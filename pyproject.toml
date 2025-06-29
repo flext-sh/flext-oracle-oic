@@ -1,0 +1,61 @@
+[tool.poetry]
+name = "oracle-oic-ext"
+version = "0.5.0"
+description = "Enterprise Python component"
+authors = ["DataCosmos Team <team@datacosmos.com>"]
+readme = "README.md"
+packages = [{include = "oracle_oic_ext"}]
+
+[tool.poetry.dependencies]
+python = "^3.9,<4.0"
+structlog = "^23.0.0"
+meltano-edk = "^0.4.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+ruff = "^0.8.0"
+black = "^24.0.0"
+isort = "^5.13.0"
+mypy = "^1.13.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D203", "D213", "COM812", "ISC001"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "D", "ANN"]
+[tool.black]
+line-length = 88
+target-version = ["py39"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+packages = ["oracle_oic_ext"]
