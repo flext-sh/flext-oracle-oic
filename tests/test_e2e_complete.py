@@ -216,7 +216,7 @@ class TestOracleOICExtE2E:
                 # This will make actual API call
                 extension.invoke("lifecycle:status", "TEST_INTEGRATION")
                 assert True
-            except Exception as e:
+            except (ConnectionError, TimeoutError, ValueError, OSError, RuntimeError) as e:
                 if "401" in str(e) or "403" in str(e):
                     pytest.skip(f"Authentication failed: {e}")
                 elif "404" in str(e):

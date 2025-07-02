@@ -19,7 +19,7 @@ def pass_through_cli() -> None:
 
     try:
         invoker.run(*sys.argv[1:])
-    except Exception as e:
+    except (OSError, RuntimeError, ValueError, ImportError) as e:
         log_subprocess_error(
             "oracle-oic-ext invocation failed",
             e,

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import operator
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import httpx
 import structlog
@@ -61,7 +61,7 @@ class MonitoringService:
         components: dict[str, str] = {}
         health_status: dict[str, object] = {
             "status": "healthy",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "components": components,
         }
 
@@ -136,7 +136,7 @@ class MonitoringService:
         """Check execution health."""
         try:
             # Get recent execution instances
-            end_time = datetime.now(timezone.utc)
+            end_time = datetime.now(UTC)
             start_time = end_time - timedelta(hours=1)
 
             params: dict[str, str | int] = {
@@ -172,7 +172,7 @@ class MonitoringService:
 
     def get_performance_metrics(self, window_hours: int = 24) -> dict[str, object]:
         """Get performance metrics for the specified time window."""
-        end_time = datetime.now(timezone.utc)
+        end_time = datetime.now(UTC)
         start_time = end_time - timedelta(hours=window_hours)
 
         metrics: dict[str, object] = {
@@ -269,7 +269,7 @@ class MonitoringService:
         integration_id: str | None = None,
     ) -> dict[str, object]:
         """Analyze error patterns in the specified time window."""
-        end_time = datetime.now(timezone.utc)
+        end_time = datetime.now(UTC)
         start_time = end_time - timedelta(hours=window_hours)
 
         error_analysis: dict[str, object] = {
@@ -337,7 +337,7 @@ class MonitoringService:
 
     def get_usage_analytics(self, window_days: int = 7) -> dict[str, object]:
         """Get usage analytics for the specified time window."""
-        end_time = datetime.now(timezone.utc)
+        end_time = datetime.now(UTC)
         start_time = end_time - timedelta(days=window_days)
 
         analytics: dict[str, object] = {
