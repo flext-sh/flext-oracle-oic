@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .extension import OracleOICExtension
+from oracle_oic_ext.extension import OracleOICExtension
 
 __version__ = "0.1.0"
 
