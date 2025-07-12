@@ -59,38 +59,40 @@ class OICExtensionConnectionConfig(DomainValueObject):
     @classmethod
     def validate_base_url(cls, v: str) -> str:
         """Validate base URL format.
-        
+
         Args:
             v: The base URL to validate.
-            
+
         Returns:
             The validated and normalized base URL.
-            
+
         Raises:
             ValueError: If URL doesn't start with http:// or https://.
 
         """
         if not v.startswith(("http://", "https://")):
-            raise ValueError("base_url must start with http:// or https://")
+            msg = "base_url must start with http:// or https://"
+            raise ValueError(msg)
         return v.rstrip("/")
 
     @field_validator("oauth_token_url")
     @classmethod
     def validate_oauth_token_url(cls, v: str) -> str:
         """Validate OAuth token URL format.
-        
+
         Args:
             v: The OAuth token URL to validate.
-            
+
         Returns:
             The validated OAuth token URL.
-            
+
         Raises:
             ValueError: If URL doesn't start with http:// or https://.
 
         """
         if not v.startswith(("http://", "https://")):
-            raise ValueError("oauth_token_url must start with http:// or https://")
+            msg = "oauth_token_url must start with http:// or https://"
+            raise ValueError(msg)
         return v
 
 
@@ -189,9 +191,9 @@ class OICExtensionPerformanceConfig(DomainValueObject):
     )
 
     batch_size: int = Field(
-        default=FlextConstants.DEFAULT_BATCH_SIZE,
+        default=1000,
         ge=1,
-        le=1000,
+        le=10000,
         description="Batch size for bulk operations",
     )
 
@@ -248,13 +250,13 @@ class OracleOICExtensionSettings(BaseSettings):
     )
 
     # Core project metadata
-    project_name: ProjectName = Field(
-        default=ProjectName("flext-oracle-oic-ext"),
+    project_name: str = Field(
+        default="flext-oracle-oic-ext",
         description="Project name",
     )
 
-    version: Version = Field(
-        default=Version("0.7.0"),
+    version: str = Field(
+        default="0.7.0",
         description="Project version",
     )
 
@@ -316,10 +318,10 @@ class OracleOICExtensionSettings(BaseSettings):
     @model_validator(mode="after")
     def validate_configuration(self) -> OracleOICExtensionSettings:
         """Validate configuration after model creation.
-        
+
         Returns:
             The validated configuration instance.
-            
+
         Raises:
             ValueError: If configuration validation fails.
 
@@ -331,8 +333,9 @@ class OracleOICExtensionSettings(BaseSettings):
             try:
                 artifact_path.mkdir(parents=True, exist_ok=True)
             except OSError as e:
+                msg = f"Cannot create artifact directory {artifact_path}: {e}"
                 raise ValueError(
-                    f"Cannot create artifact directory {artifact_path}: {e}",
+                    msg,
                 ) from e
 
         # Validate OAuth scope if not provided:
@@ -350,10 +353,10 @@ class OracleOICExtensionSettings(BaseSettings):
     @classmethod
     def from_dict(cls, config_dict: dict[str, Any]) -> OracleOICExtensionSettings:
         """Create settings instance from dictionary.
-        
+
         Args:
             config_dict: Dictionary containing configuration values.
-            
+
         Returns:
             OracleOICExtensionSettings instance.
 
@@ -410,12 +413,12 @@ class OracleOICExtensionSettings(BaseSettings):
 
     def to_dict(self) -> dict[str, str | int | float | bool | None]:
         """Convert settings to dictionary format.
-        
+
         Returns:
             Dictionary representation of all configuration values.
 
         """
-        return {# Connection config
+        return {  # Connection config
             "base_url": self.connection.base_url,
             "oauth_client_id": self.connection.oauth_client_id,
             "oauth_client_secret": self.connection.oauth_client_secret,
@@ -456,7 +459,7 @@ class OracleOICExtensionSettings(BaseSettings):
 
     def get_auth_config(self) -> dict[str, str]:
         """Get authentication configuration.
-        
+
         Returns:
             Dictionary containing OAuth authentication configuration.
 
@@ -466,6 +469,7 @@ class OracleOICExtensionSettings(BaseSettings):
             "oauth_token_url": self.connection.oauth_token_url,
             "oauth_scope": self.connection.oauth_scope or "",
         }
+
 
 from pathlib import Path  # TODO: Move import to module level
 from typing import Any

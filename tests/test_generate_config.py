@@ -201,7 +201,7 @@ class TestConfigGeneration:
                 "artifact_directory": str(artifact_dir),
             }
 
-            settings = OracleOICExtensionSettings.from_dict(config_dict)
+            OracleOICExtensionSettings.from_dict(config_dict)
 
             # Directory should be created during validation
             assert artifact_dir.exists()

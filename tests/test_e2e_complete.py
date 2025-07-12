@@ -1,7 +1,7 @@
 """Comprehensive End-to-End tests for oracle-oic-ext.
 
 Tests all functionalities including:
-- Extension initialization  
+- Extension initialization
 - Lifecycle management
 - Monitoring services
 - Artifact extraction
