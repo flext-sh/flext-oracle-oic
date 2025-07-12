@@ -184,7 +184,7 @@ python generate_config.py --test-mode
 
 - **OIC Instance Access**: Requires valid OIC connection for integration tests
 - **Mock Testing**: Unit tests use mocked OIC responses
-- **Configuration Testing**: Validates config.json generation and parsing
+- **Configuration Testing**: Validates config.JSON generation and parsing
 
 ---
 

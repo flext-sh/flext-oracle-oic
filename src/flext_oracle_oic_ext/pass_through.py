@@ -1,18 +1,24 @@
-"""Pass-through invoker for Oracle OIC extension."""
+"""Pass-through invoker for Oracle OIC extension.
+
+REFACTORED:
+            Uses flext-core patterns.
+Zero tolerance for code duplication.
+"""
 
 from __future__ import annotations
 
 import sys
 
-import structlog
 from meltano.edk.process import Invoker, log_subprocess_error
 
-log = structlog.get_logger()
+from flext_observability.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 def pass_through_cli() -> None:
-    """Pass through CLI for Oracle OIC extension."""
-    log.debug("Running pass-through invoker", command=sys.argv[1:])
+    """Pass-through CLI for oracle-oic-ext."""
+    logger.debug("Running pass-through invoker", command=sys.argv[1:])
 
     # Pass through to actual command
     invoker = Invoker("oracle-oic-ext")

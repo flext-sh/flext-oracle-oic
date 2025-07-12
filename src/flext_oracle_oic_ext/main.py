@@ -1,18 +1,24 @@
-"""Main entry point for Oracle OIC extension."""
+"""Main entry point for Oracle OIC extension.
+
+REFACTORED: Uses flext-core patterns.
+Zero tolerance for code duplication.
+"""
 
 from __future__ import annotations
 
-import structlog
+import json
+
 import typer
 from meltano.edk.logging import default_logging_config, parse_log_level
 
-from oracle_oic_ext.extension import OracleOICExtension
+from flext_observability.logging import get_logger
+from flext_oracle_oic_ext.extension import OracleOICExtension
 
-APP_NAME = "oracle_oic_extension"
+APP_NAME = "flext_oracle_oic_extension"
 
 default_logging_config(level=parse_log_level("INFO"))
 
-log = structlog.get_logger(APP_NAME)
+logger = get_logger(__name__)
 
 ext = OracleOICExtension()
 
@@ -28,7 +34,6 @@ def main(
     log_level: str = typer.Option("INFO", envvar="LOG_LEVEL"),
     log_json: bool = typer.Option(False, envvar="LOG_JSON"),
 ) -> None:
-    """Oracle OIC Extension for lifecycle management and monitoring."""
     if ctx.invoked_subcommand is None:
         # No subcommand was invoked, show help
         typer.echo(ctx.get_help())
@@ -39,14 +44,13 @@ def initialize(
     ctx: typer.Context,
     force: bool = typer.Option(False, help="Force initialization"),
 ) -> None:
-    """Initialize the Oracle OIC extension."""
     try:
         # Extension initialization logic
-        log.info("Initializing Oracle OIC extension...")
+        logger.info("Initializing Oracle OIC extension...")
         ext.initialize(force)
-        log.info("Extension initialized successfully")
+        logger.info("Extension initialized successfully")
     except Exception as e:
-        log.exception(f"Failed to initialize extension: {e}")
+        logger.exception(f"Failed to initialize extension: {e}")
         raise typer.Exit(1) from e
 
 
@@ -55,7 +59,6 @@ def invoke(
     ctx: typer.Context,
     command_args: list[str] = typer.Argument(None, help="Command and arguments"),
 ) -> None:
-    """Invoke an Oracle OIC extension command."""
     if not command_args:
         typer.echo("No command provided. Use --help for available commands.")
         raise typer.Exit(1)
@@ -66,7 +69,7 @@ def invoke(
     try:
         ext.invoke(command, *args)
     except Exception as e:
-        log.exception(f"Command failed: {e}")
+        logger.exception(f"Command failed: {e}")
         raise typer.Exit(1) from e
 
 
@@ -75,14 +78,12 @@ def describe(
     ctx: typer.Context,
     output_format: str = typer.Option("json", help="Output format (json or text)"),
 ) -> None:
-    """Describe the capabilities of the Oracle OIC extension."""
     description = ext.describe()
 
     if output_format == "json":
         # Output as JSON
-        import json
-
         typer.echo(json.dumps(description.model_dump(), indent=2))
+    else:
         # Output as text
         typer.echo("Oracle OIC Extension Commands:")
         typer.echo("")

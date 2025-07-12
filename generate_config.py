@@ -1,13 +1,11 @@
-"""Module generate_config."""
-
-# !/usr/bin/env python3
-from typing import Any
-
 """Generate config.json from .env file for oracle-oic-ext."""
+
+#!/usr/bin/env python3
 
 import json
 import os
 from pathlib import Path
+from typing import Any
 
 from dotenv import load_dotenv
 
@@ -16,7 +14,6 @@ load_dotenv()
 
 
 def generate_config() -> Any:
-    """Generate config.json from environment variables."""
     # OAuth2 configuration
     oauth_config = {
         "base_url": os.getenv("OIC_IDCS_CLIENT_AUD", "").rstrip("/"),
@@ -67,13 +64,12 @@ def generate_config() -> Any:
 
 
 def main() -> None:
-    """Main function."""
     config = generate_config()
 
     # Check if config.json already exists
     config_path = Path("config.json")
     if config_path.exists():
-        response = input().strip().lower()
+        response = input("Config file exists. Overwrite? (y/n): ").strip().lower()
         if response != "y":
             return
 

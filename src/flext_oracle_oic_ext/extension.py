@@ -1,4 +1,8 @@
-"""Oracle Integration Cloud extension implementation."""
+"""Oracle Integration Cloud extension implementation.
+
+REFACTORED: Uses flext-core patterns.
+Zero tolerance for code duplication.
+"""
 
 from __future__ import annotations
 
@@ -6,30 +10,38 @@ import subprocess
 import sys
 from typing import Any
 
-import structlog
 from meltano.edk import models
 from meltano.edk.extension import ExtensionBase
 
-from oracle_oic_ext.lifecycle import LifecycleManager
-from oracle_oic_ext.monitoring import MonitoringService
+from flext_observability.logging import get_logger
+from flext_oracle_oic_ext.lifecycle import LifecycleManager
+from flext_oracle_oic_ext.monitoring import MonitoringService
 
-log = structlog.get_logger()
+logger = get_logger(__name__)
 
 
 class OracleOICExtension(ExtensionBase):
     """Extension for Oracle Integration Cloud operations."""
 
     def __init__(self) -> None:
-        """Initialize the Oracle OIC extension."""
         self.oracle_oic_bin = "oracle-oic-ext"
         self.lifecycle_manager: LifecycleManager | None = None
         self.monitoring_service: MonitoringService | None = None
         self.config: dict[str, Any] = {}
 
     def invoke(self, command_name: str | None, *command_args: Any) -> None:
-        """Invoke the extension command."""
+        """Invoke a command within the Oracle OIC extension.
+
+        Routes commands to appropriate handlers based on command prefix.
+        Supports lifecycle:, monitor:, and extraction: command namespaces.
+
+        Args:
+            command_name: Command to execute (e.g., 'lifecycle:activate').
+            *command_args: Arguments to pass to the command handler.
+
+        """
         if not command_name:
-            # Show help if no command provided
+            # Show help if no command provided:
             self._show_help()
             return
 
@@ -46,11 +58,16 @@ class OracleOICExtension(ExtensionBase):
         elif command_name.startswith("transform:"):
             self._handle_transformation_command(command_name, *command_args)
         else:
-            log.error("Unknown command: %s", command_name)
+            logger.error("Unknown command: %s", command_name)
             sys.exit(1)
 
     def describe(self) -> models.Describe:
-        """Describe the extension's capabilities."""
+        """Describe available commands and capabilities.
+
+        Returns:
+            Describe model containing command information and metadata.
+
+        """
         return models.Describe(
             commands=[
                 # Lifecycle Management Commands
@@ -117,7 +134,6 @@ class OracleOICExtension(ExtensionBase):
         )
 
     def _initialize_services(self) -> None:
-        """Initialize services with configuration."""
         config = self.config
 
         # Initialize lifecycle manager
@@ -141,63 +157,64 @@ class OracleOICExtension(ExtensionBase):
         )
 
     def _handle_lifecycle_command(self, command: str, *args) -> None:
-        """Handle lifecycle management commands."""
         cmd = command.split(":", 1)[1]
 
         if cmd == "activate":
             if len(args) < 1:
-                log.error("Integration ID required")
+                logger.error("Integration ID required")
                 sys.exit(1)
             integration_id = args[0]
             version = args[1] if len(args) > 1 else "01.00.0000"
             if self.lifecycle_manager:
                 self.lifecycle_manager.activate_integration(integration_id, version)
             else:
-                log.error("Lifecycle manager not initialized")
+                logger.error("Lifecycle manager not initialized")
                 sys.exit(1)
 
         elif cmd == "deactivate":
             if len(args) < 1:
-                log.error("Integration ID required")
+                logger.error("Integration ID required")
                 sys.exit(1)
             integration_id = args[0]
             version = args[1] if len(args) > 1 else "01.00.0000"
-            self.lifecycle_manager.deactivate_integration(integration_id, version)
+            if self.lifecycle_manager:
+                self.lifecycle_manager.deactivate_integration(integration_id, version)
 
         elif cmd == "status":
             if len(args) < 1:
-                log.error("Integration ID required")
+                logger.error("Integration ID required")
                 sys.exit(1)
             integration_id = args[0]
             version = args[1] if len(args) > 1 else "01.00.0000"
             if self.lifecycle_manager is None:
-                log.error("Lifecycle manager not initialized")
+                logger.error("Lifecycle manager not initialized")
                 sys.exit(1)
             status = self.lifecycle_manager.get_integration_status(
                 integration_id,
                 version,
             )
-            log.info("Integration %s|%s status: %s", integration_id, version, status)
+            logger.info("Integration %s|%s status: %s", integration_id, version, status)
         else:
-            log.error("Unknown lifecycle command: %s", cmd)
+            logger.error("Unknown lifecycle command: %s", cmd)
             sys.exit(1)
 
     def _handle_monitoring_command(self, command: str, *args) -> None:
-        """Handle monitoring commands."""
         cmd = command.split(":", 1)[1]
 
         if cmd == "health":
             detailed = "--detailed" in args
-            health = self.monitoring_service.check_health(detailed=detailed)
-            log.info("OIC Health Status", **health)
+            if self.monitoring_service:
+                health = self.monitoring_service.check_health(detailed=detailed)
+                logger.info("OIC Health Status", **health)
 
         elif cmd == "performance":
             window_hours = 24
             for i, arg in enumerate(args):
                 if arg == "--window" and i + 1 < len(args):
                     window_hours = int(args[i + 1])
-            metrics = self.monitoring_service.get_performance_metrics(window_hours)
-            log.info("Performance Metrics", **metrics)
+            if self.monitoring_service:
+                metrics = self.monitoring_service.get_performance_metrics(window_hours)
+                logger.info("Performance Metrics", **metrics)
 
         elif cmd == "errors":
             window_hours = 24
@@ -207,17 +224,17 @@ class OracleOICExtension(ExtensionBase):
                     window_hours = int(args[i + 1])
                 elif arg == "--integration" and i + 1 < len(args):
                     integration_id = args[i + 1]
-            errors = self.monitoring_service.analyze_errors(
-                window_hours,
-                integration_id,
-            )
-            log.info("Error Analysis", **errors)
+            if self.monitoring_service:
+                errors = self.monitoring_service.analyze_errors(
+                    window_hours,
+                    integration_id,
+                )
+                logger.info("Error Analysis", **errors)
         else:
-            log.error("Unknown monitoring command: %s", cmd)
+            logger.error("Unknown monitoring command: %s", cmd)
             sys.exit(1)
 
     def _handle_extraction_command(self, command: str, *args) -> None:
-        """Handle advanced extraction commands."""
         cmd = command.split(":", 1)[1]
 
         if cmd == "artifacts":
@@ -231,7 +248,7 @@ class OracleOICExtension(ExtensionBase):
                     integration_id = args[i + 1]
 
             if not output_dir:
-                log.error("--output-dir required")
+                logger.error("--output-dir required")
                 sys.exit(1)
 
             # Use tap-oracle-oic with specific configuration
@@ -246,18 +263,16 @@ class OracleOICExtension(ExtensionBase):
             # Run tap-oracle-oic in artifact extraction mode
             self._run_tap_extraction(tap_config)
         else:
-            log.error("Unknown extraction command: %s", cmd)
+            logger.error("Unknown extraction command: %s", cmd)
             sys.exit(1)
 
     def _handle_transformation_command(self, command: str, *args) -> None:
-        """Handle data transformation commands."""
         cmd = command.split(":", 1)[1]
 
-        log.info("Transformation command '%s' not yet implemented", cmd)
+        logger.info("Transformation command '%s' not yet implemented", cmd)
         sys.exit(1)
 
     def _run_tap_extraction(self, config: dict) -> None:
-        """Run tap-oracle-oic for extraction."""
         try:
             # Run tap-oracle-oic with specific config
             cmd = ["tap-oracle-oic", "--config", "-"]
@@ -269,17 +284,16 @@ class OracleOICExtension(ExtensionBase):
                 check=False,
             )
             if proc.returncode != 0:
-                log.error("Extraction failed", stderr=proc.stderr)
+                logger.error("Extraction failed", stderr=proc.stderr)
                 sys.exit(1)
-            log.info("Extraction completed successfully")
+            logger.info("Extraction completed successfully")
         except Exception as e:
-            log.exception("Failed to run extraction", error=str(e))
+            logger.exception("Failed to run extraction", error=str(e))
             sys.exit(1)
 
     def _show_help(self) -> None:
-        """Show extension help."""
-        log.info("Oracle OIC Extension Commands:")
+        logger.info("Oracle OIC Extension Commands:")
         for cmd in self.describe().commands:
-            log.info("  %s: %s", cmd.name, cmd.description)
+            logger.info("  %s: %s", cmd.name, cmd.description)
             if hasattr(cmd, "args") and cmd.args:
-                log.info("    Args: %s", cmd.args)
+                logger.info("    Args: %s", cmd.args)
