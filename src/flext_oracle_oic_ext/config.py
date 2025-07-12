@@ -15,8 +15,6 @@ from flext_core.config import BaseSettings, singleton
 from flext_core.domain.pydantic_base import DomainValueObject
 from flext_core.domain.types import (
     FlextConstants,
-    ProjectName,
-    Version,
 )
 
 if TYPE_CHECKING:
