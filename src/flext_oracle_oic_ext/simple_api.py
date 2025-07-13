@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from flext_core.domain.result import ServiceResult
+from flext_core import ServiceResult
 from flext_observability.logging import get_logger, setup_logging
 from flext_oracle_oic_ext.config import OracleOICExtensionSettings
 

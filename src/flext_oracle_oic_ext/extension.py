@@ -14,6 +14,7 @@ from meltano.edk import models
 from meltano.edk.extension import ExtensionBase
 
 from flext_observability.logging import get_logger
+from flext_oracle_oic_ext.config import OracleOICExtensionSettings
 from flext_oracle_oic_ext.lifecycle import LifecycleManager
 from flext_oracle_oic_ext.monitoring import MonitoringService
 
@@ -136,25 +137,17 @@ class OracleOICExtension(ExtensionBase):
     def _initialize_services(self) -> None:
         config = self.config
 
-        # Initialize lifecycle manager
-        self.lifecycle_manager = LifecycleManager(
-            base_url=config.get("base_url"),
-            auth_config={
-                "oauth_client_id": config.get("oauth_client_id"),
-                "oauth_client_secret": config.get("oauth_client_secret"),
-                "oauth_token_url": config.get("oauth_token_url"),
-            },
-        )
+        # Create settings object from config dict
+        settings = OracleOICExtensionSettings.from_dict(config)
 
-        # Initialize monitoring service
-        self.monitoring_service = MonitoringService(
-            base_url=config.get("base_url"),
-            auth_config={
-                "oauth_client_id": config.get("oauth_client_id"),
-                "oauth_client_secret": config.get("oauth_client_secret"),
-                "oauth_token_url": config.get("oauth_token_url"),
-            },
-        )
+        # Initialize lifecycle manager with settings
+        self.lifecycle_manager = LifecycleManager(settings)
+
+        # Initialize monitoring service - needs a session object
+        # For now we'll create a basic session
+        import requests
+        session = requests.Session()
+        self.monitoring_service = MonitoringService(session)
 
     def _handle_lifecycle_command(self, command: str, *args) -> None:
         cmd = command.split(":", 1)[1]

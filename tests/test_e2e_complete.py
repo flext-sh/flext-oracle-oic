@@ -286,9 +286,11 @@ class TestOracleOICExtE2E:
         """Test log extraction functionality."""
         os.environ["MELTANO_PROJECT_ROOT"] = str(Path.cwd())
 
-        with patch.object(extension, "_load_config", return_value=config):
-            # Mock log extraction
-            with patch("builtins.open", create=True) as mock_open:
+        # Set config directly on extension instead of patching non-existent method
+        extension.config = config
+
+        # Mock log extraction
+        with patch("builtins.open", create=True) as mock_open:
                 mock_file = Mock()
                 mock_open.return_value.__enter__.return_value = mock_file
 
