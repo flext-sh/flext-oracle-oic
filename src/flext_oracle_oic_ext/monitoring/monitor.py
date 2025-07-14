@@ -105,7 +105,9 @@ class MonitoringService:
             if response.status_code == 200:
                 integrations = response.json().get("items", [])
                 active = sum(1 for i in integrations if i.get("status") == "ACTIVE")
-                configured = sum(1 for i in integrations if i.get("status") == "CONFIGURED")
+                configured = sum(
+                    1 for i in integrations if i.get("status") == "CONFIGURED"
+                )
                 total = len(integrations)
                 return {
                     "status": "healthy" if active > 0 else "warning",
@@ -139,7 +141,9 @@ class MonitoringService:
                 instances = response.json().get("items", [])
                 successful = sum(1 for i in instances if i.get("status") == "COMPLETED")
                 failed = sum(1 for i in instances if i.get("status") == "FAILED")
-                in_progress = sum(1 for i in instances if i.get("status") == "IN_PROGRESS")
+                in_progress = sum(
+                    1 for i in instances if i.get("status") == "IN_PROGRESS"
+                )
 
                 return {
                     "status": "healthy" if failed < successful else "warning",
@@ -193,7 +197,8 @@ class MonitoringService:
                 durations = [
                     instance["duration"]
                     for instance in instances
-                    if instance.get("status") == "COMPLETED" and instance.get("duration")
+                    if instance.get("status") == "COMPLETED"
+                    and instance.get("duration")
                 ]
 
                 metrics["executions"] = {
@@ -202,14 +207,17 @@ class MonitoringService:
                     "failed": failed,
                     "success_rate": (
                         (successful / total_executions * 100)
-                        if total_executions > 0 else 0
+                        if total_executions > 0
+                        else 0
                     ),
                     "avg_duration_ms": (
                         sum(durations) / len(durations) if durations else 0
                     ),
                 }
 
-                metrics["throughput"] = self._calculate_throughput(instances, window_hours)
+                metrics["throughput"] = self._calculate_throughput(
+                    instances, window_hours
+                )
 
         except Exception as e:
             log.exception("Failed to get performance metrics", error=str(e))
@@ -217,7 +225,9 @@ class MonitoringService:
 
         return metrics
 
-    def _calculate_throughput(self, instances: list[dict[str, Any]], window_hours: int) -> dict[str, Any]:
+    def _calculate_throughput(
+        self, instances: list[dict[str, Any]], window_hours: int
+    ) -> dict[str, Any]:
         """Calculate throughput metrics from execution instances."""
         hourly_counts: dict[str, int] = {}
 
@@ -240,7 +250,9 @@ class MonitoringService:
             "min_per_hour": 0,
         }
 
-    def analyze_errors(self, window_hours: int = 24, integration_id: str | None = None) -> dict[str, Any]:
+    def analyze_errors(
+        self, window_hours: int = 24, integration_id: str | None = None
+    ) -> dict[str, Any]:
         """Analyze error patterns in OIC executions.
 
         Args:
@@ -284,8 +296,7 @@ class MonitoringService:
                     "total_instances": len(instances),
                     "failed_instances": len(failed_instances),
                     "error_rate": (
-                        len(failed_instances) / len(instances) * 100
-                        if instances else 0
+                        len(failed_instances) / len(instances) * 100 if instances else 0
                     ),
                 }
 
@@ -296,7 +307,9 @@ class MonitoringService:
                     error_patterns[error_msg] = error_patterns.get(error_msg, 0) + 1
 
                 error_analysis["patterns"] = dict(
-                    sorted(error_patterns.items(), key=operator.itemgetter(1), reverse=True),
+                    sorted(
+                        error_patterns.items(), key=operator.itemgetter(1), reverse=True
+                    ),
                 )
 
                 # Generate recommendations

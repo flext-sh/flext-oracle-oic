@@ -15,7 +15,7 @@ dependencies = [
     # Oracle OIC Extension specific dependencies
     "meltano-edk @ git+https://github.com/meltano/edk.git@a7ab9e7",
     "requests>=2.32.0",
-    "oracledb>=2.4.1",
+    "oracledb>=3.2.0",
     "sqlalchemy>=2.0.0",
 
     # Core libraries
@@ -26,7 +26,7 @@ dependencies = [
     "python-dateutil>=2.9.0",
     "httpx>=0.28.0",
     "tenacity>=9.0.0",
-    "cryptography>=44.0.0",
+    "cryptography",
     "orjson>=3.10.0",
 ]
 keywords = ["flext", "oracle", "oic", "extension", "integration", "enterprise"]
@@ -70,12 +70,12 @@ flext-observability = { path = "../flext-observability", develop = true }
 # Oracle OIC Extension specific dependencies
 meltano-edk = { git = "https://github.com/meltano/edk.git", rev = "a7ab9e7" }
 requests = ">=2.32.0"
-oracledb = ">=2.4.1"
+oracledb = ">=3.2.0"
 sqlalchemy = ">=2.0.0"
 python-dateutil = ">=2.9.0"
 httpx = ">=0.28.0"
 tenacity = ">=9.0.0"
-cryptography = ">=44.0.0"
+cryptography = "*"
 orjson = ">=3.10.0"
 
 [tool.poetry.group.dev.dependencies]
@@ -100,6 +100,10 @@ bandit = ">=1.8.0"
 mkdocs = ">=1.6.0"
 mkdocs-material = ">=9.5.0"
 mkdocs-mermaid2-plugin = ">=1.1.0"
+execnet = "^2.1.1"
+fsspec = "^2025.5.1"
+mirakuru = "^2.6.1"
+pprintpp = "^0.4.0"
 
 [tool.poetry.scripts]
 oracle-oic-ext = "flext_oracle_oic_ext.cli:main"
@@ -259,9 +263,9 @@ indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
 
-# MyPy configuration - focused on src/ and tests/
+# MyPy configuration - compatible with Poetry editable installs
 [tool.mypy]
-files = ["src", "tests"]
+files = ["src/flext_oracle_oic_ext", "tests"]
 python_version = "3.13"
 strict = true
 warn_return_any = true
@@ -277,13 +281,7 @@ warn_no_return = true
 warn_unreachable = true
 strict_equality = true
 
-# Paths to check
-
 # Import discovery
-namespace_packages = true
-explicit_package_bases = true
-
-# Error output
 show_error_codes = true
 show_column_numbers = true
 show_error_context = true

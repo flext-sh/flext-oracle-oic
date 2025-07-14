@@ -22,7 +22,7 @@ from flext_core.domain.pydantic_base import DomainValueObject
 from flext_observability.logging import get_logger
 
 if TYPE_CHECKING:
-            from flext_oracle_oic_ext.config import OracleOICExtensionSettings
+    from flext_oracle_oic_ext.config import OracleOICExtensionSettings
 
 logger = get_logger(__name__)
 
@@ -81,7 +81,8 @@ class LifecycleManager:
 
         """
         if not self._client:
-            self._client = httpx.Client(base_url=self.settings.connection.base_url,
+            self._client = httpx.Client(
+                base_url=self.settings.connection.base_url,
                 headers=self._get_auth_headers(),
                 timeout=self.settings.performance.request_timeout,
             )
@@ -90,12 +91,14 @@ class LifecycleManager:
     def _get_auth_headers(self) -> dict[str, str]:
         if not self._access_token:
             self._refresh_token()
-        return {"Authorization": f"Bearer {self._access_token}",
+        return {
+            "Authorization": f"Bearer {self._access_token}",
             "Accept": "application/json",
             "Content-Type": "application/json",
         }
 
-    @retry(stop=stop_after_attempt(3),
+    @retry(
+        stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=4, max=10),
         reraise=True,
     )
@@ -103,8 +106,10 @@ class LifecycleManager:
         try:
             with httpx.Client() as client:
                 auth_config = self.settings.get_auth_config()
-                response = client.post(auth_config["oauth_token_url"],
-                    data={"grant_type": "client_credentials",
+                response = client.post(
+                    auth_config["oauth_token_url"],
+                    data={
+                        "grant_type": "client_credentials",
                         "client_id": auth_config["oauth_client_id"],
                         "client_secret": auth_config["oauth_client_secret"],
                         "scope": auth_config["oauth_scope"],
@@ -119,7 +124,9 @@ class LifecycleManager:
             logger.exception("Failed to refresh OAuth2 token", error=str(e))
             raise
 
-    def activate_integration(self, integration_id: str, version: str = "01.00.0000") -> ServiceResult[LifecycleOperationResult]:
+    def activate_integration(
+        self, integration_id: str, version: str = "01.00.0000"
+    ) -> ServiceResult[LifecycleOperationResult]:
         """Activate an integration in Oracle Integration Cloud.
 
         Args:
@@ -130,7 +137,8 @@ class LifecycleManager:
             ServiceResult containing operation result with status and details.
 
         """
-        identifier = IntegrationIdentifier(integration_id=integration_id,
+        identifier = IntegrationIdentifier(
+            integration_id=integration_id,
             version=version,
         )
 
@@ -147,7 +155,8 @@ class LifecycleManager:
                     )
 
             # Perform activation
-            response = self.client.post(f"/ic/api/integration/v1/integrations/{identifier}/activate",
+            response = self.client.post(
+                f"/ic/api/integration/v1/integrations/{identifier}/activate",
                 timeout=self.settings.lifecycle.activation_timeout,
             )
 
@@ -160,14 +169,18 @@ class LifecycleManager:
                     message="Integration activated successfully",
                     details=response.json(),
                 )
-                logger.info("Integration activated successfully", integration=str(identifier))
+                logger.info(
+                    "Integration activated successfully", integration=str(identifier)
+                )
                 return ServiceResult.success(result)
             error_message = f"Failed to activate integration {identifier}"
-            logger.error(error_message,
+            logger.error(
+                error_message,
                 status_code=response.status_code,
                 response=response.text,
             )
-            return ServiceResult.failure(error_type="ActivationError",
+            return ServiceResult.failure(
+                error_type="ActivationError",
                 message=error_message,
             )
 
@@ -179,7 +192,9 @@ class LifecycleManager:
                 message=error_message,
             )
 
-    def deactivate_integration(self, integration_id: str, version: str = "01.00.0000") -> ServiceResult[LifecycleOperationResult]:
+    def deactivate_integration(
+        self, integration_id: str, version: str = "01.00.0000"
+    ) -> ServiceResult[LifecycleOperationResult]:
         """Deactivate an integration in Oracle Integration Cloud.
 
         Args:
@@ -190,44 +205,54 @@ class LifecycleManager:
             ServiceResult containing operation result with status and details.
 
         """
-        identifier = IntegrationIdentifier(integration_id=integration_id,
+        identifier = IntegrationIdentifier(
+            integration_id=integration_id,
             version=version,
         )
 
         logger.info("Deactivating integration", integration=str(identifier))
 
         try:
-            response = self.client.post(f"/ic/api/integration/v1/integrations/{identifier}/deactivate",
+            response = self.client.post(
+                f"/ic/api/integration/v1/integrations/{identifier}/deactivate",
                 timeout=self.settings.lifecycle.activation_timeout,
             )
 
             if response.status_code == 200:
-                result = LifecycleOperationResult(integration_id=integration_id,
+                result = LifecycleOperationResult(
+                    integration_id=integration_id,
                     version=version,
                     operation="deactivate",
                     success=True,
                     message="Integration deactivated successfully",
                     details=response.json(),
                 )
-                logger.info("Integration deactivated successfully", integration=str(identifier))
+                logger.info(
+                    "Integration deactivated successfully", integration=str(identifier)
+                )
                 return ServiceResult.success(result)
             error_message = f"Failed to deactivate integration {identifier}"
-            logger.error(error_message,
+            logger.error(
+                error_message,
                 status_code=response.status_code,
                 response=response.text,
             )
-            return ServiceResult.failure(error_type="DeactivationError",
+            return ServiceResult.failure(
+                error_type="DeactivationError",
                 message=error_message,
             )
 
         except Exception as e:
             error_message = f"Exception during deactivation of {identifier}: {e}"
             logger.exception(error_message)
-            return ServiceResult.failure(error_type="DeactivationException",
+            return ServiceResult.failure(
+                error_type="DeactivationException",
                 message=error_message,
             )
 
-    def get_integration_status(self, integration_id: str, version: str = "01.00.0000") -> ServiceResult[IntegrationStatus]:
+    def get_integration_status(
+        self, integration_id: str, version: str = "01.00.0000"
+    ) -> ServiceResult[IntegrationStatus]:
         """Get current status of an integration.
 
         Args:
@@ -238,18 +263,21 @@ class LifecycleManager:
             ServiceResult containing current integration status information.
 
         """
-        identifier = IntegrationIdentifier(integration_id=integration_id,
+        identifier = IntegrationIdentifier(
+            integration_id=integration_id,
             version=version,
         )
 
         try:
-            response = self.client.get(f"/ic/api/integration/v1/integrations/{identifier}",
+            response = self.client.get(
+                f"/ic/api/integration/v1/integrations/{identifier}",
                 timeout=self.settings.performance.request_timeout,
             )
 
             if response.status_code == 200:
                 data = response.json()
-                status = IntegrationStatus(integration_id=integration_id,
+                status = IntegrationStatus(
+                    integration_id=integration_id,
                     version=version,
                     status=data.get("status", "UNKNOWN"),
                     message=data.get("message"),
@@ -257,22 +285,27 @@ class LifecycleManager:
                 )
                 return ServiceResult.success(status)
             error_message = f"Failed to get integration status for {identifier}"
-            logger.error(error_message,
+            logger.error(
+                error_message,
                 status_code=response.status_code,
                 response=response.text,
             )
-            return ServiceResult.failure(error_type="StatusError",
+            return ServiceResult.failure(
+                error_type="StatusError",
                 message=error_message,
             )
 
         except Exception as e:
             error_message = f"Exception getting status for {identifier}: {e}"
             logger.exception(error_message)
-            return ServiceResult.failure(error_type="StatusException",
+            return ServiceResult.failure(
+                error_type="StatusException",
                 message=error_message,
             )
 
-    def bulk_activate(self, integration_list: list[dict[str, str]]) -> ServiceResult[BulkOperationResult]:
+    def bulk_activate(
+        self, integration_list: list[dict[str, str]]
+    ) -> ServiceResult[BulkOperationResult]:
         """Activate multiple integrations in batch.
 
         Args:
@@ -296,20 +329,24 @@ class LifecycleManager:
             if result.is_success():
                 successful_integrations.append(identifier)
             else:
-                failed_integrations.append({
-                    "integration": identifier,
-                    "error": result.error_message,
-                    "error_type": result.error_type,
-                })
+                failed_integrations.append(
+                    {
+                        "integration": identifier,
+                        "error": result.error_message,
+                        "error_type": result.error_type,
+                    }
+                )
 
-        bulk_result = BulkOperationResult(total_count=len(integration_list),
+        bulk_result = BulkOperationResult(
+            total_count=len(integration_list),
             success_count=len(successful_integrations),
             failure_count=len(failed_integrations),
             successful_integrations=successful_integrations,
             failed_integrations=failed_integrations,
         )
 
-        logger.info("Bulk activation completed",
+        logger.info(
+            "Bulk activation completed",
             total=bulk_result.total_count,
             success=bulk_result.success_count,
             failed=bulk_result.failure_count,
@@ -317,7 +354,9 @@ class LifecycleManager:
 
         return ServiceResult.success(bulk_result)
 
-    def bulk_deactivate(self, integration_list: list[dict[str, str]]) -> ServiceResult[BulkOperationResult]:
+    def bulk_deactivate(
+        self, integration_list: list[dict[str, str]]
+    ) -> ServiceResult[BulkOperationResult]:
         """Deactivate multiple integrations in batch.
 
         Args:
@@ -341,20 +380,24 @@ class LifecycleManager:
             if result.is_success():
                 successful_integrations.append(identifier)
             else:
-                failed_integrations.append({
-                    "integration": identifier,
-                    "error": result.error_message,
-                    "error_type": result.error_type,
-                })
+                failed_integrations.append(
+                    {
+                        "integration": identifier,
+                        "error": result.error_message,
+                        "error_type": result.error_type,
+                    }
+                )
 
-        bulk_result = BulkOperationResult(total_count=len(integration_list),
+        bulk_result = BulkOperationResult(
+            total_count=len(integration_list),
             success_count=len(successful_integrations),
             failure_count=len(failed_integrations),
             successful_integrations=successful_integrations,
             failed_integrations=failed_integrations,
         )
 
-        logger.info("Bulk deactivation completed",
+        logger.info(
+            "Bulk deactivation completed",
             total=bulk_result.total_count,
             success=bulk_result.success_count,
             failed=bulk_result.failure_count,
@@ -362,7 +405,9 @@ class LifecycleManager:
 
         return ServiceResult.success(bulk_result)
 
-    def validate_integration(self, integration_id: str, version: str = "01.00.0000") -> ServiceResult[dict[str, Any]]:
+    def validate_integration(
+        self, integration_id: str, version: str = "01.00.0000"
+    ) -> ServiceResult[dict[str, Any]]:
         """Validate an integration configuration.
 
         Args:
@@ -373,14 +418,16 @@ class LifecycleManager:
             ServiceResult containing validation results and any errors found.
 
         """
-        identifier = IntegrationIdentifier(integration_id=integration_id,
+        identifier = IntegrationIdentifier(
+            integration_id=integration_id,
             version=version,
         )
 
         logger.info("Validating integration", integration=str(identifier))
 
         try:
-            response = self.client.post(f"/ic/api/integration/v1/integrations/{identifier}/validate",
+            response = self.client.post(
+                f"/ic/api/integration/v1/integrations/{identifier}/validate",
                 timeout=self.settings.performance.request_timeout,
             )
 
@@ -389,27 +436,33 @@ class LifecycleManager:
                 is_valid = validation_result.get("valid", False)
 
                 if is_valid:
-                    logger.info("Integration validation successful", integration=str(identifier))
+                    logger.info(
+                        "Integration validation successful", integration=str(identifier)
+                    )
                 else:
-                    logger.warning("Integration validation failed",
+                    logger.warning(
+                        "Integration validation failed",
                         integration=str(identifier),
                         issues=validation_result.get("issues", []),
                     )
 
                 return ServiceResult.success(validation_result)
             error_message = f"Failed to validate integration {identifier}"
-            logger.error(error_message,
+            logger.error(
+                error_message,
                 status_code=response.status_code,
                 response=response.text,
             )
-            return ServiceResult.failure(error_type="ValidationError",
+            return ServiceResult.failure(
+                error_type="ValidationError",
                 message=error_message,
             )
 
         except Exception as e:
             error_message = f"Exception during validation of {identifier}: {e}"
             logger.exception(error_message)
-            return ServiceResult.failure(error_type="ValidationException",
+            return ServiceResult.failure(
+                error_type="ValidationException",
                 message=error_message,
             )
 

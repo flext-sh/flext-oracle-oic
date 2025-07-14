@@ -146,6 +146,7 @@ class OracleOICExtension(ExtensionBase):
         # Initialize monitoring service - needs a session object
         # For now we'll create a basic session
         import requests
+
         session = requests.Session()
         self.monitoring_service = MonitoringService(session)
 

@@ -15,7 +15,9 @@ from flext_oracle_oic_ext.config import OracleOICExtensionSettings
 logger = get_logger(__name__)
 
 
-def setup_oic_extension(settings: OracleOICExtensionSettings | None = None) -> ServiceResult[OracleOICExtensionSettings]:
+def setup_oic_extension(
+    settings: OracleOICExtensionSettings | None = None,
+) -> ServiceResult[OracleOICExtensionSettings]:
     """Setup Oracle OIC extension with logging and configuration validation."""
     try:
         if settings is None:
@@ -251,7 +253,9 @@ def create_sandbox_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
     return OracleOICExtensionSettings(**config)
 
 
-def configure_for_meltano(config_dict: dict[str, Any]) -> ServiceResult[OracleOICExtensionSettings]:
+def configure_for_meltano(
+    config_dict: dict[str, Any],
+) -> ServiceResult[OracleOICExtensionSettings]:
     """Configure Oracle OIC extension from Meltano configuration dictionary."""
     try:
         settings = OracleOICExtensionSettings.from_dict(config_dict)

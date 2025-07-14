@@ -171,7 +171,7 @@ class TestConfigGeneration:
         [
             ("dev", True),
             ("test", False),
-            ("staging", False),
+            ("stage", False),
             ("prod", False),
         ],
     )

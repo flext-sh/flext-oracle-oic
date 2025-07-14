@@ -40,12 +40,14 @@ class OICExtensionConnectionConfig(DomainValueObject):
         min_length=1,
     )
 
-    oauth_token_url: str = Field(...,
+    oauth_token_url: str = Field(
+        ...,
         description="IDCS token endpoint URL",
         min_length=1,
     )
 
-    oauth_scope: str | None = Field(None,
+    oauth_scope: str | None = Field(
+        None,
         description="OAuth2 scope for authentication",
     )
 
@@ -255,7 +257,8 @@ class OracleOICExtensionSettings(BaseSettings):
     )
 
     # Connection configuration
-    connection: OICExtensionConnectionConfig = Field(...,
+    connection: OICExtensionConnectionConfig = Field(
+        ...,
         description="Oracle Integration Cloud connection configuration",
     )
 
@@ -289,7 +292,8 @@ class OracleOICExtensionSettings(BaseSettings):
         description="OIC instance identifier",
     )
 
-    region: str | None = Field(None,
+    region: str | None = Field(
+        None,
         description="OIC region",
     )
 
@@ -356,44 +360,51 @@ class OracleOICExtensionSettings(BaseSettings):
 
         """
         # Transform flat config to nested structure
-        connection_config = {"base_url": config_dict.get("base_url"),
+        connection_config = {
+            "base_url": config_dict.get("base_url"),
             "oauth_client_id": config_dict.get("oauth_client_id"),
             "oauth_client_secret": config_dict.get("oauth_client_secret"),
             "oauth_token_url": config_dict.get("oauth_token_url"),
             "oauth_scope": config_dict.get("oauth_scope"),
         }
 
-        lifecycle_config = {"auto_activate": config_dict.get("auto_activate", False),
+        lifecycle_config = {
+            "auto_activate": config_dict.get("auto_activate", False),
             "health_check_interval": config_dict.get("health_check_interval", 300),
             "activation_timeout": config_dict.get("activation_timeout", 60),
-            "validate_before_activate": config_dict.get("validate_before_activate",
+            "validate_before_activate": config_dict.get(
+                "validate_before_activate",
                 True,
             ),
             "rollback_on_failure": config_dict.get("rollback_on_failure", True),
         }
 
-        monitoring_config = {"enable_monitoring": config_dict.get("enable_monitoring", True),
+        monitoring_config = {
+            "enable_monitoring": config_dict.get("enable_monitoring", True),
             "monitoring_interval": config_dict.get("monitoring_interval", 60),
             "alert_threshold": config_dict.get("alert_threshold", 90),
             "error_window_hours": config_dict.get("error_window_hours", 24),
             "performance_window_hours": config_dict.get("performance_window_hours", 6),
         }
 
-        performance_config = {"request_timeout": config_dict.get("request_timeout", 60),
+        performance_config = {
+            "request_timeout": config_dict.get("request_timeout", 60),
             "max_retries": config_dict.get("max_retries", 3),
             "retry_delay": config_dict.get("retry_delay", 1.0),
             "batch_size": config_dict.get("batch_size", 100),
             "max_concurrent_requests": config_dict.get("max_concurrent_requests", 5),
         }
 
-        extraction_config = {"extract_artifacts": config_dict.get("extract_artifacts", True),
+        extraction_config = {
+            "extract_artifacts": config_dict.get("extract_artifacts", True),
             "extract_logs": config_dict.get("extract_logs", True),
             "extract_metadata": config_dict.get("extract_metadata", True),
             "artifact_directory": config_dict.get("artifact_directory", "./artifacts"),
             "log_window_hours": config_dict.get("log_window_hours", 24),
         }
 
-        return cls(connection=OICExtensionConnectionConfig(**connection_config),
+        return cls(
+            connection=OICExtensionConnectionConfig(**connection_config),
             lifecycle=OICExtensionLifecycleConfig(**lifecycle_config),
             monitoring=OICExtensionMonitoringConfig(**monitoring_config),
             performance=OICExtensionPerformanceConfig(**performance_config),
@@ -458,7 +469,8 @@ class OracleOICExtensionSettings(BaseSettings):
             Dictionary containing OAuth authentication configuration.
 
         """
-        return {"oauth_client_id": self.connection.oauth_client_id,
+        return {
+            "oauth_client_id": self.connection.oauth_client_id,
             "oauth_client_secret": self.connection.oauth_client_secret,
             "oauth_token_url": self.connection.oauth_token_url,
             "oauth_scope": self.connection.oauth_scope or "",
