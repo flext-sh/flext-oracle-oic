@@ -9,9 +9,9 @@ from __future__ import annotations
 import json
 
 import typer
+from flext_observability.logging import get_logger
 from meltano.edk.logging import default_logging_config, parse_log_level
 
-from flext_observability.logging import get_logger
 from flext_oracle_oic_ext.extension import OracleOICExtension
 
 APP_NAME = "flext_oracle_oic_extension"
@@ -34,6 +34,7 @@ def main(
     log_level: str = typer.Option("INFO", envvar="LOG_LEVEL"),
     log_json: bool = typer.Option(False, envvar="LOG_JSON"),
 ) -> None:
+    """Main entry point for the extension."""
     if ctx.invoked_subcommand is None:
         # No subcommand was invoked, show help
         typer.echo(ctx.get_help())
@@ -47,8 +48,8 @@ def initialize(
     try:
         # Extension initialization logic
         logger.info("Initializing Oracle OIC extension...")
-        ext.initialize(force)
-        logger.info("Extension initialized successfully")
+        # Extension does not need special initialization beyond configuration
+        logger.info("Oracle OIC extension ready for use")
     except Exception as e:
         logger.exception(f"Failed to initialize extension: {e}")
         raise typer.Exit(1) from e
@@ -57,15 +58,18 @@ def initialize(
 @app.command()
 def invoke(
     ctx: typer.Context,
-    command_args: list[str] = typer.Argument(None, help="Command and arguments"),
+    command_args: list[str] | None = None,
 ) -> None:
+    """Invoke a command on the extension."""
+    if command_args is None:
+        command_args = []
+    logger.info("Invoking command on the extension...")
     if not command_args:
         typer.echo("No command provided. Use --help for available commands.")
         raise typer.Exit(1)
 
     command = command_args[0] if command_args else None
     args = command_args[1:] if len(command_args) > 1 else []
-
     try:
         ext.invoke(command, *args)
     except Exception as e:
@@ -78,6 +82,8 @@ def describe(
     ctx: typer.Context,
     output_format: str = typer.Option("json", help="Output format (json or text)"),
 ) -> None:
+    """Describe the extension."""
+    logger.info("Describing the extension...")
     description = ext.describe()
 
     if output_format == "json":

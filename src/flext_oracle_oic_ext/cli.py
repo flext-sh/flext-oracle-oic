@@ -1,4 +1,4 @@
-"""CLI entry point for flext-oracle-oic-ext.
+"""CLI entry point for flext-extensions.oracle.flext-oracle-oic-ext.
 
 REFACTORED:
             Uses flext-core patterns.

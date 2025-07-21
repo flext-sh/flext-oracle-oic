@@ -1,0 +1,18 @@
+[bandit]
+# Bandit configuration for FLEXT Oracle OIC Extension
+# Aligns with ruff ignore settings in pyproject.toml
+
+# Skip specific tests that are legitimate for this extension:
+# B404: import-subprocess - Extension needs subprocess for tap orchestration
+# B603: subprocess-without-shell-equals-true - Controlled subprocess execution
+skips = B404,B603
+
+# Exclude test directories and auto-generated files
+exclude_dirs = tests,proto,generated
+
+# Files to exclude
+exclude = *_pb2.py,*_pb2_grpc.py
+
+# Report format configuration
+severity = low
+confidence = high

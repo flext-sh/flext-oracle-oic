@@ -1,16 +1,31 @@
 """Simple API for FLEXT Oracle OIC Extension setup and configuration.
 
-Provides a simple interface for setting up Oracle Integration Cloud extensions.
-Uses flext-core patterns for configuration and error handling.
+Copyright (c) 2025 Flext. All rights reserved.
+SPDX-License-Identifier: MIT
+
+This module provides a simple API for setting up Oracle Integration Cloud extensions.
+It uses flext-core patterns for configuration and error handling.
 """
 
 from __future__ import annotations
 
-from typing import Any
+import os
+from typing import TYPE_CHECKING, Any, cast
 
-from flext_core import ServiceResult
-from flext_observability.logging import get_logger, setup_logging
-from flext_oracle_oic_ext.config import OracleOICExtensionSettings
+from flext_core import LogLevel, ServiceResult
+from flext_observability.logging import LoggingConfig, get_logger, setup_logging
+
+from flext_oracle_oic_ext.config import (
+    OICExtensionConnectionConfig,
+    OICExtensionExtractionConfig,
+    OICExtensionLifecycleConfig,
+    OICExtensionMonitoringConfig,
+    OICExtensionPerformanceConfig,
+    OracleOICExtensionSettings,
+)
+
+if TYPE_CHECKING:
+    from flext_core.domain.types import EnvironmentLiteral, LogLevelLiteral
 
 logger = get_logger(__name__)
 
@@ -21,11 +36,38 @@ def setup_oic_extension(
     """Setup Oracle OIC extension with logging and configuration validation."""
     try:
         if settings is None:
-            # This will fail if required connection params aren't in environment
-            settings = OracleOICExtensionSettings()
+            # Create minimal settings for testing - requires connection to be provided externally
+            # NOTE: This is for development/testing. Use environment variables in production.
+            from flext_oracle_oic_ext.config import OICExtensionConnectionConfig
 
-        # Setup logging using flext-observability
-        setup_logging(level=settings.log_level, format="json")
+            connection = OICExtensionConnectionConfig(
+                base_url=os.getenv(
+                    "OIC_BASE_URL",
+                    "https://example.integration.ocp.oraclecloud.com",
+                ),
+                oauth_client_id=os.getenv("OIC_CLIENT_ID", "client_id"),
+                oauth_client_secret=os.getenv("OIC_CLIENT_SECRET", "client_secret"),  # nosec: default for dev/test
+                oauth_token_url=os.getenv(
+                    "OIC_TOKEN_URL",
+                    "https://idcs.identity.oraclecloud.com/oauth2/v1/token",
+                ),  # nosec: default for dev/test
+                oauth_scope=None,
+            )
+            settings = OracleOICExtensionSettings(
+                connection=connection,
+                instance_id=None,
+                region=None,
+            )
+
+        # Setup logging using flext-infrastructure.monitoring.flext-observability
+        # Convert string log level to LogLevel enum
+        log_level = (
+            LogLevel(settings.log_level.lower())
+            if isinstance(settings.log_level, str)
+            else settings.log_level
+        )
+        logging_config = LoggingConfig(log_level=log_level, json_logs=True)
+        setup_logging(logging_config)
 
         return ServiceResult.ok(settings)
 
@@ -34,19 +76,43 @@ def setup_oic_extension(
 
 
 def create_development_oic_config(
-    base_url: str = "https://dev-instance.integration.ocp.oraclecloud.com",
-    oauth_client_id: str = "dev_client_id",
-    oauth_client_secret: str = "dev_client_secret",
-    oauth_token_url: str = "https://idcs-dev.identity.oraclecloud.com/oauth2/v1/token",
+    base_url: str | None = None,
+    oauth_client_id: str | None = None,
+    oauth_client_secret: str | None = None,
+    oauth_token_url: str | None = None,
     **overrides: Any,
 ) -> OracleOICExtensionSettings:
-    """Create development configuration with conservative settings."""
+    """Create development configuration with conservative settings.
+
+    All credentials should be provided via environment variables or parameters.
+    This function no longer contains hardcoded default values for security reasons.
+    """
+    # Get values from environment variables or parameters, with safe defaults
+    final_base_url = (
+        base_url
+        or os.getenv("OIC_DEV_BASE_URL")
+        or "https://CONFIGURE-DEV-INSTANCE.integration.ocp.oraclecloud.com"
+    )
+    final_oauth_client_id = (
+        oauth_client_id or os.getenv("OIC_DEV_CLIENT_ID") or "CONFIGURE_DEV_CLIENT_ID"
+    )
+    final_oauth_client_secret = (
+        oauth_client_secret
+        or os.getenv("OIC_DEV_CLIENT_SECRET")
+        or "CONFIGURE_DEV_CLIENT_SECRET"
+    )
+    final_oauth_token_url = (
+        oauth_token_url
+        or os.getenv("OIC_DEV_TOKEN_URL")
+        or "https://CONFIGURE-IDCS-DEV.identity.oraclecloud.com/oauth2/v1/token"
+    )
+
     config = {
         "connection": {
-            "base_url": base_url,
-            "oauth_client_id": oauth_client_id,
-            "oauth_client_secret": oauth_client_secret,
-            "oauth_token_url": oauth_token_url,
+            "base_url": final_base_url,
+            "oauth_client_id": final_oauth_client_id,
+            "oauth_client_secret": final_oauth_client_secret,
+            "oauth_token_url": final_oauth_token_url,
         },
         "lifecycle": {
             "auto_activate": False,
@@ -83,12 +149,37 @@ def create_development_oic_config(
 
     # Override with provided values
     for key, value in overrides.items():
-        if isinstance(value, dict) and key in config and isinstance(config[key], dict):
-            config[key].update(value)
+        if isinstance(value, dict) and key in config:
+            current_value = config[key]
+            if isinstance(current_value, dict):
+                current_value.update(value)
+            else:
+                config[key] = value
         else:
             config[key] = value
 
-    return OracleOICExtensionSettings(**config)
+    return OracleOICExtensionSettings(
+        connection=OICExtensionConnectionConfig(
+            **cast("dict[str, Any]", config["connection"]),
+        ),
+        lifecycle=OICExtensionLifecycleConfig(
+            **cast("dict[str, Any]", config["lifecycle"]),
+        ),
+        monitoring=OICExtensionMonitoringConfig(
+            **cast("dict[str, Any]", config["monitoring"]),
+        ),
+        performance=OICExtensionPerformanceConfig(
+            **cast("dict[str, Any]", config["performance"]),
+        ),
+        extraction=OICExtensionExtractionConfig(
+            **cast("dict[str, Any]", config["extraction"]),
+        ),
+        environment=cast("EnvironmentLiteral", config["environment"]),
+        log_level=cast("LogLevelLiteral", config["log_level"]),
+        debug=cast("bool", config["debug"]),
+        instance_id=None,
+        region=None,
+    )
 
 
 def create_production_oic_config(
@@ -141,12 +232,37 @@ def create_production_oic_config(
 
     # Override with provided values
     for key, value in overrides.items():
-        if isinstance(value, dict) and key in config and isinstance(config[key], dict):
-            config[key].update(value)
+        if isinstance(value, dict) and key in config:
+            current_value = config[key]
+            if isinstance(current_value, dict):
+                current_value.update(value)
+            else:
+                config[key] = value
         else:
             config[key] = value
 
-    return OracleOICExtensionSettings(**config)
+    return OracleOICExtensionSettings(
+        connection=OICExtensionConnectionConfig(
+            **cast("dict[str, Any]", config["connection"]),
+        ),
+        lifecycle=OICExtensionLifecycleConfig(
+            **cast("dict[str, Any]", config["lifecycle"]),
+        ),
+        monitoring=OICExtensionMonitoringConfig(
+            **cast("dict[str, Any]", config["monitoring"]),
+        ),
+        performance=OICExtensionPerformanceConfig(
+            **cast("dict[str, Any]", config["performance"]),
+        ),
+        extraction=OICExtensionExtractionConfig(
+            **cast("dict[str, Any]", config["extraction"]),
+        ),
+        environment=cast("EnvironmentLiteral", config["environment"]),
+        log_level=cast("LogLevelLiteral", config["log_level"]),
+        debug=cast("bool", config["debug"]),
+        instance_id=None,
+        region=None,
+    )
 
 
 def create_test_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
@@ -193,12 +309,37 @@ def create_test_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
 
     # Override with provided values
     for key, value in overrides.items():
-        if isinstance(value, dict) and key in config and isinstance(config[key], dict):
-            config[key].update(value)
+        if isinstance(value, dict) and key in config:
+            current_value = config[key]
+            if isinstance(current_value, dict):
+                current_value.update(value)
+            else:
+                config[key] = value
         else:
             config[key] = value
 
-    return OracleOICExtensionSettings(**config)
+    return OracleOICExtensionSettings(
+        connection=OICExtensionConnectionConfig(
+            **cast("dict[str, Any]", config["connection"]),
+        ),
+        lifecycle=OICExtensionLifecycleConfig(
+            **cast("dict[str, Any]", config["lifecycle"]),
+        ),
+        monitoring=OICExtensionMonitoringConfig(
+            **cast("dict[str, Any]", config["monitoring"]),
+        ),
+        performance=OICExtensionPerformanceConfig(
+            **cast("dict[str, Any]", config["performance"]),
+        ),
+        extraction=OICExtensionExtractionConfig(
+            **cast("dict[str, Any]", config["extraction"]),
+        ),
+        environment=cast("EnvironmentLiteral", config["environment"]),
+        log_level=cast("LogLevelLiteral", config["log_level"]),
+        debug=cast("bool", config["debug"]),
+        instance_id=None,
+        region=None,
+    )
 
 
 def create_sandbox_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
@@ -245,12 +386,37 @@ def create_sandbox_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
 
     # Override with provided values
     for key, value in overrides.items():
-        if isinstance(value, dict) and key in config and isinstance(config[key], dict):
-            config[key].update(value)
+        if isinstance(value, dict) and key in config:
+            current_value = config[key]
+            if isinstance(current_value, dict):
+                current_value.update(value)
+            else:
+                config[key] = value
         else:
             config[key] = value
 
-    return OracleOICExtensionSettings(**config)
+    return OracleOICExtensionSettings(
+        connection=OICExtensionConnectionConfig(
+            **cast("dict[str, Any]", config["connection"]),
+        ),
+        lifecycle=OICExtensionLifecycleConfig(
+            **cast("dict[str, Any]", config["lifecycle"]),
+        ),
+        monitoring=OICExtensionMonitoringConfig(
+            **cast("dict[str, Any]", config["monitoring"]),
+        ),
+        performance=OICExtensionPerformanceConfig(
+            **cast("dict[str, Any]", config["performance"]),
+        ),
+        extraction=OICExtensionExtractionConfig(
+            **cast("dict[str, Any]", config["extraction"]),
+        ),
+        environment=cast("EnvironmentLiteral", config["environment"]),
+        log_level=cast("LogLevelLiteral", config["log_level"]),
+        debug=cast("bool", config["debug"]),
+        instance_id=None,
+        region=None,
+    )
 
 
 def configure_for_meltano(

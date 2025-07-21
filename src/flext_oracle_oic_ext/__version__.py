@@ -1,4 +1,6 @@
-"""Version information for flext-oracle-oic-ext."""
+"""Version information for flext-extensions.oracle.flext-oracle-oic-ext."""
+
+from __future__ import annotations
 
 __version__ = "0.7.0"
 __version_info__ = tuple(int(x) for x in __version__.split("."))

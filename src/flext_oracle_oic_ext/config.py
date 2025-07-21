@@ -6,17 +6,22 @@ Zero tolerance for code duplication.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal
+from pathlib import Path
 
+# Runtime imports needed for Pydantic validation
+from typing import Any, Literal
+
+from flext_core.config import BaseSettings
+from flext_core.domain.constants import ConfigDefaults, LogLevels
+
+# Direct imports for Pydantic models - needed at runtime for validation
+from flext_core.domain.pydantic_base import DomainValueObject
 from pydantic import Field, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
-from flext_core.config import BaseSettings, singleton
-from flext_core.domain.pydantic_base import DomainValueObject
-from flext_core.domain.types import (
-    FlextConstants,
-    LogLevelLiteral,
-)
+# Use local literals for this module
+EnvironmentLiteral = Literal["development", "test", "staging", "production"]
+LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 
 
 class OICExtensionConnectionConfig(DomainValueObject):
@@ -67,8 +72,10 @@ class OICExtensionConnectionConfig(DomainValueObject):
 
         """
         if not v.startswith(("http://", "https://")):
-            msg = "base_url must start with http:// or https://"
-            raise ValueError(msg)
+            msg = "Base URL must start with http:// or https://"
+            raise ValueError(
+                msg,
+            )
         return v.rstrip("/")
 
     @field_validator("oauth_token_url")
@@ -87,8 +94,10 @@ class OICExtensionConnectionConfig(DomainValueObject):
 
         """
         if not v.startswith(("http://", "https://")):
-            msg = "oauth_token_url must start with http:// or https://"
-            raise ValueError(msg)
+            msg = "OAuth token URL must start with http:// or https://"
+            raise ValueError(
+                msg,
+            )
         return v
 
 
@@ -108,7 +117,7 @@ class OICExtensionLifecycleConfig(DomainValueObject):
     )
 
     activation_timeout: int = Field(
-        default=FlextConstants.DEFAULT_REQUEST_TIMEOUT,
+        default=ConfigDefaults.DEFAULT_HTTP_TIMEOUT,
         ge=30,
         le=600,
         description="Activation timeout in seconds",
@@ -166,14 +175,14 @@ class OICExtensionPerformanceConfig(DomainValueObject):
     """Oracle Integration Cloud performance configuration using flext-core patterns."""
 
     request_timeout: int = Field(
-        default=FlextConstants.DEFAULT_REQUEST_TIMEOUT,
+        default=ConfigDefaults.DEFAULT_HTTP_TIMEOUT,
         ge=10,
         le=300,
         description="Request timeout in seconds",
     )
 
     max_retries: int = Field(
-        default=FlextConstants.DEFAULT_MAX_RETRIES,
+        default=ConfigDefaults.DEFAULT_HTTP_RETRIES,
         ge=0,
         le=10,
         description="Maximum number of retry attempts",
@@ -232,7 +241,6 @@ class OICExtensionExtractionConfig(DomainValueObject):
     )
 
 
-@singleton()
 class OracleOICExtensionSettings(BaseSettings):
     """Oracle Integration Cloud extension configuration using flext-core patterns."""
 
@@ -247,7 +255,7 @@ class OracleOICExtensionSettings(BaseSettings):
 
     # Core project metadata
     project_name: str = Field(
-        default="flext-oracle-oic-ext",
+        default="flext-extensions.oracle.flext-oracle-oic-ext",
         description="Project name",
     )
 
@@ -257,8 +265,8 @@ class OracleOICExtensionSettings(BaseSettings):
     )
 
     # Connection configuration
-    connection: OICExtensionConnectionConfig = Field(
-        ...,
+    connection: OICExtensionConnectionConfig | None = Field(
+        None,
         description="Oracle Integration Cloud connection configuration",
     )
 
@@ -297,14 +305,14 @@ class OracleOICExtensionSettings(BaseSettings):
         description="OIC region",
     )
 
-    environment: Literal["dev", "test", "stage", "prod"] = Field(
+    environment: EnvironmentLiteral = Field(
         default="test",
         description="Environment name",
     )
 
     # Logging configuration
     log_level: LogLevelLiteral = Field(
-        default=FlextConstants.DEFAULT_LOG_LEVEL,
+        default=LogLevels.DEFAULT,
         description="Log level",
     )
 
@@ -327,17 +335,16 @@ class OracleOICExtensionSettings(BaseSettings):
         # Validate artifact directory
 
         artifact_path = Path(self.extraction.artifact_directory)
-        if not artifact_path.exists():
-            try:
-                artifact_path.mkdir(parents=True, exist_ok=True)
-            except OSError as e:
-                msg = f"Cannot create artifact directory {artifact_path}: {e}"
-                raise ValueError(
-                    msg,
-                ) from e
+        try:
+            artifact_path.mkdir(parents=True, exist_ok=True)
+        except OSError as e:
+            msg = f"Failed to create artifact directory: {e}"
+            raise ValueError(
+                msg,
+            ) from e
 
         # Validate OAuth scope if not provided:
-        if not self.connection.oauth_scope:
+        if self.connection is not None and not self.connection.oauth_scope:
             # Set default scope based on base URL
             base_url = self.connection.base_url.rstrip("/")
             object.__setattr__(
@@ -359,12 +366,22 @@ class OracleOICExtensionSettings(BaseSettings):
             OracleOICExtensionSettings instance.
 
         """
+        # Validate required connection fields
+        if not all([
+            config_dict.get("base_url"),
+            config_dict.get("oauth_client_id"),
+            config_dict.get("oauth_client_secret"),
+            config_dict.get("oauth_token_url"),
+        ]):
+            msg = "Missing required connection configuration fields"
+            raise ValueError(msg)
+
         # Transform flat config to nested structure
         connection_config = {
-            "base_url": config_dict.get("base_url"),
-            "oauth_client_id": config_dict.get("oauth_client_id"),
-            "oauth_client_secret": config_dict.get("oauth_client_secret"),
-            "oauth_token_url": config_dict.get("oauth_token_url"),
+            "base_url": config_dict["base_url"],
+            "oauth_client_id": config_dict["oauth_client_id"],
+            "oauth_client_secret": config_dict["oauth_client_secret"],
+            "oauth_token_url": config_dict["oauth_token_url"],
             "oauth_scope": config_dict.get("oauth_scope"),
         }
 
@@ -404,7 +421,13 @@ class OracleOICExtensionSettings(BaseSettings):
         }
 
         return cls(
-            connection=OICExtensionConnectionConfig(**connection_config),
+            connection=OICExtensionConnectionConfig(
+                base_url=connection_config["base_url"],
+                oauth_client_id=connection_config["oauth_client_id"],
+                oauth_client_secret=connection_config["oauth_client_secret"],
+                oauth_token_url=connection_config["oauth_token_url"],
+                oauth_scope=connection_config.get("oauth_scope"),
+            ),
             lifecycle=OICExtensionLifecycleConfig(**lifecycle_config),
             monitoring=OICExtensionMonitoringConfig(**monitoring_config),
             performance=OICExtensionPerformanceConfig(**performance_config),
@@ -412,7 +435,7 @@ class OracleOICExtensionSettings(BaseSettings):
             instance_id=config_dict.get("instance_id"),
             region=config_dict.get("region"),
             environment=config_dict.get("environment", "test"),
-            log_level=config_dict.get("log_level", "INFO"),
+            log_level=config_dict.get("log_level", LogLevels.DEFAULT),
             debug=config_dict.get("debug", False),
         )
 
@@ -423,6 +446,10 @@ class OracleOICExtensionSettings(BaseSettings):
             Dictionary representation of all configuration values.
 
         """
+        if self.connection is None:
+            msg = "Connection configuration is not set."
+            raise ValueError(msg)
+
         return {  # Connection config
             "base_url": self.connection.base_url,
             "oauth_client_id": self.connection.oauth_client_id,
@@ -469,6 +496,10 @@ class OracleOICExtensionSettings(BaseSettings):
             Dictionary containing OAuth authentication configuration.
 
         """
+        if self.connection is None:
+            msg = "Connection configuration is not set."
+            raise ValueError(msg)
+
         return {
             "oauth_client_id": self.connection.oauth_client_id,
             "oauth_client_secret": self.connection.oauth_client_secret,
@@ -477,8 +508,8 @@ class OracleOICExtensionSettings(BaseSettings):
         }
 
 
-from pathlib import Path  # TODO: Move import to module level
-from typing import Any
+# Rebuild model to resolve forward references
+OracleOICExtensionSettings.model_rebuild()
 
 # Copyright (c) 2025 FLEXT Team
 # Licensed under the MIT License

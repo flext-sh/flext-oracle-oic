@@ -1,0 +1,16 @@
+{
+  "base_url": "https://test.integration.ocp.oraclecloud.com",
+  "oauth_client_id": "test_client_id",
+  "oauth_client_secret": "test_client_secret",
+  "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+  "instance_id": "test_instance",
+  "region": "test_region",
+  "environment": "test",
+  "enable_monitoring": true,
+  "monitoring_interval": 60,
+  "alert_threshold": 90,
+  "auto_activate": false,
+  "health_check_interval": 300,
+  "debug": false,
+  "log_level": "INFO"
+}

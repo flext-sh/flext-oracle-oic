@@ -1,4 +1,4 @@
-"""Tests for flext-oracle-oic-ext.
+"""Tests for flext-extensions.oracle.flext-oracle-oic-ext.
 
 Tests for Oracle OIC Extension functionality including initialization,
 command handling, lifecycle management, and monitoring services.
@@ -63,13 +63,17 @@ class TestOracleOICExtension:
         LifecycleManager(settings)
 
         # Test that manager was created with correct settings
-        assert settings.connection.base_url == "https://test.integration.ocp.oraclecloud.com"
+        assert (
+            settings.connection.base_url
+            == "https://test.integration.ocp.oraclecloud.com"
+        )
         assert settings.connection.oauth_client_id == "test_client"
 
     def test_monitoring_service_initialization(self) -> None:
         """Test monitoring service initialization with configuration."""
         # MonitoringService expects a requests.Session object
         import requests
+
         session = requests.Session()
         service = MonitoringService(session)
 
@@ -82,13 +86,19 @@ class TestOracleOICExtension:
         description = ext.describe()
 
         # Verify command categories exist
-        lifecycle_commands = [cmd for cmd in description.commands if cmd.name.startswith("lifecycle:")]
-        monitor_commands = [cmd for cmd in description.commands if cmd.name.startswith("monitor:")]
-        extract_commands = [cmd for cmd in description.commands if cmd.name.startswith("extract:")]
+        lifecycle_commands = [
+            cmd for cmd in description.commands if cmd.name.startswith("lifecycle:")
+        ]
+        monitor_commands = [
+            cmd for cmd in description.commands if cmd.name.startswith("monitor:")
+        ]
+        extract_commands = [
+            cmd for cmd in description.commands if cmd.name.startswith("extract:")
+        ]
 
         assert len(lifecycle_commands) >= 3  # activate, deactivate, status
-        assert len(monitor_commands) >= 3   # health, performance, errors
-        assert len(extract_commands) >= 3   # artifacts, logs, metadata
+        assert len(monitor_commands) >= 3  # health, performance, errors
+        assert len(extract_commands) >= 3  # artifacts, logs, metadata
 
     def test_configuration_validation(self) -> None:
         """Test configuration validation for managers."""
@@ -140,9 +150,13 @@ class TestOracleOICExtension:
         description = ext.describe()
 
         command_names = [cmd.name for cmd in description.commands]
-        prefix_commands = [name for name in command_names if name.startswith(f"{command_prefix}:")]
+        prefix_commands = [
+            name for name in command_names if name.startswith(f"{command_prefix}:")
+        ]
 
-        assert len(prefix_commands) > 0, f"No commands found with prefix {command_prefix}:"
+        assert len(prefix_commands) > 0, (
+            f"No commands found with prefix {command_prefix}:"
+        )
 
     def test_manager_auth_config_structure(self) -> None:
         """Test that managers properly store auth configuration."""
@@ -160,7 +174,10 @@ class TestOracleOICExtension:
         # Verify auth config is accessible through settings
         assert settings.connection.oauth_client_id == "test_client_id"
         assert settings.connection.oauth_client_secret == "test_client_secret"
-        assert settings.connection.oauth_token_url == "https://test.identity.oraclecloud.com/oauth2/v1/token"
+        assert (
+            settings.connection.oauth_token_url
+            == "https://test.identity.oraclecloud.com/oauth2/v1/token"
+        )
 
     def test_base_url_validation(self) -> None:
         """Test base URL validation in managers."""
@@ -177,4 +194,7 @@ class TestOracleOICExtension:
         assert settings.connection.base_url.startswith("https://")
 
         # URL validation depends on implementation - testing what we can
-        assert "ocp.oraclecloud.com" in settings.connection.base_url or "integration" in settings.connection.base_url
+        assert (
+            "ocp.oraclecloud.com" in settings.connection.base_url
+            or "integration" in settings.connection.base_url
+        )

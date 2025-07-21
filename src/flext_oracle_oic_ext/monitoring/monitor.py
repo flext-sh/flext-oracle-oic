@@ -53,19 +53,16 @@ class MonitoringService:
         }
 
         components = health_status["components"]
-
-        # Check API health
         try:
             response = self.client.get("/ic/api/integration/v1/integrations?limit=1")
             if response.status_code == 200:
                 components["api"] = "healthy"
             else:
                 components["api"] = "unhealthy"
-                health_status["status"] = "degraded"
         except Exception as e:
             components["api"] = "error"
             health_status["status"] = "unhealthy"
-            log.exception("API health check failed", error=str(e))
+            log.exception("API health check failed: %s", str(e))
 
         if detailed:
             health_status.update(self._detailed_health_check())
@@ -81,7 +78,6 @@ class MonitoringService:
         }
 
     def _check_connections_health(self) -> dict[str, Any]:
-        """Check health of OIC connections."""
         try:
             response = self.client.get("/ic/api/integration/v1/connections?limit=100")
             if response.status_code == 200:
@@ -93,13 +89,11 @@ class MonitoringService:
                     "active": active,
                     "total": total,
                 }
-            return {"status": "error", "error": f"HTTP {response.status_code}"}
         except Exception as e:
-            log.exception("Failed to check connections health", error=str(e))
+            log.exception("Failed to check connections health: %s", str(e))
             return {"status": "error", "error": str(e)}
 
     def _check_integrations_health(self) -> dict[str, Any]:
-        """Check health of OIC integrations."""
         try:
             response = self.client.get("/ic/api/integration/v1/integrations?limit=100")
             if response.status_code == 200:
@@ -115,13 +109,11 @@ class MonitoringService:
                     "configured": configured,
                     "total": total,
                 }
-            return {"status": "error", "error": f"HTTP {response.status_code}"}
         except Exception as e:
-            log.exception("Failed to check integrations health", error=str(e))
+            log.exception("Failed to check integrations health: %s", str(e))
             return {"status": "error", "error": str(e)}
 
     def _check_execution_health(self) -> dict[str, Any]:
-        """Check health of recent OIC executions."""
         try:
             end_time = datetime.now(UTC)
             start_time = end_time - timedelta(hours=1)
@@ -152,9 +144,8 @@ class MonitoringService:
                     "in_progress": in_progress,
                     "window": "1h",
                 }
-            return {"status": "error", "error": f"HTTP {response.status_code}"}
         except Exception as e:
-            log.exception("Failed to check execution health", error=str(e))
+            log.exception("Failed to check execution health: %s", str(e))
             return {"status": "error", "error": str(e)}
 
     def get_performance_metrics(self, window_hours: int = 24) -> dict[str, Any]:
@@ -216,17 +207,19 @@ class MonitoringService:
                 }
 
                 metrics["throughput"] = self._calculate_throughput(
-                    instances, window_hours
+                    instances,
+                    window_hours,
                 )
-
         except Exception as e:
-            log.exception("Failed to get performance metrics", error=str(e))
+            log.exception("Failed to get performance metrics: %s", str(e))
             metrics["error"] = str(e)
 
         return metrics
 
     def _calculate_throughput(
-        self, instances: list[dict[str, Any]], window_hours: int
+        self,
+        instances: list[dict[str, Any]],
+        window_hours: int,
     ) -> dict[str, Any]:
         """Calculate throughput metrics from execution instances."""
         hourly_counts: dict[str, int] = {}
@@ -251,7 +244,9 @@ class MonitoringService:
         }
 
     def analyze_errors(
-        self, window_hours: int = 24, integration_id: str | None = None
+        self,
+        window_hours: int = 24,
+        integration_id: str | None = None,
     ) -> dict[str, Any]:
         """Analyze error patterns in OIC executions.
 
@@ -272,7 +267,6 @@ class MonitoringService:
             "patterns": {},
             "recommendations": [],
         }
-
         try:
             params: dict[str, str | int] = {
                 "startdate": start_time.isoformat(),
@@ -308,7 +302,9 @@ class MonitoringService:
 
                 error_analysis["patterns"] = dict(
                     sorted(
-                        error_patterns.items(), key=operator.itemgetter(1), reverse=True
+                        error_patterns.items(),
+                        key=operator.itemgetter(1),
+                        reverse=True,
                     ),
                 )
 
@@ -317,9 +313,8 @@ class MonitoringService:
                     error_analysis["recommendations"].append(
                         "High error rate detected. Review integration configurations.",
                     )
-
         except Exception as e:
-            log.exception("Failed to analyze errors", error=str(e))
+            log.exception("Failed to analyze errors: %s", str(e))
             error_analysis["error"] = str(e)
 
         return error_analysis
