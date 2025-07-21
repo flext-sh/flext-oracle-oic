@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, Any
 import pytest
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncGenerator, Generator
+    from collections.abc import Generator
 
 
 # Test environment setup
@@ -45,14 +45,13 @@ def oic_connection_config() -> dict[str, Any]:
 
 
 @pytest.fixture
-async def oic_client(oic_connection_config: dict[str, Any]) -> AsyncGenerator[Any]:
-    """Oracle OIC client for testing."""
-    from flext_oracle_oic_ext.client import OICClient
+def oic_client(oic_connection_config: dict[str, Any]) -> Any:
+    """Oracle OIC extension for testing."""
+    from flext_oracle_oic_ext.extension import OracleOICExtension
 
-    client = OICClient(oic_connection_config)
-    await client.connect()
-    yield client
-    await client.disconnect()
+    extension = OracleOICExtension()
+    extension.config = oic_connection_config
+    return extension
 
 
 # OIC integration fixtures
@@ -385,10 +384,10 @@ def mock_oic_service() -> Any:
 
     class MockOICService:
         def __init__(self) -> None:
-            self.integrations = {}
-            self.connections = {}
-            self.packages = {}
-            self.instances = {}
+            self.integrations: dict[str, dict[str, Any]] = {}
+            self.connections: dict[str, dict[str, Any]] = {}
+            self.packages: dict[str, dict[str, Any]] = {}
+            self.instances: dict[str, dict[str, Any]] = {}
 
         async def create_integration(
             self,
@@ -487,7 +486,7 @@ def mock_oic_client() -> Any:
         def __init__(self, config: dict[str, Any]) -> None:
             self.config = config
             self.connected = False
-            self.session_token = None
+            self.session_token: str | None = None
 
         async def connect(self) -> bool:
             self.connected = True
@@ -502,7 +501,7 @@ def mock_oic_client() -> Any:
         async def get(
             self,
             endpoint: str,
-            params: dict | None = None,
+            params: dict[str, Any] | None = None,
         ) -> dict[str, Any]:
             return {
                 "status": "success",
@@ -515,7 +514,7 @@ def mock_oic_client() -> Any:
             self,
             endpoint: str,
             data: dict[str, Any],
-            headers: dict | None = None,
+            headers: dict[str, Any] | None = None,
         ) -> dict[str, Any]:
             return {
                 "status": "success",
@@ -529,7 +528,7 @@ def mock_oic_client() -> Any:
             self,
             endpoint: str,
             data: dict[str, Any],
-            headers: dict | None = None,
+            headers: dict[str, Any] | None = None,
         ) -> dict[str, Any]:
             return {
                 "status": "success",

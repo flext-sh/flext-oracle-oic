@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import tempfile
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -48,6 +49,7 @@ class TestConfigGeneration:
 
         settings = OracleOICExtensionSettings.from_dict(config_dict)
 
+        assert settings.connection is not None
         assert settings.connection.base_url == config_dict["base_url"]
         assert settings.connection.oauth_client_id == config_dict["oauth_client_id"]
         assert settings.environment == "test"
@@ -81,6 +83,7 @@ class TestConfigGeneration:
         }
 
         settings = OracleOICExtensionSettings.from_dict(valid_config)
+        assert settings.connection is not None
         assert settings.connection.base_url.startswith("https://")
 
         # Invalid URL validation
@@ -213,10 +216,11 @@ class TestConfigGeneration:
         settings = OracleOICExtensionSettings.from_dict(config_dict)
 
         # Should auto-generate scope based on base URL
+        assert settings.connection is not None
         assert settings.connection.oauth_scope is not None
         assert "urn:opc:resource:consumer:all" in settings.connection.oauth_scope
 
-    def _create_invalid_config(self, valid_config: dict) -> None:
+    def _create_invalid_config(self, valid_config: dict[str, Any]) -> None:
         """Helper function to create invalid configuration for testing."""
         invalid_config = valid_config.copy()
         invalid_config["base_url"] = "invalid-url"

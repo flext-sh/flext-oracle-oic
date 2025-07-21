@@ -89,6 +89,7 @@ class MonitoringService:
                     "active": active,
                     "total": total,
                 }
+            return {"status": "error", "error": f"API returned status {response.status_code}"}
         except Exception as e:
             log.exception("Failed to check connections health: %s", str(e))
             return {"status": "error", "error": str(e)}
@@ -109,6 +110,7 @@ class MonitoringService:
                     "configured": configured,
                     "total": total,
                 }
+            return {"status": "error", "error": f"API returned status {response.status_code}"}
         except Exception as e:
             log.exception("Failed to check integrations health: %s", str(e))
             return {"status": "error", "error": str(e)}
@@ -144,6 +146,7 @@ class MonitoringService:
                     "in_progress": in_progress,
                     "window": "1h",
                 }
+            return {"status": "error", "error": f"API returned status {response.status_code}"}
         except Exception as e:
             log.exception("Failed to check execution health: %s", str(e))
             return {"status": "error", "error": str(e)}

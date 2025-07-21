@@ -63,6 +63,7 @@ class TestOracleOICExtension:
         LifecycleManager(settings)
 
         # Test that manager was created with correct settings
+        assert settings.connection is not None
         assert (
             settings.connection.base_url
             == "https://test.integration.ocp.oraclecloud.com"
@@ -115,6 +116,7 @@ class TestOracleOICExtension:
 
         # Test LifecycleManager with settings
         LifecycleManager(settings)
+        assert settings.connection is not None
         assert settings.connection.base_url.startswith("https://")
 
         # Test MonitoringService - needs a session object, so we'll skip this for now
@@ -172,6 +174,7 @@ class TestOracleOICExtension:
         LifecycleManager(settings)
 
         # Verify auth config is accessible through settings
+        assert settings.connection is not None
         assert settings.connection.oauth_client_id == "test_client_id"
         assert settings.connection.oauth_client_secret == "test_client_secret"
         assert (
@@ -191,6 +194,7 @@ class TestOracleOICExtension:
         # Valid HTTPS URL should work
         settings = OracleOICExtensionSettings.from_dict(config_dict)
         LifecycleManager(settings)
+        assert settings.connection is not None
         assert settings.connection.base_url.startswith("https://")
 
         # URL validation depends on implementation - testing what we can

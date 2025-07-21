@@ -22,7 +22,7 @@ from flext_oracle_oic_ext.monitoring import MonitoringService
 logger = get_logger(__name__)
 
 
-class OracleOICExtension(ExtensionBase):  # type: ignore[misc]
+class OracleOICExtension(ExtensionBase):
     """Extension for Oracle Integration Cloud operations."""
 
     def __init__(self) -> None:
@@ -295,7 +295,9 @@ class OracleOICExtension(ExtensionBase):  # type: ignore[misc]
             # Log extraction - use lifecycle manager to get logs
             if self.lifecycle_manager:
                 logger.info(
-                    "Extracting logs for %s to %s", integration_id or "all", output_dir,
+                    "Extracting logs for %s to %s",
+                    integration_id or "all",
+                    output_dir,
                 )
 
                 # Create output directory if it doesn't exist

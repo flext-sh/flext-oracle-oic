@@ -367,12 +367,14 @@ class OracleOICExtensionSettings(BaseSettings):
 
         """
         # Validate required connection fields
-        if not all([
-            config_dict.get("base_url"),
-            config_dict.get("oauth_client_id"),
-            config_dict.get("oauth_client_secret"),
-            config_dict.get("oauth_token_url"),
-        ]):
+        if not all(
+            [
+                config_dict.get("base_url"),
+                config_dict.get("oauth_client_id"),
+                config_dict.get("oauth_client_secret"),
+                config_dict.get("oauth_token_url"),
+            ],
+        ):
             msg = "Missing required connection configuration fields"
             raise ValueError(msg)
 
