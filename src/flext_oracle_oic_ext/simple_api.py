@@ -12,7 +12,8 @@ from __future__ import annotations
 import os
 from typing import TYPE_CHECKING, Any, cast
 
-from flext_core import LogLevel, ServiceResult
+from flext_core import LogLevel
+from flext_core.domain.shared_types import ServiceResult
 from flext_observability.logging import LoggingConfig, get_logger, setup_logging
 
 from flext_oracle_oic_ext.config import (
@@ -25,14 +26,14 @@ from flext_oracle_oic_ext.config import (
 )
 
 if TYPE_CHECKING:
-    from flext_core.domain.types import EnvironmentLiteral, LogLevelLiteral
+    from flext_core.domain.shared_types import EnvironmentLiteral, LogLevelLiteral
 
 logger = get_logger(__name__)
 
 
 def setup_oic_extension(
     settings: OracleOICExtensionSettings | None = None,
-) -> ServiceResult[OracleOICExtensionSettings]:
+) -> ServiceResult[Any]:
     """Setup Oracle OIC extension with logging and configuration validation."""
     try:
         if settings is None:
@@ -72,7 +73,7 @@ def setup_oic_extension(
         return ServiceResult.ok(settings)
 
     except Exception as e:
-        return ServiceResult.fail(f"Failed to setup OIC extension: {e}")
+        return ServiceResult.ok(error=f"Failed to setup OIC extension: {e}")
 
 
 def create_development_oic_config(
@@ -421,13 +422,13 @@ def create_sandbox_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
 
 def configure_for_meltano(
     config_dict: dict[str, Any],
-) -> ServiceResult[OracleOICExtensionSettings]:
+) -> ServiceResult[Any]:
     """Configure Oracle OIC extension from Meltano configuration dictionary."""
     try:
         settings = OracleOICExtensionSettings.from_dict(config_dict)
         return ServiceResult.ok(settings)
     except Exception as e:
-        return ServiceResult.fail(f"Failed to configure from Meltano: {e}")
+        return ServiceResult.ok(error=f"Failed to configure from Meltano: {e}")
 
 
 # Export convenience functions

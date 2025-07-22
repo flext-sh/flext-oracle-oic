@@ -10,8 +10,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 import httpx
-from flext_core import ServiceResult, injectable
+from flext_core import injectable
 from flext_core.domain.pydantic_base import DomainValueObject
+from flext_core.domain.shared_types import ServiceResult
 from flext_observability.logging import get_logger
 from tenacity import retry, stop_after_attempt, wait_exponential
 
@@ -131,7 +132,7 @@ class LifecycleManager:
         self,
         integration_id: str,
         version: str = "01.00.0000",
-    ) -> ServiceResult[LifecycleOperationResult]:
+    ) -> ServiceResult[Any]:
         """Activate an integration in Oracle Integration Cloud.
 
         Args:
@@ -155,7 +156,7 @@ class LifecycleManager:
                 validation_result = self.validate_integration(integration_id, version)
                 if validation_result.is_failure:
                     return ServiceResult.fail(
-                        f"Integration validation failed: {validation_result.error}",
+                        f"Integration validation failed: {validation_result.error}"
                     )
 
             # Perform activation
@@ -196,7 +197,7 @@ class LifecycleManager:
         self,
         integration_id: str,
         version: str = "01.00.0000",
-    ) -> ServiceResult[LifecycleOperationResult]:
+    ) -> ServiceResult[Any]:
         """Deactivate an integration in Oracle Integration Cloud.
 
         Args:
@@ -252,7 +253,7 @@ class LifecycleManager:
         self,
         integration_id: str,
         version: str = "01.00.0000",
-    ) -> ServiceResult[IntegrationStatus]:
+    ) -> ServiceResult[Any]:
         """Get current status of an integration.
 
         Args:
@@ -301,7 +302,7 @@ class LifecycleManager:
     def bulk_activate(
         self,
         integration_list: list[dict[str, str]],
-    ) -> ServiceResult[BulkOperationResult]:
+    ) -> ServiceResult[Any]:
         """Activate multiple integrations in batch.
 
         Args:
@@ -322,7 +323,7 @@ class LifecycleManager:
             identifier = f"{integration_id}|{version}"
 
             result = self.activate_integration(integration_id, version)
-            if result.is_success:
+            if result.success:
                 successful_integrations.append(identifier)
             else:
                 failed_integrations.append(
@@ -353,7 +354,7 @@ class LifecycleManager:
     def bulk_deactivate(
         self,
         integration_list: list[dict[str, str]],
-    ) -> ServiceResult[BulkOperationResult]:
+    ) -> ServiceResult[Any]:
         """Deactivate multiple integrations in batch.
 
         Args:
@@ -374,7 +375,7 @@ class LifecycleManager:
             identifier = f"{integration_id}|{version}"
 
             result = self.deactivate_integration(integration_id, version)
-            if result.is_success:
+            if result.success:
                 successful_integrations.append(identifier)
             else:
                 failed_integrations.append(
@@ -406,7 +407,7 @@ class LifecycleManager:
         self,
         integration_id: str,
         version: str = "01.00.0000",
-    ) -> ServiceResult[dict[str, Any]]:
+    ) -> ServiceResult[Any]:
         """Validate an integration configuration.
 
         Args:

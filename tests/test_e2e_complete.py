@@ -152,7 +152,7 @@ class TestOracleOICExtE2E:
             # Mock the access token to avoid authentication
             with patch.object(manager, "_access_token", "mock_token"):
                 status_result = manager.get_integration_status("TEST_INTEGRATION")
-                assert status_result.is_success
+                assert status_result.success
                 status = status_result.unwrap()
                 assert status.status == "ACTIVATED"
                 assert status.integration_id == "TEST_INTEGRATION"
@@ -196,6 +196,7 @@ class TestOracleOICExtE2E:
         # Mock the initialization to avoid real service creation
         # and ensure lifecycle_manager is available
         from unittest.mock import MagicMock
+
         mock_lifecycle_manager = MagicMock()
         extension.lifecycle_manager = mock_lifecycle_manager
 
@@ -392,7 +393,7 @@ class TestOracleOICExtE2E:
             extension.lifecycle_manager = mock_manager
 
             # Mock manager methods to return ServiceResult objects
-            from flext_core import ServiceResult
+            from flext_core.domain.shared_types import ServiceResult
 
             from flext_oracle_oic_ext.lifecycle.manager import IntegrationStatus
 
@@ -404,8 +405,7 @@ class TestOracleOICExtE2E:
             mock_manager.get_integration_status.return_value = ServiceResult.ok(
                 integration_status,
             )
-            mock_manager.activate_integration.return_value = ServiceResult.ok(
-                {
+            mock_manager.activate_integration.return_value = ServiceResult.ok({
                     "status": "ACTIVATED",
                 },
             )
