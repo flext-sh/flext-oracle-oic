@@ -153,6 +153,8 @@ codespell = "^2.3.0"
 pyupgrade = "^3.19.0"
 autoflake = "^2.3.1"
 meltano-edk = {git = "https://github.com/meltano/edk.git"}
+detect-secrets = "^1.5.0"
+commitizen = "^4.8.3"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.4.0"

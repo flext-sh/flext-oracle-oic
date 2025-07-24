@@ -6,12 +6,14 @@ Zero tolerance for code duplication.
 
 from __future__ import annotations
 
+# Removed circular dependency - use DI pattern
+# # FIXME: Removed circular dependency - use DI pattern
+import logging
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from flext_observability.logging import get_logger
 from meltano.edk import models
 from meltano.edk.extension import ExtensionBase
 
@@ -19,7 +21,7 @@ from flext_oracle_oic_ext.config import OracleOICExtensionSettings
 from flext_oracle_oic_ext.lifecycle import LifecycleManager
 from flext_oracle_oic_ext.monitoring import MonitoringService
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class OracleOICExtension(ExtensionBase):

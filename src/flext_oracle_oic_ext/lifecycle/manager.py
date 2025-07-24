@@ -7,19 +7,48 @@ and error handling.  Zero tolerance for code duplication.
 
 from __future__ import annotations
 
+# Removed circular dependency - use DI pattern
+# # FIXME: Removed circular dependency - use DI pattern
+import logging
 from typing import TYPE_CHECKING, Any
 
 import httpx
-from flext_core import injectable
-from flext_core.domain.pydantic_base import DomainValueObject
-from flext_core.domain.shared_types import ServiceResult
-from flext_observability.logging import get_logger
+
+# 🚨 ARCHITECTURAL COMPLIANCE: Using módulo raiz imports
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_oracle_oic_ext.infrastructure.di_container import (
+    get_base_config,
+    get_domain_entity,
+    get_domain_value_object,
+    get_field,
+    get_service_result,
+)
+
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_oracle_oic_ext.infrastructure.di_container import (
+    get_base_config,
+    get_domain_entity,
+    get_domain_value_object,
+    get_field,
+    get_service_result,
+)
+
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 if TYPE_CHECKING:
     from flext_oracle_oic_ext.config import OracleOICExtensionSettings
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class IntegrationIdentifier(DomainValueObject):

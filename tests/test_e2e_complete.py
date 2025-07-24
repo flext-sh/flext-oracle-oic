@@ -393,7 +393,8 @@ class TestOracleOICExtE2E:
             extension.lifecycle_manager = mock_manager
 
             # Mock manager methods to return ServiceResult objects
-            from flext_core.domain.shared_types import ServiceResult
+            # 🚨 ARCHITECTURAL COMPLIANCE: Using módulo raiz imports
+from flext_core import ServiceResult
 
             from flext_oracle_oic_ext.lifecycle.manager import IntegrationStatus
 

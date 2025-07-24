@@ -8,16 +8,17 @@ using FLEXT core patterns and standards.
 
 from __future__ import annotations
 
+# Removed circular dependency - use DI pattern
+# # FIXME: Removed circular dependency - use DI pattern
+import logging
 import operator
 from datetime import UTC, datetime, timedelta
 from typing import TYPE_CHECKING, Any
 
-from flext_observability import get_logger
-
 if TYPE_CHECKING:
     import requests
 
-log = get_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 class MonitoringService:

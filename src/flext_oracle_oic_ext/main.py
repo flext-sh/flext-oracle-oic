@@ -8,8 +8,11 @@ from __future__ import annotations
 
 import json
 
+# Removed circular dependency - use DI pattern
+# # FIXME: Removed circular dependency - use DI pattern
+import logging
+
 import typer
-from flext_observability.logging import get_logger
 from meltano.edk.logging import default_logging_config, parse_log_level
 
 from flext_oracle_oic_ext.extension import OracleOICExtension
@@ -18,7 +21,7 @@ APP_NAME = "flext_oracle_oic_extension"
 
 default_logging_config(level=parse_log_level("INFO"))
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 ext = OracleOICExtension()
 

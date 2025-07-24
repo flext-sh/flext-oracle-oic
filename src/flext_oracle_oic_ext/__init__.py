@@ -16,15 +16,29 @@ import importlib.metadata
 import warnings
 
 # Import from flext-core for foundational patterns
-from flext_core import (
-    BaseConfig,
-    BaseConfig as OICBaseConfig,  # Configuration base
-    DomainBaseModel,
-    DomainBaseModel as BaseModel,  # Base for OIC models
-    DomainError as OICError,  # OIC-specific errors
-    ValidationError as ValidationError,  # Validation errors
+# 🚨 ARCHITECTURAL COMPLIANCE: Using módulo raiz imports
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_oracle_oic_ext.infrastructure.di_container import (
+    get_base_config,
+    get_domain_entity,
+    get_domain_value_object,
+    get_field,
+    get_service_result,
 )
-from flext_core.domain.shared_types import ServiceResult
+
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
+
+__all__ = [
+    "BaseConfig",
+    "DomainEntity",
+    "DomainValueObject",
+    "Field",
+    "ServiceResult",
+]
 
 try:
     __version__ = importlib.metadata.version("flext-oracle-oic-ext")

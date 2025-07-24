@@ -11,11 +11,50 @@ from pathlib import Path
 # Runtime imports needed for Pydantic validation
 from typing import Any, Literal
 
-from flext_core.config import BaseSettings
-from flext_core.domain.constants import ConfigDefaults, LogLevels
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_oracle_oic_ext.infrastructure.di_container import (
+    get_base_config,
+    get_domain_entity,
+    get_domain_value_object,
+    get_field,
+    get_service_result,
+)
+
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_oracle_oic_ext.infrastructure.di_container import (
+    get_base_config,
+    get_domain_entity,
+    get_domain_value_object,
+    get_field,
+    get_service_result,
+)
+
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
 
 # Direct imports for Pydantic models - needed at runtime for validation
-from flext_core.domain.pydantic_base import DomainValueObject
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_oracle_oic_ext.infrastructure.di_container import (
+    get_base_config,
+    get_domain_entity,
+    get_domain_value_object,
+    get_field,
+    get_service_result,
+)
+
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
 from pydantic import Field, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 

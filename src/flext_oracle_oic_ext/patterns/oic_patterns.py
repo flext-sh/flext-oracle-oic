@@ -13,7 +13,22 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 import requests
-from flext_core.domain.shared_types import ServiceResult
+
+# 🚨 ARCHITECTURAL COMPLIANCE: Using módulo raiz imports
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_oracle_oic_ext.infrastructure.di_container import (
+    get_base_config,
+    get_domain_entity,
+    get_domain_value_object,
+    get_field,
+    get_service_result,
+)
+
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
 from pydantic import BaseModel, ConfigDict, Field, SecretStr
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry

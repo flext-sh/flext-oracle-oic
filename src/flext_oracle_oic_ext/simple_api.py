@@ -8,14 +8,6 @@ It uses flext-core patterns for configuration and error handling.
 """
 
 from __future__ import annotations
-
-import os
-from typing import TYPE_CHECKING, Any, cast
-
-from flext_core import LogLevel
-from flext_core.domain.shared_types import ServiceResult
-from flext_observability.logging import LoggingConfig, get_logger, setup_logging
-
 from flext_oracle_oic_ext.config import (
     OICExtensionConnectionConfig,
     OICExtensionExtractionConfig,
@@ -25,10 +17,30 @@ from flext_oracle_oic_ext.config import (
     OracleOICExtensionSettings,
 )
 
-if TYPE_CHECKING:
-    from flext_core.domain.shared_types import EnvironmentLiteral, LogLevelLiteral
+# FIXME: Removed circular dependency - use DI pattern
+import logging
+import os
+from typing import TYPE_CHECKING, Any, cast
 
-logger = get_logger(__name__)
+# 🚨 ARCHITECTURAL COMPLIANCE: Using módulo raiz imports
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_oracle_oic_ext.infrastructure.di_container import get_service_result, get_domain_entity, get_field, get_domain_value_object, get_base_config
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
+
+
+if TYPE_CHECKING:
+    # 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
+
+logger = logging.getLogger(__name__)
 
 
 def setup_oic_extension(
@@ -38,7 +50,8 @@ def setup_oic_extension(
     try:
         if settings is None:
             # Create minimal settings for testing - requires connection to be provided externally
-            # NOTE: This is for development/testing. Use environment variables in production.
+            # NOTE: This is for development/testing. Use environment variables
+            # in production.
             from flext_oracle_oic_ext.config import OICExtensionConnectionConfig
 
             connection = OICExtensionConnectionConfig(
@@ -47,7 +60,10 @@ def setup_oic_extension(
                     "https://example.integration.ocp.oraclecloud.com",
                 ),
                 oauth_client_id=os.getenv("OIC_CLIENT_ID", "client_id"),
-                oauth_client_secret=os.getenv("OIC_CLIENT_SECRET", "client_secret"),  # nosec: default for dev/test
+                oauth_client_secret=os.getenv(
+                    "OIC_CLIENT_SECRET",
+                    "client_secret"),
+                # nosec: default for dev/test
                 oauth_token_url=os.getenv(
                     "OIC_TOKEN_URL",
                     "https://idcs.identity.oraclecloud.com/oauth2/v1/token",
@@ -94,9 +110,8 @@ def create_development_oic_config(
         or os.getenv("OIC_DEV_BASE_URL")
         or "https://CONFIGURE-DEV-INSTANCE.integration.ocp.oraclecloud.com"
     )
-    final_oauth_client_id = (
-        oauth_client_id or os.getenv("OIC_DEV_CLIENT_ID") or "CONFIGURE_DEV_CLIENT_ID"
-    )
+    final_oauth_client_id = (oauth_client_id or os.getenv(
+        "OIC_DEV_CLIENT_ID") or "CONFIGURE_DEV_CLIENT_ID")
     final_oauth_client_secret = (
         oauth_client_secret
         or os.getenv("OIC_DEV_CLIENT_SECRET")

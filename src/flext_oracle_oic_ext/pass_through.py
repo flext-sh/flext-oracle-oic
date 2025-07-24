@@ -9,13 +9,15 @@ It uses flext-core patterns and has zero tolerance for code duplication.
 
 from __future__ import annotations
 
+# Removed circular dependency - use DI pattern
+# # FIXME: Removed circular dependency - use DI pattern
+import logging
 import sys
 from subprocess import CalledProcessError
 
-from flext_observability.logging import get_logger
 from meltano.edk.process import Invoker, log_subprocess_error
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def pass_through_cli() -> None:
