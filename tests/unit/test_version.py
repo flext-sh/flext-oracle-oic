@@ -17,9 +17,10 @@ def test_version_module_functions() -> None:
     # Import the module to trigger function calls
 
     # Test that version functions are called from flext_core
-    with patch("flext_core.version.get_version") as mock_get_version, \
-         patch("flext_core.version.get_version_info") as mock_get_version_info:
-
+    with (
+        patch("flext_core.version.get_version") as mock_get_version,
+        patch("flext_core.version.get_version_info") as mock_get_version_info,
+    ):
         mock_get_version.return_value = "1.0.0"
         mock_get_version_info.return_value = (1, 0, 0)
 

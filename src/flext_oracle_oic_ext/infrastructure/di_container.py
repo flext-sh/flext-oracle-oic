@@ -1,50 +1,76 @@
-"""🚨 ARCHITECTURAL COMPLIANCE: DI Container for flext-oracle-oic-ext."""
+"""🚨 ARCHITECTURAL COMPLIANCE: ELIMINATED DUPLICATE DI Container.
+
+REFATORADO COMPLETO:
+- REMOVIDA TODAS as duplicações de FlextContainer/DIContainer
+- USA APENAS FlextContainer oficial do flext-core
+- Mantém apenas utilitários flext_oracle_oic_ext-específicos
+- SEM fallback, backward compatibility ou código duplicado
+
+Copyright (c) 2025 Flext. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
 from typing import Any
 
+# 🚨 ARCHITECTURAL COMPLIANCE: Use ONLY official flext-core FlextContainer
+from flext_core import FlextContainer, get_logger
 
-def get_service_result() -> Any:
+logger = get_logger(__name__)
+
+
+# ==================== FLEXT_ORACLE_OIC_EXT-SPECIFIC DI UTILITIES ====================
+
+_flext_oracle_oic_ext_container_instance: FlextContainer | None = None
+
+
+def get_flext_oracle_oic_ext_container() -> FlextContainer:
+    """Get FLEXT_ORACLE_OIC_EXT-specific DI container instance.
+
+    Returns:
+        FlextContainer: Official container from flext-core.
+
+    """
+    global _flext_oracle_oic_ext_container_instance
+    if _flext_oracle_oic_ext_container_instance is None:
+        _flext_oracle_oic_ext_container_instance = FlextContainer()
+    return _flext_oracle_oic_ext_container_instance
+
+
+def configure_flext_oracle_oic_ext_dependencies() -> None:
+    """Configure FLEXT_ORACLE_OIC_EXT dependencies using official FlextContainer."""
+    get_flext_oracle_oic_ext_container()
+
     try:
-        from flext_core import FlextResult
+        # Register module-specific dependencies
+        # TODO: Add module-specific service registrations here
 
-        return FlextResult
+        logger.info("FLEXT_ORACLE_OIC_EXT dependencies configured successfully")
+
     except ImportError as e:
-        raise ImportError(f"Failed to load FlextResult: {e}") from e
+        logger.exception(f"Failed to configure FLEXT_ORACLE_OIC_EXT dependencies: {e}")
 
 
-def get_domain_entity() -> Any:
-    try:
-        from flext_core import FlextEntity
+def get_flext_oracle_oic_ext_service(service_name: str) -> Any:
+    """Get flext_oracle_oic_ext service from container.
 
-        return FlextEntity
-    except ImportError as e:
-        raise ImportError(f"Failed to load FlextEntity: {e}") from e
+    Args:
+        service_name: Name of service to retrieve.
 
+    Returns:
+        Service instance or None if not found.
 
-def get_field() -> Any:
-    try:
-        from flext_core import FlextField
+    """
+    container = get_flext_oracle_oic_ext_container()
+    result = container.get(service_name)
 
-        return FlextField
-    except ImportError as e:
-        raise ImportError(f"Failed to load FlextField: {e}") from e
+    if result.success:
+        return result.data
 
-
-def get_domain_value_object() -> Any:
-    try:
-        from flext_core import FlextValueObject
-
-        return FlextValueObject
-    except ImportError as e:
-        raise ImportError(f"Failed to load FlextValueObject: {e}") from e
+    logger.warning(f"FLEXT_ORACLE_OIC_EXT service '{service_name}' not found: {result.error}")
+    return None
 
 
-def get_base_config() -> Any:
-    try:
-        from flext_core import FlextCoreSettings
-
-        return FlextCoreSettings
-    except ImportError as e:
-        raise ImportError(f"Failed to load FlextCoreSettings: {e}") from e
+# Initialize flext_oracle_oic_ext dependencies on module import
+configure_flext_oracle_oic_ext_dependencies()

@@ -392,9 +392,9 @@ class TestOracleOICExtE2E:
             mock_manager = Mock()
             extension.lifecycle_manager = mock_manager
 
-            # Mock manager methods to return ServiceResult objects
+            # Mock manager methods to return FlextResult objects
             # 🚨 ARCHITECTURAL COMPLIANCE: Using módulo raiz imports
-from flext_core import ServiceResult
+from flext_core import FlextResult
 
             from flext_oracle_oic_ext.lifecycle.manager import IntegrationStatus
 
@@ -403,10 +403,10 @@ from flext_core import ServiceResult
                 version="01.00.0000",
                 status="ACTIVATED",
             )
-            mock_manager.get_integration_status.return_value = ServiceResult.ok(
+            mock_manager.get_integration_status.return_value = FlextResult.ok(
                 integration_status,
             )
-            mock_manager.activate_integration.return_value = ServiceResult.ok({
+            mock_manager.activate_integration.return_value = FlextResult.ok({
                     "status": "ACTIVATED",
                 },
             )

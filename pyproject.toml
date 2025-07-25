@@ -4,13 +4,23 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "flext-oracle-oic-ext"
-version = "0.7.0"
+version = "0.8.0"
 description = "FLEXT Oracle OIC Extension - Advanced Oracle Integration Cloud Extensions"
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
 keywords = [ "flext", "enterprise", "async", "typed", "integration", "adapter",]
 classifiers = [ "Development Status :: 5 - Production/Stable", "Intended Audience :: Developers", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent", "Programming Language :: Python :: 3.13", "Programming Language :: Python :: 3 :: Only", "Topic :: Software Development :: Libraries :: Python Modules", "Typing :: Typed",]
-dependencies = [ "tenacity (>=9.1.2,<10.0.0)", "pydantic (>=2.11.7,<3.0.0)", "pydantic-settings (>=2.10.1,<3.0.0)", "meltano[edk] (>=3.0.0,<4.0.0)",]
+dependencies = [
+    "tenacity (>=9.1.2,<10.0.0)",
+    "pydantic (>=2.11.7,<3.0.0)",
+    "pydantic-settings (>=2.10.1,<3.0.0)",
+    "meltano[edk] (>=3.0.0,<4.0.0)",
+    "flext-core @ file:///home/marlonsc/flext/flext-core",
+    "requests (>=2.31.0,<3.0.0)",
+    "httpx (>=0.28.1,<0.29.0)",
+    "typer (>=0.12.0,<1.0.0)",
+    "urllib3 (>=2.0.0,<3.0.0)",
+]
 [[project.authors]]
 name = "FLEXT Team"
 email = "team@flext.sh"
@@ -39,6 +49,7 @@ show-fixes = true
 respect-gitignore = true
 src = [ "src", "tests",]
 extend-exclude = [ "__pycache__", ".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv", "venv", "build", "dist", "htmlcov",]
+extend = "../.ruff-shared.toml"
 
 [tool.mypy]
 python_version = "3.13"

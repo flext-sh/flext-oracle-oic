@@ -8,7 +8,15 @@ It uses flext-core patterns for configuration and error handling.
 """
 
 from __future__ import annotations
+
+import os
+from typing import TYPE_CHECKING, Any, cast
+
+from flext_core import FlextLoggingConfig, FlextResult, get_logger
+from flext_observability.logging import FlextLogLevel, setup_logging
+
 from flext_oracle_oic_ext.config import (
+    LogLevelLiteral,
     OICExtensionConnectionConfig,
     OICExtensionExtractionConfig,
     OICExtensionLifecycleConfig,
@@ -17,52 +25,25 @@ from flext_oracle_oic_ext.config import (
     OracleOICExtensionSettings,
 )
 
-# FIXME: Removed circular dependency - use DI pattern
-import logging
-import os
-from typing import TYPE_CHECKING, Any, cast
-
-# 🚨 ARCHITECTURAL COMPLIANCE: Using módulo raiz imports
-# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
-from flext_oracle_oic_ext.infrastructure.di_container import get_service_result, get_domain_entity, get_field, get_domain_value_object, get_base_config
-ServiceResult = get_service_result()
-DomainEntity = get_domain_entity()
-Field = get_field()
-DomainValueObject = get_domain_value_object()
-BaseConfig = get_base_config()
-
-
 if TYPE_CHECKING:
-    # 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
-ServiceResult = get_service_result()
-DomainEntity = get_domain_entity()
-Field = get_field()
-DomainValueObject = get_domain_value_object()
-BaseConfig = get_base_config()
+    from flext_meltano.simple_api import EnvironmentLiteral
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 def setup_oic_extension(
     settings: OracleOICExtensionSettings | None = None,
-) -> ServiceResult[Any]:
+) -> FlextResult[Any]:
     """Setup Oracle OIC extension with logging and configuration validation."""
     try:
         if settings is None:
-            # Create minimal settings for testing - requires connection to be provided externally
-            # NOTE: This is for development/testing. Use environment variables
-            # in production.
-            from flext_oracle_oic_ext.config import OICExtensionConnectionConfig
-
             connection = OICExtensionConnectionConfig(
                 base_url=os.getenv(
                     "OIC_BASE_URL",
                     "https://example.integration.ocp.oraclecloud.com",
                 ),
                 oauth_client_id=os.getenv("OIC_CLIENT_ID", "client_id"),
-                oauth_client_secret=os.getenv(
-                    "OIC_CLIENT_SECRET",
-                    "client_secret"),
+                oauth_client_secret=os.getenv("OIC_CLIENT_SECRET", "client_secret"),
                 # nosec: default for dev/test
                 oauth_token_url=os.getenv(
                     "OIC_TOKEN_URL",
@@ -79,17 +60,17 @@ def setup_oic_extension(
         # Setup logging using flext-infrastructure.monitoring.flext-observability
         # Convert string log level to LogLevel enum
         log_level = (
-            LogLevel(settings.log_level.lower())
+            FlextLogLevel(settings.log_level.lower())
             if isinstance(settings.log_level, str)
             else settings.log_level
         )
-        logging_config = LoggingConfig(log_level=log_level, json_logs=True)
+        logging_config = FlextLoggingConfig(log_level=log_level, json_logs=True)
         setup_logging(logging_config)
 
-        return ServiceResult.ok(settings)
+        return FlextResult.ok(settings)
 
     except Exception as e:
-        return ServiceResult.ok(error=f"Failed to setup OIC extension: {e}")
+        return FlextResult.ok(error=f"Failed to setup OIC extension: {e}")
 
 
 def create_development_oic_config(
@@ -110,8 +91,9 @@ def create_development_oic_config(
         or os.getenv("OIC_DEV_BASE_URL")
         or "https://CONFIGURE-DEV-INSTANCE.integration.ocp.oraclecloud.com"
     )
-    final_oauth_client_id = (oauth_client_id or os.getenv(
-        "OIC_DEV_CLIENT_ID") or "CONFIGURE_DEV_CLIENT_ID")
+    final_oauth_client_id = (
+        oauth_client_id or os.getenv("OIC_DEV_CLIENT_ID") or "CONFIGURE_DEV_CLIENT_ID"
+    )
     final_oauth_client_secret = (
         oauth_client_secret
         or os.getenv("OIC_DEV_CLIENT_SECRET")
@@ -437,13 +419,13 @@ def create_sandbox_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
 
 def configure_for_meltano(
     config_dict: dict[str, Any],
-) -> ServiceResult[Any]:
+) -> FlextResult[Any]:
     """Configure Oracle OIC extension from Meltano configuration dictionary."""
     try:
         settings = OracleOICExtensionSettings.from_dict(config_dict)
-        return ServiceResult.ok(settings)
+        return FlextResult.ok(settings)
     except Exception as e:
-        return ServiceResult.ok(error=f"Failed to configure from Meltano: {e}")
+        return FlextResult.ok(error=f"Failed to configure from Meltano: {e}")
 
 
 # Export convenience functions

@@ -17,28 +17,36 @@ import warnings
 
 # Import from flext-core for foundational patterns
 # 🚨 ARCHITECTURAL COMPLIANCE: Using módulo raiz imports
-# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
-from flext_oracle_oic_ext.infrastructure.di_container import (
-    get_base_config,
-    get_domain_entity,
-    get_domain_value_object,
-    get_field,
-    get_service_result,
-)
-
-ServiceResult = get_service_result()
-DomainEntity = get_domain_entity()
-Field = get_field()
-DomainValueObject = get_domain_value_object()
-BaseConfig = get_base_config()
+try:
+    from flext_core import (
+        BaseConfig,
+        Field,
+        FlextResult,
+    )
+    from pydantic import BaseModel as DomainEntity
+    FlextValueObject = DomainEntity  # Alias for compatibility
+except ImportError:
+    # Fallback stubs if flext-core not available
+    class FlextResult:  # type: ignore[no-redef]
+        pass
+    class BaseConfig:  # type: ignore[no-redef]
+        pass
+    class Field:  # type: ignore[no-redef]
+        pass
+    class DomainEntity:  # type: ignore[no-redef]
+        pass
+    FlextValueObject = DomainEntity
 
 __all__ = [
     "BaseConfig",
     "DomainEntity",
-    "DomainValueObject",
     "Field",
-    "ServiceResult",
+    "FlextResult",
+    "FlextValueObject",
 ]
+
+# Add BaseModel alias for exports
+BaseModel = DomainEntity
 
 try:
     __version__ = importlib.metadata.version("flext-oracle-oic-ext")
@@ -73,47 +81,28 @@ def _show_deprecation_warning(old_import: str, new_import: str) -> None:
 
 # Foundation patterns - ALWAYS from flext-core (imported above)
 
+# CONSOLIDATED: Import from centralized flext-meltano
 with contextlib.suppress(ImportError):
-    from flext_oracle_oic_ext.extension import OracleOICExtension
+    from flext_meltano.extensions.oracle_oic import OracleOICExtension
 
-with contextlib.suppress(ImportError):
-    from flext_oracle_oic_ext.client.extended_client import ExtendedOICClient
-
-with contextlib.suppress(ImportError):
-    from flext_oracle_oic_ext.orchestration.patterns import (
-        IntegrationPattern,
-        IntegrationPatternOrchestrator,
-    )
-
-with contextlib.suppress(ImportError):
-    from flext_oracle_oic_ext.adapters import (
-        CustomDatabaseAdapter,
-        CustomRESTAdapter,
-        OICAdapterManager,
-    )
+# Note: Other complex classes may not be directly available,
+# keeping simplified interface focused on core extension functionality
 
 # ================================
 
 __all__ = [
-    "BaseModel",  # from flext_oracle_oic_ext import BaseModel
-    # OIC Custom Adapters (simplified access)
-    "CustomDatabaseAdapter",  # from flext_oracle_oic_ext import CustomDatabaseAdapter
-    "CustomRESTAdapter",  # from flext_oracle_oic_ext import CustomRESTAdapter
-    # OIC Extended Client (simplified access)
-    "ExtendedOICClient",  # from flext_oracle_oic_ext import ExtendedOICClient
-    # OIC Integration Patterns (simplified access)
-    "IntegrationPattern",  # from flext_oracle_oic_ext import IntegrationPattern
-    "IntegrationPatternOrchestrator",  # from flext_oracle_oic_ext import IntegrationPatternOrchestrator
-    # OIC Adapters (simplified access)
-    "OICAdapterManager",  # from flext_oracle_oic_ext import OICAdapterManager
-    # Core Patterns (from flext-core)
-    "OICBaseConfig",  # from flext_oracle_oic_ext import OICBaseConfig
-    "OICError",  # from flext_oracle_oic_ext import OICError
-    # Main OIC Extension (simplified access)
-    "OracleOICExtension",  # from flext_oracle_oic_ext import OracleOICExtension
-    "ServiceResult",  # from flext_oracle_oic_ext import ServiceResult
-    "ValidationError",  # from flext_oracle_oic_ext import ValidationError
-    # Version
+    # Core foundation patterns from flext-core
+    "BaseConfig",
+    "BaseModel",
+    "DomainEntity",
+    "Field",
+    "FlextResult",
+    "FlextValueObject",
+
+    # Main OIC Extension (consolidated from flext-meltano)
+    "OracleOICExtension",
+
+    # Version info
     "__version__",
     "__version_info__",
 ]

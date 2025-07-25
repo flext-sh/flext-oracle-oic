@@ -1,43 +1,16 @@
 """Pass-through invoker for Oracle OIC extension.
 
-Copyright (c) 2025 Flext. All rights reserved.
-SPDX-License-Identifier: MIT
-
-This module provides a pass-through CLI for the oracle-oic-ext command.
-It uses flext-core patterns and has zero tolerance for code duplication.
+CONSOLIDATED: Uses centralized pass-through from flext-meltano.
+Zero tolerance for code duplication.
 """
 
 from __future__ import annotations
 
-# Removed circular dependency - use DI pattern
-# # FIXME: Removed circular dependency - use DI pattern
-import logging
-import sys
-from subprocess import CalledProcessError
+# CONSOLIDATED: Import from centralized flext-meltano
+from flext_meltano.extensions.oracle_oic.pass_through import pass_through_cli
 
-from meltano.edk.process import Invoker, log_subprocess_error
-
-logger = logging.getLogger(__name__)
-
-
-def pass_through_cli() -> None:
-    """Pass-through CLI for oracle-oic-ext."""
-    logger.debug("Running pass-through invoker", command=sys.argv[1:])
-
-    invoker = Invoker("oracle-oic-ext")
-    try:
-        invoker.run(*sys.argv[1:])
-    except CalledProcessError as e:
-        log_subprocess_error(
-            "oracle-oic-ext",
-            e,
-            "oracle-oic-ext invocation failed",
-        )
-        sys.exit(1)
-    except (OSError, RuntimeError, ValueError, ImportError):
-        logger.exception("oracle-oic-ext invocation failed")
-        sys.exit(1)
-
+# Re-export for backward compatibility
+__all__ = ["pass_through_cli"]
 
 if __name__ == "__main__":
     pass_through_cli()
