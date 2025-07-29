@@ -3,12 +3,6 @@
 Tests configuration generation functionality and validation.
 """
 
-import flext_oracle_oic_ext
-import flext_oracle_oic_ext
-from flext_oracle_oic_ext.config import OracleOICExtensionSettings
-from flext_oracle_oic_ext.simple_api import setup_oic_extension
-
-
 from __future__ import annotations
 
 import tempfile
@@ -17,7 +11,9 @@ from typing import Any
 
 import pytest
 
+import flext_oracle_oic_ext
 from flext_oracle_oic_ext.config import OracleOICExtensionSettings
+from flext_oracle_oic_ext.simple_api import setup_oic_extension
 
 
 def test_module_imports() -> None:
@@ -28,8 +24,6 @@ def test_module_imports() -> None:
 def test_basic_functionality() -> None:
     """Test basic module functionality."""
     try:
-
-
         # Basic smoke test
         assert hasattr(flext_oracle_oic_ext, "__file__")
     except (ImportError, AttributeError):
@@ -57,13 +51,18 @@ class TestConfigGeneration:
 
         assert settings.connection is not None
         if settings.connection.base_url != config_dict["base_url"]:
-            raise AssertionError(f"Expected {config_dict["base_url"]}, got {settings.connection.base_url}")
+            msg = f"Expected {config_dict['base_url']}, got {settings.connection.base_url}"
+            raise AssertionError(
+                msg,
+            )
         assert settings.connection.oauth_client_id == config_dict["oauth_client_id"]
         if settings.environment != "test":
-            raise AssertionError(f"Expected {"test"}, got {settings.environment}")
+            msg = f"Expected {'test'}, got {settings.environment}"
+            raise AssertionError(msg)
         assert settings.log_level == "DEBUG"
         if not (settings.debug):
-            raise AssertionError(f"Expected True, got {settings.debug}")
+            msg = f"Expected True, got {settings.debug}"
+            raise AssertionError(msg)
 
     def test_config_to_dict_conversion(self) -> None:
         """Test converting configuration to dictionary."""
@@ -78,11 +77,14 @@ class TestConfigGeneration:
         result_dict = settings.to_dict()
 
         if result_dict["base_url"] != config_dict["base_url"]:
-
-            raise AssertionError(f"Expected {config_dict["base_url"]}, got {result_dict["base_url"]}")
+            msg = f"Expected {config_dict['base_url']}, got {result_dict['base_url']}"
+            raise AssertionError(
+                msg,
+            )
         assert result_dict["oauth_client_id"] == config_dict["oauth_client_id"]
         if "environment" not in result_dict:
-            raise AssertionError(f"Expected {"environment"} in {result_dict}")
+            msg = f"Expected {'environment'} in {result_dict}"
+            raise AssertionError(msg)
 
     def test_config_validation(self) -> None:
         """Test configuration validation."""
@@ -116,11 +118,16 @@ class TestConfigGeneration:
         auth_config = settings.get_auth_config()
 
         if auth_config["oauth_client_id"] != "test_client_id":
-
-            raise AssertionError(f"Expected {"test_client_id"}, got {auth_config["oauth_client_id"]}")
+            msg = f"Expected {'test_client_id'}, got {auth_config['oauth_client_id']}"
+            raise AssertionError(
+                msg,
+            )
         assert auth_config["oauth_client_secret"] == "test_client_secret"
         if auth_config["oauth_token_url"] != config_dict["oauth_token_url"]:
-            raise AssertionError(f"Expected {config_dict["oauth_token_url"]}, got {auth_config["oauth_token_url"]}")
+            msg = f"Expected {config_dict['oauth_token_url']}, got {auth_config['oauth_token_url']}"
+            raise AssertionError(
+                msg,
+            )
         assert auth_config["oauth_scope"] == "test_scope"
 
     def test_default_configuration_values(self) -> None:
@@ -136,12 +143,18 @@ class TestConfigGeneration:
 
         # Check default values
         if settings.environment != "test":
-            raise AssertionError(f"Expected {"test"}, got {settings.environment}")
+            msg = f"Expected {'test'}, got {settings.environment}"
+            raise AssertionError(msg)
         assert settings.log_level == "INFO"
         if settings.debug:
-            raise AssertionError(f"Expected False, got {settings.debug}")\ n        assert settings.lifecycle.auto_activate is False
+            msg = f"Expected False, got {settings.debug}"
+            raise AssertionError(msg)
+        assert settings.lifecycle.auto_activate is False
         if not (settings.monitoring.enable_monitoring):
-            raise AssertionError(f"Expected True, got {settings.monitoring.enable_monitoring}")
+            msg = f"Expected True, got {settings.monitoring.enable_monitoring}"
+            raise AssertionError(
+                msg,
+            )
 
     def test_performance_config_defaults(self) -> None:
         """Test performance configuration defaults."""
@@ -155,11 +168,14 @@ class TestConfigGeneration:
         settings = OracleOICExtensionSettings.from_dict(config_dict)
 
         if settings.performance.request_timeout < 10:
-
-            raise AssertionError(f"Expected {settings.performance.request_timeout} >= {10}")
+            msg = f"Expected {settings.performance.request_timeout} >= {10}"
+            raise AssertionError(
+                msg,
+            )
         assert settings.performance.max_retries >= 0
         if settings.performance.batch_size < 1:
-            raise AssertionError(f"Expected {settings.performance.batch_size} >= {1}")
+            msg = f"Expected {settings.performance.batch_size} >= {1}"
+            raise AssertionError(msg)
         assert settings.performance.max_concurrent_requests >= 1
 
     def test_extraction_config_setup(self) -> None:
@@ -175,13 +191,21 @@ class TestConfigGeneration:
         settings = OracleOICExtensionSettings.from_dict(config_dict)
 
         if not (settings.extraction.extract_artifacts):
-
-            raise AssertionError(f"Expected True, got {settings.extraction.extract_artifacts}")
+            msg = f"Expected True, got {settings.extraction.extract_artifacts}"
+            raise AssertionError(
+                msg,
+            )
         assert settings.extraction.extract_logs is True
         if not (settings.extraction.extract_metadata):
-            raise AssertionError(f"Expected True, got {settings.extraction.extract_metadata}")
+            msg = f"Expected True, got {settings.extraction.extract_metadata}"
+            raise AssertionError(
+                msg,
+            )
         if "./test_artifacts" not in settings.extraction.artifact_directory:
-            raise AssertionError(f"Expected {"./test_artifacts"} in {settings.extraction.artifact_directory}")
+            msg = f"Expected {'./test_artifacts'} in {settings.extraction.artifact_directory}"
+            raise AssertionError(
+                msg,
+            )
 
     @pytest.mark.parametrize(
         ("environment", "expected_debug"),
@@ -208,7 +232,8 @@ class TestConfigGeneration:
 
         settings = OracleOICExtensionSettings.from_dict(config_dict)
         if settings.environment != environment:
-            raise AssertionError(f"Expected {environment}, got {settings.environment}")
+            msg = f"Expected {environment}, got {settings.environment}"
+            raise AssertionError(msg)
 
     def test_artifact_directory_creation(self) -> None:
         """Test artifact directory creation during validation."""
@@ -244,7 +269,10 @@ class TestConfigGeneration:
         assert settings.connection is not None
         assert settings.connection.oauth_scope is not None
         if "urn:opc:resource:consumer:all" not in settings.connection.oauth_scope:
-            raise AssertionError(f"Expected {"urn:opc:resource:consumer:all"} in {settings.connection.oauth_scope}")
+            msg = f"Expected {'urn:opc:resource:consumer:all'} in {settings.connection.oauth_scope}"
+            raise AssertionError(
+                msg,
+            )
 
     def _create_invalid_config(self, valid_config: dict[str, Any]) -> None:
         """Helper function to create invalid configuration for testing."""
@@ -259,8 +287,6 @@ class TestBasicCoverage:
     def test_module_attributes(self) -> None:
         """Test module has expected attributes."""
         try:
-
-
             assert flext_oracle_oic_ext
         except ImportError:
             # If module import fails, verify this is expected
@@ -270,8 +296,6 @@ class TestBasicCoverage:
     def test_config_imports(self) -> None:
         """Test configuration module imports correctly."""
         try:
-
-
             assert OracleOICExtensionSettings is not None
         except ImportError:
             # If config module import fails, verify this is expected
@@ -281,8 +305,6 @@ class TestBasicCoverage:
     def test_simple_api_imports(self) -> None:
         """Test simple API module imports correctly."""
         try:
-
-
             assert setup_oic_extension is not None
         except ImportError:
             # If simple API import fails, verify this is expected
