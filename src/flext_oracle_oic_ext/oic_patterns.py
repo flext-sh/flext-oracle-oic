@@ -175,7 +175,7 @@ class BaseOICAuthenticator(ABC):
             error_msg = f"Invalid OAuth2 response format: missing {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             error_msg = f"OIC authentication error: {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
@@ -267,7 +267,7 @@ class BaseOICClient(ABC):
 
             return FlextResult.ok(self._session)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             error_msg = f"Failed to create authenticated session: {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
@@ -341,7 +341,7 @@ class BaseOICClient(ABC):
             error_msg = f"OIC API request failed: {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             error_msg = f"OIC API client error: {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
@@ -405,7 +405,7 @@ class BaseOICClient(ABC):
 
             return FlextResult.ok(all_records)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             error_msg = f"OIC pagination failed: {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)

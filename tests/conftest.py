@@ -11,6 +11,8 @@ from typing import TYPE_CHECKING, Any
 
 import pytest
 
+from flext_oracle_oic_ext.extension import OracleOICExtension
+
 if TYPE_CHECKING:
     from collections.abc import Generator
 
@@ -45,10 +47,8 @@ def oic_connection_config() -> dict[str, Any]:
 
 
 @pytest.fixture
-def oic_client(oic_connection_config: dict[str, Any]) -> Any:
+def oic_client(oic_connection_config: dict[str, Any]) -> object:
     """Oracle OIC extension for testing."""
-    from flext_oracle_oic_ext.extension import OracleOICExtension
-
     extension = OracleOICExtension()
     extension.config = oic_connection_config
     return extension
@@ -379,7 +379,7 @@ def pytest_configure(config: pytest.Config) -> None:
 
 # Mock services
 @pytest.fixture
-def mock_oic_service() -> Any:
+def mock_oic_service() -> object:
     """Mock OIC service for testing."""
 
     class MockOICService:
@@ -479,7 +479,7 @@ def mock_oic_service() -> Any:
 
 
 @pytest.fixture
-def mock_oic_client() -> Any:
+def mock_oic_client() -> object:
     """Mock OIC client for testing."""
 
     class MockOICClient:

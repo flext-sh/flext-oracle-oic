@@ -9,6 +9,13 @@ Tests all functionalities including:
 - Error handling
 """
 
+from unittest.mock import Mock
+from flext_oracle_oic_ext.config import OracleOICExtensionSettings
+from unittest.mock import Mock
+from unittest.mock import Mock
+from unittest.mock import Mock
+
+
 from __future__ import annotations
 
 import json
@@ -55,7 +62,8 @@ class TestOracleOICExtE2E:
 
     def test_extension_initialization(self, extension: OracleOICExtension) -> None:
         """Test extension initialization."""
-        assert extension.oracle_oic_bin == "oracle-oic-ext"
+        if extension.oracle_oic_bin != "oracle-oic-ext":
+            raise AssertionError(f"Expected {"oracle-oic-ext"}, got {extension.oracle_oic_bin}")
         assert extension.lifecycle_manager is None
         assert extension.monitoring_service is None
 
@@ -69,25 +77,33 @@ class TestOracleOICExtE2E:
         command_names = [cmd.name for cmd in description.commands]
 
         # Lifecycle commands
-        assert "lifecycle:activate" in command_names
+        if "lifecycle:activate" not in command_names:
+            raise AssertionError(f"Expected {"lifecycle:activate"} in {command_names}")
         assert "lifecycle:deactivate" in command_names
-        assert "lifecycle:bulk-activate" in command_names
+        if "lifecycle:bulk-activate" not in command_names:
+            raise AssertionError(f"Expected {"lifecycle:bulk-activate"} in {command_names}")
         assert "lifecycle:bulk-deactivate" in command_names
-        assert "lifecycle:status" in command_names
+        if "lifecycle:status" not in command_names:
+            raise AssertionError(f"Expected {"lifecycle:status"} in {command_names}")
 
         # Monitoring commands
-        assert "monitor:health" in command_names
+        if "monitor:health" not in command_names:
+            raise AssertionError(f"Expected {"monitor:health"} in {command_names}")
         assert "monitor:performance" in command_names
-        assert "monitor:errors" in command_names
+        if "monitor:errors" not in command_names:
+            raise AssertionError(f"Expected {"monitor:errors"} in {command_names}")
         assert "monitor:usage" in command_names
 
         # Extraction commands
-        assert "extract:artifacts" in command_names
+        if "extract:artifacts" not in command_names:
+            raise AssertionError(f"Expected {"extract:artifacts"} in {command_names}")
         assert "extract:logs" in command_names
-        assert "extract:metadata" in command_names
+        if "extract:metadata" not in command_names:
+            raise AssertionError(f"Expected {"extract:metadata"} in {command_names}")
 
         # Transformation commands
-        assert "transform:flatten" in command_names
+        if "transform:flatten" not in command_names:
+            raise AssertionError(f"Expected {"transform:flatten"} in {command_names}")
         assert "transform:mask" in command_names
 
     def test_command_routing(self, extension: OracleOICExtension) -> None:
@@ -125,16 +141,17 @@ class TestOracleOICExtE2E:
 
     def test_lifecycle_manager_operations(self, config: dict[str, Any]) -> None:
         """Test lifecycle manager functionality."""
-        from unittest.mock import Mock
 
-        from flext_oracle_oic_ext.config import OracleOICExtensionSettings
+
+
 
         settings = OracleOICExtensionSettings.from_dict(config)
         manager = LifecycleManager(settings)
 
         # Test initialization
         assert manager.settings.connection is not None
-        assert manager.settings.connection.base_url == config["base_url"]
+        if manager.settings.connection.base_url != config["base_url"]:
+            raise AssertionError(f"Expected {config["base_url"]}, got {manager.settings.connection.base_url}")
         assert manager.settings.connection.oauth_client_id == config["oauth_client_id"]
 
         # Test status check with mocked authentication
@@ -154,13 +171,14 @@ class TestOracleOICExtE2E:
                 status_result = manager.get_integration_status("TEST_INTEGRATION")
                 assert status_result.success
                 status = status_result.unwrap()
-                assert status.status == "ACTIVATED"
+                if status.status != "ACTIVATED":
+                    raise AssertionError(f"Expected {"ACTIVATED"}, got {status.status}")
                 assert status.integration_id == "TEST_INTEGRATION"
 
     def test_monitoring_service_operations(self, config: dict[str, Any]) -> None:
         """Test monitoring service functionality."""
         # Create a mock HTTP client for MonitoringService
-        from unittest.mock import Mock
+
 
         mock_client = Mock()
         service = MonitoringService(client=mock_client)
@@ -173,7 +191,8 @@ class TestOracleOICExtE2E:
         }
 
         health = service.get_health_status()
-        assert health["status"] == "healthy"
+        if health["status"] != "healthy":
+            raise AssertionError(f"Expected {"healthy"}, got {health["status"]}")
 
     def test_artifact_extraction(
         self,
@@ -246,7 +265,9 @@ class TestOracleOICExtE2E:
         }
         extension.config = test_config
 
-        assert "base_url" in extension.config
+        if "base_url" not in extension.config:
+
+            raise AssertionError(f"Expected {"base_url"} in {extension.config}")
         assert "oauth_client_id" in extension.config
         assert extension.config["base_url"].startswith("https://")
 
@@ -301,11 +322,13 @@ class TestOracleOICExtE2E:
             for integration in integrations:
                 extension.invoke("lifecycle:activate", integration)
 
-            assert mock_activate.call_count == len(integrations)
+            if mock_activate.call_count != len(integrations):
+
+                raise AssertionError(f"Expected {len(integrations)}, got {mock_activate.call_count}")
 
     def test_monitoring_alerts(self, config: dict[str, Any]) -> None:
         """Test monitoring alert functionality."""
-        from unittest.mock import Mock
+
 
         mock_client = Mock()
         service = MonitoringService(client=mock_client)
@@ -322,12 +345,13 @@ class TestOracleOICExtE2E:
         }
 
         analysis = service.analyze_errors()
-        assert "patterns" in analysis
+        if "patterns" not in analysis:
+            raise AssertionError(f"Expected {"patterns"} in {analysis}")
         assert "recommendations" in analysis
 
     def test_performance_metrics(self, config: dict[str, Any]) -> None:
         """Test performance metrics collection."""
-        from unittest.mock import Mock
+
 
         mock_client = Mock()
         service = MonitoringService(client=mock_client)
@@ -349,7 +373,8 @@ class TestOracleOICExtE2E:
         }
 
         metrics = service.get_performance_metrics()
-        assert "executions" in metrics
+        if "executions" not in metrics:
+            raise AssertionError(f"Expected {"executions"} in {metrics}")
         assert "throughput" in metrics
 
     def test_log_extraction(
@@ -442,7 +467,8 @@ from flext_core import FlextResult
                 input="y\n",
                 check=False,
             )
-            assert result.returncode == 0
+            if result.returncode != 0:
+                raise AssertionError(f"Expected {0}, got {result.returncode}")
             assert config_path.exists()
 
         # Load and validate config
@@ -450,12 +476,16 @@ from flext_core import FlextResult
             config = json.load(f)
 
         # Check required fields
-        assert "base_url" in config
+        if "base_url" not in config:
+            raise AssertionError(f"Expected {"base_url"} in {config}")
         assert "oauth_client_id" in config
-        assert "oauth_client_secret" in config
+        if "oauth_client_secret" not in config:
+            raise AssertionError(f"Expected {"oauth_client_secret"} in {config}")
         assert "oauth_token_url" in config
 
         # Check extension-specific fields
-        assert "instance_id" in config
+        if "instance_id" not in config:
+            raise AssertionError(f"Expected {"instance_id"} in {config}")
         assert "region" in config
-        assert "environment" in config
+        if "environment" not in config:
+            raise AssertionError(f"Expected {"environment"} in {config}")

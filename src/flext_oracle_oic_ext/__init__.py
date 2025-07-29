@@ -24,17 +24,22 @@ try:
         FlextResult,
     )
     from pydantic import BaseModel as DomainEntity
+
     FlextValueObject = DomainEntity  # Alias for compatibility
 except ImportError:
     # Fallback stubs if flext-core not available
-    class FlextResult:  # type: ignore[no-redef]
+    class FlextResult:
         pass
-    class BaseConfig:  # type: ignore[no-redef]
+
+    class BaseConfig:
         pass
-    class Field:  # type: ignore[no-redef]
+
+    class Field:
         pass
-    class DomainEntity:  # type: ignore[no-redef]
+
+    class DomainEntity:
         pass
+
     FlextValueObject = DomainEntity
 
 __all__ = [
@@ -98,10 +103,8 @@ __all__ = [
     "Field",
     "FlextResult",
     "FlextValueObject",
-
     # Main OIC Extension (consolidated from flext-meltano)
     "OracleOICExtension",
-
     # Version info
     "__version__",
     "__version_info__",

@@ -69,7 +69,7 @@ def setup_oic_extension(
 
         return FlextResult.ok(settings)
 
-    except Exception as e:
+    except (RuntimeError, ValueError, TypeError) as e:
         return FlextResult.ok(error=f"Failed to setup OIC extension: {e}")
 
 
@@ -78,7 +78,7 @@ def create_development_oic_config(
     oauth_client_id: str | None = None,
     oauth_client_secret: str | None = None,
     oauth_token_url: str | None = None,
-    **overrides: Any,
+    **overrides: object,
 ) -> OracleOICExtensionSettings:
     """Create development configuration with conservative settings.
 
@@ -185,7 +185,7 @@ def create_production_oic_config(
     oauth_client_id: str,
     oauth_client_secret: str,
     oauth_token_url: str,
-    **overrides: Any,
+    **overrides: object,
 ) -> OracleOICExtensionSettings:
     """Create production configuration with performance optimizations."""
     config = {
@@ -424,7 +424,7 @@ def configure_for_meltano(
     try:
         settings = OracleOICExtensionSettings.from_dict(config_dict)
         return FlextResult.ok(settings)
-    except Exception as e:
+    except (RuntimeError, ValueError, TypeError) as e:
         return FlextResult.ok(error=f"Failed to configure from Meltano: {e}")
 
 
