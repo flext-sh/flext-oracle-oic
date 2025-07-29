@@ -17,30 +17,13 @@ import warnings
 
 # Import from flext-core for foundational patterns
 # 🚨 ARCHITECTURAL COMPLIANCE: Using módulo raiz imports
-try:
-    from flext_core import (
-        BaseConfig,
-        Field,
-        FlextResult,
-    )
-    from pydantic import BaseModel as DomainEntity
-
-    FlextValueObject = DomainEntity  # Alias for compatibility
-except ImportError:
-    # Fallback stubs if flext-core not available
-    class FlextResult:
-        pass
-
-    class BaseConfig:
-        pass
-
-    class Field:
-        pass
-
-    class DomainEntity:
-        pass
-
-    FlextValueObject = DomainEntity
+from flext_core import (
+    FlextBaseSettings as BaseConfig,  # Alias for backward compatibility
+    FlextFields as Field,  # Alias for backward compatibility
+    FlextResult,
+    FlextValueObject,
+)
+from pydantic import BaseModel as DomainEntity
 
 __all__ = [
     "BaseConfig",
