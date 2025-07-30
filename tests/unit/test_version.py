@@ -57,6 +57,6 @@ def test_version_centralized_management() -> None:
     # Get module source to check for centralized management comment
     source = inspect.getsource(version_module)
     if "centralized version management" not in source.lower():
-        msg = f"Expected {"centralized version management"} in {source.lower()}"
+        msg = f"Expected {'centralized version management'} in {source.lower()}"
         raise AssertionError(msg)
     assert "flext_core.version" in source

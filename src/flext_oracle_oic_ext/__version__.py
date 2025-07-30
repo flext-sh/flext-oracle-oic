@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 # Simplified version management - no undefined functions
-__version__ = "0.7.0"
+__version__ = "0.9.0"
 __version_info__ = (0, 7, 0)
 
 # FLEXT Enterprise - Unified Versioning System

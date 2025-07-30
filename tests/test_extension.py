@@ -4,12 +4,10 @@ Tests for Oracle OIC Extension functionality including initialization,
 command handling, lifecycle management, and monitoring services.
 """
 
-import requests
-
-
 from __future__ import annotations
 
 import pytest
+import requests
 
 from flext_oracle_oic_ext.config import OracleOICExtensionSettings
 from flext_oracle_oic_ext.extension import OracleOICExtension
@@ -24,7 +22,10 @@ class TestOracleOICExtension:
         """Test extension initialization with default values."""
         ext = OracleOICExtension()
         if ext.oracle_oic_bin != "oracle-oic-ext":
-            raise AssertionError(f"Expected {"oracle-oic-ext"}, got {ext.oracle_oic_bin}")
+            msg = f"Expected {'oracle-oic-ext'}, got {ext.oracle_oic_bin}"
+            raise AssertionError(
+                msg,
+            )
         assert ext.lifecycle_manager is None
         assert ext.monitoring_service is None
 
@@ -38,25 +39,31 @@ class TestOracleOICExtension:
         # Check lifecycle commands
         command_names = [cmd.name for cmd in description.commands]
         if "lifecycle:activate" not in command_names:
-            raise AssertionError(f"Expected {"lifecycle:activate"} in {command_names}")
+            msg = f"Expected {'lifecycle:activate'} in {command_names}"
+            raise AssertionError(msg)
         assert "lifecycle:deactivate" in command_names
         if "lifecycle:status" not in command_names:
-            raise AssertionError(f"Expected {"lifecycle:status"} in {command_names}")
+            msg = f"Expected {'lifecycle:status'} in {command_names}"
+            raise AssertionError(msg)
 
         # Check monitoring commands
         if "monitor:health" not in command_names:
-            raise AssertionError(f"Expected {"monitor:health"} in {command_names}")
+            msg = f"Expected {'monitor:health'} in {command_names}"
+            raise AssertionError(msg)
         assert "monitor:performance" in command_names
         if "monitor:errors" not in command_names:
-            raise AssertionError(f"Expected {"monitor:errors"} in {command_names}")
+            msg = f"Expected {'monitor:errors'} in {command_names}"
+            raise AssertionError(msg)
         assert "monitor:usage" in command_names
 
         # Check extraction commands
         if "extract:artifacts" not in command_names:
-            raise AssertionError(f"Expected {"extract:artifacts"} in {command_names}")
+            msg = f"Expected {'extract:artifacts'} in {command_names}"
+            raise AssertionError(msg)
         assert "extract:logs" in command_names
         if "extract:metadata" not in command_names:
-            raise AssertionError(f"Expected {"extract:metadata"} in {command_names}")
+            msg = f"Expected {'extract:metadata'} in {command_names}"
+            raise AssertionError(msg)
 
     def test_lifecycle_manager_initialization(self) -> None:
         """Test lifecycle manager initialization with configuration."""
@@ -79,12 +86,14 @@ class TestOracleOICExtension:
             == "https://test.integration.ocp.oraclecloud.com"
         )
         if settings.connection.oauth_client_id != "test_client":
-            raise AssertionError(f"Expected {"test_client"}, got {settings.connection.oauth_client_id}")
+            msg = f"Expected {'test_client'}, got {settings.connection.oauth_client_id}"
+            raise AssertionError(
+                msg,
+            )
 
     def test_monitoring_service_initialization(self) -> None:
         """Test monitoring service initialization with configuration."""
         # MonitoringService expects a requests.Session object
-
 
         session = requests.Session()
         service = MonitoringService(session)
@@ -108,12 +117,15 @@ class TestOracleOICExtension:
             cmd for cmd in description.commands if cmd.name.startswith("extract:")
         ]
 
-        if len(lifecycle_commands) < 3  # activate, deactivate, status:
-
-            raise AssertionError(f"Expected {len(lifecycle_commands)} >= {3  # activate, deactivate, status}")
-        assert len(monitor_commands) >= 3  # health, performance, errors
-        if len(extract_commands) < 3  # artifacts, logs, metadata:
-            raise AssertionError(f"Expected {len(extract_commands)} >= {3  # artifacts, logs, metadata}")
+        if len(lifecycle_commands) < 3:  # activate, deactivate, status
+            msg = f"Expected {len(lifecycle_commands)} >= {3}"
+            raise AssertionError(msg)
+        if len(monitor_commands) < 3:  # health, performance, errors
+            msg = f"Expected {len(monitor_commands)} >= {3}"
+            raise AssertionError(msg)
+        if len(extract_commands) < 3:  # artifacts, logs, metadata
+            msg = f"Expected {len(extract_commands)} >= {3}"
+            raise AssertionError(msg)
 
     def test_configuration_validation(self) -> None:
         """Test configuration validation for managers."""
@@ -140,7 +152,10 @@ class TestOracleOICExtension:
         """Test that extension bin property is correctly set."""
         ext = OracleOICExtension()
         if ext.oracle_oic_bin != "oracle-oic-ext":
-            raise AssertionError(f"Expected {"oracle-oic-ext"}, got {ext.oracle_oic_bin}")
+            msg = f"Expected {'oracle-oic-ext'}, got {ext.oracle_oic_bin}"
+            raise AssertionError(
+                msg,
+            )
         assert isinstance(ext.oracle_oic_bin, str)
         assert len(ext.oracle_oic_bin) > 0
 
@@ -156,7 +171,8 @@ class TestOracleOICExtension:
             assert len(command.name) > 0
             # Commands should have format "category:action"
             if ":" not in command.name:
-                raise AssertionError(f"Expected {":"} in {command.name}")
+                msg = f"Expected {':'} in {command.name}"
+                raise AssertionError(msg)
 
     @pytest.mark.parametrize(
         "command_prefix",
@@ -192,7 +208,10 @@ class TestOracleOICExtension:
         # Verify auth config is accessible through settings
         assert settings.connection is not None
         if settings.connection.oauth_client_id != "test_client_id":
-            raise AssertionError(f"Expected {"test_client_id"}, got {settings.connection.oauth_client_id}")
+            msg = f"Expected {'test_client_id'}, got {settings.connection.oauth_client_id}"
+            raise AssertionError(
+                msg,
+            )
         assert settings.connection.oauth_client_secret == "test_client_secret"
         assert (
             settings.connection.oauth_token_url
