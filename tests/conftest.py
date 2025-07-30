@@ -62,7 +62,7 @@ def integration_definition() -> dict[str, Any]:
         "id": "TEST_INTEGRATION_001",
         "name": "Test Integration",
         "description": "Test integration for OIC extension",
-        "version": "1.0.0",
+        "version": "0.9.0",
         "pattern": "orchestration",
         "style": "scheduled",
         "connections": [
@@ -110,7 +110,7 @@ def package_definition() -> dict[str, Any]:
         "id": "TEST_PACKAGE_001",
         "name": "Test Package",
         "description": "Test package for OIC deployment",
-        "version": "1.0.0",
+        "version": "0.9.0",
         "integrations": ["TEST_INTEGRATION_001"],
         "connections": ["TEST_CONNECTION_001"],
         "libraries": [],
@@ -266,7 +266,7 @@ def integration_instance_data() -> dict[str, Any]:
     return {
         "instance_id": "INST_001",
         "integration_id": "TEST_INTEGRATION_001",
-        "version": "1.0.0",
+        "version": "0.9.0",
         "status": "active",
         "created_at": "2023-01-01T10:00:00Z",
         "last_run": "2023-01-01T11:30:00Z",
@@ -398,7 +398,7 @@ def mock_oic_service() -> object:
                 **integration_def,
                 "created_at": "2023-01-01T12:00:00Z",
                 "status": "draft",
-                "version": integration_def.get("version", "1.0.0"),
+                "version": integration_def.get("version", "0.9.0"),
             }
             self.integrations[integration_id] = integration
             return integration

@@ -1,82 +1,12 @@
-# ============================================================================
-# FLEXT-ORACLE-OIC-EXT - Oracle Integration Cloud Extension .gitignore
-# Python 3.13 | Poetry | Oracle OIC | REST APIs | Integration
-# ============================================================================
-
-# ============================================================================
-# JUNK FILES - NEVER COMMIT THESE
-# ============================================================================
-
-# Archive and backup directories  
-archive/
-archives/
-backup/
-backups/
-.backup/
-*_backup/
-*_backup_*/
-
-# AI-generated files and reports
-*_REPORT*.md
-*_ANALYSIS*.md
-*_SUMMARY*.md  
-*_FINDINGS*.md
-CLAUDE*.md
-CONFIG_MIGRATION*.md
-DEVELOPMENT_STANDARDS*.md
-DUPLICATION_REPORT*.md
-LINT_CORRECTIONS*.md
-*.ai.md
-*.ai.txt
-
-# Backup files with timestamps
-*_20250*.bak
-*_202507*.bak
-*_202506*.bak
-*.md_20250*
-README_20250*.bak
-
-# Generic backup patterns
-*.bak
-*.backup
-*.orig
-*.syntax_backup  
-*.broken
-*.tmp.bak
-*_temp.py
-*_temp.md
-
-# Fix scripts and validation files
-fix_*.py
-*_fix.py
-*_validation.py
-validate_*.py
-investigate_*.py
-temp_*.py
-debug_*.py
-
-# Tool reports and analysis
-*_analysis.txt
-*_report.txt
-*_output.txt
-analysis_temp/
-report_*/
-reports/
-reports_*/
-temp_test_*/
-
-# ============================================================================
-# PYTHON ARTIFACTS
-# ============================================================================
-
-# Python artifacts
+# Python
 __pycache__/
 *.py[cod]
 *.pyc
 *.pyo
 *.pyd
+*.so
 
-# Distribution / packaging
+# Build
 build/
 dist/
 *.egg-info/
@@ -84,7 +14,7 @@ dist/
 *.egg
 MANIFEST
 
-# Testing and coverage
+# Testing
 htmlcov/
 .tox/
 .nox/
@@ -95,7 +25,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Development tools
+# Tools
 .mypy_cache/
 .ruff_cache/
 .pyre/
@@ -108,164 +38,92 @@ env/
 venv/
 ENV/
 
-# IDEs and editors
+# Editors
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# System files
+# System
 .DS_Store
 Thumbs.db
 Desktop.ini
 
-# ============================================================================
-# ORACLE INTEGRATION CLOUD (OIC)
-# ============================================================================
-
-# OIC integration packages
+# Oracle OIC specific
 *.iar
 *.ics
 *.par
 *.jar
-
-# OIC deployment artifacts
 oic-deployments/
 integration-packages/
-connection-packages/
-
-# OIC configuration backups
 *.oic.backup
 oic_config/
-connections.json.bak
-integrations.json.bak
-
-# OIC adapters and connectors
 adapters/
 connectors/
-adapter-configs/
-
-# OIC runtime artifacts
 oic_runtime/
 oic_logs/
-oic_temp/
 
-# ============================================================================
-# INTEGRATION AND API ARTIFACTS
-# ============================================================================
-
-# WSDL and XSD files (generated)
+# Integration artifacts
 *.wsdl.generated
 *.xsd.generated
-wsdl_cache/
-xsd_cache/
-
-# OpenAPI/Swagger definitions (generated)
 *.swagger.json
 *.openapi.yaml
-api_specs_generated/
-
-# REST/SOAP message samples
 message_samples/
-request_samples/
-response_samples/
-
-# Integration test data
 test_data/
 mock_data/
-integration_test_results/
 
-# ============================================================================
-# TRANSFORMATION AND MAPPING
-# ============================================================================
-
-# XSLT transformations (generated)
+# Transformation files
 *.xslt.generated
-xslt_temp/
-transformation_cache/
-
-# JSON/XML mapping files (generated)
 *.map.generated
 mappings_backup/
 transformation_logs/
 
-# Data mapping artifacts
-data_mappings/
-field_mappings/
-schema_mappings/
-
-# ============================================================================
-# MONITORING AND LOGGING
-# ============================================================================
-
-# Integration logs
-integration.log
-oic.log
-adapter.log
-*.integration.log
-
-# Error logs
-error_logs/
-failed_messages/
-retry_logs/
-
-# Performance monitoring
-performance_logs/
-metrics/
-monitoring_data/
-
-# ============================================================================
-# SECURITY AND CREDENTIALS
-# ============================================================================
-
-# OIC credentials
+# Security
 oic_credentials.json
 *.oic.key
 *.oic.pem
 *.oic.crt
-
-# Connection credentials
 connection_credentials/
-*.connection.key
-*.wallet
-
-# OAuth tokens
 oauth_tokens/
 *.oauth
 access_tokens.json
-
-# Certificates
 certificates/
 *.p12
 *.jks
 *.keystore
 
-# ============================================================================
-# TEMPORARY AND CACHE FILES
-# ============================================================================
+# Documentation
+docs/_build/
+site/
 
 # Logs
 *.log
-logs/
+integration.log
+oic.log
+adapter.log
+error_logs/
+performance_logs/
+monitoring_data/
 
 # Temporary files
 *.tmp
 temp/
-tmp/
-
-# Cache files
 cache/
-.cache/
-
-# Data files
 data/
 output/
 
-# Force include critical files
-!pyproject.toml
-!Makefile
-!README.md
-!example.wsdl
-!example.xsd
-!docker-compose.yml
+# Archive/backup
+archive/
+backup/
+*.bak
+*.backup
+*.orig
+*_temp.*
+temp_*
+fix_*
+
+# Reports
+*_REPORT*.md
+*_ANALYSIS*.md
+*_SUMMARY*.md

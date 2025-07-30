@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "flext-oracle-oic-ext"
-version = "0.8.0"
+version = "0.9.0"
 description = "FLEXT Oracle OIC Extension - Advanced Oracle Integration Cloud Extensions"
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
