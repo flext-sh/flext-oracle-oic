@@ -12,7 +12,7 @@ from __future__ import annotations
 import os
 from typing import TYPE_CHECKING, Any, cast
 
-from flext_core import FlextLoggingConfig, FlextResult, get_logger
+from flext_core import FlextLogging, FlextResult, get_logger
 from flext_observability.logging import FlextLogLevel, setup_logging
 
 from flext_oracle_oic_ext.config import (
@@ -64,7 +64,7 @@ def setup_oic_extension(
             if isinstance(settings.log_level, str)
             else settings.log_level
         )
-        logging_config = FlextLoggingConfig(log_level=log_level, json_logs=True)
+        logging_config = FlextLogging(log_level=log_level, json_logs=True)
         setup_logging(logging_config)
 
         return FlextResult.ok(settings)
@@ -158,19 +158,19 @@ def create_development_oic_config(
 
     return OracleOICExtensionSettings(
         connection=OICExtensionConnectionConfig(
-            **cast("dict[str, Any]", config["connection"]),
+            **cast("dict[str, object]", config["connection"]),
         ),
         lifecycle=OICExtensionLifecycleConfig(
-            **cast("dict[str, Any]", config["lifecycle"]),
+            **cast("dict[str, object]", config["lifecycle"]),
         ),
         monitoring=OICExtensionMonitoringConfig(
-            **cast("dict[str, Any]", config["monitoring"]),
+            **cast("dict[str, object]", config["monitoring"]),
         ),
         performance=OICExtensionPerformanceConfig(
-            **cast("dict[str, Any]", config["performance"]),
+            **cast("dict[str, object]", config["performance"]),
         ),
         extraction=OICExtensionExtractionConfig(
-            **cast("dict[str, Any]", config["extraction"]),
+            **cast("dict[str, object]", config["extraction"]),
         ),
         environment=cast("EnvironmentLiteral", config["environment"]),
         log_level=cast("LogLevelLiteral", config["log_level"]),
@@ -241,19 +241,19 @@ def create_production_oic_config(
 
     return OracleOICExtensionSettings(
         connection=OICExtensionConnectionConfig(
-            **cast("dict[str, Any]", config["connection"]),
+            **cast("dict[str, object]", config["connection"]),
         ),
         lifecycle=OICExtensionLifecycleConfig(
-            **cast("dict[str, Any]", config["lifecycle"]),
+            **cast("dict[str, object]", config["lifecycle"]),
         ),
         monitoring=OICExtensionMonitoringConfig(
-            **cast("dict[str, Any]", config["monitoring"]),
+            **cast("dict[str, object]", config["monitoring"]),
         ),
         performance=OICExtensionPerformanceConfig(
-            **cast("dict[str, Any]", config["performance"]),
+            **cast("dict[str, object]", config["performance"]),
         ),
         extraction=OICExtensionExtractionConfig(
-            **cast("dict[str, Any]", config["extraction"]),
+            **cast("dict[str, object]", config["extraction"]),
         ),
         environment=cast("EnvironmentLiteral", config["environment"]),
         log_level=cast("LogLevelLiteral", config["log_level"]),
@@ -318,19 +318,19 @@ def create_test_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
 
     return OracleOICExtensionSettings(
         connection=OICExtensionConnectionConfig(
-            **cast("dict[str, Any]", config["connection"]),
+            **cast("dict[str, object]", config["connection"]),
         ),
         lifecycle=OICExtensionLifecycleConfig(
-            **cast("dict[str, Any]", config["lifecycle"]),
+            **cast("dict[str, object]", config["lifecycle"]),
         ),
         monitoring=OICExtensionMonitoringConfig(
-            **cast("dict[str, Any]", config["monitoring"]),
+            **cast("dict[str, object]", config["monitoring"]),
         ),
         performance=OICExtensionPerformanceConfig(
-            **cast("dict[str, Any]", config["performance"]),
+            **cast("dict[str, object]", config["performance"]),
         ),
         extraction=OICExtensionExtractionConfig(
-            **cast("dict[str, Any]", config["extraction"]),
+            **cast("dict[str, object]", config["extraction"]),
         ),
         environment=cast("EnvironmentLiteral", config["environment"]),
         log_level=cast("LogLevelLiteral", config["log_level"]),
@@ -395,19 +395,19 @@ def create_sandbox_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
 
     return OracleOICExtensionSettings(
         connection=OICExtensionConnectionConfig(
-            **cast("dict[str, Any]", config["connection"]),
+            **cast("dict[str, object]", config["connection"]),
         ),
         lifecycle=OICExtensionLifecycleConfig(
-            **cast("dict[str, Any]", config["lifecycle"]),
+            **cast("dict[str, object]", config["lifecycle"]),
         ),
         monitoring=OICExtensionMonitoringConfig(
-            **cast("dict[str, Any]", config["monitoring"]),
+            **cast("dict[str, object]", config["monitoring"]),
         ),
         performance=OICExtensionPerformanceConfig(
-            **cast("dict[str, Any]", config["performance"]),
+            **cast("dict[str, object]", config["performance"]),
         ),
         extraction=OICExtensionExtractionConfig(
-            **cast("dict[str, Any]", config["extraction"]),
+            **cast("dict[str, object]", config["extraction"]),
         ),
         environment=cast("EnvironmentLiteral", config["environment"]),
         log_level=cast("LogLevelLiteral", config["log_level"]),
@@ -418,7 +418,7 @@ def create_sandbox_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
 
 
 def configure_for_meltano(
-    config_dict: dict[str, Any],
+    config_dict: dict[str, object],
 ) -> FlextResult[Any]:
     """Configure Oracle OIC extension from Meltano configuration dictionary."""
     try:

@@ -274,7 +274,7 @@ class TestConfigGeneration:
                 msg,
             )
 
-    def _create_invalid_config(self, valid_config: dict[str, Any]) -> None:
+    def _create_invalid_config(self, valid_config: dict[str, object]) -> None:
         """Helper function to create invalid configuration for testing."""
         invalid_config = valid_config.copy()
         invalid_config["base_url"] = "invalid-url"

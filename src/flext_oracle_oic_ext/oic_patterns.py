@@ -108,7 +108,7 @@ class BaseOICAuthenticator(ABC):
         # Fallback to simple scope
         return self.auth_config.oauth_scope or "urn:opc:resource:consumer:all"
 
-    def get_oauth_request_body(self) -> dict[str, Any]:
+    def get_oauth_request_body(self) -> dict[str, object]:
         """Generate OAuth2 request body for client credentials flow.
 
         Returns:
@@ -276,9 +276,9 @@ class BaseOICClient(ABC):
         self,
         method: str,
         endpoint: str,
-        params: dict[str, Any] | None = None,
-        data: dict[str, Any] | None = None,
-        json: dict[str, Any] | None = None,
+        params: dict[str, object] | None = None,
+        data: dict[str, object] | None = None,
+        json: dict[str, object] | None = None,
     ) -> FlextResult[Any]:
         """Make authenticated request to OIC API.
 
@@ -350,7 +350,7 @@ class BaseOICClient(ABC):
         self,
         endpoint: str,
         page_size: int = 100,
-        params: dict[str, Any] | None = None,
+        params: dict[str, object] | None = None,
     ) -> FlextResult[Any]:
         """Paginate through OIC API responses.
 
@@ -500,7 +500,7 @@ class OICTargetClient(BaseOICClient):
 
     def create_integration(
         self,
-        integration_data: dict[str, Any],
+        integration_data: dict[str, object],
     ) -> FlextResult[Any]:
         """Create integration in OIC.
 
@@ -516,7 +516,7 @@ class OICTargetClient(BaseOICClient):
     def update_integration(
         self,
         integration_id: str,
-        integration_data: dict[str, Any],
+        integration_data: dict[str, object],
     ) -> FlextResult[Any]:
         """Update integration in OIC.
 
@@ -533,7 +533,7 @@ class OICTargetClient(BaseOICClient):
 
     def create_connection(
         self,
-        connection_data: dict[str, Any],
+        connection_data: dict[str, object],
     ) -> FlextResult[Any]:
         """Create connection in OIC.
 

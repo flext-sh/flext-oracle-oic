@@ -33,7 +33,7 @@ def set_test_environment() -> Generator[None]:
 
 # Oracle OIC connection fixtures
 @pytest.fixture
-def oic_connection_config() -> dict[str, Any]:
+def oic_connection_config() -> dict[str, object]:
     """Oracle OIC connection configuration for testing."""
     return {
         "host": "test-oic.oraclecloud.com",
@@ -47,7 +47,7 @@ def oic_connection_config() -> dict[str, Any]:
 
 
 @pytest.fixture
-def oic_client(oic_connection_config: dict[str, Any]) -> object:
+def oic_client(oic_connection_config: dict[str, object]) -> object:
     """Oracle OIC extension for testing."""
     extension = OracleOICExtension()
     extension.config = oic_connection_config
@@ -56,7 +56,7 @@ def oic_client(oic_connection_config: dict[str, Any]) -> object:
 
 # OIC integration fixtures
 @pytest.fixture
-def integration_definition() -> dict[str, Any]:
+def integration_definition() -> dict[str, object]:
     """Integration definition for testing."""
     return {
         "id": "TEST_INTEGRATION_001",
@@ -83,7 +83,7 @@ def integration_definition() -> dict[str, Any]:
 
 
 @pytest.fixture
-def connection_definition() -> dict[str, Any]:
+def connection_definition() -> dict[str, object]:
     """Connection definition for testing."""
     return {
         "id": "TEST_CONNECTION_001",
@@ -104,7 +104,7 @@ def connection_definition() -> dict[str, Any]:
 
 # OIC artifact fixtures
 @pytest.fixture
-def package_definition() -> dict[str, Any]:
+def package_definition() -> dict[str, object]:
     """Package definition for testing."""
     return {
         "id": "TEST_PACKAGE_001",
@@ -119,7 +119,7 @@ def package_definition() -> dict[str, Any]:
 
 
 @pytest.fixture
-def runtime_config() -> dict[str, Any]:
+def runtime_config() -> dict[str, object]:
     """Runtime configuration for testing."""
     return {
         "environment": "test",
@@ -140,7 +140,7 @@ def runtime_config() -> dict[str, Any]:
 
 # REST API fixtures
 @pytest.fixture
-def rest_endpoint_config() -> dict[str, Any]:
+def rest_endpoint_config() -> dict[str, object]:
     """REST endpoint configuration for testing."""
     return {
         "base_url": "https://test-oic.oraclecloud.com",
@@ -164,7 +164,7 @@ def rest_endpoint_config() -> dict[str, Any]:
 
 
 @pytest.fixture
-def sample_payload_data() -> dict[str, Any]:
+def sample_payload_data() -> dict[str, object]:
     """Sample payload data for testing."""
     return {
         "request": {
@@ -201,7 +201,7 @@ def sample_payload_data() -> dict[str, Any]:
 
 # Deployment fixtures
 @pytest.fixture
-def deployment_config() -> dict[str, Any]:
+def deployment_config() -> dict[str, object]:
     """Deployment configuration for testing."""
     return {
         "target_environment": "test",
@@ -230,7 +230,7 @@ def deployment_config() -> dict[str, Any]:
 
 # Monitoring fixtures
 @pytest.fixture
-def monitoring_config() -> dict[str, Any]:
+def monitoring_config() -> dict[str, object]:
     """Monitoring configuration for testing."""
     return {
         "metrics": {
@@ -261,7 +261,7 @@ def monitoring_config() -> dict[str, Any]:
 
 
 @pytest.fixture
-def integration_instance_data() -> dict[str, Any]:
+def integration_instance_data() -> dict[str, object]:
     """Integration instance data for testing."""
     return {
         "instance_id": "INST_001",
@@ -279,7 +279,7 @@ def integration_instance_data() -> dict[str, Any]:
 
 # Error handling fixtures
 @pytest.fixture
-def error_scenarios() -> list[dict[str, Any]]:
+def error_scenarios() -> list[dict[str, object]]:
     """Error scenarios for testing."""
     return [
         {
@@ -315,7 +315,7 @@ def error_scenarios() -> list[dict[str, Any]]:
 
 # Security fixtures
 @pytest.fixture
-def security_config() -> dict[str, Any]:
+def security_config() -> dict[str, object]:
     """Security configuration for testing."""
     return {
         "authentication": {
@@ -340,7 +340,7 @@ def security_config() -> dict[str, Any]:
 
 # Performance test fixtures
 @pytest.fixture
-def performance_test_config() -> dict[str, Any]:
+def performance_test_config() -> dict[str, object]:
     """Performance test configuration."""
     return {
         "load_test": {
@@ -384,15 +384,15 @@ def mock_oic_service() -> object:
 
     class MockOICService:
         def __init__(self) -> None:
-            self.integrations: dict[str, dict[str, Any]] = {}
-            self.connections: dict[str, dict[str, Any]] = {}
-            self.packages: dict[str, dict[str, Any]] = {}
-            self.instances: dict[str, dict[str, Any]] = {}
+            self.integrations: dict[str, dict[str, object]] = {}
+            self.connections: dict[str, dict[str, object]] = {}
+            self.packages: dict[str, dict[str, object]] = {}
+            self.instances: dict[str, dict[str, object]] = {}
 
         async def create_integration(
             self,
-            integration_def: dict[str, Any],
-        ) -> dict[str, Any]:
+            integration_def: dict[str, object],
+        ) -> dict[str, object]:
             integration_id = integration_def["id"]
             integration = {
                 **integration_def,
@@ -403,7 +403,7 @@ def mock_oic_service() -> object:
             self.integrations[integration_id] = integration
             return integration
 
-        async def deploy_integration(self, integration_id: str) -> dict[str, Any]:
+        async def deploy_integration(self, integration_id: str) -> dict[str, object]:
             if integration_id not in self.integrations:
                 msg = f"Integration {integration_id} not found"
                 raise ValueError(msg)
@@ -422,8 +422,8 @@ def mock_oic_service() -> object:
 
         async def create_connection(
             self,
-            connection_def: dict[str, Any],
-        ) -> dict[str, Any]:
+            connection_def: dict[str, object],
+        ) -> dict[str, object]:
             connection_id = connection_def["id"]
             connection = {
                 **connection_def,
@@ -433,7 +433,7 @@ def mock_oic_service() -> object:
             self.connections[connection_id] = connection
             return connection
 
-        async def test_connection(self, connection_id: str) -> dict[str, Any]:
+        async def test_connection(self, connection_id: str) -> dict[str, object]:
             if connection_id not in self.connections:
                 msg = f"Connection {connection_id} not found"
                 raise ValueError(msg)
@@ -450,7 +450,7 @@ def mock_oic_service() -> object:
             integration_id: str,
             start_time: str,
             end_time: str,
-        ) -> dict[str, Any]:
+        ) -> dict[str, object]:
             return {
                 "integration_id": integration_id,
                 "period": {"start": start_time, "end": end_time},
@@ -483,7 +483,7 @@ def mock_oic_client() -> object:
     """Mock OIC client for testing."""
 
     class MockOICClient:
-        def __init__(self, config: dict[str, Any]) -> None:
+        def __init__(self, config: dict[str, object]) -> None:
             self.config = config
             self.connected = False
             self.session_token: str | None = None
@@ -501,8 +501,8 @@ def mock_oic_client() -> object:
         async def get(
             self,
             endpoint: str,
-            params: dict[str, Any] | None = None,
-        ) -> dict[str, Any]:
+            params: dict[str, object] | None = None,
+        ) -> dict[str, object]:
             return {
                 "status": "success",
                 "endpoint": endpoint,
@@ -513,9 +513,9 @@ def mock_oic_client() -> object:
         async def post(
             self,
             endpoint: str,
-            data: dict[str, Any],
-            headers: dict[str, Any] | None = None,
-        ) -> dict[str, Any]:
+            data: dict[str, object],
+            headers: dict[str, object] | None = None,
+        ) -> dict[str, object]:
             return {
                 "status": "success",
                 "endpoint": endpoint,
@@ -527,9 +527,9 @@ def mock_oic_client() -> object:
         async def put(
             self,
             endpoint: str,
-            data: dict[str, Any],
-            headers: dict[str, Any] | None = None,
-        ) -> dict[str, Any]:
+            data: dict[str, object],
+            headers: dict[str, object] | None = None,
+        ) -> dict[str, object]:
             return {
                 "status": "success",
                 "endpoint": endpoint,
@@ -538,7 +538,7 @@ def mock_oic_client() -> object:
                 "response_time": 0.8,
             }
 
-        async def delete(self, endpoint: str) -> dict[str, Any]:
+        async def delete(self, endpoint: str) -> dict[str, object]:
             return {
                 "status": "success",
                 "endpoint": endpoint,

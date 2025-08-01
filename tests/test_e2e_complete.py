@@ -43,10 +43,10 @@ class TestOracleOICExtE2E:
         return str(config_file)
 
     @pytest.fixture
-    def config(self, config_path: str) -> dict[str, Any]:
+    def config(self, config_path: str) -> dict[str, object]:
         """Load configuration from file."""
         with open(config_path, encoding="utf-8") as f:
-            loaded_config: dict[str, Any] = json.load(f)
+            loaded_config: dict[str, object] = json.load(f)
             return loaded_config
 
     @pytest.fixture
@@ -146,7 +146,7 @@ class TestOracleOICExtE2E:
                 "integration123",
             )
 
-    def test_lifecycle_manager_operations(self, config: dict[str, Any]) -> None:
+    def test_lifecycle_manager_operations(self, config: dict[str, object]) -> None:
         """Test lifecycle manager functionality."""
         settings = OracleOICExtensionSettings.from_dict(config)
         manager = LifecycleManager(settings)
@@ -182,7 +182,7 @@ class TestOracleOICExtE2E:
                     raise AssertionError(msg)
                 assert status.integration_id == "TEST_INTEGRATION"
 
-    def test_monitoring_service_operations(self, config: dict[str, Any]) -> None:
+    def test_monitoring_service_operations(self, config: dict[str, object]) -> None:
         """Test monitoring service functionality."""
         # Create a mock HTTP client for MonitoringService
 
@@ -282,7 +282,7 @@ class TestOracleOICExtE2E:
     def test_live_integration_status(
         self,
         extension: OracleOICExtension,
-        config: dict[str, Any],
+        config: dict[str, object],
     ) -> None:
         """Test live integration status check."""
         os.environ["MELTANO_PROJECT_ROOT"] = str(Path.cwd())
@@ -335,7 +335,7 @@ class TestOracleOICExtE2E:
                     msg,
                 )
 
-    def test_monitoring_alerts(self, config: dict[str, Any]) -> None:
+    def test_monitoring_alerts(self, config: dict[str, object]) -> None:
         """Test monitoring alert functionality."""
         mock_client = Mock()
         service = MonitoringService(client=mock_client)
@@ -357,7 +357,7 @@ class TestOracleOICExtE2E:
             raise AssertionError(msg)
         assert "recommendations" in analysis
 
-    def test_performance_metrics(self, config: dict[str, Any]) -> None:
+    def test_performance_metrics(self, config: dict[str, object]) -> None:
         """Test performance metrics collection."""
         mock_client = Mock()
         service = MonitoringService(client=mock_client)
@@ -387,7 +387,7 @@ class TestOracleOICExtE2E:
     def test_log_extraction(
         self,
         extension: OracleOICExtension,
-        config: dict[str, Any],
+        config: dict[str, object],
         tmp_path: Path,
     ) -> None:
         """Test log extraction functionality."""
@@ -409,7 +409,7 @@ class TestOracleOICExtE2E:
     def test_full_workflow(
         self,
         extension: OracleOICExtension,
-        config: dict[str, Any],
+        config: dict[str, object],
         tmp_path: Path,
     ) -> None:
         """Test complete integration workflow."""
