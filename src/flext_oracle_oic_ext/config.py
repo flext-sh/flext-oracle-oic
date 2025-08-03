@@ -10,6 +10,7 @@ from flext_core import FlextBaseSettings
 EnvironmentLiteral = Literal["development", "staging", "production"]
 LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 
+
 class OICExtensionConnectionConfig(FlextBaseSettings):
     """OIC extension connection configuration."""
 
@@ -17,12 +18,14 @@ class OICExtensionConnectionConfig(FlextBaseSettings):
     port: int = 8080
     use_ssl: bool = False
 
+
 class OracleOICExtensionSettings(FlextBaseSettings):
     """Oracle OIC extension settings."""
 
     environment: EnvironmentLiteral = "development"
     log_level: LogLevelLiteral = "INFO"
     connection: OICExtensionConnectionConfig = OICExtensionConnectionConfig()
+
 
 # Re-export for backward compatibility
 __all__ = [

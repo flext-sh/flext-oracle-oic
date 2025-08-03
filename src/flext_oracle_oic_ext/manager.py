@@ -14,11 +14,13 @@ class IntegrationIdentifier:
     def __init__(self, integration_id: str) -> None:
         self.integration_id = integration_id
 
+
 class IntegrationStatus:
     """Integration status placeholder."""
 
     ACTIVE = "active"
     INACTIVE = "inactive"
+
 
 class LifecycleOperationResult:
     """Lifecycle operation result placeholder."""
@@ -26,6 +28,7 @@ class LifecycleOperationResult:
     def __init__(self, success: bool, message: str) -> None:
         self.success = success
         self.message = message
+
 
 class LifecycleManager:
     """Lifecycle manager placeholder."""
@@ -36,6 +39,7 @@ class LifecycleManager:
     def get_status(self, integration_id: IntegrationIdentifier) -> FlextResult[Any]:
         """Get integration status."""
         return FlextResult.ok(IntegrationStatus.INACTIVE)
+
 
 __all__ = [
     "IntegrationIdentifier",

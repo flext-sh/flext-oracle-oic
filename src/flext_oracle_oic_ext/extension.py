@@ -14,4 +14,5 @@ class OracleOICExtension:
         """Get extension information."""
         return f"{self.name} - Implementation pending"
 
+
 __all__ = ["OracleOICExtension"]

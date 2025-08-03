@@ -6,8 +6,6 @@ Zero tolerance for code duplication.
 
 from __future__ import annotations
 
-from typing import Any
-
 from flext_core import FlextResult
 
 
@@ -19,12 +17,14 @@ class HealthCheckResult:
         self.healthy = healthy
         self.message = message
 
+
 class PerformanceMetrics:
     """Performance metrics placeholder."""
 
     def __init__(self) -> None:
         self.response_time = 0.0
         self.throughput = 0.0
+
 
 class MonitoringService:
     """Monitoring service placeholder."""
@@ -41,6 +41,7 @@ class MonitoringService:
         """Get performance metrics."""
         metrics = PerformanceMetrics()
         return FlextResult.ok(metrics)
+
 
 __all__ = [
     "HealthCheckResult",

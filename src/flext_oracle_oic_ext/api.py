@@ -15,7 +15,6 @@ from typing import Any
 from flext_core import FlextResult, get_logger
 
 from flext_oracle_oic_ext.config import (
-    LogLevelLiteral,
     OICExtensionConnectionConfig,
     OracleOICExtensionSettings,
 )
@@ -40,7 +39,9 @@ def setup_oic_extension(
                 connection=connection,
             )
 
-        logger.info("OIC extension setup completed", extra={"settings": type(settings).__name__})
+        logger.info(
+            "OIC extension setup completed", extra={"settings": type(settings).__name__}
+        )
         return FlextResult.ok(settings)
 
     except (RuntimeError, ValueError, TypeError) as e:
@@ -56,7 +57,11 @@ def create_development_oic_config(
     """Create development configuration with conservative settings."""
     final_host = host or os.getenv("OIC_DEV_HOST") or "localhost"
     final_port = port or int(os.getenv("OIC_DEV_PORT", "8080"))
-    final_use_ssl = use_ssl if use_ssl is not None else os.getenv("OIC_DEV_USE_SSL", "false").lower() == "true"
+    final_use_ssl = (
+        use_ssl
+        if use_ssl is not None
+        else os.getenv("OIC_DEV_USE_SSL", "false").lower() == "true"
+    )
 
     connection = OICExtensionConnectionConfig(
         host=final_host,
@@ -131,7 +136,11 @@ def configure_for_meltano(
         port_value = config_dict.get("port", 8080)
         port = int(port_value) if isinstance(port_value, (int, str)) else 8080
         use_ssl_value = config_dict.get("use_ssl", False)
-        use_ssl = bool(use_ssl_value) if isinstance(use_ssl_value, (bool, str, int)) else False
+        use_ssl = (
+            bool(use_ssl_value)
+            if isinstance(use_ssl_value, (bool, str, int))
+            else False
+        )
         environment = str(config_dict.get("environment", "development"))
         log_level = str(config_dict.get("log_level", "INFO"))
 
