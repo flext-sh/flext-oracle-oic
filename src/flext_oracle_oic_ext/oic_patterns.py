@@ -235,7 +235,7 @@ class BaseOICClient(ABC):
             if not self._session:
                 # Get OAuth2 token
                 token_result = self.authenticator.get_access_token()
-                if not token_result.success:
+                if not token_result.is_success:
                     return FlextResult.fail(
                         f"Authentication failed: {token_result.error}",
                     )
@@ -295,7 +295,7 @@ class BaseOICClient(ABC):
         """
         try:
             session_result = self.get_authenticated_session()
-            if not session_result.success:
+            if not session_result.is_success:
                 return FlextResult.fail(
                     session_result.error or "Authentication failed",
                 )
@@ -384,7 +384,7 @@ class BaseOICClient(ABC):
                     endpoint,
                     params=request_params,
                 )
-                if not response_result.success:
+                if not response_result.is_success:
                     return FlextResult.fail(response_result.error or "Request failed")
 
                 response_data = response_result.data
@@ -433,7 +433,7 @@ class OICTapClient(BaseOICClient):
             FlextResult containing integrations or error
 
         """
-        params = {}
+        params: dict[str, object] = {}
 
         if status_filter:
             params["q"] = f"status in ({','.join(status_filter)})"
@@ -459,7 +459,7 @@ class OICTapClient(BaseOICClient):
             FlextResult containing connections or error
 
         """
-        params = {}
+        params: dict[str, object] = {}
 
         if type_filter:
             params["q"] = f"adapterType in ({','.join(type_filter)})"

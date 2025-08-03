@@ -1,13 +1,17 @@
-"""Oracle Integration Cloud extension implementation.
-
-CONSOLIDATED: Uses centralized extension from flext-meltano.
-Zero tolerance for code duplication.
-"""
+"""Oracle Integration Cloud extension implementation."""
 
 from __future__ import annotations
 
-# CONSOLIDATED: Import from centralized flext-meltano
-from flext_meltano.extensions.oracle_oic import OracleOICExtension
 
-# Re-export for backward compatibility
+class OracleOICExtension:
+    """Oracle OIC Extension placeholder implementation."""
+
+    def __init__(self) -> None:
+        """Initialize OIC extension."""
+        self.name = "Oracle OIC Extension"
+
+    def get_info(self) -> str:
+        """Get extension information."""
+        return f"{self.name} - Implementation pending"
+
 __all__ = ["OracleOICExtension"]

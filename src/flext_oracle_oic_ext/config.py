@@ -1,18 +1,28 @@
-"""Modern Configuration System using flext-core patterns.
-
-CONSOLIDATED: Uses centralized config from flext-meltano.
-Zero tolerance for code duplication.
-"""
+"""Modern Configuration System using flext-core patterns."""
 
 from __future__ import annotations
 
-# CONSOLIDATED: Import from centralized flext-meltano
-from flext_meltano.extensions.oracle_oic.config import (
-    EnvironmentLiteral,
-    LogLevelLiteral,
-    OICExtensionConnectionConfig,
-    OracleOICExtensionSettings,
-)
+from typing import Literal
+
+from flext_core import FlextBaseSettings
+
+# Type definitions
+EnvironmentLiteral = Literal["development", "staging", "production"]
+LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+
+class OICExtensionConnectionConfig(FlextBaseSettings):
+    """OIC extension connection configuration."""
+
+    host: str = "localhost"
+    port: int = 8080
+    use_ssl: bool = False
+
+class OracleOICExtensionSettings(FlextBaseSettings):
+    """Oracle OIC extension settings."""
+
+    environment: EnvironmentLiteral = "development"
+    log_level: LogLevelLiteral = "INFO"
+    connection: OICExtensionConnectionConfig = OICExtensionConnectionConfig()
 
 # Re-export for backward compatibility
 __all__ = [

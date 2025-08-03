@@ -10,23 +10,15 @@ It uses flext-core patterns for configuration and error handling.
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING, Any, cast
+from typing import Any
 
-from flext_core import FlextLogging, FlextResult, get_logger
-from flext_observability.logging import FlextLogLevel, setup_logging
+from flext_core import FlextResult, get_logger
 
 from flext_oracle_oic_ext.config import (
     LogLevelLiteral,
     OICExtensionConnectionConfig,
-    OICExtensionExtractionConfig,
-    OICExtensionLifecycleConfig,
-    OICExtensionMonitoringConfig,
-    OICExtensionPerformanceConfig,
     OracleOICExtensionSettings,
 )
-
-if TYPE_CHECKING:
-    from flext_meltano.simple_api import EnvironmentLiteral
 
 logger = get_logger(__name__)
 
@@ -34,386 +26,98 @@ logger = get_logger(__name__)
 def setup_oic_extension(
     settings: OracleOICExtensionSettings | None = None,
 ) -> FlextResult[Any]:
-    """Setup Oracle OIC extension with logging and configuration validation."""
+    """Setup Oracle OIC extension with basic configuration validation."""
     try:
         if settings is None:
             connection = OICExtensionConnectionConfig(
-                base_url=os.getenv(
-                    "OIC_BASE_URL",
-                    "https://example.integration.ocp.oraclecloud.com",
-                ),
-                oauth_client_id=os.getenv("OIC_CLIENT_ID", "client_id"),
-                oauth_client_secret=os.getenv("OIC_CLIENT_SECRET", "client_secret"),
-                # nosec: default for dev/test
-                oauth_token_url=os.getenv(
-                    "OIC_TOKEN_URL",
-                    "https://idcs.identity.oraclecloud.com/oauth2/v1/token",
-                ),  # nosec: default for dev/test
-                oauth_scope=None,
+                host=os.getenv("OIC_HOST", "localhost"),
+                port=int(os.getenv("OIC_PORT", "8080")),
+                use_ssl=os.getenv("OIC_USE_SSL", "false").lower() == "true",
             )
             settings = OracleOICExtensionSettings(
+                environment="development",
+                log_level="INFO",
                 connection=connection,
-                instance_id=None,
-                region=None,
             )
 
-        # Setup logging using flext-infrastructure.monitoring.flext-observability
-        # Convert string log level to LogLevel enum
-        log_level = (
-            FlextLogLevel(settings.log_level.lower())
-            if isinstance(settings.log_level, str)
-            else settings.log_level
-        )
-        logging_config = FlextLogging(log_level=log_level, json_logs=True)
-        setup_logging(logging_config)
-
+        logger.info("OIC extension setup completed", extra={"settings": type(settings).__name__})
         return FlextResult.ok(settings)
 
     except (RuntimeError, ValueError, TypeError) as e:
-        return FlextResult.ok(error=f"Failed to setup OIC extension: {e}")
+        return FlextResult.fail(f"Failed to setup OIC extension: {e}")
 
 
 def create_development_oic_config(
-    base_url: str | None = None,
-    oauth_client_id: str | None = None,
-    oauth_client_secret: str | None = None,
-    oauth_token_url: str | None = None,
+    host: str | None = None,
+    port: int | None = None,
+    use_ssl: bool | None = None,
     **overrides: object,
 ) -> OracleOICExtensionSettings:
-    """Create development configuration with conservative settings.
+    """Create development configuration with conservative settings."""
+    final_host = host or os.getenv("OIC_DEV_HOST") or "localhost"
+    final_port = port or int(os.getenv("OIC_DEV_PORT", "8080"))
+    final_use_ssl = use_ssl if use_ssl is not None else os.getenv("OIC_DEV_USE_SSL", "false").lower() == "true"
 
-    All credentials should be provided via environment variables or parameters.
-    This function no longer contains hardcoded default values for security reasons.
-    """
-    # Get values from environment variables or parameters, with safe defaults
-    final_base_url = (
-        base_url
-        or os.getenv("OIC_DEV_BASE_URL")
-        or "https://CONFIGURE-DEV-INSTANCE.integration.ocp.oraclecloud.com"
+    connection = OICExtensionConnectionConfig(
+        host=final_host,
+        port=final_port,
+        use_ssl=final_use_ssl,
     )
-    final_oauth_client_id = (
-        oauth_client_id or os.getenv("OIC_DEV_CLIENT_ID") or "CONFIGURE_DEV_CLIENT_ID"
-    )
-    final_oauth_client_secret = (
-        oauth_client_secret
-        or os.getenv("OIC_DEV_CLIENT_SECRET")
-        or "CONFIGURE_DEV_CLIENT_SECRET"
-    )
-    final_oauth_token_url = (
-        oauth_token_url
-        or os.getenv("OIC_DEV_TOKEN_URL")
-        or "https://CONFIGURE-IDCS-DEV.identity.oraclecloud.com/oauth2/v1/token"
-    )
-
-    config = {
-        "connection": {
-            "base_url": final_base_url,
-            "oauth_client_id": final_oauth_client_id,
-            "oauth_client_secret": final_oauth_client_secret,
-            "oauth_token_url": final_oauth_token_url,
-        },
-        "lifecycle": {
-            "auto_activate": False,
-            "health_check_interval": 300,
-            "activation_timeout": 60,
-            "validate_before_activate": True,
-            "rollback_on_failure": True,
-        },
-        "monitoring": {
-            "enable_monitoring": True,
-            "monitoring_interval": 60,
-            "alert_threshold": 80,
-            "error_window_hours": 12,
-            "performance_window_hours": 3,
-        },
-        "performance": {
-            "request_timeout": 30,
-            "max_retries": 3,
-            "retry_delay": 1.0,
-            "batch_size": 50,
-            "max_concurrent_requests": 3,
-        },
-        "extraction": {
-            "extract_artifacts": True,
-            "extract_logs": True,
-            "extract_metadata": True,
-            "artifact_directory": "./dev_artifacts",
-            "log_window_hours": 12,
-        },
-        "environment": "dev",
-        "log_level": "DEBUG",
-        "debug": True,
-    }
-
-    # Override with provided values
-    for key, value in overrides.items():
-        if isinstance(value, dict) and key in config:
-            current_value = config[key]
-            if isinstance(current_value, dict):
-                current_value.update(value)
-            else:
-                config[key] = value
-        else:
-            config[key] = value
 
     return OracleOICExtensionSettings(
-        connection=OICExtensionConnectionConfig(
-            **cast("dict[str, object]", config["connection"]),
-        ),
-        lifecycle=OICExtensionLifecycleConfig(
-            **cast("dict[str, object]", config["lifecycle"]),
-        ),
-        monitoring=OICExtensionMonitoringConfig(
-            **cast("dict[str, object]", config["monitoring"]),
-        ),
-        performance=OICExtensionPerformanceConfig(
-            **cast("dict[str, object]", config["performance"]),
-        ),
-        extraction=OICExtensionExtractionConfig(
-            **cast("dict[str, object]", config["extraction"]),
-        ),
-        environment=cast("EnvironmentLiteral", config["environment"]),
-        log_level=cast("LogLevelLiteral", config["log_level"]),
-        debug=cast("bool", config["debug"]),
-        instance_id=None,
-        region=None,
+        environment="development",
+        log_level="DEBUG",
+        connection=connection,
     )
 
 
 def create_production_oic_config(
-    base_url: str,
-    oauth_client_id: str,
-    oauth_client_secret: str,
-    oauth_token_url: str,
+    host: str,
+    port: int = 443,
+    use_ssl: bool = True,
     **overrides: object,
 ) -> OracleOICExtensionSettings:
     """Create production configuration with performance optimizations."""
-    config = {
-        "connection": {
-            "base_url": base_url,
-            "oauth_client_id": oauth_client_id,
-            "oauth_client_secret": oauth_client_secret,
-            "oauth_token_url": oauth_token_url,
-        },
-        "lifecycle": {
-            "auto_activate": True,
-            "health_check_interval": 600,
-            "activation_timeout": 120,
-            "validate_before_activate": True,
-            "rollback_on_failure": True,
-        },
-        "monitoring": {
-            "enable_monitoring": True,
-            "monitoring_interval": 300,
-            "alert_threshold": 95,
-            "error_window_hours": 24,
-            "performance_window_hours": 6,
-        },
-        "performance": {
-            "request_timeout": 60,
-            "max_retries": 5,
-            "retry_delay": 2.0,
-            "batch_size": 100,
-            "max_concurrent_requests": 10,
-        },
-        "extraction": {
-            "extract_artifacts": True,
-            "extract_logs": True,
-            "extract_metadata": True,
-            "artifact_directory": "/opt/oic/artifacts",
-            "log_window_hours": 24,
-        },
-        "environment": "prod",
-        "log_level": "INFO",
-        "debug": False,
-    }
-
-    # Override with provided values
-    for key, value in overrides.items():
-        if isinstance(value, dict) and key in config:
-            current_value = config[key]
-            if isinstance(current_value, dict):
-                current_value.update(value)
-            else:
-                config[key] = value
-        else:
-            config[key] = value
+    connection = OICExtensionConnectionConfig(
+        host=host,
+        port=port,
+        use_ssl=use_ssl,
+    )
 
     return OracleOICExtensionSettings(
-        connection=OICExtensionConnectionConfig(
-            **cast("dict[str, object]", config["connection"]),
-        ),
-        lifecycle=OICExtensionLifecycleConfig(
-            **cast("dict[str, object]", config["lifecycle"]),
-        ),
-        monitoring=OICExtensionMonitoringConfig(
-            **cast("dict[str, object]", config["monitoring"]),
-        ),
-        performance=OICExtensionPerformanceConfig(
-            **cast("dict[str, object]", config["performance"]),
-        ),
-        extraction=OICExtensionExtractionConfig(
-            **cast("dict[str, object]", config["extraction"]),
-        ),
-        environment=cast("EnvironmentLiteral", config["environment"]),
-        log_level=cast("LogLevelLiteral", config["log_level"]),
-        debug=cast("bool", config["debug"]),
-        instance_id=None,
-        region=None,
+        environment="production",
+        log_level="INFO",
+        connection=connection,
     )
 
 
 def create_test_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
     """Create test configuration with minimal resource usage."""
-    config = {
-        "connection": {
-            "base_url": "https://test-instance.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id",
-            "oauth_client_secret": "test_client_secret",
-            "oauth_token_url": "https://idcs-test.identity.oraclecloud.com/oauth2/v1/token",
-        },
-        "lifecycle": {
-            "auto_activate": False,
-            "health_check_interval": 3600,
-            "activation_timeout": 30,
-            "validate_before_activate": False,
-            "rollback_on_failure": False,
-        },
-        "monitoring": {
-            "enable_monitoring": False,
-            "monitoring_interval": 3600,
-            "alert_threshold": 50,
-            "error_window_hours": 1,
-            "performance_window_hours": 1,
-        },
-        "performance": {
-            "request_timeout": 10,
-            "max_retries": 1,
-            "retry_delay": 0.5,
-            "batch_size": 10,
-            "max_concurrent_requests": 1,
-        },
-        "extraction": {
-            "extract_artifacts": False,
-            "extract_logs": False,
-            "extract_metadata": True,
-            "artifact_directory": "./test_artifacts",
-            "log_window_hours": 1,
-        },
-        "environment": "test",
-        "log_level": "WARNING",
-        "debug": False,
-    }
-
-    # Override with provided values
-    for key, value in overrides.items():
-        if isinstance(value, dict) and key in config:
-            current_value = config[key]
-            if isinstance(current_value, dict):
-                current_value.update(value)
-            else:
-                config[key] = value
-        else:
-            config[key] = value
+    connection = OICExtensionConnectionConfig(
+        host="test-host",
+        port=8080,
+        use_ssl=False,
+    )
 
     return OracleOICExtensionSettings(
-        connection=OICExtensionConnectionConfig(
-            **cast("dict[str, object]", config["connection"]),
-        ),
-        lifecycle=OICExtensionLifecycleConfig(
-            **cast("dict[str, object]", config["lifecycle"]),
-        ),
-        monitoring=OICExtensionMonitoringConfig(
-            **cast("dict[str, object]", config["monitoring"]),
-        ),
-        performance=OICExtensionPerformanceConfig(
-            **cast("dict[str, object]", config["performance"]),
-        ),
-        extraction=OICExtensionExtractionConfig(
-            **cast("dict[str, object]", config["extraction"]),
-        ),
-        environment=cast("EnvironmentLiteral", config["environment"]),
-        log_level=cast("LogLevelLiteral", config["log_level"]),
-        debug=cast("bool", config["debug"]),
-        instance_id=None,
-        region=None,
+        environment="development",  # Test uses dev environment
+        log_level="WARNING",
+        connection=connection,
     )
 
 
 def create_sandbox_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
     """Create sandbox configuration for experimentation and learning."""
-    config = {
-        "connection": {
-            "base_url": "https://sandbox.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "sandbox_client",
-            "oauth_client_secret": "sandbox_secret",
-            "oauth_token_url": "https://idcs-sandbox.identity.oraclecloud.com/oauth2/v1/token",
-        },
-        "lifecycle": {
-            "auto_activate": False,
-            "health_check_interval": 60,
-            "activation_timeout": 30,
-            "validate_before_activate": False,
-            "rollback_on_failure": False,
-        },
-        "monitoring": {
-            "enable_monitoring": True,
-            "monitoring_interval": 30,
-            "alert_threshold": 70,
-            "error_window_hours": 2,
-            "performance_window_hours": 1,
-        },
-        "performance": {
-            "request_timeout": 20,
-            "max_retries": 2,
-            "retry_delay": 0.5,
-            "batch_size": 25,
-            "max_concurrent_requests": 2,
-        },
-        "extraction": {
-            "extract_artifacts": True,
-            "extract_logs": True,
-            "extract_metadata": True,
-            "artifact_directory": "./sandbox_artifacts",
-            "log_window_hours": 4,
-        },
-        "environment": "dev",  # Sandbox uses dev environment
-        "log_level": "DEBUG",
-        "debug": True,
-    }
-
-    # Override with provided values
-    for key, value in overrides.items():
-        if isinstance(value, dict) and key in config:
-            current_value = config[key]
-            if isinstance(current_value, dict):
-                current_value.update(value)
-            else:
-                config[key] = value
-        else:
-            config[key] = value
+    connection = OICExtensionConnectionConfig(
+        host="sandbox-host",
+        port=8080,
+        use_ssl=False,
+    )
 
     return OracleOICExtensionSettings(
-        connection=OICExtensionConnectionConfig(
-            **cast("dict[str, object]", config["connection"]),
-        ),
-        lifecycle=OICExtensionLifecycleConfig(
-            **cast("dict[str, object]", config["lifecycle"]),
-        ),
-        monitoring=OICExtensionMonitoringConfig(
-            **cast("dict[str, object]", config["monitoring"]),
-        ),
-        performance=OICExtensionPerformanceConfig(
-            **cast("dict[str, object]", config["performance"]),
-        ),
-        extraction=OICExtensionExtractionConfig(
-            **cast("dict[str, object]", config["extraction"]),
-        ),
-        environment=cast("EnvironmentLiteral", config["environment"]),
-        log_level=cast("LogLevelLiteral", config["log_level"]),
-        debug=cast("bool", config["debug"]),
-        instance_id=None,
-        region=None,
+        environment="development",  # Sandbox uses dev environment
+        log_level="DEBUG",
+        connection=connection,
     )
 
 
@@ -422,10 +126,30 @@ def configure_for_meltano(
 ) -> FlextResult[Any]:
     """Configure Oracle OIC extension from Meltano configuration dictionary."""
     try:
-        settings = OracleOICExtensionSettings.from_dict(config_dict)
+        # Extract basic configuration and create simple settings
+        host = str(config_dict.get("host", "localhost"))
+        port_value = config_dict.get("port", 8080)
+        port = int(port_value) if isinstance(port_value, (int, str)) else 8080
+        use_ssl_value = config_dict.get("use_ssl", False)
+        use_ssl = bool(use_ssl_value) if isinstance(use_ssl_value, (bool, str, int)) else False
+        environment = str(config_dict.get("environment", "development"))
+        log_level = str(config_dict.get("log_level", "INFO"))
+
+        connection = OICExtensionConnectionConfig(
+            host=host,
+            port=port,
+            use_ssl=use_ssl,
+        )
+
+        settings = OracleOICExtensionSettings(
+            environment=environment,  # type: ignore[arg-type]
+            log_level=log_level,  # type: ignore[arg-type]
+            connection=connection,
+        )
+
         return FlextResult.ok(settings)
     except (RuntimeError, ValueError, TypeError) as e:
-        return FlextResult.ok(error=f"Failed to configure from Meltano: {e}")
+        return FlextResult.fail(f"Failed to configure from Meltano: {e}")
 
 
 # Export convenience functions

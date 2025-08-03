@@ -6,14 +6,42 @@ Zero tolerance for code duplication.
 
 from __future__ import annotations
 
-# CONSOLIDATED: Import from centralized flext-meltano
-from flext_meltano.extensions.oracle_oic.monitoring.monitor import (
-    HealthCheckResult,
-    MonitoringService,
-    PerformanceMetrics,
-)
+from typing import Any
 
-# Re-export for backward compatibility
+from flext_core import FlextResult
+
+
+# Stub implementations since flext-meltano module doesn't exist
+class HealthCheckResult:
+    """Health check result placeholder."""
+
+    def __init__(self, healthy: bool, message: str) -> None:
+        self.healthy = healthy
+        self.message = message
+
+class PerformanceMetrics:
+    """Performance metrics placeholder."""
+
+    def __init__(self) -> None:
+        self.response_time = 0.0
+        self.throughput = 0.0
+
+class MonitoringService:
+    """Monitoring service placeholder."""
+
+    def __init__(self) -> None:
+        pass
+
+    def health_check(self) -> FlextResult[HealthCheckResult]:
+        """Perform health check."""
+        result = HealthCheckResult(True, "Service healthy")
+        return FlextResult.ok(result)
+
+    def get_metrics(self) -> FlextResult[PerformanceMetrics]:
+        """Get performance metrics."""
+        metrics = PerformanceMetrics()
+        return FlextResult.ok(metrics)
+
 __all__ = [
     "HealthCheckResult",
     "MonitoringService",

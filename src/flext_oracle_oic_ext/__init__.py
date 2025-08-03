@@ -69,9 +69,12 @@ def _show_deprecation_warning(old_import: str, new_import: str) -> None:
 
 # Foundation patterns - ALWAYS from flext-core (imported above)
 
-# CONSOLIDATED: Import from centralized flext-meltano
-with contextlib.suppress(ImportError):
-    from flext_meltano.extensions.oracle_oic import OracleOICExtension
+# CONSOLIDATED: Import from centralized flext-meltano (disabled - dependency not available)
+# with contextlib.suppress(ImportError):
+#     from flext_meltano.extensions.oracle_oic import OracleOICExtension
+
+# Use local extension implementation instead
+from flext_oracle_oic_ext.extension import OracleOICExtension
 
 # Note: Other complex classes may not be directly available,
 # keeping simplified interface focused on core extension functionality

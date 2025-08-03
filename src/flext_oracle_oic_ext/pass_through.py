@@ -1,15 +1,12 @@
-"""Pass-through invoker for Oracle OIC extension.
-
-CONSOLIDATED: Uses centralized pass-through from flext-meltano.
-Zero tolerance for code duplication.
-"""
+"""Pass-through invoker for Oracle OIC extension."""
 
 from __future__ import annotations
 
-# CONSOLIDATED: Import from centralized flext-meltano
-from flext_meltano.extensions.oracle_oic.pass_through import pass_through_cli
 
-# Re-export for backward compatibility
+def pass_through_cli() -> None:
+    """Pass-through CLI placeholder implementation."""
+
+
 __all__ = ["pass_through_cli"]
 
 if __name__ == "__main__":
