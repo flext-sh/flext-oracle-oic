@@ -28,7 +28,7 @@ class OracleOICExtensionSettings(FlextBaseSettings):
 
 
 # Re-export for backward compatibility
-__all__ = [
+__all__: list[str] = [
     "EnvironmentLiteral",
     "LogLevelLiteral",
     "OICExtensionConnectionConfig",

@@ -11,7 +11,7 @@ def main() -> None:
     """Main CLI entry point."""
 
 
-__all__ = ["app", "main"]
+__all__: list[str] = ["app", "main"]
 
 if __name__ == "__main__":
     app()

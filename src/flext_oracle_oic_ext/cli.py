@@ -2,4 +2,4 @@
 
 from flext_oracle_oic_ext.main import app, main
 
-__all__ = ["app", "main"]
+__all__: list[str] = ["app", "main"]

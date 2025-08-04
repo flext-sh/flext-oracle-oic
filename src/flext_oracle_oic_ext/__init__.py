@@ -25,7 +25,7 @@ from flext_core import (
 )
 from pydantic import BaseModel as DomainEntity
 
-__all__ = [
+__all__: list[str] = [
     "BaseConfig",
     "DomainEntity",
     "Field",
@@ -81,7 +81,7 @@ from flext_oracle_oic_ext.extension import OracleOICExtension
 
 # ================================
 
-__all__ = [
+__all__: list[str] = [
     # Core foundation patterns from flext-core
     "BaseConfig",
     "BaseModel",

@@ -168,15 +168,15 @@ class BaseOICAuthenticator(ABC):
             return FlextResult.ok(self._access_token)
 
         except requests.exceptions.RequestException as e:
-            error_msg = f"OIC OAuth2 authentication failed: {e}"
+            error_msg: str = f"OIC OAuth2 authentication failed: {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
         except KeyError as e:
-            error_msg = f"Invalid OAuth2 response format: missing {e}"
+            error_msg: str = f"Invalid OAuth2 response format: missing {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
         except (RuntimeError, ValueError, TypeError) as e:
-            error_msg = f"OIC authentication error: {e}"
+            error_msg: str = f"OIC authentication error: {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
 
@@ -235,7 +235,7 @@ class BaseOICClient(ABC):
             if not self._session:
                 # Get OAuth2 token
                 token_result = self.authenticator.get_access_token()
-                if not token_result.is_success:
+                if not token_result.success:
                     return FlextResult.fail(
                         f"Authentication failed: {token_result.error}",
                     )
@@ -268,7 +268,7 @@ class BaseOICClient(ABC):
             return FlextResult.ok(self._session)
 
         except (RuntimeError, ValueError, TypeError) as e:
-            error_msg = f"Failed to create authenticated session: {e}"
+            error_msg: str = f"Failed to create authenticated session: {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
 
@@ -295,7 +295,7 @@ class BaseOICClient(ABC):
         """
         try:
             session_result = self.get_authenticated_session()
-            if not session_result.is_success:
+            if not session_result.success:
                 return FlextResult.fail(
                     session_result.error or "Authentication failed",
                 )
@@ -328,21 +328,21 @@ class BaseOICClient(ABC):
             return FlextResult.ok({"raw_content": response.text})
 
         except requests.exceptions.HTTPError as e:
-            error_msg = f"OIC API HTTP error: {e}"
+            error_msg: str = f"OIC API HTTP error: {e}"
             if hasattr(e, "response") and e.response is not None:
                 try:
                     error_data = e.response.json()
-                    error_msg = f"OIC API error: {error_data}"
+                    error_msg: str = f"OIC API error: {error_data}"
                 except (ValueError, KeyError):
-                    error_msg = f"OIC API error: {e.response.text}"
+                    error_msg: str = f"OIC API error: {e.response.text}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
         except requests.exceptions.RequestException as e:
-            error_msg = f"OIC API request failed: {e}"
+            error_msg: str = f"OIC API request failed: {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
         except (RuntimeError, ValueError, TypeError) as e:
-            error_msg = f"OIC API client error: {e}"
+            error_msg: str = f"OIC API client error: {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
 
@@ -384,7 +384,7 @@ class BaseOICClient(ABC):
                     endpoint,
                     params=request_params,
                 )
-                if not response_result.is_success:
+                if not response_result.success:
                     return FlextResult.fail(response_result.error or "Request failed")
 
                 response_data = response_result.data
@@ -406,7 +406,7 @@ class BaseOICClient(ABC):
             return FlextResult.ok(all_records)
 
         except (RuntimeError, ValueError, TypeError) as e:
-            error_msg = f"OIC pagination failed: {e}"
+            error_msg: str = f"OIC pagination failed: {e}"
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
 

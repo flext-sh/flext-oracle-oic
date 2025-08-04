@@ -50,17 +50,17 @@ class TestConfigGeneration:
 
         assert settings.connection is not None
         if settings.connection.base_url != config_dict["base_url"]:
-            msg = f"Expected {config_dict['base_url']}, got {settings.connection.base_url}"
+            msg: str = f"Expected {config_dict['base_url']}, got {settings.connection.base_url}"
             raise AssertionError(
                 msg,
             )
         assert settings.connection.oauth_client_id == config_dict["oauth_client_id"]
         if settings.environment != "test":
-            msg = f"Expected {'test'}, got {settings.environment}"
+            msg: str = f"Expected {'test'}, got {settings.environment}"
             raise AssertionError(msg)
         assert settings.log_level == "DEBUG"
         if not (settings.debug):
-            msg = f"Expected True, got {settings.debug}"
+            msg: str = f"Expected True, got {settings.debug}"
             raise AssertionError(msg)
 
     def test_config_to_dict_conversion(self) -> None:
@@ -76,13 +76,15 @@ class TestConfigGeneration:
         result_dict = settings.to_dict()
 
         if result_dict["base_url"] != config_dict["base_url"]:
-            msg = f"Expected {config_dict['base_url']}, got {result_dict['base_url']}"
+            msg: str = (
+                f"Expected {config_dict['base_url']}, got {result_dict['base_url']}"
+            )
             raise AssertionError(
                 msg,
             )
         assert result_dict["oauth_client_id"] == config_dict["oauth_client_id"]
         if "environment" not in result_dict:
-            msg = f"Expected {'environment'} in {result_dict}"
+            msg: str = f"Expected {'environment'} in {result_dict}"
             raise AssertionError(msg)
 
     def test_config_validation(self) -> None:
@@ -117,13 +119,15 @@ class TestConfigGeneration:
         auth_config = settings.get_auth_config()
 
         if auth_config["oauth_client_id"] != "test_client_id":
-            msg = f"Expected {'test_client_id'}, got {auth_config['oauth_client_id']}"
+            msg: str = (
+                f"Expected {'test_client_id'}, got {auth_config['oauth_client_id']}"
+            )
             raise AssertionError(
                 msg,
             )
         assert auth_config["oauth_client_secret"] == "test_client_secret"
         if auth_config["oauth_token_url"] != config_dict["oauth_token_url"]:
-            msg = f"Expected {config_dict['oauth_token_url']}, got {auth_config['oauth_token_url']}"
+            msg: str = f"Expected {config_dict['oauth_token_url']}, got {auth_config['oauth_token_url']}"
             raise AssertionError(
                 msg,
             )
@@ -142,15 +146,15 @@ class TestConfigGeneration:
 
         # Check default values
         if settings.environment != "test":
-            msg = f"Expected {'test'}, got {settings.environment}"
+            msg: str = f"Expected {'test'}, got {settings.environment}"
             raise AssertionError(msg)
         assert settings.log_level == "INFO"
         if settings.debug:
-            msg = f"Expected False, got {settings.debug}"
+            msg: str = f"Expected False, got {settings.debug}"
             raise AssertionError(msg)
         assert settings.lifecycle.auto_activate is False
         if not (settings.monitoring.enable_monitoring):
-            msg = f"Expected True, got {settings.monitoring.enable_monitoring}"
+            msg: str = f"Expected True, got {settings.monitoring.enable_monitoring}"
             raise AssertionError(
                 msg,
             )
@@ -167,13 +171,13 @@ class TestConfigGeneration:
         settings = OracleOICExtensionSettings.from_dict(config_dict)
 
         if settings.performance.request_timeout < 10:
-            msg = f"Expected {settings.performance.request_timeout} >= {10}"
+            msg: str = f"Expected {settings.performance.request_timeout} >= {10}"
             raise AssertionError(
                 msg,
             )
         assert settings.performance.max_retries >= 0
         if settings.performance.batch_size < 1:
-            msg = f"Expected {settings.performance.batch_size} >= {1}"
+            msg: str = f"Expected {settings.performance.batch_size} >= {1}"
             raise AssertionError(msg)
         assert settings.performance.max_concurrent_requests >= 1
 
@@ -190,18 +194,18 @@ class TestConfigGeneration:
         settings = OracleOICExtensionSettings.from_dict(config_dict)
 
         if not (settings.extraction.extract_artifacts):
-            msg = f"Expected True, got {settings.extraction.extract_artifacts}"
+            msg: str = f"Expected True, got {settings.extraction.extract_artifacts}"
             raise AssertionError(
                 msg,
             )
         assert settings.extraction.extract_logs is True
         if not (settings.extraction.extract_metadata):
-            msg = f"Expected True, got {settings.extraction.extract_metadata}"
+            msg: str = f"Expected True, got {settings.extraction.extract_metadata}"
             raise AssertionError(
                 msg,
             )
         if "./test_artifacts" not in settings.extraction.artifact_directory:
-            msg = f"Expected {'./test_artifacts'} in {settings.extraction.artifact_directory}"
+            msg: str = f"Expected {'./test_artifacts'} in {settings.extraction.artifact_directory}"
             raise AssertionError(
                 msg,
             )
@@ -231,7 +235,7 @@ class TestConfigGeneration:
 
         settings = OracleOICExtensionSettings.from_dict(config_dict)
         if settings.environment != environment:
-            msg = f"Expected {environment}, got {settings.environment}"
+            msg: str = f"Expected {environment}, got {settings.environment}"
             raise AssertionError(msg)
 
     def test_artifact_directory_creation(self) -> None:
@@ -268,7 +272,7 @@ class TestConfigGeneration:
         assert settings.connection is not None
         assert settings.connection.oauth_scope is not None
         if "urn:opc:resource:consumer:all" not in settings.connection.oauth_scope:
-            msg = f"Expected {'urn:opc:resource:consumer:all'} in {settings.connection.oauth_scope}"
+            msg: str = f"Expected {'urn:opc:resource:consumer:all'} in {settings.connection.oauth_scope}"
             raise AssertionError(
                 msg,
             )

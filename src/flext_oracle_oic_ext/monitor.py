@@ -43,7 +43,7 @@ class MonitoringService:
         return FlextResult.ok(metrics)
 
 
-__all__ = [
+__all__: list[str] = [
     "HealthCheckResult",
     "MonitoringService",
     "PerformanceMetrics",

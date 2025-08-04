@@ -40,7 +40,8 @@ def setup_oic_extension(
             )
 
         logger.info(
-            "OIC extension setup completed", extra={"settings": type(settings).__name__},
+            "OIC extension setup completed",
+            extra={"settings": type(settings).__name__},
         )
         return FlextResult.ok(settings)
 
@@ -162,7 +163,7 @@ def configure_for_meltano(
 
 
 # Export convenience functions
-__all__ = [
+__all__: list[str] = [
     "configure_for_meltano",
     "create_development_oic_config",
     "create_production_oic_config",

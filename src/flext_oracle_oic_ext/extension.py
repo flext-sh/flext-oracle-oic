@@ -15,4 +15,4 @@ class OracleOICExtension:
         return f"{self.name} - Implementation pending"
 
 
-__all__ = ["OracleOICExtension"]
+__all__: list[str] = ["OracleOICExtension"]

@@ -41,7 +41,7 @@ class LifecycleManager:
         return FlextResult.ok(IntegrationStatus.INACTIVE)
 
 
-__all__ = [
+__all__: list[str] = [
     "IntegrationIdentifier",
     "IntegrationStatus",
     "LifecycleManager",

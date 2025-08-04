@@ -405,7 +405,7 @@ def mock_oic_service() -> object:
 
         async def deploy_integration(self, integration_id: str) -> dict[str, object]:
             if integration_id not in self.integrations:
-                msg = f"Integration {integration_id} not found"
+                msg: str = f"Integration {integration_id} not found"
                 raise ValueError(msg)
 
             self.integrations[integration_id]["status"] = "active"
@@ -435,7 +435,7 @@ def mock_oic_service() -> object:
 
         async def test_connection(self, connection_id: str) -> dict[str, object]:
             if connection_id not in self.connections:
-                msg = f"Connection {connection_id} not found"
+                msg: str = f"Connection {connection_id} not found"
                 raise ValueError(msg)
 
             return {

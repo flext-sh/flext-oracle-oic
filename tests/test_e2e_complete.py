@@ -56,7 +56,7 @@ class TestOracleOICExtE2E:
     def test_extension_initialization(self, extension: OracleOICExtension) -> None:
         """Test extension initialization."""
         if extension.oracle_oic_bin != "oracle-oic-ext":
-            msg = f"Expected {'oracle-oic-ext'}, got {extension.oracle_oic_bin}"
+            msg: str = f"Expected {'oracle-oic-ext'}, got {extension.oracle_oic_bin}"
             raise AssertionError(
                 msg,
             )
@@ -74,41 +74,41 @@ class TestOracleOICExtE2E:
 
         # Lifecycle commands
         if "lifecycle:activate" not in command_names:
-            msg = f"Expected {'lifecycle:activate'} in {command_names}"
+            msg: str = f"Expected {'lifecycle:activate'} in {command_names}"
             raise AssertionError(msg)
         assert "lifecycle:deactivate" in command_names
         if "lifecycle:bulk-activate" not in command_names:
-            msg = f"Expected {'lifecycle:bulk-activate'} in {command_names}"
+            msg: str = f"Expected {'lifecycle:bulk-activate'} in {command_names}"
             raise AssertionError(
                 msg,
             )
         assert "lifecycle:bulk-deactivate" in command_names
         if "lifecycle:status" not in command_names:
-            msg = f"Expected {'lifecycle:status'} in {command_names}"
+            msg: str = f"Expected {'lifecycle:status'} in {command_names}"
             raise AssertionError(msg)
 
         # Monitoring commands
         if "monitor:health" not in command_names:
-            msg = f"Expected {'monitor:health'} in {command_names}"
+            msg: str = f"Expected {'monitor:health'} in {command_names}"
             raise AssertionError(msg)
         assert "monitor:performance" in command_names
         if "monitor:errors" not in command_names:
-            msg = f"Expected {'monitor:errors'} in {command_names}"
+            msg: str = f"Expected {'monitor:errors'} in {command_names}"
             raise AssertionError(msg)
         assert "monitor:usage" in command_names
 
         # Extraction commands
         if "extract:artifacts" not in command_names:
-            msg = f"Expected {'extract:artifacts'} in {command_names}"
+            msg: str = f"Expected {'extract:artifacts'} in {command_names}"
             raise AssertionError(msg)
         assert "extract:logs" in command_names
         if "extract:metadata" not in command_names:
-            msg = f"Expected {'extract:metadata'} in {command_names}"
+            msg: str = f"Expected {'extract:metadata'} in {command_names}"
             raise AssertionError(msg)
 
         # Transformation commands
         if "transform:flatten" not in command_names:
-            msg = f"Expected {'transform:flatten'} in {command_names}"
+            msg: str = f"Expected {'transform:flatten'} in {command_names}"
             raise AssertionError(msg)
         assert "transform:mask" in command_names
 
@@ -153,7 +153,7 @@ class TestOracleOICExtE2E:
         # Test initialization
         assert manager.settings.connection is not None
         if manager.settings.connection.base_url != config["base_url"]:
-            msg = f"Expected {config['base_url']}, got {manager.settings.connection.base_url}"
+            msg: str = f"Expected {config['base_url']}, got {manager.settings.connection.base_url}"
             raise AssertionError(
                 msg,
             )
@@ -177,7 +177,7 @@ class TestOracleOICExtE2E:
                 assert status_result.success
                 status = status_result.unwrap()
                 if status.status != "ACTIVATED":
-                    msg = f"Expected {'ACTIVATED'}, got {status.status}"
+                    msg: str = f"Expected {'ACTIVATED'}, got {status.status}"
                     raise AssertionError(msg)
                 assert status.integration_id == "TEST_INTEGRATION"
 
@@ -197,7 +197,7 @@ class TestOracleOICExtE2E:
 
         health = service.get_health_status()
         if health["status"] != "healthy":
-            msg = f"Expected {'healthy'}, got {health['status']}"
+            msg: str = f"Expected {'healthy'}, got {health['status']}"
             raise AssertionError(msg)
 
     def test_artifact_extraction(
@@ -272,7 +272,7 @@ class TestOracleOICExtE2E:
         extension.config = test_config
 
         if "base_url" not in extension.config:
-            msg = f"Expected {'base_url'} in {extension.config}"
+            msg: str = f"Expected {'base_url'} in {extension.config}"
             raise AssertionError(msg)
         assert "oauth_client_id" in extension.config
         assert extension.config["base_url"].startswith("https://")
@@ -329,7 +329,9 @@ class TestOracleOICExtE2E:
                 extension.invoke("lifecycle:activate", integration)
 
             if mock_activate.call_count != len(integrations):
-                msg = f"Expected {len(integrations)}, got {mock_activate.call_count}"
+                msg: str = (
+                    f"Expected {len(integrations)}, got {mock_activate.call_count}"
+                )
                 raise AssertionError(
                     msg,
                 )
@@ -352,7 +354,7 @@ class TestOracleOICExtE2E:
 
         analysis = service.analyze_errors()
         if "patterns" not in analysis:
-            msg = f"Expected {'patterns'} in {analysis}"
+            msg: str = f"Expected {'patterns'} in {analysis}"
             raise AssertionError(msg)
         assert "recommendations" in analysis
 
@@ -379,7 +381,7 @@ class TestOracleOICExtE2E:
 
         metrics = service.get_performance_metrics()
         if "executions" not in metrics:
-            msg = f"Expected {'executions'} in {metrics}"
+            msg: str = f"Expected {'executions'} in {metrics}"
             raise AssertionError(msg)
         assert "throughput" in metrics
 
@@ -475,7 +477,7 @@ class TestOracleOICExtE2E:
                 check=False,
             )
             if result.returncode != 0:
-                msg = f"Expected {0}, got {result.returncode}"
+                msg: str = f"Expected {0}, got {result.returncode}"
                 raise AssertionError(msg)
             assert config_path.exists()
 
@@ -485,19 +487,19 @@ class TestOracleOICExtE2E:
 
         # Check required fields
         if "base_url" not in config:
-            msg = f"Expected {'base_url'} in {config}"
+            msg: str = f"Expected {'base_url'} in {config}"
             raise AssertionError(msg)
         assert "oauth_client_id" in config
         if "oauth_client_secret" not in config:
-            msg = f"Expected {'oauth_client_secret'} in {config}"
+            msg: str = f"Expected {'oauth_client_secret'} in {config}"
             raise AssertionError(msg)
         assert "oauth_token_url" in config
 
         # Check extension-specific fields
         if "instance_id" not in config:
-            msg = f"Expected {'instance_id'} in {config}"
+            msg: str = f"Expected {'instance_id'} in {config}"
             raise AssertionError(msg)
         assert "region" in config
         if "environment" not in config:
-            msg = f"Expected {'environment'} in {config}"
+            msg: str = f"Expected {'environment'} in {config}"
             raise AssertionError(msg)
