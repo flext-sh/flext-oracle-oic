@@ -40,7 +40,7 @@ def setup_oic_extension(
             )
 
         logger.info(
-            "OIC extension setup completed", extra={"settings": type(settings).__name__}
+            "OIC extension setup completed", extra={"settings": type(settings).__name__},
         )
         return FlextResult.ok(settings)
 
