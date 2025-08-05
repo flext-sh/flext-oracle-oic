@@ -387,11 +387,9 @@ class BaseOICClient(ABC):
                     return FlextResult.fail(response_result.error or "Request failed")
 
                 response_data = response_result.data
-                if response_data is None:
-                    return FlextResult.fail("No response data received")
-
-                if not isinstance(response_data, dict):
-                    return FlextResult.fail("Invalid response format")
+                # response_data is guaranteed to be dict[str, object] when success=True
+                assert response_data is not None  # Type narrowing for MyPy
+                assert isinstance(response_data, dict)  # Type narrowing for MyPy
 
                 items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):
@@ -471,7 +469,9 @@ class OICTapClient(BaseOICClient):
 
         return self.paginate_request("/connections", page_size=page_size, params=params)
 
-    def get_packages(self, page_size: int = 100) -> FlextResult[list[dict[str, object]]]:
+    def get_packages(
+        self, page_size: int = 100,
+    ) -> FlextResult[list[dict[str, object]]]:
         """Get integration packages from OIC.
 
         Args:

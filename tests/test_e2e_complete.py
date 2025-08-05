@@ -15,12 +15,17 @@ import json
 import os
 import subprocess
 from pathlib import Path
+from typing import TYPE_CHECKING
 from unittest.mock import Mock, patch
 
 import pytest
 
 from flext_oracle_oic_ext.config import OracleOICExtensionSettings
 from flext_oracle_oic_ext.manager import LifecycleManager
+from flext_oracle_oic_ext.monitoring import MonitoringService
+
+if TYPE_CHECKING:
+    from flext_oracle_oic_ext.extension import OracleOICExtension
 
 
 class TestOracleOICExtE2E:

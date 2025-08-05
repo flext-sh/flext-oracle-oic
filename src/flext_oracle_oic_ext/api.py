@@ -10,10 +10,13 @@ It uses flext-core patterns for configuration and error handling.
 from __future__ import annotations
 
 import os
+from typing import cast
 
 from flext_core import FlextResult, get_logger
 
 from flext_oracle_oic_ext.config import (
+    EnvironmentLiteral,
+    LogLevelLiteral,
     OICExtensionConnectionConfig,
     OracleOICExtensionSettings,
 )
@@ -141,8 +144,16 @@ def configure_for_meltano(
             if isinstance(use_ssl_value, (bool, str, int))
             else False
         )
-        environment = str(config_dict.get("environment", "development"))
-        log_level = str(config_dict.get("log_level", "INFO"))
+        # Validate and cast to Literal types
+        env_value = str(config_dict.get("environment", "development"))
+        if env_value not in {"development", "staging", "production"}:
+            env_value = "development"  # Default fallback
+        environment = cast("EnvironmentLiteral", env_value)
+
+        level_value = str(config_dict.get("log_level", "INFO"))
+        if level_value not in {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}:
+            level_value = "INFO"  # Default fallback
+        log_level = cast("LogLevelLiteral", level_value)
 
         connection = OICExtensionConnectionConfig(
             host=host,
