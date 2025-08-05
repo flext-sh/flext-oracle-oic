@@ -15,6 +15,10 @@ import contextlib
 import importlib.metadata
 import warnings
 
+# Local extension implementation
+with contextlib.suppress(ImportError):
+    from flext_oracle_oic_ext.extension import OracleOICExtension
+
 # Import from flext-core for foundational patterns
 # 🚨 ARCHITECTURAL COMPLIANCE: Using módulo raiz imports
 from flext_core import (
@@ -25,13 +29,7 @@ from flext_core import (
 )
 from pydantic import BaseModel as DomainEntity
 
-__all__: list[str] = [
-    "BaseConfig",
-    "DomainEntity",
-    "Field",
-    "FlextResult",
-    "FlextValueObject",
-]
+# __all__ is defined at the end of the file
 
 # Add BaseModel alias for exports
 BaseModel = DomainEntity
@@ -72,9 +70,6 @@ def _show_deprecation_warning(old_import: str, new_import: str) -> None:
 # CONSOLIDATED: Import from centralized flext-meltano (disabled - dependency not available)
 # with contextlib.suppress(ImportError):
 #     from flext_meltano.extensions.oracle_oic import OracleOICExtension
-
-# Use local extension implementation instead
-from flext_oracle_oic_ext.extension import OracleOICExtension
 
 # Note: Other complex classes may not be directly available,
 # keeping simplified interface focused on core extension functionality

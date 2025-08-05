@@ -10,7 +10,6 @@ It uses flext-core patterns for configuration and error handling.
 from __future__ import annotations
 
 import os
-from typing import Any
 
 from flext_core import FlextResult, get_logger
 
@@ -24,7 +23,7 @@ logger = get_logger(__name__)
 
 def setup_oic_extension(
     settings: OracleOICExtensionSettings | None = None,
-) -> FlextResult[Any]:
+) -> FlextResult[OracleOICExtensionSettings]:
     """Setup Oracle OIC extension with basic configuration validation."""
     try:
         if settings is None:
@@ -97,7 +96,7 @@ def create_production_oic_config(
     )
 
 
-def create_test_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
+def create_test_oic_config(**overrides: object) -> OracleOICExtensionSettings:
     """Create test configuration with minimal resource usage."""
     connection = OICExtensionConnectionConfig(
         host="test-host",
@@ -112,7 +111,7 @@ def create_test_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
     )
 
 
-def create_sandbox_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
+def create_sandbox_oic_config(**overrides: object) -> OracleOICExtensionSettings:
     """Create sandbox configuration for experimentation and learning."""
     connection = OICExtensionConnectionConfig(
         host="sandbox-host",
@@ -129,7 +128,7 @@ def create_sandbox_oic_config(**overrides: Any) -> OracleOICExtensionSettings:
 
 def configure_for_meltano(
     config_dict: dict[str, object],
-) -> FlextResult[Any]:
+) -> FlextResult[OracleOICExtensionSettings]:
     """Configure Oracle OIC extension from Meltano configuration dictionary."""
     try:
         # Extract basic configuration and create simple settings
@@ -152,8 +151,8 @@ def configure_for_meltano(
         )
 
         settings = OracleOICExtensionSettings(
-            environment=environment,  # type: ignore[arg-type]
-            log_level=log_level,  # type: ignore[arg-type]
+            environment=environment,
+            log_level=log_level,
             connection=connection,
         )
 

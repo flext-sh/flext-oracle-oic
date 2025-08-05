@@ -5,14 +5,15 @@ Tests configuration generation functionality and validation.
 
 from __future__ import annotations
 
+import contextlib
 import tempfile
 from pathlib import Path
 
 import pytest
 
 import flext_oracle_oic_ext
+from flext_oracle_oic_ext.api import setup_oic_extension
 from flext_oracle_oic_ext.config import OracleOICExtensionSettings
-from flext_oracle_oic_ext.simple_api import setup_oic_extension
 
 
 def test_module_imports() -> None:
@@ -22,13 +23,9 @@ def test_module_imports() -> None:
 
 def test_basic_functionality() -> None:
     """Test basic module functionality."""
-    try:
+    with contextlib.suppress(ImportError, AttributeError):
         # Basic smoke test
         assert hasattr(flext_oracle_oic_ext, "__file__")
-    except (ImportError, AttributeError):
-        # If module has issues, verify this is expected in development
-        # This confirms the module structure is still in development
-        pass
 
 
 class TestConfigGeneration:
@@ -46,7 +43,7 @@ class TestConfigGeneration:
             "debug": True,
         }
 
-        settings = OracleOICExtensionSettings.from_dict(config_dict)
+        settings = OracleOICExtensionSettings(**config_dict)
 
         assert settings.connection is not None
         if settings.connection.base_url != config_dict["base_url"]:
@@ -72,7 +69,7 @@ class TestConfigGeneration:
             "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
         }
 
-        settings = OracleOICExtensionSettings.from_dict(config_dict)
+        settings = OracleOICExtensionSettings(**config_dict)
         result_dict = settings.to_dict()
 
         if result_dict["base_url"] != config_dict["base_url"]:
@@ -97,7 +94,7 @@ class TestConfigGeneration:
             "oauth_token_url": "https://valid.identity.oraclecloud.com/oauth2/v1/token",
         }
 
-        settings = OracleOICExtensionSettings.from_dict(valid_config)
+        settings = OracleOICExtensionSettings(**valid_config)
         assert settings.connection is not None
         assert settings.connection.base_url.startswith("https://")
 
@@ -115,7 +112,7 @@ class TestConfigGeneration:
             "oauth_scope": "test_scope",
         }
 
-        settings = OracleOICExtensionSettings.from_dict(config_dict)
+        settings = OracleOICExtensionSettings(**config_dict)
         auth_config = settings.get_auth_config()
 
         if auth_config["oauth_client_id"] != "test_client_id":
@@ -142,7 +139,7 @@ class TestConfigGeneration:
             "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
         }
 
-        settings = OracleOICExtensionSettings.from_dict(minimal_config)
+        settings = OracleOICExtensionSettings(**minimal_config)
 
         # Check default values
         if settings.environment != "test":
@@ -168,7 +165,7 @@ class TestConfigGeneration:
             "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
         }
 
-        settings = OracleOICExtensionSettings.from_dict(config_dict)
+        settings = OracleOICExtensionSettings(**config_dict)
 
         if settings.performance.request_timeout < 10:
             msg: str = f"Expected {settings.performance.request_timeout} >= {10}"
@@ -191,7 +188,7 @@ class TestConfigGeneration:
             "artifact_directory": "./test_artifacts",
         }
 
-        settings = OracleOICExtensionSettings.from_dict(config_dict)
+        settings = OracleOICExtensionSettings(**config_dict)
 
         if not (settings.extraction.extract_artifacts):
             msg: str = f"Expected True, got {settings.extraction.extract_artifacts}"
@@ -233,7 +230,7 @@ class TestConfigGeneration:
             "environment": environment,
         }
 
-        settings = OracleOICExtensionSettings.from_dict(config_dict)
+        settings = OracleOICExtensionSettings(**config_dict)
         if settings.environment != environment:
             msg: str = f"Expected {environment}, got {settings.environment}"
             raise AssertionError(msg)
@@ -251,7 +248,7 @@ class TestConfigGeneration:
                 "artifact_directory": str(artifact_dir),
             }
 
-            OracleOICExtensionSettings.from_dict(config_dict)
+            OracleOICExtensionSettings(config_dict)
 
             # Directory should be created during validation
             assert artifact_dir.exists()
@@ -266,7 +263,7 @@ class TestConfigGeneration:
             # No oauth_scope provided
         }
 
-        settings = OracleOICExtensionSettings.from_dict(config_dict)
+        settings = OracleOICExtensionSettings(**config_dict)
 
         # Should auto-generate scope based on base URL
         assert settings.connection is not None
@@ -281,7 +278,7 @@ class TestConfigGeneration:
         """Helper function to create invalid configuration for testing."""
         invalid_config = valid_config.copy()
         invalid_config["base_url"] = "invalid-url"
-        OracleOICExtensionSettings.from_dict(invalid_config)
+        OracleOICExtensionSettings(**invalid_config)
 
 
 class TestBasicCoverage:
@@ -289,27 +286,15 @@ class TestBasicCoverage:
 
     def test_module_attributes(self) -> None:
         """Test module has expected attributes."""
-        try:
+        with contextlib.suppress(ImportError):
             assert flext_oracle_oic_ext
-        except ImportError:
-            # If module import fails, verify this is expected
-            # This confirms module import issue is expected
-            pass
 
     def test_config_imports(self) -> None:
         """Test configuration module imports correctly."""
-        try:
+        with contextlib.suppress(ImportError):
             assert OracleOICExtensionSettings is not None
-        except ImportError:
-            # If config module import fails, verify this is expected
-            # This confirms config module is still in development
-            pass
 
     def test_simple_api_imports(self) -> None:
         """Test simple API module imports correctly."""
-        try:
+        with contextlib.suppress(ImportError):
             assert setup_oic_extension is not None
-        except ImportError:
-            # If simple API import fails, verify this is expected
-            # This confirms simple API module is still in development
-            pass

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from flext_core import FlextResult
 
 
@@ -36,7 +34,7 @@ class LifecycleManager:
     def __init__(self) -> None:
         pass
 
-    def get_status(self, integration_id: IntegrationIdentifier) -> FlextResult[Any]:
+    def get_status(self, integration_id: IntegrationIdentifier) -> FlextResult[str]:
         """Get integration status."""
         return FlextResult.ok(IntegrationStatus.INACTIVE)
 
