@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import base64
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 
 import requests
 from flext_core import FlextLoggerFactory, FlextResult, get_logger
@@ -17,6 +18,18 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 logger = get_logger(__name__)
+
+
+@dataclass
+class RequestParams:
+    """Parameters for OIC API request."""
+
+    session: requests.Session
+    method: str
+    url: str
+    params: dict[str, str | int | float] | None
+    data: dict[str, object] | None
+    json_data: dict[str, object] | None
 
 
 class OICAuthConfig(BaseModel):
@@ -293,57 +306,98 @@ class BaseOICClient(ABC):
 
         """
         try:
-            session_result = self.get_authenticated_session()
+            # Get authenticated session
+            session_result = self._get_session_for_request()
             if not session_result.success:
-                return FlextResult.fail(
-                    session_result.error or "Authentication failed",
-                )
+                return FlextResult.fail(session_result.error or "Session error")
 
             session = session_result.data
             if session is None:
-                return FlextResult.fail("Failed to get authenticated session")
+                return FlextResult.fail("Failed to get session")
 
             # Build full URL
-            base_url = self.get_base_url()
-            url = (
-                f"{base_url}{endpoint}"
-                if endpoint.startswith("/")
-                else f"{base_url}/{endpoint}"
-            )
+            url = self._build_request_url(endpoint)
 
-            # Make request
-            response = session.request(
+            # Make request and handle response
+            request_params = RequestParams(
+                session=session,
                 method=method,
                 url=url,
                 params=params,
                 data=data,
-                json=json,
+                json_data=json,
             )
-            response.raise_for_status()
-
-            # Parse response
-            if response.headers.get("content-type", "").startswith("application/json"):
-                return FlextResult.ok(response.json())
-            return FlextResult.ok({"raw_content": response.text})
+            return self._execute_request(request_params)
 
         except requests.exceptions.HTTPError as e:
-            http_error_msg = f"OIC API HTTP error: {e}"
-            if hasattr(e, "response") and e.response is not None:
-                try:
-                    error_data = e.response.json()
-                    http_error_msg = f"OIC API error: {error_data}"
-                except (ValueError, KeyError):
-                    http_error_msg = f"OIC API error: {e.response.text}"
-            self.logger.exception(http_error_msg)
-            return FlextResult.fail(http_error_msg)
+            return self._handle_http_error(e)
         except requests.exceptions.RequestException as e:
-            request_error_msg = f"OIC API request failed: {e}"
-            self.logger.exception(request_error_msg)
-            return FlextResult.fail(request_error_msg)
+            return self._handle_request_error(e)
         except (RuntimeError, ValueError, TypeError) as e:
-            client_error_msg = f"OIC API client error: {e}"
-            self.logger.exception(client_error_msg)
-            return FlextResult.fail(client_error_msg)
+            return self._handle_client_error(e)
+
+    def _get_session_for_request(self) -> FlextResult[requests.Session]:
+        """Get authenticated session for request."""
+        session_result = self.get_authenticated_session()
+        if not session_result.success:
+            return FlextResult.fail(
+                session_result.error or "Authentication failed",
+            )
+
+        session = session_result.data
+        if session is None:
+            return FlextResult.fail("Failed to get authenticated session")
+
+        return FlextResult.ok(session)
+
+    def _build_request_url(self, endpoint: str) -> str:
+        """Build full request URL."""
+        base_url = self.get_base_url()
+        return (
+            f"{base_url}{endpoint}"
+            if endpoint.startswith("/")
+            else f"{base_url}/{endpoint}"
+        )
+
+    def _execute_request(self, request_params: RequestParams) -> FlextResult[dict[str, object]]:
+        """Execute the actual request."""
+        response = request_params.session.request(
+            method=request_params.method,
+            url=request_params.url,
+            params=request_params.params,
+            data=request_params.data,
+            json=request_params.json_data,
+        )
+        response.raise_for_status()
+
+        # Parse response
+        if response.headers.get("content-type", "").startswith("application/json"):
+            return FlextResult.ok(response.json())
+        return FlextResult.ok({"raw_content": response.text})
+
+    def _handle_http_error(self, e: requests.exceptions.HTTPError) -> FlextResult[dict[str, object]]:
+        """Handle HTTP errors."""
+        http_error_msg = f"OIC API HTTP error: {e}"
+        if hasattr(e, "response") and e.response is not None:
+            try:
+                error_data = e.response.json()
+                http_error_msg = f"OIC API error: {error_data}"
+            except (ValueError, KeyError):
+                http_error_msg = f"OIC API error: {e.response.text}"
+        self.logger.exception(http_error_msg)
+        return FlextResult.fail(http_error_msg)
+
+    def _handle_request_error(self, e: requests.exceptions.RequestException) -> FlextResult[dict[str, object]]:
+        """Handle request errors."""
+        request_error_msg = f"OIC API request failed: {e}"
+        self.logger.exception(request_error_msg)
+        return FlextResult.fail(request_error_msg)
+
+    def _handle_client_error(self, e: Exception) -> FlextResult[dict[str, object]]:
+        """Handle client errors."""
+        client_error_msg = f"OIC API client error: {e}"
+        self.logger.exception(client_error_msg)
+        return FlextResult.fail(client_error_msg)
 
     def paginate_request(
         self,
@@ -388,8 +442,8 @@ class BaseOICClient(ABC):
 
                 response_data = response_result.data
                 # response_data is guaranteed to be dict[str, object] when success=True
-                assert response_data is not None  # Type narrowing for MyPy
-                assert isinstance(response_data, dict)  # Type narrowing for MyPy
+                if response_data is None or not isinstance(response_data, dict):
+                    return FlextResult.fail("Invalid response data format")
 
                 items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):

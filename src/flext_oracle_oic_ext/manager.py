@@ -23,7 +23,7 @@ class IntegrationStatus:
 class LifecycleOperationResult:
     """Lifecycle operation result placeholder."""
 
-    def __init__(self, success: bool, message: str) -> None:
+    def __init__(self, *, success: bool, message: str) -> None:
         self.success = success
         self.message = message
 
@@ -34,7 +34,7 @@ class LifecycleManager:
     def __init__(self) -> None:
         pass
 
-    def get_status(self, integration_id: IntegrationIdentifier) -> FlextResult[str]:
+    def get_status(self, _integration_id: IntegrationIdentifier) -> FlextResult[str]:
         """Get integration status."""
         return FlextResult.ok(IntegrationStatus.INACTIVE)
 

@@ -13,7 +13,7 @@ from flext_core import FlextResult
 class HealthCheckResult:
     """Health check result placeholder."""
 
-    def __init__(self, healthy: bool, message: str) -> None:
+    def __init__(self, *, healthy: bool, message: str) -> None:
         self.healthy = healthy
         self.message = message
 
@@ -34,7 +34,7 @@ class MonitoringService:
 
     def health_check(self) -> FlextResult[HealthCheckResult]:
         """Perform health check."""
-        result = HealthCheckResult(True, "Service healthy")
+        result = HealthCheckResult(healthy=True, message="Service healthy")
         return FlextResult.ok(result)
 
     def get_metrics(self) -> FlextResult[PerformanceMetrics]:

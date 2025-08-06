@@ -54,8 +54,9 @@ def setup_oic_extension(
 def create_development_oic_config(
     host: str | None = None,
     port: int | None = None,
+    *,
     use_ssl: bool | None = None,
-    **overrides: object,
+    **_overrides: object,
 ) -> OracleOICExtensionSettings:
     """Create development configuration with conservative settings."""
     final_host = host or os.getenv("OIC_DEV_HOST") or "localhost"
@@ -82,8 +83,8 @@ def create_development_oic_config(
 def create_production_oic_config(
     host: str,
     port: int = 443,
-    use_ssl: bool = True,
-    **overrides: object,
+    *, use_ssl: bool = True,
+    **_overrides: object,
 ) -> OracleOICExtensionSettings:
     """Create production configuration with performance optimizations."""
     connection = OICExtensionConnectionConfig(
@@ -99,7 +100,7 @@ def create_production_oic_config(
     )
 
 
-def create_test_oic_config(**overrides: object) -> OracleOICExtensionSettings:
+def create_test_oic_config(**_overrides: object) -> OracleOICExtensionSettings:
     """Create test configuration with minimal resource usage."""
     connection = OICExtensionConnectionConfig(
         host="test-host",
@@ -114,7 +115,7 @@ def create_test_oic_config(**overrides: object) -> OracleOICExtensionSettings:
     )
 
 
-def create_sandbox_oic_config(**overrides: object) -> OracleOICExtensionSettings:
+def create_sandbox_oic_config(**_overrides: object) -> OracleOICExtensionSettings:
     """Create sandbox configuration for experimentation and learning."""
     connection = OICExtensionConnectionConfig(
         host="sandbox-host",

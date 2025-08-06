@@ -47,7 +47,7 @@ class TestOracleOICExtE2E:
     @pytest.fixture
     def config(self, config_path: str) -> dict[str, object]:
         """Load configuration from file."""
-        with open(config_path, encoding="utf-8") as f:
+        with Path(config_path).open(encoding="utf-8") as f:
             loaded_config: dict[str, object] = json.load(f)
             return loaded_config
 
@@ -485,7 +485,7 @@ class TestOracleOICExtE2E:
             assert config_path.exists()
 
         # Load and validate config
-        with open(config_path, encoding="utf-8") as f:
+        with Path(config_path).open(encoding="utf-8") as f:
             config = json.load(f)
 
         # Check required fields
