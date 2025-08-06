@@ -83,7 +83,8 @@ def create_development_oic_config(
 def create_production_oic_config(
     host: str,
     port: int = 443,
-    *, use_ssl: bool = True,
+    *,
+    use_ssl: bool = True,
     **_overrides: object,
 ) -> OracleOICExtensionSettings:
     """Create production configuration with performance optimizations."""

@@ -359,7 +359,9 @@ class BaseOICClient(ABC):
             else f"{base_url}/{endpoint}"
         )
 
-    def _execute_request(self, request_params: RequestParams) -> FlextResult[dict[str, object]]:
+    def _execute_request(
+        self, request_params: RequestParams,
+    ) -> FlextResult[dict[str, object]]:
         """Execute the actual request."""
         response = request_params.session.request(
             method=request_params.method,
@@ -375,7 +377,9 @@ class BaseOICClient(ABC):
             return FlextResult.ok(response.json())
         return FlextResult.ok({"raw_content": response.text})
 
-    def _handle_http_error(self, e: requests.exceptions.HTTPError) -> FlextResult[dict[str, object]]:
+    def _handle_http_error(
+        self, e: requests.exceptions.HTTPError,
+    ) -> FlextResult[dict[str, object]]:
         """Handle HTTP errors."""
         http_error_msg = f"OIC API HTTP error: {e}"
         if hasattr(e, "response") and e.response is not None:
@@ -384,19 +388,21 @@ class BaseOICClient(ABC):
                 http_error_msg = f"OIC API error: {error_data}"
             except (ValueError, KeyError):
                 http_error_msg = f"OIC API error: {e.response.text}"
-        self.logger.exception(http_error_msg)
+        self.logger.error(http_error_msg)
         return FlextResult.fail(http_error_msg)
 
-    def _handle_request_error(self, e: requests.exceptions.RequestException) -> FlextResult[dict[str, object]]:
+    def _handle_request_error(
+        self, e: requests.exceptions.RequestException,
+    ) -> FlextResult[dict[str, object]]:
         """Handle request errors."""
         request_error_msg = f"OIC API request failed: {e}"
-        self.logger.exception(request_error_msg)
+        self.logger.error(request_error_msg)
         return FlextResult.fail(request_error_msg)
 
     def _handle_client_error(self, e: Exception) -> FlextResult[dict[str, object]]:
         """Handle client errors."""
         client_error_msg = f"OIC API client error: {e}"
-        self.logger.exception(client_error_msg)
+        self.logger.error(client_error_msg)
         return FlextResult.fail(client_error_msg)
 
     def paginate_request(
@@ -524,7 +530,8 @@ class OICTapClient(BaseOICClient):
         return self.paginate_request("/connections", page_size=page_size, params=params)
 
     def get_packages(
-        self, page_size: int = 100,
+        self,
+        page_size: int = 100,
     ) -> FlextResult[list[dict[str, object]]]:
         """Get integration packages from OIC.
 
