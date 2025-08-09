@@ -13,6 +13,7 @@ import os
 from typing import cast
 
 from flext_core import FlextResult, get_logger
+from flext_core.constants import FlextConstants
 
 from flext_oracle_oic_ext.config import (
     EnvironmentLiteral,
@@ -31,8 +32,10 @@ def setup_oic_extension(
     try:
         if settings is None:
             connection = OICExtensionConnectionConfig(
-                host=os.getenv("OIC_HOST", "localhost"),
-                port=int(os.getenv("OIC_PORT", "8080")),
+                host=os.getenv("OIC_HOST", FlextConstants.Infrastructure.DEFAULT_HOST),
+                port=int(
+                    os.getenv("OIC_PORT", str(FlextConstants.Platform.FLEXCORE_PORT))
+                ),
                 use_ssl=os.getenv("OIC_USE_SSL", "false").lower() == "true",
             )
             settings = OracleOICExtensionSettings(
@@ -59,8 +62,12 @@ def create_development_oic_config(
     **_overrides: object,
 ) -> OracleOICExtensionSettings:
     """Create development configuration with conservative settings."""
-    final_host = host or os.getenv("OIC_DEV_HOST") or "localhost"
-    final_port = port or int(os.getenv("OIC_DEV_PORT", "8080"))
+    final_host = (
+        host or os.getenv("OIC_DEV_HOST") or FlextConstants.Infrastructure.DEFAULT_HOST
+    )
+    final_port = port or int(
+        os.getenv("OIC_DEV_PORT", str(FlextConstants.Platform.FLEXCORE_PORT))
+    )
     final_use_ssl = (
         use_ssl
         if use_ssl is not None

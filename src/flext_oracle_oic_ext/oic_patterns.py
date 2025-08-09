@@ -12,7 +12,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 import requests
-from flext_core import FlextLoggerFactory, FlextResult, get_logger
+from flext_core import FlextResult, get_logger
 from pydantic import BaseModel, ConfigDict, Field, SecretStr
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -86,7 +86,7 @@ class BaseOICAuthenticator(ABC):
 
         """
         self.auth_config = auth_config
-        self.logger = FlextLoggerFactory.get_logger(
+        self.logger = get_logger(
             f"{__name__}.{self.__class__.__name__}",
         )
         self._access_token: str | None = None
@@ -231,7 +231,7 @@ class BaseOICClient(ABC):
         """
         self.connection_config = connection_config
         self.authenticator = authenticator
-        self.logger = FlextLoggerFactory.get_logger(
+        self.logger = get_logger(
             f"{__name__}.{self.__class__.__name__}",
         )
         self._session: requests.Session | None = None
@@ -360,7 +360,8 @@ class BaseOICClient(ABC):
         )
 
     def _execute_request(
-        self, request_params: RequestParams,
+        self,
+        request_params: RequestParams,
     ) -> FlextResult[dict[str, object]]:
         """Execute the actual request."""
         response = request_params.session.request(
@@ -378,7 +379,8 @@ class BaseOICClient(ABC):
         return FlextResult.ok({"raw_content": response.text})
 
     def _handle_http_error(
-        self, e: requests.exceptions.HTTPError,
+        self,
+        e: requests.exceptions.HTTPError,
     ) -> FlextResult[dict[str, object]]:
         """Handle HTTP errors."""
         http_error_msg = f"OIC API HTTP error: {e}"
@@ -392,7 +394,8 @@ class BaseOICClient(ABC):
         return FlextResult.fail(http_error_msg)
 
     def _handle_request_error(
-        self, e: requests.exceptions.RequestException,
+        self,
+        e: requests.exceptions.RequestException,
     ) -> FlextResult[dict[str, object]]:
         """Handle request errors."""
         request_error_msg = f"OIC API request failed: {e}"

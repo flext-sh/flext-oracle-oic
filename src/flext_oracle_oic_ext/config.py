@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from typing import Literal
 
-from flext_core import FlextBaseSettings
+from flext_core import FlextSettings
 
 # Type definitions
 EnvironmentLiteral = Literal["development", "staging", "production"]
 LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 
 
-class OICExtensionConnectionConfig(FlextBaseSettings):
+class OICExtensionConnectionConfig(FlextSettings):
     """OIC extension connection configuration."""
 
     host: str = "localhost"
@@ -19,7 +19,7 @@ class OICExtensionConnectionConfig(FlextBaseSettings):
     use_ssl: bool = False
 
 
-class OracleOICExtensionSettings(FlextBaseSettings):
+class OracleOICExtensionSettings(FlextSettings):
     """Oracle OIC extension settings."""
 
     environment: EnvironmentLiteral = "development"

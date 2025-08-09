@@ -11,22 +11,11 @@ Version 0.9.0 - Oracle OIC Extensions with simplified public API:
 
 from __future__ import annotations
 
-import contextlib
 import importlib.metadata
 import warnings
 
-# Local extension implementation
-with contextlib.suppress(ImportError):
-    from flext_oracle_oic_ext.extension import OracleOICExtension
+from flext_oracle_oic_ext.extension import OracleOICExtension
 
-# Import from flext-core for foundational patterns
-# 🚨 ARCHITECTURAL COMPLIANCE: Using módulo raiz imports
-from flext_core import (
-    FlextBaseSettings as BaseConfig,  # Alias for backward compatibility
-    FlextFields as Field,  # Alias for backward compatibility
-    FlextResult,
-    FlextValueObject,
-)
 from pydantic import BaseModel as DomainEntity
 
 # __all__ is defined at the end of the file
@@ -77,13 +66,6 @@ def _show_deprecation_warning(old_import: str, new_import: str) -> None:
 # ================================
 
 __all__: list[str] = [
-    # Core foundation patterns from flext-core
-    "BaseConfig",
-    "BaseModel",
-    "DomainEntity",
-    "Field",
-    "FlextResult",
-    "FlextValueObject",
     # Main OIC Extension (consolidated from flext-meltano)
     "OracleOICExtension",
     # Version info
