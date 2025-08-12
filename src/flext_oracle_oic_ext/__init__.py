@@ -1,12 +1,15 @@
-"""FLEXT ORACLE OIC EXT - Oracle Integration Cloud Extensions with simplified imports.
+"""FLEXT Oracle OIC Extension - EXTENSION Pattern.
+
+Este módulo estabelece o padrão EXTENSION PEP8 para Oracle OIC Extension
+com API simplificada e integração flext-core. Serve como modelo para futuras extensions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 
-Version 0.9.0 - Oracle OIC Extensions with simplified public API:
-- All common imports available from root: from flext_oracle_oic_ext import ExtendedOICClient
-- Built on flext-core foundation for robust Oracle OIC integration
-- Deprecation warnings for internal imports
+Version 0.9.0 - Oracle OIC Extension API seguindo padrão EXTENSION:
+- Imports simplificados: from flext_oracle_oic_ext import OracleOICExtensionService
+- Integração flext-core completa: FlextResult, FlextSettings, etc
+- Padrão EXTENSION estabelecido para futuras extensions
 """
 
 from __future__ import annotations
@@ -14,14 +17,44 @@ from __future__ import annotations
 import importlib.metadata
 import warnings
 
+# ================================
+# EXTENSION Pattern: Core Imports
+# ================================
+
+# Foundation da flext-core
+from flext_core import FlextResult, FlextValueObject, FlextSettings, get_logger
+
+# EXTENSION Pattern: Main components
+from flext_oracle_oic_ext.ext_config import (
+    OracleOICExtensionSettings,
+    OICExtensionConnectionConfig,
+    OICExtensionAuthConfig,
+)
+from flext_oracle_oic_ext.ext_client import (
+    OracleOICExtensionClient,
+    OICExtensionAuthenticator,
+)
+from flext_oracle_oic_ext.ext_services import (
+    OracleOICExtensionService,
+    OICIntegrationPatternService,
+)
+from flext_oracle_oic_ext.ext_models import (
+    OICAuthConfig,
+    OICConnectionConfig,
+    OICIntegrationInfo,
+    OICConnectionInfo,
+)
+from flext_oracle_oic_ext.ext_exceptions import (
+    OICAuthenticationError,
+    OICConnectionError,
+    OICAPIError,
+    OICIntegrationError,
+)
+
+# Legacy extension for backward compatibility
 from flext_oracle_oic_ext.extension import OracleOICExtension
 
-from pydantic import BaseModel as DomainEntity
-
-# __all__ is defined at the end of the file
-
-# Add BaseModel alias for exports
-BaseModel = DomainEntity
+logger = get_logger(__name__)
 
 try:
     __version__ = importlib.metadata.version("flext-oracle-oic-ext")
@@ -51,24 +84,111 @@ def _show_deprecation_warning(old_import: str, new_import: str) -> None:
 
 
 # ================================
-# SIMPLIFIED PUBLIC API EXPORTS
+# EXTENSION Pattern: Convenience Functions
 # ================================
 
-# Foundation patterns - ALWAYS from flext-core (imported above)
 
-# CONSOLIDATED: Import from centralized flext-meltano (disabled - dependency not available)
-# with contextlib.suppress(ImportError):
-#     from flext_meltano.extensions.oracle_oic import OracleOICExtension
+def create_oic_extension_service(
+    settings: OracleOICExtensionSettings | None = None,
+) -> FlextResult[OracleOICExtensionService]:
+    """Create Oracle OIC Extension service with configuration.
 
-# Note: Other complex classes may not be directly available,
-# keeping simplified interface focused on core extension functionality
+    Padrão EXTENSION: Função de conveniência para criar serviço
+    Oracle OIC Extension com configuração padrão ou customizada.
 
+    Args:
+        settings: Configuration settings (uses defaults if None)
+
+    Returns:
+        FlextResult containing service instance or error
+
+    """
+    try:
+        if settings is None:
+            settings = OracleOICExtensionSettings()
+
+        service = OracleOICExtensionService(settings)
+        logger.info("OIC Extension service created successfully")
+        return FlextResult.ok(service)
+
+    except Exception as e:
+        error_msg = f"Failed to create OIC Extension service: {e}"
+        logger.exception(error_msg)
+        return FlextResult.fail(error_msg)
+
+
+def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
+    """Create OIC Extension service for development.
+
+    Padrão EXTENSION: Função de conveniência para ambiente de desenvolvimento
+    com configurações adequadas para testes e desenvolvimento local.
+
+    Returns:
+        FlextResult containing development service or error
+
+    """
+    try:
+        settings = OracleOICExtensionSettings(
+            environment="development",
+            log_level="DEBUG",
+            enable_monitoring=True,
+        )
+
+        service = OracleOICExtensionService(settings)
+        logger.info("Development OIC Extension service created")
+        return FlextResult.ok(service)
+
+    except Exception as e:
+        error_msg = f"Failed to create development OIC service: {e}"
+        logger.exception(error_msg)
+        return FlextResult.fail(error_msg)
+
+
+# ================================
+# EXTENSION Pattern: Public API Exports
 # ================================
 
 __all__: list[str] = [
-    # Main OIC Extension (consolidated from flext-meltano)
-    "OracleOICExtension",
-    # Version info
+    "annotations", "FlextResult", "FlextValueObject", "FlextSettings", "get_logger",
+    "OracleOICExtensionSettings", "OICExtensionConnectionConfig", "OICExtensionAuthConfig",
+    "OracleOICExtensionClient", "OICExtensionAuthenticator", "OracleOICExtensionService",
+    "OICIntegrationPatternService", "OICAuthConfig", "OICConnectionConfig", "OICIntegrationInfo",
+    "OICConnectionInfo", "OICAuthenticationError", "OICConnectionError", "OICAPIError",
+    "OICIntegrationError", "OracleOICExtension", "logger", "__version_info__",
+    "FlextOracleOicExtDeprecationWarning", "create_oic_extension_service",
+    "create_development_oic_service",
+] = [
+    # ===== Foundation flext-core =====
+    "FlextResult",
+    "FlextValueObject",
+    "FlextSettings",
+    "get_logger",
+    # ===== Main EXTENSION Components =====
+    "OracleOICExtensionService",  # Main service (EXTENSION Pattern)
+    "OracleOICExtensionClient",  # API client
+    "OracleOICExtensionSettings",  # Configuration
+    "OICIntegrationPatternService",  # Integration patterns
+    # ===== Configuration Models =====
+    "OICExtensionConnectionConfig",  # Connection config
+    "OICExtensionAuthConfig",  # Auth config
+    "OICAuthConfig",  # Auth model
+    "OICConnectionConfig",  # Connection model
+    # ===== Business Models =====
+    "OICIntegrationInfo",  # Integration info
+    "OICConnectionInfo",  # Connection info
+    # ===== Authentication =====
+    "OICExtensionAuthenticator",  # Main authenticator
+    # ===== Exceptions =====
+    "OICAuthenticationError",  # Auth errors
+    "OICConnectionError",  # Connection errors
+    "OICAPIError",  # API errors
+    "OICIntegrationError",  # Integration errors
+    # ===== Convenience Functions =====
+    "create_oic_extension_service",  # Create service
+    "create_development_oic_service",  # Development service
+    # ===== Legacy Support =====
+    "OracleOICExtension",  # Backward compatibility
+    # ===== Version Info =====
     "__version__",
     "__version_info__",
 ]
