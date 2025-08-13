@@ -49,7 +49,10 @@ class TestOracleOICExtE2E:
                 return process.returncode
 
             asyncio.run(
-                _run([sys.executable, "generate_config.py"], cwd=str(Path(__file__).parent.parent)),
+                _run(
+                    [sys.executable, "generate_config.py"],
+                    cwd=str(Path(__file__).parent.parent),
+                ),
             )
         return str(config_file)
 
@@ -480,7 +483,12 @@ class TestOracleOICExtE2E:
 
         # If config doesn't exist, it should be generated
         if not config_path.exists():
-            async def _run_input(cmd_list: list[str], cwd: str | None = None, input_text: str = "") -> tuple[int, str, str]:
+
+            async def _run_input(
+                cmd_list: list[str],
+                cwd: str | None = None,
+                input_text: str = "",
+            ) -> tuple[int, str, str]:
                 process = await asyncio.create_subprocess_exec(
                     *cmd_list,
                     cwd=cwd,
@@ -492,7 +500,11 @@ class TestOracleOICExtE2E:
                 return process.returncode, stdout.decode(), stderr.decode()
 
             rc, _out, _err = asyncio.run(
-                _run_input([sys.executable, "generate_config.py"], cwd=str(Path(__file__).parent.parent), input_text="y\n"),
+                _run_input(
+                    [sys.executable, "generate_config.py"],
+                    cwd=str(Path(__file__).parent.parent),
+                    input_text="y\n",
+                ),
             )
             if rc != 0:
                 msg: str = f"Expected {0}, got {rc}"
