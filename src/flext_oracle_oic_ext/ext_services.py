@@ -14,9 +14,6 @@ from flext_oracle_oic_ext.ext_client import (
     OICExtensionAuthenticator,
     OracleOICExtensionClient,
 )
-from flext_oracle_oic_ext.ext_exceptions import (
-    OICIntegrationError,
-)
 from flext_oracle_oic_ext.ext_models import (
     OICAuthConfig,
     OICConnectionConfig,
@@ -110,7 +107,7 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult.fail(client_result.error)
+                return FlextResult.fail(client_result.error or "Client creation failed")
 
             client = client_result.data
             if client is None:
@@ -123,7 +120,7 @@ class OracleOICExtensionService:
             )
 
             if not integrations_result.success:
-                return FlextResult.fail(integrations_result.error)
+                return FlextResult.fail(integrations_result.error or "Failed to fetch integrations")
 
             integrations_data = integrations_result.data or []
 
@@ -169,7 +166,7 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult.fail(client_result.error)
+                return FlextResult.fail(client_result.error or "Client creation failed")
 
             client = client_result.data
             if client is None:
@@ -182,7 +179,7 @@ class OracleOICExtensionService:
             )
 
             if not connections_result.success:
-                return FlextResult.fail(connections_result.error)
+                return FlextResult.fail(connections_result.error or "Connections fetch failed")
 
             connections_data = connections_result.data or []
 
@@ -221,7 +218,7 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult.fail(client_result.error)
+                return FlextResult.fail(client_result.error or "Client creation failed")
 
             client = client_result.data
             if client is None:
@@ -232,7 +229,7 @@ class OracleOICExtensionService:
 
             if integrations_result.success:
                 self.logger.info("OIC connection test successful")
-                return FlextResult.ok(True)
+                return FlextResult.ok(data=True)
             error_msg = f"OIC connection test failed: {integrations_result.error}"
             self.logger.error(error_msg)
             return FlextResult.fail(error_msg)
@@ -258,7 +255,7 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult.fail(client_result.error)
+                return FlextResult.fail(client_result.error or "Client creation failed")
 
             client = client_result.data
             if client is None:
@@ -268,13 +265,11 @@ class OracleOICExtensionService:
             create_result = client.create_integration(integration_data)
 
             if not create_result.success:
-                return FlextResult.fail(create_result.error)
+                return FlextResult.fail(create_result.error or "Create integration failed")
 
             created_integration = create_result.data
             if not created_integration:
-                return FlextResult.fail(
-                    OICIntegrationError("No integration data returned"),
-                )
+                return FlextResult.fail("No integration data returned")
 
             integration_id = created_integration.get("id", "")
 
@@ -290,7 +285,12 @@ class OracleOICExtensionService:
         """Context manager entry."""
         return self
 
-    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: object,
+    ) -> None:
         """Context manager exit."""
         if self._client:
             self._client.__exit__(exc_type, exc_val, exc_tb)

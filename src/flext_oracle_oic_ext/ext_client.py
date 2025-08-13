@@ -14,10 +14,6 @@ from typing import TYPE_CHECKING, Any, Self
 import httpx
 from flext_core import FlextResult, get_logger
 
-from flext_oracle_oic_ext.ext_exceptions import (
-    OICAuthenticationError,
-)
-
 if TYPE_CHECKING:
     from flext_oracle_oic_ext.ext_models import (
         OICAuthConfig,
@@ -104,7 +100,7 @@ class BaseOICAuthenticator(ABC):
         credentials = f"{client_id}:{client_secret}"
         return base64.b64encode(credentials.encode()).decode()
 
-    def get_access_token(self) -> FlextResult[str]:
+    def get_access_token(self) -> FlextResult[str]:  # noqa: PLR0911
         """Get access token using OAuth2 client credentials flow.
 
         Returns:
@@ -202,17 +198,15 @@ class BaseOICClient(ABC):
                 token_result = self.authenticator.get_access_token()
                 if not token_result.success:
                     return FlextResult.fail(
-                        OICAuthenticationError(
-                            f"Authentication failed: {token_result.error}",
-                        ),
+                        f"Authentication failed: {token_result.error}",
                     )
 
                 # Create authenticated client
                 self._client = httpx.Client(
                     headers={
                         "Authorization": f"Bearer {token_result.data}",
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
+                        "Content-Type": FlextApiConstants.ContentTypes.JSON,
+                        "Accept": FlextApiConstants.ContentTypes.JSON,
                     },
                     timeout=self.connection_config.request_timeout,
                     verify=self.connection_config.verify_ssl,
@@ -225,7 +219,7 @@ class BaseOICClient(ABC):
             self.logger.exception(error_msg)
             return FlextResult.fail(error_msg)
 
-    def make_request(
+    def make_request(  # noqa: PLR0911
         self,
         method: str,
         endpoint: str,
@@ -380,7 +374,12 @@ class BaseOICClient(ABC):
         """Context manager entry."""
         return self
 
-    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: object,
+    ) -> None:
         """Context manager exit."""
         if self._client:
             self._client.close()

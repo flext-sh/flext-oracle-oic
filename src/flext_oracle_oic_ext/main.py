@@ -23,6 +23,25 @@ app = typer.Typer(
 )
 
 
+def _handle_service_error(message: str) -> NoReturn:
+    """Handle service creation error by logging and raising typer.Exit."""
+    logger.error(message)
+    raise typer.Exit(code=1) from None
+
+
+def _handle_connection_error(message: str) -> NoReturn:
+    """Handle connection error by logging and raising typer.Exit."""
+    logger.error(message)
+    raise typer.Exit(code=1) from None
+
+
+def _handle_general_error(message: str, error: Exception) -> NoReturn:
+    """Handle general error by logging and raising typer.Exit."""
+    logger.exception("Error: %s", message)
+    typer.echo(f"❌ {message}: {error}")
+    raise typer.Exit(code=1) from error
+
+
 @app.command("test-connection")
 def test_connection() -> None:
     """Test connection to Oracle OIC instance.
@@ -36,13 +55,11 @@ def test_connection() -> None:
         # Create development service for testing
         service_result = create_development_oic_service()
         if not service_result.success:
-            logger.error(f"Failed to create service: {service_result.error}")
-            raise typer.Exit(code=1)
+            _handle_service_error(f"Failed to create service: {service_result.error}")
 
         service = service_result.data
         if service is None:
-            logger.error("Service is None")
-            raise typer.Exit(code=1)
+            _handle_service_error("Service is None")
 
         # Test connection
         with service:
@@ -51,14 +68,10 @@ def test_connection() -> None:
                 logger.info("✅ Oracle OIC connection successful!")
                 typer.echo("✅ Connection to Oracle OIC established successfully")
             else:
-                logger.error(f"❌ Connection failed: {connection_result.error}")
-                typer.echo(f"❌ Connection failed: {connection_result.error}")
-                raise typer.Exit(code=1)
+                _handle_connection_error(f"❌ Connection failed: {connection_result.error}")
 
     except Exception as e:
-        logger.exception(f"Connection test error: {e}")
-        typer.echo(f"❌ Connection test failed: {e}")
-        raise typer.Exit(code=1)
+        _handle_general_error("Connection test failed", e)
 
 
 @app.command("list-integrations")
@@ -74,13 +87,11 @@ def list_integrations() -> None:
         # Create development service
         service_result = create_development_oic_service()
         if not service_result.success:
-            logger.error(f"Failed to create service: {service_result.error}")
-            raise typer.Exit(code=1)
+            _handle_service_error(f"Failed to create service: {service_result.error}")
 
         service = service_result.data
         if service is None:
-            logger.error("Service is None")
-            raise typer.Exit(code=1)
+            _handle_service_error("Service is None")
 
         # List integrations
         with service:
@@ -104,18 +115,12 @@ def list_integrations() -> None:
                 else:
                     typer.echo("📋 No integrations found")
             else:
-                logger.error(
+                _handle_connection_error(
                     f"❌ Failed to list integrations: {integrations_result.error}",
                 )
-                typer.echo(
-                    f"❌ Failed to list integrations: {integrations_result.error}",
-                )
-                raise typer.Exit(code=1)
 
     except Exception as e:
-        logger.exception(f"List integrations error: {e}")
-        typer.echo(f"❌ List integrations failed: {e}")
-        raise typer.Exit(code=1)
+        _handle_general_error("List integrations failed", e)
 
 
 @app.command("version")

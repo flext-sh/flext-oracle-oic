@@ -49,7 +49,7 @@ class OICConnectionConfig(BaseModel):
     api_version: str = Field("v1", description="OIC API version")
     request_timeout: int = Field(30, ge=1, description="Request timeout in seconds")
     max_retries: int = Field(3, ge=0, description="Maximum retry attempts")
-    verify_ssl: bool = Field(True, description="Verify SSL certificates")
+    verify_ssl: bool = Field(default=True, description="Verify SSL certificates")
 
 
 class OICIntegrationInfo(BaseModel):
