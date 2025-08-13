@@ -24,7 +24,6 @@ dependencies = [
     "pydantic (>=2.11.7)",
     "pydantic-settings (>=2.10.1)",
     "meltano[edk] (>=3.0.0)",
-    "flext-core @ file:///home/marlonsc/flext/flext-core",
     "requests (>=2.31.0)",
     "httpx (>=0.28.1)",
     "typer (>=0.12.0)",
@@ -95,6 +94,8 @@ warn_required_dynamic_aliases = true
 include = "flext_oracle_oic_ext"
 from = "src"
 
+# Local workspace dependencies are defined under [tool.poetry.dependencies]
+
 [tool.deptry]
 known_first_party = ["flext_oracle_oic_ext"]
 
@@ -151,10 +152,8 @@ output = "reports/coverage.xml"
 
 [tool.poetry.dependencies]
 python = ">=3.13,<3.14"
-
-[tool.poetry.dependencies.flext-core]
-path = "../flext-core"
-develop = true
+flext-core = { path = "../flext-core", develop = true }
+flext-observability = { path = "../flext-observability", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 ruff = ">=0.12.3"
