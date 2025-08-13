@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 from unittest.mock import Mock, patch
@@ -38,7 +39,7 @@ class TestOracleOICExtE2E:
         if not config_file.exists():
             # Generate config if it doesn't exist
             subprocess.run(
-                ["python", "generate_config.py"],  # noqa: S607
+                [sys.executable, "generate_config.py"],
                 cwd=Path(__file__).parent.parent,
                 check=False,
             )
@@ -472,7 +473,7 @@ class TestOracleOICExtE2E:
         # If config doesn't exist, it should be generated
         if not config_path.exists():
             result = subprocess.run(
-                ["python", "generate_config.py"],  # noqa: S607
+                [sys.executable, "generate_config.py"],
                 capture_output=True,
                 text=True,
                 cwd=Path(__file__).parent.parent,
