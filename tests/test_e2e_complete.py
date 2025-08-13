@@ -11,9 +11,9 @@ Tests all functionalities including:
 
 from __future__ import annotations
 
+import asyncio
 import json
 import os
-import subprocess
 import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -38,10 +38,18 @@ class TestOracleOICExtE2E:
         config_file = Path(__file__).parent.parent / "config.json"
         if not config_file.exists():
             # Generate config if it doesn't exist
-            subprocess.run(
-                [sys.executable, "generate_config.py"],
-                cwd=Path(__file__).parent.parent,
-                check=False,
+            async def _run(cmd_list: list[str], cwd: str | None = None) -> int:
+                process = await asyncio.create_subprocess_exec(
+                    *cmd_list,
+                    cwd=cwd,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                )
+                await process.communicate()
+                return process.returncode
+
+            asyncio.run(
+                _run([sys.executable, "generate_config.py"], cwd=str(Path(__file__).parent.parent)),
             )
         return str(config_file)
 
@@ -472,16 +480,22 @@ class TestOracleOICExtE2E:
 
         # If config doesn't exist, it should be generated
         if not config_path.exists():
-            result = subprocess.run(
-                [sys.executable, "generate_config.py"],
-                capture_output=True,
-                text=True,
-                cwd=Path(__file__).parent.parent,
-                input="y\n",
-                check=False,
+            async def _run_input(cmd_list: list[str], cwd: str | None = None, input_text: str = "") -> tuple[int, str, str]:
+                process = await asyncio.create_subprocess_exec(
+                    *cmd_list,
+                    cwd=cwd,
+                    stdin=asyncio.subprocess.PIPE,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                )
+                stdout, stderr = await process.communicate(input=input_text.encode())
+                return process.returncode, stdout.decode(), stderr.decode()
+
+            rc, _out, _err = asyncio.run(
+                _run_input([sys.executable, "generate_config.py"], cwd=str(Path(__file__).parent.parent), input_text="y\n"),
             )
-            if result.returncode != 0:
-                msg: str = f"Expected {0}, got {result.returncode}"
+            if rc != 0:
+                msg: str = f"Expected {0}, got {rc}"
                 raise AssertionError(msg)
             assert config_path.exists()
 

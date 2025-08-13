@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Self
 
 from flext_core import FlextResult, get_logger
+from pydantic import SecretStr
 
 from flext_oracle_oic_ext.ext_client import (
     OICExtensionAuthenticator,
@@ -60,8 +61,6 @@ class OracleOICExtensionService:
         try:
             if not self._client:
                 # Create auth config from settings
-                from pydantic import SecretStr
-
                 auth_config = OICAuthConfig(
                     oauth_client_id=self.settings.auth.oauth_client_id,
                     oauth_client_secret=SecretStr(

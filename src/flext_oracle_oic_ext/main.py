@@ -12,6 +12,7 @@ import typer
 from flext_core import get_logger
 
 from flext_oracle_oic_ext import (
+    __version__,
     create_development_oic_service,
 )
 
@@ -128,8 +129,6 @@ def list_integrations() -> None:
 @app.command("version")
 def show_version() -> None:
     """Show Oracle OIC Extension version."""
-    from flext_oracle_oic_ext import __version__
-
     typer.echo(f"Oracle OIC Extension v{__version__}")
     typer.echo("EXTENSION Pattern: Enterprise Oracle Integration Cloud")
 
