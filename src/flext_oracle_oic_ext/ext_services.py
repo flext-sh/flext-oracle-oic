@@ -61,9 +61,12 @@ class OracleOICExtensionService:
             if not self._client:
                 # Create auth config from settings
                 from pydantic import SecretStr
+
                 auth_config = OICAuthConfig(
                     oauth_client_id=self.settings.auth.oauth_client_id,
-                    oauth_client_secret=SecretStr(self.settings.auth.oauth_client_secret),
+                    oauth_client_secret=SecretStr(
+                        self.settings.auth.oauth_client_secret,
+                    ),
                     oauth_token_url=self.settings.auth.oauth_token_url,
                     oauth_client_aud=self.settings.auth.oauth_client_aud,
                     oauth_scope=self.settings.auth.oauth_scope,
@@ -81,7 +84,8 @@ class OracleOICExtensionService:
                 # Create authenticator and client
                 authenticator = OICExtensionAuthenticator(auth_config)
                 self._client = OracleOICExtensionClient(
-                    connection_config, authenticator,
+                    connection_config,
+                    authenticator,
                 )
 
             return FlextResult.ok(self._client)
@@ -120,7 +124,9 @@ class OracleOICExtensionService:
             )
 
             if not integrations_result.success:
-                return FlextResult.fail(integrations_result.error or "Failed to fetch integrations")
+                return FlextResult.fail(
+                    integrations_result.error or "Failed to fetch integrations",
+                )
 
             integrations_data = integrations_result.data or []
 
@@ -179,7 +185,9 @@ class OracleOICExtensionService:
             )
 
             if not connections_result.success:
-                return FlextResult.fail(connections_result.error or "Connections fetch failed")
+                return FlextResult.fail(
+                    connections_result.error or "Connections fetch failed",
+                )
 
             connections_data = connections_result.data or []
 
@@ -265,7 +273,9 @@ class OracleOICExtensionService:
             create_result = client.create_integration(integration_data)
 
             if not create_result.success:
-                return FlextResult.fail(create_result.error or "Create integration failed")
+                return FlextResult.fail(
+                    create_result.error or "Create integration failed",
+                )
 
             created_integration = create_result.data
             if not created_integration:

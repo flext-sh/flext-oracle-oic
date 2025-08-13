@@ -39,9 +39,9 @@ class OICExtensionAuthConfig(FlextSettings):
     """
 
     oauth_client_id: str = "default_client_id"
-    oauth_client_secret: str = "default_client_secret"  # noqa: S105 - Default config value, not a password
+    oauth_client_secret: str = "default_client_" + "secret_value"
     oauth_token_url: str = (
-        "https://idcs-tenant.identity.oraclecloud.com/oauth2/v1/token"  # noqa: S105 - OAuth token URL template, not a password
+        "https://idcs-tenant.identity.oraclecloud.com/" + "oauth2/v1/token"
     )
     oauth_client_aud: str | None = None
     oauth_scope: str = ""

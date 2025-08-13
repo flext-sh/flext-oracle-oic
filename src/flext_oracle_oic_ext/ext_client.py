@@ -205,8 +205,8 @@ class BaseOICClient(ABC):
                 self._client = httpx.Client(
                     headers={
                         "Authorization": f"Bearer {token_result.data}",
-                        "Content-Type": FlextApiConstants.ContentTypes.JSON,
-                        "Accept": FlextApiConstants.ContentTypes.JSON,
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
                     },
                     timeout=self.connection_config.request_timeout,
                     verify=self.connection_config.verify_ssl,
@@ -293,7 +293,8 @@ class BaseOICClient(ABC):
         )
 
     def _handle_http_error(
-        self, e: httpx.HTTPStatusError,
+        self,
+        e: httpx.HTTPStatusError,
     ) -> FlextResult[dict[str, Any]]:
         """Handle HTTP errors."""
         try:
@@ -339,7 +340,9 @@ class BaseOICClient(ABC):
 
                 # Make request
                 response_result = self.make_request(
-                    "GET", endpoint, params=request_params,
+                    "GET",
+                    endpoint,
+                    params=request_params,
                 )
                 if not response_result.success:
                     return FlextResult.fail(response_result.error or "Request failed")
@@ -459,7 +462,9 @@ class OracleOICExtensionClient(BaseOICClient):
             params["q"] = f"status in ({','.join(status_filter)})"
 
         return self.paginate_request(
-            "/integrations", page_size=page_size, params=params,
+            "/integrations",
+            page_size=page_size,
+            params=params,
         )
 
     def get_connections(

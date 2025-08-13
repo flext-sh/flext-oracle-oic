@@ -37,7 +37,7 @@ def _handle_connection_error(message: str) -> NoReturn:
 
 def _handle_general_error(message: str, error: Exception) -> NoReturn:
     """Handle general error by logging and raising typer.Exit."""
-    logger.exception("Error: %s", message)
+    logger.error("Error: %s", message)
     typer.echo(f"❌ {message}: {error}")
     raise typer.Exit(code=1) from error
 
@@ -68,7 +68,9 @@ def test_connection() -> None:
                 logger.info("✅ Oracle OIC connection successful!")
                 typer.echo("✅ Connection to Oracle OIC established successfully")
             else:
-                _handle_connection_error(f"❌ Connection failed: {connection_result.error}")
+                _handle_connection_error(
+                    f"❌ Connection failed: {connection_result.error}",
+                )
 
     except Exception as e:
         _handle_general_error("Connection test failed", e)
