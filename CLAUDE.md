@@ -4,250 +4,272 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**flext-oracle-oic-ext** is an Oracle Integration Cloud (OIC) extension library within the FLEXT ecosystem. It provides advanced enterprise integration patterns, workflow orchestration, and OIC REST API integration capabilities. The project implements consolidated architecture patterns using centralized components from flext-meltano to eliminate code duplication.
+**flext-oracle-oic-ext** is an Oracle Integration Cloud (OIC) extension library within the FLEXT ecosystem. It implements the **EXTENSION Pattern** with advanced enterprise integration capabilities and clean architecture principles. The project provides Oracle OIC REST API integration, OAuth2 authentication, and extensible configuration management.
 
 ## Architecture & Design
 
-### Consolidated Architecture
+### EXTENSION Pattern Implementation
 
-- **Centralized Components**: Uses `flext-meltano.extensions.oracle_oic` for core OIC functionality to prevent code duplication
-- **Extension Pattern**: Implements Oracle OIC-specific extensions with enterprise integration patterns
-- **Foundation**: Built on `flext-core` for FlextResult patterns, dependency injection, and base configurations
-- **Zero Tolerance**: Strict consolidation policy - no duplicate implementations across the FLEXT ecosystem
+- **Extension Pattern**: Implements standardized EXTENSION pattern for Oracle OIC-specific functionality
+- **Foundation**: Built on `flext-core` for FlextResult patterns, FlextSettings, dependency injection, and logging
+- **Clean Architecture**: Strict layer separation following DDD principles with clear domain boundaries
+- **Type Safety**: Comprehensive type hints and strict MyPy configuration for enterprise reliability
 
-### Key Components
+### Core Components
 
-- **OracleOICExtension**: Main extension class (consolidated from flext-meltano)
-- **OIC Patterns**: Enterprise integration patterns (Message Router, Scatter-Gather, Content Filter, etc.)
-- **OAuth2 Authentication**: IDCS OAuth2 client credentials flow with proper scope handling
-- **REST API Clients**: OIC Tap and Target clients with pagination and retry logic
-- **Configuration Management**: Environment-based configuration with validation
+Located in `src/flext_oracle_oic_ext/`:
 
-### Integration Patterns Supported
+- **OracleOICExtensionService**: Main service class implementing business logic (`ext_services.py`)
+- **OracleOICExtensionClient**: REST API client with authentication (`ext_client.py`) 
+- **OracleOICExtensionSettings**: Configuration management with Pydantic validation (`ext_config.py`)
+- **OICExtensionAuthenticator**: OAuth2/IDCS authentication handler (`ext_client.py`)
+- **Extension Models**: Business domain models with validation (`ext_models.py`)
+- **Custom Exceptions**: Specific error handling for OIC operations (`ext_exceptions.py`)
 
-- **Message Router**: Route messages based on content and rules
-- **Scatter-Gather**: Broadcast to multiple endpoints and aggregate responses
-- **Content Filter**: Filter messages based on payload content
-- **Message Translator**: Transform message formats and structures
-- **Aggregator**: Combine multiple messages into single output
-- **Splitter**: Split single message into multiple messages
+### Development Architecture
 
-## Development Commands
-
-### Essential Commands
-
-```bash
-# Development setup
-make setup                    # Complete development setup
-make install                  # Install dependencies with Poetry
-make dev-install             # Install in development mode with pre-commit hooks
-
-# Quality Gates (run before committing)
-make validate                # Full validation (lint + type + security + test + oic-test)
-make check                   # Essential checks (lint + type + test)
-make lint                    # Ruff linting with ALL rules enabled
-make type-check              # MyPy strict type checking
-make security                # Security scans (bandit + pip-audit)
-make format                  # Format code with ruff
-
-# Testing
-make test                    # Run tests with 90% coverage requirement
-make test-unit               # Run unit tests only
-make test-integration        # Run integration tests only
-make test-oic                # Run OIC-specific tests
-make test-patterns           # Run integration pattern tests
-make test-orchestration      # Run orchestration tests
-make test-performance        # Run performance benchmarks
+```
+src/flext_oracle_oic_ext/
+├── __init__.py              # Public API with EXTENSION pattern exports
+├── ext_config.py            # Settings and configuration classes
+├── ext_client.py            # API clients and authentication
+├── ext_services.py          # Main business logic services
+├── ext_models.py            # Domain models and data structures
+├── ext_exceptions.py        # Custom exception hierarchy
+├── extension.py             # Legacy extension class (backward compatibility)
+├── legacy.py                # Legacy imports and deprecation warnings
+├── main.py                  # CLI entry point
+└── cli.py                   # Command-line interface implementation
 ```
 
-### OIC-Specific Operations
+## Essential Development Commands
+
+### Quality Gates (Always run before committing)
 
 ```bash
-# Oracle OIC API Testing
-make oic-test               # Test OIC API connectivity
-make oic-auth               # Test OAuth2 authentication
-make oic-deploy             # Test integration deployment
-make oic-patterns           # Test enterprise integration patterns
-make oic-orchestration      # Test workflow orchestration
-make oic-monitoring         # Test monitoring capabilities
+# Complete validation pipeline
+make validate                # lint + type-check + security + test
 
-# Pattern Testing
-make pattern-test           # Test all integration patterns
-make message-router         # Test message router pattern
-make scatter-gather         # Test scatter-gather pattern
-make content-filter         # Test content filter pattern
-make aggregator             # Test aggregator pattern
+# Quick health check
+make check                   # lint + type-check only
 
-# Development Tools
-make dev-oic-server         # Start development OIC mock server
-make dev-pattern-playground # Integration pattern playground
-make dev-orchestration-designer # Workflow designer
+# Individual quality checks
+make lint                    # Ruff linting (strict configuration)
+make type-check              # MyPy strict mode
+make security                # Bandit security scanning + pip-audit
+make format                  # Auto-format code with Ruff
 ```
 
-### Build & Deployment
+### Testing Commands
 
 ```bash
-make build                  # Build distribution packages
-make package                # Create deployment package
-make clean                  # Remove all artifacts
-make deps-update            # Update dependencies
-make deps-audit             # Security audit dependencies
+# Core testing
+make test                    # Run all tests with 90% coverage requirement
+make test-unit               # Unit tests only (fast)
+make test-integration        # Integration tests only
+make test-fast               # Skip coverage for speed
+
+# OIC-specific testing
+make test-oic                # OIC connectivity and API tests
+make test-patterns           # Integration pattern tests
+
+# Coverage reporting
+make coverage-html           # Generate HTML coverage report
+```
+
+### Setup and Installation
+
+```bash
+# Complete project setup
+make setup                   # Install dependencies + pre-commit hooks
+make install                 # Install dependencies with Poetry
+make install-dev             # Install with dev dependencies
+
+# Development utilities
+make shell                   # Open Python shell with project loaded
+make pre-commit              # Run pre-commit hooks manually
+```
+
+### OIC Operations
+
+```bash
+# OIC connectivity testing
+make oic-test                # Test API connectivity
+make oic-auth                # Test OAuth2 authentication
+make oic-patterns            # Test integration patterns
+make oic-deploy              # Test deployment capabilities
+```
+
+### Build and Maintenance
+
+```bash
+# Build operations
+make build                   # Build distribution packages
+make clean                   # Remove build artifacts
+make clean-all               # Deep clean including virtual environment
+
+# Dependency management
+make deps-update             # Update all dependencies
+make deps-audit              # Security audit of dependencies
+make deps-show               # Show dependency tree
+
+# Project health
+make doctor                  # Full health check and diagnostics
+make diagnose                # Show project diagnostics
 ```
 
 ## Testing Strategy
 
+### Test Structure
+
+```
+tests/
+├── conftest.py              # Pytest configuration and fixtures
+├── test_basic_import.py     # Basic import and module loading tests
+├── test_extension.py        # Main extension functionality tests
+├── test_e2e_complete.py     # End-to-end integration tests
+├── test_generate_config.py  # Configuration generation tests
+└── unit/
+    └── test_version.py      # Version information tests
+```
+
 ### Test Categories
 
-- **Unit Tests**: Core functionality testing with mocks
-- **Integration Tests**: Real OIC API integration testing
-- **E2E Tests**: Complete workflow testing
-- **OIC Tests**: Oracle OIC-specific functionality testing
-- **Pattern Tests**: Enterprise integration pattern validation
-- **Performance Tests**: Benchmark critical operations
+- **Unit Tests**: Fast tests with mocking (marked with `@pytest.mark.unit`)
+- **Integration Tests**: Tests with external dependencies (marked with `@pytest.mark.integration`) 
+- **OIC Tests**: Oracle Integration Cloud specific tests
+- **Slow Tests**: Long-running tests (marked with `@pytest.mark.slow`)
+- **E2E Tests**: Complete workflow validation
 
-### Test Execution
+### Running Tests
 
 ```bash
-# Run specific test types
+# All tests with coverage (90% minimum required)
+make test
+
+# Test categories using pytest markers
 pytest -m unit              # Unit tests only
 pytest -m integration       # Integration tests only
-pytest -m oic               # OIC-specific tests
-pytest -m patterns          # Integration pattern tests
-pytest -m orchestration     # Orchestration tests
-pytest -m performance       # Performance tests
+pytest -m "not slow"        # Exclude slow tests
 
-# Test single file
+# Specific test files
 pytest tests/test_extension.py -v
 pytest tests/unit/test_version.py -v
 
 # Coverage reporting
-make coverage               # Generate coverage report
-make coverage-html          # Open HTML coverage report
+make coverage-html          # HTML report in reports/coverage/
 ```
 
 ## Configuration
 
-### Environment Variables
+### Settings Architecture
 
-Key environment variables for OIC extension operations:
+Configuration follows the EXTENSION Pattern with Pydantic validation:
 
-```bash
-# OIC Connection
-export OIC_EXT_BASE_URL="https://your-instance.integration.ocp.oraclecloud.com"
-export OIC_EXT_API_VERSION="v1"
+- **OracleOICExtensionSettings**: Main settings class (`ext_config.py:50`)
+- **OICExtensionConnectionConfig**: Connection settings (`ext_config.py:19`) 
+- **OICExtensionAuthConfig**: OAuth2 authentication settings (`ext_config.py:34`)
 
-# OAuth2 Authentication
-export OIC_EXT_OAUTH_CLIENT_ID="your_client_id"
-export OIC_EXT_OAUTH_CLIENT_SECRET="your_client_secret"
-export OIC_EXT_OAUTH_TOKEN_URL="https://idcs-tenant.identity.oraclecloud.com/oauth2/v1/token"
-export OIC_EXT_OAUTH_SCOPE="https://integration.ocp.oraclecloud.com:443"
+### Key Configuration Files
 
-# Extension Features
-export OIC_EXT_ENABLE_MONITORING="true"
-export OIC_EXT_ENABLE_ENTERPRISE_PATTERNS="true"
-export OIC_EXT_ENABLE_ORCHESTRATION="true"
-export OIC_EXT_ENABLE_CUSTOM_ADAPTERS="true"
-```
-
-### Configuration Files
-
-- `config.json`: Main configuration file (see `config.json.example`)
+- `config.json`: Main configuration (see `config.json.example`)
 - `pyproject.toml`: Project dependencies and tool configuration
-- `.env`: Environment variables (not tracked in git)
+- Environment variables: Loaded automatically by FlextSettings
 
-## Code Standards
+## Code Quality Standards
 
-### Quality Requirements
+### Zero Tolerance Quality Gates
 
-- **Coverage**: Minimum 90% test coverage enforced
-- **Type Safety**: Strict MyPy configuration with no untyped code
-- **Linting**: Ruff with ALL rule categories enabled
-- **Security**: Bandit security scanning and pip-audit
-- **Import Organization**: Consolidated imports from flext-meltano
+- **Test Coverage**: Minimum 90% required (enforced by pytest)
+- **Type Safety**: Strict MyPy configuration with comprehensive type hints
+- **Linting**: Ruff with strict rules for code quality
+- **Security**: Bandit + pip-audit for vulnerability scanning
 
-### Architecture Constraints
+### Architecture Patterns
 
-1. **No Code Duplication**: All OIC functionality must use centralized components from flext-meltano
-2. **FlextResult Pattern**: All operations must return FlextResult for consistent error handling
-3. **Dependency Injection**: Use flext-core DI container for dependencies
-4. **Configuration**: Use flext-core BaseSettings patterns
-5. **Logging**: Use flext-core FlextLoggerFactory
+1. **EXTENSION Pattern**: Standardized structure for Oracle OIC functionality
+2. **FlextResult Pattern**: Railway-oriented programming for error handling
+3. **FlextSettings**: Pydantic-based configuration with validation
+4. **Clean Architecture**: Clear separation between domain, application, and infrastructure layers
 
-## Integration with FLEXT Ecosystem
+## Development Patterns
 
-### Dependencies
-
-- **flext-core**: Foundation patterns, FlextResult, DI container, logging
-- **flext-meltano**: Centralized OIC extension implementation
-- **pydantic**: Data validation and settings management
-- **requests/httpx**: HTTP client operations
-- **tenacity**: Retry logic and resilience patterns
-
-### Ecosystem Role
-
-This project serves as the OIC extension library within the FLEXT ecosystem, providing:
-
-- Oracle Integration Cloud REST API integration
-- Enterprise integration patterns implementation
-- Workflow orchestration capabilities
-- Authentication and security patterns
-- Monitoring and observability features
-
-## Common Patterns
-
-### FlextResult Usage
+### Using FlextResult
 
 ```python
 from flext_core import FlextResult
+from flext_oracle_oic_ext import OracleOICExtensionService
 
-def process_integration() -> FlextResult[IntegrationData]:
-    try:
-        result = perform_operation()
-        return FlextResult.ok(result)
-    except Exception as e:
-        return FlextResult.fail(f"Operation failed: {e}")
+def process_oic_integration() -> FlextResult[str]:
+    service = OracleOICExtensionService(settings)
+    return service.process_integration()
 ```
 
-### Configuration Pattern
+### Configuration Usage
 
 ```python
-from flext_oracle_oic_ext.config import OracleOICExtensionSettings
+from flext_oracle_oic_ext import OracleOICExtensionSettings
 
+# Auto-loads from environment variables
 settings = OracleOICExtensionSettings()
-# Configuration automatically loaded from environment variables
+
+# Access nested configurations
+connection_config = settings.connection
+auth_config = settings.auth
 ```
 
-### OIC Authentication
+### Service Initialization
 
 ```python
-from flext_oracle_oic_ext.oic_patterns import OICTapAuthenticator, OICConnectionConfig
+from flext_oracle_oic_ext import (
+    create_oic_extension_service,
+    create_development_oic_service
+)
 
-auth = OICTapAuthenticator(auth_config)
-token_result = auth.get_access_token()
-if token_result.success:
-    # Use token for API calls
-    token = token_result.data
+# Production service
+service_result = create_oic_extension_service()
+if service_result.is_success():
+    service = service_result.value
+
+# Development service
+dev_service_result = create_development_oic_service()
 ```
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Authentication Failures**: Check OAuth2 credentials and token URL
-2. **API Timeouts**: Verify OIC instance accessibility and network connectivity
-3. **Import Errors**: Ensure flext-meltano dependency is properly installed
-4. **Configuration Issues**: Validate config.JSON format and required fields
+1. **Import Errors**: Check flext-core dependency installation
+2. **Configuration Validation**: Use Pydantic validation for settings
+3. **Type Errors**: Run `make type-check` for MyPy issues
+4. **Test Failures**: Use `make test` for coverage validation
 
-### Debug Commands
+### Diagnostic Commands
 
 ```bash
-# Test OIC connectivity
-make oic-test
+# Project health check
+make doctor
 
 # Validate configuration
-poetry run python -c "from flext_oracle_oic_ext.config import OracleOICExtensionSettings; print(OracleOICExtensionSettings())"
+poetry run python -c "from flext_oracle_oic_ext import OracleOICExtensionSettings; print(OracleOICExtensionSettings())"
 
-# Check dependencies
-poetry show --tree
+# Check dependency issues
 make deps-audit
+
+# Full validation pipeline
+make validate
 ```
+
+## Dependencies
+
+### Core FLEXT Dependencies
+
+- **flext-core**: Foundation patterns, FlextResult, FlextSettings, logging
+- **flext-observability**: Monitoring and observability (path dependency)
+
+### External Dependencies
+
+- **pydantic**: Data validation and settings management
+- **httpx**: Modern HTTP client for API operations
+- **tenacity**: Retry logic and resilience patterns
+- **typer**: CLI framework for command-line interface

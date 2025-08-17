@@ -41,7 +41,7 @@ class OICExtensionAuthConfig(FlextSettings):
     oauth_client_id: str = "default_client_id"
     oauth_client_secret: str = "default_client_" + "secret_value"
     oauth_token_url: str = (
-        "https://idcs-tenant.identity.oraclecloud.com/" + "oauth2/v1/token"
+      "https://idcs-tenant.identity.oraclecloud.com/" + "oauth2/v1/token"
     )
     oauth_client_aud: str | None = None
     oauth_scope: str = ""

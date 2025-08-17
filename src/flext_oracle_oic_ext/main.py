@@ -51,30 +51,30 @@ def test_connection() -> None:
     com validação de autenticação e configuração.
     """
     try:
-        logger.info("Testing Oracle OIC connection...")
+      logger.info("Testing Oracle OIC connection...")
 
-        # Create development service for testing
-        service_result = create_development_oic_service()
-        if not service_result.success:
-            _handle_service_error(f"Failed to create service: {service_result.error}")
+      # Create development service for testing
+      service_result = create_development_oic_service()
+      if not service_result.success:
+          _handle_service_error(f"Failed to create service: {service_result.error}")
 
-        service = service_result.data
-        if service is None:
-            _handle_service_error("Service is None")
+      service = service_result.data
+      if service is None:
+          _handle_service_error("Service is None")
 
-        # Test connection
-        with service:
-            connection_result = service.test_connection()
-            if connection_result.success:
-                logger.info("✅ Oracle OIC connection successful!")
-                typer.echo("✅ Connection to Oracle OIC established successfully")
-            else:
-                _handle_connection_error(
-                    f"❌ Connection failed: {connection_result.error}",
-                )
+      # Test connection
+      with service:
+          connection_result = service.test_connection()
+          if connection_result.success:
+              logger.info("✅ Oracle OIC connection successful!")
+              typer.echo("✅ Connection to Oracle OIC established successfully")
+          else:
+              _handle_connection_error(
+                  f"❌ Connection failed: {connection_result.error}",
+              )
 
     except Exception as e:
-        _handle_general_error("Connection test failed", e)
+      _handle_general_error("Connection test failed", e)
 
 
 @app.command("list-integrations")
@@ -85,45 +85,45 @@ def list_integrations() -> None:
     com informações detalhadas e status.
     """
     try:
-        logger.info("Listing Oracle OIC integrations...")
+      logger.info("Listing Oracle OIC integrations...")
 
-        # Create development service
-        service_result = create_development_oic_service()
-        if not service_result.success:
-            _handle_service_error(f"Failed to create service: {service_result.error}")
+      # Create development service
+      service_result = create_development_oic_service()
+      if not service_result.success:
+          _handle_service_error(f"Failed to create service: {service_result.error}")
 
-        service = service_result.data
-        if service is None:
-            _handle_service_error("Service is None")
+      service = service_result.data
+      if service is None:
+          _handle_service_error("Service is None")
 
-        # List integrations
-        with service:
-            integrations_result = service.list_integrations()
-            if integrations_result.success:
-                integrations = integrations_result.data or []
-                logger.info(f"Found {len(integrations)} integrations")
+      # List integrations
+      with service:
+          integrations_result = service.list_integrations()
+          if integrations_result.success:
+              integrations = integrations_result.data or []
+              logger.info(f"Found {len(integrations)} integrations")
 
-                if integrations:
-                    typer.echo("📋 Oracle OIC Integrations:")
-                    for integration in integrations:
-                        typer.echo(
-                            f"  • {integration.name} (ID: {integration.integration_id})",
-                        )
-                        typer.echo(
-                            f"    Status: {integration.status}, Version: {integration.version}",
-                        )
-                        if integration.description:
-                            typer.echo(f"    Description: {integration.description}")
-                        typer.echo("")
-                else:
-                    typer.echo("📋 No integrations found")
-            else:
-                _handle_connection_error(
-                    f"❌ Failed to list integrations: {integrations_result.error}",
-                )
+              if integrations:
+                  typer.echo("📋 Oracle OIC Integrations:")
+                  for integration in integrations:
+                      typer.echo(
+                          f"  • {integration.name} (ID: {integration.integration_id})",
+                      )
+                      typer.echo(
+                          f"    Status: {integration.status}, Version: {integration.version}",
+                      )
+                      if integration.description:
+                          typer.echo(f"    Description: {integration.description}")
+                      typer.echo("")
+              else:
+                  typer.echo("📋 No integrations found")
+          else:
+              _handle_connection_error(
+                  f"❌ Failed to list integrations: {integrations_result.error}",
+              )
 
     except Exception as e:
-        _handle_general_error("List integrations failed", e)
+      _handle_general_error("List integrations failed", e)
 
 
 @app.command("version")
@@ -140,14 +140,14 @@ def main() -> NoReturn:
     com comandos enterprise e logging estruturado.
     """
     try:
-        app()
-        sys.exit(0)  # Explicit exit for NoReturn
+      app()
+      sys.exit(0)  # Explicit exit for NoReturn
     except KeyboardInterrupt:
-        logger.info("Oracle OIC Extension CLI interrupted by user")
-        sys.exit(130)
+      logger.info("Oracle OIC Extension CLI interrupted by user")
+      sys.exit(130)
     except Exception:
-        logger.exception("Oracle OIC Extension CLI error")
-        sys.exit(1)
+      logger.exception("Oracle OIC Extension CLI error")
+      sys.exit(1)
 
 
 __all__: list[str] = ["app", "main"]

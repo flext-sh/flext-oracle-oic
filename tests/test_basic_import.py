@@ -1,7 +1,7 @@
 """Basic test to verify flext-extensions.oracle.flext-oracle-oic-ext imports work."""
 
 import flext_oracle_oic_ext
-from flext_oracle_oic_ext.config import OracleOICExtensionSettings
+from flext_oracle_oic_ext import OracleOICExtensionSettings
 
 
 def test_basic_import() -> None:

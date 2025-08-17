@@ -12,8 +12,7 @@ from pathlib import Path
 import pytest
 
 import flext_oracle_oic_ext
-from flext_oracle_oic_ext.api import setup_oic_extension
-from flext_oracle_oic_ext.config import OracleOICExtensionSettings
+from flext_oracle_oic_ext import OracleOICExtensionSettings, setup_oic_extension
 
 
 def test_module_imports() -> None:
@@ -24,278 +23,278 @@ def test_module_imports() -> None:
 def test_basic_functionality() -> None:
     """Test basic module functionality."""
     with contextlib.suppress(ImportError, AttributeError):
-        # Basic smoke test
-        assert hasattr(flext_oracle_oic_ext, "__file__")
+      # Basic smoke test
+      assert hasattr(flext_oracle_oic_ext, "__file__")
 
 
 class TestConfigGeneration:
     """Test configuration generation functionality."""
 
     def test_config_creation_from_dict(self) -> None:
-        """Test creating configuration from dictionary."""
-        config_dict = {
-            "base_url": "https://test.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id",
-            "oauth_client_secret": "test_client_secret",
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-            "environment": "test",
-            "log_level": "DEBUG",
-            "debug": True,
-        }
+      """Test creating configuration from dictionary."""
+      config_dict = {
+          "base_url": "https://test.integration.ocp.oraclecloud.com",
+          "oauth_client_id": "test_client_id",
+          "oauth_client_secret": "test_client_secret",
+          "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+          "environment": "test",
+          "log_level": "DEBUG",
+          "debug": True,
+      }
 
-        settings = OracleOICExtensionSettings(**config_dict)
+      settings = OracleOICExtensionSettings(**config_dict)
 
-        assert settings.connection is not None
-        if settings.connection.base_url != config_dict["base_url"]:
-            msg: str = f"Expected {config_dict['base_url']}, got {settings.connection.base_url}"
-            raise AssertionError(
-                msg,
-            )
-        assert settings.connection.oauth_client_id == config_dict["oauth_client_id"]
-        if settings.environment != "test":
-            msg: str = f"Expected {'test'}, got {settings.environment}"
-            raise AssertionError(msg)
-        assert settings.log_level == "DEBUG"
-        if not (settings.debug):
-            msg: str = f"Expected True, got {settings.debug}"
-            raise AssertionError(msg)
+      assert settings.connection is not None
+      if settings.connection.base_url != config_dict["base_url"]:
+          msg: str = f"Expected {config_dict['base_url']}, got {settings.connection.base_url}"
+          raise AssertionError(
+              msg,
+          )
+      assert settings.connection.oauth_client_id == config_dict["oauth_client_id"]
+      if settings.environment != "test":
+          msg: str = f"Expected {'test'}, got {settings.environment}"
+          raise AssertionError(msg)
+      assert settings.log_level == "DEBUG"
+      if not (settings.debug):
+          msg: str = f"Expected True, got {settings.debug}"
+          raise AssertionError(msg)
 
     def test_config_to_dict_conversion(self) -> None:
-        """Test converting configuration to dictionary."""
-        config_dict = {
-            "base_url": "https://test.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id",
-            "oauth_client_secret": "test_client_secret",
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-        }
+      """Test converting configuration to dictionary."""
+      config_dict = {
+          "base_url": "https://test.integration.ocp.oraclecloud.com",
+          "oauth_client_id": "test_client_id",
+          "oauth_client_secret": "test_client_secret",
+          "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+      }
 
-        settings = OracleOICExtensionSettings(**config_dict)
-        result_dict = settings.to_dict()
+      settings = OracleOICExtensionSettings(**config_dict)
+      result_dict = settings.to_dict()
 
-        if result_dict["base_url"] != config_dict["base_url"]:
-            msg: str = (
-                f"Expected {config_dict['base_url']}, got {result_dict['base_url']}"
-            )
-            raise AssertionError(
-                msg,
-            )
-        assert result_dict["oauth_client_id"] == config_dict["oauth_client_id"]
-        if "environment" not in result_dict:
-            msg: str = f"Expected {'environment'} in {result_dict}"
-            raise AssertionError(msg)
+      if result_dict["base_url"] != config_dict["base_url"]:
+          msg: str = (
+              f"Expected {config_dict['base_url']}, got {result_dict['base_url']}"
+          )
+          raise AssertionError(
+              msg,
+          )
+      assert result_dict["oauth_client_id"] == config_dict["oauth_client_id"]
+      if "environment" not in result_dict:
+          msg: str = f"Expected {'environment'} in {result_dict}"
+          raise AssertionError(msg)
 
     def test_config_validation(self) -> None:
-        """Test configuration validation."""
-        # Valid configuration
-        valid_config = {
-            "base_url": "https://valid.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "valid_client_id",
-            "oauth_client_secret": "valid_client_secret",
-            "oauth_token_url": "https://valid.identity.oraclecloud.com/oauth2/v1/token",
-        }
+      """Test configuration validation."""
+      # Valid configuration
+      valid_config = {
+          "base_url": "https://valid.integration.ocp.oraclecloud.com",
+          "oauth_client_id": "valid_client_id",
+          "oauth_client_secret": "valid_client_secret",
+          "oauth_token_url": "https://valid.identity.oraclecloud.com/oauth2/v1/token",
+      }
 
-        settings = OracleOICExtensionSettings(**valid_config)
-        assert settings.connection is not None
-        assert settings.connection.base_url.startswith("https://")
+      settings = OracleOICExtensionSettings(**valid_config)
+      assert settings.connection is not None
+      assert settings.connection.base_url.startswith("https://")
 
-        # Invalid URL validation
-        with pytest.raises(ValueError, match=".*invalid.*"):
-            self._create_invalid_config(valid_config)
+      # Invalid URL validation
+      with pytest.raises(ValueError, match=".*invalid.*"):
+          self._create_invalid_config(valid_config)
 
     def test_auth_config_extraction(self) -> None:
-        """Test authentication configuration extraction."""
-        config_dict = {
-            "base_url": "https://test.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id",
-            "oauth_client_secret": "test_client_secret",
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-            "oauth_scope": "test_scope",
-        }
+      """Test authentication configuration extraction."""
+      config_dict = {
+          "base_url": "https://test.integration.ocp.oraclecloud.com",
+          "oauth_client_id": "test_client_id",
+          "oauth_client_secret": "test_client_secret",
+          "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+          "oauth_scope": "test_scope",
+      }
 
-        settings = OracleOICExtensionSettings(**config_dict)
-        auth_config = settings.get_auth_config()
+      settings = OracleOICExtensionSettings(**config_dict)
+      auth_config = settings.get_auth_config()
 
-        if auth_config["oauth_client_id"] != "test_client_id":
-            msg: str = (
-                f"Expected {'test_client_id'}, got {auth_config['oauth_client_id']}"
-            )
-            raise AssertionError(
-                msg,
-            )
-        assert auth_config["oauth_client_secret"] == "test_client_secret"
-        if auth_config["oauth_token_url"] != config_dict["oauth_token_url"]:
-            msg: str = f"Expected {config_dict['oauth_token_url']}, got {auth_config['oauth_token_url']}"
-            raise AssertionError(
-                msg,
-            )
-        assert auth_config["oauth_scope"] == "test_scope"
+      if auth_config["oauth_client_id"] != "test_client_id":
+          msg: str = (
+              f"Expected {'test_client_id'}, got {auth_config['oauth_client_id']}"
+          )
+          raise AssertionError(
+              msg,
+          )
+      assert auth_config["oauth_client_secret"] == "test_client_secret"
+      if auth_config["oauth_token_url"] != config_dict["oauth_token_url"]:
+          msg: str = f"Expected {config_dict['oauth_token_url']}, got {auth_config['oauth_token_url']}"
+          raise AssertionError(
+              msg,
+          )
+      assert auth_config["oauth_scope"] == "test_scope"
 
     def test_default_configuration_values(self) -> None:
-        """Test default configuration values."""
-        minimal_config = {
-            "base_url": "https://test.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id",
-            "oauth_client_secret": "test_client_secret",
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-        }
+      """Test default configuration values."""
+      minimal_config = {
+          "base_url": "https://test.integration.ocp.oraclecloud.com",
+          "oauth_client_id": "test_client_id",
+          "oauth_client_secret": "test_client_secret",
+          "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+      }
 
-        settings = OracleOICExtensionSettings(**minimal_config)
+      settings = OracleOICExtensionSettings(**minimal_config)
 
-        # Check default values
-        if settings.environment != "test":
-            msg: str = f"Expected {'test'}, got {settings.environment}"
-            raise AssertionError(msg)
-        assert settings.log_level == "INFO"
-        if settings.debug:
-            msg: str = f"Expected False, got {settings.debug}"
-            raise AssertionError(msg)
-        assert settings.lifecycle.auto_activate is False
-        if not (settings.monitoring.enable_monitoring):
-            msg: str = f"Expected True, got {settings.monitoring.enable_monitoring}"
-            raise AssertionError(
-                msg,
-            )
+      # Check default values
+      if settings.environment != "test":
+          msg: str = f"Expected {'test'}, got {settings.environment}"
+          raise AssertionError(msg)
+      assert settings.log_level == "INFO"
+      if settings.debug:
+          msg: str = f"Expected False, got {settings.debug}"
+          raise AssertionError(msg)
+      assert settings.lifecycle.auto_activate is False
+      if not (settings.monitoring.enable_monitoring):
+          msg: str = f"Expected True, got {settings.monitoring.enable_monitoring}"
+          raise AssertionError(
+              msg,
+          )
 
     def test_performance_config_defaults(self) -> None:
-        """Test performance configuration defaults."""
-        config_dict = {
-            "base_url": "https://test.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id",
-            "oauth_client_secret": "test_client_secret",
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-        }
+      """Test performance configuration defaults."""
+      config_dict = {
+          "base_url": "https://test.integration.ocp.oraclecloud.com",
+          "oauth_client_id": "test_client_id",
+          "oauth_client_secret": "test_client_secret",
+          "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+      }
 
-        settings = OracleOICExtensionSettings(**config_dict)
+      settings = OracleOICExtensionSettings(**config_dict)
 
-        if settings.performance.request_timeout < 10:
-            msg: str = f"Expected {settings.performance.request_timeout} >= {10}"
-            raise AssertionError(
-                msg,
-            )
-        assert settings.performance.max_retries >= 0
-        if settings.performance.batch_size < 1:
-            msg: str = f"Expected {settings.performance.batch_size} >= {1}"
-            raise AssertionError(msg)
-        assert settings.performance.max_concurrent_requests >= 1
+      if settings.performance.request_timeout < 10:
+          msg: str = f"Expected {settings.performance.request_timeout} >= {10}"
+          raise AssertionError(
+              msg,
+          )
+      assert settings.performance.max_retries >= 0
+      if settings.performance.batch_size < 1:
+          msg: str = f"Expected {settings.performance.batch_size} >= {1}"
+          raise AssertionError(msg)
+      assert settings.performance.max_concurrent_requests >= 1
 
     def test_extraction_config_setup(self) -> None:
-        """Test extraction configuration setup."""
-        config_dict = {
-            "base_url": "https://test.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id",
-            "oauth_client_secret": "test_client_secret",
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-            "artifact_directory": "./test_artifacts",
-        }
+      """Test extraction configuration setup."""
+      config_dict = {
+          "base_url": "https://test.integration.ocp.oraclecloud.com",
+          "oauth_client_id": "test_client_id",
+          "oauth_client_secret": "test_client_secret",
+          "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+          "artifact_directory": "./test_artifacts",
+      }
 
-        settings = OracleOICExtensionSettings(**config_dict)
+      settings = OracleOICExtensionSettings(**config_dict)
 
-        if not (settings.extraction.extract_artifacts):
-            msg: str = f"Expected True, got {settings.extraction.extract_artifacts}"
-            raise AssertionError(
-                msg,
-            )
-        assert settings.extraction.extract_logs is True
-        if not (settings.extraction.extract_metadata):
-            msg: str = f"Expected True, got {settings.extraction.extract_metadata}"
-            raise AssertionError(
-                msg,
-            )
-        if "./test_artifacts" not in settings.extraction.artifact_directory:
-            msg: str = f"Expected {'./test_artifacts'} in {settings.extraction.artifact_directory}"
-            raise AssertionError(
-                msg,
-            )
+      if not (settings.extraction.extract_artifacts):
+          msg: str = f"Expected True, got {settings.extraction.extract_artifacts}"
+          raise AssertionError(
+              msg,
+          )
+      assert settings.extraction.extract_logs is True
+      if not (settings.extraction.extract_metadata):
+          msg: str = f"Expected True, got {settings.extraction.extract_metadata}"
+          raise AssertionError(
+              msg,
+          )
+      if "./test_artifacts" not in settings.extraction.artifact_directory:
+          msg: str = f"Expected {'./test_artifacts'} in {settings.extraction.artifact_directory}"
+          raise AssertionError(
+              msg,
+          )
 
     @pytest.mark.parametrize(
-        ("environment", "expected_debug"),
-        [
-            ("development", True),
-            ("test", False),
-            ("staging", False),
-            ("production", False),
-        ],
+      ("environment", "expected_debug"),
+      [
+          ("development", True),
+          ("test", False),
+          ("staging", False),
+          ("production", False),
+      ],
     )
     def test_environment_specific_defaults(
-        self,
-        environment: str,
-        *,
-        expected_debug: bool,
+      self,
+      environment: str,
+      *,
+      expected_debug: bool,
     ) -> None:
-        """Test environment-specific default values."""
-        config_dict = {
-            "base_url": "https://test.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id",
-            "oauth_client_secret": "test_client_secret",
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-            "environment": environment,
-        }
+      """Test environment-specific default values."""
+      config_dict = {
+          "base_url": "https://test.integration.ocp.oraclecloud.com",
+          "oauth_client_id": "test_client_id",
+          "oauth_client_secret": "test_client_secret",
+          "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+          "environment": environment,
+      }
 
-        settings = OracleOICExtensionSettings(**config_dict)
-        if settings.environment != environment:
-            msg: str = f"Expected {environment}, got {settings.environment}"
-            raise AssertionError(msg)
+      settings = OracleOICExtensionSettings(**config_dict)
+      if settings.environment != environment:
+          msg: str = f"Expected {environment}, got {settings.environment}"
+          raise AssertionError(msg)
 
     def test_artifact_directory_creation(self) -> None:
-        """Test artifact directory creation during validation."""
-        with tempfile.TemporaryDirectory() as temp_dir:
-            artifact_dir = Path(temp_dir) / "test_artifacts"
+      """Test artifact directory creation during validation."""
+      with tempfile.TemporaryDirectory() as temp_dir:
+          artifact_dir = Path(temp_dir) / "test_artifacts"
 
-            config_dict = {
-                "base_url": "https://test.integration.ocp.oraclecloud.com",
-                "oauth_client_id": "test_client_id",
-                "oauth_client_secret": "test_client_secret",
-                "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-                "artifact_directory": str(artifact_dir),
-            }
+          config_dict = {
+              "base_url": "https://test.integration.ocp.oraclecloud.com",
+              "oauth_client_id": "test_client_id",
+              "oauth_client_secret": "test_client_secret",
+              "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+              "artifact_directory": str(artifact_dir),
+          }
 
-            OracleOICExtensionSettings(config_dict)
+          OracleOICExtensionSettings(config_dict)
 
-            # Directory should be created during validation
-            assert artifact_dir.exists()
+          # Directory should be created during validation
+          assert artifact_dir.exists()
 
     def test_oauth_scope_auto_generation(self) -> None:
-        """Test automatic OAuth scope generation."""
-        config_dict = {
-            "base_url": "https://test.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id",
-            "oauth_client_secret": "test_client_secret",
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-            # No oauth_scope provided
-        }
+      """Test automatic OAuth scope generation."""
+      config_dict = {
+          "base_url": "https://test.integration.ocp.oraclecloud.com",
+          "oauth_client_id": "test_client_id",
+          "oauth_client_secret": "test_client_secret",
+          "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+          # No oauth_scope provided
+      }
 
-        settings = OracleOICExtensionSettings(**config_dict)
+      settings = OracleOICExtensionSettings(**config_dict)
 
-        # Should auto-generate scope based on base URL
-        assert settings.connection is not None
-        assert settings.connection.oauth_scope is not None
-        if "urn:opc:resource:consumer:all" not in settings.connection.oauth_scope:
-            msg: str = f"Expected {'urn:opc:resource:consumer:all'} in {settings.connection.oauth_scope}"
-            raise AssertionError(
-                msg,
-            )
+      # Should auto-generate scope based on base URL
+      assert settings.connection is not None
+      assert settings.connection.oauth_scope is not None
+      if "urn:opc:resource:consumer:all" not in settings.connection.oauth_scope:
+          msg: str = f"Expected {'urn:opc:resource:consumer:all'} in {settings.connection.oauth_scope}"
+          raise AssertionError(
+              msg,
+          )
 
     def _create_invalid_config(self, valid_config: dict[str, object]) -> None:
-        """Helper function to create invalid configuration for testing."""
-        invalid_config = valid_config.copy()
-        invalid_config["base_url"] = "invalid-url"
-        OracleOICExtensionSettings(**invalid_config)
+      """Helper function to create invalid configuration for testing."""
+      invalid_config = valid_config.copy()
+      invalid_config["base_url"] = "invalid-url"
+      OracleOICExtensionSettings(**invalid_config)
 
 
 class TestBasicCoverage:
     """Basic coverage tests."""
 
     def test_module_attributes(self) -> None:
-        """Test module has expected attributes."""
-        with contextlib.suppress(ImportError):
-            assert flext_oracle_oic_ext
+      """Test module has expected attributes."""
+      with contextlib.suppress(ImportError):
+          assert flext_oracle_oic_ext
 
     def test_config_imports(self) -> None:
-        """Test configuration module imports correctly."""
-        with contextlib.suppress(ImportError):
-            assert OracleOICExtensionSettings is not None
+      """Test configuration module imports correctly."""
+      with contextlib.suppress(ImportError):
+          assert OracleOICExtensionSettings is not None
 
     def test_simple_api_imports(self) -> None:
-        """Test simple API module imports correctly."""
-        with contextlib.suppress(ImportError):
-            assert setup_oic_extension is not None
+      """Test simple API module imports correctly."""
+      with contextlib.suppress(ImportError):
+          assert setup_oic_extension is not None

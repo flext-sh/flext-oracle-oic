@@ -9,20 +9,14 @@ from __future__ import annotations
 
 import base64
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, Self
+from typing import Any, Self
 
 import httpx
 from flext_core import FlextResult, get_logger
 
-if TYPE_CHECKING:
-    from flext_oracle_oic_ext.ext_models import (
-        OICAuthConfig,
-        OICConnectionConfig,
-    )
+from flext_oracle_oic_ext.ext_models import OICAuthConfig, OICConnectionConfig
 
 logger = get_logger(__name__)
-
-
 # ================================
 # EXTENSION Pattern: Base Classes
 # ================================
@@ -36,125 +30,125 @@ class BaseOICAuthenticator(ABC):
     """
 
     def __init__(self, auth_config: OICAuthConfig) -> None:
-        """Initialize OIC authenticator.
+      """Initialize OIC authenticator.
 
-        Args:
-            auth_config: OIC authentication configuration
+      Args:
+          auth_config: OIC authentication configuration
 
-        """
-        self.auth_config = auth_config
-        self.logger = get_logger(f"{__name__}.{self.__class__.__name__}")
-        self._access_token: str | None = None
+      """
+      self.auth_config = auth_config
+      self.logger = get_logger(f"{__name__}.{self.__class__.__name__}")
+      self._access_token: str | None = None
 
     @abstractmethod
     def get_oauth_scopes(self) -> str:
-        """Get OAuth2 scopes for authentication.
+      """Get OAuth2 scopes for authentication.
 
-        Returns:
-            OAuth2 scope string
+      Returns:
+          OAuth2 scope string
 
-        """
+      """
 
     def build_oauth_scopes(self, client_aud: str | None = None) -> str:
-        """Build OAuth2 scopes for Oracle Integration Cloud.
+      """Build OAuth2 scopes for Oracle Integration Cloud.
 
-        Args:
-            client_aud: OAuth2 audience (auto-detected if not provided)
+      Args:
+          client_aud: OAuth2 audience (auto-detected if not provided)
 
-        Returns:
-            OAuth2 scope string
+      Returns:
+          OAuth2 scope string
 
-        """
-        audience = client_aud or self.auth_config.oauth_client_aud
+      """
+      audience = client_aud or self.auth_config.oauth_client_aud
 
-        if audience:
-            # Build scope like: "audience:443urn:opc:resource:consumer:all audience:443/ic/api/"
-            resource_aud = f"{audience}:443urn:opc:resource:consumer:all"
-            api_aud = f"{audience}:443/ic/api/"
-            return f"{resource_aud} {api_aud}"
-        # Fallback to simple scope
-        return self.auth_config.oauth_scope or "urn:opc:resource:consumer:all"
+      if audience:
+          # Build scope like: "audience:443urn:opc:resource:consumer:all audience:443/ic/api/"
+          resource_aud = f"{audience}:443urn:opc:resource:consumer:all"
+          api_aud = f"{audience}:443/ic/api/"
+          return f"{resource_aud} {api_aud}"
+      # Fallback to simple scope
+      return self.auth_config.oauth_scope or "urn:opc:resource:consumer:all"
 
     def get_oauth_request_body(self) -> dict[str, Any]:
-        """Generate OAuth2 request body for client credentials flow.
+      """Generate OAuth2 request body for client credentials flow.
 
-        Returns:
-            Dict containing grant_type and scope for OAuth2 token request
+      Returns:
+          Dict containing grant_type and scope for OAuth2 token request
 
-        """
-        return {
-            "grant_type": "client_credentials",
-            "scope": self.get_oauth_scopes(),
-        }
+      """
+      return {
+          "grant_type": "client_credentials",
+          "scope": self.get_oauth_scopes(),
+      }
 
     def encode_client_credentials(self) -> str:
-        """Encode client credentials for HTTP Basic authentication.
+      """Encode client credentials for HTTP Basic authentication.
 
-        Returns:
-            Base64 encoded client credentials
+      Returns:
+          Base64 encoded client credentials
 
-        """
-        client_id = self.auth_config.oauth_client_id
-        client_secret = self.auth_config.oauth_client_secret.get_secret_value()
+      """
+      client_id = self.auth_config.oauth_client_id
+      client_secret = self.auth_config.oauth_client_secret.get_secret_value()
 
-        credentials = f"{client_id}:{client_secret}"
-        return base64.b64encode(credentials.encode()).decode()
+      credentials = f"{client_id}:{client_secret}"
+      return base64.b64encode(credentials.encode()).decode()
 
     def get_access_token(self) -> FlextResult[str]:  # noqa: PLR0911
-        """Get access token using OAuth2 client credentials flow.
+      """Get access token using OAuth2 client credentials flow.
 
-        Returns:
-            FlextResult containing access token or error
+      Returns:
+          FlextResult containing access token or error
 
-        """
-        try:
-            if not self.auth_config.oauth_token_url:
-                return FlextResult.fail("OAuth token URL not configured")
+      """
+      try:
+          if not self.auth_config.oauth_token_url:
+              return FlextResult.fail("OAuth token URL not configured")
 
-            # Encode client credentials for HTTP Basic authentication
-            encoded_credentials = self.encode_client_credentials()
+          # Encode client credentials for HTTP Basic authentication
+          encoded_credentials = self.encode_client_credentials()
 
-            headers = {
-                "Authorization": f"Basic {encoded_credentials}",
-                "Content-Type": "application/x-www-form-urlencoded",
-            }
+          headers = {
+              "Authorization": f"Basic {encoded_credentials}",
+              "Content-Type": "application/x-www-form-urlencoded",
+          }
 
-            # Make token request using httpx
-            with httpx.Client() as client:
-                response = client.post(
-                    self.auth_config.oauth_token_url,
-                    headers=headers,
-                    data=self.get_oauth_request_body(),
-                    timeout=30,
-                )
-                response.raise_for_status()
+          # Make token request using httpx
+          with httpx.Client() as client:
+              response = client.post(
+                  self.auth_config.oauth_token_url,
+                  headers=headers,
+                  data=self.get_oauth_request_body(),
+                  timeout=30,
+              )
+              response.raise_for_status()
 
-                token_data = response.json()
-                self._access_token = token_data["access_token"]
+              token_data = response.json()
+              self._access_token = token_data["access_token"]
 
-                self.logger.info("OIC OAuth2 authentication successful")
-                return FlextResult.ok(self._access_token)
+              self.logger.info("OIC OAuth2 authentication successful")
+              return FlextResult.ok(self._access_token)
 
-        except httpx.TimeoutException as e:
-            error_msg = f"OIC OAuth2 authentication timeout: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult.fail(error_msg)
-        except httpx.HTTPStatusError as e:
-            error_msg = f"OIC OAuth2 authentication HTTP error: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult.fail(error_msg)
-        except httpx.RequestError as e:
-            error_msg = f"OIC OAuth2 authentication request failed: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult.fail(error_msg)
-        except KeyError as e:
-            error_msg = f"Invalid OAuth2 response format: missing {e}"
-            self.logger.exception(error_msg)
-            return FlextResult.fail(error_msg)
-        except Exception as e:
-            error_msg = f"OIC authentication error: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult.fail(error_msg)
+      except httpx.TimeoutException as e:
+          error_msg = f"OIC OAuth2 authentication timeout: {e}"
+          self.logger.exception(error_msg)
+          return FlextResult.fail(error_msg)
+      except httpx.HTTPStatusError as e:
+          error_msg = f"OIC OAuth2 authentication HTTP error: {e}"
+          self.logger.exception(error_msg)
+          return FlextResult.fail(error_msg)
+      except httpx.RequestError as e:
+          error_msg = f"OIC OAuth2 authentication request failed: {e}"
+          self.logger.exception(error_msg)
+          return FlextResult.fail(error_msg)
+      except KeyError as e:
+          error_msg = f"Invalid OAuth2 response format: missing {e}"
+          self.logger.exception(error_msg)
+          return FlextResult.fail(error_msg)
+      except Exception as e:
+          error_msg = f"OIC authentication error: {e}"
+          self.logger.exception(error_msg)
+          return FlextResult.fail(error_msg)
 
 
 class BaseOICClient(ABC):
@@ -165,228 +159,228 @@ class BaseOICClient(ABC):
     """
 
     def __init__(
-        self,
-        connection_config: OICConnectionConfig,
-        authenticator: BaseOICAuthenticator,
+      self,
+      connection_config: OICConnectionConfig,
+      authenticator: BaseOICAuthenticator,
     ) -> None:
-        """Initialize OIC client.
+      """Initialize OIC client.
 
-        Args:
-            connection_config: OIC connection configuration
-            authenticator: OIC authenticator instance
+      Args:
+          connection_config: OIC connection configuration
+          authenticator: OIC authenticator instance
 
-        """
-        self.connection_config = connection_config
-        self.authenticator = authenticator
-        self.logger = get_logger(f"{__name__}.{self.__class__.__name__}")
-        self._client: httpx.Client | None = None
+      """
+      self.connection_config = connection_config
+      self.authenticator = authenticator
+      self.logger = get_logger(f"{__name__}.{self.__class__.__name__}")
+      self._client: httpx.Client | None = None
 
     @abstractmethod
     def get_base_url(self) -> str:
-        """Get OIC API base URL."""
+      """Get OIC API base URL."""
 
     def get_authenticated_client(self) -> FlextResult[httpx.Client]:
-        """Get authenticated HTTP client.
+      """Get authenticated HTTP client.
 
-        Returns:
-            FlextResult containing authenticated client or error
+      Returns:
+          FlextResult containing authenticated client or error
 
-        """
-        try:
-            if not self._client:
-                # Get OAuth2 token
-                token_result = self.authenticator.get_access_token()
-                if not token_result.success:
-                    return FlextResult.fail(
-                        f"Authentication failed: {token_result.error}",
-                    )
+      """
+      try:
+          if not self._client:
+              # Get OAuth2 token
+              token_result = self.authenticator.get_access_token()
+              if not token_result.success:
+                  return FlextResult.fail(
+                      f"Authentication failed: {token_result.error}",
+                  )
 
-                # Create authenticated client
-                self._client = httpx.Client(
-                    headers={
-                        "Authorization": f"Bearer {token_result.data}",
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                    },
-                    timeout=self.connection_config.request_timeout,
-                    verify=self.connection_config.verify_ssl,
-                )
+              # Create authenticated client
+              self._client = httpx.Client(
+                  headers={
+                      "Authorization": f"Bearer {token_result.data}",
+                      "Content-Type": "application/json",
+                      "Accept": "application/json",
+                  },
+                  timeout=self.connection_config.request_timeout,
+                  verify=self.connection_config.verify_ssl,
+              )
 
-            return FlextResult.ok(self._client)
+          return FlextResult.ok(self._client)
 
-        except Exception as e:
-            error_msg = f"Failed to create authenticated client: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult.fail(error_msg)
+      except Exception as e:
+          error_msg = f"Failed to create authenticated client: {e}"
+          self.logger.exception(error_msg)
+          return FlextResult.fail(error_msg)
 
     def make_request(  # noqa: PLR0911
-        self,
-        method: str,
-        endpoint: str,
-        params: dict[str, str | int | float] | None = None,
-        data: dict[str, Any] | None = None,
-        json: dict[str, Any] | None = None,
+      self,
+      method: str,
+      endpoint: str,
+      params: dict[str, str | int | float] | None = None,
+      data: dict[str, Any] | None = None,
+      json: dict[str, Any] | None = None,
     ) -> FlextResult[dict[str, Any]]:
-        """Make authenticated request to OIC API.
+      """Make authenticated request to OIC API.
 
-        Args:
-            method: HTTP method
-            endpoint: API endpoint (relative to base URL)
-            params: Query parameters
-            data: Form data
-            json: JSON data
+      Args:
+          method: HTTP method
+          endpoint: API endpoint (relative to base URL)
+          params: Query parameters
+          data: Form data
+          json: JSON data
 
-        Returns:
-            FlextResult containing response data or error
+      Returns:
+          FlextResult containing response data or error
 
-        """
-        try:
-            # Get authenticated client
-            client_result = self.get_authenticated_client()
-            if not client_result.success:
-                return FlextResult.fail(client_result.error or "Client error")
+      """
+      try:
+          # Get authenticated client
+          client_result = self.get_authenticated_client()
+          if not client_result.success:
+              return FlextResult.fail(client_result.error or "Client error")
 
-            client = client_result.data
-            if client is None:
-                return FlextResult.fail("Failed to get client")
+          client = client_result.data
+          if client is None:
+              return FlextResult.fail("Failed to get client")
 
-            # Build full URL
-            url = self._build_request_url(endpoint)
+          # Build full URL
+          url = self._build_request_url(endpoint)
 
-            # Make request
-            response = client.request(
-                method=method,
-                url=url,
-                params=params,
-                data=data,
-                json=json,
-            )
-            response.raise_for_status()
+          # Make request
+          response = client.request(
+              method=method,
+              url=url,
+              params=params,
+              data=data,
+              json=json,
+          )
+          response.raise_for_status()
 
-            # Parse response
-            if response.headers.get("content-type", "").startswith("application/json"):
-                return FlextResult.ok(response.json())
-            return FlextResult.ok({"raw_content": response.text})
+          # Parse response
+          if response.headers.get("content-type", "").startswith("application/json"):
+              return FlextResult.ok(response.json())
+          return FlextResult.ok({"raw_content": response.text})
 
-        except httpx.TimeoutException as e:
-            error_msg = f"OIC API request timeout: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult.fail(error_msg)
-        except httpx.HTTPStatusError as e:
-            return self._handle_http_error(e)
-        except httpx.RequestError as e:
-            error_msg = f"OIC API request failed: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult.fail(error_msg)
-        except Exception as e:
-            error_msg = f"OIC API client error: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult.fail(error_msg)
+      except httpx.TimeoutException as e:
+          error_msg = f"OIC API request timeout: {e}"
+          self.logger.exception(error_msg)
+          return FlextResult.fail(error_msg)
+      except httpx.HTTPStatusError as e:
+          return self._handle_http_error(e)
+      except httpx.RequestError as e:
+          error_msg = f"OIC API request failed: {e}"
+          self.logger.exception(error_msg)
+          return FlextResult.fail(error_msg)
+      except Exception as e:
+          error_msg = f"OIC API client error: {e}"
+          self.logger.exception(error_msg)
+          return FlextResult.fail(error_msg)
 
     def _build_request_url(self, endpoint: str) -> str:
-        """Build full request URL."""
-        base_url = self.get_base_url()
-        return (
-            f"{base_url}{endpoint}"
-            if endpoint.startswith("/")
-            else f"{base_url}/{endpoint}"
-        )
+      """Build full request URL."""
+      base_url = self.get_base_url()
+      return (
+          f"{base_url}{endpoint}"
+          if endpoint.startswith("/")
+          else f"{base_url}/{endpoint}"
+      )
 
     def _handle_http_error(
-        self,
-        e: httpx.HTTPStatusError,
+      self,
+      e: httpx.HTTPStatusError,
     ) -> FlextResult[dict[str, Any]]:
-        """Handle HTTP errors."""
-        try:
-            error_data = e.response.json()
-            error_msg = f"OIC API error: {error_data}"
-        except Exception:
-            error_msg = f"OIC API error: {e.response.text}"
+      """Handle HTTP errors."""
+      try:
+          error_data = e.response.json()
+          error_msg = f"OIC API error: {error_data}"
+      except Exception:
+          error_msg = f"OIC API error: {e.response.text}"
 
-        self.logger.error(error_msg)
-        return FlextResult.fail(error_msg)
+      self.logger.error(error_msg)
+      return FlextResult.fail(error_msg)
 
     def paginate_request(
-        self,
-        endpoint: str,
-        page_size: int = 100,
-        params: dict[str, str | int | float] | None = None,
+      self,
+      endpoint: str,
+      page_size: int = 100,
+      params: dict[str, str | int | float] | None = None,
     ) -> FlextResult[list[dict[str, Any]]]:
-        """Paginate through OIC API responses.
+      """Paginate through OIC API responses.
 
-        Args:
-            endpoint: API endpoint to paginate
-            page_size: Number of records per page
-            params: Additional query parameters
+      Args:
+          endpoint: API endpoint to paginate
+          page_size: Number of records per page
+          params: Additional query parameters
 
-        Returns:
-            FlextResult containing all paginated records or error
+      Returns:
+          FlextResult containing all paginated records or error
 
-        """
-        try:
-            all_records: list[dict[str, Any]] = []
-            offset = 0
-            base_params: dict[str, str | int | float] = params or {}
+      """
+      try:
+          all_records: list[dict[str, Any]] = []
+          offset = 0
+          base_params: dict[str, str | int | float] = params or {}
 
-            while True:
-                # Prepare pagination parameters
-                request_params = base_params.copy()
-                request_params.update(
-                    {
-                        "offset": offset,
-                        "limit": page_size,
-                    },
-                )
+          while True:
+              # Prepare pagination parameters
+              request_params = base_params.copy()
+              request_params.update(
+                  {
+                      "offset": offset,
+                      "limit": page_size,
+                  },
+              )
 
-                # Make request
-                response_result = self.make_request(
-                    "GET",
-                    endpoint,
-                    params=request_params,
-                )
-                if not response_result.success:
-                    return FlextResult.fail(response_result.error or "Request failed")
+              # Make request
+              response_result = self.make_request(
+                  "GET",
+                  endpoint,
+                  params=request_params,
+              )
+              if not response_result.success:
+                  return FlextResult.fail(response_result.error or "Request failed")
 
-                response_data = response_result.data
-                if response_data is None or not isinstance(response_data, dict):
-                    return FlextResult.fail("Invalid response data format")
+              response_data = response_result.data
+              if response_data is None or not isinstance(response_data, dict):
+                  return FlextResult.fail("Invalid response data format")
 
-                items_raw = response_data.get("items", [])
-                if not isinstance(items_raw, list):
-                    return FlextResult.fail("Invalid items format")
-                items = items_raw
+              items_raw = response_data.get("items", [])
+              if not isinstance(items_raw, list):
+                  return FlextResult.fail("Invalid items format")
+              items = items_raw
 
-                # Add items to collection
-                all_records.extend(items)
+              # Add items to collection
+              all_records.extend(items)
 
-                # Check if we have more pages
-                has_more = response_data.get("hasMore", False)
-                if not has_more or len(items) < page_size:
-                    break
+              # Check if we have more pages
+              has_more = response_data.get("hasMore", False)
+              if not has_more or len(items) < page_size:
+                  break
 
-                offset += page_size
+              offset += page_size
 
-            return FlextResult.ok(all_records)
+          return FlextResult.ok(all_records)
 
-        except Exception as e:
-            error_msg = f"OIC pagination failed: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult.fail(error_msg)
+      except Exception as e:
+          error_msg = f"OIC pagination failed: {e}"
+          self.logger.exception(error_msg)
+          return FlextResult.fail(error_msg)
 
     def __enter__(self) -> Self:
-        """Context manager entry."""
-        return self
+      """Context manager entry."""
+      return self
 
     def __exit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_val: BaseException | None,
-        exc_tb: object,
+      self,
+      exc_type: type[BaseException] | None,
+      exc_val: BaseException | None,
+      exc_tb: object,
     ) -> None:
-        """Context manager exit."""
-        if self._client:
-            self._client.close()
-            self._client = None
+      """Context manager exit."""
+      if self._client:
+          self._client.close()
+          self._client = None
 
 
 # ================================
@@ -402,8 +396,8 @@ class OICExtensionAuthenticator(BaseOICAuthenticator):
     """
 
     def get_oauth_scopes(self) -> str:
-        """Get OAuth2 scopes for OIC Extension."""
-        return self.build_oauth_scopes()
+      """Get OAuth2 scopes for OIC Extension."""
+      return self.build_oauth_scopes()
 
 
 class OICTapAuthenticator(BaseOICAuthenticator):
@@ -414,8 +408,8 @@ class OICTapAuthenticator(BaseOICAuthenticator):
     """
 
     def get_oauth_scopes(self) -> str:
-        """Get OAuth2 scopes for OIC Tap."""
-        return self.build_oauth_scopes()
+      """Get OAuth2 scopes for OIC Tap."""
+      return self.build_oauth_scopes()
 
 
 class OICTargetAuthenticator(BaseOICAuthenticator):
@@ -426,8 +420,8 @@ class OICTargetAuthenticator(BaseOICAuthenticator):
     """
 
     def get_oauth_scopes(self) -> str:
-        """Get OAuth2 scopes for OIC Target."""
-        return self.build_oauth_scopes()
+      """Get OAuth2 scopes for OIC Target."""
+      return self.build_oauth_scopes()
 
 
 class OracleOICExtensionClient(BaseOICClient):
@@ -438,134 +432,134 @@ class OracleOICExtensionClient(BaseOICClient):
     """
 
     def get_base_url(self) -> str:
-        """Get OIC API base URL."""
-        return f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
+      """Get OIC API base URL."""
+      return f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
 
     def get_integrations(
-        self,
-        status_filter: list[str] | None = None,
-        page_size: int = 100,
+      self,
+      status_filter: list[str] | None = None,
+      page_size: int = 100,
     ) -> FlextResult[list[dict[str, Any]]]:
-        """Get integration flows from OIC.
+      """Get integration flows from OIC.
 
-        Args:
-            status_filter: Filter integrations by status
-            page_size: Number of records per page
+      Args:
+          status_filter: Filter integrations by status
+          page_size: Number of records per page
 
-        Returns:
-            FlextResult containing integrations or error
+      Returns:
+          FlextResult containing integrations or error
 
-        """
-        params: dict[str, str | int | float] = {}
+      """
+      params: dict[str, str | int | float] = {}
 
-        if status_filter:
-            params["q"] = f"status in ({','.join(status_filter)})"
+      if status_filter:
+          params["q"] = f"status in ({','.join(status_filter)})"
 
-        return self.paginate_request(
-            "/integrations",
-            page_size=page_size,
-            params=params,
-        )
+      return self.paginate_request(
+          "/integrations",
+          page_size=page_size,
+          params=params,
+      )
 
     def get_connections(
-        self,
-        type_filter: list[str] | None = None,
-        page_size: int = 100,
+      self,
+      type_filter: list[str] | None = None,
+      page_size: int = 100,
     ) -> FlextResult[list[dict[str, Any]]]:
-        """Get adapter connections from OIC.
+      """Get adapter connections from OIC.
 
-        Args:
-            type_filter: Filter connections by adapter type
-            page_size: Number of records per page
+      Args:
+          type_filter: Filter connections by adapter type
+          page_size: Number of records per page
 
-        Returns:
-            FlextResult containing connections or error
+      Returns:
+          FlextResult containing connections or error
 
-        """
-        params: dict[str, str | int | float] = {}
+      """
+      params: dict[str, str | int | float] = {}
 
-        if type_filter:
-            params["q"] = f"adapterType in ({','.join(type_filter)})"
+      if type_filter:
+          params["q"] = f"adapterType in ({','.join(type_filter)})"
 
-        return self.paginate_request("/connections", page_size=page_size, params=params)
+      return self.paginate_request("/connections", page_size=page_size, params=params)
 
     def get_packages(
-        self,
-        page_size: int = 100,
+      self,
+      page_size: int = 100,
     ) -> FlextResult[list[dict[str, Any]]]:
-        """Get integration packages from OIC.
+      """Get integration packages from OIC.
 
-        Args:
-            page_size: Number of records per page
+      Args:
+          page_size: Number of records per page
 
-        Returns:
-            FlextResult containing packages or error
+      Returns:
+          FlextResult containing packages or error
 
-        """
-        return self.paginate_request("/packages", page_size=page_size)
+      """
+      return self.paginate_request("/packages", page_size=page_size)
 
     def get_lookups(
-        self,
-        page_size: int = 100,
+      self,
+      page_size: int = 100,
     ) -> FlextResult[list[dict[str, Any]]]:
-        """Get lookup tables from OIC.
+      """Get lookup tables from OIC.
 
-        Args:
-            page_size: Number of records per page
+      Args:
+          page_size: Number of records per page
 
-        Returns:
-            FlextResult containing lookups or error
+      Returns:
+          FlextResult containing lookups or error
 
-        """
-        return self.paginate_request("/lookups", page_size=page_size)
+      """
+      return self.paginate_request("/lookups", page_size=page_size)
 
     def create_integration(
-        self,
-        integration_data: dict[str, Any],
+      self,
+      integration_data: dict[str, Any],
     ) -> FlextResult[dict[str, Any]]:
-        """Create integration in OIC.
+      """Create integration in OIC.
 
-        Args:
-            integration_data: Integration configuration data
+      Args:
+          integration_data: Integration configuration data
 
-        Returns:
-            FlextResult containing created integration or error
+      Returns:
+          FlextResult containing created integration or error
 
-        """
-        return self.make_request("POST", "/integrations", json=integration_data)
+      """
+      return self.make_request("POST", "/integrations", json=integration_data)
 
     def update_integration(
-        self,
-        integration_id: str,
-        integration_data: dict[str, Any],
+      self,
+      integration_id: str,
+      integration_data: dict[str, Any],
     ) -> FlextResult[dict[str, Any]]:
-        """Update integration in OIC.
+      """Update integration in OIC.
 
-        Args:
-            integration_id: Integration ID to update
-            integration_data: Updated integration data
+      Args:
+          integration_id: Integration ID to update
+          integration_data: Updated integration data
 
-        Returns:
-            FlextResult containing updated integration or error
+      Returns:
+          FlextResult containing updated integration or error
 
-        """
-        endpoint = f"/integrations/{integration_id}"
-        return self.make_request("PUT", endpoint, json=integration_data)
+      """
+      endpoint = f"/integrations/{integration_id}"
+      return self.make_request("PUT", endpoint, json=integration_data)
 
     def create_connection(
-        self,
-        connection_data: dict[str, Any],
+      self,
+      connection_data: dict[str, Any],
     ) -> FlextResult[dict[str, Any]]:
-        """Create connection in OIC.
+      """Create connection in OIC.
 
-        Args:
-            connection_data: Connection configuration data
+      Args:
+          connection_data: Connection configuration data
 
-        Returns:
-            FlextResult containing created connection or error
+      Returns:
+          FlextResult containing created connection or error
 
-        """
-        return self.make_request("POST", "/connections", json=connection_data)
+      """
+      return self.make_request("POST", "/connections", json=connection_data)
 
 
 # Exports seguindo padrão EXTENSION
