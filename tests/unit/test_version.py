@@ -21,23 +21,23 @@ def test_version_module_functions() -> None:
 
     # Test that version functions are called from flext_core
     with (
-      patch("flext_core.version.get_version") as mock_get_version,
-      patch("flext_core.version.get_version_info") as mock_get_version_info,
+        patch("flext_core.version.get_version") as mock_get_version,
+        patch("flext_core.version.get_version_info") as mock_get_version_info,
     ):
-      mock_get_version.return_value = "0.9.0"
-      mock_get_version_info.return_value = (1, 0, 0)
+        mock_get_version.return_value = "0.9.0"
+        mock_get_version_info.return_value = (1, 0, 0)
 
-      # Re-import to trigger the version calls
+        # Re-import to trigger the version calls
 
-      module_name = "flext_oracle_oic_ext.__version__"
-      if module_name in sys.modules:
-          importlib.reload(sys.modules[module_name])
-      else:
-          importlib.import_module(module_name)
+        module_name = "flext_oracle_oic_ext.__version__"
+        if module_name in sys.modules:
+            importlib.reload(sys.modules[module_name])
+        else:
+            importlib.import_module(module_name)
 
-      # Verify the functions were called with correct package name
-      mock_get_version.assert_called_with("flext-oracle-oic-ext")
-      mock_get_version_info.assert_called_with("flext-oracle-oic-ext")
+        # Verify the functions were called with correct package name
+        mock_get_version.assert_called_with("flext-oracle-oic-ext")
+        mock_get_version_info.assert_called_with("flext-oracle-oic-ext")
 
 
 def test_version_attributes_exist() -> None:
@@ -56,6 +56,6 @@ def test_version_centralized_management() -> None:
     # Get module source to check for centralized management comment
     source = inspect.getsource(version_module)
     if "centralized version management" not in source.lower():
-      msg: str = f"Expected {'centralized version management'} in {source.lower()}"
-      raise AssertionError(msg)
+        msg: str = f"Expected {'centralized version management'} in {source.lower()}"
+        raise AssertionError(msg)
     assert "flext_core.version" in source

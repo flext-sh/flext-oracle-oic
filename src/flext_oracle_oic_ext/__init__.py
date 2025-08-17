@@ -71,15 +71,15 @@ class FlextOracleOicExtDeprecationWarning(DeprecationWarning):
 def _show_deprecation_warning(old_import: str, new_import: str) -> None:
     """Show deprecation warning for import paths."""
     message_parts = [
-      f"⚠️  DEPRECATED IMPORT: {old_import}",
-      f"✅ USE INSTEAD: {new_import}",
-      "🔗 This will be removed in version 1.0.0",
-      "📖 See FLEXT ORACLE OIC EXT docs for migration guide",
+        f"⚠️  DEPRECATED IMPORT: {old_import}",
+        f"✅ USE INSTEAD: {new_import}",
+        "🔗 This will be removed in version 1.0.0",
+        "📖 See FLEXT ORACLE OIC EXT docs for migration guide",
     ]
     warnings.warn(
-      "\n".join(message_parts),
-      FlextOracleOicExtDeprecationWarning,
-      stacklevel=3,
+        "\n".join(message_parts),
+        FlextOracleOicExtDeprecationWarning,
+        stacklevel=3,
     )
 
 
@@ -104,17 +104,17 @@ def create_oic_extension_service(
 
     """
     try:
-      if settings is None:
-          settings = OracleOICExtensionSettings()
+        if settings is None:
+            settings = OracleOICExtensionSettings()
 
-      service = OracleOICExtensionService(settings)
-      logger.info("OIC Extension service created successfully")
-      return FlextResult.ok(service)
+        service = OracleOICExtensionService(settings)
+        logger.info("OIC Extension service created successfully")
+        return FlextResult.ok(service)
 
     except Exception as e:
-      error_msg = f"Failed to create OIC Extension service: {e}"
-      logger.exception(error_msg)
-      return FlextResult.fail(error_msg)
+        error_msg = f"Failed to create OIC Extension service: {e}"
+        logger.exception(error_msg)
+        return FlextResult.fail(error_msg)
 
 
 def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
@@ -128,20 +128,20 @@ def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
 
     """
     try:
-      settings = OracleOICExtensionSettings(
-          environment="development",
-          log_level="DEBUG",
-          enable_monitoring=True,
-      )
+        settings = OracleOICExtensionSettings(
+            environment="development",
+            log_level="DEBUG",
+            enable_monitoring=True,
+        )
 
-      service = OracleOICExtensionService(settings)
-      logger.info("Development OIC Extension service created")
-      return FlextResult.ok(service)
+        service = OracleOICExtensionService(settings)
+        logger.info("Development OIC Extension service created")
+        return FlextResult.ok(service)
 
     except Exception as e:
-      error_msg = f"Failed to create development OIC service: {e}"
-      logger.exception(error_msg)
-      return FlextResult.fail(error_msg)
+        error_msg = f"Failed to create development OIC service: {e}"
+        logger.exception(error_msg)
+        return FlextResult.fail(error_msg)
 
 
 # ================================

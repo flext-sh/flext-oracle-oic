@@ -35,10 +35,10 @@ from flext_oracle_oic_ext.exceptions import (
 def _issue_deprecation_warning(legacy_name: str, modern_name: str) -> None:
     """Issue deprecation warning for legacy exception usage."""
     warnings.warn(
-      f"{legacy_name} is deprecated. Use {modern_name} from "
-      f"flext_oracle_oic_ext.exceptions instead.",
-      DeprecationWarning,
-      stacklevel=3,
+        f"{legacy_name} is deprecated. Use {modern_name} from "
+        f"flext_oracle_oic_ext.exceptions instead.",
+        DeprecationWarning,
+        stacklevel=3,
     )
 
 
@@ -63,7 +63,8 @@ def OICAuthenticationError(  # noqa: N802
 ) -> FlextOracleOicAuthenticationError:
     """Legacy OICAuthenticationError facade."""
     _issue_deprecation_warning(
-      "OICAuthenticationError", "FlextOracleOicAuthenticationError",
+        "OICAuthenticationError",
+        "FlextOracleOicAuthenticationError",
     )
     return FlextOracleOicAuthenticationError(message, code=code, context=context)
 
@@ -82,14 +83,14 @@ def OICTokenError(  # noqa: N802
     """Legacy OICTokenError facade."""
     _issue_deprecation_warning("OICTokenError", "FlextOracleOicOAuth2TokenError")
     return FlextOracleOicOAuth2TokenError(
-      message,
-      token_type=token_type,
-      client_id=client_id,
-      scope=scope,
-      grant_type=grant_type,
-      expires_in=expires_in,
-      code=code,
-      context=context,
+        message,
+        token_type=token_type,
+        client_id=client_id,
+        scope=scope,
+        grant_type=grant_type,
+        expires_in=expires_in,
+        code=code,
+        context=context,
     )
 
 
@@ -130,14 +131,14 @@ def OICAPIError(  # noqa: N802
     """Legacy OICAPIError facade."""
     _issue_deprecation_warning("OICAPIError", "FlextOracleOicApiRequestError")
     return FlextOracleOicApiRequestError(
-      message,
-      status_code=status_code,
-      response_body=response_body,
-      entity_name=entity_name,
-      endpoint=endpoint,
-      method=method,
-      code=code,
-      context=context,
+        message,
+        status_code=status_code,
+        response_body=response_body,
+        entity_name=entity_name,
+        endpoint=endpoint,
+        method=method,
+        code=code,
+        context=context,
     )
 
 
@@ -154,16 +155,17 @@ def OICValidationError(  # noqa: N802
 ) -> FlextOracleOicDataValidationError:
     """Legacy OICValidationError facade."""
     _issue_deprecation_warning(
-      "OICValidationError", "FlextOracleOicDataValidationError",
+        "OICValidationError",
+        "FlextOracleOicDataValidationError",
     )
     return FlextOracleOicDataValidationError(
-      message,
-      field_name=field_name,
-      field_value=field_value,
-      validation_rule=validation_rule,
-      entity_name=entity_name,
-      code=code,
-      context=context,
+        message,
+        field_name=field_name,
+        field_value=field_value,
+        validation_rule=validation_rule,
+        entity_name=entity_name,
+        code=code,
+        context=context,
     )
 
 
@@ -192,17 +194,18 @@ def OICWorkflowError(  # noqa: N802
 ) -> FlextOracleOicWorkflowExecutionError:
     """Legacy OICWorkflowError facade."""
     _issue_deprecation_warning(
-      "OICWorkflowError", "FlextOracleOicWorkflowExecutionError",
+        "OICWorkflowError",
+        "FlextOracleOicWorkflowExecutionError",
     )
     return FlextOracleOicWorkflowExecutionError(
-      message,
-      workflow_id=workflow_id,
-      execution_id=execution_id,
-      step_name=step_name,
-      status=status,
-      error_code=error_code,
-      code=code,
-      context=context,
+        message,
+        workflow_id=workflow_id,
+        execution_id=execution_id,
+        step_name=step_name,
+        status=status,
+        error_code=error_code,
+        code=code,
+        context=context,
     )
 
 
@@ -220,13 +223,13 @@ def OICConfigurationError(  # noqa: N802
     """Legacy OICConfigurationError facade."""
     _issue_deprecation_warning("OICConfigurationError", "FlextOracleOicConfigError")
     return FlextOracleOicConfigError(
-      message,
-      config_key=config_key,
-      config_value=config_value,
-      config_section=config_section,
-      valid_range=valid_range,
-      code=code,
-      context=context,
+        message,
+        config_key=config_key,
+        config_value=config_value,
+        config_section=config_section,
+        valid_range=valid_range,
+        code=code,
+        context=context,
     )
 
 
@@ -243,17 +246,18 @@ def OICPatternError(  # noqa: N802
 ) -> FlextOracleOicIntegrationPatternError:
     """Legacy OICPatternError facade."""
     _issue_deprecation_warning(
-      "OICPatternError", "FlextOracleOicIntegrationPatternError",
+        "OICPatternError",
+        "FlextOracleOicIntegrationPatternError",
     )
     return FlextOracleOicIntegrationPatternError(
-      message,
-      pattern_name=pattern_name,
-      pattern_type=pattern_type,
-      workflow_id=workflow_id,
-      step_id=step_id,
-      operation=operation,
-      code=code,
-      context=context,
+        message,
+        pattern_name=pattern_name,
+        pattern_type=pattern_type,
+        workflow_id=workflow_id,
+        step_id=step_id,
+        operation=operation,
+        code=code,
+        context=context,
     )
 
 
@@ -266,14 +270,14 @@ def create_legacy_error_context(
 ) -> dict[str, object]:
     """Create legacy error context for backward compatibility."""
     _issue_deprecation_warning(
-      "create_legacy_error_context",
-      "direct context dict creation",
+        "create_legacy_error_context",
+        "direct context dict creation",
     )
     context: dict[str, object] = {"operation": operation}
     if entity_id is not None:
-      context["entity_id"] = entity_id
+        context["entity_id"] = entity_id
     if entity_type is not None:
-      context["entity_type"] = entity_type
+        context["entity_type"] = entity_type
     context.update(kwargs)
     return context
 
@@ -281,20 +285,20 @@ def create_legacy_error_context(
 def get_legacy_error_code(error_type: str) -> FlextOracleOicErrorCodes:
     """Get legacy error code mapping for backward compatibility."""
     _issue_deprecation_warning(
-      "get_legacy_error_code",
-      "FlextOracleOicErrorCodes enum directly",
+        "get_legacy_error_code",
+        "FlextOracleOicErrorCodes enum directly",
     )
     mapping = {
-      "authentication": FlextOracleOicErrorCodes.OIC_AUTHENTICATION_ERROR,
-      "connection": FlextOracleOicErrorCodes.OIC_CONNECTION_ERROR,
-      "api": FlextOracleOicErrorCodes.OIC_API_ERROR,
-      "validation": FlextOracleOicErrorCodes.OIC_VALIDATION_ERROR,
-      "integration": FlextOracleOicErrorCodes.OIC_INTEGRATION_ERROR,
-      "workflow": FlextOracleOicErrorCodes.OIC_WORKFLOW_ERROR,
-      "configuration": FlextOracleOicErrorCodes.OIC_CONFIGURATION_ERROR,
-      "pattern": FlextOracleOicErrorCodes.OIC_PATTERN_ERROR,
-      "token": FlextOracleOicErrorCodes.OIC_TOKEN_ERROR,
-      "timeout": FlextOracleOicErrorCodes.OIC_TIMEOUT_ERROR,
+        "authentication": FlextOracleOicErrorCodes.OIC_AUTHENTICATION_ERROR,
+        "connection": FlextOracleOicErrorCodes.OIC_CONNECTION_ERROR,
+        "api": FlextOracleOicErrorCodes.OIC_API_ERROR,
+        "validation": FlextOracleOicErrorCodes.OIC_VALIDATION_ERROR,
+        "integration": FlextOracleOicErrorCodes.OIC_INTEGRATION_ERROR,
+        "workflow": FlextOracleOicErrorCodes.OIC_WORKFLOW_ERROR,
+        "configuration": FlextOracleOicErrorCodes.OIC_CONFIGURATION_ERROR,
+        "pattern": FlextOracleOicErrorCodes.OIC_PATTERN_ERROR,
+        "token": FlextOracleOicErrorCodes.OIC_TOKEN_ERROR,
+        "timeout": FlextOracleOicErrorCodes.OIC_TIMEOUT_ERROR,
     }
     return mapping.get(error_type.lower(), FlextOracleOicErrorCodes.OIC_ERROR)
 
