@@ -410,10 +410,10 @@ class TestOracleOICExtension:
                 version="01.00.0000",
                 status="ACTIVATED",
             )
-            mock_manager.get_integration_status.return_value = FlextResult.ok(
+            mock_manager.get_integration_status.return_value = FlextResult[None].ok(
                 integration_status,
             )
-            mock_manager.activate_integration.return_value = FlextResult.ok(
+            mock_manager.activate_integration.return_value = FlextResult[None].ok(
                 {
                     "status": "ACTIVATED",
                 },
