@@ -106,7 +106,9 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult[None].fail(client_result.error or "Client creation failed")
+                return FlextResult[None].fail(
+                    client_result.error or "Client creation failed"
+                )
 
             client = client_result.data
             if client is None:
@@ -167,7 +169,9 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult[None].fail(client_result.error or "Client creation failed")
+                return FlextResult[None].fail(
+                    client_result.error or "Client creation failed"
+                )
 
             client = client_result.data
             if client is None:
@@ -221,7 +225,9 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult[None].fail(client_result.error or "Client creation failed")
+                return FlextResult[None].fail(
+                    client_result.error or "Client creation failed"
+                )
 
             client = client_result.data
             if client is None:
@@ -258,7 +264,9 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult[None].fail(client_result.error or "Client creation failed")
+                return FlextResult[None].fail(
+                    client_result.error or "Client creation failed"
+                )
 
             client = client_result.data
             if client is None:

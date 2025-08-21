@@ -339,7 +339,9 @@ class BaseOICClient(ABC):
                     params=request_params,
                 )
                 if not response_result.success:
-                    return FlextResult[None].fail(response_result.error or "Request failed")
+                    return FlextResult[None].fail(
+                        response_result.error or "Request failed"
+                    )
 
                 response_data = response_result.data
                 if response_data is None or not isinstance(response_data, dict):
