@@ -22,7 +22,7 @@ import warnings
 # ================================
 
 # Foundation da flext-core
-from flext_core import FlextResult, FlextValueObject, FlextSettings, get_logger
+from flext_core import FlextResult, FlextValue, FlextSettings, get_logger
 
 # EXTENSION Pattern: Main components
 from flext_oracle_oic_ext.ext_config import (
@@ -151,7 +151,7 @@ def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
 __all__: list[str] = [
     # ===== Foundation flext-core =====
     "FlextResult",
-    "FlextValueObject",
+    "FlextValue",
     "FlextSettings",
     "get_logger",
     # ===== Main EXTENSION Components =====
