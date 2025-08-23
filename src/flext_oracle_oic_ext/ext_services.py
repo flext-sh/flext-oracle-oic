@@ -238,7 +238,7 @@ class OracleOICExtensionService:
 
             if integrations_result.success:
                 self.logger.info("OIC connection test successful")
-                return FlextResult[None].ok(True)
+                return FlextResult[None].ok(data=True)
             error_msg = f"OIC connection test failed: {integrations_result.error}"
             self.logger.error(error_msg)
             return FlextResult[None].fail(error_msg)
