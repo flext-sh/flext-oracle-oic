@@ -13,8 +13,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from enum import Enum
 
-from flext_core import FlextError
-from flext_core.exceptions import FlextErrorMixin
+from flext_core import FlextError, FlextErrorMixin
 
 
 class FlextOracleOicErrorCodes(Enum):
@@ -27,7 +26,7 @@ class FlextOracleOicErrorCodes(Enum):
     OIC_CONFIGURATION_ERROR = "OIC_CONFIGURATION_ERROR"
     OIC_API_ERROR = "OIC_API_ERROR"
     OIC_TIMEOUT_ERROR = "OIC_TIMEOUT_ERROR"
-    OIC_TOKEN_ERROR = "OIC_TOKEN_ERROR"  # noqa: S105
+    OIC_TOKEN_ERROR = "OIC_TOKEN_ERROR"
     OIC_INTEGRATION_ERROR = "OIC_INTEGRATION_ERROR"
     OIC_WORKFLOW_ERROR = "OIC_WORKFLOW_ERROR"
     OIC_PATTERN_ERROR = "OIC_PATTERN_ERROR"

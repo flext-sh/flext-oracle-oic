@@ -109,12 +109,12 @@ def create_oic_extension_service(
 
         service = OracleOICExtensionService(settings)
         logger.info("OIC Extension service created successfully")
-        return FlextResult[None].ok(service)
+        return FlextResult[OracleOICExtensionService].ok(service)
 
     except Exception as e:
         error_msg = f"Failed to create OIC Extension service: {e}"
         logger.exception(error_msg)
-        return FlextResult[None].fail(error_msg)
+        return FlextResult[OracleOICExtensionService].fail(error_msg)
 
 
 def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
@@ -136,12 +136,12 @@ def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
 
         service = OracleOICExtensionService(settings)
         logger.info("Development OIC Extension service created")
-        return FlextResult[None].ok(service)
+        return FlextResult[OracleOICExtensionService].ok(service)
 
     except Exception as e:
         error_msg = f"Failed to create development OIC service: {e}"
         logger.exception(error_msg)
-        return FlextResult[None].fail(error_msg)
+        return FlextResult[OracleOICExtensionService].fail(error_msg)
 
 
 # ================================

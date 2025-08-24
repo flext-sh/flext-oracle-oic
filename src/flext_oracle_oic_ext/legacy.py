@@ -43,7 +43,7 @@ def _issue_deprecation_warning(legacy_name: str, modern_name: str) -> None:
 
 
 # Legacy exception facade functions for backward compatibility
-def OracleOICExtensionError(  # noqa: N802
+def OracleOICExtensionError(
     message: str,
     *,
     code: FlextOracleOicErrorCodes | None = FlextOracleOicErrorCodes.OIC_ERROR,
@@ -54,7 +54,7 @@ def OracleOICExtensionError(  # noqa: N802
     return FlextOracleOicError(message, code=code, context=context)
 
 
-def OICAuthenticationError(  # noqa: N802
+def OICAuthenticationError(
     message: str,
     *,
     code: FlextOracleOicErrorCodes
@@ -69,7 +69,7 @@ def OICAuthenticationError(  # noqa: N802
     return FlextOracleOicAuthenticationError(message, code=code, context=context)
 
 
-def OICTokenError(  # noqa: N802
+def OICTokenError(
     message: str,
     *,
     token_type: str | None = None,
@@ -94,7 +94,7 @@ def OICTokenError(  # noqa: N802
     )
 
 
-def OICConnectionError(  # noqa: N802
+def OICConnectionError(
     message: str,
     *,
     code: FlextOracleOicErrorCodes
@@ -106,7 +106,7 @@ def OICConnectionError(  # noqa: N802
     return FlextOracleOicConnectionError(message, code=code, context=context)
 
 
-def OICTimeoutError(  # noqa: N802
+def OICTimeoutError(
     message: str,
     *,
     code: FlextOracleOicErrorCodes | None = FlextOracleOicErrorCodes.OIC_TIMEOUT_ERROR,
@@ -117,7 +117,7 @@ def OICTimeoutError(  # noqa: N802
     return FlextOracleOicTimeoutError(message, code=code, context=context)
 
 
-def OICAPIError(  # noqa: N802
+def OICAPIError(
     message: str,
     *,
     status_code: int | None = None,
@@ -142,7 +142,7 @@ def OICAPIError(  # noqa: N802
     )
 
 
-def OICValidationError(  # noqa: N802
+def OICValidationError(
     message: str,
     *,
     field_name: str | None = None,
@@ -169,7 +169,7 @@ def OICValidationError(  # noqa: N802
     )
 
 
-def OICIntegrationError(  # noqa: N802
+def OICIntegrationError(
     message: str,
     *,
     code: FlextOracleOicErrorCodes
@@ -181,7 +181,7 @@ def OICIntegrationError(  # noqa: N802
     return FlextOracleOicIntegrationError(message, code=code, context=context)
 
 
-def OICWorkflowError(  # noqa: N802
+def OICWorkflowError(
     message: str,
     *,
     workflow_id: str | None = None,
@@ -209,7 +209,7 @@ def OICWorkflowError(  # noqa: N802
     )
 
 
-def OICConfigurationError(  # noqa: N802
+def OICConfigurationError(
     message: str,
     *,
     config_key: str | None = None,
@@ -233,7 +233,7 @@ def OICConfigurationError(  # noqa: N802
     )
 
 
-def OICPatternError(  # noqa: N802
+def OICPatternError(
     message: str,
     *,
     pattern_name: str | None = None,

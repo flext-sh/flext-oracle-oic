@@ -94,7 +94,7 @@ class BaseOICAuthenticator(ABC):
         credentials = f"{client_id}:{client_secret}"
         return base64.b64encode(credentials.encode()).decode()
 
-    def get_access_token(self) -> FlextResult[str]:  # noqa: PLR0911
+    def get_access_token(self) -> FlextResult[str]:
         """Get access token using OAuth2 client credentials flow.
 
         Returns:
@@ -103,7 +103,7 @@ class BaseOICAuthenticator(ABC):
         """
         try:
             if not self.auth_config.oauth_token_url:
-                return FlextResult[None].fail("OAuth token URL not configured")
+                return FlextResult[str].fail("OAuth token URL not configured")
 
             # Encode client credentials for HTTP Basic authentication
             encoded_credentials = self.encode_client_credentials()
@@ -127,28 +127,28 @@ class BaseOICAuthenticator(ABC):
                 self._access_token = token_data["access_token"]
 
                 self.logger.info("OIC OAuth2 authentication successful")
-                return FlextResult[None].ok(self._access_token)
+                return FlextResult[str].ok(self._access_token)
 
         except httpx.TimeoutException as e:
             error_msg = f"OIC OAuth2 authentication timeout: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[str].fail(error_msg)
         except httpx.HTTPStatusError as e:
             error_msg = f"OIC OAuth2 authentication HTTP error: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[str].fail(error_msg)
         except httpx.RequestError as e:
             error_msg = f"OIC OAuth2 authentication request failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[str].fail(error_msg)
         except KeyError as e:
             error_msg = f"Invalid OAuth2 response format: missing {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[str].fail(error_msg)
         except Exception as e:
             error_msg = f"OIC authentication error: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[str].fail(error_msg)
 
 
 class BaseOICClient(ABC):
@@ -191,7 +191,7 @@ class BaseOICClient(ABC):
                 # Get OAuth2 token
                 token_result = self.authenticator.get_access_token()
                 if not token_result.success:
-                    return FlextResult[None].fail(
+                    return FlextResult[httpx.Client].fail(
                         f"Authentication failed: {token_result.error}",
                     )
 
@@ -206,14 +206,14 @@ class BaseOICClient(ABC):
                     verify=self.connection_config.verify_ssl,
                 )
 
-            return FlextResult[None].ok(self._client)
+            return FlextResult[httpx.Client].ok(self._client)
 
         except Exception as e:
             error_msg = f"Failed to create authenticated client: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[httpx.Client].fail(error_msg)
 
-    def make_request(  # noqa: PLR0911
+    def make_request(
         self,
         method: str,
         endpoint: str,
@@ -238,7 +238,7 @@ class BaseOICClient(ABC):
             # Get authenticated client
             client_result = self.get_authenticated_client()
             if not client_result.success:
-                return FlextResult[None].fail(client_result.error or "Client error")
+                return FlextResult[dict[str, Any]].fail(client_result.error or "Client error")
 
             client = client_result.data
             if client is None:
@@ -259,23 +259,23 @@ class BaseOICClient(ABC):
 
             # Parse response
             if response.headers.get("content-type", "").startswith("application/json"):
-                return FlextResult[None].ok(response.json())
-            return FlextResult[None].ok({"raw_content": response.text})
+                return FlextResult[dict[str, Any]].ok(response.json())
+            return FlextResult[dict[str, Any]].ok({"raw_content": response.text})
 
         except httpx.TimeoutException as e:
             error_msg = f"OIC API request timeout: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[dict[str, Any]].fail(error_msg)
         except httpx.HTTPStatusError as e:
             return self._handle_http_error(e)
         except httpx.RequestError as e:
             error_msg = f"OIC API request failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[dict[str, Any]].fail(error_msg)
         except Exception as e:
             error_msg = f"OIC API client error: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[dict[str, Any]].fail(error_msg)
 
     def _build_request_url(self, endpoint: str) -> str:
         """Build full request URL."""
@@ -298,7 +298,7 @@ class BaseOICClient(ABC):
             error_msg = f"OIC API error: {e.response.text}"
 
         self.logger.error(error_msg)
-        return FlextResult[None].fail(error_msg)
+        return FlextResult[dict[str, Any]].fail(error_msg)
 
     def paginate_request(
         self,
@@ -339,7 +339,7 @@ class BaseOICClient(ABC):
                     params=request_params,
                 )
                 if not response_result.success:
-                    return FlextResult[None].fail(
+                    return FlextResult[list[dict[str, Any]]].fail(
                         response_result.error or "Request failed"
                     )
 
@@ -349,7 +349,7 @@ class BaseOICClient(ABC):
 
                 items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):
-                    return FlextResult[None].fail("Invalid items format")
+                    return FlextResult[list[dict[str, Any]]].fail("Invalid items format")
                 items = items_raw
 
                 # Add items to collection
@@ -362,12 +362,12 @@ class BaseOICClient(ABC):
 
                 offset += page_size
 
-            return FlextResult[None].ok(all_records)
+            return FlextResult[list[dict[str, Any]]].ok(all_records)
 
         except Exception as e:
             error_msg = f"OIC pagination failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[list[dict[str, Any]]].fail(error_msg)
 
     def __enter__(self) -> Self:
         """Context manager entry."""

@@ -83,12 +83,12 @@ class OracleOICExtensionService:
                     authenticator,
                 )
 
-            return FlextResult[None].ok(self._client)
+            return FlextResult[OracleOICExtensionClient].ok(self._client)
 
         except Exception as e:
             error_msg = f"Failed to create OIC client: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[OracleOICExtensionClient].fail(error_msg)
 
     def list_integrations(
         self,
@@ -106,7 +106,7 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[list[OICIntegrationInfo]].fail(
                     client_result.error or "Client creation failed"
                 )
 
@@ -121,7 +121,7 @@ class OracleOICExtensionService:
             )
 
             if not integrations_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[list[OICIntegrationInfo]].fail(
                     integrations_result.error or "Failed to fetch integrations",
                 )
 
@@ -146,12 +146,12 @@ class OracleOICExtensionService:
                     continue
 
             self.logger.info(f"Retrieved {len(integration_infos)} integrations")
-            return FlextResult[None].ok(integration_infos)
+            return FlextResult[list[OICIntegrationInfo]].ok(integration_infos)
 
         except Exception as e:
             error_msg = f"Failed to list integrations: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[list[OICIntegrationInfo]].fail(error_msg)
 
     def list_connections(
         self,
@@ -169,7 +169,7 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[list[OICConnectionInfo]].fail(
                     client_result.error or "Client creation failed"
                 )
 
@@ -184,7 +184,7 @@ class OracleOICExtensionService:
             )
 
             if not connections_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[list[OICConnectionInfo]].fail(
                     connections_result.error or "Connections fetch failed",
                 )
 
@@ -208,12 +208,12 @@ class OracleOICExtensionService:
                     continue
 
             self.logger.info(f"Retrieved {len(connection_infos)} connections")
-            return FlextResult[None].ok(connection_infos)
+            return FlextResult[list[OICConnectionInfo]].ok(connection_infos)
 
         except Exception as e:
             error_msg = f"Failed to list connections: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[list[OICConnectionInfo]].fail(error_msg)
 
     def test_connection(self) -> FlextResult[bool]:
         """Test connection to Oracle OIC.
@@ -225,7 +225,7 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[bool].fail(
                     client_result.error or "Client creation failed"
                 )
 
@@ -238,15 +238,15 @@ class OracleOICExtensionService:
 
             if integrations_result.success:
                 self.logger.info("OIC connection test successful")
-                return FlextResult[None].ok(data=True)
+                return FlextResult[bool].ok(data=True)
             error_msg = f"OIC connection test failed: {integrations_result.error}"
             self.logger.error(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[bool].fail(error_msg)
 
         except Exception as e:
             error_msg = f"Connection test error: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[bool].fail(error_msg)
 
     def deploy_integration(
         self,
@@ -264,7 +264,7 @@ class OracleOICExtensionService:
         try:
             client_result = self._get_client()
             if not client_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[str].fail(
                     client_result.error or "Client creation failed"
                 )
 
@@ -276,23 +276,23 @@ class OracleOICExtensionService:
             create_result = client.create_integration(integration_data)
 
             if not create_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[str].fail(
                     create_result.error or "Create integration failed",
                 )
 
             created_integration = create_result.data
             if not created_integration:
-                return FlextResult[None].fail("No integration data returned")
+                return FlextResult[str].fail("No integration data returned")
 
             integration_id = created_integration.get("id", "")
 
             self.logger.info(f"Integration deployed successfully: {integration_id}")
-            return FlextResult[None].ok(integration_id)
+            return FlextResult[str].ok(integration_id)
 
         except Exception as e:
             error_msg = f"Failed to deploy integration: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[str].fail(error_msg)
 
     def __enter__(self) -> Self:
         """Context manager entry."""
@@ -353,12 +353,12 @@ class OICIntegrationPatternService:
                 "status": "processed",
             }
 
-            return FlextResult[None].ok(routing_result)
+            return FlextResult[dict[str, Any]].ok(routing_result)
 
         except Exception as e:
             error_msg = f"Message router pattern failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[dict[str, Any]].fail(error_msg)
 
     def apply_scatter_gather_pattern(
         self,
@@ -386,12 +386,12 @@ class OICIntegrationPatternService:
                 "status": "processed",
             }
 
-            return FlextResult[None].ok(scatter_result)
+            return FlextResult[dict[str, Any]].ok(scatter_result)
 
         except Exception as e:
             error_msg = f"Scatter-gather pattern failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
+            return FlextResult[dict[str, Any]].fail(error_msg)
 
 
 # Exports seguindo padrão EXTENSION
