@@ -50,7 +50,7 @@ oracle-oic-ext = "flext_oracle_oic_ext.cli:main"
 flext-oracle-oic-ext = "flext_oracle_oic_ext.cli:main"
 
 [tool.ruff]
-extend = "../.config/tools/.ruff-shared.toml"
+extend = "../ruff-shared.toml"
 lint.isort.known-first-party = ["flext_oracle_oic_ext"]
 
 [tool.mypy]
