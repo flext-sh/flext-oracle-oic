@@ -1,7 +1,7 @@
 """Oracle OIC Extension Exception Hierarchy - Modern Pydantic v2 Patterns.
 
 This module provides Oracle OIC Extension-specific exceptions using modern patterns from flext-core.
-All exceptions follow the FlextErrorMixin pattern with keyword-only arguments and
+All exceptions follow the FlextExceptions.ErrorMixin pattern with keyword-only arguments and
 modern Python 3.13 type aliases for comprehensive error handling in Oracle OIC operations.
 
 Copyright (c) 2025 FLEXT Contributors
@@ -13,7 +13,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from enum import Enum
 
-from flext_core import FlextError, FlextErrorMixin
+from flext_core import FlextExceptions
 
 
 class FlextOracleOicErrorCodes(Enum):
@@ -32,8 +32,8 @@ class FlextOracleOicErrorCodes(Enum):
     OIC_PATTERN_ERROR = "OIC_PATTERN_ERROR"
 
 
-# Base Oracle OIC Extension exception hierarchy using FlextErrorMixin pattern
-class FlextOracleOicError(FlextError, FlextErrorMixin):
+# Base Oracle OIC Extension exception hierarchy using FlextExceptions.ErrorMixin pattern
+class FlextOracleOicError(FlextExceptions.Error, FlextExceptions.ErrorMixin):
     """Base Oracle OIC Extension error."""
 
 
@@ -78,7 +78,7 @@ class FlextOracleOicPatternError(FlextOracleOicError):
 
 
 # Domain-specific exceptions for Oracle OIC Extension business logic
-# Using modern FlextErrorMixin pattern with context support
+# Using modern FlextExceptions.ErrorMixin pattern with context support
 
 
 class FlextOracleOicDataValidationError(FlextOracleOicValidationError):
