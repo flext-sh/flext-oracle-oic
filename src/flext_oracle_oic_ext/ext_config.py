@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from flext_core import FlextSettings
+from flext_core import FlextConfig
 
 # Type definitions seguindo padrão EXTENSION
 EnvironmentLiteral = Literal["development", "staging", "production"]
@@ -16,7 +16,7 @@ LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 OICApiVersionLiteral = Literal["v1", "v2"]
 
 
-class OICExtensionConnectionConfig(FlextSettings):
+class OICExtensionConnectionConfig(FlextConfig):
     """Oracle OIC Extension connection configuration.
 
     EXTENSION Pattern: Oracle OIC connection configuration with
@@ -31,7 +31,7 @@ class OICExtensionConnectionConfig(FlextSettings):
     verify_ssl: bool = True
 
 
-class OICExtensionAuthConfig(FlextSettings):
+class OICExtensionAuthConfig(FlextConfig):
     """Oracle OIC Extension OAuth2 authentication configuration.
 
     Padrão EXTENSION: Configuração de autenticação IDCS OAuth2
@@ -47,7 +47,7 @@ class OICExtensionAuthConfig(FlextSettings):
     oauth_scope: str = ""
 
 
-class OracleOICExtensionSettings(FlextSettings):
+class OracleOICExtensionSettings(FlextConfig):
     """Oracle OIC Extension main settings.
 
     Padrão EXTENSION: Configuração principal da extension Oracle OIC

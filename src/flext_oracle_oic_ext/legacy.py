@@ -1,7 +1,7 @@
 """Oracle OIC Extension Legacy Compatibility Layer.
 
 This module provides backward compatibility with older Oracle OIC extension exception patterns.
-It maps legacy exception names to their modern FlextExceptions.ErrorMixin equivalents.
+It maps legacy exception names to their modern FlextExceptionsMixin equivalents.
 
 ⚠️  DEPRECATION WARNING: This module is for backward compatibility only.
     Use the modern exceptions from flext_oracle_oic_ext.exceptions instead.

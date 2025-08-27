@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 
 Version 0.9.0 - Oracle OIC Extension API seguindo padrão EXTENSION:
 - Imports simplificados: from flext_oracle_oic_ext import OracleOICExtensionService
-- Integração flext-core completa: FlextResult, FlextSettings, etc
+- Integração flext-core completa: FlextResult, FlextConfig, etc
 - Padrão EXTENSION estabelecido para futuras extensions
 """
 
@@ -22,7 +22,7 @@ import warnings
 # ================================
 
 # Foundation da flext-core
-from flext_core import FlextResult, FlextValue, FlextSettings, get_logger
+from flext_core import FlextResult, FlextValue, FlextConfig, get_logger
 
 # EXTENSION Pattern: Main components
 from flext_oracle_oic_ext.ext_config import (
@@ -152,7 +152,7 @@ __all__: list[str] = [
     # ===== Foundation flext-core =====
     "FlextResult",
     "FlextValue",
-    "FlextSettings",
+    "FlextConfig",
     "get_logger",
     # ===== Main EXTENSION Components =====
     "OracleOICExtensionService",  # Main service (EXTENSION Pattern)
