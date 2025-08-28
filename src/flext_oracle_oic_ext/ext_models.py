@@ -7,7 +7,8 @@ de dados Oracle OIC. Serve como modelo para futuras extensions.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+
+object
 
 from flext_core import get_logger
 from pydantic import BaseModel, ConfigDict, Field, SecretStr
@@ -98,8 +99,8 @@ class RequestParams:
     method: str
     url: str
     params: dict[str, str | int | float] | None = None
-    data: dict[str, Any] | None = None
-    json_data: dict[str, Any] | None = None
+    data: dict[str, object] | None = None
+    json_data: dict[str, object] | None = None
     headers: dict[str, str] | None = None
     timeout: int = 30
 

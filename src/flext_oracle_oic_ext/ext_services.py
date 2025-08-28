@@ -6,7 +6,7 @@ especializados Oracle OIC. Serve como modelo para futuras extensions.
 
 from __future__ import annotations
 
-from typing import Any, Self
+from typing import Self, object
 
 from flext_core import FlextResult, get_logger
 from pydantic import SecretStr
@@ -250,7 +250,7 @@ class OracleOICExtensionService:
 
     def deploy_integration(
         self,
-        integration_data: dict[str, Any],
+        integration_data: dict[str, object],
     ) -> FlextResult[str]:
         """Deploy integration to Oracle OIC.
 
@@ -329,9 +329,9 @@ class OICIntegrationPatternService:
 
     def apply_message_router_pattern(
         self,
-        message_data: dict[str, Any],
-        routing_rules: list[dict[str, Any]],
-    ) -> FlextResult[dict[str, Any]]:
+        message_data: dict[str, object],
+        routing_rules: list[dict[str, object]],
+    ) -> FlextResult[dict[str, object]]:
         """Apply message router pattern to OIC integration.
 
         Args:
@@ -353,18 +353,18 @@ class OICIntegrationPatternService:
                 "status": "processed",
             }
 
-            return FlextResult[dict[str, Any]].ok(routing_result)
+            return FlextResult[dict[str, object]].ok(routing_result)
 
         except Exception as e:
             error_msg = f"Message router pattern failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[dict[str, Any]].fail(error_msg)
+            return FlextResult[dict[str, object]].fail(error_msg)
 
     def apply_scatter_gather_pattern(
         self,
-        request_data: dict[str, Any],
+        request_data: dict[str, object],
         target_endpoints: list[str],
-    ) -> FlextResult[dict[str, Any]]:
+    ) -> FlextResult[dict[str, object]]:
         """Apply scatter-gather pattern to OIC integration.
 
         Args:
@@ -386,12 +386,12 @@ class OICIntegrationPatternService:
                 "status": "processed",
             }
 
-            return FlextResult[dict[str, Any]].ok(scatter_result)
+            return FlextResult[dict[str, object]].ok(scatter_result)
 
         except Exception as e:
             error_msg = f"Scatter-gather pattern failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[dict[str, Any]].fail(error_msg)
+            return FlextResult[dict[str, object]].fail(error_msg)
 
 
 # Exports seguindo padrão EXTENSION

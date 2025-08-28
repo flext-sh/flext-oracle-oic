@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import base64
 from abc import ABC, abstractmethod
-from typing import Any, Self
+from typing import Self, object
 
 import httpx
 from flext_core import FlextResult, get_logger
@@ -69,7 +69,7 @@ class BaseOICAuthenticator(ABC):
         # Fallback to simple scope
         return self.auth_config.oauth_scope or "urn:opc:resource:consumer:all"
 
-    def get_oauth_request_body(self) -> dict[str, Any]:
+    def get_oauth_request_body(self) -> dict[str, object]:
         """Generate OAuth2 request body for client credentials flow.
 
         Returns:
@@ -218,9 +218,9 @@ class BaseOICClient(ABC):
         method: str,
         endpoint: str,
         params: dict[str, str | int | float] | None = None,
-        data: dict[str, Any] | None = None,
-        json: dict[str, Any] | None = None,
-    ) -> FlextResult[dict[str, Any]]:
+        data: dict[str, object] | None = None,
+        json: dict[str, object] | None = None,
+    ) -> FlextResult[dict[str, object]]:
         """Make authenticated request to OIC API.
 
         Args:
@@ -238,7 +238,9 @@ class BaseOICClient(ABC):
             # Get authenticated client
             client_result = self.get_authenticated_client()
             if not client_result.success:
-                return FlextResult[dict[str, Any]].fail(client_result.error or "Client error")
+                return FlextResult[dict[str, object]].fail(
+                    client_result.error or "Client error"
+                )
 
             client = client_result.data
             if client is None:
@@ -259,23 +261,23 @@ class BaseOICClient(ABC):
 
             # Parse response
             if response.headers.get("content-type", "").startswith("application/json"):
-                return FlextResult[dict[str, Any]].ok(response.json())
-            return FlextResult[dict[str, Any]].ok({"raw_content": response.text})
+                return FlextResult[dict[str, object]].ok(response.json())
+            return FlextResult[dict[str, object]].ok({"raw_content": response.text})
 
         except httpx.TimeoutException as e:
             error_msg = f"OIC API request timeout: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[dict[str, Any]].fail(error_msg)
+            return FlextResult[dict[str, object]].fail(error_msg)
         except httpx.HTTPStatusError as e:
             return self._handle_http_error(e)
         except httpx.RequestError as e:
             error_msg = f"OIC API request failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[dict[str, Any]].fail(error_msg)
+            return FlextResult[dict[str, object]].fail(error_msg)
         except Exception as e:
             error_msg = f"OIC API client error: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[dict[str, Any]].fail(error_msg)
+            return FlextResult[dict[str, object]].fail(error_msg)
 
     def _build_request_url(self, endpoint: str) -> str:
         """Build full request URL."""
@@ -289,7 +291,7 @@ class BaseOICClient(ABC):
     def _handle_http_error(
         self,
         e: httpx.HTTPStatusError,
-    ) -> FlextResult[dict[str, Any]]:
+    ) -> FlextResult[dict[str, object]]:
         """Handle HTTP errors."""
         try:
             error_data = e.response.json()
@@ -298,14 +300,14 @@ class BaseOICClient(ABC):
             error_msg = f"OIC API error: {e.response.text}"
 
         self.logger.error(error_msg)
-        return FlextResult[dict[str, Any]].fail(error_msg)
+        return FlextResult[dict[str, object]].fail(error_msg)
 
     def paginate_request(
         self,
         endpoint: str,
         page_size: int = 100,
         params: dict[str, str | int | float] | None = None,
-    ) -> FlextResult[list[dict[str, Any]]]:
+    ) -> FlextResult[list[dict[str, object]]]:
         """Paginate through OIC API responses.
 
         Args:
@@ -318,7 +320,7 @@ class BaseOICClient(ABC):
 
         """
         try:
-            all_records: list[dict[str, Any]] = []
+            all_records: list[dict[str, object]] = []
             offset = 0
             base_params: dict[str, str | int | float] = params or {}
 
@@ -339,7 +341,7 @@ class BaseOICClient(ABC):
                     params=request_params,
                 )
                 if not response_result.success:
-                    return FlextResult[list[dict[str, Any]]].fail(
+                    return FlextResult[list[dict[str, object]]].fail(
                         response_result.error or "Request failed"
                     )
 
@@ -349,7 +351,9 @@ class BaseOICClient(ABC):
 
                 items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):
-                    return FlextResult[list[dict[str, Any]]].fail("Invalid items format")
+                    return FlextResult[list[dict[str, object]]].fail(
+                        "Invalid items format"
+                    )
                 items = items_raw
 
                 # Add items to collection
@@ -362,12 +366,12 @@ class BaseOICClient(ABC):
 
                 offset += page_size
 
-            return FlextResult[list[dict[str, Any]]].ok(all_records)
+            return FlextResult[list[dict[str, object]]].ok(all_records)
 
         except Exception as e:
             error_msg = f"OIC pagination failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[list[dict[str, Any]]].fail(error_msg)
+            return FlextResult[list[dict[str, object]]].fail(error_msg)
 
     def __enter__(self) -> Self:
         """Context manager entry."""
@@ -441,7 +445,7 @@ class OracleOICExtensionClient(BaseOICClient):
         self,
         status_filter: list[str] | None = None,
         page_size: int = 100,
-    ) -> FlextResult[list[dict[str, Any]]]:
+    ) -> FlextResult[list[dict[str, object]]]:
         """Get integration flows from OIC.
 
         Args:
@@ -467,7 +471,7 @@ class OracleOICExtensionClient(BaseOICClient):
         self,
         type_filter: list[str] | None = None,
         page_size: int = 100,
-    ) -> FlextResult[list[dict[str, Any]]]:
+    ) -> FlextResult[list[dict[str, object]]]:
         """Get adapter connections from OIC.
 
         Args:
@@ -488,7 +492,7 @@ class OracleOICExtensionClient(BaseOICClient):
     def get_packages(
         self,
         page_size: int = 100,
-    ) -> FlextResult[list[dict[str, Any]]]:
+    ) -> FlextResult[list[dict[str, object]]]:
         """Get integration packages from OIC.
 
         Args:
@@ -503,7 +507,7 @@ class OracleOICExtensionClient(BaseOICClient):
     def get_lookups(
         self,
         page_size: int = 100,
-    ) -> FlextResult[list[dict[str, Any]]]:
+    ) -> FlextResult[list[dict[str, object]]]:
         """Get lookup tables from OIC.
 
         Args:
@@ -517,8 +521,8 @@ class OracleOICExtensionClient(BaseOICClient):
 
     def create_integration(
         self,
-        integration_data: dict[str, Any],
-    ) -> FlextResult[dict[str, Any]]:
+        integration_data: dict[str, object],
+    ) -> FlextResult[dict[str, object]]:
         """Create integration in OIC.
 
         Args:
@@ -533,8 +537,8 @@ class OracleOICExtensionClient(BaseOICClient):
     def update_integration(
         self,
         integration_id: str,
-        integration_data: dict[str, Any],
-    ) -> FlextResult[dict[str, Any]]:
+        integration_data: dict[str, object],
+    ) -> FlextResult[dict[str, object]]:
         """Update integration in OIC.
 
         Args:
@@ -550,8 +554,8 @@ class OracleOICExtensionClient(BaseOICClient):
 
     def create_connection(
         self,
-        connection_data: dict[str, Any],
-    ) -> FlextResult[dict[str, Any]]:
+        connection_data: dict[str, object],
+    ) -> FlextResult[dict[str, object]]:
         """Create connection in OIC.
 
         Args:
