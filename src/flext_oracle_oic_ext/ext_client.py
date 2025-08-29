@@ -12,11 +12,11 @@ from abc import ABC, abstractmethod
 from typing import Self, object
 
 import httpx
-from flext_core import FlextResult, get_logger
+from flext_core import FlextLogger, FlextResult
 
 from flext_oracle_oic_ext.ext_models import OICAuthConfig, OICConnectionConfig
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 # ================================
 # EXTENSION Pattern: Base Classes
 # ================================
@@ -37,7 +37,7 @@ class BaseOICAuthenticator(ABC):
 
         """
         self.auth_config = auth_config
-        self.logger = get_logger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
         self._access_token: str | None = None
 
     @abstractmethod
@@ -172,7 +172,7 @@ class BaseOICClient(ABC):
         """
         self.connection_config = connection_config
         self.authenticator = authenticator
-        self.logger = get_logger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
         self._client: httpx.Client | None = None
 
     @abstractmethod

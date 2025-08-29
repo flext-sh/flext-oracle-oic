@@ -10,10 +10,10 @@ from dataclasses import dataclass
 
 object
 
-from flext_core import get_logger
+from flext_core import FlextLogger
 from pydantic import BaseModel, ConfigDict, Field, SecretStr
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 
 
 # ================================

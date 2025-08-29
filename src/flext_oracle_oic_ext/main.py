@@ -9,14 +9,14 @@ import sys
 from typing import NoReturn
 
 import typer
-from flext_core import get_logger
+from flext_core import FlextLogger
 
 from flext_oracle_oic_ext import (
     __version__,
     create_development_oic_service,
 )
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 app = typer.Typer(
     name="oracle-oic-ext",
     help="FLEXT Oracle OIC Extension CLI - Enterprise Oracle Integration Cloud operations",

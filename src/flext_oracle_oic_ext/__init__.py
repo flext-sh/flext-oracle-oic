@@ -22,7 +22,7 @@ import warnings
 # ================================
 
 # Foundation da flext-core
-from flext_core import FlextResult, FlextValue, FlextConfig, get_logger
+from flext_core import FlextResult, FlextModels.Value, FlextConfig, FlextLogger
 
 # EXTENSION Pattern: Main components
 from flext_oracle_oic_ext.ext_config import (
@@ -54,7 +54,7 @@ from flext_oracle_oic_ext.ext_exceptions import (
 # Legacy extension for backward compatibility
 from flext_oracle_oic_ext.extension import OracleOICExtension
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 
 try:
     __version__ = importlib.metadata.version("flext-oracle-oic-ext")
@@ -151,9 +151,9 @@ def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
 __all__: list[str] = [
     # ===== Foundation flext-core =====
     "FlextResult",
-    "FlextValue",
+    "FlextModels.Value",
     "FlextConfig",
-    "get_logger",
+    "FlextLogger",
     # ===== Main EXTENSION Components =====
     "OracleOICExtensionService",  # Main service (EXTENSION Pattern)
     "OracleOICExtensionClient",  # API client

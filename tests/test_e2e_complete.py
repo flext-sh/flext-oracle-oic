@@ -19,7 +19,7 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 import pytest
-from flext_core import FlextResult, get_logger
+from flext_core import FlextLogger, FlextResult
 
 from flext_oracle_oic_ext import (
     IntegrationStatus,
@@ -29,7 +29,7 @@ from flext_oracle_oic_ext import (
     OracleOICExtensionSettings,
 )
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 
 
 class TestOracleOICExtension:

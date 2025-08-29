@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Self, object
 
-from flext_core import FlextResult, get_logger
+from flext_core import FlextLogger, FlextResult
 from pydantic import SecretStr
 
 from flext_oracle_oic_ext.ext_client import (
@@ -23,7 +23,7 @@ from flext_oracle_oic_ext.ext_models import (
     OICIntegrationInfo,
 )
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 # ================================
 # EXTENSION Pattern: Specialized Services
 # ================================
@@ -44,7 +44,7 @@ class OracleOICExtensionService:
 
         """
         self.settings = settings
-        self.logger = get_logger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
         self._client: OracleOICExtensionClient | None = None
 
     def _get_client(self) -> FlextResult[OracleOICExtensionClient]:
@@ -325,7 +325,7 @@ class OICIntegrationPatternService:
 
         """
         self.oic_service = oic_service
-        self.logger = get_logger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
 
     def apply_message_router_pattern(
         self,
