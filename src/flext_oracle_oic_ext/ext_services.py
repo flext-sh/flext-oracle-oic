@@ -6,7 +6,7 @@ especializados Oracle OIC. Serve como modelo para futuras extensions.
 
 from __future__ import annotations
 
-from typing import Self, object
+from typing import Self
 
 from flext_core import FlextLogger, FlextResult
 from pydantic import SecretStr

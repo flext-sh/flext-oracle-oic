@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import base64
 from abc import ABC, abstractmethod
-from typing import Self, object
+from typing import Self
 
 import httpx
 from flext_core import FlextLogger, FlextResult
