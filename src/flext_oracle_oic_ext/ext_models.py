@@ -8,10 +8,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-object
-
-from flext_core import FlextLogger
-from pydantic import BaseModel, ConfigDict, Field, SecretStr
+from flext_core import FlextLogger, FlextModels
+from pydantic import ConfigDict, Field, SecretStr
 
 logger = FlextLogger(__name__)
 
@@ -21,7 +19,7 @@ logger = FlextLogger(__name__)
 # ================================
 
 
-class OICAuthConfig(BaseModel):
+class OICAuthConfig(FlextModels):
     """Oracle Integration Cloud authentication configuration.
 
     Padrão EXTENSION: Value Object para configuração de autenticação
@@ -37,7 +35,7 @@ class OICAuthConfig(BaseModel):
     oauth_scope: str = Field("", description="OAuth2 scope")
 
 
-class OICConnectionConfig(BaseModel):
+class OICConnectionConfig(FlextModels):
     """Oracle Integration Cloud connection configuration.
 
     Padrão EXTENSION: Value Object para configuração de conexão
@@ -53,7 +51,7 @@ class OICConnectionConfig(BaseModel):
     verify_ssl: bool = Field(default=True, description="Verify SSL certificates")
 
 
-class OICIntegrationInfo(BaseModel):
+class OICIntegrationInfo(FlextModels):
     """Oracle OIC Integration information.
 
     Padrão EXTENSION: Value Object representando informações
@@ -71,7 +69,7 @@ class OICIntegrationInfo(BaseModel):
     last_updated: str = Field("", description="Last update timestamp")
 
 
-class OICConnectionInfo(BaseModel):
+class OICConnectionInfo(FlextModels):
     """Oracle OIC Connection information.
 
     Padrão EXTENSION: Value Object representando informações
