@@ -20,7 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Located in `src/flext_oracle_oic_ext/`:
 
 - **OracleOICExtensionService**: Main service class implementing business logic (`ext_services.py`)
-- **OracleOICExtensionClient**: REST API client with authentication (`ext_client.py`) 
+- **OracleOICExtensionClient**: REST API client with authentication (`ext_client.py`)
 - **OracleOICExtensionSettings**: Configuration management with Pydantic validation (`ext_config.py`)
 - **OICExtensionAuthenticator**: OAuth2/IDCS authentication handler (`ext_client.py`)
 - **Extension Models**: Business domain models with validation (`ext_models.py`)
@@ -136,7 +136,7 @@ tests/
 ### Test Categories
 
 - **Unit Tests**: Fast tests with mocking (marked with `@pytest.mark.unit`)
-- **Integration Tests**: Tests with external dependencies (marked with `@pytest.mark.integration`) 
+- **Integration Tests**: Tests with external dependencies (marked with `@pytest.mark.integration`)
 - **OIC Tests**: Oracle Integration Cloud specific tests
 - **Slow Tests**: Long-running tests (marked with `@pytest.mark.slow`)
 - **E2E Tests**: Complete workflow validation
@@ -167,7 +167,7 @@ make coverage-html          # HTML report in reports/coverage/
 Configuration follows the EXTENSION Pattern with Pydantic validation:
 
 - **OracleOICExtensionSettings**: Main settings class (`ext_config.py:50`)
-- **OICExtensionConnectionConfig**: Connection settings (`ext_config.py:19`) 
+- **OICExtensionConnectionConfig**: Connection settings (`ext_config.py:19`)
 - **OICExtensionAuthConfig**: OAuth2 authentication settings (`ext_config.py:34`)
 
 ### Key Configuration Files
