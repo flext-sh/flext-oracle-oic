@@ -32,8 +32,8 @@ class FlextOracleOicErrorCodes(Enum):
     OIC_PATTERN_ERROR = "OIC_PATTERN_ERROR"
 
 
-# Base Oracle OIC Extension exception hierarchy using FlextExceptionsMixin pattern
-class FlextOracleOicError(FlextExceptions, FlextExceptionsMixin):
+# Base Oracle OIC Extension exception hierarchy
+class FlextOracleOicError(FlextExceptions):
     """Base Oracle OIC Extension error."""
 
 
