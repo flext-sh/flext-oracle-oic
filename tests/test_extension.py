@@ -2,6 +2,10 @@
 
 Tests for Oracle OIC Extension functionality including initialization,
 command handling, lifecycle management, and monitoring services.
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations

@@ -1,9 +1,21 @@
 """Main entry point for Oracle OIC Extension - EXTENSION Pattern.
 
 Este módulo implementa o padrão EXTENSION PEP8 para CLI Oracle OIC Extension.
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
+
+from flext_core import FlextTypes
+
+"""
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
+
 
 import sys
 from typing import NoReturn
@@ -83,6 +95,10 @@ def list_integrations() -> None:
 
     Padrão EXTENSION: Comando para listar integrações Oracle OIC
     com informações detalhadas e status.
+
+    Returns:
+            object: Description of return value.
+
     """
     try:
         logger.info("Listing Oracle OIC integrations...")
@@ -134,7 +150,7 @@ def show_version() -> None:
 
 
 def main() -> NoReturn:
-    """Main CLI entry point - EXTENSION Pattern.
+    """Run main CLI entry point - EXTENSION Pattern.
 
     Padrão EXTENSION: Entry point principal para CLI Oracle OIC Extension
     com comandos enterprise e logging estruturado.
@@ -150,7 +166,7 @@ def main() -> NoReturn:
         sys.exit(1)
 
 
-__all__: list[str] = ["app", "main"]
+__all__: FlextTypes.Core.StringList = ["app", "main"]
 
 if __name__ == "__main__":
     main()

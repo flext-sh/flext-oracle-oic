@@ -2,9 +2,21 @@
 
 Este módulo estabelece o padrão EXTENSION PEP8 para exceções
 especializadas Oracle OIC usando factory pattern flext-core.
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
+
+from flext_core import FlextTypes
+
+"""
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
+
 
 # ================================
 # EXTENSION Pattern: Specialized Exceptions
@@ -66,7 +78,7 @@ class OICPatternError(OracleOICExtensionError):
 
 
 # Exports seguindo padrão EXTENSION
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     # API
     "OICAPIError",
     # Authentication

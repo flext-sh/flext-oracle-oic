@@ -1,6 +1,16 @@
-"""Oracle Integration Cloud extension implementation."""
+"""Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT.
+"""
 
 from __future__ import annotations
+
+from flext_core import FlextTypes
+
+"""Oracle Integration Cloud extension implementation.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 
 class OracleOICExtension:
@@ -15,4 +25,4 @@ class OracleOICExtension:
         return f"{self.name} - Implementation pending"
 
 
-__all__: list[str] = ["OracleOICExtension"]
+__all__: FlextTypes.Core.StringList = ["OracleOICExtension"]

@@ -2,6 +2,10 @@
 
 Provides pytest fixtures and configuration for testing Oracle OIC extension functionality
 using real Oracle Integration Cloud connections and flext-core patterns.
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
@@ -10,6 +14,7 @@ import os
 from collections.abc import Generator
 
 import pytest
+from flext_core import FlextTypes
 
 from flext_oracle_oic_ext import OracleOICExtension
 
@@ -30,7 +35,7 @@ def set_test_environment() -> Generator[None]:
 
 # Oracle OIC connection fixtures
 @pytest.fixture
-def oic_connection_config() -> dict[str, object]:
+def oic_connection_config() -> FlextTypes.Core.Dict:
     """Oracle OIC connection configuration for testing."""
     return {
         "host": "test-oic.oraclecloud.com",
@@ -44,7 +49,7 @@ def oic_connection_config() -> dict[str, object]:
 
 
 @pytest.fixture
-def oic_client(oic_connection_config: dict[str, object]) -> object:
+def oic_client(oic_connection_config: FlextTypes.Core.Dict) -> object:
     """Oracle OIC extension for testing."""
     extension = OracleOICExtension()
     extension.config = oic_connection_config
@@ -53,7 +58,7 @@ def oic_client(oic_connection_config: dict[str, object]) -> object:
 
 # OIC integration fixtures
 @pytest.fixture
-def integration_definition() -> dict[str, object]:
+def integration_definition() -> FlextTypes.Core.Dict:
     """Integration definition for testing."""
     return {
         "id": "TEST_INTEGRATION_001",
@@ -80,7 +85,7 @@ def integration_definition() -> dict[str, object]:
 
 
 @pytest.fixture
-def connection_definition() -> dict[str, object]:
+def connection_definition() -> FlextTypes.Core.Dict:
     """Connection definition for testing."""
     return {
         "id": "TEST_CONNECTION_001",
@@ -101,7 +106,7 @@ def connection_definition() -> dict[str, object]:
 
 # OIC artifact fixtures
 @pytest.fixture
-def package_definition() -> dict[str, object]:
+def package_definition() -> FlextTypes.Core.Dict:
     """Package definition for testing."""
     return {
         "id": "TEST_PACKAGE_001",
@@ -116,7 +121,7 @@ def package_definition() -> dict[str, object]:
 
 
 @pytest.fixture
-def runtime_config() -> dict[str, object]:
+def runtime_config() -> FlextTypes.Core.Dict:
     """Runtime configuration for testing."""
     return {
         "environment": "test",
@@ -137,7 +142,7 @@ def runtime_config() -> dict[str, object]:
 
 # REST API fixtures
 @pytest.fixture
-def rest_endpoint_config() -> dict[str, object]:
+def rest_endpoint_config() -> FlextTypes.Core.Dict:
     """REST endpoint configuration for testing."""
     return {
         "base_url": "https://test-oic.oraclecloud.com",
@@ -161,7 +166,7 @@ def rest_endpoint_config() -> dict[str, object]:
 
 
 @pytest.fixture
-def sample_payload_data() -> dict[str, object]:
+def sample_payload_data() -> FlextTypes.Core.Dict:
     """Sample payload data for testing."""
     return {
         "request": {
@@ -198,7 +203,7 @@ def sample_payload_data() -> dict[str, object]:
 
 # Deployment fixtures
 @pytest.fixture
-def deployment_config() -> dict[str, object]:
+def deployment_config() -> FlextTypes.Core.Dict:
     """Deployment configuration for testing."""
     return {
         "target_environment": "test",
@@ -227,7 +232,7 @@ def deployment_config() -> dict[str, object]:
 
 # Monitoring fixtures
 @pytest.fixture
-def monitoring_config() -> dict[str, object]:
+def monitoring_config() -> FlextTypes.Core.Dict:
     """Monitoring configuration for testing."""
     return {
         "metrics": {
@@ -258,7 +263,7 @@ def monitoring_config() -> dict[str, object]:
 
 
 @pytest.fixture
-def integration_instance_data() -> dict[str, object]:
+def integration_instance_data() -> FlextTypes.Core.Dict:
     """Integration instance data for testing."""
     return {
         "instance_id": "INST_001",
@@ -276,7 +281,7 @@ def integration_instance_data() -> dict[str, object]:
 
 # Error handling fixtures
 @pytest.fixture
-def error_scenarios() -> list[dict[str, object]]:
+def error_scenarios() -> list[FlextTypes.Core.Dict]:
     """Error scenarios for testing."""
     return [
         {
@@ -312,7 +317,7 @@ def error_scenarios() -> list[dict[str, object]]:
 
 # Security fixtures
 @pytest.fixture
-def security_config() -> dict[str, object]:
+def security_config() -> FlextTypes.Core.Dict:
     """Security configuration for testing."""
     return {
         "authentication": {
@@ -337,7 +342,7 @@ def security_config() -> dict[str, object]:
 
 # Performance test fixtures
 @pytest.fixture
-def performance_test_config() -> dict[str, object]:
+def performance_test_config() -> FlextTypes.Core.Dict:
     """Performance test configuration."""
     return {
         "load_test": {
@@ -381,15 +386,15 @@ def mock_oic_service() -> object:
 
     class MockOICService:
         def __init__(self) -> None:
-            self.integrations: dict[str, dict[str, object]] = {}
-            self.connections: dict[str, dict[str, object]] = {}
-            self.packages: dict[str, dict[str, object]] = {}
-            self.instances: dict[str, dict[str, object]] = {}
+            self.integrations: dict[str, FlextTypes.Core.Dict] = {}
+            self.connections: dict[str, FlextTypes.Core.Dict] = {}
+            self.packages: dict[str, FlextTypes.Core.Dict] = {}
+            self.instances: dict[str, FlextTypes.Core.Dict] = {}
 
         async def create_integration(
             self,
-            integration_def: dict[str, object],
-        ) -> dict[str, object]:
+            integration_def: FlextTypes.Core.Dict,
+        ) -> FlextTypes.Core.Dict:
             integration_id = integration_def["id"]
             integration = {
                 **integration_def,
@@ -400,7 +405,7 @@ def mock_oic_service() -> object:
             self.integrations[integration_id] = integration
             return integration
 
-        async def deploy_integration(self, integration_id: str) -> dict[str, object]:
+        async def deploy_integration(self, integration_id: str) -> FlextTypes.Core.Dict:
             if integration_id not in self.integrations:
                 msg: str = f"Integration {integration_id} not found"
                 raise ValueError(msg)
@@ -419,8 +424,8 @@ def mock_oic_service() -> object:
 
         async def create_connection(
             self,
-            connection_def: dict[str, object],
-        ) -> dict[str, object]:
+            connection_def: FlextTypes.Core.Dict,
+        ) -> FlextTypes.Core.Dict:
             connection_id = connection_def["id"]
             connection = {
                 **connection_def,
@@ -430,7 +435,7 @@ def mock_oic_service() -> object:
             self.connections[connection_id] = connection
             return connection
 
-        async def test_connection(self, connection_id: str) -> dict[str, object]:
+        async def test_connection(self, connection_id: str) -> FlextTypes.Core.Dict:
             if connection_id not in self.connections:
                 msg: str = f"Connection {connection_id} not found"
                 raise ValueError(msg)
@@ -447,7 +452,7 @@ def mock_oic_service() -> object:
             integration_id: str,
             start_time: str,
             end_time: str,
-        ) -> dict[str, object]:
+        ) -> FlextTypes.Core.Dict:
             return {
                 "integration_id": integration_id,
                 "period": {"start": start_time, "end": end_time},
@@ -480,7 +485,7 @@ def mock_oic_client() -> object:
     """Mock OIC client for testing."""
 
     class MockOICClient:
-        def __init__(self, config: dict[str, object]) -> None:
+        def __init__(self, config: FlextTypes.Core.Dict) -> None:
             self.config = config
             self.connected = False
             self.session_token: str | None = None
@@ -498,8 +503,8 @@ def mock_oic_client() -> object:
         async def get(
             self,
             endpoint: str,
-            params: dict[str, object] | None = None,
-        ) -> dict[str, object]:
+            params: FlextTypes.Core.Dict | None = None,
+        ) -> FlextTypes.Core.Dict:
             return {
                 "status": "success",
                 "endpoint": endpoint,
@@ -510,9 +515,9 @@ def mock_oic_client() -> object:
         async def post(
             self,
             endpoint: str,
-            data: dict[str, object],
-            headers: dict[str, object] | None = None,
-        ) -> dict[str, object]:
+            data: FlextTypes.Core.Dict,
+            headers: FlextTypes.Core.Dict | None = None,
+        ) -> FlextTypes.Core.Dict:
             return {
                 "status": "success",
                 "endpoint": endpoint,
@@ -524,9 +529,9 @@ def mock_oic_client() -> object:
         async def put(
             self,
             endpoint: str,
-            data: dict[str, object],
-            headers: dict[str, object] | None = None,
-        ) -> dict[str, object]:
+            data: FlextTypes.Core.Dict,
+            headers: FlextTypes.Core.Dict | None = None,
+        ) -> FlextTypes.Core.Dict:
             return {
                 "status": "success",
                 "endpoint": endpoint,
@@ -535,7 +540,7 @@ def mock_oic_client() -> object:
                 "response_time": 0.8,
             }
 
-        async def delete(self, endpoint: str) -> dict[str, object]:
+        async def delete(self, endpoint: str) -> FlextTypes.Core.Dict:
             return {
                 "status": "success",
                 "endpoint": endpoint,

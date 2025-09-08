@@ -1,6 +1,10 @@
 """Tests for Oracle OIC Extension configuration generation.
 
 Tests configuration generation functionality and validation.
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
@@ -10,6 +14,7 @@ import tempfile
 from pathlib import Path
 
 import pytest
+from flext_core import FlextTypes
 
 import flext_oracle_oic_ext
 from flext_oracle_oic_ext import OracleOICExtensionSettings, setup_oic_extension
@@ -274,7 +279,7 @@ class TestConfigGeneration:
                 msg,
             )
 
-    def _create_invalid_config(self, valid_config: dict[str, object]) -> None:
+    def _create_invalid_config(self, valid_config: FlextTypes.Core.Dict) -> None:
         """Helper function to create invalid configuration for testing."""
         invalid_config = valid_config.copy()
         invalid_config["base_url"] = "invalid-url"

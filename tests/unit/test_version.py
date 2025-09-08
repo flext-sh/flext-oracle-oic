@@ -1,4 +1,8 @@
-"""Unit tests for flext-oracle-oic-ext version module."""
+"""Unit tests for flext-oracle-oic-ext version module.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 

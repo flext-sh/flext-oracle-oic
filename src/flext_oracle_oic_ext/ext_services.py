@@ -2,9 +2,21 @@
 
 Este módulo estabelece o padrão EXTENSION PEP8 para serviços
 especializados Oracle OIC. Serve como modelo para futuras extensions.
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
+
+from flext_core import FlextTypes
+
+"""
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
+
 
 from typing import Self
 
@@ -41,6 +53,9 @@ class OracleOICExtensionService:
 
         Args:
             settings: Extension configuration settings
+
+        Returns:
+            object: Description of return value.
 
         """
         self.settings = settings
@@ -92,7 +107,7 @@ class OracleOICExtensionService:
 
     def list_integrations(
         self,
-        status_filter: list[str] | None = None,
+        status_filter: FlextTypes.Core.StringList | None = None,
     ) -> FlextResult[list[OICIntegrationInfo]]:
         """List Oracle OIC integrations.
 
@@ -155,7 +170,7 @@ class OracleOICExtensionService:
 
     def list_connections(
         self,
-        type_filter: list[str] | None = None,
+        type_filter: FlextTypes.Core.StringList | None = None,
     ) -> FlextResult[list[OICConnectionInfo]]:
         """List Oracle OIC connections.
 
@@ -250,7 +265,7 @@ class OracleOICExtensionService:
 
     def deploy_integration(
         self,
-        integration_data: dict[str, object],
+        integration_data: FlextTypes.Core.Dict,
     ) -> FlextResult[str]:
         """Deploy integration to Oracle OIC.
 
@@ -323,15 +338,18 @@ class OICIntegrationPatternService:
         Args:
             oic_service: Main OIC extension service
 
+        Returns:
+            object: Description of return value.
+
         """
         self.oic_service = oic_service
         self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
 
     def apply_message_router_pattern(
         self,
-        message_data: dict[str, object],
-        routing_rules: list[dict[str, object]],
-    ) -> FlextResult[dict[str, object]]:
+        message_data: FlextTypes.Core.Dict,
+        routing_rules: list[FlextTypes.Core.Dict],
+    ) -> FlextResult[FlextTypes.Core.Dict]:
         """Apply message router pattern to OIC integration.
 
         Args:
@@ -353,18 +371,18 @@ class OICIntegrationPatternService:
                 "status": "processed",
             }
 
-            return FlextResult[dict[str, object]].ok(routing_result)
+            return FlextResult[FlextTypes.Core.Dict].ok(routing_result)
 
         except Exception as e:
             error_msg = f"Message router pattern failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[dict[str, object]].fail(error_msg)
+            return FlextResult[FlextTypes.Core.Dict].fail(error_msg)
 
     def apply_scatter_gather_pattern(
         self,
-        request_data: dict[str, object],
-        target_endpoints: list[str],
-    ) -> FlextResult[dict[str, object]]:
+        request_data: FlextTypes.Core.Dict,
+        target_endpoints: FlextTypes.Core.StringList,
+    ) -> FlextResult[FlextTypes.Core.Dict]:
         """Apply scatter-gather pattern to OIC integration.
 
         Args:
@@ -386,16 +404,16 @@ class OICIntegrationPatternService:
                 "status": "processed",
             }
 
-            return FlextResult[dict[str, object]].ok(scatter_result)
+            return FlextResult[FlextTypes.Core.Dict].ok(scatter_result)
 
         except Exception as e:
             error_msg = f"Scatter-gather pattern failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[dict[str, object]].fail(error_msg)
+            return FlextResult[FlextTypes.Core.Dict].fail(error_msg)
 
 
 # Exports seguindo padrão EXTENSION
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "OICIntegrationPatternService",
     # Main services
     "OracleOICExtensionService",

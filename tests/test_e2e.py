@@ -7,6 +7,10 @@ Tests all functionalities including:
 - Artifact extraction
 - Command routing
 - Error handling
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
@@ -19,7 +23,7 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 import pytest
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes
 
 from flext_oracle_oic_ext import (
     IntegrationStatus,
@@ -125,7 +129,7 @@ class TestOracleOICExtension:
                 "integration123",
             )
 
-    def test_lifecycle_manager_operations(self, config: dict[str, object]) -> None:
+    def test_lifecycle_manager_operations(self, config: FlextTypes.Core.Dict) -> None:
         """Test lifecycle manager functionality."""
         settings = OracleOICExtensionSettings.from_dict(config)
         manager = LifecycleManager(settings)
@@ -161,7 +165,7 @@ class TestOracleOICExtension:
                     raise AssertionError(msg)
                 assert status.integration_id == "TEST_INTEGRATION"
 
-    def test_monitoring_service_operations(self, config: dict[str, object]) -> None:
+    def test_monitoring_service_operations(self, config: FlextTypes.Core.Dict) -> None:
         """Test monitoring service functionality."""
         # Create a mock HTTP client for MonitoringService
 
@@ -261,7 +265,7 @@ class TestOracleOICExtension:
     def test_live_integration_status(
         self,
         extension: OracleOICExtension,
-        config: dict[str, object],
+        config: FlextTypes.Core.Dict,
     ) -> None:
         """Test live integration status check."""
         os.environ["MELTANO_PROJECT_ROOT"] = str(Path.cwd())
@@ -316,7 +320,7 @@ class TestOracleOICExtension:
                     msg,
                 )
 
-    def test_monitoring_alerts(self, config: dict[str, object]) -> None:
+    def test_monitoring_alerts(self, config: FlextTypes.Core.Dict) -> None:
         """Test monitoring alert functionality."""
         mock_client = Mock()
         service = MonitoringService(client=mock_client)
@@ -338,7 +342,7 @@ class TestOracleOICExtension:
             raise AssertionError(msg)
         assert "recommendations" in analysis
 
-    def test_performance_metrics(self, config: dict[str, object]) -> None:
+    def test_performance_metrics(self, config: FlextTypes.Core.Dict) -> None:
         """Test performance metrics collection."""
         mock_client = Mock()
         service = MonitoringService(client=mock_client)
@@ -368,7 +372,7 @@ class TestOracleOICExtension:
     def test_log_extraction(
         self,
         extension: OracleOICExtension,
-        config: dict[str, object],
+        config: FlextTypes.Core.Dict,
         tmp_path: Path,
     ) -> None:
         """Test log extraction functionality."""
@@ -390,7 +394,7 @@ class TestOracleOICExtension:
     def test_full_workflow(
         self,
         extension: OracleOICExtension,
-        config: dict[str, object],
+        config: FlextTypes.Core.Dict,
         tmp_path: Path,
     ) -> None:
         """Test complete integration workflow."""
@@ -444,7 +448,7 @@ class TestOracleOICExtension:
         if not config_path.exists():
 
             async def _run_input(
-                cmd_list: list[str],
+                cmd_list: FlextTypes.Core.StringList,
                 cwd: str | None = None,
                 input_text: str = "",
             ) -> tuple[int, str, str]:

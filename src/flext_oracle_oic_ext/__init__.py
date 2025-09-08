@@ -1,18 +1,18 @@
 """FLEXT Oracle OIC Extension - EXTENSION Pattern.
 
-Este módulo estabelece o padrão EXTENSION PEP8 para Oracle OIC Extension
-com API simplificada e integração flext-core. Serve como modelo para futuras extensions.
-
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
-
-Version 0.9.0 - Oracle OIC Extension API seguindo padrão EXTENSION:
-- Imports simplificados: from flext_oracle_oic_ext import OracleOICExtensionService
-- Integração flext-core completa: FlextResult, FlextConfig, etc
-- Padrão EXTENSION estabelecido para futuras extensions
 """
 
 from __future__ import annotations
+from flext_core import FlextTypes
+from __future__ import annotations
+
+"""
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
+
 
 import importlib.metadata
 import warnings
@@ -53,6 +53,33 @@ from flext_oracle_oic_ext.ext_exceptions import (
 
 # Legacy extension for backward compatibility
 from flext_oracle_oic_ext.extension import OracleOICExtension
+
+logger = FlextLogger(__name__)
+
+try:
+    __version__ = importlib.metadata.version("flext-oracle-oic-ext")
+except importlib.metadata.PackageNotFoundError:
+    __version__ = "0.9.0"
+
+__version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
+
+
+class FlextOracleOicExtDeprecationWarning(DeprecationWarning):
+    """Custom deprecation warning for FLEXT ORACLE OIC EXT import changes."""
+
+
+import importlib.metadata
+
+# ================================
+# EXTENSION Pattern: Core Imports
+# ================================
+
+# Foundation da flext-core
+from flext_core import FlextLogger
+
+# EXTENSION Pattern: Main components
+
+# Legacy extension for backward compatibility
 
 logger = FlextLogger(__name__)
 
@@ -148,7 +175,7 @@ def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
 # EXTENSION Pattern: Public API Exports
 # ================================
 
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     # ===== Foundation flext-core =====
     "FlextResult",
     "FlextModels",

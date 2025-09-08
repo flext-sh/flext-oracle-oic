@@ -1,3 +1,11 @@
+"""Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT.
+"""
+
+from __future__ import annotations
+
+from flext_core import FlextTypes
+
 """Oracle OIC Extension Exception Hierarchy - Modern Pydantic v2 Patterns.
 
 This module provides Oracle OIC Extension-specific exceptions using modern patterns from flext-core.
@@ -8,7 +16,6 @@ Copyright (c) 2025 FLEXT Contributors
 SPDX-License-Identifier: MIT
 """
 
-from __future__ import annotations
 
 from collections.abc import Mapping
 from enum import Enum
@@ -97,7 +104,7 @@ class FlextOracleOicDataValidationError(FlextOracleOicValidationError):
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension data validation error with field context."""
-        context_dict: dict[str, object] = dict(context) if context else {}
+        context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
         if field_name is not None:
             context_dict["field_name"] = field_name
         if field_value is not None:
@@ -130,7 +137,7 @@ class FlextOracleOicApiRequestError(FlextOracleOicApiError):
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension API request error with HTTP context."""
-        context_dict: dict[str, object] = dict(context) if context else {}
+        context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
         if status_code is not None:
             context_dict["status_code"] = status_code
         if response_body is not None:
@@ -165,7 +172,7 @@ class FlextOracleOicConfigError(FlextOracleOicConfigurationError):
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension configuration error with config context."""
-        context_dict: dict[str, object] = dict(context) if context else {}
+        context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
         if config_key is not None:
             context_dict["config_key"] = config_key
         if config_value is not None:
@@ -199,7 +206,7 @@ class FlextOracleOicIntegrationPatternError(FlextOracleOicPatternError):
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension integration pattern error with pattern context."""
-        context_dict: dict[str, object] = dict(context) if context else {}
+        context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
         if pattern_name is not None:
             context_dict["pattern_name"] = pattern_name
         if pattern_type is not None:
@@ -235,7 +242,7 @@ class FlextOracleOicWorkflowExecutionError(FlextOracleOicWorkflowError):
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension workflow execution error with workflow context."""
-        context_dict: dict[str, object] = dict(context) if context else {}
+        context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
         if workflow_id is not None:
             context_dict["workflow_id"] = workflow_id
         if execution_id is not None:
@@ -271,7 +278,7 @@ class FlextOracleOicOAuth2TokenError(FlextOracleOicTokenError):
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension OAuth2 token error with authentication context."""
-        context_dict: dict[str, object] = dict(context) if context else {}
+        context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
         if token_type is not None:
             context_dict["token_type"] = token_type
         if client_id is not None:
@@ -290,7 +297,7 @@ class FlextOracleOicOAuth2TokenError(FlextOracleOicTokenError):
         )
 
 
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "FlextOracleOicApiError",
     "FlextOracleOicApiRequestError",
     "FlextOracleOicAuthenticationError",

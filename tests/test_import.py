@@ -1,4 +1,8 @@
-"""Basic test to verify flext-extensions.oracle.flext-oracle-oic-ext imports work."""
+"""Basic test to verify flext-extensions.oracle.flext-oracle-oic-ext imports work.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 import flext_oracle_oic_ext
 from flext_oracle_oic_ext import OracleOICExtensionSettings

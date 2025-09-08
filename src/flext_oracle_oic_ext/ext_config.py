@@ -2,9 +2,21 @@
 
 This module establishes the EXTENSION PEP8 pattern for Oracle OIC extension
 configuration. Serves as a template for future extensions.
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
+
+from flext_core import FlextTypes
+
+"""
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
+
 
 from typing import Literal
 
@@ -66,7 +78,7 @@ class OracleOICExtensionSettings(FlextConfig):
 
 
 # Exports seguindo padrão EXTENSION
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     # Type literals
     "EnvironmentLiteral",
     "LogLevelLiteral",

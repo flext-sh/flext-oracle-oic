@@ -2,9 +2,21 @@
 
 Este módulo estabelece o padrão EXTENSION PEP8 para modelos
 de dados Oracle OIC. Serve como modelo para futuras extensions.
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
+
+from flext_core import FlextTypes
+
+"""
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
+
 
 from dataclasses import dataclass
 
@@ -97,14 +109,14 @@ class RequestParams:
     method: str
     url: str
     params: dict[str, str | int | float] | None = None
-    data: dict[str, object] | None = None
-    json_data: dict[str, object] | None = None
-    headers: dict[str, str] | None = None
+    data: FlextTypes.Core.Dict | None = None
+    json_data: FlextTypes.Core.Dict | None = None
+    headers: FlextTypes.Core.Headers | None = None
     timeout: int = 30
 
 
 # Exports seguindo padrão EXTENSION
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     # Configuration models
     "OICAuthConfig",
     "OICConnectionConfig",
