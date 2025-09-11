@@ -5,8 +5,8 @@ SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
+
 from flext_core import FlextTypes
-from __future__ import annotations
 
 """
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -20,35 +20,35 @@ import warnings
 # ================================
 # EXTENSION Pattern: Core Imports
 # ================================
-
 # Foundation da flext-core
-from flext_core import FlextResult, FlextModels, FlextConfig, FlextLogger
+from flext_core import FlextConfig, FlextLogger, FlextModels, FlextResult
+
+from flext_oracle_oic_ext.ext_client import (
+    OICExtensionAuthenticator,
+    OracleOICExtensionClient,
+)
 
 # EXTENSION Pattern: Main components
 from flext_oracle_oic_ext.ext_config import (
-    OracleOICExtensionSettings,
-    OICExtensionConnectionConfig,
     OICExtensionAuthConfig,
+    OICExtensionConnectionConfig,
+    OracleOICExtensionSettings,
 )
-from flext_oracle_oic_ext.ext_client import (
-    OracleOICExtensionClient,
-    OICExtensionAuthenticator,
-)
-from flext_oracle_oic_ext.ext_services import (
-    OracleOICExtensionService,
-    OICIntegrationPatternService,
+from flext_oracle_oic_ext.ext_exceptions import (
+    OICAPIError,
+    OICAuthenticationError,
+    OICConnectionError,
+    OICIntegrationError,
 )
 from flext_oracle_oic_ext.ext_models import (
     OICAuthConfig,
     OICConnectionConfig,
-    OICIntegrationInfo,
     OICConnectionInfo,
+    OICIntegrationInfo,
 )
-from flext_oracle_oic_ext.ext_exceptions import (
-    OICAuthenticationError,
-    OICConnectionError,
-    OICAPIError,
-    OICIntegrationError,
+from flext_oracle_oic_ext.ext_services import (
+    OICIntegrationPatternService,
+    OracleOICExtensionService,
 )
 
 # Legacy extension for backward compatibility
@@ -73,7 +73,6 @@ import importlib.metadata
 # ================================
 # EXTENSION Pattern: Core Imports
 # ================================
-
 # Foundation da flext-core
 from flext_core import FlextLogger
 
@@ -176,39 +175,39 @@ def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
 # ================================
 
 __all__: FlextTypes.Core.StringList = [
-    # ===== Foundation flext-core =====
-    "FlextResult",
-    "FlextModels",
     "FlextConfig",
     "FlextLogger",
-    # ===== Main EXTENSION Components =====
-    "OracleOICExtensionService",  # Main service (EXTENSION Pattern)
-    "OracleOICExtensionClient",  # API client
-    "OracleOICExtensionSettings",  # Configuration
-    "OICIntegrationPatternService",  # Integration patterns
-    # ===== Configuration Models =====
-    "OICExtensionConnectionConfig",  # Connection config
-    "OICExtensionAuthConfig",  # Auth config
+    "FlextModels",
+    # ===== Foundation flext-core =====
+    "FlextResult",
+    "OICAPIError",  # API errors
     "OICAuthConfig",  # Auth model
-    "OICConnectionConfig",  # Connection model
-    # ===== Business Models =====
-    "OICIntegrationInfo",  # Integration info
-    "OICConnectionInfo",  # Connection info
-    # ===== Authentication =====
-    "OICExtensionAuthenticator",  # Main authenticator
     # ===== Exceptions =====
     "OICAuthenticationError",  # Auth errors
+    "OICConnectionConfig",  # Connection model
     "OICConnectionError",  # Connection errors
-    "OICAPIError",  # API errors
+    "OICConnectionInfo",  # Connection info
+    "OICExtensionAuthConfig",  # Auth config
+    # ===== Authentication =====
+    "OICExtensionAuthenticator",  # Main authenticator
+    # ===== Configuration Models =====
+    "OICExtensionConnectionConfig",  # Connection config
     "OICIntegrationError",  # Integration errors
-    # ===== Convenience Functions =====
-    "create_oic_extension_service",  # Create service
-    "create_development_oic_service",  # Development service
+    # ===== Business Models =====
+    "OICIntegrationInfo",  # Integration info
+    "OICIntegrationPatternService",  # Integration patterns
     # ===== Legacy Support =====
     "OracleOICExtension",  # Backward compatibility
+    "OracleOICExtensionClient",  # API client
+    # ===== Main EXTENSION Components =====
+    "OracleOICExtensionService",  # Main service (EXTENSION Pattern)
+    "OracleOICExtensionSettings",  # Configuration
     # ===== Version Info =====
     "__version__",
     "__version_info__",
+    "create_development_oic_service",  # Development service
+    # ===== Convenience Functions =====
+    "create_oic_extension_service",  # Create service
 ]
 
 # Legacy re-exports removed: lifecycle module not present in this package structure
