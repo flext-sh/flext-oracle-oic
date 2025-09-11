@@ -79,7 +79,6 @@ class OracleOICExtensionSettings(FlextConfig):
 
 # Exports seguindo padrão EXTENSION
 __all__: FlextTypes.Core.StringList = [
-    # Type literals
     "EnvironmentLiteral",
     "LogLevelLiteral",
     "OICApiVersionLiteral",
