@@ -204,7 +204,6 @@ class TestOracleOICExtension:
 
         # Mock the initialization to avoid real service creation
         # and ensure lifecycle_manager is available
-        from unittest.mock import MagicMock
 
         mock_lifecycle_manager = MagicMock()
         extension.lifecycle_manager = mock_lifecycle_manager

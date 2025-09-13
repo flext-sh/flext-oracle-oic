@@ -386,6 +386,7 @@ def mock_oic_service() -> object:
 
     class MockOICService:
         def __init__(self) -> None:
+            """Initialize the instance."""
             self.integrations: dict[str, FlextTypes.Core.Dict] = {}
             self.connections: dict[str, FlextTypes.Core.Dict] = {}
             self.packages: dict[str, FlextTypes.Core.Dict] = {}
@@ -486,6 +487,7 @@ def mock_oic_client() -> object:
 
     class MockOICClient:
         def __init__(self, config: FlextTypes.Core.Dict) -> None:
+            """Initialize the instance."""
             self.config = config
             self.connected = False
             self.session_token: str | None = None

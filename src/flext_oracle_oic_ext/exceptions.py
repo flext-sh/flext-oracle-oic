@@ -1,11 +1,3 @@
-"""Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT.
-"""
-
-from __future__ import annotations
-
-from flext_core import FlextTypes
-
 """Oracle OIC Extension Exception Hierarchy - Modern Pydantic v2 Patterns.
 
 This module provides Oracle OIC Extension-specific exceptions using modern patterns from flext-core.
@@ -16,11 +8,12 @@ Copyright (c) 2025 FLEXT Contributors
 SPDX-License-Identifier: MIT
 """
 
+from __future__ import annotations
 
 from collections.abc import Mapping
 from enum import Enum
 
-from flext_core import FlextExceptions
+from flext_core import FlextExceptions, FlextTypes
 
 
 class FlextOracleOicErrorCodes(Enum):

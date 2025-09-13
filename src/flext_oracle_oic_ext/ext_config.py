@@ -1,26 +1,13 @@
-"""Oracle OIC Extension Configuration - EXTENSION Pattern.
+"""FLEXT Module.
 
-This module establishes the EXTENSION PEP8 pattern for Oracle OIC extension
-configuration. Serves as a template for future extensions.
-
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
+Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
-
-"""
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
-
 from typing import Literal
 
-from flext_core import FlextConfig
+from flext_core import FlextConfig, FlextTypes
 
 # Type definitions seguindo padrão EXTENSION
 EnvironmentLiteral = Literal["development", "staging", "production"]

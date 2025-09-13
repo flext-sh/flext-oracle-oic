@@ -1,12 +1,3 @@
-"""Tests for Oracle OIC Extension configuration generation.
-
-Tests configuration generation functionality and validation.
-
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
 from __future__ import annotations
 
 import contextlib
@@ -22,6 +13,7 @@ from flext_oracle_oic_ext import OracleOICExtensionSettings, setup_oic_extension
 
 def test_module_imports() -> None:
     """Test that the module can be imported correctly."""
+
     # Module imported successfully
 
 

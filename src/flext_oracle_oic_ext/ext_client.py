@@ -1,30 +1,16 @@
-"""Oracle OIC Extension Client - EXTENSION Pattern.
+"""FLEXT Module.
 
-Este módulo estabelece o padrão EXTENSION PEP8 para cliente
-Oracle OIC com autenticação OAuth2 e padrões enterprise.
-Servirá como modelo para futuras extensions.
-
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
+Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
-
-from flext_core import FlextTypes
-
-"""
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
 
 import base64
 from abc import ABC, abstractmethod
 from typing import Self
 
 import httpx
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes
 
 from flext_oracle_oic_ext.ext_models import OICAuthConfig, OICConnectionConfig
 

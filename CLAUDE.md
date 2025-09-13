@@ -16,8 +16,9 @@
 **CRITICAL ROLE**: flext-oracle-oic-ext is the enterprise-grade Oracle Integration Cloud (OIC) extension and enterprise Oracle integration foundation for the entire FLEXT ecosystem. This is a PRODUCTION mission-critical system providing Oracle OIC REST API integration, OAuth2/IDCS authentication, integration patterns, and enterprise Oracle cloud connectivity with ZERO TOLERANCE for custom Oracle OIC implementations.
 
 **ORACLE OIC INTEGRATION EXTENSION RESPONSIBILITIES**:
+
 - ✅ **Enterprise Oracle OIC Integration**: Production-grade Oracle Integration Cloud REST API integration with OAuth2/IDCS authentication
-- ✅ **FLEXT Ecosystem Integration**: MANDATORY use of flext-core foundation exclusively  
+- ✅ **FLEXT Ecosystem Integration**: MANDATORY use of flext-core foundation exclusively
 - ✅ **Oracle Cloud Connectivity**: Complete Oracle OIC, Oracle Cloud, and enterprise Oracle system integration
 - ✅ **Integration Pattern Management**: Oracle OIC integration patterns, workflow orchestration, and process automation
 - ✅ **Enterprise Authentication**: OAuth2/IDCS authentication, secure token management, and Oracle cloud security
@@ -25,6 +26,7 @@
 - ✅ **Production Quality**: Zero errors across all quality gates with comprehensive Oracle OIC testing
 
 **FLEXT ECOSYSTEM IMPACT** (ORACLE OIC EXTENSION AUTHORITY):
+
 - **All 32+ FLEXT Projects**: Oracle OIC integration extension for entire ecosystem - NO custom Oracle OIC implementations
 - **Enterprise Oracle Integration**: Production-ready Oracle Integration Cloud connectivity and workflow management
 - **Oracle Cloud Platform**: Complete Oracle OIC integration patterns for cloud-based enterprise systems
@@ -32,6 +34,7 @@
 - **Cross-Platform Integration**: Unified Oracle OIC connectivity across Python, Go, and enterprise Oracle systems
 
 **ORACLE OIC QUALITY IMPERATIVES** (ZERO TOLERANCE ENFORCEMENT):
+
 - 🔴 **ZERO custom Oracle OIC implementations** - ALL Oracle integration operations through flext-oracle-oic-ext foundation
 - 🔴 **ZERO direct Oracle OIC SDK/httpx imports** outside flext-oracle-oic-ext
 - 🟢 **90%+ test coverage** - Complete Oracle OIC functionality testing with real Oracle Integration Cloud APIs
@@ -41,9 +44,10 @@
 
 ## 🛑 ZERO TOLERANCE ENFORCEMENT (ORACLE OIC INTEGRATION EXTENSION)
 
-### ⛔ ABSOLUTELY FORBIDDEN ORACLE OIC VIOLATIONS:
+### ⛔ ABSOLUTELY FORBIDDEN ORACLE OIC VIOLATIONS
 
-#### 1. **DIRECT ORACLE OIC/HTTP LIBRARY IMPORTS (ECOSYSTEM VIOLATION)**:
+#### 1. **DIRECT ORACLE OIC/HTTP LIBRARY IMPORTS (ECOSYSTEM VIOLATION)**
+
 ```python
 # ❌ ABSOLUTELY FORBIDDEN - Direct Oracle OIC/HTTP library imports
 import httpx                              # VIOLATION: Use flext-oracle-oic-ext foundation
@@ -58,20 +62,22 @@ from flext_oracle_oic_ext import OICIntegrationPatternService
 from flext_core import FlextResult, FlextLogger, get_logger
 ```
 
-#### 2. **CUSTOM ORACLE OIC IMPLEMENTATIONS (ARCHITECTURE VIOLATION)**:
+#### 2. **CUSTOM ORACLE OIC IMPLEMENTATIONS (ARCHITECTURE VIOLATION)**
+
 - **FORBIDDEN**: Custom Oracle OIC REST API implementations outside flext-oracle-oic-ext patterns
 - **FORBIDDEN**: Direct OAuth2/IDCS authentication setup - Use OICExtensionAuthenticator
 - **FORBIDDEN**: Custom Oracle Integration Cloud clients - Use OracleOICExtensionClient
 - **FORBIDDEN**: Manual Oracle cloud connectivity - Use OracleOICExtensionSettings
 - **FORBIDDEN**: Custom Oracle OIC error handling - Use FlextResult[T] railway pattern
 
-#### 3. **ORACLE OIC CONFIGURATION VIOLATIONS**:
+#### 3. **ORACLE OIC CONFIGURATION VIOLATIONS**
+
 - **FORBIDDEN**: Direct Oracle OIC API configuration without flext-oracle-oic-ext validation
 - **FORBIDDEN**: OAuth2 token management outside OICExtensionAuthenticator
 - **FORBIDDEN**: Custom Oracle Integration Cloud workflows bypassing OICIntegrationPatternService
 - **FORBIDDEN**: Oracle OIC connectivity without flext-oracle-oic-ext security patterns
 
-### ⛔ PRODUCTION ORACLE OIC STANDARDS (ZERO DEVIATION):
+### ⛔ PRODUCTION ORACLE OIC STANDARDS (ZERO DEVIATION)
 
 1. **ALL Oracle OIC operations** through flext-oracle-oic-ext foundation exclusively
 2. **ALL Oracle Integration Cloud APIs** via OracleOICExtensionClient and service abstractions
@@ -83,6 +89,7 @@ from flext_core import FlextResult, FlextLogger, get_logger
 ## 🚀 ENTERPRISE DEVELOPMENT COMMANDS (PRODUCTION ORACLE OIC FOUNDATION)
 
 ### 🔴 MANDATORY QUALITY GATES (ZERO ERRORS TOLERANCE)
+
 ```bash
 # MANDATORY before ANY commit - Complete Oracle OIC validation pipeline
 make validate                 # Runs: lint + type-check + security + test + oic-validate
@@ -96,12 +103,13 @@ make format                  # Auto-format with Ruff (enterprise standards)
 
 # Quality status shortcuts (production efficiency)
 make l                       # Alias for lint
-make t                       # Alias for test  
+make t                       # Alias for test
 make tc                      # Alias for type-check
 make v                       # Alias for validate
 ```
 
 ### 🏛️ ORACLE OIC FOUNDATION OPERATIONS
+
 ```bash
 # Core Oracle OIC integration lifecycle
 make oic-init                # Initialize Oracle OIC project with FLEXT standards
@@ -123,6 +131,7 @@ make oracle-security-check # Oracle cloud security validation
 ```
 
 ### 🧪 ENTERPRISE TESTING STANDARDS (REAL ORACLE OIC VALIDATION)
+
 ```bash
 # Comprehensive Oracle OIC testing (NO MOCKS - Real Oracle Integration Cloud APIs)
 make test                    # Full suite: 90%+ coverage with real Oracle OIC integration
@@ -157,17 +166,20 @@ LEVEL 1: flext-core (abstract foundation)
 ### 🔧 ENTERPRISE ORACLE OIC ARCHITECTURE PRINCIPLES (ZERO DEVIATION)
 
 **1. Railway-Oriented Programming (MANDATORY)**:
+
 - ALL Oracle OIC operations return `FlextResult[T]` for type-safe error handling
 - NO try/except fallbacks - explicit error handling through FlextResult pattern
 - ALL Oracle Integration Cloud interactions wrapped in FlextResult chains
 
 **2. Clean Architecture + Domain-Driven Design (ENTERPRISE STANDARD)**:
+
 - **Domain Layer**: OICIntegrationInfo, OICConnectionInfo, OICAuthConfig entities
 - **Application Layer**: OracleOICExtensionService, OICIntegrationPatternService
 - **Infrastructure Layer**: OracleOICExtensionClient, OICExtensionAuthenticator
 - **Interface Layer**: Oracle OIC REST API abstraction, CLI commands
 
 **3. SOLID Principles Enforcement (PRODUCTION QUALITY)**:
+
 - **Single Responsibility**: Each service handles ONE Oracle OIC concern
 - **Open/Closed**: Extensions through Oracle integration patterns, closed for modification
 - **Liskov Substitution**: All Oracle OIC clients/services interchangeable
@@ -175,6 +187,7 @@ LEVEL 1: flext-core (abstract foundation)
 - **Dependency Inversion**: Depend on FlextResult abstractions, not implementations
 
 **4. Real Oracle OIC Integration (100% PRODUCTION READINESS)**:
+
 - ZERO mocks in production code - ALL tests use real Oracle Integration Cloud APIs
 - Complete OAuth2/IDCS authentication with actual Oracle cloud services
 - Actual Oracle OIC workflow execution with real integration patterns
@@ -183,6 +196,7 @@ LEVEL 1: flext-core (abstract foundation)
 ### 🏭 ENTERPRISE ORACLE OIC MODULE ARCHITECTURE
 
 **FOUNDATION LAYER** (Oracle OIC Core Infrastructure):
+
 ```python
 src/flext_oracle_oic_ext/
 ├── __init__.py              # Complete module exports and FLEXT ecosystem integration
@@ -192,6 +206,7 @@ src/flext_oracle_oic_ext/
 ```
 
 **SERVICE LAYER** (Oracle OIC Business Logic):
+
 ```python
 ├── ext_services.py          # OracleOICExtensionService (core Oracle OIC orchestration)
 ├── ext_client.py            # OracleOICExtensionClient (Oracle Integration Cloud API)
@@ -199,6 +214,7 @@ src/flext_oracle_oic_ext/
 ```
 
 **INTEGRATION LAYER** (Oracle OIC API Abstraction):
+
 ```python
 ├── extension.py             # Legacy OracleOICExtension (backward compatibility)
 ├── main.py                  # CLI entry point for Oracle OIC operations
@@ -228,6 +244,7 @@ auth_result = await authenticator.authenticate()  # Real Oracle IDCS authenticat
 ```
 
 **AUTHENTICATION COMMUNICATION STANDARDS**:
+
 - ALL authentication operations return JSON responses with FlextResult structure
 - MANDATORY error handling through FlextResult patterns
 - Complete Oracle OIC authentication logging and monitoring integration
@@ -238,6 +255,7 @@ auth_result = await authenticator.authenticate()  # Real Oracle IDCS authenticat
 ### ✅ MANDATORY ORACLE OIC IMPORT PATTERNS (ZERO TOLERANCE ENFORCEMENT)
 
 **CORRECT - FLEXT Ecosystem Foundation Imports Only:**
+
 ```python
 # ✅ FLEXT-ORACLE-OIC-EXT Foundation Imports (MANDATORY)
 from flext_oracle_oic_ext import OracleOICExtensionService, OracleOICExtensionClient
@@ -254,6 +272,7 @@ from flext_observability import flext_create_metric, flext_monitor_function
 ### ❌ ABSOLUTELY FORBIDDEN ORACLE OIC IMPORTS (ECOSYSTEM VIOLATION)
 
 **PROHIBITED - Direct Oracle OIC/HTTP Library Imports:**
+
 ```python
 # ❌ ZERO TOLERANCE VIOLATIONS - Direct Oracle OIC/HTTP library imports
 import httpx                              # FORBIDDEN: Use flext-oracle-oic-ext foundation
@@ -273,16 +292,19 @@ from flext_core.internal.settings import Settings                        # WRONG
 **ALLOWED Dependencies (Level 1-2 Foundation Only):**
 
 **MANDATORY FLEXT Ecosystem Dependencies:**
+
 - `flext-core>=0.9.0` - Foundation patterns, FlextResult, service base classes, logging
 - `flext-observability>=0.9.0` - Monitoring, metrics, and distributed tracing
 
 **EXTERNAL Oracle OIC Dependencies (Abstracted Through FLEXT):**
+
 - `httpx>=0.25.0` - Modern HTTP client (INTERNAL USE ONLY - wrapped by OracleOICExtensionClient)
 - `tenacity>=8.2.0` - Retry logic for Oracle OIC operations (INTERNAL USE ONLY)
 - `pydantic>=2.0.0` - Data validation and modeling for Oracle OIC configurations
 - `typer>=0.9.0` - CLI framework for Oracle OIC command-line interface
 
 **ABSOLUTELY PROHIBITED Dependencies:**
+
 - ❌ Same level (other Level 3) or higher level modules
 - ❌ Direct Oracle OIC SDK/HTTP client usage for integration operations
 - ❌ Custom OAuth2 implementations bypassing flext-oracle-oic-ext patterns
@@ -293,6 +315,7 @@ from flext_core.internal.settings import Settings                        # WRONG
 ### 🔧 ORACLE OIC TYPE SAFETY REQUIREMENTS (PRODUCTION CRITICAL)
 
 **MANDATORY Type Safety Standards:**
+
 - **MyPy Strict Mode**: ALL source code must pass `mypy src --strict` with ZERO errors
 - **PyRight Validation**: Complete PyRight compliance for IDE integration
 - **Python 3.13+**: Modern Python features, Union types, generic type annotations
@@ -301,6 +324,7 @@ from flext_core.internal.settings import Settings                        # WRONG
 - **Authentication Type Validation**: Typed OAuth2/IDCS configurations and Oracle cloud results
 
 **Oracle OIC-Specific Type Requirements:**
+
 ```python
 # ✅ CORRECT - Oracle OIC type annotations
 from typing import Dict, List, Optional, Union
@@ -322,6 +346,7 @@ def connect_oracle_oic(config, params):  # Missing types
 ### 📋 ORACLE OIC LINTING STANDARDS (ZERO TOLERANCE ENFORCEMENT)
 
 **MANDATORY Linting Configuration:**
+
 - **Ruff**: ALL rules enabled with Oracle OIC-specific configurations
 - **Complexity Limits**: Oracle OIC functions with complexity >10 require refactoring
 - **Parameter Limits**: Oracle OIC functions with >5 parameters need restructuring
@@ -333,18 +358,21 @@ def connect_oracle_oic(config, params):  # Missing types
 **PRODUCTION TESTING STANDARDS:**
 
 **1. Real Oracle OIC API Integration (100% Production Readiness):**
+
 - ZERO mocks for Oracle OIC operations - ALL tests use real Oracle Integration Cloud APIs
 - Complete OAuth2/IDCS authentication testing with actual Oracle cloud services
 - Real Oracle OIC workflow execution with actual integration pattern validation
 - Production Oracle OIC configuration testing
 
 **2. Oracle OIC Coverage Requirements (Evidence-Based Quality):**
+
 - **90% minimum coverage** with meaningful Oracle OIC functionality tests
 - **Real Oracle Integration Cloud testing** with actual API calls and workflow execution
 - **OAuth2/IDCS authentication validation** with actual Oracle cloud authentication
 - **Oracle OIC pattern testing** with real integration workflow validation
 
 **3. Test Categories (Comprehensive Oracle OIC Validation):**
+
 ```bash
 # Oracle OIC-specific test markers
 pytest -m unit_oic           # Unit tests for Oracle OIC components
@@ -356,6 +384,7 @@ pytest -m oic_e2e           # End-to-end Oracle OIC testing
 ```
 
 **4. Production Oracle OIC Test Environment:**
+
 ```python
 # ✅ CORRECT - Real Oracle OIC testing
 from flext_oracle_oic_ext import OracleOICExtensionService, OracleOICExtensionSettings
@@ -366,7 +395,7 @@ async def test_oracle_oic_integration():
     """Test real Oracle OIC integration."""
     settings = OracleOICExtensionSettings()
     service = OracleOICExtensionService(settings)
-    
+
     # Test with actual Oracle Integration Cloud
     result = await service.process_integration("test-integration-pattern")
     assert result.is_success, f"Oracle OIC integration failed: {result.error}"
@@ -392,35 +421,35 @@ from flext_oracle_oic_ext import OracleOICExtensionService, OracleOICExtensionSe
 import asyncio
 
 async def enterprise_oracle_integration(
-    integration_name: str, 
+    integration_name: str,
     oic_config: Dict[str, Any]
 ) -> FlextResult[Dict[str, Any]]:
     """Enterprise Oracle OIC integration with proper error handling - NO try/except fallbacks."""
     logger = get_logger("oracle_oic_operations")
-    
+
     # Input validation with early return
     if not integration_name or not oic_config:
         return FlextResult[Dict[str, Any]].fail("Invalid Oracle OIC integration configuration")
-        
+
     # Use flext-oracle-oic-ext exclusively for Oracle operations - NO custom implementations
     try:
         settings = OracleOICExtensionSettings(**oic_config)
         service = OracleOICExtensionService(settings)
-        
+
         # Oracle OIC integration through flext-oracle-oic-ext foundation
         integration_result = await service.process_integration(integration_name)
         if integration_result.is_failure:
             return FlextResult[Dict[str, Any]].fail(f"Oracle OIC integration failed: {integration_result.error}")
-            
+
         integration_data = integration_result.unwrap()
-        
+
         # OAuth2/IDCS authentication through flext-oracle-oic-ext
         from flext_oracle_oic_ext import OICExtensionAuthenticator
         authenticator = OICExtensionAuthenticator(settings.auth)
         auth_result = await authenticator.authenticate()
         if auth_result.is_failure:
             return FlextResult[Dict[str, Any]].fail(f"Oracle IDCS authentication failed: {auth_result.error}")
-            
+
         return FlextResult[Dict[str, Any]].ok({
             "integration_name": integration_name,
             "integration_data": integration_data,
@@ -441,6 +470,7 @@ async def enterprise_oracle_integration(
 ### 🔍 PRE-DEVELOPMENT VALIDATION (MANDATORY FIRST STEPS)
 
 **1. Oracle OIC Extension Status Check:**
+
 ```bash
 # MANDATORY - Verify current Oracle OIC extension status
 make check                    # Quick validation (lint + type + oic-config-check)
@@ -449,6 +479,7 @@ make test-fast              # Oracle OIC functionality verification without cove
 ```
 
 **2. Enterprise Oracle OIC Architecture Understanding:**
+
 ```bash
 # Review FLEXT ecosystem Oracle OIC dependencies
 grep -r "from flext_" src/ --include="*.py" | sort | uniq
@@ -464,6 +495,7 @@ cat src/flext_oracle_oic_ext/ext_config.py | head -50
 ```
 
 **3. Production Oracle OIC Environment Verification:**
+
 ```bash
 # Verify Oracle OIC connectivity configuration
 cat config.json.example                     # Oracle OIC configuration template
@@ -478,35 +510,36 @@ make test-oic               # Oracle OIC integration validation
 ### ⚡ DURING ORACLE OIC DEVELOPMENT (PRODUCTION PATTERNS)
 
 **1. FlextResult Oracle OIC Pattern Compliance (MANDATORY):**
+
 ```python
 # ✅ CORRECT - ALL Oracle OIC operations use FlextResult pattern
 from flext_core import FlextResult
 from flext_oracle_oic_ext import OracleOICExtensionService, OICExtensionAuthenticator
 
 async def oracle_integration_workflow(
-    integration_name: str, 
-    auth_config: Dict[str, str], 
+    integration_name: str,
+    auth_config: Dict[str, str],
     workflow_params: Dict[str, Any]
 ) -> FlextResult[Dict[str, Any]]:
     """Complete Oracle OIC workflow with railway-oriented programming."""
     service = OracleOICExtensionService()
     authenticator = OICExtensionAuthenticator()
-    
+
     # Authentication phase with FlextResult chaining
     auth_result = await authenticator.authenticate(auth_config)
     if auth_result.is_failure:
         return FlextResult[Dict[str, Any]].fail(f"Oracle IDCS authentication failed: {auth_result.error}")
-    
-    # Integration phase with FlextResult chaining  
+
+    # Integration phase with FlextResult chaining
     integration_result = await service.process_integration(integration_name, workflow_params)
     if integration_result.is_failure:
         return FlextResult[Dict[str, Any]].fail(f"Oracle OIC integration failed: {integration_result.error}")
-    
+
     # Workflow execution phase with FlextResult chaining
     workflow_result = await service.execute_workflow(integration_result.unwrap())
     if workflow_result.is_failure:
         return FlextResult[Dict[str, Any]].fail(f"Oracle OIC workflow failed: {workflow_result.error}")
-    
+
     return FlextResult[Dict[str, Any]].ok({
         "authenticated": True,
         "integration_executed": integration_result.unwrap(),
@@ -521,6 +554,7 @@ except Exception as e:
 ```
 
 **2. Real Oracle OIC Integration (PRODUCTION REQUIREMENT):**
+
 ```python
 # ✅ CORRECT - Direct Oracle OIC integration through FLEXT abstractions
 from flext_oracle_oic_ext import create_oic_extension_service, OracleOICExtensionSettings
@@ -549,6 +583,7 @@ def test_fake_oracle_oic(): pass
 ```
 
 **3. Incremental Oracle OIC Quality Validation:**
+
 ```bash
 # Run after each significant change
 make lint                     # Ruff validation with Oracle OIC-specific rules
@@ -677,21 +712,25 @@ curl -H "Authorization: Bearer $ORACLE_OIC_TOKEN" \
 **MANDATORY Reading for Oracle OIC Development:**
 
 **Foundation Architecture:**
+
 - `src/flext_oracle_oic_ext/__init__.py` - Complete module exports and FLEXT ecosystem integration
-- `src/flext_oracle_oic_ext/ext_services.py` - OracleOICExtensionService core Oracle OIC orchestration  
+- `src/flext_oracle_oic_ext/ext_services.py` - OracleOICExtensionService core Oracle OIC orchestration
 - `src/flext_oracle_oic_ext/ext_client.py` - OracleOICExtensionClient Oracle Integration Cloud API
 
 **Oracle OIC Implementations:**
+
 - `src/flext_oracle_oic_ext/ext_config.py` - OracleOICExtensionSettings Oracle OIC configuration
 - `src/flext_oracle_oic_ext/ext_models.py` - OICIntegrationInfo, OICConnectionInfo, OICAuthConfig
 - `src/flext_oracle_oic_ext/ext_exceptions.py` - Oracle OIC error hierarchy
 
 **Production Testing:**
+
 - `tests/test_*_complete.py` - Comprehensive real Oracle OIC API tests
 - `tests/integration/` - Integration tests with real Oracle Integration Cloud operations
 - `tests/e2e/` - End-to-end Oracle OIC workflow testing
 
 **Configuration Files:**
+
 - `config.json.example` - Oracle OIC configuration template
 - `pyproject.toml` - Oracle OIC extension dependencies and tool configuration
 

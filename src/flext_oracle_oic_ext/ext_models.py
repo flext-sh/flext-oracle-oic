@@ -1,26 +1,13 @@
-"""Oracle OIC Extension Models - EXTENSION Pattern.
+"""FLEXT Module.
 
-Este módulo estabelece o padrão EXTENSION PEP8 para modelos
-de dados Oracle OIC. Serve como modelo para futuras extensions.
-
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
+Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
-
-"""
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
-
 from dataclasses import dataclass
 
-from flext_core import FlextLogger, FlextModels
+from flext_core import FlextLogger, FlextModels, FlextTypes
 from pydantic import ConfigDict, Field, SecretStr
 
 logger = FlextLogger(__name__)
