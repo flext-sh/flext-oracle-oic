@@ -167,7 +167,8 @@ class TestOracleOICExtension:
                     raise AssertionError(msg)
                 assert status.integration_id == "TEST_INTEGRATION"
 
-    def test_monitoring_service_operations(self, config: FlextTypes.Core.Dict) -> None:
+    @pytest.mark.usefixtures("_mock_oic_client")
+    def test_monitoring_service_operations(self) -> None:
         """Test monitoring service functionality."""
         # Create a mock HTTP client for MonitoringService
 
@@ -321,7 +322,8 @@ class TestOracleOICExtension:
                     msg,
                 )
 
-    def test_monitoring_alerts(self, config: FlextTypes.Core.Dict) -> None:
+    @pytest.mark.usefixtures("_mock_oic_client")
+    def test_monitoring_alerts(self) -> None:
         """Test monitoring alert functionality."""
         mock_client = Mock()
         service = MonitoringService(client=mock_client)
@@ -343,7 +345,8 @@ class TestOracleOICExtension:
             raise AssertionError(msg)
         assert "recommendations" in analysis
 
-    def test_performance_metrics(self, config: FlextTypes.Core.Dict) -> None:
+    @pytest.mark.usefixtures("_mock_oic_client")
+    def test_performance_metrics(self) -> None:
         """Test performance metrics collection."""
         mock_client = Mock()
         service = MonitoringService(client=mock_client)

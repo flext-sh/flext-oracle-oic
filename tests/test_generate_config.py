@@ -223,11 +223,10 @@ class TestConfigGeneration:
             ("production", False),
         ],
     )
+    @pytest.mark.usefixtures("_expected_debug")
     def test_environment_specific_defaults(
         self,
         environment: str,
-        *,
-        expected_debug: bool,
     ) -> None:
         """Test environment-specific default values."""
         config_dict = {
