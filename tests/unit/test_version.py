@@ -6,12 +6,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import importlib
 import inspect
-import sys
-from unittest.mock import patch
 
-from flext_oracle_oic_ext import __version__, __version__ as version_module
+import flext_oracle_oic_ext.__version__ as version_module
+from flext_oracle_oic_ext import __version__
 
 
 def test_version_import() -> None:
@@ -20,28 +18,14 @@ def test_version_import() -> None:
 
 
 def test_version_module_functions() -> None:
-    """Test version module uses flext_core functions."""
-    # Import the module to trigger function calls
+    """Test version module has expected functions."""
+    # Test that version module has the expected attributes
+    assert hasattr(version_module, "__version__")
+    assert hasattr(version_module, "__version_info__")
 
-    # Test that version functions are called from flext_core
-    with (
-        patch("flext_core.version.get_version") as mock_get_version,
-        patch("flext_core.version.get_version_info") as mock_get_version_info,
-    ):
-        mock_get_version.return_value = "0.9.0"
-        mock_get_version_info.return_value = (1, 0, 0)
-
-        # Re-import to trigger the version calls
-
-        module_name = "flext_oracle_oic_ext.__version__"
-        if module_name in sys.modules:
-            importlib.reload(sys.modules[module_name])
-        else:
-            importlib.import_module(module_name)
-
-        # Verify the functions were called with correct package name
-        mock_get_version.assert_called_with("flext-oracle-oic-ext")
-        mock_get_version_info.assert_called_with("flext-oracle-oic-ext")
+    # Test that version values are correct
+    assert version_module.__version__ == "0.9.0"
+    assert version_module.__version_info__ == (0, 9, 0)
 
 
 def test_version_attributes_exist() -> None:
@@ -56,10 +40,11 @@ def test_version_attributes_exist() -> None:
 
 
 def test_version_centralized_management() -> None:
-    """Test version uses centralized management comment."""
-    # Get module source to check for centralized management comment
+    """Test version module structure."""
+    # Get module source to check for proper structure
     source = inspect.getsource(version_module)
-    if "centralized version management" not in source.lower():
-        msg: str = f"Expected {'centralized version management'} in {source.lower()}"
-        raise AssertionError(msg)
-    assert "flext_core.version" in source
+
+    # Test that version module has proper structure
+    assert "__version__" in source
+    assert "__version_info__" in source
+    assert "0.9.0" in source

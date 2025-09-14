@@ -20,7 +20,7 @@ import json
 import os
 import sys
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 from flext_core import FlextLogger, FlextResult, FlextTypes
@@ -37,6 +37,8 @@ logger = FlextLogger(__name__)
 
 
 class TestOracleOICExtension:
+    """Test class for Oracle OIC Extension functionality."""
+
     def test_extension_initialization(self, extension: Mock) -> None:
         """Test extension initialization."""
         if extension.oracle_oic_bin != "oracle-oic-ext":
@@ -234,7 +236,7 @@ class TestOracleOICExtension:
 
         # Test missing config
         os.environ.pop("MELTANO_PROJECT_ROOT", None)
-        with pytest.raises(Exception, match=".*config.*"):
+        with pytest.raises(Exception, match=r".*config.*"):
             extension.invoke("lifecycle:status")
 
     def test_config_loading(

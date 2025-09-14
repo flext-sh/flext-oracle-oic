@@ -37,6 +37,7 @@ from flext_oracle_oic_ext.ext_exceptions import (
     OracleOICExtensionError,
 )
 from flext_oracle_oic_ext.ext_models import (
+    IntegrationStatus,
     OICAuthConfig,
     OICConnectionConfig,
     OICConnectionInfo,
@@ -44,6 +45,8 @@ from flext_oracle_oic_ext.ext_models import (
     RequestParams,
 )
 from flext_oracle_oic_ext.ext_services import (
+    LifecycleManager,
+    MonitoringService,
     OICIntegrationPatternService,
     OracleOICExtensionService,
 )
@@ -53,6 +56,7 @@ from flext_oracle_oic_ext.factory import (
     _show_deprecation_warning,
     create_development_oic_service,
     create_oic_extension_service,
+    setup_oic_extension,
 )
 
 # Version information
@@ -78,33 +82,29 @@ except importlib.metadata.PackageNotFoundError:
 
 __version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
 __all__: FlextTypes.Core.StringList = [
-    # Client classes
     "BaseOICAuthenticator",
     "BaseOICClient",
-    # Foundation flext-core
     "FlextConfig",
     "FlextLogger",
     "FlextModels",
-    # Factory functions
     "FlextOracleOicExtDeprecationWarning",
     "FlextResult",
     "FlextTypes",
-    # Exception classes
+    "IntegrationStatus",
+    "LifecycleManager",
+    "MonitoringService",
     "OICAPIError",
-    # Model classes
     "OICAuthConfig",
     "OICAuthenticationError",
     "OICConfigurationError",
     "OICConnectionConfig",
     "OICConnectionError",
     "OICConnectionInfo",
-    # Configuration classes
     "OICExtensionAuthConfig",
     "OICExtensionAuthenticator",
     "OICExtensionConnectionConfig",
     "OICIntegrationError",
     "OICIntegrationInfo",
-    # Service classes
     "OICIntegrationPatternService",
     "OICPatternError",
     "OICTapAuthenticator",
@@ -113,20 +113,16 @@ __all__: FlextTypes.Core.StringList = [
     "OICTokenError",
     "OICValidationError",
     "OICWorkflowError",
-    # Extension classes
     "OracleOICExtension",
     "OracleOICExtensionClient",
     "OracleOICExtensionError",
     "OracleOICExtensionService",
     "OracleOICExtensionSettings",
     "RequestParams",
-    # Version info
     "__version__",
     "__version_info__",
     "_show_deprecation_warning",
     "create_development_oic_service",
-    "create_development_oic_service",
     "create_oic_extension_service",
-    # Utility functions
-    "create_oic_extension_service",
+    "setup_oic_extension",
 ]

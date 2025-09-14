@@ -9,19 +9,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
-
-"""
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
-
 import sys
 from typing import NoReturn
 
 import typer
-from flext_core import FlextLogger
+from flext_core import FlextLogger, FlextTypes
 
 from flext_oracle_oic_ext import (
     __version__,

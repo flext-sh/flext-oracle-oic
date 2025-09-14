@@ -33,47 +33,47 @@ class FlextOracleOicErrorCodes(Enum):
 
 
 # Base Oracle OIC Extension exception hierarchy
-class FlextOracleOicError(FlextExceptions):
+class FlextOracleOicError(FlextExceptions.BaseError):
     """Base Oracle OIC Extension error."""
 
 
-class FlextOracleOicValidationError(FlextOracleOicError):
+class FlextOracleOicValidationError(FlextExceptions.BaseError):
     """Oracle OIC Extension validation error."""
 
 
-class FlextOracleOicConnectionError(FlextOracleOicError):
+class FlextOracleOicConnectionError(FlextExceptions.BaseError):
     """Oracle OIC Extension connection error."""
 
 
-class FlextOracleOicAuthenticationError(FlextOracleOicError):
+class FlextOracleOicAuthenticationError(FlextExceptions.BaseError):
     """Oracle OIC Extension authentication error."""
 
 
-class FlextOracleOicConfigurationError(FlextOracleOicError):
+class FlextOracleOicConfigurationError(FlextExceptions.BaseError):
     """Oracle OIC Extension configuration error."""
 
 
-class FlextOracleOicApiError(FlextOracleOicError):
+class FlextOracleOicApiError(FlextExceptions.BaseError):
     """Oracle OIC Extension API error."""
 
 
-class FlextOracleOicTimeoutError(FlextOracleOicError):
+class FlextOracleOicTimeoutError(FlextExceptions.BaseError):
     """Oracle OIC Extension timeout error."""
 
 
-class FlextOracleOicTokenError(FlextOracleOicError):
+class FlextOracleOicTokenError(FlextExceptions.BaseError):
     """Oracle OIC Extension token error."""
 
 
-class FlextOracleOicIntegrationError(FlextOracleOicError):
+class FlextOracleOicIntegrationError(FlextExceptions.BaseError):
     """Oracle OIC Extension integration error."""
 
 
-class FlextOracleOicWorkflowError(FlextOracleOicError):
+class FlextOracleOicWorkflowError(FlextExceptions.BaseError):
     """Oracle OIC Extension workflow error."""
 
 
-class FlextOracleOicPatternError(FlextOracleOicError):
+class FlextOracleOicPatternError(FlextExceptions.BaseError):
     """Oracle OIC Extension pattern error."""
 
 
@@ -92,8 +92,7 @@ class FlextOracleOicDataValidationError(FlextOracleOicValidationError):
         field_value: object | None = None,
         validation_rule: str | None = None,
         entity_name: str | None = None,
-        code: FlextOracleOicErrorCodes
-        | None = FlextOracleOicErrorCodes.OIC_VALIDATION_ERROR,
+        code: str | None = None,
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension data validation error with field context."""
@@ -109,7 +108,7 @@ class FlextOracleOicDataValidationError(FlextOracleOicValidationError):
 
         super().__init__(
             message,
-            code=code,
+            code=code or FlextOracleOicErrorCodes.OIC_VALIDATION_ERROR.value,
             context=context_dict,
         )
 
@@ -126,7 +125,7 @@ class FlextOracleOicApiRequestError(FlextOracleOicApiError):
         entity_name: str | None = None,
         endpoint: str | None = None,
         method: str | None = None,
-        code: FlextOracleOicErrorCodes | None = FlextOracleOicErrorCodes.OIC_API_ERROR,
+        code: str | None = None,
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension API request error with HTTP context."""
@@ -144,7 +143,7 @@ class FlextOracleOicApiRequestError(FlextOracleOicApiError):
 
         super().__init__(
             message,
-            code=code,
+            code=code or FlextOracleOicErrorCodes.OIC_API_ERROR.value,
             context=context_dict,
         )
 
@@ -160,8 +159,7 @@ class FlextOracleOicConfigError(FlextOracleOicConfigurationError):
         config_value: object | None = None,
         config_section: str | None = None,
         valid_range: str | None = None,
-        code: FlextOracleOicErrorCodes
-        | None = FlextOracleOicErrorCodes.OIC_CONFIGURATION_ERROR,
+        code: str | None = None,
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension configuration error with config context."""
@@ -177,7 +175,7 @@ class FlextOracleOicConfigError(FlextOracleOicConfigurationError):
 
         super().__init__(
             message,
-            code=code,
+            code=code or FlextOracleOicErrorCodes.OIC_CONFIGURATION_ERROR.value,
             context=context_dict,
         )
 
@@ -194,8 +192,7 @@ class FlextOracleOicIntegrationPatternError(FlextOracleOicPatternError):
         workflow_id: str | None = None,
         step_id: str | None = None,
         operation: str | None = None,
-        code: FlextOracleOicErrorCodes
-        | None = FlextOracleOicErrorCodes.OIC_PATTERN_ERROR,
+        code: str | None = None,
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension integration pattern error with pattern context."""
@@ -213,7 +210,7 @@ class FlextOracleOicIntegrationPatternError(FlextOracleOicPatternError):
 
         super().__init__(
             message,
-            code=code,
+            code=code or FlextOracleOicErrorCodes.OIC_PATTERN_ERROR.value,
             context=context_dict,
         )
 
@@ -230,8 +227,7 @@ class FlextOracleOicWorkflowExecutionError(FlextOracleOicWorkflowError):
         step_name: str | None = None,
         status: str | None = None,
         error_code: str | None = None,
-        code: FlextOracleOicErrorCodes
-        | None = FlextOracleOicErrorCodes.OIC_WORKFLOW_ERROR,
+        code: str | None = None,
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension workflow execution error with workflow context."""
@@ -249,7 +245,7 @@ class FlextOracleOicWorkflowExecutionError(FlextOracleOicWorkflowError):
 
         super().__init__(
             message,
-            code=code,
+            code=code or FlextOracleOicErrorCodes.OIC_WORKFLOW_ERROR.value,
             context=context_dict,
         )
 
@@ -266,8 +262,7 @@ class FlextOracleOicOAuth2TokenError(FlextOracleOicTokenError):
         scope: str | None = None,
         grant_type: str | None = None,
         expires_in: int | None = None,
-        code: FlextOracleOicErrorCodes
-        | None = FlextOracleOicErrorCodes.OIC_TOKEN_ERROR,
+        code: str | None = None,
         context: Mapping[str, object] | None = None,
     ) -> None:
         """Initialize Oracle OIC Extension OAuth2 token error with authentication context."""
@@ -285,7 +280,7 @@ class FlextOracleOicOAuth2TokenError(FlextOracleOicTokenError):
 
         super().__init__(
             message,
-            code=code,
+            code=code or FlextOracleOicErrorCodes.OIC_TOKEN_ERROR.value,
             context=context_dict,
         )
 

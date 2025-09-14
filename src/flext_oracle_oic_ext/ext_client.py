@@ -125,10 +125,13 @@ class BaseOICAuthenticator(ABC):
                 response.raise_for_status()
 
                 token_data = response.json()
-                self._access_token = token_data["access_token"]
+                access_token = token_data.get("access_token")
+                if not access_token:
+                    return FlextResult[str].fail("No access token in response")
 
+                self._access_token = access_token
                 self.logger.info("OIC OAuth2 authentication successful")
-                return FlextResult[str].ok(self._access_token)
+                return FlextResult[str].ok(access_token)
 
         except httpx.TimeoutException as e:
             error_msg = f"OIC OAuth2 authentication timeout: {e}"
@@ -245,7 +248,7 @@ class BaseOICClient(ABC):
 
             client = client_result.data
             if client is None:
-                return FlextResult[None].fail("Failed to get client")
+                return FlextResult[FlextTypes.Core.Dict].fail("Failed to get client")
 
             # Build full URL
             url = self._build_request_url(endpoint)
@@ -348,7 +351,9 @@ class BaseOICClient(ABC):
 
                 response_data = response_result.data
                 if response_data is None or not isinstance(response_data, dict):
-                    return FlextResult[None].fail("Invalid response data format")
+                    return FlextResult[list[FlextTypes.Core.Dict]].fail(
+                        "Invalid response data format"
+                    )
 
                 items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):

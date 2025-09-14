@@ -53,8 +53,7 @@ class OracleOICExtensionSettings(FlextConfig):
     consolidando todas as configurações necessárias.
     """
 
-    environment: EnvironmentLiteral = "development"
-    log_level: LogLevelLiteral = "INFO"
+    # Use base types from FlextConfig to avoid type conflicts
     enable_monitoring: bool = True
     enable_enterprise_patterns: bool = True
     enable_orchestration: bool = True

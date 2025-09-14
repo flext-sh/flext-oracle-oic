@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import warnings
 
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes
 
 from flext_oracle_oic_ext.ext_config import OracleOICExtensionSettings
 from flext_oracle_oic_ext.ext_services import OracleOICExtensionService
@@ -86,3 +86,38 @@ def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
         error_msg = f"Failed to create development OIC service: {e}"
         logger.exception(error_msg)
         return FlextResult[OracleOICExtensionService].fail(error_msg)
+
+
+def setup_oic_extension(
+    settings: OracleOICExtensionSettings | None = None,
+) -> FlextResult[OracleOICExtensionService]:
+    """Setup Oracle OIC Extension with configuration.
+
+    Args:
+        settings: Configuration settings (uses defaults if None)
+
+    Returns:
+        FlextResult containing configured service or error
+
+    """
+    try:
+        if settings is None:
+            settings = OracleOICExtensionSettings()
+
+        service = OracleOICExtensionService(settings)
+        logger.info("OIC Extension setup completed successfully")
+        return FlextResult[OracleOICExtensionService].ok(service)
+
+    except Exception as e:
+        error_msg = f"Failed to setup OIC Extension: {e}"
+        logger.exception(error_msg)
+        return FlextResult[OracleOICExtensionService].fail(error_msg)
+
+
+__all__: FlextTypes.Core.StringList = [
+    "FlextOracleOicExtDeprecationWarning",
+    "_show_deprecation_warning",
+    "create_development_oic_service",
+    "create_oic_extension_service",
+    "setup_oic_extension",
+]

@@ -7,8 +7,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from flext_core import FlextLogger, FlextModels, FlextTypes
-from pydantic import ConfigDict, Field, SecretStr
+from flext_core import FlextLogger, FlextTypes
+from pydantic import BaseModel, ConfigDict, Field, SecretStr
 
 logger = FlextLogger(__name__)
 
@@ -18,7 +18,7 @@ logger = FlextLogger(__name__)
 # ================================
 
 
-class OICAuthConfig(FlextModels):
+class OICAuthConfig(BaseModel):
     """Oracle Integration Cloud authentication configuration.
 
     Padrão EXTENSION: Value Object para configuração de autenticação
@@ -34,7 +34,7 @@ class OICAuthConfig(FlextModels):
     oauth_scope: str = Field("", description="OAuth2 scope")
 
 
-class OICConnectionConfig(FlextModels):
+class OICConnectionConfig(BaseModel):
     """Oracle Integration Cloud connection configuration.
 
     Padrão EXTENSION: Value Object para configuração de conexão
@@ -50,7 +50,7 @@ class OICConnectionConfig(FlextModels):
     verify_ssl: bool = Field(default=True, description="Verify SSL certificates")
 
 
-class OICIntegrationInfo(FlextModels):
+class OICIntegrationInfo(BaseModel):
     """Oracle OIC Integration information.
 
     Padrão EXTENSION: Value Object representando informações
@@ -68,7 +68,7 @@ class OICIntegrationInfo(FlextModels):
     last_updated: str = Field("", description="Last update timestamp")
 
 
-class OICConnectionInfo(FlextModels):
+class OICConnectionInfo(BaseModel):
     """Oracle OIC Connection information.
 
     Padrão EXTENSION: Value Object representando informações
@@ -83,6 +83,22 @@ class OICConnectionInfo(FlextModels):
     status: str = Field(..., description="Connection status")
     connection_type: str = Field(..., description="Connection type")
     description: str = Field("", description="Connection description")
+
+
+class IntegrationStatus(BaseModel):
+    """Oracle OIC Integration status information.
+
+    Padrão EXTENSION: Value Object representando status
+    de uma integração Oracle OIC.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    integration_id: str = Field(..., description="Integration unique identifier")
+    version: str = Field(..., description="Integration version")
+    status: str = Field(..., description="Integration status")
+    last_updated: str = Field("", description="Last update timestamp")
+    activated_by: str = Field("", description="User who activated the integration")
 
 
 @dataclass
@@ -104,12 +120,10 @@ class RequestParams:
 
 # Exports seguindo padrão EXTENSION
 __all__: FlextTypes.Core.StringList = [
-    # Configuration models
+    "IntegrationStatus",
     "OICAuthConfig",
     "OICConnectionConfig",
     "OICConnectionInfo",
-    # Business models
     "OICIntegrationInfo",
-    # Request models
     "RequestParams",
 ]

@@ -10,25 +10,20 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
+from typing import Protocol, Self
 
-"""
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
-
-from typing import Self
-
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes
 from pydantic import SecretStr
 
 from flext_oracle_oic_ext.ext_client import (
     OICExtensionAuthenticator,
     OracleOICExtensionClient,
 )
-from flext_oracle_oic_ext.ext_config import OracleOICExtensionSettings
+from flext_oracle_oic_ext.ext_config import (
+    OracleOICExtensionSettings,
+)
 from flext_oracle_oic_ext.ext_models import (
+    IntegrationStatus,
     OICAuthConfig,
     OICConnectionConfig,
     OICConnectionInfo,
@@ -36,6 +31,25 @@ from flext_oracle_oic_ext.ext_models import (
 )
 
 logger = FlextLogger(__name__)
+
+# HTTP Status Codes
+HTTP_OK = 200
+
+
+class HTTPClientProtocol(Protocol):
+    """Protocol for HTTP client used by MonitoringService."""
+
+    def get(self, url: str) -> HTTPResponseProtocol: ...
+
+
+class HTTPResponseProtocol(Protocol):
+    """Protocol for HTTP response."""
+
+    status_code: int
+
+    def json(self) -> FlextTypes.Core.Dict: ...
+
+
 # ================================
 # EXTENSION Pattern: Specialized Services
 # ================================
@@ -127,7 +141,7 @@ class OracleOICExtensionService:
 
             client = client_result.data
             if client is None:
-                return FlextResult[None].fail("No client available")
+                return FlextResult[list[OICIntegrationInfo]].fail("No client available")
 
             # Get integrations from OIC
             integrations_result = client.get_integrations(
@@ -147,13 +161,13 @@ class OracleOICExtensionService:
             for integration in integrations_data:
                 try:
                     integration_info = OICIntegrationInfo(
-                        integration_id=integration.get("id", ""),
-                        name=integration.get("name", ""),
-                        status=integration.get("status", ""),
-                        version=integration.get("version", ""),
-                        description=integration.get("description", ""),
-                        created_by=integration.get("createdBy", ""),
-                        last_updated=integration.get("lastUpdated", ""),
+                        integration_id=str(integration.get("id", "")),
+                        name=str(integration.get("name", "")),
+                        status=str(integration.get("status", "")),
+                        version=str(integration.get("version", "")),
+                        description=str(integration.get("description", "")),
+                        created_by=str(integration.get("createdBy", "")),
+                        last_updated=str(integration.get("lastUpdated", "")),
                     )
                     integration_infos.append(integration_info)
                 except Exception as e:
@@ -190,7 +204,7 @@ class OracleOICExtensionService:
 
             client = client_result.data
             if client is None:
-                return FlextResult[None].fail("No client available")
+                return FlextResult[list[OICConnectionInfo]].fail("No client available")
 
             # Get connections from OIC
             connections_result = client.get_connections(
@@ -210,12 +224,12 @@ class OracleOICExtensionService:
             for connection in connections_data:
                 try:
                     connection_info = OICConnectionInfo(
-                        connection_id=connection.get("id", ""),
-                        name=connection.get("name", ""),
-                        adapter_type=connection.get("adapterType", ""),
-                        status=connection.get("status", ""),
-                        connection_type=connection.get("connectionType", ""),
-                        description=connection.get("description", ""),
+                        connection_id=str(connection.get("id", "")),
+                        name=str(connection.get("name", "")),
+                        adapter_type=str(connection.get("adapterType", "")),
+                        status=str(connection.get("status", "")),
+                        connection_type=str(connection.get("connectionType", "")),
+                        description=str(connection.get("description", "")),
                     )
                     connection_infos.append(connection_info)
                 except Exception as e:
@@ -246,7 +260,7 @@ class OracleOICExtensionService:
 
             client = client_result.data
             if client is None:
-                return FlextResult[None].fail("No client available")
+                return FlextResult[bool].fail("No client available")
 
             # Try to get integrations as connection test
             integrations_result = client.get_integrations(page_size=1)
@@ -285,7 +299,7 @@ class OracleOICExtensionService:
 
             client = client_result.data
             if client is None:
-                return FlextResult[None].fail("No client available")
+                return FlextResult[str].fail("No client available")
 
             # Create integration
             create_result = client.create_integration(integration_data)
@@ -300,9 +314,11 @@ class OracleOICExtensionService:
                 return FlextResult[str].fail("No integration data returned")
 
             integration_id = created_integration.get("id", "")
+            if not integration_id:
+                return FlextResult[str].fail("No integration ID returned")
 
             self.logger.info(f"Integration deployed successfully: {integration_id}")
-            return FlextResult[str].ok(integration_id)
+            return FlextResult[str].ok(str(integration_id))
 
         except Exception as e:
             error_msg = f"Failed to deploy integration: {e}"
@@ -412,8 +428,267 @@ class OICIntegrationPatternService:
             return FlextResult[FlextTypes.Core.Dict].fail(error_msg)
 
 
+class LifecycleManager:
+    """Oracle OIC Integration Lifecycle Manager.
+
+    Padrão EXTENSION: Gerenciador de ciclo de vida de integrações
+    Oracle OIC com operações de ativação, desativação e monitoramento.
+    """
+
+    def __init__(self, settings: OracleOICExtensionSettings) -> None:
+        """Initialize lifecycle manager.
+
+        Args:
+            settings: Extension configuration settings
+
+        """
+        self.settings = settings
+        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
+        self._client: OracleOICExtensionClient | None = None
+
+    def _get_client(self) -> FlextResult[OracleOICExtensionClient]:
+        """Get authenticated OIC client."""
+        try:
+            if not self._client:
+                # Create auth config from settings
+                auth_config = OICAuthConfig(
+                    oauth_client_id=self.settings.auth.oauth_client_id,
+                    oauth_client_secret=SecretStr(
+                        self.settings.auth.oauth_client_secret,
+                    ),
+                    oauth_token_url=self.settings.auth.oauth_token_url,
+                    oauth_client_aud=self.settings.auth.oauth_client_aud,
+                    oauth_scope=self.settings.auth.oauth_scope,
+                )
+
+                # Create connection config from settings
+                connection_config = OICConnectionConfig(
+                    base_url=self.settings.connection.base_url,
+                    api_version=self.settings.connection.api_version,
+                    request_timeout=self.settings.connection.request_timeout,
+                    max_retries=self.settings.connection.max_retries,
+                    verify_ssl=self.settings.connection.verify_ssl,
+                )
+
+                # Create authenticator and client
+                authenticator = OICExtensionAuthenticator(auth_config)
+                self._client = OracleOICExtensionClient(
+                    connection_config,
+                    authenticator,
+                )
+
+            return FlextResult[OracleOICExtensionClient].ok(self._client)
+
+        except Exception as e:
+            error_msg = f"Failed to create OIC client: {e}"
+            self.logger.exception(error_msg)
+            return FlextResult[OracleOICExtensionClient].fail(error_msg)
+
+    def activate_integration(
+        self, integration_id: str
+    ) -> FlextResult[IntegrationStatus]:
+        """Activate an Oracle OIC integration.
+
+        Args:
+            integration_id: Integration identifier
+
+        Returns:
+            FlextResult containing integration status or error
+
+        """
+        try:
+            client_result = self._get_client()
+            if not client_result.success:
+                return FlextResult[IntegrationStatus].fail(
+                    client_result.error or "Client creation failed"
+                )
+
+            client = client_result.data
+            if client is None:
+                return FlextResult[IntegrationStatus].fail("No client available")
+
+            # Update integration to activate it
+            activation_data: FlextTypes.Core.Dict = {"status": "ACTIVATED"}
+            activate_result = client.update_integration(integration_id, activation_data)
+
+            if not activate_result.success:
+                return FlextResult[IntegrationStatus].fail(
+                    activate_result.error or "Activation failed"
+                )
+
+            # Create status object
+            status = IntegrationStatus(
+                integration_id=integration_id,
+                version="01.00.0000",  # Default version
+                status="ACTIVATED",
+                last_updated="",
+                activated_by="system",
+            )
+
+            self.logger.info(f"Integration {integration_id} activated successfully")
+            return FlextResult[IntegrationStatus].ok(status)
+
+        except Exception as e:
+            error_msg = f"Failed to activate integration {integration_id}: {e}"
+            self.logger.exception(error_msg)
+            return FlextResult[IntegrationStatus].fail(error_msg)
+
+    def deactivate_integration(
+        self, integration_id: str
+    ) -> FlextResult[IntegrationStatus]:
+        """Deactivate an Oracle OIC integration.
+
+        Args:
+            integration_id: Integration identifier
+
+        Returns:
+            FlextResult containing integration status or error
+
+        """
+        try:
+            client_result = self._get_client()
+            if not client_result.success:
+                return FlextResult[IntegrationStatus].fail(
+                    client_result.error or "Client creation failed"
+                )
+
+            client = client_result.data
+            if client is None:
+                return FlextResult[IntegrationStatus].fail("No client available")
+
+            # Update integration to deactivate it
+            deactivation_data: FlextTypes.Core.Dict = {"status": "DEACTIVATED"}
+            deactivate_result = client.update_integration(
+                integration_id, deactivation_data
+            )
+
+            if not deactivate_result.success:
+                return FlextResult[IntegrationStatus].fail(
+                    deactivate_result.error or "Deactivation failed"
+                )
+
+            # Create status object
+            status = IntegrationStatus(
+                integration_id=integration_id,
+                version="01.00.0000",  # Default version
+                status="DEACTIVATED",
+                last_updated="",
+                activated_by="system",
+            )
+
+            self.logger.info(f"Integration {integration_id} deactivated successfully")
+            return FlextResult[IntegrationStatus].ok(status)
+
+        except Exception as e:
+            error_msg = f"Failed to deactivate integration {integration_id}: {e}"
+            self.logger.exception(error_msg)
+            return FlextResult[IntegrationStatus].fail(error_msg)
+
+
+class MonitoringService:
+    """Oracle OIC Monitoring Service.
+
+    Padrão EXTENSION: Serviço de monitoramento Oracle OIC
+    com verificações de saúde e métricas de performance.
+    """
+
+    def __init__(self, client: HTTPClientProtocol) -> None:
+        """Initialize monitoring service.
+
+        Args:
+            client: HTTP client (requests.Session or mock)
+
+        """
+        self.client = client
+        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
+
+    def get_health_status(self) -> FlextTypes.Core.Dict:
+        """Get Oracle OIC health status.
+
+        Returns:
+            Dictionary containing health status information
+
+        """
+        try:
+            # Mock health check response
+            response = self.client.get("/ic/api/integration/v1/health")
+
+            if response.status_code == HTTP_OK:
+                health_data = response.json()
+                return {
+                    "status": "healthy",
+                    "components": {
+                        "database": "healthy",
+                        "messaging": "healthy",
+                        "integration_engine": "healthy",
+                    },
+                    "timestamp": health_data.get("timestamp", ""),
+                }
+            return {
+                "status": "unhealthy",
+                "components": {
+                    "database": "unknown",
+                    "messaging": "unknown",
+                    "integration_engine": "unknown",
+                },
+                "error": f"HTTP {response.status_code}",
+            }
+
+        except Exception as e:
+            self.logger.exception("Health check failed")
+            return {
+                "status": "error",
+                "components": {
+                    "database": "unknown",
+                    "messaging": "unknown",
+                    "integration_engine": "unknown",
+                },
+                "error": str(e),
+            }
+
+    def get_performance_metrics(self) -> FlextTypes.Core.Dict:
+        """Get Oracle OIC performance metrics.
+
+        Returns:
+            Dictionary containing performance metrics
+
+        """
+        try:
+            # Mock performance metrics response
+            response = self.client.get("/ic/api/integration/v1/metrics")
+
+            if response.status_code == HTTP_OK:
+                metrics_data = response.json()
+                return {
+                    "active_integrations": metrics_data.get("active_integrations", 0),
+                    "total_executions": metrics_data.get("total_executions", 0),
+                    "success_rate": metrics_data.get("success_rate", 0.0),
+                    "average_response_time": metrics_data.get("avg_response_time", 0.0),
+                    "timestamp": metrics_data.get("timestamp", ""),
+                }
+            return {
+                "active_integrations": 0,
+                "total_executions": 0,
+                "success_rate": 0.0,
+                "average_response_time": 0.0,
+                "error": f"HTTP {response.status_code}",
+            }
+
+        except Exception as e:
+            self.logger.exception("Performance metrics failed")
+            return {
+                "active_integrations": 0,
+                "total_executions": 0,
+                "success_rate": 0.0,
+                "average_response_time": 0.0,
+                "error": str(e),
+            }
+
+
 # Exports seguindo padrão EXTENSION
 __all__: FlextTypes.Core.StringList = [
+    "LifecycleManager",
+    "MonitoringService",
     "OICIntegrationPatternService",
     # Main services
     "OracleOICExtensionService",
