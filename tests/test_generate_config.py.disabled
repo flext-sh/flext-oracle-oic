@@ -163,27 +163,22 @@ class TestConfigGeneration:
         assert settings.debug is False  # Default value
         assert settings.enable_monitoring is True  # Default value
 
-    def test_performance_config_defaults(self) -> None:
-        """Test performance configuration defaults."""
-        config_dict = {
-            "base_url": "https://test.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id",
-            "oauth_client_secret": "test_client_secret",
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-        }
+    def test_connection_config_defaults(self) -> None:
+        """Test connection configuration defaults."""
+        settings = OracleOICExtensionSettings()
 
-        settings = OracleOICExtensionSettings(**config_dict)
+        if settings.connection.request_timeout < 10:
+            timeout_msg: str = f"Expected {settings.connection.request_timeout} >= {10}"
+            raise AssertionError(timeout_msg)
 
-        if settings.performance.request_timeout < 10:
-            msg: str = f"Expected {settings.performance.request_timeout} >= {10}"
-            raise AssertionError(
-                msg,
-            )
-        assert settings.performance.max_retries >= 0
-        if settings.performance.batch_size < 1:
-            msg: str = f"Expected {settings.performance.batch_size} >= {1}"
-            raise AssertionError(msg)
-        assert settings.performance.max_concurrent_requests >= 1
+        assert settings.connection.max_retries >= 0
+
+        if settings.connection.max_retries < 0:
+            retries_msg: str = f"Expected {settings.connection.max_retries} >= {0}"
+            raise AssertionError(retries_msg)
+
+        assert settings.enable_monitoring is True
+        assert settings.enable_enterprise_patterns is True
 
     def test_extraction_config_setup(self) -> None:
         """Test extraction configuration setup."""

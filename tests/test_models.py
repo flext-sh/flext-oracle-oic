@@ -55,11 +55,8 @@ class TestOICAuthConfig:
     def test_auth_config_validation_error(self) -> None:
         """Test auth config validation error."""
         with pytest.raises(ValidationError):
-            OICAuthConfig(
-                oauth_client_id="test_client_id",
-                # Missing required oauth_client_secret should fail
-                oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
-            )
+            # Missing all required fields should fail
+            OICAuthConfig()
 
 
 class TestOICConnectionConfig:

@@ -1,834 +1,240 @@
-# FLEXT Oracle OIC - Enterprise Integration Cloud Library
+# flext-oracle-oic-ext
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
-[![Oracle OIC Gen3](https://img.shields.io/badge/Oracle-OIC%20Gen3-red.svg)](https://www.oracle.com/integration/)
-[![FLEXT Framework](https://img.shields.io/badge/FLEXT-Enterprise-green.svg)](https://github.com/flext)
-[![Clean Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture%20%2B%20DDD-green.svg)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-[![Asyncio](https://img.shields.io/badge/Asyncio-Native-blue.svg)](https://docs.python.org/3/library/asyncio.html)
-[![Coverage](https://img.shields.io/badge/coverage-95%25+-brightgreen.svg)](https://pytest.org)
+[![FLEXT Framework](https://img.shields.io/badge/FLEXT-Extension-green.svg)](https://github.com/flext)
 
-**The first enterprise-grade Python library for Oracle Integration Cloud (OIC)** - Transform your Oracle integrations with modern Python patterns, asyncio performance, and comprehensive Enterprise Integration Pattern implementations.
+**Oracle Integration Cloud extension for the FLEXT ecosystem** - Basic Oracle OIC HTTP client patterns with OAuth2 authentication framework.
 
-## 🚀 Why FLEXT Oracle OIC?
-
-In 2025, **no mature Python library exists specifically for Oracle Integration Cloud**. While Oracle provides database drivers (python-oracledb) and cloud SDKs, enterprises struggle to integrate with Oracle's OIC Gen3 APIs, pre-built WMS flows, and modern integration patterns.
-
-**FLEXT Oracle OIC bridges this gap** - the first enterprise-grade Python library designed specifically for Oracle Integration Cloud, built on modern Python 3.13 standards with comprehensive asyncio support and real WMS API integration.
-
-## ✨ Enterprise Features (2025)
-
-### 🏭 Oracle OIC Gen3 Integration
-- **Latest Oracle APIs**: Full support for Oracle Integration Cloud Generation 3
-- **AI-Powered Integration**: Leverage Oracle's 2025 AI-powered prebuilt solutions
-- **GenAI Integration**: Direct GenAI integration capabilities (Oracle 2025 feature)
-- **Low-Code Automation**: Oracle's enhanced low-code automation capabilities
-- **68+ Adapters**: Access to Oracle's complete adapter ecosystem
-
-### ⚡ Modern Python Architecture (2025 Standards)
-- **Asyncio-Native**: Built-first on async/await patterns for high performance
-- **Python 3.13+**: Leverage latest Python features and performance improvements
-- **Type-Safe**: Comprehensive type hints with Pydantic v2 models
-- **Enterprise Patterns**: Message Router, Scatter-Gather, Content Filter, Process Manager
-- **Clean Architecture**: Domain-driven design with strict layer separation
-
-### 🔄 Enterprise Integration Patterns
-- **Message Router**: Content-based routing with Oracle OIC adapters
-- **Scatter-Gather**: Parallel processing with response aggregation
-- **Content Filter**: Oracle-specific message filtering and transformation
-- **Process Manager**: Long-running business process orchestration
-- **Event-Driven**: Real-time Oracle OIC event processing
-- **Template Mapping**: Oracle's XML template-based data transformation
-
-### 🏭 Real WMS Integration (Production Oracle APIs)
-- **Oracle Fusion WMS**: Native integration with Oracle Fusion Cloud Warehouse Management
-- **Third-Party WMS**: Manhattan Associates, JDA/Blue Yonder, SAP EWM, Infor WMS
-- **Pre-built Connectors**: Oracle OIC's 68+ pre-built WMS integration adapters
-- **Real-Time Synchronization**: Inventory, orders, shipments, and receipt processing
-- **Enterprise Workflows**: Pick, pack, ship automation with Oracle OIC orchestration
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.13+** with asyncio support
-- **Oracle Integration Cloud** Gen3 instance access
-- **Oracle IDCS** OAuth2 credentials
-- **FLEXT Ecosystem** (automatically managed)
-
-### Installation
-
-```bash
-# Install from PyPI (coming soon)
-pip install flext-oracle-oic
-
-# Or from source
-git clone <repository-url>
-cd flext-oracle-oic
-poetry install
-```
-
-### First Oracle OIC Integration
-
-```python
-import asyncio
-from flext_oracle_oic import OracleOICService, OICConfig
-
-async def main():
-    # Configure Oracle OIC connection
-    config = OICConfig(
-        base_url="https://your-instance.integration.ocp.oraclecloud.com",
-        oauth_client_id="your_client_id",
-        oauth_client_secret="your_client_secret",
-        idcs_url="https://idcs-tenant.identity.oraclecloud.com"
-    )
-
-    # Create OIC service (asyncio-native)
-    async with OracleOICService(config) as oic:
-        # Test connectivity
-        health = await oic.health_check()
-        print(f"OIC Status: {health.status}")
-
-        # List integrations
-        integrations = await oic.list_integrations()
-        for integration in integrations:
-            print(f"Integration: {integration.name} - {integration.status}")
-
-        # Execute integration pattern
-        result = await oic.execute_pattern(
-            pattern_type="message_router",
-            message={"customer_type": "PREMIUM", "order_value": 15000},
-            routing_rules=[
-                {"condition": "customer_type == 'PREMIUM'", "target": "premium-flow"}
-            ]
-        )
-        print(f"Routing Result: {result}")
-
-# Run with asyncio
-asyncio.run(main())
-```
-
-### Real WMS Integration Example
-
-```python
-import asyncio
-from flext_oracle_oic import WMSIntegrationService, OracleOICConfig
-
-async def integrate_with_real_wms():
-    """Example of real WMS integration using Oracle OIC pre-built adapters."""
-    config = OracleOICConfig(
-        base_url="https://your-oic-instance.integration.ocp.oraclecloud.com",
-        oauth_client_id="your_oauth2_client_id",
-        oauth_client_secret="your_oauth2_client_secret",
-        idcs_url="https://your-idcs-domain.identity.oraclecloud.com"
-    )
-
-    async with WMSIntegrationService(config) as wms_service:
-        # Connect to Oracle Fusion WMS (real production API)
-        fusion_wms_result = await wms_service.connect_oracle_fusion_wms(
-            wms_endpoint="https://your-fusion-wms.oraclecloud.com",
-            warehouse_code="WH001"
-        )
-
-        if fusion_wms_result.is_success:
-            # Real inventory synchronization
-            inventory_sync = await wms_service.sync_inventory({
-                "warehouse_id": "WH001",
-                "sync_mode": "incremental",
-                "item_categories": ["electronics", "apparel"]
-            })
-
-            print(f"Inventory Sync: {inventory_sync.unwrap()}")
-
-        # Connect to third-party WMS (Manhattan Associates example)
-        manhattan_result = await wms_service.connect_third_party_wms(
-            wms_type="manhattan_associates",
-            wms_endpoint="https://wms-api.company.com",
-            connection_config={
-                "api_key": "your_manhattan_api_key",
-                "warehouse_facilities": ["DC001", "DC002"]
-            }
-        )
-
-        if manhattan_result.is_success:
-            # Real order processing workflow
-            order_result = await wms_service.process_orders({
-                "orders": [
-                    {"order_id": "ORD123", "priority": "HIGH"},
-                    {"order_id": "ORD124", "priority": "STANDARD"}
-                ],
-                "processing_mode": "batch"
-            })
-
-            print(f"Order Processing: {order_result.unwrap()}")
-
-# Run real WMS integration
-asyncio.run(integrate_with_real_wms())
-```
-
-### Enterprise Integration Patterns
-
-```python
-# Message Router Pattern
-router_result = await oic.message_router(
-    message={"product_id": "P123", "category": "electronics"},
-    rules=[
-        {"condition": "category == 'electronics'", "target": "electronics-processor"},
-        {"condition": "product_id.startswith('P')", "target": "premium-processor"}
-    ]
-)
-
-# Scatter-Gather Pattern
-scatter_result = await oic.scatter_gather(
-    request={"order_id": "ORD123"},
-    endpoints=["inventory-service", "pricing-service", "availability-service"],
-    aggregation_strategy="merge_responses"
-)
-
-# Process Manager (Long-running workflows)
-process_result = await oic.start_process(
-    process_name="order-fulfillment",
-    input_data={"order_id": "ORD123", "customer_id": "CUST456"}
-)
-```
-
-## Architecture
-
-### Clean Architecture + Domain-Driven Design (2025)
-
-**FLEXT Oracle OIC** implements Clean Architecture with Domain-Driven Design patterns specifically optimized for Oracle Integration Cloud Gen3 APIs:
-
-#### **Domain Layer** (Enterprise Business Logic)
-- **Integration Entities**: `OICIntegration`, `WorkflowProcess`, `MessagePattern`
-- **Value Objects**: `OICConnectionInfo`, `AuthToken`, `IntegrationResult`
-- **Domain Services**: Integration pattern business rules and Oracle OIC workflow logic
-- **Repository Interfaces**: Oracle OIC data access abstractions
-
-#### **Application Layer** (Use Cases & Orchestration)
-- **Service Orchestrators**: `OracleOICService`, `IntegrationPatternService`, `WMSIntegrationService`
-- **Command Handlers**: Integration execution, workflow management, pattern processing
-- **Query Handlers**: Integration status, workflow monitoring, pattern analytics
-- **Application Services**: OAuth2 authentication, session management
-
-#### **Infrastructure Layer** (Oracle OIC APIs & External Services)
-- **Oracle OIC Clients**: Gen3 REST API clients with asyncio support
-- **Authentication**: OAuth2/IDCS integration with Oracle Cloud Identity
-- **Message Brokers**: Integration pattern message routing and processing
-- **Monitoring**: Oracle OIC metrics collection and observability
-
-#### **Interface Layer** (APIs & CLI)
-- **REST APIs**: FastAPI-based Oracle OIC integration endpoints
-- **CLI Commands**: Enterprise Oracle OIC management and deployment tools
-- **Web Interface**: Integration pattern designer and workflow monitoring
-
-### FLEXT Ecosystem Integration (Enterprise Foundation)
-
-**Zero Custom Implementation Policy** - FLEXT Oracle OIC leverages the complete FLEXT ecosystem:
-
-- **flext-core**: FlextResult patterns, dependency injection, enterprise logging
-- **flext-api**: HTTP client abstractions, API gateway patterns, request/response handling
-- **flext-auth**: OAuth2/IDCS authentication, session management, token lifecycle
-- **flext-cli**: Command-line interfaces, interactive tools, deployment automation
-- **flext-observability**: Distributed tracing, metrics collection, performance monitoring
-
-### Enterprise Architecture Principles
-
-#### **Railway-Oriented Programming (Functional Error Handling)**
-```python
-async def process_integration_workflow(
-    integration_name: str,
-    input_data: Dict[str, Any]
-) -> FlextResult[IntegrationResult]:
-    """
-    Complete integration workflow using railway-oriented programming.
-    Every step returns FlextResult for safe error propagation.
-    """
-    return await (
-        validate_integration_config(integration_name)
-        .bind(lambda config: authenticate_oracle_oic(config))
-        .bind(lambda auth: execute_integration_pattern(auth, input_data))
-        .bind(lambda result: monitor_integration_execution(result))
-    )
-```
-
-#### **Enterprise Integration Patterns (Gang of Four + EIP)**
-- **Message Router**: Content-based routing with Oracle OIC adapters
-- **Scatter-Gather**: Parallel processing with asyncio concurrency
-- **Process Manager**: Long-running workflow orchestration
-- **Content Filter**: Oracle-specific message transformation
-- **Strategy Pattern**: Pluggable integration algorithms
-- **Template Method**: Oracle OIC workflow execution patterns
-
-### Project Structure (Clean Architecture)
-
-```
-src/flext_oracle_oic/          # Renamed from flext_oracle_oic_ext
-   # Domain Layer (Business Logic)
-   domain/
-      entities/             # Core domain entities
-         integration.py     # OICIntegration, WorkflowProcess
-         message.py         # MessagePattern, RoutingRule
-         connection.py      # OICConnection, AuthConfig
-      services/             # Domain services
-         pattern_engine.py  # Integration pattern business logic
-         workflow_rules.py  # Oracle OIC workflow validation
-      repositories/         # Repository interfaces
-         integration_repo.py # Integration persistence abstraction
-
-   # Application Layer (Use Cases)
-   application/
-      services/             # Application orchestrators
-         oracle_oic_service.py      # Main OIC service orchestrator
-         integration_pattern_service.py # Pattern execution service
-         workflow_service.py        # Workflow management service
-         wms_integration_service.py # WMS integration service
-      commands/             # Command handlers
-         execute_integration.py     # Integration execution
-         deploy_workflow.py         # Workflow deployment
-      queries/              # Query handlers
-         get_integration_status.py  # Status monitoring
-         list_active_workflows.py   # Workflow listing
-
-   # Infrastructure Layer (External Services)
-   infrastructure/
-      clients/              # Oracle OIC API clients
-         oic_gen3_client.py # Oracle OIC Gen3 REST API
-         idcs_client.py     # Oracle IDCS OAuth2 client
-         wms_clients/       # WMS integration clients
-            fusion_wms_client.py    # Oracle Fusion WMS client
-            manhattan_wms_client.py # Manhattan Associates client
-      repositories/         # Data access implementations
-         integration_repository.py # Integration storage
-      messaging/            # Message processing
-         message_broker.py  # Integration message routing
-      monitoring/           # Observability
-         metrics_collector.py # OIC metrics collection
-
-   # Interface Layer (APIs & CLI)
-   interfaces/
-      api/                  # REST API endpoints
-         integration_api.py # FastAPI integration endpoints
-         workflow_api.py    # Workflow management API
-         wms_api.py         # WMS integration API
-      cli/                  # Command-line interface
-         oic_commands.py    # Oracle OIC CLI commands
-         deployment_cli.py  # Deployment automation
-         wms_commands.py    # WMS integration CLI
-      web/                  # Web interface (optional)
-         pattern_designer.py # Integration pattern designer
-```
-
-## Development Commands
-
-### Quality Gates (Zero Tolerance)
-
-```bash
-# Complete validation pipeline (run before commits)
-make validate                # lint + type + security + test + oic-test
-
-# Essential checks
-make check                   # lint + type + test + oic-auth
-
-# Individual quality gates
-make lint                    # Ruff linting (ALL rules enabled)
-make type-check              # MyPy strict mode
-make security                # Bandit + pip-audit + detect-secrets
-make format                  # Format code with Ruff
-```
-
-### OIC Operations
-
-```bash
-# Core OIC workflow
-make oic-test                # Test OIC API connectivity
-make oic-auth                # Test OAuth2 authentication
-make oic-deploy              # Test integration deployment
-make oic-patterns            # Test enterprise integration patterns
-make wms-test                # Test real WMS integration
-make oic-monitoring          # Test monitoring capabilities
-
-# Pattern testing
-make pattern-test            # Test all integration patterns
-make message-router          # Test message router pattern
-make scatter-gather          # Test scatter-gather pattern
-make content-filter          # Test content filter pattern
-
-# WMS integration testing
-make wms-fusion-test         # Test Oracle Fusion WMS integration
-make wms-manhattan-test      # Test Manhattan Associates WMS
-make wms-sync-test           # Test WMS synchronization patterns
-```
-
-### Testing
-
-```bash
-# Complete test suite
-make test                    # All tests with 95% coverage requirement
-make test-unit               # Unit tests only
-make test-integration        # Integration tests with real OIC
-make test-wms                # Real WMS integration tests
-make test-e2e                # End-to-end workflow tests
-make coverage-html           # Generate HTML coverage report
-
-# Test categories
-pytest -m unit               # Unit tests
-pytest -m integration        # Integration tests
-pytest -m oic                # OIC-specific tests
-pytest -m wms                # WMS integration tests
-pytest -m patterns           # Integration pattern tests
-pytest -m performance        # Performance tests
-```
-
-## Configuration
-
-### Enterprise Configuration Management
-
-**FLEXT Oracle OIC** uses Pydantic v2 for type-safe configuration with environment-based overrides and production security:
-
-### Oracle OIC Connection (Production-Ready)
-
-```python
-# config/settings.py - Type-safe configuration with Pydantic v2
-from pydantic import BaseSettings, Field, SecretStr
-from typing import Optional, Dict, Any, List
-
-class OracleOICConfig(BaseSettings):
-    """Oracle Integration Cloud Gen3 configuration."""
-
-    # Oracle OIC Gen3 Connection (2025)
-    base_url: str = Field(..., description="Oracle OIC Gen3 instance URL")
-    api_version: str = Field(default="v1", description="Oracle OIC API version")
-    region: str = Field(..., description="Oracle Cloud region (us-phoenix-1, etc.)")
-
-    # Performance & Resilience (Enterprise Settings)
-    connection_pool_size: int = Field(default=20, ge=1, le=100)
-    request_timeout: float = Field(default=30.0, ge=1.0, le=300.0)
-    retry_attempts: int = Field(default=3, ge=1, le=10)
-    retry_delay: float = Field(default=1.0, ge=0.1, le=10.0)
-
-    # Oracle IDCS OAuth2 Authentication (Production Security)
-    oauth_client_id: str = Field(..., description="Oracle IDCS OAuth2 client ID")
-    oauth_client_secret: SecretStr = Field(..., description="OAuth2 client secret")
-    idcs_url: str = Field(..., description="Oracle IDCS base URL")
-    oauth_scope: str = Field(
-        default="urn:opc:idm:__myscopes__",
-        description="OAuth2 scope"
-    )
-
-    # Enterprise Features (2025 Oracle OIC Capabilities)
-    enable_ai_integration: bool = Field(default=True, description="Enable AI-powered integrations")
-    enable_genai_features: bool = Field(default=True, description="Enable GenAI integration")
-    enable_process_automation: bool = Field(default=True, description="Low-code automation")
-    enable_monitoring: bool = Field(default=True, description="Advanced monitoring")
-
-    # WMS Integration Settings (Real APIs)
-    wms_systems: List[str] = Field(
-        default=["oracle_fusion", "manhattan_associates", "jda_blue_yonder"],
-        description="Enabled WMS systems"
-    )
-    wms_sync_interval: int = Field(default=15, description="WMS sync interval in minutes")
-
-    class Config:
-        env_prefix = "ORACLE_OIC_"
-        case_sensitive = False
-        secrets_dir = "/etc/oracle-oic"  # Production secrets
-
-# Usage in application
-config = OracleOICConfig()  # Automatically loads from environment
-oic_service = OracleOICService(config)
-```
-
-### Environment Variables (Production Deployment)
-
-```bash
-# Oracle OIC Gen3 Connection (2025)
-export ORACLE_OIC_BASE_URL="https://your-instance.integration.ocp.oraclecloud.com"
-export ORACLE_OIC_API_VERSION="v1"
-export ORACLE_OIC_REGION="us-phoenix-1"  # Oracle Cloud region
-
-# OAuth2/IDCS Authentication (Production Security)
-export ORACLE_OIC_OAUTH_CLIENT_ID="ocid1.app.oc1..."
-export ORACLE_OIC_OAUTH_CLIENT_SECRET="$(vault kv get -field=client_secret secret/oracle-oic)"
-export ORACLE_OIC_IDCS_URL="https://idcs-abcd1234.identity.oraclecloud.com"
-export ORACLE_OIC_OAUTH_SCOPE="urn:opc:idm:__myscopes__"
-
-# Enterprise Features (Oracle OIC 2025)
-export ORACLE_OIC_ENABLE_AI_INTEGRATION="true"      # AI-powered integrations
-export ORACLE_OIC_ENABLE_GENAI_FEATURES="true"      # GenAI integration
-export ORACLE_OIC_ENABLE_PROCESS_AUTOMATION="true"  # Low-code automation
-export ORACLE_OIC_ENABLE_MONITORING="true"          # Advanced monitoring
-
-# WMS Integration (Real APIs)
-export ORACLE_OIC_WMS_SYSTEMS="oracle_fusion,manhattan_associates,sap_ewm"
-export ORACLE_OIC_WMS_SYNC_INTERVAL="15"            # 15-minute sync interval
-
-# Performance & Resilience (Enterprise Settings)
-export ORACLE_OIC_CONNECTION_POOL_SIZE="50"         # High-performance pool
-export ORACLE_OIC_REQUEST_TIMEOUT="30.0"            # Optimized timeout
-export ORACLE_OIC_RETRY_ATTEMPTS="3"                # Resilient retry logic
-export ORACLE_OIC_RETRY_DELAY="1.0"                 # Exponential backoff
-
-# FLEXT Ecosystem Integration
-export FLEXT_LOG_LEVEL="INFO"                       # FLEXT logging
-export FLEXT_METRICS_ENABLED="true"                 # Observability
-export FLEXT_TRACING_ENABLED="true"                 # Distributed tracing
-
-# Oracle Cloud Infrastructure (Optional)
-export OCI_CONFIG_FILE="~/.oci/config"              # OCI configuration
-export OCI_PROFILE="DEFAULT"                        # OCI profile
-```
-
-## Real WMS Integration (Production Oracle OIC)
-
-### Oracle OIC WMS Pre-built Integrations (2025)
-
-**FLEXT Oracle OIC** leverages Oracle's comprehensive WMS integration adapters available in Oracle Integration Cloud:
-
-#### **Native Oracle WMS Integrations**
-```python
-from flext_oracle_oic import OracleOICService, WMSIntegrationPattern
-
-async def configure_oracle_wms_integration():
-    """Configure Oracle OIC with real WMS using pre-built adapters."""
-    oic_service = OracleOICService(config)
-
-    # Oracle OIC provides 68+ pre-built adapters including WMS
-    wms_adapter = await oic_service.get_adapter("oracle-wms-cloud")
-
-    # Configure real Oracle WMS integration
-    wms_integration = WMSIntegrationPattern(
-        adapter=wms_adapter,
-        wms_endpoint="https://your-wms.oraclecloud.com",
-        integration_flows=[
-            "inventory-sync",
-            "order-fulfillment",
-            "shipment-tracking",
-            "receipt-processing"
-        ]
-    )
-
-    # Execute real WMS operations
-    inventory_sync_result = await wms_integration.sync_inventory({
-        "warehouse_id": "WH001",
-        "item_filter": {"category": "electronics"},
-        "sync_mode": "incremental"
-    })
-
-    return inventory_sync_result
-```
-
-#### **Enterprise WMS Integration Patterns (Real Oracle APIs)**
-```python
-# Real Oracle Fusion WMS Integration
-from flext_oracle_oic import OracleFusionWMSAdapter
-
-async def integrate_fusion_wms():
-    """Integrate with Oracle Fusion WMS using real APIs."""
-    fusion_wms = OracleFusionWMSAdapter(
-        fusion_base_url="https://your-fusion.oraclecloud.com",
-        auth_config=oauth_config
-    )
-
-    # Real warehouse operations
-    warehouse_operations = await fusion_wms.execute_operations([
-        {"operation": "receive_inventory", "data": receipt_data},
-        {"operation": "allocate_orders", "data": order_data},
-        {"operation": "generate_picks", "data": pick_data}
-    ])
-
-    return warehouse_operations
-
-# Third-party WMS Integration (Real APIs)
-from flext_oracle_oic import ThirdPartyWMSAdapter
-
-async def integrate_external_wms():
-    """Integrate with external WMS systems via Oracle OIC."""
-    # Oracle OIC supports major WMS systems:
-    # - Manhattan Associates WMS
-    # - JDA/Blue Yonder WMS
-    # - SAP EWM
-    # - Infor WMS
-    # - HighJump WMS
-
-    external_wms = ThirdPartyWMSAdapter(
-        wms_type="manhattan_associates",
-        wms_endpoint="https://wms-api.company.com",
-        oic_connector="manhattan-wms-connector"
-    )
-
-    # Real WMS data synchronization
-    sync_result = await external_wms.bidirectional_sync({
-        "entities": ["inventory", "orders", "shipments"],
-        "schedule": "every_15_minutes",
-        "error_handling": "retry_with_dlq"
-    })
-
-    return sync_result
-```
-
-### Production WMS Use Cases
-
-#### **Inventory Management**
-- Real-time inventory synchronization across Oracle and external WMS
-- Automated stock level monitoring with Oracle OIC event triggers
-- Multi-warehouse inventory visibility and allocation
-
-#### **Order Fulfillment**
-- Automated order routing based on warehouse capacity and location
-- Pick, pack, and ship workflow orchestration
-- Real-time order status updates to Oracle ERP/CX systems
-
-#### **Supply Chain Visibility**
-- End-to-end supply chain event tracking
-- Predictive analytics for warehouse performance
-- Exception handling and automated escalation
-
-## Testing Strategy
-
-### Test Architecture (Real Oracle OIC Environment)
-
-```
-tests/
-   unit/                    # Fast unit tests (domain & application logic)
-      domain/               # Domain entity tests
-         test_integration_entities.py
-         test_workflow_entities.py
-      application/          # Application service tests
-         test_oracle_oic_service.py
-         test_pattern_service.py
-      infrastructure/       # Infrastructure component tests
-         test_oic_clients.py
-         test_auth_handlers.py
-
-   integration/             # Tests with REAL Oracle OIC APIs
-      test_real_oic_gen3.py         # Real Oracle OIC Gen3 integration
-      test_oauth2_idcs_flow.py      # Real OAuth2/IDCS authentication
-      test_wms_integration.py       # Real WMS integration testing
-      test_pattern_execution.py     # Real integration pattern execution
-
-   e2e/                     # End-to-end workflow tests (Production-like)
-      test_complete_wms_workflow.py    # Complete WMS integration workflow
-      test_order_fulfillment_e2e.py   # Order-to-fulfillment testing
-      test_inventory_sync_e2e.py      # Inventory synchronization testing
-
-   performance/             # Performance and load testing
-      test_high_volume_messages.py   # High-throughput message processing
-      test_concurrent_integrations.py # Concurrent integration execution
-      test_wms_performance.py        # WMS integration performance
-
-   security/                # Security and vulnerability testing
-      test_oauth2_security.py        # OAuth2 security validation
-      test_api_security.py           # API security testing
-      test_data_encryption.py        # Data encryption validation
-```
-
-### Coverage Requirements (Evidence-Based Quality)
-
-#### **Zero Mock Policy for Core Integration Logic**
-- **Real Oracle OIC APIs**: 100% of integration tests use actual Oracle OIC Gen3 APIs
-- **Real OAuth2/IDCS**: Authentication tests with actual Oracle Cloud Identity
-- **Real WMS Integration**: WMS tests with actual warehouse management systems
-- **Production-like Environment**: E2E tests simulate production Oracle OIC scenarios
-
-#### **Coverage Standards**
-- **Minimum**: 95% test coverage for critical integration paths
-- **Domain Logic**: 100% coverage with unit tests (pure business logic)
-- **Integration Layer**: 90% coverage with real Oracle OIC API tests
-- **E2E Workflows**: 85% coverage with complete workflow validation
-- **WMS Integration**: 90% coverage with real WMS API testing
-- **Performance**: Load testing for high-volume integration scenarios
-- **Security**: Comprehensive OAuth2, encryption, and vulnerability testing
-
-## Quality Standards (Enterprise Zero-Tolerance)
-
-### Mandatory Quality Gates (100% Pass Required)
-
-#### **Code Quality (Zero Errors)**
-- **Type Safety**: MyPy strict mode + PyRight with 100% type coverage
-- **Linting**: Ruff with ALL rules enabled (no warnings, no errors)
-- **Security**: Bandit + pip-audit + semgrep security scanning
-- **Dependencies**: Automated dependency vulnerability scanning
-- **Code Complexity**: Cyclomatic complexity ≤ 10 per function
-
-#### **Integration Quality (Real Oracle OIC)**
-- **Oracle OIC Integration**: 100% pass rate on real Oracle OIC Gen3 APIs
-- **WMS Integration**: All WMS integration tests with real warehouse systems
-- **OAuth2/IDCS Authentication**: Real Oracle Cloud Identity validation
-- **Pattern Execution**: Enterprise integration patterns with actual Oracle OIC
-- **Performance**: Load testing with production-scale message volumes
-
-#### **Architecture Quality (FLEXT Compliance)**
-- **Clean Architecture**: Strict layer separation with dependency rules
-- **Domain-Driven Design**: Rich domain models with business logic
-- **Railway-Oriented Programming**: FlextResult for all error handling
-- **FLEXT Ecosystem**: Zero custom implementations, use FLEXT foundations
-- **Oracle OIC Best Practices**: Follow Oracle's recommended integration patterns
-
-### Development Standards (2025)
-
-#### **Modern Python (3.13+)**
-```python
-from typing import Generic, TypeVar, Protocol, runtime_checkable
-from dataclasses import dataclass, field
-from functools import singledispatch
-from contextlib import asynccontextmanager
-
-# Modern type annotations
-T = TypeVar('T', bound='OICIntegration')
-P = TypeVar('P', contravariant=True)
-R = TypeVar('R', covariant=True)
-
-@runtime_checkable
-class IntegrationPattern(Protocol[P, R]):
-    async def execute(self, input_data: P) -> FlextResult[R]: ...
-
-# Generic integration service
-@dataclass(frozen=True, slots=True)
-class OracleOICService(Generic[T]):
-    config: OracleOICConfig = field(repr=False)
-
-    @asynccontextmanager
-    async def integration_context(self) -> AsyncIterator[T]:
-        # Modern async context management
-        pass
-```
-
-## Dependencies (Enterprise Architecture)
-
-### FLEXT Ecosystem Dependencies (Zero Custom Implementation)
-
-#### **Mandatory FLEXT Foundations**
-- **flext-core ≥0.9.0**: FlextResult patterns, dependency injection, enterprise logging
-- **flext-api ≥0.9.0**: HTTP client abstractions, API gateway patterns, request/response handling
-- **flext-auth ≥0.9.0**: OAuth2/IDCS authentication, session management, token lifecycle
-- **flext-cli ≥0.9.0**: Command-line interfaces, interactive tools, deployment automation
-- **flext-observability ≥0.9.0**: Distributed tracing, metrics collection, performance monitoring
-
-### External Dependencies (Minimal & Controlled)
-
-#### **Core Dependencies**
-```toml
-[tool.poetry.dependencies]
-python = "^3.13"                    # Latest Python for performance
-pydantic = "^2.5.0"                # Type-safe configuration and models
-fastapi = "^0.104.0"               # Modern async web framework
-
-# Enterprise Features
-opentelemetry-api = "^1.21.0"      # Observability
-prometheus-client = "^0.19.0"      # Metrics collection
-structlog = "^23.2.0"              # Structured logging
-```
-
-## Contributing (Enterprise Standards)
-
-### Development Workflow
-
-#### **1. Pre-Development Setup**
-```bash
-# Fork repository and clone
-git clone https://github.com/your-username/flext-oracle-oic.git
-cd flext-oracle-oic
-
-# Setup development environment
-make setup                          # Complete development setup
-make install-dev                    # Install all dependencies
-pre-commit install                  # Install git hooks
-
-# Verify Oracle OIC connectivity
-make oic-test                       # Test Oracle OIC integration
-make oic-auth                       # Verify OAuth2/IDCS authentication
-make wms-test                       # Test real WMS integration
-```
-
-#### **2. Quality Validation (100% Pass Required)**
-```bash
-# Complete validation before commit
-make validate                       # Complete quality pipeline
-make test-integration               # Real Oracle OIC integration tests
-make test-wms                       # Real WMS integration tests
-make coverage-html                  # Coverage reporting
-```
-
-### Contribution Guidelines
-
-#### **Code Quality Standards**
-- **Type Safety**: 100% type coverage with MyPy strict mode
-- **Test Coverage**: 95% minimum with real Oracle OIC integration
-- **Performance**: Load testing for integration patterns
-- **Security**: Comprehensive security validation
-- **WMS Integration**: Real WMS API testing with production systems
-
-#### **Oracle OIC Integration Standards**
-- **Real APIs**: No mocks for Oracle OIC integration logic
-- **Production Config**: Test with production-like Oracle OIC setup
-- **Error Handling**: FlextResult patterns for all operations
-- **Performance**: Asyncio-native for high throughput
-- **Security**: OAuth2/IDCS with production security practices
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
-
-## Documentation
-
-### Comprehensive Documentation Suite
-
-#### **Architecture & Development**
-- **[README.md](README.md)** - This comprehensive overview and quick start guide
-- **[TODO.md](TODO.md)** - Detailed implementation roadmap and requirements
-- **[CLAUDE.md](CLAUDE.md)** - Development standards and FLEXT integration patterns
-- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Clean Architecture detailed design
-- **[docs/WMS_INTEGRATION.md](docs/WMS_INTEGRATION.md)** - Real WMS integration patterns and examples
-- **[docs/SECURITY.md](docs/SECURITY.md)** - Security architecture and OAuth2/IDCS implementation
-
-#### **Oracle OIC Integration**
-- **[docs/ORACLE_OIC_GUIDE.md](docs/ORACLE_OIC_GUIDE.md)** - Complete Oracle OIC Gen3 integration guide
-- **[docs/API_REFERENCE.md](docs/API_REFERENCE.md)** - Complete API documentation
-- **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** - Production deployment and configuration
-
-#### **Interactive Documentation**
-```bash
-# View current configuration
-poetry run python -c "
-from flext_oracle_oic import OracleOICConfig
-config = OracleOICConfig()
-print('Current Oracle OIC Configuration:')
-print(config.model_dump_json(indent=2))
-"
-
-# Test Oracle OIC connectivity
-make oic-test                       # Live Oracle OIC API testing
-make oic-auth                       # OAuth2/IDCS authentication testing
-make wms-test                       # Real WMS integration testing
-make pattern-test                   # Integration pattern testing
-
-# Generate API documentation
-make docs-build                     # Generate complete documentation
-make docs-serve                     # Serve documentation locally
-```
-
-### FLEXT Ecosystem Integration
-
-#### **Core FLEXT Libraries**
-- **[../flext-core/](../flext-core/)** - Foundation library with FlextResult patterns and dependency injection
-- **[../flext-api/](../flext-api/)** - HTTP client abstractions and API gateway patterns
-- **[../flext-auth/](../flext-auth/)** - OAuth2/IDCS authentication and session management
-- **[../flext-cli/](../flext-cli/)** - Command-line interfaces and interactive tools
-- **[../flext-observability/](../flext-observability/)** - Distributed tracing, metrics, and monitoring
-
-#### **Oracle Integration Ecosystem**
-- **[../flext-tap-oracle/](../flext-tap-oracle/)** - Singer tap for Oracle database extraction
-- **[../flext-target-oracle/](../flext-target-oracle/)** - Singer target for Oracle database loading
-
-### Community & Support
-
-#### **Getting Help**
-- **GitHub Issues**: [Report bugs and request features](https://github.com/flext/flext-oracle-oic/issues)
-- **Discussions**: [Community Q&A and best practices](https://github.com/flext/flext-oracle-oic/discussions)
-- **Documentation**: [Complete documentation site](https://docs.flext.io/oracle-oic/)
+> **⚠️ STATUS**: Early Development (v0.9.0) - Basic foundation with FLEXT compliance issues to resolve
 
 ---
 
-**Enterprise Library**: FLEXT Oracle OIC - First Python Library for Oracle Integration Cloud Gen3
-**Framework**: FLEXT Ecosystem | **Technology**: Oracle OIC Gen3 + Python 3.13+ + AsyncIO + Real WMS APIs
-**Architecture**: Clean Architecture + Domain-Driven Design | **Quality**: 95% Coverage + Real Oracle APIs
-**Updated**: 2025-01-08 | **Status**: Production-Ready Enterprise Integration Platform
+## 🎯 Purpose and Role in FLEXT Ecosystem
+
+### **For the FLEXT Ecosystem**
+
+This extension provides basic Oracle Integration Cloud HTTP client patterns for FLEXT projects requiring Oracle OIC connectivity. Currently implements basic authentication and client structure with plans for full integration capabilities.
+
+### **Key Responsibilities**
+
+1. **Oracle OIC HTTP Client** - Basic HTTP client structure for Oracle Integration Cloud APIs
+2. **OAuth2 Authentication Framework** - Foundation for Oracle IDCS authentication (partial implementation)
+3. **FLEXT Integration Pattern** - Extension pattern following FLEXT ecosystem standards (with current violations to fix)
+
+### **Integration Points**
+
+- **flext-core** → Uses FlextResult, FlextLogger (needs dependency injection improvements)
+- **flext-api** → Should use for HTTP clients (currently violates by using httpx directly)
+- **flext-cli** → Should use for CLI functionality (currently violates by using typer directly)
+
+---
+
+## 🏗️ Architecture and Patterns
+
+### **FLEXT-Core Integration Status**
+
+| Pattern             | Status         | Description             |
+| ------------------- | -------------- | ----------------------- |
+| **FlextResult<T>**  | 🟡 75% | Basic usage implemented, needs completion     |
+| **FlextService**    | 🔴 25% | Service structure exists, needs proper patterns    |
+| **FlextContainer**  | 🔴 0% | Not implemented - needs dependency injection    |
+| **Domain Patterns** | 🔴 10% | Basic models exist, no DDD implementation    |
+
+> **Status**: 🔴 Critical | 🟡 Partial | 🟢 Complete
+
+### **Current Implementation**
+
+```
+src/flext_oracle_oic_ext/
+├── __init__.py              # Module exports
+├── ext_config.py            # Pydantic configuration models
+├── ext_exceptions.py        # Oracle OIC exception hierarchy
+├── ext_client.py            # Basic HTTP client (needs FLEXT compliance)
+├── ext_services.py          # Service layer (basic structure)
+├── ext_models.py            # Data models using Pydantic
+├── cli.py                   # CLI (needs flext-cli patterns)
+├── extension.py             # Legacy extension pattern
+└── factory.py               # Service factory patterns
+```
+
+---
+
+## 🚀 Quick Start
+
+### **Installation**
+
+```bash
+# From source (recommended for development)
+cd flext-oracle-oic-ext
+poetry install --with dev,test
+```
+
+### **Basic Usage**
+
+```python
+from flext_oracle_oic_ext import OracleOICExtensionService, OracleOICExtensionSettings
+
+# Basic configuration
+settings = OracleOICExtensionSettings(
+    connection=OICExtensionConnectionConfig(
+        base_url="https://your-oic-instance.integration.ocp.oraclecloud.com"
+    ),
+    auth=OICExtensionAuthConfig(
+        oauth_client_id="your_client_id",
+        oauth_client_secret="your_client_secret",
+        oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
+    )
+)
+
+# Create service instance
+service = OracleOICExtensionService(settings)
+
+# Note: Full functionality still in development
+```
+
+---
+
+## 🔧 Development
+
+### **Essential Commands**
+
+```bash
+# Setup development environment
+make install-dev
+
+# Quality gates
+make validate      # Complete validation pipeline
+make lint          # Code linting with ruff
+make type-check    # MyPy type checking
+make test          # Run test suite
+make format        # Format code
+```
+
+### **Quality Gates**
+
+Current quality status and requirements:
+
+- **Coverage**: Target 90% (currently basic test suite exists)
+- **Type Safety**: Partial implementation, needs completion
+- **Security**: Basic structure, needs security audit
+- **FLEXT-Core Compliance**: 25% - Major violations need fixing
+
+---
+
+## 🧪 Testing
+
+### **Test Structure**
+
+```
+tests/
+├── unit/                    # Unit tests for business logic
+├── conftest.py             # Test configuration and fixtures
+├── test_basic.py           # Basic functionality tests
+├── test_config.py          # Configuration tests
+├── test_models.py          # Model validation tests
+└── test_extension.py       # Extension pattern tests
+```
+
+### **Testing Commands**
+
+```bash
+make test              # Run all tests
+make test-unit         # Unit tests only
+make coverage-html     # Generate coverage report
+```
+
+---
+
+## 📊 Status and Metrics
+
+### **Quality Standards**
+
+- **Coverage**: 65% (needs improvement to 90%)
+- **Type Safety**: Partial (MyPy strict mode compliance needed)
+- **Security**: Basic (comprehensive security audit needed)
+- **FLEXT-Core Compliance**: 25% (critical violations to fix)
+
+### **Critical Issues to Address**
+
+1. **FLEXT Compliance Violations**
+   - Direct `httpx` import (should use flext-api)
+   - Direct `typer` import (should use flext-cli)
+   - Missing dependency injection patterns
+
+2. **Language Inconsistency**
+   - Portuguese comments mixed with English code
+   - Needs standardization to English-only
+
+3. **Architecture Gaps**
+   - No Clean Architecture implementation
+   - Missing Domain-Driven Design patterns
+   - Basic service structure needs improvement
+
+---
+
+## 🗺️ Roadmap
+
+### **Current Version (v0.9.0)**
+
+Basic foundation with configuration, models, and service structure. FLEXT compliance violations need immediate attention.
+
+### **Next Version (v0.10.0)**
+
+- Fix all FLEXT compliance violations
+- Implement proper dependency injection
+- Complete OAuth2/IDCS authentication
+- Achieve 90% test coverage
+
+### **Future Versions**
+
+- Real Oracle OIC API integration
+- Enterprise integration patterns
+- WMS integration (if business requirement confirmed)
+- Production-ready deployment patterns
+
+---
+
+## 📚 Documentation
+
+- **[Getting Started](docs/getting-started.md)** - Installation and basic setup
+- **[Architecture](docs/architecture.md)** - Current architecture and improvement plans
+- **[Development](docs/development.md)** - Development guidelines and standards
+- **[TODO & Roadmap](TODO.md)** - Detailed development roadmap and priorities
+
+---
+
+## 🤝 Contributing
+
+### **Immediate Priorities**
+
+1. **Fix FLEXT compliance violations** - Replace direct httpx/typer usage
+2. **Language standardization** - Convert Portuguese comments to English
+3. **Implement proper patterns** - Add dependency injection and service patterns
+4. **Improve test coverage** - Add comprehensive unit and integration tests
+
+### **Quality Standards**
+
+- **Type Safety**: 100% MyPy strict mode compliance required
+- **Test Coverage**: 90% minimum for all new code
+- **FLEXT Compliance**: Zero tolerance for ecosystem violations
+- **Documentation**: English-only, clear and accurate
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+## 🆘 Support
+
+- **Documentation**: [docs/](docs/)
+- **Issues**: [GitHub Issues](https://github.com/flext-sh/flext-oracle-oic-ext/issues)
+- **Security**: Report security issues privately to maintainers
+
+---
+
+**flext-oracle-oic-ext v0.9.0** - Oracle Integration Cloud extension providing basic HTTP client patterns for FLEXT ecosystem integration projects.
+
+**Mission**: Develop a reliable Oracle OIC integration library following FLEXT ecosystem standards and enabling Oracle Integration Cloud connectivity for enterprise Python applications.
