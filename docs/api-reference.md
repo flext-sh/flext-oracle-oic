@@ -1,368 +1,265 @@
 # API Reference
 
-**flext-oracle-oic-ext v0.9.0 API Documentation**
+**flext-oracle-oic-ext v0.9.0** - Available APIs and Components
 
-> **Status**: Early Development - Many APIs are basic implementations and subject to change
+[![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
-## Configuration Classes
+> **Implementation Status**: Version 0.9.0 provides basic configuration and service structure. Full Oracle OIC integration capabilities are in development.
+
+## Public API Overview
+
+The current implementation provides foundation configuration classes and basic service structure. All public APIs are available through the main module import.
+
+```python
+from flext_oracle_oic_ext import (
+    # Configuration classes
+    OracleOICExtensionSettings,
+    OICExtensionConnectionConfig,
+    OICExtensionAuthConfig,
+
+    # Basic service classes (implementation varies)
+    # Additional components available but may have limited functionality
+)
+```
+
+## Configuration API
 
 ### OracleOICExtensionSettings
 
 Main configuration container for Oracle OIC extension settings.
 
 ```python
-from flext_oracle_oic_ext import OracleOICExtensionSettings
+from flext_oracle_oic_ext import OracleOICExtensionSettings, OICExtensionConnectionConfig
 
+# Basic configuration creation
 settings = OracleOICExtensionSettings(
-    connection=OICExtensionConnectionConfig(...),
-    auth=OICExtensionAuthConfig(...),
-    enable_monitoring=True,
-    enable_enterprise_patterns=True
+    connection=OICExtensionConnectionConfig(
+        base_url="https://your-instance.integration.ocp.oraclecloud.com"
+    )
 )
 ```
 
-**Attributes:**
-- `connection: OICExtensionConnectionConfig` - Connection configuration
-- `auth: OICExtensionAuthConfig` - Authentication configuration
-- `enable_monitoring: bool` - Enable monitoring features (default: True)
-- `enable_enterprise_patterns: bool` - Enable enterprise patterns (default: True)
+**Constructor Parameters:**
+- `connection: OICExtensionConnectionConfig` (required) - Connection configuration
+- `auth: OICExtensionAuthConfig` (optional) - Authentication configuration
+- Additional parameters may vary based on actual implementation
 
 ### OICExtensionConnectionConfig
 
-HTTP connection configuration for Oracle OIC.
+HTTP connection configuration for Oracle Integration Cloud.
 
 ```python
 from flext_oracle_oic_ext import OICExtensionConnectionConfig
 
+# Basic connection configuration
 config = OICExtensionConnectionConfig(
     base_url="https://your-instance.integration.ocp.oraclecloud.com",
     api_version="v1",
-    request_timeout=30,
-    max_retries=3
+    request_timeout=30
 )
 ```
 
-**Attributes:**
-- `base_url: str` - Oracle OIC instance base URL
-- `api_version: str` - API version (default: "v1")
-- `request_timeout: int` - Request timeout in seconds (default: 30)
-- `max_retries: int` - Maximum retry attempts (default: 3)
+**Constructor Parameters:**
+- `base_url: str` (required) - Oracle OIC instance base URL
+- `api_version: str` (optional) - API version, defaults to "v1"
+- `request_timeout: int` (optional) - Request timeout in seconds, defaults to 30
+- Additional parameters based on actual Pydantic model implementation
 
 ### OICExtensionAuthConfig
 
-OAuth2/IDCS authentication configuration.
+OAuth2/IDCS authentication configuration for Oracle cloud integration.
 
 ```python
 from flext_oracle_oic_ext import OICExtensionAuthConfig
 
+# OAuth2 authentication setup
 auth_config = OICExtensionAuthConfig(
     oauth_client_id="your_client_id",
     oauth_client_secret="your_client_secret",
-    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
-    oauth_client_aud="your_audience",
-    oauth_scope="your_scope"
+    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
 )
 ```
 
-**Attributes:**
-- `oauth_client_id: str` - OAuth2 client ID
-- `oauth_client_secret: str` - OAuth2 client secret
-- `oauth_token_url: str` - OAuth2 token endpoint URL
-- `oauth_client_aud: str` - OAuth2 audience (optional)
-- `oauth_scope: str` - OAuth2 scope (optional)
+**Constructor Parameters:**
+- `oauth_client_id: str` (required) - OAuth2 client ID from Oracle IDCS
+- `oauth_client_secret: str` (required) - OAuth2 client secret (uses SecretStr)
+- `oauth_token_url: str` (required) - OAuth2 token endpoint URL
+- Additional OAuth2 parameters may be available based on implementation
 
-## Service Classes
+## Available Components
 
-### OracleOICExtensionService
+> **Important**: The following components exist in the codebase but may have limited or placeholder functionality. Refer to source code for actual implementation details.
 
-Main service class for Oracle OIC operations.
-
-```python
-from flext_oracle_oic_ext import OracleOICExtensionService, OracleOICExtensionSettings
-
-service = OracleOICExtensionService(settings)
-```
-
-**Methods:**
-
-#### `__init__(settings: OracleOICExtensionSettings) -> None`
-Initialize the service with configuration settings.
-
-> **Note**: Current implementation provides basic structure only. Full Oracle OIC integration in development.
-
-### OICIntegrationPatternService
-
-Service for integration pattern operations (basic implementation).
+### Service Classes (Implementation Status Varies)
 
 ```python
-from flext_oracle_oic_ext import OICIntegrationPatternService
-
-pattern_service = OICIntegrationPatternService()
-```
-
-> **Status**: Placeholder implementation - Integration patterns not yet implemented
-
-### LifecycleManager
-
-Basic lifecycle management for Oracle OIC operations.
-
-```python
-from flext_oracle_oic_ext import LifecycleManager
-
-manager = LifecycleManager(settings)
-```
-
-**Methods:**
-
-#### `__init__(settings: OracleOICExtensionSettings) -> None`
-Initialize lifecycle manager with settings.
-
-### MonitoringService
-
-Basic monitoring service for Oracle OIC operations.
-
-```python
-from flext_oracle_oic_ext import MonitoringService
-import requests
-
-session = requests.Session()
-monitoring = MonitoringService(session)
-```
-
-**Methods:**
-
-#### `__init__(client: HTTPClientProtocol) -> None`
-Initialize monitoring service with HTTP client.
-
-> **Note**: Currently requires a requests.Session object. Will be updated to use FLEXT patterns.
-
-## Client Classes
-
-### OracleOICExtensionClient
-
-HTTP client for Oracle OIC API operations.
-
-```python
-from flext_oracle_oic_ext import OracleOICExtensionClient
-
-client = OracleOICExtensionClient(connection_config, auth_config)
-```
-
-> **Critical Issue**: Currently uses direct httpx which violates FLEXT standards. Will be refactored to use flext-api.
-
-### BaseOICAuthenticator
-
-Abstract base class for Oracle OIC authentication.
-
-```python
-from flext_oracle_oic_ext import BaseOICAuthenticator
-
-# This is an abstract class - use concrete implementations
-```
-
-**Abstract Methods:**
-- `get_oauth_scopes() -> str` - Get OAuth2 scopes for authentication
-
-### OICExtensionAuthenticator
-
-OAuth2 authenticator implementation for Oracle OIC.
-
-```python
-from flext_oracle_oic_ext import OICExtensionAuthenticator
-
-authenticator = OICExtensionAuthenticator(auth_config)
-```
-
-**Methods:**
-
-#### `get_oauth_scopes() -> str`
-Returns OAuth2 scopes for Oracle OIC authentication.
-
-> **Status**: Basic implementation - Full OAuth2/IDCS integration in development
-
-## Data Models
-
-### OICIntegrationInfo
-
-Model for Oracle OIC integration information.
-
-```python
-from flext_oracle_oic_ext import OICIntegrationInfo
-
-integration = OICIntegrationInfo(
-    integration_id="int_001",
-    name="Test Integration",
-    version="1.0.0",
-    status=IntegrationStatus.ACTIVE
+# These components may be available for import but implementation varies
+from flext_oracle_oic_ext.ext_services import (
+    OracleOICExtensionService,    # Main service class
+    OICIntegrationPatternService, # Integration patterns (basic)
+    LifecycleManager,            # Lifecycle management (basic)
+    MonitoringService            # Monitoring (basic)
 )
 ```
 
-**Attributes:**
-- `integration_id: str` - Unique integration identifier
-- `name: str` - Integration display name
-- `version: str` - Integration version
-- `status: IntegrationStatus` - Current status
+**Usage Note**: Current service implementations provide basic structure. Full Oracle OIC integration capabilities are in development.
 
-### OICConnectionInfo
-
-Model for Oracle OIC connection information.
+### Client Components (FLEXT Compliance Issues)
 
 ```python
-from flext_oracle_oic_ext import OICConnectionInfo
+# HTTP client wrapper (needs FLEXT compliance fixes)
+from flext_oracle_oic_ext.ext_client import OracleOICExtensionClient
 
-connection = OICConnectionInfo(
-    connection_id="conn_001",
-    name="Test Connection",
-    connection_type="REST",
-    endpoint_url="https://api.example.com"
+# Authentication components (basic implementation)
+from flext_oracle_oic_ext.ext_services import (
+    BaseOICAuthenticator,
+    OICExtensionAuthenticator
 )
 ```
 
-**Attributes:**
-- `connection_id: str` - Unique connection identifier
-- `name: str` - Connection display name
-- `connection_type: str` - Type of connection
-- `endpoint_url: str` - Connection endpoint URL
+**Critical Issue**: Current client implementation uses direct `httpx` imports (line 12 in `ext_client.py`) which violates FLEXT ecosystem standards. Will be refactored to use `flext-api` patterns.
 
-### IntegrationStatus
+### Data Models
 
-Enumeration for integration status values.
+Basic Pydantic data models are available:
 
 ```python
-from flext_oracle_oic_ext import IntegrationStatus
-
-# Available status values:
-IntegrationStatus.ACTIVE     # Integration is active
-IntegrationStatus.INACTIVE   # Integration is inactive
-IntegrationStatus.DRAFT      # Integration is in draft state
-IntegrationStatus.ERROR      # Integration has errors
+from flext_oracle_oic_ext.ext_models import (
+    OICIntegrationInfo,  # Integration metadata
+    OICConnectionInfo,   # Connection information
+    # Additional models based on actual implementation
+)
 ```
 
-## Exception Classes
+## Exception Hierarchy
 
-### OracleOICExtensionError
-
-Base exception for Oracle OIC extension errors.
+Oracle OIC-specific exception classes:
 
 ```python
-from flext_oracle_oic_ext import OracleOICExtensionError
-
-try:
-    # Some Oracle OIC operation
-    pass
-except OracleOICExtensionError as e:
-    print(f"Oracle OIC error: {e}")
+from flext_oracle_oic_ext.ext_exceptions import (
+    OracleOICExtensionError,    # Base exception
+    OICAPIError,                # API operation errors
+    OICAuthenticationError,     # Authentication failures
+    OICConfigurationError,      # Configuration issues
+    OICConnectionError,         # Connection problems
+    OICTokenError,              # Token management errors
+    # Additional exceptions based on actual implementation
+)
 ```
 
-### Specific Exception Types
+**Implementation Note**: Exception hierarchy provides structured error handling for Oracle OIC operations.
+
+## Factory and Utility Functions
 
 ```python
+from flext_oracle_oic_ext.factory import (
+    # Factory functions for service creation
+    # Implementation details vary
+)
+```
+
+## Current Implementation Limitations
+
+### Available Features ✅
+- **Configuration Management**: Pydantic models with type safety
+- **Basic Service Structure**: Foundation classes and module organization
+- **Exception Hierarchy**: Oracle OIC-specific error handling
+- **Module Organization**: Structured codebase with clear separation
+
+### Critical Issues ❌
+
+**FLEXT Compliance Violations:**
+- Direct `httpx` import in `ext_client.py:12` (should use flext-api)
+- Direct `typer` import in `main.py:15` (should use flext-cli)
+- Missing FlextDomainService inheritance across service classes
+- Multiple classes per module violate FLEXT unified class pattern
+
+**Oracle OIC Integration Gaps:**
+- No actual Oracle Integration Cloud API connectivity
+- OAuth2/IDCS authentication framework incomplete
+- No integration pattern execution capabilities
+- Missing enterprise features (circuit breaker, retry patterns)
+
+**Type Safety Issues:**
+- 2 MyPy errors: `exceptions.py:283` and `test_models.py:61`
+
+### Development Roadmap
+
+**Phase 1: FLEXT Compliance (Critical)**
+1. Fix MyPy errors in exceptions and test files
+2. Replace direct httpx/typer imports with FLEXT abstractions
+3. Implement FlextDomainService inheritance
+4. Convert to unified class pattern (single class per module)
+
+**Phase 2: Oracle OIC Implementation**
+1. Complete OAuth2/IDCS authentication with Oracle Cloud Identity
+2. Implement real Oracle OIC REST API integration
+3. Add integration pattern execution engine
+4. Enterprise features (circuit breaker, retry, monitoring)
+
+**Phase 3: Production Readiness**
+1. Comprehensive testing with real Oracle OIC instances
+2. Contract testing for API compliance
+3. Performance optimization and monitoring
+4. Complete documentation and examples
+
+## API Compatibility
+
+### Import Patterns
+
+```python
+# Recommended import pattern for current version
 from flext_oracle_oic_ext import (
-    OICAPIError,              # API operation errors
-    OICAuthenticationError,   # Authentication failures
-    OICConfigurationError,    # Configuration issues
-    OICConnectionError,       # Connection problems
-    OICIntegrationError,      # Integration execution errors
-    OICPatternError,          # Integration pattern errors
-    OICTimeoutError,          # Timeout errors
-    OICTokenError,            # Token management errors
-    OICValidationError,       # Data validation errors
-    OICWorkflowError          # Workflow execution errors
+    OracleOICExtensionSettings,
+    OICExtensionConnectionConfig,
+    OICExtensionAuthConfig
+)
+
+# Create basic configuration
+settings = OracleOICExtensionSettings(
+    connection=OICExtensionConnectionConfig(
+        base_url="https://your-instance.integration.ocp.oraclecloud.com"
+    )
 )
 ```
 
-## Factory Functions
+### API Stability
 
-### create_oic_extension_service
+- **Configuration Classes**: Stable API, backward compatibility maintained
+- **Exception Classes**: Stable hierarchy, names and structure preserved
+- **Service Classes**: Subject to change during FLEXT compliance refactoring
+- **Client Classes**: Will be refactored for FLEXT compliance
 
-Factory function to create OracleOICExtensionService instances.
+## Usage Recommendations
 
-```python
-from flext_oracle_oic_ext import create_oic_extension_service
-
-# Create service with default configuration
-service_result = create_oic_extension_service()
-if service_result.is_success:
-    service = service_result.unwrap()
-```
-
-**Returns:** `FlextResult[OracleOICExtensionService]`
-
-### create_development_oic_service
-
-Factory function for development/testing scenarios.
+### Current Version (v0.9.0)
 
 ```python
-from flext_oracle_oic_ext import create_development_oic_service
+# Safe to use for configuration and basic setup
+from flext_oracle_oic_ext import (
+    OracleOICExtensionSettings,
+    OICExtensionConnectionConfig,
+    OICExtensionAuthConfig
+)
 
-# Create development service
-dev_service_result = create_development_oic_service()
-if dev_service_result.is_success:
-    service = dev_service_result.unwrap()
+# Configuration validation and type safety works correctly
+try:
+    config = OICExtensionConnectionConfig(
+        base_url="https://test-instance.integration.ocp.oraclecloud.com"
+    )
+    print("✅ Configuration valid")
+except ValueError as e:
+    print(f"❌ Configuration error: {e}")
 ```
 
-**Returns:** `FlextResult[OracleOICExtensionService]`
+### Future Versions
 
-## CLI Interface
-
-### Extension Commands
-
-The extension provides CLI commands through the OracleOICExtension class:
-
-```bash
-# Lifecycle commands
-oracle-oic-ext lifecycle:activate
-oracle-oic-ext lifecycle:deactivate
-oracle-oic-ext lifecycle:status
-
-# Monitoring commands
-oracle-oic-ext monitor:health
-oracle-oic-ext monitor:performance
-oracle-oic-ext monitor:errors
-oracle-oic-ext monitor:usage
-
-# Extraction commands
-oracle-oic-ext extract:artifacts
-oracle-oic-ext extract:logs
-oracle-oic-ext extract:metadata
-```
-
-> **Critical Issue**: CLI implementation uses direct typer which violates FLEXT standards. Will be refactored to use flext-cli.
-
-## Current Limitations
-
-### API Limitations
-- **No real Oracle OIC API calls** - Basic structure only
-- **Authentication incomplete** - OAuth2/IDCS integration in development
-- **Pattern operations not implemented** - Enterprise Integration Patterns pending
-- **WMS integration missing** - No warehouse management functionality
-
-### FLEXT Compliance Issues
-- **Direct httpx usage** - Violates FLEXT standards (should use flext-api)
-- **Direct typer usage** - Violates FLEXT standards (should use flext-cli)
-- **Missing dependency injection** - Not using FlextContainer
-- **Incomplete FlextResult usage** - Some methods still use direct exceptions
-
-### Architecture Issues
-- **Multiple classes per module** - Violates unified class pattern
-- **Missing domain models** - Basic data models only
-- **No Clean Architecture layers** - Flat service structure
-- **Language inconsistency** - Portuguese comments in code
-
-## Migration Notes
-
-### Upcoming API Changes
-- **HTTP client refactoring** - Will use flext-api instead of httpx
-- **CLI refactoring** - Will use flext-cli instead of typer
-- **Authentication refactoring** - Will integrate with flext-auth
-- **Service refactoring** - Will follow unified class pattern
-
-### Backward Compatibility
-- Current API structure will be maintained during refactoring
-- Configuration classes will remain compatible
-- Exception hierarchy will be preserved
-- Factory functions will continue to work
+API will be enhanced with:
+- Complete Oracle OIC integration capabilities
+- FLEXT ecosystem compliance
+- Professional enterprise features
+- Comprehensive testing and validation
 
 ---
 
-**Note**: This API reference reflects the current implementation as of September 2025. Many features are in early development and will be enhanced in future releases.
+This API reference reflects the actual implementation status as of September 17, 2025. Version 0.9.0 provides foundation configuration and basic service structure, with significant enhancements planned for FLEXT compliance and Oracle OIC integration.

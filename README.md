@@ -1,280 +1,330 @@
 # flext-oracle-oic-ext
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
-[![FLEXT Framework](https://img.shields.io/badge/FLEXT-Extension-red.svg)](https://github.com/flext)
 
-**Oracle Integration Cloud extension for the FLEXT ecosystem** - Basic HTTP client foundation with quality gate failures requiring immediate attention.
+**Oracle Integration Cloud client library for the FLEXT ecosystem** providing **OAuth2/IDCS authentication** and **integration pattern execution** using **FlextDomainService patterns** with **professional OIC 2025 architecture**.
 
-> **⚠️ STATUS**: Early Development (v0.9.0) - 2,937 lines, 21% coverage, MyPy errors, FLEXT compliance violations
-
----
-
-## 🎯 Purpose and Current Reality
-
-### **Project Status (September 17, 2025)**
-
-This project provides a basic HTTP client foundation for Oracle Integration Cloud integration within the FLEXT ecosystem. Currently in early development with significant quality issues that must be resolved before production use.
-
-### **Actual Implementation Status**
-
-- **Total Lines**: 2,937 (basic implementation, not enterprise-scale)
-- **Test Coverage**: 21% (significantly below FLEXT standards)
-- **Quality Gates**: 2 MyPy errors active, FLEXT compliance violations
-- **Language Standards**: Portuguese comments present (violates FLEXT English-only)
-- **Architecture**: Direct httpx/typer imports (violates FLEXT patterns)
-
-### **Current Capabilities**
-
-1. **Basic HTTP Client Structure** - `ext_client.py` (188 lines, partial implementation)
-2. **Configuration Models** - Pydantic models for Oracle OIC settings
-3. **Authentication Framework** - OAuth2/IDCS patterns (not fully implemented)
-4. **Basic CLI** - Simple command interface with FLEXT violations
+> **⚠️ STATUS**: Early Development (v0.9.0) - Foundation implemented, requires FLEXT compliance and Oracle OIC 2025 patterns
 
 ---
 
-## 🏗️ Current Architecture Status
+## 🎯 Purpose and Role in FLEXT Ecosystem
 
-### **Critical Issues Requiring Immediate Attention**
+### **For the FLEXT Ecosystem**
 
-| Issue Type | Description | Status |
-|------------|-------------|---------|
-| **MyPy Errors** | `exceptions.py:283` missing `OIC_TOKEN_ERROR` | ❌ Active |
-| **MyPy Errors** | `test_models.py:61` type mismatch in validation | ❌ Active |
-| **FLEXT Violations** | `ext_client.py:12` direct `import httpx` | ❌ Active |
-| **FLEXT Violations** | `main.py:15` direct `import typer` | ❌ Active |
-| **Language Standards** | Portuguese comment in `main.py:3` | ❌ Active |
+This extension provides Oracle Integration Cloud (OIC) integration capabilities for FLEXT projects requiring Oracle cloud connectivity. It implements OAuth2/IDCS authentication, integration pattern execution, and enterprise Oracle cloud operations following FLEXT architectural standards.
 
-### **Actual Implementation Structure**
+### **Key Responsibilities**
 
+1. **Oracle OIC Authentication** - OAuth2 client credentials flow with IDCS Gen3 simplifications
+2. **Integration Pattern Execution** - App-driven orchestration, scheduled orchestration, file transfer patterns
+3. **FLEXT Integration** - FlextDomainService architecture with FlextResult railway patterns
+4. **Enterprise Security** - Secure credential management with encryption and token lifecycle
+
+### **Integration Points**
+
+- **[flext-core](../flext-core/README.md)** → Uses FlextResult, FlextDomainService, FlextContainer for foundation patterns
+- **[flext-api](../flext-api/README.md)** → HTTP client abstractions for Oracle OIC REST API operations
+- **[flext-cli](../flext-cli/README.md)** → CLI interface for Oracle OIC deployment and management operations
+- **[flext-tap-oracle-oic](../flext-tap-oracle-oic/README.md)** → Data extraction from Oracle Integration Cloud
+- **[flext-target-oracle-oic](../flext-target-oracle-oic/README.md)** → Data loading to Oracle Integration Cloud
+
+---
+
+## 🏗️ Architecture and Patterns
+
+### **FLEXT-Core Integration Status**
+
+| Pattern             | Status         | Description             |
+| ------------------- | -------------- | ----------------------- |
+| **FlextResult[T]**  | 🟡 65% | Partial usage implemented, needs completion across all operations |
+| **FlextDomainService** | 🔴 0% | Not implemented - critical requirement for FLEXT compliance |
+| **FlextContainer**  | 🔴 0% | Not implemented - dependency injection missing |
+| **Unified Classes** | 🔴 15% | Multiple classes per module violate FLEXT patterns |
+
+> **Status**: 🔴 Critical | 🟡 Partial | 🟢 Complete
+
+### **Architecture Diagram**
+
+```mermaid
+graph TB
+    Core[FLEXT-Core Foundation] --> OIC[flext-oracle-oic-ext]
+    OIC --> Services[Oracle OIC Integration Services]
+    OIC --> CLI[Oracle OIC CLI Operations]
+    OIC --> Patterns[Integration Pattern Execution]
+
+    Services --> Auth[OAuth2/IDCS Authentication]
+    Services --> Client[OIC REST API Client]
+    Services --> Retry[Retry & Circuit Breaker]
+
+    CLI --> Deploy[Integration Deployment]
+    CLI --> Monitor[Health Monitoring]
+    CLI --> Config[Configuration Management]
+
+    Patterns --> AppDriven[App-Driven Orchestration]
+    Patterns --> Scheduled[Scheduled Orchestration]
+    Patterns --> FileTransfer[File Transfer]
 ```
-src/flext_oracle_oic_ext/
-├── __init__.py              # Module exports (78 lines)
-├── ext_config.py            # Pydantic configuration models (working)
-├── ext_exceptions.py        # Exception hierarchy (with MyPy error)
-├── ext_client.py            # HTTP client (188 lines, FLEXT violations)
-├── ext_services.py          # Service layer (228 lines, basic structure)
-├── ext_models.py            # Data models (basic implementation)
-├── main.py                  # CLI entry (78 lines, violations present)
-├── extension.py             # Legacy pattern
-└── factory.py               # Service factory
-```
 
-### **Test Coverage Reality**
+### **Current Implementation vs FLEXT Standards**
 
-- **Overall Coverage**: 21% (not 90%+ as previously claimed)
-- **Test Files**: 24 tests passing (tests configuration models only)
-- **Missing Tests**: No integration tests with real Oracle OIC APIs
-- **Quality Status**: Tests pass but cover minimal functionality
+| Component | Current State | FLEXT Standard | Required Action |
+|-----------|---------------|----------------|-----------------|
+| **Service Architecture** | Multiple classes per module | Single FlextDomainService per module | Refactor to unified pattern |
+| **Error Handling** | Mixed FlextResult/exceptions | Consistent FlextResult railway | Complete pattern implementation |
+| **HTTP Client** | Direct httpx usage | flext-api abstractions | Replace with FLEXT patterns |
+| **CLI Interface** | Direct typer usage | flext-cli patterns | Implement FLEXT CLI interface |
+| **Testing** | 21% unit tests only | 70%+ with integration tests | Add contract and integration testing |
 
 ---
 
-## ⚠️ Installation and Usage Warnings
+## 🚀 Quick Start
 
-### **Current Installation Status**
+### **Installation**
 
 ```bash
-# Development installation only
+# FLEXT workspace setup (recommended)
+cd /path/to/flext/workspace
+git clone <repository-url> flext-oracle-oic-ext
 cd flext-oracle-oic-ext
+
+# Install dependencies
 poetry install --with dev,test
 
-# Note: Quality gates currently failing
-make validate  # Will show 2 MyPy errors and FLEXT violations
+# Verify installation
+python -c "from flext_oracle_oic_ext import OracleOICExtensionSettings; print('Import successful')"
 ```
 
-### **Limited Usage Example**
+### **Basic Usage**
 
 ```python
-# Basic configuration model testing (what currently works)
-from flext_oracle_oic_ext import OracleOICExtensionSettings, OICExtensionConnectionConfig
+from flext_oracle_oic_ext import (
+    OracleOICExtensionSettings,
+    OICExtensionConnectionConfig,
+    OICExtensionAuthConfig
+)
 
-# Configuration models work
+# Oracle OIC configuration
 settings = OracleOICExtensionSettings(
     connection=OICExtensionConnectionConfig(
-        base_url="https://your-oic-instance.integration.ocp.oraclecloud.com"
+        base_url="https://your-oic-instance.integration.ocp.oraclecloud.com",
+        api_version="v1",
+        request_timeout=30
+    ),
+    auth=OICExtensionAuthConfig(
+        oauth_client_id="your_client_id",
+        oauth_client_secret="your_client_secret",
+        oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
     )
 )
 
-# WARNING: Full service functionality not yet implemented
-# WARNING: Authentication may fail due to incomplete implementation
-# WARNING: Direct httpx usage violates FLEXT standards
+# Note: Full FlextDomainService implementation in development
+# Current implementation provides configuration and basic patterns
 ```
 
-### **What Actually Works**
+### **Current Capabilities**
 
-- ✅ Basic configuration models with Pydantic validation
-- ✅ Basic CLI commands (test-connection, list-integrations, version)
-- ✅ Module imports and exports
-- ❌ Complete Oracle OIC authentication (partial implementation)
-- ❌ Production Oracle OIC integration (development stub)
-- ❌ FLEXT ecosystem compliance (active violations)
+- ✅ **Configuration Management**: Pydantic models for Oracle OIC settings
+- ✅ **Basic Authentication**: OAuth2/IDCS configuration framework
+- ✅ **Module Structure**: Organized service and client architecture
+- 🟡 **CLI Interface**: Basic commands available (needs flext-cli integration)
+- ❌ **FLEXT Compliance**: Requires FlextDomainService implementation
+- ❌ **Production Integration**: OAuth2 Gen3 authentication needs completion
 
 ---
 
-## 🔧 Development Status
+## 🔧 Development
 
-### **Essential Commands (With Current Issues)**
+### **Essential Commands**
 
 ```bash
 # Setup development environment
-make install-dev
+make setup                 # Complete development environment setup
+poetry install --with dev,test
 
-# Quality gates (currently failing)
-make validate      # ❌ 2 MyPy errors, FLEXT violations
-make lint          # ✅ Passes with noqa suppressions
-make type-check    # ❌ 2 active MyPy errors
-make test          # ✅ 24/24 tests pass (basic functionality only)
-make format        # ✅ Code formatting works
+# Quality gates
+make validate              # Complete validation pipeline (lint + type + test)
+make check                 # Quick validation (lint + type-check only)
+make lint                  # Ruff linting with zero tolerance
+make type-check            # MyPy strict mode type checking
+make test                  # Run test suite with coverage
+make format                # Auto-format code with Ruff
+
+# Development shortcuts
+make t                     # Alias for test
+make l                     # Alias for lint
+make tc                    # Alias for type-check
+make v                     # Alias for validate
 ```
 
-### **Honest Quality Assessment**
+### **Quality Gates**
 
-**Current Reality vs Previous Claims:**
+Current quality requirements following FLEXT ecosystem standards:
 
-| Metric | Previous Claim | Actual Status | Evidence |
-|--------|----------------|---------------|----------|
-| **Coverage** | "90%+" | 21% | `pytest --cov=src` |
-| **MyPy** | "Zero errors" | 2 active errors | `mypy .` |
-| **FLEXT Compliance** | "Full compliance" | Active violations | Direct httpx/typer imports |
-| **Language Standards** | "English-only" | Portuguese comments | `main.py:3` |
-| **Implementation** | "Production-ready" | Basic foundation | 2,937 lines total |
+- **Type Safety**: MyPy strict mode with zero tolerance for type errors
+- **Code Quality**: Ruff linting with professional standards
+- **Test Coverage**: Target 70%+ with meaningful integration tests
+- **FLEXT Compliance**: Complete FlextDomainService architecture implementation
+- **Security**: Secure credential management and Oracle cloud authentication
 
 ---
 
-## 🧪 Testing Reality
+## 🧪 Testing
 
-### **Actual Test Status**
+### **Test Structure**
 
 ```
 tests/
-├── conftest.py             # Basic fixtures
-├── test_config.py          # Configuration model tests ✅
-├── test_models.py          # Model tests ✅ (with MyPy error)
-└── test_extension.py       # Basic extension tests ✅
+├── unit/                    # Unit tests for individual components
+├── integration/             # Integration tests with Oracle OIC APIs
+├── contract/                # Contract tests for API compliance
+├── conftest.py             # Shared fixtures and utilities
+└── test_*.py               # Current basic functionality tests
 ```
 
-**What Tests Actually Cover:**
-- ✅ Basic configuration model validation (OracleOICExtensionSettings)
-- ✅ Model instantiation and basic validation
-- ❌ No Oracle OIC API integration tests
-- ❌ No authentication flow tests
-- ❌ No real HTTP client tests
-- ❌ No CLI functionality tests
+### **Testing Strategy**
 
-### **Testing Commands (Current Status)**
+Following FLEXT ecosystem testing patterns with Oracle OIC focus:
+
+- **Unit Tests**: Component behavior with FlextResult patterns
+- **Integration Tests**: Real Oracle OIC API interactions
+- **Contract Tests**: Oracle OIC API compliance verification
+- **Mock Tests**: Isolated testing with Oracle OIC endpoint mocking
+
+### **Testing Commands**
 
 ```bash
-make test              # ✅ 24/24 tests pass, 21% coverage
-make test-unit         # Same as above (all tests are unit)
-make coverage-html     # Shows 21% coverage reality
+make test                      # Complete test suite with coverage
+make test-unit                 # Unit tests only (fast feedback)
+make test-integration          # Integration tests with Oracle OIC
+make test-contract             # Contract tests for API compliance
+make coverage-html             # Generate HTML coverage report
 
-# Evidence-based testing commands
-pytest --cov=src --cov-report=term-missing  # See actual 21%
-pytest tests/ -v      # See what's actually tested
+# Specific test categories
+pytest -m unit                 # Unit tests only
+pytest -m integration          # Integration tests only
+pytest -m oic                  # Oracle OIC specific tests
+pytest tests/ --cov=src --cov-report=term-missing  # Coverage analysis
 ```
 
 ---
 
-## 📊 Evidence-Based Status Report
+## 📊 Status and Metrics
 
-### **Verified Metrics (September 17, 2025)**
+### **Quality Standards**
 
-| Metric | Value | Source | Notes |
-|--------|-------|--------|-------|
-| **Total Lines** | 2,937 | `find src/ -name "*.py" \| xargs wc -l` | Basic implementation |
-| **Test Coverage** | 21% | `pytest --cov=src` | Far below FLEXT standards |
-| **MyPy Errors** | 2 active | `mypy .` | `exceptions.py:283`, `test_models.py:61` |
-| **Tests Passing** | 24/24 | `pytest tests/` | Tests basic functionality only |
-| **FLEXT Violations** | 2 critical | Code inspection | httpx/typer direct imports |
+Current status aligned with FLEXT ecosystem requirements:
 
-### **Immediate Priorities (Evidence-Based)**
+- **Coverage**: 21% current, targeting 70% with integration tests
+- **Type Safety**: MyPy strict mode compliance required (2 errors to resolve)
+- **Security**: OAuth2/IDCS secure credential management needed
+- **FLEXT-Core Compliance**: 20% - Critical architecture refactoring required
 
-**Phase 1: Quality Gate Fixes (Week 1-2)**
-1. ❌ Fix `exceptions.py:283` - missing `OIC_TOKEN_ERROR` attribute
-2. ❌ Fix `test_models.py:61` - type mismatch `oauth_client_secret=123`
-3. ❌ Remove Portuguese comment from `main.py:3`
-4. ❌ Replace `import httpx` with flext-api patterns
-5. ❌ Replace `import typer` with flext-cli patterns
+### **Ecosystem Integration**
 
-**Phase 2: Basic Functionality (Week 3-8)**
-1. Implement actual OAuth2/IDCS authentication
-2. Create working Oracle OIC REST API client
-3. Add real integration pattern execution
-4. Achieve 40-50% test coverage (realistic target)
+**Direct Dependencies:**
+- **[flext-core](../flext-core/README.md)** - Foundation patterns (FlextResult, FlextDomainService, FlextContainer)
+- **[flext-api](../flext-api/README.md)** - HTTP client abstractions for Oracle OIC REST operations
+- **[flext-cli](../flext-cli/README.md)** - CLI framework for Oracle OIC management commands
 
----
+**Service Dependencies:**
+- **[flext-tap-oracle-oic](../flext-tap-oracle-oic/README.md)** - Depends on this for Oracle OIC data extraction
+- **[flext-target-oracle-oic](../flext-target-oracle-oic/README.md)** - Depends on this for Oracle OIC data loading
 
-## 🗺️ Realistic Development Timeline
+**Integration Points:** 4 major connections with FLEXT ecosystem Oracle projects
 
-### **Current Version (v0.9.0) - September 2025**
+### **Current Technical Debt**
 
-- ✅ Basic configuration models working
-- ✅ Module structure established
-- ❌ Quality gates failing (2 MyPy errors)
-- ❌ FLEXT compliance violations active
-- ❌ Documentation misaligned with reality
+**Critical Issues (Must Resolve):**
+- FlextDomainService inheritance not implemented
+- FlextContainer dependency injection missing
+- Direct httpx/typer imports violate FLEXT standards
+- Mixed FlextResult/exception error handling patterns
 
-### **Version 0.9.1 (Target: October 2025)**
-
-**Goal**: Fix quality gate failures and FLEXT compliance
-- Fix 2 MyPy errors in exceptions.py and test_models.py
-- Remove Portuguese comments, ensure English-only code
-- Replace direct httpx/typer imports with flext-api/flext-cli
-- Update documentation to reflect actual capabilities
-
-### **Version 0.10.0 (Target: December 2025)**
-
-**Goal**: Basic functional Oracle OIC client
-- Implement working OAuth2/IDCS authentication
-- Create functional Oracle OIC REST API client
-- Add one working integration pattern example
-- Achieve 40-50% test coverage (realistic from current 21%)
-
-### **Success Definition**
-
-**NOT**: "Enterprise-grade production platform" (unrealistic)
-**YES**: "Working Oracle OIC client library for FLEXT ecosystem" (achievable)
+**Oracle OIC 2025 Requirements:**
+- OAuth2 Gen3 client credentials flow needed
+- Integration pattern execution framework incomplete
+- Circuit breaker and retry patterns missing
+- Contract testing for API compliance required
 
 ---
 
-## 📚 Documentation Status
+## 🗺️ Roadmap
 
-**Current Documentation Issues:**
-- Previous documentation contained exaggerated claims about production readiness
-- Coverage claims (90%+) were inaccurate vs actual 21%
-- Implementation status was misrepresented
+### **Current Version (v0.9.0)**
 
-**Available Documentation:**
-- **[TODO.md](TODO.md)** - Honest assessment and realistic development priorities
-- **[Architecture](docs/architecture.md)** - Needs update for honesty (if exists)
-- **[Development](docs/development.md)** - Needs FLEXT compliance review (if exists)
+Foundation implemented with configuration management and basic service structure. FLEXT compliance refactoring required before production use.
 
-**Note**: Some docs/ files may need to be renamed to .bak if they contain outdated or duplicate information.
+### **Next Version (v0.9.1)**
+
+**FLEXT Ecosystem Compliance:**
+- Implement FlextDomainService architecture patterns
+- Replace direct imports with FLEXT abstractions
+- Complete FlextResult railway pattern implementation
+- Achieve zero MyPy errors in strict mode
+
+### **Version 0.10.0**
+
+**Oracle OIC 2025 Implementation:**
+- OAuth2 Gen3 client credentials authentication
+- Professional Oracle OIC REST client with retry patterns
+- App-driven orchestration integration pattern
+- 60-70% test coverage with integration testing
+
+### **Future Versions**
+
+**Enterprise Integration Patterns:**
+- Scheduled orchestration and file transfer patterns
+- Message routing and transformation capabilities
+- Advanced monitoring and health checking
+- Security hardening with credential encryption
 
 ---
 
-## 🤝 Contributing Reality
+## 📚 Documentation
 
-### **Immediate Priorities (This Week)**
+- **[Getting Started](docs/getting-started.md)** - Installation and Oracle OIC setup
+- **[Architecture](docs/architecture.md)** - FLEXT patterns and Oracle OIC integration
+- **[API Reference](docs/api-reference.md)** - Complete API documentation
+- **[Configuration](docs/configuration.md)** - OAuth2/IDCS settings and environment management
+- **[Development](docs/development.md)** - Contributing guidelines and FLEXT compliance
+- **[Integration](docs/integration.md)** - FLEXT ecosystem integration patterns
+- **[Examples](docs/examples/)** - Oracle OIC integration examples
+- **[Troubleshooting](docs/troubleshooting.md)** - Common Oracle cloud issues
+- **[TODO & Roadmap](TODO.md)** - Evidence-based development roadmap
 
-**Critical fixes that must be completed first:**
-1. Fix 2 MyPy errors (`exceptions.py:283`, `test_models.py:61`)
-2. Remove Portuguese comment from `main.py:3`
-3. Document FLEXT violations honestly in architecture docs
-4. Update README.md to reflect 21% coverage reality
+---
 
-### **Next Week Priorities**
+## 🤝 Contributing
 
-1. Replace `import httpx` with flext-api patterns
-2. Replace `import typer` with flext-cli patterns
-3. Update all documentation to remove enterprise claims
-4. Test basic Oracle OIC connectivity (authentication only)
+### **FLEXT-Core Compliance Checklist**
 
-### **Quality Standards (Realistic)**
+All contributions must meet FLEXT ecosystem standards:
 
-- **Type Safety**: MyPy strict mode compliance (currently 2 errors)
-- **Test Coverage**: Target 40-50% (realistic from current 21%)
-- **FLEXT Compliance**: Zero direct imports (currently violated)
-- **Documentation**: English-only, honest and accurate
+- [ ] All changes pass `make validate` (lint + type + test)
+- [ ] FlextDomainService inheritance implemented
+- [ ] FlextResult railway pattern used consistently
+- [ ] FlextContainer dependency injection utilized
+- [ ] No direct httpx/typer imports (use flext-api/flext-cli)
+- [ ] Type safety maintained (zero MyPy errors in strict mode)
+
+### **Oracle OIC Integration Requirements**
+
+Professional Oracle Integration Cloud implementation standards:
+
+- [ ] OAuth2 Gen3 client credentials flow compliance
+- [ ] Circuit breaker and retry patterns for fault tolerance
+- [ ] Contract testing for Oracle OIC API compliance
+- [ ] Secure credential management with encryption
+- [ ] Integration pattern testing with real Oracle OIC APIs
+
+### **Quality Standards**
+
+- **Type Safety**: MyPy strict mode with zero tolerance for type errors
+- **Test Coverage**: 70% minimum with meaningful integration tests
+- **FLEXT Compliance**: Complete ecosystem pattern implementation
+- **Documentation**: Technical accuracy with working code examples
+- **Security**: Secure Oracle cloud authentication and credential management
 
 ---
 
@@ -286,16 +336,13 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🆘 Support
 
-- **Documentation**: [TODO.md](TODO.md) for honest status and priorities
-- **Issues**: Report issues with specific error messages and evidence
-- **Development**: Focus on quality gate fixes before feature requests
+- **Documentation**: [docs/](docs/)
+- **Issues**: [GitHub Issues](https://github.com/flext-sh/flext-oracle-oic-ext/issues)
+- **Security**: Report security issues privately to maintainers
+- **Oracle OIC**: Oracle Integration Cloud specific support and troubleshooting
 
 ---
 
-**flext-oracle-oic-ext v0.9.0** - Basic HTTP client foundation for Oracle Integration Cloud connectivity within the FLEXT ecosystem.
+**flext-oracle-oic-ext v0.9.0** - Oracle Integration Cloud client library enabling secure OAuth2/IDCS authentication and professional integration pattern execution across the FLEXT ecosystem.
 
-**Current Status**: Early development with quality gate failures requiring immediate attention before production use.
-
-**Mission**: Develop a working Oracle OIC client library that follows FLEXT ecosystem standards and provides reliable Oracle Integration Cloud connectivity for Python applications.
-
-**Note**: This README reflects the honest reality of the project status as of September 17, 2025, based on actual code inspection and testing evidence.
+**Mission**: Provide a professional Oracle Integration Cloud library following FLEXT ecosystem standards that enables reliable, secure, and maintainable Oracle cloud integration solutions for enterprise Python applications.

@@ -33,8 +33,8 @@ class OICExtensionConnectionConfig(FlextConfig):
 class OICExtensionAuthConfig(FlextConfig):
     """Oracle OIC Extension OAuth2 authentication configuration.
 
-    Padrão EXTENSION: Configuração de autenticação IDCS OAuth2
-    com segurança enterprise.
+    EXTENSION Pattern: IDCS OAuth2 authentication configuration
+    with enterprise security.
     """
 
     oauth_client_id: str = "default_client_id"

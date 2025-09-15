@@ -1,326 +1,298 @@
 # Configuration
 
-**Configuration guide for flext-oracle-oic-ext v0.9.0**
+**Configuration Management for flext-oracle-oic-ext v0.9.0**
+
+[![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
 ## Overview
 
-flext-oracle-oic-ext uses Pydantic models for type-safe configuration management. All configuration can be provided through code, environment variables, or configuration files.
+flext-oracle-oic-ext provides Pydantic-based configuration management following FLEXT ecosystem patterns. The current implementation offers basic configuration structure with type safety and validation.
 
-## Basic Configuration
+> **Implementation Status**: Version 0.9.0 provides foundation configuration models. Full Oracle OIC integration and enterprise features are planned for future releases.
+
+## Current Configuration Components
 
 ### Connection Configuration
 
-Configure Oracle Integration Cloud connection parameters:
+Configure Oracle Integration Cloud connection parameters using `OICExtensionConnectionConfig`:
 
 ```python
 from flext_oracle_oic_ext import OICExtensionConnectionConfig
 
+# Basic connection configuration
 connection_config = OICExtensionConnectionConfig(
     base_url="https://your-instance.integration.ocp.oraclecloud.com",
     api_version="v1",
-    request_timeout=30,
-    max_retries=3
+    request_timeout=30
 )
 ```
 
-**Parameters:**
+**Available Parameters:**
 - `base_url` (required): Oracle OIC instance URL
 - `api_version` (optional): API version, defaults to "v1"
 - `request_timeout` (optional): HTTP timeout in seconds, defaults to 30
-- `max_retries` (optional): Retry attempts, defaults to 3
 
 ### Authentication Configuration
 
-Configure OAuth2/IDCS authentication:
+Configure OAuth2/IDCS authentication using `OICExtensionAuthConfig`:
 
 ```python
 from flext_oracle_oic_ext import OICExtensionAuthConfig
 
+# OAuth2 authentication setup
 auth_config = OICExtensionAuthConfig(
     oauth_client_id="your_client_id",
     oauth_client_secret="your_client_secret",
-    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
-    oauth_client_aud="optional_audience",
-    oauth_scope="optional_scope"
+    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
 )
 ```
 
-**Parameters:**
-- `oauth_client_id` (required): OAuth2 client identifier
-- `oauth_client_secret` (required): OAuth2 client secret
+**Available Parameters:**
+- `oauth_client_id` (required): OAuth2 client identifier from Oracle IDCS
+- `oauth_client_secret` (required): OAuth2 client secret (SecretStr type)
 - `oauth_token_url` (required): OAuth2 token endpoint URL
-- `oauth_client_aud` (optional): OAuth2 audience parameter
-- `oauth_scope` (optional): OAuth2 scope parameter
+- Additional OAuth2 parameters (implementation varies by actual fields in models)
 
-### Main Settings
+### Main Settings Container
 
-Combine connection and authentication configuration:
+Combine configuration components using `OracleOICExtensionSettings`:
 
 ```python
 from flext_oracle_oic_ext import OracleOICExtensionSettings
 
+# Complete configuration
 settings = OracleOICExtensionSettings(
     connection=connection_config,
-    auth=auth_config,
-    enable_monitoring=True,
-    enable_enterprise_patterns=True
+    auth=auth_config
 )
 ```
 
-**Parameters:**
+**Primary Configuration Object:**
 - `connection` (required): Connection configuration object
-- `auth` (required): Authentication configuration object
-- `enable_monitoring` (optional): Enable monitoring features, defaults to True
-- `enable_enterprise_patterns` (optional): Enable pattern features, defaults to True
+- `auth` (optional): Authentication configuration object
+- Additional settings based on actual implementation
 
 ## Environment Variables
 
-Configuration can be loaded from environment variables using the `from_dict` method:
+Environment variables can be used for configuration, though the current implementation requires manual handling:
 
-### Required Environment Variables
+### Oracle OIC Connection Variables
 
 ```bash
-# Oracle OIC Connection
+# Required Oracle OIC connection settings
 export ORACLE_OIC_BASE_URL="https://your-instance.integration.ocp.oraclecloud.com"
 export ORACLE_OIC_API_VERSION="v1"
 export ORACLE_OIC_REQUEST_TIMEOUT="30"
-export ORACLE_OIC_MAX_RETRIES="3"
 
 # OAuth2/IDCS Authentication
-export ORACLE_OIC_OAUTH_CLIENT_ID="your_client_id"
-export ORACLE_OIC_OAUTH_CLIENT_SECRET="your_client_secret"
+export ORACLE_OIC_OAUTH_CLIENT_ID="your_oauth_client_id"
+export ORACLE_OIC_OAUTH_CLIENT_SECRET="your_oauth_client_secret"
 export ORACLE_OIC_OAUTH_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
-
-# Optional OAuth2 parameters
-export ORACLE_OIC_OAUTH_CLIENT_AUD="your_audience"
-export ORACLE_OIC_OAUTH_SCOPE="your_scope"
-
-# Feature flags
-export ORACLE_OIC_ENABLE_MONITORING="true"
-export ORACLE_OIC_ENABLE_ENTERPRISE_PATTERNS="true"
 ```
 
 ### Loading from Environment
 
 ```python
 import os
-from flext_oracle_oic_ext import OracleOICExtensionSettings
+from flext_oracle_oic_ext import (
+    OracleOICExtensionSettings,
+    OICExtensionConnectionConfig,
+    OICExtensionAuthConfig
+)
 
-# Create configuration dictionary from environment
-config_dict = {
-    "base_url": os.getenv("ORACLE_OIC_BASE_URL"),
-    "api_version": os.getenv("ORACLE_OIC_API_VERSION", "v1"),
-    "request_timeout": int(os.getenv("ORACLE_OIC_REQUEST_TIMEOUT", "30")),
-    "max_retries": int(os.getenv("ORACLE_OIC_MAX_RETRIES", "3")),
-    "oauth_client_id": os.getenv("ORACLE_OIC_OAUTH_CLIENT_ID"),
-    "oauth_client_secret": os.getenv("ORACLE_OIC_OAUTH_CLIENT_SECRET"),
-    "oauth_token_url": os.getenv("ORACLE_OIC_OAUTH_TOKEN_URL"),
-    "oauth_client_aud": os.getenv("ORACLE_OIC_OAUTH_CLIENT_AUD"),
-    "oauth_scope": os.getenv("ORACLE_OIC_OAUTH_SCOPE"),
-}
+# Manual environment variable loading (current approach)
+connection_config = OICExtensionConnectionConfig(
+    base_url=os.getenv("ORACLE_OIC_BASE_URL"),
+    api_version=os.getenv("ORACLE_OIC_API_VERSION", "v1"),
+    request_timeout=int(os.getenv("ORACLE_OIC_REQUEST_TIMEOUT", "30"))
+)
 
-# Create settings from dictionary
-settings = OracleOICExtensionSettings.from_dict(config_dict)
+auth_config = OICExtensionAuthConfig(
+    oauth_client_id=os.getenv("ORACLE_OIC_OAUTH_CLIENT_ID"),
+    oauth_client_secret=os.getenv("ORACLE_OIC_OAUTH_CLIENT_SECRET"),
+    oauth_token_url=os.getenv("ORACLE_OIC_OAUTH_TOKEN_URL")
+)
+
+settings = OracleOICExtensionSettings(
+    connection=connection_config,
+    auth=auth_config
+)
 ```
 
-## Configuration Files
+## Configuration Validation
 
-### JSON Configuration
-
-Create a `config.json` file:
-
-```json
-{
-    "base_url": "https://your-instance.integration.ocp.oraclecloud.com",
-    "api_version": "v1",
-    "request_timeout": 30,
-    "max_retries": 3,
-    "oauth_client_id": "your_client_id",
-    "oauth_client_secret": "your_client_secret",
-    "oauth_token_url": "https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
-    "oauth_client_aud": "your_audience",
-    "oauth_scope": "your_scope",
-    "enable_monitoring": true,
-    "enable_enterprise_patterns": true
-}
-```
-
-Load configuration from file:
+Pydantic automatically validates configuration objects:
 
 ```python
-import json
-from flext_oracle_oic_ext import OracleOICExtensionSettings
-
-# Load from JSON file
-with open("config.json", "r") as f:
-    config_dict = json.load(f)
-
-settings = OracleOICExtensionSettings.from_dict(config_dict)
-```
-
-## Validation
-
-Configuration objects are automatically validated using Pydantic:
-
-```python
-from flext_oracle_oic_ext import OracleOICExtensionSettings
+from flext_oracle_oic_ext import OracleOICExtensionSettings, OICExtensionConnectionConfig
 
 try:
-    # Invalid configuration (missing required fields)
-    settings = OracleOICExtensionSettings.from_dict({
-        "base_url": "",  # Empty base_url
-        "oauth_client_id": "",  # Empty client_id
-    })
+    # Invalid configuration - missing required base_url
+    connection_config = OICExtensionConnectionConfig()  # Missing base_url
 except ValueError as e:
     print(f"Configuration validation error: {e}")
+
+try:
+    # Valid configuration
+    connection_config = OICExtensionConnectionConfig(
+        base_url="https://valid-oic-instance.integration.ocp.oraclecloud.com"
+    )
+    print("✅ Configuration valid")
+except ValueError as e:
+    print(f"❌ Configuration error: {e}")
 ```
 
-### Validation Rules
+### Current Validation Rules
 
-- **base_url**: Must be a valid HTTPS URL
-- **oauth_client_id**: Cannot be empty
-- **oauth_client_secret**: Cannot be empty
-- **oauth_token_url**: Must be a valid HTTPS URL
-- **request_timeout**: Must be positive integer
-- **max_retries**: Must be non-negative integer
+Based on the actual Pydantic models implementation:
+
+- **base_url**: Must be provided (required field)
+- **oauth_client_id**: Must be provided if auth config is used
+- **oauth_client_secret**: Must be provided if auth config is used
+- **oauth_token_url**: Must be provided if auth config is used
+- **request_timeout**: Must be positive integer (if specified)
+
+## Current Implementation Limitations
+
+### Available Features ✅
+- **Pydantic Type Safety**: Automatic validation and type conversion
+- **Basic Configuration Models**: Connection and authentication structures
+- **Environment Variable Support**: Manual loading from environment
+- **Secret String Support**: OAuth2 client secrets use SecretStr
+
+### Missing Features ⚠️
+- **Automatic Environment Loading**: No built-in environment variable binding
+- **Configuration File Support**: No direct JSON/YAML file loading
+- **Environment-Specific Configs**: No dev/staging/prod separation
+- **Dynamic Configuration**: No runtime configuration updates
+- **Secure Storage Integration**: No Vault or secret manager integration
 
 ## Security Considerations
 
-### Secret Management
+### Current Security Status
 
-**Current Implementation:**
-- OAuth2 client secrets stored as plain strings
-- No encryption or secure storage
+**Secret Handling:**
+```python
+from pydantic import SecretStr
+from flext_oracle_oic_ext import OICExtensionAuthConfig
 
-**Recommendations:**
-- Use environment variables for secrets
-- Consider secret management systems (Vault, AWS Secrets Manager)
-- Avoid storing secrets in configuration files
-- Use secure credential rotation practices
+# SecretStr prevents accidental logging
+auth_config = OICExtensionAuthConfig(
+    oauth_client_id="public_client_id",
+    oauth_client_secret="secret_value",  # Handled as SecretStr internally
+    oauth_token_url="https://idcs.example.com/oauth2/v1/token"
+)
 
-### Example with Secret Management
+# Secret is protected from accidental exposure
+print(auth_config.oauth_client_secret)  # Shows SecretStr('**********')
+```
+
+**Security Recommendations:**
+- Use environment variables for all sensitive configuration
+- Implement secret rotation for OAuth2 credentials
+- Consider Oracle Cloud Vault for production secret management
+- Avoid storing secrets in configuration files or version control
+
+## Development Workflow
+
+### Basic Development Setup
 
 ```python
 import os
-from flext_oracle_oic_ext import OracleOICExtensionSettings
+from flext_oracle_oic_ext import (
+    OracleOICExtensionSettings,
+    OICExtensionConnectionConfig,
+    OICExtensionAuthConfig
+)
 
-# Load secrets from secure source
-def get_secret(key: str) -> str:
-    # Implement your secret management logic
-    return os.getenv(key)  # Simplified example
+# Development configuration with environment variables
+def create_dev_config():
+    connection = OICExtensionConnectionConfig(
+        base_url=os.getenv("DEV_ORACLE_OIC_BASE_URL", "https://dev-instance.com"),
+        api_version="v1",
+        request_timeout=60  # Longer timeout for development
+    )
 
-config_dict = {
-    "base_url": "https://your-instance.integration.ocp.oraclecloud.com",
-    "oauth_client_id": get_secret("ORACLE_OIC_CLIENT_ID"),
-    "oauth_client_secret": get_secret("ORACLE_OIC_CLIENT_SECRET"),
-    "oauth_token_url": "https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
-}
+    auth = OICExtensionAuthConfig(
+        oauth_client_id=os.getenv("DEV_OIC_CLIENT_ID"),
+        oauth_client_secret=os.getenv("DEV_OIC_CLIENT_SECRET"),
+        oauth_token_url=os.getenv("DEV_OIC_TOKEN_URL")
+    )
 
-settings = OracleOICExtensionSettings.from_dict(config_dict)
-```
+    return OracleOICExtensionSettings(connection=connection, auth=auth)
 
-## Development vs Production
-
-### Development Configuration
-
-```python
-# Development settings with relaxed timeouts
-dev_settings = OracleOICExtensionSettings.from_dict({
-    "base_url": "https://dev-oic.integration.ocp.oraclecloud.com",
-    "api_version": "v1",
-    "request_timeout": 60,  # Longer timeout for development
-    "max_retries": 1,       # Fewer retries for faster feedback
-    "oauth_client_id": "dev_client_id",
-    "oauth_client_secret": "dev_client_secret",
-    "oauth_token_url": "https://dev-idcs.identity.oraclecloud.com/oauth2/v1/token",
-    "enable_monitoring": False,  # Disable monitoring in dev
-})
-```
-
-### Production Configuration
-
-```python
-# Production settings with appropriate timeouts and monitoring
-prod_settings = OracleOICExtensionSettings.from_dict({
-    "base_url": "https://prod-oic.integration.ocp.oraclecloud.com",
-    "api_version": "v1",
-    "request_timeout": 30,
-    "max_retries": 3,
-    "oauth_client_id": get_secret("PROD_OIC_CLIENT_ID"),
-    "oauth_client_secret": get_secret("PROD_OIC_CLIENT_SECRET"),
-    "oauth_token_url": "https://prod-idcs.identity.oraclecloud.com/oauth2/v1/token",
-    "enable_monitoring": True,   # Enable monitoring in production
-    "enable_enterprise_patterns": True,
-})
+# Create development configuration
+dev_settings = create_dev_config()
 ```
 
 ## Troubleshooting
 
 ### Common Configuration Issues
 
-**1. Invalid URL Format**
+**Missing Required Fields:**
 ```python
-# ❌ Incorrect
-base_url = "http://insecure-url.com"  # HTTP not allowed
+from flext_oracle_oic_ext import OICExtensionConnectionConfig
 
-# ✅ Correct
-base_url = "https://secure-url.com"
+# ❌ This will fail - base_url is required
+try:
+    config = OICExtensionConnectionConfig(api_version="v1")
+except ValueError as e:
+    print(f"Error: {e}")  # Field required error
+
+# ✅ This will work - base_url provided
+config = OICExtensionConnectionConfig(
+    base_url="https://your-instance.integration.ocp.oraclecloud.com"
+)
 ```
 
-**2. Missing Required Fields**
+**Type Validation Errors:**
 ```python
-# ❌ Incorrect - missing oauth_client_secret
-config = {
-    "base_url": "https://example.com",
-    "oauth_client_id": "client_id",
-    # oauth_client_secret missing
-}
+# ❌ Wrong type for request_timeout
+try:
+    config = OICExtensionConnectionConfig(
+        base_url="https://example.com",
+        request_timeout="invalid"  # Should be integer
+    )
+except ValueError as e:
+    print(f"Type error: {e}")
 
-# ✅ Correct - all required fields present
-config = {
-    "base_url": "https://example.com",
-    "oauth_client_id": "client_id",
-    "oauth_client_secret": "client_secret",
-    "oauth_token_url": "https://idcs.example.com/oauth2/v1/token",
-}
+# ✅ Correct type
+config = OICExtensionConnectionConfig(
+    base_url="https://example.com",
+    request_timeout=30
+)
 ```
 
-**3. Type Conversion Errors**
-```python
-# ❌ Incorrect - string instead of integer
-config = {
-    "request_timeout": "30",  # Should be integer
-}
-
-# ✅ Correct - proper integer type
-config = {
-    "request_timeout": 30,
-}
-```
-
-### Debugging Configuration
+### Configuration Debugging
 
 ```python
 from flext_oracle_oic_ext import OracleOICExtensionSettings
 
-# Create settings
-settings = OracleOICExtensionSettings.from_dict(config_dict)
+# Create and inspect configuration
+settings = OracleOICExtensionSettings(connection=connection_config, auth=auth_config)
 
-# Debug connection configuration
+# Debug connection settings
 print(f"Base URL: {settings.connection.base_url}")
 print(f"API Version: {settings.connection.api_version}")
 print(f"Timeout: {settings.connection.request_timeout}")
 
-# Debug authentication configuration (be careful with secrets)
-print(f"Client ID: {settings.auth.oauth_client_id}")
-print(f"Token URL: {settings.auth.oauth_token_url}")
-# Never print client_secret in logs!
-
-# Debug feature flags
-print(f"Monitoring enabled: {settings.enable_monitoring}")
-print(f"Enterprise patterns enabled: {settings.enable_enterprise_patterns}")
+# Debug auth settings (careful with secrets)
+if settings.auth:
+    print(f"Client ID: {settings.auth.oauth_client_id}")
+    print(f"Token URL: {settings.auth.oauth_token_url}")
+    # oauth_client_secret is SecretStr - won't print actual value
 ```
+
+## Future Enhancements
+
+The configuration system will be enhanced in future releases with:
+
+- **Automatic Environment Binding**: Direct Pydantic Settings integration
+- **Configuration File Support**: JSON, YAML, and TOML file loading
+- **Environment-Specific Configs**: Development, staging, production profiles
+- **Oracle Cloud Integration**: Native Oracle Vault and IDCS integration
+- **Dynamic Configuration**: Runtime configuration updates and validation
 
 ---
 
-**Note**: Configuration management is currently basic and will be enhanced with environment-specific settings, secure credential management, and dynamic configuration updates in future releases.
+This configuration guide reflects the actual implementation status as of September 17, 2025. The basic Pydantic configuration foundation is implemented, with advanced features planned for future releases.

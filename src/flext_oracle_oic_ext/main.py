@@ -51,8 +51,8 @@ def _handle_general_error(message: str, error: Exception) -> NoReturn:
 def test_connection() -> None:
     """Test connection to Oracle OIC instance.
 
-    Padrão EXTENSION: Comando para testar conectividade Oracle OIC
-    com validação de autenticação e configuração.
+    EXTENSION Pattern: Command to test Oracle OIC connectivity
+    with authentication and configuration validation.
     """
     try:
         logger.info("Testing Oracle OIC connection...")
@@ -85,8 +85,8 @@ def test_connection() -> None:
 def list_integrations() -> None:
     """List Oracle OIC integrations.
 
-    Padrão EXTENSION: Comando para listar integrações Oracle OIC
-    com informações detalhadas e status.
+    EXTENSION Pattern: Command to list Oracle OIC integrations
+    with detailed information and status.
 
     Returns:
             object: Description of return value.
@@ -144,8 +144,8 @@ def show_version() -> None:
 def main() -> NoReturn:
     """Run main CLI entry point - EXTENSION Pattern.
 
-    Padrão EXTENSION: Entry point principal para CLI Oracle OIC Extension
-    com comandos enterprise e logging estruturado.
+    EXTENSION Pattern: Main entry point for Oracle OIC Extension CLI
+    with enterprise commands and structured logging.
     """
     try:
         app()

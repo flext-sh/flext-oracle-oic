@@ -20,8 +20,8 @@ from flext_core import FlextTypes
 class OracleOICExtensionError(Exception):
     """Base exception for Oracle OIC Extension errors.
 
-    Padrão EXTENSION: Exceção base para todas as operações Oracle OIC Extension
-    seguindo hierarquia enterprise de erros.
+    EXTENSION Pattern: Base exception for all Oracle OIC Extension operations
+    following enterprise error hierarchy.
     """
 
 

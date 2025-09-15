@@ -30,6 +30,7 @@ class FlextOracleOicErrorCodes(Enum):
     OIC_INTEGRATION_ERROR = "OIC_INTEGRATION_ERROR"
     OIC_WORKFLOW_ERROR = "OIC_WORKFLOW_ERROR"
     OIC_PATTERN_ERROR = "OIC_PATTERN_ERROR"
+    OIC_TOKEN_ERROR = "OIC_TOKEN_ERROR"
 
 
 # Base Oracle OIC Extension exception hierarchy
