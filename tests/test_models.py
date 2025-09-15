@@ -58,7 +58,7 @@ class TestOICAuthConfig:
             # Invalid type for oauth_client_secret should fail validation
             OICAuthConfig(
                 oauth_client_id="test_client_id",
-                oauth_client_secret=123,
+                oauth_client_secret=123,  # type: ignore[arg-type]
                 oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
                 oauth_client_aud=None,
                 oauth_scope="",
