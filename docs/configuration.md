@@ -28,6 +28,7 @@ connection_config = OICExtensionConnectionConfig(
 ```
 
 **Available Parameters:**
+
 - `base_url` (required): Oracle OIC instance URL
 - `api_version` (optional): API version, defaults to "v1"
 - `request_timeout` (optional): HTTP timeout in seconds, defaults to 30
@@ -48,6 +49,7 @@ auth_config = OICExtensionAuthConfig(
 ```
 
 **Available Parameters:**
+
 - `oauth_client_id` (required): OAuth2 client identifier from Oracle IDCS
 - `oauth_client_secret` (required): OAuth2 client secret (SecretStr type)
 - `oauth_token_url` (required): OAuth2 token endpoint URL
@@ -68,6 +70,7 @@ settings = OracleOICExtensionSettings(
 ```
 
 **Primary Configuration Object:**
+
 - `connection` (required): Connection configuration object
 - `auth` (optional): Authentication configuration object
 - Additional settings based on actual implementation
@@ -155,12 +158,14 @@ Based on the actual Pydantic models implementation:
 ## Current Implementation Limitations
 
 ### Available Features ✅
+
 - **Pydantic Type Safety**: Automatic validation and type conversion
 - **Basic Configuration Models**: Connection and authentication structures
 - **Environment Variable Support**: Manual loading from environment
 - **Secret String Support**: OAuth2 client secrets use SecretStr
 
 ### Missing Features ⚠️
+
 - **Automatic Environment Loading**: No built-in environment variable binding
 - **Configuration File Support**: No direct JSON/YAML file loading
 - **Environment-Specific Configs**: No dev/staging/prod separation
@@ -172,6 +177,7 @@ Based on the actual Pydantic models implementation:
 ### Current Security Status
 
 **Secret Handling:**
+
 ```python
 from pydantic import SecretStr
 from flext_oracle_oic_ext import OICExtensionAuthConfig
@@ -188,6 +194,7 @@ print(auth_config.oauth_client_secret)  # Shows SecretStr('**********')
 ```
 
 **Security Recommendations:**
+
 - Use environment variables for all sensitive configuration
 - Implement secret rotation for OAuth2 credentials
 - Consider Oracle Cloud Vault for production secret management
@@ -230,6 +237,7 @@ dev_settings = create_dev_config()
 ### Common Configuration Issues
 
 **Missing Required Fields:**
+
 ```python
 from flext_oracle_oic_ext import OICExtensionConnectionConfig
 
@@ -246,6 +254,7 @@ config = OICExtensionConnectionConfig(
 ```
 
 **Type Validation Errors:**
+
 ```python
 # ❌ Wrong type for request_timeout
 try:

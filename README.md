@@ -35,12 +35,12 @@ This extension provides Oracle Integration Cloud (OIC) integration capabilities 
 
 ### **FLEXT-Core Integration Status**
 
-| Pattern             | Status         | Description             |
-| ------------------- | -------------- | ----------------------- |
-| **FlextResult[T]**  | 🟡 65% | Partial usage implemented, needs completion across all operations |
-| **FlextDomainService** | 🔴 0% | Not implemented - critical requirement for FLEXT compliance |
-| **FlextContainer**  | 🔴 0% | Not implemented - dependency injection missing |
-| **Unified Classes** | 🔴 15% | Multiple classes per module violate FLEXT patterns |
+| Pattern                | Status | Description                                                       |
+| ---------------------- | ------ | ----------------------------------------------------------------- |
+| **FlextResult[T]**     | 🟡 65% | Partial usage implemented, needs completion across all operations |
+| **FlextDomainService** | 🔴 0%  | Not implemented - critical requirement for FLEXT compliance       |
+| **FlextContainer**     | 🔴 0%  | Not implemented - dependency injection missing                    |
+| **Unified Classes**    | 🔴 15% | Multiple classes per module violate FLEXT patterns                |
 
 > **Status**: 🔴 Critical | 🟡 Partial | 🟢 Complete
 
@@ -68,13 +68,13 @@ graph TB
 
 ### **Current Implementation vs FLEXT Standards**
 
-| Component | Current State | FLEXT Standard | Required Action |
-|-----------|---------------|----------------|-----------------|
-| **Service Architecture** | Multiple classes per module | Single FlextDomainService per module | Refactor to unified pattern |
-| **Error Handling** | Mixed FlextResult/exceptions | Consistent FlextResult railway | Complete pattern implementation |
-| **HTTP Client** | Direct httpx usage | flext-api abstractions | Replace with FLEXT patterns |
-| **CLI Interface** | Direct typer usage | flext-cli patterns | Implement FLEXT CLI interface |
-| **Testing** | 21% unit tests only | 70%+ with integration tests | Add contract and integration testing |
+| Component                | Current State                | FLEXT Standard                       | Required Action                      |
+| ------------------------ | ---------------------------- | ------------------------------------ | ------------------------------------ |
+| **Service Architecture** | Multiple classes per module  | Single FlextDomainService per module | Refactor to unified pattern          |
+| **Error Handling**       | Mixed FlextResult/exceptions | Consistent FlextResult railway       | Complete pattern implementation      |
+| **HTTP Client**          | Direct httpx usage           | flext-api abstractions               | Replace with FLEXT patterns          |
+| **CLI Interface**        | Direct typer usage           | flext-cli patterns                   | Implement FLEXT CLI interface        |
+| **Testing**              | 21% unit tests only          | 70%+ with integration tests          | Add contract and integration testing |
 
 ---
 
@@ -223,11 +223,13 @@ Current status aligned with FLEXT ecosystem requirements:
 ### **Ecosystem Integration**
 
 **Direct Dependencies:**
+
 - **[flext-core](../flext-core/README.md)** - Foundation patterns (FlextResult, FlextDomainService, FlextContainer)
 - **[flext-api](../flext-api/README.md)** - HTTP client abstractions for Oracle OIC REST operations
 - **[flext-cli](../flext-cli/README.md)** - CLI framework for Oracle OIC management commands
 
 **Service Dependencies:**
+
 - **[flext-tap-oracle-oic](../flext-tap-oracle-oic/README.md)** - Depends on this for Oracle OIC data extraction
 - **[flext-target-oracle-oic](../flext-target-oracle-oic/README.md)** - Depends on this for Oracle OIC data loading
 
@@ -236,12 +238,14 @@ Current status aligned with FLEXT ecosystem requirements:
 ### **Current Technical Debt**
 
 **Critical Issues (Must Resolve):**
+
 - FlextDomainService inheritance not implemented
 - FlextContainer dependency injection missing
 - Direct httpx/typer imports violate FLEXT standards
 - Mixed FlextResult/exception error handling patterns
 
 **Oracle OIC 2025 Requirements:**
+
 - OAuth2 Gen3 client credentials flow needed
 - Integration pattern execution framework incomplete
 - Circuit breaker and retry patterns missing
@@ -258,6 +262,7 @@ Foundation implemented with configuration management and basic service structure
 ### **Next Version (v0.9.1)**
 
 **FLEXT Ecosystem Compliance:**
+
 - Implement FlextDomainService architecture patterns
 - Replace direct imports with FLEXT abstractions
 - Complete FlextResult railway pattern implementation
@@ -266,6 +271,7 @@ Foundation implemented with configuration management and basic service structure
 ### **Version 0.10.0**
 
 **Oracle OIC 2025 Implementation:**
+
 - OAuth2 Gen3 client credentials authentication
 - Professional Oracle OIC REST client with retry patterns
 - App-driven orchestration integration pattern
@@ -274,6 +280,7 @@ Foundation implemented with configuration management and basic service structure
 ### **Future Versions**
 
 **Enterprise Integration Patterns:**
+
 - Scheduled orchestration and file transfer patterns
 - Message routing and transformation capabilities
 - Advanced monitoring and health checking

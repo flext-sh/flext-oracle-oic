@@ -58,14 +58,29 @@ class TestFlextOracleOicErrorCodes:
     def test_error_code_values(self) -> None:
         """Test error codes have correct string values."""
         assert FlextOracleOicErrorCodes.OIC_ERROR.value == "OIC_ERROR"
-        assert FlextOracleOicErrorCodes.OIC_VALIDATION_ERROR.value == "OIC_VALIDATION_ERROR"
-        assert FlextOracleOicErrorCodes.OIC_CONNECTION_ERROR.value == "OIC_CONNECTION_ERROR"
-        assert FlextOracleOicErrorCodes.OIC_AUTHENTICATION_ERROR.value == "OIC_AUTHENTICATION_ERROR"
-        assert FlextOracleOicErrorCodes.OIC_CONFIGURATION_ERROR.value == "OIC_CONFIGURATION_ERROR"
+        assert (
+            FlextOracleOicErrorCodes.OIC_VALIDATION_ERROR.value
+            == "OIC_VALIDATION_ERROR"
+        )
+        assert (
+            FlextOracleOicErrorCodes.OIC_CONNECTION_ERROR.value
+            == "OIC_CONNECTION_ERROR"
+        )
+        assert (
+            FlextOracleOicErrorCodes.OIC_AUTHENTICATION_ERROR.value
+            == "OIC_AUTHENTICATION_ERROR"
+        )
+        assert (
+            FlextOracleOicErrorCodes.OIC_CONFIGURATION_ERROR.value
+            == "OIC_CONFIGURATION_ERROR"
+        )
         assert FlextOracleOicErrorCodes.OIC_API_ERROR.value == "OIC_API_ERROR"
         assert FlextOracleOicErrorCodes.OIC_TIMEOUT_ERROR.value == "OIC_TIMEOUT_ERROR"
         assert FlextOracleOicErrorCodes.OIC_AUTH_ERROR.value == "OIC_AUTH_ERROR"
-        assert FlextOracleOicErrorCodes.OIC_INTEGRATION_ERROR.value == "OIC_INTEGRATION_ERROR"
+        assert (
+            FlextOracleOicErrorCodes.OIC_INTEGRATION_ERROR.value
+            == "OIC_INTEGRATION_ERROR"
+        )
         assert FlextOracleOicErrorCodes.OIC_WORKFLOW_ERROR.value == "OIC_WORKFLOW_ERROR"
         assert FlextOracleOicErrorCodes.OIC_PATTERN_ERROR.value == "OIC_PATTERN_ERROR"
         assert FlextOracleOicErrorCodes.OIC_TOKEN_ERROR.value == "OIC_TOKEN_ERROR"
@@ -158,7 +173,7 @@ class TestFlextOracleOicDataValidationError:
             field_name="oauth_client_id",
             field_value="invalid_id",
             validation_rule="required_string",
-            entity_name="OICAuthConfig"
+            entity_name="OICAuthConfig",
         )
 
         assert str(error) == "[OIC_VALIDATION_ERROR] Invalid field value"
@@ -172,8 +187,7 @@ class TestFlextOracleOicDataValidationError:
     def test_validation_error_with_custom_code(self) -> None:
         """Test validation error with custom error code."""
         error = FlextOracleOicDataValidationError(
-            "Custom validation error",
-            code="CUSTOM_VALIDATION_ERROR"
+            "Custom validation error", code="CUSTOM_VALIDATION_ERROR"
         )
 
         assert error.code == "CUSTOM_VALIDATION_ERROR"
@@ -182,9 +196,7 @@ class TestFlextOracleOicDataValidationError:
         """Test validation error with custom context."""
         custom_context = {"custom_field": "custom_value", "another_field": 123}
         error = FlextOracleOicDataValidationError(
-            "Custom context error",
-            field_name="test_field",
-            context=custom_context
+            "Custom context error", field_name="test_field", context=custom_context
         )
 
         assert "custom_field" in error.context
@@ -201,7 +213,7 @@ class TestFlextOracleOicDataValidationError:
             field_name=None,
             field_value=None,
             validation_rule=None,
-            entity_name=None
+            entity_name=None,
         )
 
         # None values should not be added to context
@@ -228,7 +240,7 @@ class TestFlextOracleOicApiRequestError:
             response_body='{"error": "Not found"}',
             entity_name="Integration",
             endpoint="/integrations/test_id",
-            method="GET"
+            method="GET",
         )
 
         assert str(error) == "[OIC_API_ERROR] HTTP 404 error"
@@ -242,8 +254,7 @@ class TestFlextOracleOicApiRequestError:
         """Test API request error truncates long response bodies."""
         long_response = "x" * 1000  # 1000 character response
         error = FlextOracleOicApiRequestError(
-            "Long response error",
-            response_body=long_response
+            "Long response error", response_body=long_response
         )
 
         # Should be truncated to 500 characters
@@ -255,8 +266,7 @@ class TestFlextOracleOicApiRequestError:
     def test_api_request_error_with_custom_code(self) -> None:
         """Test API request error with custom error code."""
         error = FlextOracleOicApiRequestError(
-            "Custom API error",
-            code="CUSTOM_API_ERROR"
+            "Custom API error", code="CUSTOM_API_ERROR"
         )
 
         assert error.code == "CUSTOM_API_ERROR"
@@ -269,7 +279,7 @@ class TestFlextOracleOicApiRequestError:
             response_body=None,
             entity_name=None,
             endpoint=None,
-            method=None
+            method=None,
         )
 
         # None values should not be added to context
@@ -296,7 +306,7 @@ class TestFlextOracleOicConfigError:
             config_key="request_timeout",
             config_value=0,
             config_section="connection",
-            valid_range="1-300 seconds"
+            valid_range="1-300 seconds",
         )
 
         assert str(error) == "[OIC_CONFIGURATION_ERROR] Invalid timeout value"
@@ -308,8 +318,7 @@ class TestFlextOracleOicConfigError:
     def test_config_error_with_custom_code(self) -> None:
         """Test configuration error with custom error code."""
         error = FlextOracleOicConfigError(
-            "Custom config error",
-            code="CUSTOM_CONFIG_ERROR"
+            "Custom config error", code="CUSTOM_CONFIG_ERROR"
         )
 
         assert error.code == "CUSTOM_CONFIG_ERROR"
@@ -321,7 +330,7 @@ class TestFlextOracleOicConfigError:
             config_key=None,
             config_value=None,
             config_section=None,
-            valid_range=None
+            valid_range=None,
         )
 
         # None values should not be added to context
@@ -348,7 +357,7 @@ class TestFlextOracleOicIntegrationPatternError:
             pattern_type="Enterprise",
             workflow_id="workflow_123",
             step_id="route_step_1",
-            operation="route_message"
+            operation="route_message",
         )
 
         assert str(error) == "[OIC_PATTERN_ERROR] Message routing pattern failed"
@@ -361,8 +370,7 @@ class TestFlextOracleOicIntegrationPatternError:
     def test_integration_pattern_error_with_custom_code(self) -> None:
         """Test integration pattern error with custom error code."""
         error = FlextOracleOicIntegrationPatternError(
-            "Custom pattern error",
-            code="CUSTOM_PATTERN_ERROR"
+            "Custom pattern error", code="CUSTOM_PATTERN_ERROR"
         )
 
         assert error.code == "CUSTOM_PATTERN_ERROR"
@@ -375,7 +383,7 @@ class TestFlextOracleOicIntegrationPatternError:
             pattern_type=None,
             workflow_id=None,
             step_id=None,
-            operation=None
+            operation=None,
         )
 
         # None values should not be added to context
@@ -403,7 +411,7 @@ class TestFlextOracleOicWorkflowExecutionError:
             execution_id="exec_789",
             step_name="data_transform",
             status="FAILED",
-            error_code="TRANSFORM_ERROR"
+            error_code="TRANSFORM_ERROR",
         )
 
         assert str(error) == "[OIC_WORKFLOW_ERROR] Transformation step failed"
@@ -416,8 +424,7 @@ class TestFlextOracleOicWorkflowExecutionError:
     def test_workflow_execution_error_with_custom_code(self) -> None:
         """Test workflow execution error with custom error code."""
         error = FlextOracleOicWorkflowExecutionError(
-            "Custom workflow error",
-            code="CUSTOM_WORKFLOW_ERROR"
+            "Custom workflow error", code="CUSTOM_WORKFLOW_ERROR"
         )
 
         assert error.code == "CUSTOM_WORKFLOW_ERROR"
@@ -430,7 +437,7 @@ class TestFlextOracleOicWorkflowExecutionError:
             execution_id=None,
             step_name=None,
             status=None,
-            error_code=None
+            error_code=None,
         )
 
         # None values should not be added to context
@@ -458,7 +465,7 @@ class TestFlextOracleOicOAuth2TokenError:
             client_id="client_123",
             scope="read write",
             grant_type="client_credentials",
-            expires_in=3600
+            expires_in=3600,
         )
 
         assert str(error) == "[OIC_TOKEN_ERROR] Access token expired"
@@ -471,8 +478,7 @@ class TestFlextOracleOicOAuth2TokenError:
     def test_oauth2_token_error_with_custom_code(self) -> None:
         """Test OAuth2 token error with custom error code."""
         error = FlextOracleOicOAuth2TokenError(
-            "Custom token error",
-            code="CUSTOM_TOKEN_ERROR"
+            "Custom token error", code="CUSTOM_TOKEN_ERROR"
         )
 
         assert error.code == "CUSTOM_TOKEN_ERROR"
@@ -485,7 +491,7 @@ class TestFlextOracleOicOAuth2TokenError:
             client_id=None,
             scope=None,
             grant_type=None,
-            expires_in=None
+            expires_in=None,
         )
 
         # None values should not be added to context

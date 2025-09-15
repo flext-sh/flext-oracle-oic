@@ -40,6 +40,7 @@ settings = OracleOICExtensionSettings(
 ```
 
 **Constructor Parameters:**
+
 - `connection: OICExtensionConnectionConfig` (required) - Connection configuration
 - `auth: OICExtensionAuthConfig` (optional) - Authentication configuration
 - Additional parameters may vary based on actual implementation
@@ -60,6 +61,7 @@ config = OICExtensionConnectionConfig(
 ```
 
 **Constructor Parameters:**
+
 - `base_url: str` (required) - Oracle OIC instance base URL
 - `api_version: str` (optional) - API version, defaults to "v1"
 - `request_timeout: int` (optional) - Request timeout in seconds, defaults to 30
@@ -81,6 +83,7 @@ auth_config = OICExtensionAuthConfig(
 ```
 
 **Constructor Parameters:**
+
 - `oauth_client_id: str` (required) - OAuth2 client ID from Oracle IDCS
 - `oauth_client_secret: str` (required) - OAuth2 client secret (uses SecretStr)
 - `oauth_token_url: str` (required) - OAuth2 token endpoint URL
@@ -161,6 +164,7 @@ from flext_oracle_oic_ext.factory import (
 ## Current Implementation Limitations
 
 ### Available Features ✅
+
 - **Configuration Management**: Pydantic models with type safety
 - **Basic Service Structure**: Foundation classes and module organization
 - **Exception Hierarchy**: Oracle OIC-specific error handling
@@ -169,35 +173,41 @@ from flext_oracle_oic_ext.factory import (
 ### Critical Issues ❌
 
 **FLEXT Compliance Violations:**
+
 - Direct `httpx` import in `ext_client.py:12` (should use flext-api)
 - Direct `typer` import in `main.py:15` (should use flext-cli)
 - Missing FlextDomainService inheritance across service classes
 - Multiple classes per module violate FLEXT unified class pattern
 
 **Oracle OIC Integration Gaps:**
+
 - No actual Oracle Integration Cloud API connectivity
 - OAuth2/IDCS authentication framework incomplete
 - No integration pattern execution capabilities
 - Missing enterprise features (circuit breaker, retry patterns)
 
 **Type Safety Issues:**
+
 - 2 MyPy errors: `exceptions.py:283` and `test_models.py:61`
 
 ### Development Roadmap
 
 **Phase 1: FLEXT Compliance (Critical)**
+
 1. Fix MyPy errors in exceptions and test files
 2. Replace direct httpx/typer imports with FLEXT abstractions
 3. Implement FlextDomainService inheritance
 4. Convert to unified class pattern (single class per module)
 
 **Phase 2: Oracle OIC Implementation**
+
 1. Complete OAuth2/IDCS authentication with Oracle Cloud Identity
 2. Implement real Oracle OIC REST API integration
 3. Add integration pattern execution engine
 4. Enterprise features (circuit breaker, retry, monitoring)
 
 **Phase 3: Production Readiness**
+
 1. Comprehensive testing with real Oracle OIC instances
 2. Contract testing for API compliance
 3. Performance optimization and monitoring
@@ -255,6 +265,7 @@ except ValueError as e:
 ### Future Versions
 
 API will be enhanced with:
+
 - Complete Oracle OIC integration capabilities
 - FLEXT ecosystem compliance
 - Professional enterprise features

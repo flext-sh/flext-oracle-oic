@@ -23,16 +23,19 @@ The library follows these core principles from the FLEXT ecosystem:
 ### Implemented Components ✅
 
 **Configuration Management**
+
 - Pydantic-based settings with environment variable support
 - Type-safe configuration models for Oracle OIC connectivity
 - Basic validation for connection parameters
 
 **Service Foundation**
+
 - Basic service class structure with organized modules
 - Exception hierarchy for Oracle OIC-specific error handling
 - Testing infrastructure with pytest configuration
 
 **FLEXT Integration (Partial)**
+
 - FlextResult usage for some error handling patterns
 - FlextLogger integration for structured logging
 - Basic import structure for FLEXT ecosystem components
@@ -40,12 +43,14 @@ The library follows these core principles from the FLEXT ecosystem:
 ### Architecture Gaps ⚠️
 
 **FLEXT Ecosystem Compliance**
+
 - Missing FlextDomainService inheritance (critical requirement)
 - Direct httpx/typer imports violate FLEXT abstraction patterns
 - Incomplete FlextContainer dependency injection implementation
 - Multiple classes per module violate unified class pattern
 
 **Oracle OIC Integration**
+
 - No actual Oracle Integration Cloud API connectivity
 - OAuth2/IDCS authentication framework incomplete
 - Missing integration pattern execution engine
@@ -77,16 +82,19 @@ src/flext_oracle_oic_ext/
 ### Configuration Management
 
 **OracleOICExtensionSettings**
+
 - Main configuration container using Pydantic
 - Environment variable integration for Oracle OIC settings
 - Type-safe configuration validation
 
 **Connection Configuration**
+
 - Base URL, API version, timeout settings
 - HTTP connection parameters for Oracle Integration Cloud
 - Request/response handling configuration
 
 **Authentication Configuration**
+
 - OAuth2 client credentials setup
 - IDCS token URL configuration
 - Secret management with Pydantic SecretStr
@@ -116,11 +124,13 @@ class OracleOICIntegrationService(FlextDomainService):
 ### Client Layer
 
 **HTTP Client Implementation**
+
 - Basic Oracle OIC REST API client wrapper
 - Request/response handling with basic error management
 - OAuth2 authentication preparation (incomplete)
 
 **FLEXT Compliance Issue**
+
 ```python
 # ❌ Current violation in ext_client.py:12
 import httpx  # Direct dependency violates FLEXT abstraction
@@ -132,11 +142,13 @@ from flext_api import FlextApiClient
 ### Domain Models
 
 **Data Transfer Objects**
+
 - `OICIntegrationInfo`: Integration metadata
 - `OICConnectionInfo`: Connection parameters
 - `OICAuthConfig`: Authentication configuration
 
 **Missing Domain-Driven Design**
+
 - No rich domain entities for Oracle OIC concepts
 - No value objects for business rules
 - No aggregate roots for consistency boundaries
@@ -146,6 +158,7 @@ from flext_api import FlextApiClient
 ### Currently Implemented ✅
 
 **FlextResult Railway Pattern (Partial)**
+
 ```python
 from flext_core import FlextResult
 
@@ -157,6 +170,7 @@ def validate_connection(config: dict) -> FlextResult[ConnectionInfo]:
 ```
 
 **FlextLogger Integration**
+
 ```python
 from flext_core import FlextLogger
 
@@ -168,6 +182,7 @@ class ServiceClass:
 ### Missing FLEXT Integration ❌
 
 **FlextDomainService Inheritance**
+
 ```python
 # ❌ Current implementation
 class OracleOICExtensionService:
@@ -179,6 +194,7 @@ class OracleOICIntegrationService(FlextDomainService):
 ```
 
 **FlextContainer Dependency Injection**
+
 ```python
 # ❌ Current: Manual service creation
 service = OracleOICExtensionService(config)
@@ -193,29 +209,35 @@ service = container.get("oic_service").unwrap()
 ### 1. FLEXT Compliance Violations
 
 **Direct Import Dependencies**
+
 - `ext_client.py:12` - Direct `httpx` import (should use flext-api)
 - `main.py:15` - Direct `typer` import (should use flext-cli)
 
 **Unified Class Pattern Violations**
+
 - `ext_services.py` contains 4 classes (should be 1 unified class)
 - Helper functions outside classes (should be nested classes)
 
 **Type Safety Issues**
+
 - 2 MyPy errors in `exceptions.py:283` and `test_models.py:61`
 
 ### 2. Oracle OIC Integration Gaps
 
 **Authentication**
+
 - OAuth2/IDCS framework incomplete
 - No token lifecycle management
 - Missing secure credential storage
 
 **Integration Patterns**
+
 - No app-driven orchestration implementation
 - No scheduled orchestration capabilities
 - Missing file transfer pattern support
 
 **Enterprise Features**
+
 - No circuit breaker pattern
 - No exponential backoff retry strategy
 - Missing monitoring and health checks
@@ -225,6 +247,7 @@ service = container.get("oic_service").unwrap()
 ### Current Test Status (21% Coverage)
 
 **Test Structure**
+
 ```
 tests/
 ├── unit/                    # Basic unit tests
@@ -236,6 +259,7 @@ tests/
 ```
 
 **Testing Limitations**
+
 - No integration tests with Oracle OIC APIs
 - No contract testing for API compliance
 - Limited mock strategy for Oracle cloud services
@@ -244,11 +268,13 @@ tests/
 ### Required Testing Strategy
 
 **Integration Testing**
+
 - Real Oracle OIC API connectivity tests
 - OAuth2/IDCS authentication flow validation
 - Integration pattern execution verification
 
 **Contract Testing**
+
 - Oracle OIC REST API compliance validation
 - Response schema verification
 - Error handling contract validation
@@ -301,15 +327,18 @@ tests/
 ## Integration with FLEXT Ecosystem
 
 ### Direct Dependencies
+
 - **[flext-core](../../flext-core/README.md)** → Foundation patterns and railway programming
 - **[flext-api](../../flext-api/README.md)** → HTTP client abstractions (needs implementation)
 - **[flext-cli](../../flext-cli/README.md)** → CLI interface patterns (needs implementation)
 
 ### Service Dependencies
+
 - **[flext-tap-oracle-oic](../../flext-tap-oracle-oic/README.md)** → Depends on this for OIC data extraction
 - **[flext-target-oracle-oic](../../flext-target-oracle-oic/README.md)** → Depends on this for OIC data loading
 
 ### Cross-References
+
 - **Oracle Integration**: Works with flext-oracle-wms for warehouse management
 - **Authentication**: Integrates with flext-auth for unified authentication
 - **Observability**: Uses flext-observability for monitoring and metrics

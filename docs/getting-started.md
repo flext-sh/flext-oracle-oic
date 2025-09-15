@@ -7,15 +7,18 @@
 ## Prerequisites
 
 ### Required Software
+
 - **Python 3.13+** with Poetry for dependency management
 - **FLEXT workspace** setup with access to [flext-core](../../flext-core/README.md)
 - **Git** for version control
 
 ### Optional for Testing
+
 - Oracle Integration Cloud instance access
 - OAuth2/IDCS credentials for Oracle cloud
 
 ### Knowledge Requirements
+
 - Basic understanding of Oracle Integration Cloud concepts
 - Familiarity with FLEXT ecosystem patterns (FlextResult, FlextDomainService)
 - Python experience with Pydantic and type annotations
@@ -147,11 +150,13 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 ## Current Implementation Status
 
 ### Available Features ✅
+
 - **Configuration Management**: Pydantic models for Oracle OIC settings
 - **Basic Service Structure**: Foundation classes and module organization
 - **FLEXT Integration**: Imports and basic patterns (needs completion)
 
 ### Planned Features 🚧
+
 - **FlextDomainService Implementation**: Complete FLEXT compliance (critical requirement)
 - **OAuth2/IDCS Authentication**: Full Oracle cloud authentication
 - **Integration Patterns**: App-driven orchestration, scheduled orchestration
@@ -176,6 +181,7 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 ### Common Installation Issues
 
 **Import Errors from FLEXT-Core**
+
 ```bash
 # Verify FLEXT workspace structure
 ls -la ../flext-core/src/flext_core/
@@ -184,6 +190,7 @@ python -c "from flext_core import FlextResult; print('Success')"
 ```
 
 **Quality Gate Failures**
+
 ```bash
 # Check specific issues
 make lint 2>&1 | head -20              # Show linting errors
@@ -196,6 +203,7 @@ mypy src/ --show-error-codes           # Show specific type errors
 ```
 
 **Poetry Dependency Issues**
+
 ```bash
 # Reset poetry environment
 poetry env remove python
@@ -206,6 +214,7 @@ poetry shell
 ### Development Issues
 
 **FLEXT Pattern Violations**
+
 ```bash
 # Check for direct imports (violations)
 grep -r "import httpx\|import typer" src/
@@ -226,11 +235,13 @@ grep -r "from httpx\|from typer" src/
 ## Getting Help
 
 ### Resources
+
 - **Documentation**: Complete docs in [docs/](../docs/) directory
 - **FLEXT Ecosystem**: See [workspace README](../../README.md) for context
 - **API Reference**: See [api-reference.md](api-reference.md) for available APIs
 
 ### Support Channels
+
 - **Issues**: Create GitHub issue with detailed error information
 - **Questions**: Check existing documentation and README files first
 - **Contributing**: Follow development guidelines in [../TODO.md](../TODO.md)
