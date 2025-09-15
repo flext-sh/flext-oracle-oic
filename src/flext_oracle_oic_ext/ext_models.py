@@ -118,7 +118,7 @@ class RequestParams:
     timeout: int = 30
 
 
-# Exports seguindo padrão EXTENSION
+# Exports following EXTENSION pattern
 __all__: FlextTypes.Core.StringList = [
     "IntegrationStatus",
     "OICAuthConfig",

@@ -23,8 +23,8 @@ logger = FlextLogger(__name__)
 class BaseOICAuthenticator(ABC):
     """Base class for Oracle Integration Cloud authentication patterns.
 
-    Padrão EXTENSION: Classe base para autenticação Oracle OIC
-    com OAuth2 IDCS e gerenciamento de tokens.
+    EXTENSION Pattern: Base class for Oracle OIC authentication
+    with OAuth2 IDCS and token management.
     """
 
     def __init__(self, auth_config: OICAuthConfig) -> None:
@@ -158,8 +158,8 @@ class BaseOICAuthenticator(ABC):
 class BaseOICClient(ABC):
     """Base class for Oracle Integration Cloud API clients.
 
-    Padrão EXTENSION: Classe base para clientes Oracle OIC API
-    com autenticação, retry logic e tratamento de erros enterprise.
+    EXTENSION Pattern: Base class for Oracle OIC API clients
+    with authentication, retry logic and enterprise error handling.
     """
 
     def __init__(
@@ -403,8 +403,8 @@ class BaseOICClient(ABC):
 class OICExtensionAuthenticator(BaseOICAuthenticator):
     """OIC Extension authenticator with standard scopes.
 
-    Padrão EXTENSION: Authenticator padrão para extensions
-    Oracle OIC com scopes apropriados.
+    EXTENSION Pattern: Default authenticator for Oracle OIC
+    extensions with appropriate scopes.
     """
 
     def get_oauth_scopes(self) -> str:
@@ -415,8 +415,8 @@ class OICExtensionAuthenticator(BaseOICAuthenticator):
 class OICTapAuthenticator(BaseOICAuthenticator):
     """OIC Tap-specific authenticator with read scopes.
 
-    Padrão EXTENSION: Authenticator para tap Oracle OIC
-    focado em operações de leitura.
+    EXTENSION Pattern: Authenticator for Oracle OIC tap
+    focused on read operations.
     """
 
     def get_oauth_scopes(self) -> str:
@@ -427,8 +427,8 @@ class OICTapAuthenticator(BaseOICAuthenticator):
 class OICTargetAuthenticator(BaseOICAuthenticator):
     """OIC Target-specific authenticator with write permissions.
 
-    Padrão EXTENSION: Authenticator para target Oracle OIC
-    com permissões de escrita.
+    EXTENSION Pattern: Authenticator for Oracle OIC target
+    with write permissions.
     """
 
     def get_oauth_scopes(self) -> str:
@@ -439,8 +439,8 @@ class OICTargetAuthenticator(BaseOICAuthenticator):
 class OracleOICExtensionClient(BaseOICClient):
     """Main Oracle OIC Extension client.
 
-    Padrão EXTENSION: Cliente principal para extension Oracle OIC
-    com funcionalidades enterprise completas.
+    EXTENSION Pattern: Main client for Oracle OIC extension
+    with complete enterprise functionality.
     """
 
     def get_base_url(self) -> str:
@@ -574,7 +574,7 @@ class OracleOICExtensionClient(BaseOICClient):
         return self.make_request("POST", "/connections", json=connection_data)
 
 
-# Exports seguindo padrão EXTENSION
+# Exports following EXTENSION pattern
 __all__: FlextTypes.Core.StringList = [
     # Base classes
     "BaseOICAuthenticator",

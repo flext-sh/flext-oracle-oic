@@ -1,7 +1,7 @@
 """Oracle OIC Extension Services - EXTENSION Pattern.
 
-Este módulo estabelece o padrão EXTENSION PEP8 para serviços
-especializados Oracle OIC. Serve como modelo para futuras extensions.
+This module establishes the EXTENSION PEP8 pattern for specialized
+Oracle OIC services. Serves as model for future extensions.
 
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -685,7 +685,7 @@ class MonitoringService:
             }
 
 
-# Exports seguindo padrão EXTENSION
+# Exports following EXTENSION pattern
 __all__: FlextTypes.Core.StringList = [
     "LifecycleManager",
     "MonitoringService",

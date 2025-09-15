@@ -1,6 +1,6 @@
 """Main entry point for Oracle OIC Extension - EXTENSION Pattern.
 
-Este módulo implementa o padrão EXTENSION PEP8 para CLI Oracle OIC Extension.
+This module implements the EXTENSION PEP8 pattern for CLI Oracle OIC Extension.
 
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.

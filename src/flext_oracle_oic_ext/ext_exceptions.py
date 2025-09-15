@@ -1,7 +1,7 @@
 """Oracle OIC Extension Exceptions - EXTENSION Pattern.
 
-Este módulo estabelece o padrão EXTENSION PEP8 para exceções
-especializadas Oracle OIC usando factory pattern flext-core.
+This module establishes the EXTENSION PEP8 pattern for specialized
+Oracle OIC exceptions using flext-core factory pattern.
 
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -71,7 +71,7 @@ class OICPatternError(OracleOICExtensionError):
     """Oracle OIC enterprise pattern execution failed."""
 
 
-# Exports seguindo padrão EXTENSION
+# Exports following EXTENSION pattern
 __all__: FlextTypes.Core.StringList = [
     # API
     "OICAPIError",

@@ -9,7 +9,7 @@ from typing import Literal
 
 from flext_core import FlextConfig, FlextTypes
 
-# Type definitions seguindo padrão EXTENSION
+# Type definitions following EXTENSION pattern
 EnvironmentLiteral = Literal["development", "staging", "production"]
 LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 OICApiVersionLiteral = Literal["v1", "v2"]
@@ -63,7 +63,7 @@ class OracleOICExtensionSettings(FlextConfig):
     auth: OICExtensionAuthConfig = OICExtensionAuthConfig()
 
 
-# Exports seguindo padrão EXTENSION
+# Exports following EXTENSION pattern
 __all__: FlextTypes.Core.StringList = [
     "EnvironmentLiteral",
     "LogLevelLiteral",
