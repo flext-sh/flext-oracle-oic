@@ -55,8 +55,14 @@ class TestOICAuthConfig:
     def test_auth_config_validation_error(self) -> None:
         """Test auth config validation error."""
         with pytest.raises(ValidationError):
-            # Missing all required fields should fail
-            OICAuthConfig()
+            # Invalid type for oauth_client_secret should fail validation
+            OICAuthConfig(
+                oauth_client_id="test_client_id",
+                oauth_client_secret=123,
+                oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
+                oauth_client_aud=None,
+                oauth_scope="",
+            )
 
 
 class TestOICConnectionConfig:
@@ -81,7 +87,10 @@ class TestOICConnectionConfig:
     def test_connection_config_defaults(self) -> None:
         """Test connection config with defaults."""
         config = OICConnectionConfig(
-            base_url="https://test.integration.ocp.oraclecloud.com"
+            base_url="https://test.integration.ocp.oraclecloud.com",
+            api_version="v1",
+            request_timeout=30,
+            max_retries=3,
         )
 
         assert config.api_version == "v1"
@@ -94,7 +103,9 @@ class TestOICConnectionConfig:
         with pytest.raises(ValidationError):
             OICConnectionConfig(
                 base_url="https://test.integration.ocp.oraclecloud.com",
+                api_version="v1",
                 request_timeout=0,  # Should be >= 1
+                max_retries=3,
             )
 
 
@@ -128,6 +139,9 @@ class TestOICIntegrationInfo:
             name="Test Integration",
             status="ACTIVE",
             version="1.0.0",
+            description="",
+            created_by="",
+            last_updated="",
         )
 
         assert info.description == ""
@@ -164,6 +178,7 @@ class TestOICConnectionInfo:
             adapter_type="REST",
             status="ACTIVE",
             connection_type="HTTP",
+            description="",
         )
 
         assert info.description == ""
