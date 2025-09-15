@@ -69,18 +69,6 @@ __version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
 
 # Logger instance
 logger = FlextLogger(__name__)
-
-
-# Logger for this module
-logger = FlextLogger(__name__)
-
-# Version information
-try:
-    __version__ = importlib.metadata.version("flext-oracle-oic-ext")
-except importlib.metadata.PackageNotFoundError:
-    __version__ = "0.9.0"
-
-__version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
 __all__: FlextTypes.Core.StringList = [
     "BaseOICAuthenticator",
     "BaseOICClient",

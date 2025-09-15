@@ -20,12 +20,36 @@ from flext_oracle_oic_ext import (
     create_development_oic_service,
 )
 
+
+def version_callback(*, value: bool) -> None:
+    """Version callback for --version option."""
+    if value:
+        typer.echo(f"Oracle OIC Extension v{__version__}")
+        typer.echo("EXTENSION Pattern: Enterprise Oracle Integration Cloud")
+        raise typer.Exit
+
+
 logger = FlextLogger(__name__)
 app = typer.Typer(
     name="oracle-oic-ext",
     help="FLEXT Oracle OIC Extension CLI - Enterprise Oracle Integration Cloud operations",
     no_args_is_help=True,
 )
+
+
+@app.callback()
+def main_callback(
+    *,
+    version: bool = typer.Option(
+        default=False,
+        flag_value=True,
+        callback=version_callback,
+        is_eager=True,
+        help="Show version",
+    )
+) -> None:
+    """Oracle OIC Extension CLI main callback."""
+    # This callback is needed for the --version option to work
 
 
 def _handle_service_error(message: str) -> NoReturn:
@@ -158,7 +182,7 @@ def main() -> NoReturn:
         sys.exit(1)
 
 
-__all__: FlextTypes.Core.StringList = ["app", "main"]
+__all__: FlextTypes.Core.StringList = ["app", "create_development_oic_service", "main"]
 
 if __name__ == "__main__":
     main()

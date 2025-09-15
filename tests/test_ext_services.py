@@ -59,8 +59,8 @@ class TestOracleOICExtensionService:
     ) -> None:
         """Test service initialization."""
         assert service.settings == settings
-        assert service.logger is not None
-        assert service._client is None
+        assert hasattr(service, "log_info")  # FlextMixins.Loggable provides logging methods
+        assert getattr(service, "_client", None) is None
 
     def test_service_context_manager(self, service: OracleOICExtensionService) -> None:
         """Test service as context manager."""
@@ -79,7 +79,7 @@ class TestOracleOICExtensionService:
 
         assert result.is_success
         assert result.value == mock_client
-        assert service._client == mock_client
+        assert getattr(service, "_client") == mock_client
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_get_client_cached(
@@ -87,7 +87,7 @@ class TestOracleOICExtensionService:
     ) -> None:
         """Test client caching."""
         mock_client = Mock()
-        service._client = mock_client
+        object.__setattr__(service, "_client", mock_client)
 
         result = service._get_client()
 
@@ -244,7 +244,6 @@ class TestOracleOICExtensionService:
         assert result.is_success
         assert isinstance(result.value, str)
         mock_client.create_integration.assert_called_once_with(integration_data)
-
 
 
 class TestOICIntegrationPatternService:

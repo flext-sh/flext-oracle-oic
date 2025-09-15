@@ -1,8 +1,8 @@
-"""Oracle OIC Extension Exceptions - EXTENSION Pattern.
+"""Oracle OIC Extension Legacy Exceptions - EXTENSION Pattern.
 
-This module establishes the EXTENSION PEP8 pattern for specialized
-Oracle OIC exceptions using flext-core factory pattern.
-
+FLEXT Unified Class Pattern: This module provides backward compatibility
+with the legacy exception structure while redirecting to the unified
+OracleOICExceptions class.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -12,83 +12,57 @@ from __future__ import annotations
 
 from flext_core import FlextTypes
 
-# ================================
-# EXTENSION Pattern: Specialized Exceptions
-# ================================
+# Import from the unified exceptions module
+from flext_oracle_oic_ext.exceptions import OracleOICExceptions
 
 
-class OracleOICExtensionError(Exception):
-    """Base exception for Oracle OIC Extension errors.
+class OracleOICExtensionExceptions:
+    """Unified Oracle OIC Extension exceptions following FLEXT patterns.
 
-    EXTENSION Pattern: Base exception for all Oracle OIC Extension operations
-    following enterprise error hierarchy.
+    Single responsibility class that provides backward compatibility
+    with legacy exception names while using the unified exceptions internally.
     """
 
-
-# Authentication exceptions
-class OICAuthenticationError(OracleOICExtensionError):
-    """OAuth2 authentication with Oracle OIC failed."""
-
-
-class OICTokenError(OracleOICExtensionError):
-    """OAuth2 token operation failed."""
-
-
-# Connection exceptions
-class OICConnectionError(OracleOICExtensionError):
-    """Connection to Oracle OIC instance failed."""
-
-
-class OICTimeoutError(OracleOICExtensionError):
-    """Oracle OIC request timeout exceeded."""
+    # Backward compatibility aliases to unified exceptions
+    BaseError = OracleOICExceptions.BaseError
+    AuthenticationError = OracleOICExceptions.AuthenticationError
+    TokenError = OracleOICExceptions.TokenError
+    ConnectionError = OracleOICExceptions.OICConnectionError
+    TimeoutError = OracleOICExceptions.OICTimeoutError
+    ApiError = OracleOICExceptions.ApiError
+    ValidationError = OracleOICExceptions.ValidationError
+    IntegrationError = OracleOICExceptions.IntegrationError
+    WorkflowError = OracleOICExceptions.WorkflowError
+    ConfigurationError = OracleOICExceptions.ConfigurationError
+    PatternError = OracleOICExceptions.PatternError
 
 
-# API exceptions
-class OICAPIError(OracleOICExtensionError):
-    """Oracle OIC REST API operation failed."""
-
-
-class OICValidationError(OracleOICExtensionError):
-    """Oracle OIC data validation failed."""
-
-
-# Integration exceptions
-class OICIntegrationError(OracleOICExtensionError):
-    """Oracle OIC integration operation failed."""
-
-
-class OICWorkflowError(OracleOICExtensionError):
-    """Oracle OIC workflow execution failed."""
-
-
-# Configuration exceptions
-class OICConfigurationError(OracleOICExtensionError):
-    """Oracle OIC extension configuration error."""
-
-
-# Pattern exceptions
-class OICPatternError(OracleOICExtensionError):
-    """Oracle OIC enterprise pattern execution failed."""
+# Legacy compatibility - these should use the unified exceptions
+OracleOICExtensionError = OracleOICExtensionExceptions.BaseError
+OICAuthenticationError = OracleOICExtensionExceptions.AuthenticationError
+OICTokenError = OracleOICExtensionExceptions.TokenError
+OICConnectionError = OracleOICExtensionExceptions.ConnectionError
+OICTimeoutError = OracleOICExtensionExceptions.TimeoutError
+OICAPIError = OracleOICExtensionExceptions.ApiError
+OICValidationError = OracleOICExtensionExceptions.ValidationError
+OICIntegrationError = OracleOICExtensionExceptions.IntegrationError
+OICWorkflowError = OracleOICExtensionExceptions.WorkflowError
+OICConfigurationError = OracleOICExtensionExceptions.ConfigurationError
+OICPatternError = OracleOICExtensionExceptions.PatternError
 
 
 # Exports following EXTENSION pattern
 __all__: FlextTypes.Core.StringList = [
-    # API
     "OICAPIError",
-    # Authentication
     "OICAuthenticationError",
-    # Configuration
     "OICConfigurationError",
-    # Connection
     "OICConnectionError",
-    # Integration
     "OICIntegrationError",
-    # Pattern
     "OICPatternError",
     "OICTimeoutError",
     "OICTokenError",
     "OICValidationError",
     "OICWorkflowError",
-    # Base exception
     "OracleOICExtensionError",
+    "OracleOICExtensionExceptions",
 ]

@@ -1,6 +1,10 @@
-"""FLEXT Module.
+"""Oracle OIC Extension Configuration - Unified Class Pattern.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
+FLEXT Unified Class Pattern: Single OracleOICExtensionConfig class
+with nested configuration classes following FLEXT architectural standards.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
@@ -8,59 +12,77 @@ from __future__ import annotations
 from typing import Literal
 
 from flext_core import FlextConfig, FlextTypes
+from pydantic import Field
 
-# Type definitions following EXTENSION pattern
+# Type definitions outside class to avoid Pydantic field errors
 EnvironmentLiteral = Literal["development", "staging", "production"]
 LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 OICApiVersionLiteral = Literal["v1", "v2"]
 
 
-class OICExtensionConnectionConfig(FlextConfig):
-    """Oracle OIC Extension connection configuration.
+class OracleOICExtensionConfig(FlextConfig):
+    """Unified Oracle OIC Extension configuration following FLEXT patterns.
 
-    EXTENSION Pattern: Oracle OIC connection configuration with
-    enterprise validation and best practices.
+    Single responsibility class with nested configuration helpers
+    following the unified class pattern from FLEXT architectural standards.
     """
 
-    base_url: str = "https://localhost.integration.ocp.oraclecloud.com"
-    api_version: OICApiVersionLiteral = "v1"
-    request_timeout: int = 30
-    max_retries: int = 3
-    use_ssl: bool = True
-    verify_ssl: bool = True
+    class ConnectionConfig(FlextConfig):
+        """Oracle OIC Extension connection configuration.
 
+        EXTENSION Pattern: Oracle OIC connection configuration with
+        enterprise validation and best practices.
+        """
 
-class OICExtensionAuthConfig(FlextConfig):
-    """Oracle OIC Extension OAuth2 authentication configuration.
+        base_url: str = "https://localhost.integration.ocp.oraclecloud.com"
+        api_version: str = "v1"
+        request_timeout: int = 30
+        max_retries: int = 3
+        use_ssl: bool = True
+        verify_ssl: bool = True
 
-    EXTENSION Pattern: IDCS OAuth2 authentication configuration
-    with enterprise security.
-    """
+    class AuthConfig(FlextConfig):
+        """Oracle OIC Extension OAuth2 authentication configuration.
 
-    oauth_client_id: str = "default_client_id"
-    oauth_client_secret: str = "default_client_" + "secret_value"
-    oauth_token_url: str = (
-        "https://idcs-tenant.identity.oraclecloud.com/" + "oauth2/v1/token"
-    )
-    oauth_client_aud: str | None = None
-    oauth_scope: str = ""
+        EXTENSION Pattern: IDCS OAuth2 authentication configuration
+        with enterprise security.
+        """
 
+        oauth_client_id: str = "default_client_id"
+        oauth_client_secret: str = "default_client_" + "secret_value"
+        oauth_token_url: str = (
+            "https://idcs-tenant.identity.oraclecloud.com/" + "oauth2/v1/token"
+        )
+        oauth_client_aud: str | None = None
+        oauth_scope: str = ""
 
-class OracleOICExtensionSettings(FlextConfig):
-    """Oracle OIC Extension main settings.
+    class Settings(FlextConfig):
+        """Oracle OIC Extension main settings.
 
-    Padrão EXTENSION: Configuração principal da extension Oracle OIC
-    consolidando todas as configurações necessárias.
-    """
+        Padrão EXTENSION: Configuração principal da extension Oracle OIC
+        consolidando todas as configurações necessárias.
+        """
 
-    # Use base types from FlextConfig to avoid type conflicts
+        # Nested configuration objects with default factories
+        connection: OracleOICExtensionConfig.ConnectionConfig = Field(default_factory=lambda: OracleOICExtensionConfig.ConnectionConfig())
+        auth: OracleOICExtensionConfig.AuthConfig = Field(default_factory=lambda: OracleOICExtensionConfig.AuthConfig())
+
+        # Use base types from FlextConfig to avoid type conflicts
+        enable_monitoring: bool = True
+        enable_enterprise_patterns: bool = True
+        enable_orchestration: bool = True
+
+    # Main configuration settings (for backward compatibility)
     enable_monitoring: bool = True
     enable_enterprise_patterns: bool = True
     enable_orchestration: bool = True
 
-    # Sub-configurations
-    connection: OICExtensionConnectionConfig = OICExtensionConnectionConfig()
-    auth: OICExtensionAuthConfig = OICExtensionAuthConfig()
+
+# Backward compatibility aliases
+OICExtensionConnectionConfig = OracleOICExtensionConfig.ConnectionConfig
+OICExtensionAuthConfig = OracleOICExtensionConfig.AuthConfig
+OracleOICExtensionSettings = OracleOICExtensionConfig.Settings
+# EnvironmentLiteral, LogLevelLiteral, OICApiVersionLiteral are defined at module level
 
 
 # Exports following EXTENSION pattern
@@ -69,7 +91,7 @@ __all__: FlextTypes.Core.StringList = [
     "LogLevelLiteral",
     "OICApiVersionLiteral",
     "OICExtensionAuthConfig",
-    # Configuration classes
     "OICExtensionConnectionConfig",
+    "OracleOICExtensionConfig",
     "OracleOICExtensionSettings",
 ]
