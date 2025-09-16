@@ -46,7 +46,7 @@ def main_callback(
         callback=version_callback,
         is_eager=True,
         help="Show version",
-    )
+    ),
 ) -> None:
     """Oracle OIC Extension CLI main callback."""
     # This callback is needed for the --version option to work

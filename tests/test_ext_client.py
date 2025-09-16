@@ -286,7 +286,11 @@ class TestOracleOICExtensionClient:
         mock_response.status_code = 200
         mock_response.raise_for_status.return_value = None
         mock_headers = Mock()
-        mock_headers.get.side_effect = lambda key, default="": "application/json" if key == "content-type" else default
+        mock_headers.get.side_effect = (
+            lambda key, default="": "application/json"
+            if key == "content-type"
+            else default
+        )
         mock_response.headers = mock_headers
         mock_response.json.return_value = {
             "items": [{"id": "int1", "name": "Integration 1"}]
@@ -347,7 +351,11 @@ class TestOracleOICExtensionClient:
         mock_response.status_code = 200
         mock_response.raise_for_status.return_value = None
         mock_headers = Mock()
-        mock_headers.get.side_effect = lambda key, default="": "application/json" if key == "content-type" else default
+        mock_headers.get.side_effect = (
+            lambda key, default="": "application/json"
+            if key == "content-type"
+            else default
+        )
         mock_response.headers = mock_headers
         mock_response.json.return_value = {
             "items": [{"id": "conn1", "name": "Connection 1"}]
