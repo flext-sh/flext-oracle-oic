@@ -12,9 +12,9 @@ from __future__ import annotations
 
 from typing import Protocol, Self
 
-from flext_core import FlextDomainService, FlextLogger, FlextResult, FlextTypes
 from pydantic import ConfigDict, SecretStr
 
+from flext_core import FlextDomainService, FlextLogger, FlextResult, FlextTypes
 from flext_oracle_oic_ext.ext_client import (
     OICExtensionAuthenticator,
     OracleOICExtensionClient,

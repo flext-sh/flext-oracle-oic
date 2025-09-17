@@ -7,8 +7,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from flext_core import FlextLogger, FlextTypes
 from pydantic import BaseModel, ConfigDict, Field, SecretStr
+
+from flext_core import FlextLogger, FlextTypes
 
 logger = FlextLogger(__name__)
 

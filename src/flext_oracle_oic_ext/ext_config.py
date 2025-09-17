@@ -11,8 +11,9 @@ from __future__ import annotations
 
 from typing import Literal
 
+from pydantic import Field, model_validator
+
 from flext_core import FlextConfig, FlextTypes
-from pydantic import Field
 
 # Type definitions outside class to avoid Pydantic field errors
 EnvironmentLiteral = Literal["development", "staging", "production"]
@@ -63,13 +64,24 @@ class OracleOICExtensionConfig(FlextConfig):
         consolidando todas as configurações necessárias.
         """
 
-        # Nested configuration objects with default factories
+        # Nested configuration objects with proper default factories
         connection: OracleOICExtensionConfig.ConnectionConfig = Field(
             default_factory=lambda: OracleOICExtensionConfig.ConnectionConfig()
         )
         auth: OracleOICExtensionConfig.AuthConfig = Field(
             default_factory=lambda: OracleOICExtensionConfig.AuthConfig()
         )
+
+        @model_validator(mode="after")
+        def _validate_settings(self) -> OracleOICExtensionConfig.Settings:
+            """Validate configuration settings after initialization.
+
+            With proper default factories, type safety is guaranteed by Pydantic.
+            This validator can be used for additional business logic validation.
+            """
+            # Additional validation can be added here if needed
+            # Type safety is already guaranteed by proper default factories
+            return self
 
         # Use base types from FlextConfig to avoid type conflicts
         enable_monitoring: bool = True

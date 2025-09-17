@@ -9,7 +9,6 @@ from __future__ import annotations
 import importlib.metadata
 
 from flext_core import FlextConfig, FlextLogger, FlextModels, FlextResult, FlextTypes
-
 from flext_oracle_oic_ext.ext_client import (
     BaseOICAuthenticator,
     BaseOICClient,

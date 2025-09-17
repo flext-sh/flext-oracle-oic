@@ -10,8 +10,8 @@ from abc import ABC, abstractmethod
 from typing import Self
 
 import httpx
-from flext_core import FlextLogger, FlextResult, FlextTypes
 
+from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_oracle_oic_ext.ext_models import OICAuthConfig, OICConnectionConfig
 
 logger = FlextLogger(__name__)
