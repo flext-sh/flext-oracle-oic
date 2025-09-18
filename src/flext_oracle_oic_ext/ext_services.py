@@ -170,8 +170,8 @@ class OracleOICExtensionService(FlextDomainService[list[OICIntegrationInfo]]):
                     connection_config,
                     authenticator,
                 )
-                # Store client using object.__setattr__ for frozen model
-                object.__setattr__(self, "_client", client)
+                # Store client using setattr for frozen model
+                setattr(self, "_client", client)
 
             return FlextResult[OracleOICExtensionClient].ok(client)
 

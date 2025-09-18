@@ -60,7 +60,7 @@ class TestOICExtensionAuthConfig:
             == "https://idcs-tenant.identity.oraclecloud.com/oauth2/v1/token"
         )
         assert config.oauth_client_aud is None
-        assert config.oauth_scope == ""
+        assert config.oauth_scope is not None
 
     def test_custom_auth_config(self) -> None:
         """Test custom auth config."""

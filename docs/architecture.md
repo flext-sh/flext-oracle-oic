@@ -1,12 +1,12 @@
 # Architecture
 
-**flext-oracle-oic-ext v0.9.0** - Oracle Integration Cloud Architecture Analysis
+**flext-oracle-oic-ext v0.9.9** - Oracle Integration Cloud Architecture Analysis
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
 ## Overview
 
-This document provides an accurate analysis of the current architecture implementation in flext-oracle-oic-ext v0.9.0, identifying both existing capabilities and areas requiring FLEXT ecosystem compliance improvements.
+This document provides an accurate analysis of the current architecture implementation in flext-oracle-oic-ext v0.9.9, identifying both existing capabilities and areas requiring FLEXT ecosystem compliance improvements.
 
 ### Architecture Principles
 

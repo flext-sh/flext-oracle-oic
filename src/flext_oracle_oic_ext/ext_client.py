@@ -6,11 +6,11 @@ Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import base64
+import json
 from abc import ABC, abstractmethod
 from typing import Self
 
-import httpx
-
+from flext_api import FlextApiClient
 from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_oracle_oic_ext.ext_models import OICAuthConfig, OICConnectionConfig
 
@@ -95,7 +95,7 @@ class BaseOICAuthenticator(ABC):
         credentials = f"{client_id}:{client_secret}"
         return base64.b64encode(credentials.encode()).decode()
 
-    def get_access_token(self) -> FlextResult[str]:
+    async def get_access_token(self) -> FlextResult[str]:
         """Get access token using OAuth2 client credentials flow.
 
         Returns:
@@ -114,17 +114,27 @@ class BaseOICAuthenticator(ABC):
                 "Content-Type": "application/x-www-form-urlencoded",
             }
 
-            # Make token request using httpx
-            with httpx.Client() as client:
-                response = client.post(
-                    self.auth_config.oauth_token_url,
+            # Make token request using FlextApiClient
+            api_client = FlextApiClient(self.auth_config.oauth_token_url)
+            async with api_client:
+                response_result = await api_client.post(
+                    "",  # Empty endpoint since URL is base_url
                     headers=headers,
                     data=self.get_oauth_request_body(),
-                    timeout=30,
                 )
-                response.raise_for_status()
 
-                token_data = response.json()
+                if response_result.is_failure:
+                    return FlextResult[str].fail(
+                        f"OAuth request failed: {response_result.error}"
+                    )
+
+                response = response_result.unwrap()
+                if response.status_code >= 400:
+                    return FlextResult[str].fail(
+                        f"OAuth HTTP error: {response.status_code}"
+                    )
+
+                token_data = json.loads(response.body)
                 access_token = token_data.get("access_token")
                 if not access_token:
                     return FlextResult[str].fail("No access token in response")
@@ -133,24 +143,12 @@ class BaseOICAuthenticator(ABC):
                 self.logger.info("OIC OAuth2 authentication successful")
                 return FlextResult[str].ok(access_token)
 
-        except httpx.TimeoutException as e:
-            error_msg = f"OIC OAuth2 authentication timeout: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult[str].fail(error_msg)
-        except httpx.HTTPStatusError as e:
-            error_msg = f"OIC OAuth2 authentication HTTP error: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult[str].fail(error_msg)
-        except httpx.RequestError as e:
-            error_msg = f"OIC OAuth2 authentication request failed: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult[str].fail(error_msg)
         except KeyError as e:
             error_msg = f"Invalid OAuth2 response format: missing {e}"
             self.logger.exception(error_msg)
             return FlextResult[str].fail(error_msg)
         except Exception as e:
-            error_msg = f"OIC authentication error: {e}"
+            error_msg = f"OIC OAuth2 authentication failed: {e}"
             self.logger.exception(error_msg)
             return FlextResult[str].fail(error_msg)
 
@@ -177,13 +175,13 @@ class BaseOICClient(ABC):
         self.connection_config = connection_config
         self.authenticator = authenticator
         self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
-        self._client: httpx.Client | None = None
+        self._client: FlextApiClient | None = None
 
     @abstractmethod
     def get_base_url(self) -> str:
         """Get OIC API base URL."""
 
-    def get_authenticated_client(self) -> FlextResult[httpx.Client]:
+    async def get_authenticated_client(self) -> FlextResult[FlextApiClient]:
         """Get authenticated HTTP client.
 
         Returns:
@@ -193,31 +191,31 @@ class BaseOICClient(ABC):
         try:
             if not self._client:
                 # Get OAuth2 token
-                token_result = self.authenticator.get_access_token()
-                if not token_result.success:
-                    return FlextResult[httpx.Client].fail(
+                token_result = await self.authenticator.get_access_token()
+                if token_result.is_failure:
+                    return FlextResult[FlextApiClient].fail(
                         f"Authentication failed: {token_result.error}",
                     )
 
-                # Create authenticated client
-                self._client = httpx.Client(
+                # Create authenticated client with FlextApiClient
+                self._client = FlextApiClient(
+                    base_url=self.get_base_url(),
+                    timeout=self.connection_config.request_timeout,
                     headers={
-                        "Authorization": f"Bearer {token_result.data}",
+                        "Authorization": f"Bearer {token_result.unwrap()}",
                         "Content-Type": "application/json",
                         "Accept": "application/json",
                     },
-                    timeout=self.connection_config.request_timeout,
-                    verify=self.connection_config.verify_ssl,
                 )
 
-            return FlextResult[httpx.Client].ok(self._client)
+            return FlextResult[FlextApiClient].ok(self._client)
 
         except Exception as e:
             error_msg = f"Failed to create authenticated client: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[httpx.Client].fail(error_msg)
+            return FlextResult[FlextApiClient].fail(error_msg)
 
-    def make_request(
+    async def make_request(
         self,
         method: str,
         endpoint: str,
@@ -240,46 +238,46 @@ class BaseOICClient(ABC):
         """
         try:
             # Get authenticated client
-            client_result = self.get_authenticated_client()
-            if not client_result.success:
+            client_result = await self.get_authenticated_client()
+            if client_result.is_failure:
                 return FlextResult[FlextTypes.Core.Dict].fail(
                     client_result.error or "Client error"
                 )
 
-            client = client_result.data
+            client = client_result.unwrap()
             if client is None:
                 return FlextResult[FlextTypes.Core.Dict].fail("Failed to get client")
 
-            # Build full URL
-            url = self._build_request_url(endpoint)
+            # Make request using FlextApiClient
+            async with client:
+                response_result = await client.request(
+                    method=method,
+                    url=endpoint,  # FlextApiClient handles URL building
+                    params=params,
+                    data=data,
+                    json=json,
+                )
 
-            # Make request
-            response = client.request(
-                method=method,
-                url=url,
-                params=params,
-                data=data,
-                json=json,
-            )
-            response.raise_for_status()
+                if response_result.is_failure:
+                    return FlextResult[FlextTypes.Core.Dict].fail(
+                        f"Request failed: {response_result.error}"
+                    )
 
-            # Parse response
-            if response.headers.get("content-type", "").startswith("application/json"):
-                return FlextResult[FlextTypes.Core.Dict].ok(response.json())
-            return FlextResult[FlextTypes.Core.Dict].ok({"raw_content": response.text})
+                response = response_result.unwrap()
 
-        except httpx.TimeoutException as e:
-            error_msg = f"OIC API request timeout: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult[FlextTypes.Core.Dict].fail(error_msg)
-        except httpx.HTTPStatusError as e:
-            return self._handle_http_error(e)
-        except httpx.RequestError as e:
-            error_msg = f"OIC API request failed: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult[FlextTypes.Core.Dict].fail(error_msg)
+                # Parse response
+                if response.headers.get("content-type", "").startswith(
+                    "application/json"
+                ):
+                    return FlextResult[FlextTypes.Core.Dict].ok(
+                        json.loads(response.body)
+                    )
+                return FlextResult[FlextTypes.Core.Dict].ok(
+                    {"raw_content": response.body}
+                )
+
         except Exception as e:
-            error_msg = f"OIC API client error: {e}"
+            error_msg = f"OIC API request failed: {e}"
             self.logger.exception(error_msg)
             return FlextResult[FlextTypes.Core.Dict].fail(error_msg)
 
@@ -292,21 +290,7 @@ class BaseOICClient(ABC):
             else f"{base_url}/{endpoint}"
         )
 
-    def _handle_http_error(
-        self,
-        e: httpx.HTTPStatusError,
-    ) -> FlextResult[FlextTypes.Core.Dict]:
-        """Handle HTTP errors."""
-        try:
-            error_data = e.response.json()
-            error_msg = f"OIC API error: {error_data}"
-        except Exception:
-            error_msg = f"OIC API error: {e.response.text}"
-
-        self.logger.error(error_msg)
-        return FlextResult[FlextTypes.Core.Dict].fail(error_msg)
-
-    def paginate_request(
+    async def paginate_request(
         self,
         endpoint: str,
         page_size: int = 100,

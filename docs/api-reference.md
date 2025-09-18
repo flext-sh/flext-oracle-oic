@@ -1,10 +1,10 @@
 # API Reference
 
-**flext-oracle-oic-ext v0.9.0** - Available APIs and Components
+**flext-oracle-oic-ext v0.9.9** - Available APIs and Components
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
-> **Implementation Status**: Version 0.9.0 provides basic configuration and service structure. Full Oracle OIC integration capabilities are in development.
+> **Implementation Status**: Version 0.9.9 provides basic configuration and service structure. Full Oracle OIC integration capabilities are in development.
 
 ## Public API Overview
 
@@ -242,7 +242,7 @@ settings = OracleOICExtensionSettings(
 
 ## Usage Recommendations
 
-### Current Version (v0.9.0)
+### Current Version (v0.9.9)
 
 ```python
 # Safe to use for configuration and basic setup
@@ -273,4 +273,4 @@ API will be enhanced with:
 
 ---
 
-This API reference reflects the actual implementation status as of September 17, 2025. Version 0.9.0 provides foundation configuration and basic service structure, with significant enhancements planned for FLEXT compliance and Oracle OIC integration.
+This API reference reflects the actual implementation status as of September 17, 2025. Version 0.9.9 provides foundation configuration and basic service structure, with significant enhancements planned for FLEXT compliance and Oracle OIC integration.

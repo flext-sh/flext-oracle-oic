@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import inspect
 
-import flext_oracle_oic_ext.__version__ as version_module
+import flext_oracle_oic_ext as version_module
 from flext_oracle_oic_ext import __version__
 
 

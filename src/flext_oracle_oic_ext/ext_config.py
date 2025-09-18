@@ -65,10 +65,10 @@ class OracleOICExtensionConfig(FlextConfig):
         """
 
         # Nested configuration objects with proper default factories
-        connection: OracleOICExtensionConfig.ConnectionConfig = Field(
+        connection: "OracleOICExtensionConfig.ConnectionConfig" = Field(
             default_factory=lambda: OracleOICExtensionConfig.ConnectionConfig()
         )
-        auth: OracleOICExtensionConfig.AuthConfig = Field(
+        auth: "OracleOICExtensionConfig.AuthConfig" = Field(
             default_factory=lambda: OracleOICExtensionConfig.AuthConfig()
         )
 

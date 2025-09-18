@@ -1,6 +1,6 @@
 # Configuration
 
-**Configuration Management for flext-oracle-oic-ext v0.9.0**
+**Configuration Management for flext-oracle-oic-ext v0.9.9**
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
@@ -8,7 +8,7 @@
 
 flext-oracle-oic-ext provides Pydantic-based configuration management following FLEXT ecosystem patterns. The current implementation offers basic configuration structure with type safety and validation.
 
-> **Implementation Status**: Version 0.9.0 provides foundation configuration models. Full Oracle OIC integration and enterprise features are planned for future releases.
+> **Implementation Status**: Version 0.9.9 provides foundation configuration models. Full Oracle OIC integration and enterprise features are planned for future releases.
 
 ## Current Configuration Components
 

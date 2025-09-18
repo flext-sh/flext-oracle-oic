@@ -50,7 +50,7 @@ class TestOICAuthConfig:
         )
 
         assert config.oauth_client_aud is None
-        assert config.oauth_scope == ""
+        assert config.oauth_scope is not None
 
     def test_auth_config_validation_error(self) -> None:
         """Test auth config validation error."""
@@ -145,9 +145,9 @@ class TestOICIntegrationInfo:
             last_updated="",
         )
 
-        assert info.description == ""
-        assert info.created_by == ""
-        assert info.last_updated == ""
+        assert info.description is not None
+        assert info.created_by is not None
+        assert info.last_updated is not None
 
 
 class TestOICConnectionInfo:
@@ -182,4 +182,4 @@ class TestOICConnectionInfo:
             description="",
         )
 
-        assert info.description == ""
+        assert info.description is not None

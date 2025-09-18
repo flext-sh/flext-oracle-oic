@@ -1,14 +1,14 @@
 # Documentation Index
 
-**flext-oracle-oic-ext v0.9.0** - Oracle Integration Cloud client library for the FLEXT ecosystem
+**flext-oracle-oic-ext v0.9.9** - Oracle Integration Cloud client library for the FLEXT ecosystem
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
 ## Overview
 
-This documentation covers the Oracle Integration Cloud extension for the FLEXT ecosystem. Version 0.9.0 provides foundation configuration management and basic service structure, with comprehensive Oracle OIC integration planned for future releases.
+This documentation covers the Oracle Integration Cloud extension for the FLEXT ecosystem. Version 0.9.9 provides foundation configuration management and basic service structure, with comprehensive Oracle OIC integration planned for future releases.
 
-> **Implementation Status**: Early development (v0.9.0) with foundation implemented. Full Oracle OIC integration and FLEXT compliance improvements needed before production use.
+> **Implementation Status**: Early development (v0.9.9) with foundation implemented. Full Oracle OIC integration and FLEXT compliance improvements needed before production use.
 
 ## Documentation Structure
 

@@ -89,7 +89,7 @@ class TestOracleOICExtensionService:
     ) -> None:
         """Test client caching."""
         mock_client = Mock()
-        object.__setattr__(service, "_client", mock_client)
+        setattr(service, "_client", mock_client)
 
         result = service._get_client()
 

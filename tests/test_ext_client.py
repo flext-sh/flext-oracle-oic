@@ -376,8 +376,8 @@ class TestOracleOICExtensionClient:
 
     def test_context_manager_enter(self, client: OracleOICExtensionClient) -> None:
         """Test context manager __enter__ method."""
-        result = client.__enter__()
-        assert result is client
+        with client as result:
+            assert result is client
 
     def test_client_authenticator_attribute(
         self, client: OracleOICExtensionClient

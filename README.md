@@ -4,7 +4,7 @@
 
 **Oracle Integration Cloud client library for the FLEXT ecosystem** providing **OAuth2/IDCS authentication** and **integration pattern execution** using **FlextDomainService patterns** with **professional OIC 2025 architecture**.
 
-> **⚠️ STATUS**: Early Development (v0.9.0) - Foundation implemented, requires FLEXT compliance and Oracle OIC 2025 patterns
+> **⚠️ STATUS**: Early Development (v0.9.9) - Foundation implemented, requires FLEXT compliance and Oracle OIC 2025 patterns
 
 ---
 
@@ -42,7 +42,7 @@ This extension provides Oracle Integration Cloud (OIC) integration capabilities 
 | **FlextContainer**     | 🔴 0%  | Not implemented - dependency injection missing                    |
 | **Unified Classes**    | 🔴 15% | Multiple classes per module violate FLEXT patterns                |
 
-> **Status**: 🔴 Critical | 🟡 Partial | 🟢 Complete
+> **Status**: 🔴 Critical · 1.0.0 Release Preparation | 🟡 Partial | 🟢 Complete
 
 ### **Architecture Diagram**
 
@@ -255,7 +255,7 @@ Current status aligned with FLEXT ecosystem requirements:
 
 ## 🗺️ Roadmap
 
-### **Current Version (v0.9.0)**
+### **Current Version (v0.9.9)**
 
 Foundation implemented with configuration management and basic service structure. FLEXT compliance refactoring required before production use.
 
@@ -350,6 +350,6 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**flext-oracle-oic-ext v0.9.0** - Oracle Integration Cloud client library enabling secure OAuth2/IDCS authentication and professional integration pattern execution across the FLEXT ecosystem.
+**flext-oracle-oic-ext v0.9.9** - Oracle Integration Cloud client library enabling secure OAuth2/IDCS authentication and professional integration pattern execution across the FLEXT ecosystem.
 
 **Mission**: Provide a professional Oracle Integration Cloud library following FLEXT ecosystem standards that enables reliable, secure, and maintainable Oracle cloud integration solutions for enterprise Python applications.
