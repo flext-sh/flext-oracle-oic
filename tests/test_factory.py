@@ -116,7 +116,8 @@ class TestSetupOicExtension:
     def test_setup_extension_with_custom_settings(self) -> None:
         """Test setup extension with custom settings."""
         settings = OracleOICExtensionSettings(
-            environment="production", log_level="ERROR",
+            environment="production",
+            log_level="ERROR",
         )
 
         result = setup_oic_extension(settings)

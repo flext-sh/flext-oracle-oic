@@ -553,7 +553,8 @@ class LifecycleManager:
             return FlextResult[OracleOICExtensionClient].fail(error_msg)
 
     async def activate_integration(
-        self, integration_id: str,
+        self,
+        integration_id: str,
     ) -> FlextResult[IntegrationStatus]:
         """Activate an Oracle OIC integration.
 
@@ -577,7 +578,9 @@ class LifecycleManager:
 
             # Update integration to activate it
             activation_data: FlextTypes.Core.Dict = {"status": "ACTIVATED"}
-            activate_result = await client.update_integration(integration_id, activation_data)
+            activate_result = await client.update_integration(
+                integration_id, activation_data
+            )
 
             if not activate_result.success:
                 return FlextResult[IntegrationStatus].fail(
@@ -602,7 +605,8 @@ class LifecycleManager:
             return FlextResult[IntegrationStatus].fail(error_msg)
 
     async def deactivate_integration(
-        self, integration_id: str,
+        self,
+        integration_id: str,
     ) -> FlextResult[IntegrationStatus]:
         """Deactivate an Oracle OIC integration.
 
@@ -627,7 +631,8 @@ class LifecycleManager:
             # Update integration to deactivate it
             deactivation_data: FlextTypes.Core.Dict = {"status": "DEACTIVATED"}
             deactivate_result = await client.update_integration(
-                integration_id, deactivation_data,
+                integration_id,
+                deactivation_data,
             )
 
             if not deactivate_result.success:

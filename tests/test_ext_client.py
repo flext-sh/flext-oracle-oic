@@ -64,7 +64,9 @@ class TestOICExtensionAuthenticator:
         return OICExtensionAuthenticator(auth_config)
 
     def test_authenticator_initialization(
-        self, authenticator: OICExtensionAuthenticator, auth_config: OICAuthConfig,
+        self,
+        authenticator: OICExtensionAuthenticator,
+        auth_config: OICAuthConfig,
     ) -> None:
         """Test authenticator initializes properly."""
         assert authenticator.auth_config == auth_config
@@ -95,7 +97,9 @@ class TestOICExtensionAuthenticator:
 
     @patch("httpx.Client.post")
     def test_get_access_token_success(
-        self, mock_post: Mock, authenticator: OICExtensionAuthenticator,
+        self,
+        mock_post: Mock,
+        authenticator: OICExtensionAuthenticator,
     ) -> None:
         """Test successful access token retrieval."""
         mock_response = Mock()
@@ -115,7 +119,9 @@ class TestOICExtensionAuthenticator:
 
     @patch("httpx.Client.post")
     def test_get_access_token_http_error(
-        self, mock_post: Mock, authenticator: OICExtensionAuthenticator,
+        self,
+        mock_post: Mock,
+        authenticator: OICExtensionAuthenticator,
     ) -> None:
         """Test access token retrieval with HTTP error."""
         mock_response = Mock()
@@ -123,7 +129,9 @@ class TestOICExtensionAuthenticator:
         mock_response.text = "Bad Request"
         # Configure raise_for_status to raise HTTPStatusError
         mock_response.raise_for_status.side_effect = httpx.HTTPStatusError(
-            "HTTP Error", request=Mock(), response=mock_response,
+            "HTTP Error",
+            request=Mock(),
+            response=mock_response,
         )
         mock_post.return_value = mock_response
 
@@ -134,7 +142,9 @@ class TestOICExtensionAuthenticator:
 
     @patch("httpx.Client.post")
     def test_get_access_token_missing_token(
-        self, mock_post: Mock, authenticator: OICExtensionAuthenticator,
+        self,
+        mock_post: Mock,
+        authenticator: OICExtensionAuthenticator,
     ) -> None:
         """Test access token retrieval with missing token in response."""
         mock_response = Mock()
@@ -149,7 +159,9 @@ class TestOICExtensionAuthenticator:
 
     @patch("httpx.Client.post")
     def test_get_access_token_exception(
-        self, mock_post: Mock, authenticator: OICExtensionAuthenticator,
+        self,
+        mock_post: Mock,
+        authenticator: OICExtensionAuthenticator,
     ) -> None:
         """Test access token retrieval with exception."""
         mock_post.side_effect = httpx.ConnectError("Network error")
@@ -160,7 +172,8 @@ class TestOICExtensionAuthenticator:
         assert "OIC OAuth2 authentication request failed" in str(result.error)
 
     def test_build_oauth_scopes_with_audience(
-        self, authenticator: OICExtensionAuthenticator,
+        self,
+        authenticator: OICExtensionAuthenticator,
     ) -> None:
         """Test build_oauth_scopes with custom audience."""
         scopes = authenticator.build_oauth_scopes("custom_audience")
@@ -168,7 +181,8 @@ class TestOICExtensionAuthenticator:
         assert scopes == expected
 
     def test_get_oauth_request_body(
-        self, authenticator: OICExtensionAuthenticator,
+        self,
+        authenticator: OICExtensionAuthenticator,
     ) -> None:
         """Test OAuth request body generation."""
         body = authenticator.get_oauth_request_body()
@@ -182,7 +196,8 @@ class TestOICExtensionAuthenticator:
         assert body["scope"] == expected_scope
 
     def test_encode_client_credentials(
-        self, authenticator: OICExtensionAuthenticator,
+        self,
+        authenticator: OICExtensionAuthenticator,
     ) -> None:
         """Test client credentials encoding."""
         encoded = authenticator.encode_client_credentials()
@@ -245,7 +260,9 @@ class TestOracleOICExtensionClient:
 
     @patch.object(OICExtensionAuthenticator, "get_access_token")
     def test_get_authenticated_client_success(
-        self, mock_get_token: Mock, client: OracleOICExtensionClient,
+        self,
+        mock_get_token: Mock,
+        client: OracleOICExtensionClient,
     ) -> None:
         """Test successful authenticated client creation."""
         mock_get_token.return_value.is_success = True
@@ -259,7 +276,9 @@ class TestOracleOICExtensionClient:
 
     @patch.object(OICExtensionAuthenticator, "get_access_token")
     def test_get_authenticated_client_auth_failure(
-        self, mock_get_token: Mock, client: OracleOICExtensionClient,
+        self,
+        mock_get_token: Mock,
+        client: OracleOICExtensionClient,
     ) -> None:
         """Test authenticated client creation with auth failure."""
         # Mock the authenticator to return a failed result
@@ -278,7 +297,9 @@ class TestOracleOICExtensionClient:
 
     @patch.object(OracleOICExtensionClient, "get_authenticated_client")
     def test_get_integrations_success(
-        self, mock_get_client: Mock, client: OracleOICExtensionClient,
+        self,
+        mock_get_client: Mock,
+        client: OracleOICExtensionClient,
     ) -> None:
         """Test successful integration retrieval."""
         mock_http_client = Mock()
@@ -311,7 +332,9 @@ class TestOracleOICExtensionClient:
 
     @patch.object(OracleOICExtensionClient, "get_authenticated_client")
     def test_get_integrations_client_failure(
-        self, mock_get_client: Mock, client: OracleOICExtensionClient,
+        self,
+        mock_get_client: Mock,
+        client: OracleOICExtensionClient,
     ) -> None:
         """Test integration retrieval with client failure."""
         mock_get_client.return_value.is_success = False
@@ -324,7 +347,9 @@ class TestOracleOICExtensionClient:
 
     @patch.object(OracleOICExtensionClient, "get_authenticated_client")
     def test_get_integrations_http_error(
-        self, mock_get_client: Mock, client: OracleOICExtensionClient,
+        self,
+        mock_get_client: Mock,
+        client: OracleOICExtensionClient,
     ) -> None:
         """Test integration retrieval with HTTP error."""
         mock_http_client = Mock()
@@ -343,7 +368,9 @@ class TestOracleOICExtensionClient:
 
     @patch.object(OracleOICExtensionClient, "get_authenticated_client")
     def test_get_connections_success(
-        self, mock_get_client: Mock, client: OracleOICExtensionClient,
+        self,
+        mock_get_client: Mock,
+        client: OracleOICExtensionClient,
     ) -> None:
         """Test successful connection retrieval."""
         mock_http_client = Mock()
@@ -380,14 +407,16 @@ class TestOracleOICExtensionClient:
             assert result is client
 
     def test_client_authenticator_attribute(
-        self, client: OracleOICExtensionClient,
+        self,
+        client: OracleOICExtensionClient,
     ) -> None:
         """Test client has authenticator attribute."""
         assert client.authenticator is not None
         assert hasattr(client.authenticator, "auth_config")
 
     def test_client_has_connection_config(
-        self, client: OracleOICExtensionClient,
+        self,
+        client: OracleOICExtensionClient,
     ) -> None:
         """Test client has proper connection configuration."""
         assert client.connection_config is not None

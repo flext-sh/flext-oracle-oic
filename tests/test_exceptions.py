@@ -187,7 +187,8 @@ class TestFlextOracleOicDataValidationError:
     def test_validation_error_with_custom_code(self) -> None:
         """Test validation error with custom error code."""
         error = FlextOracleOicDataValidationError(
-            "Custom validation error", code="CUSTOM_VALIDATION_ERROR",
+            "Custom validation error",
+            code="CUSTOM_VALIDATION_ERROR",
         )
 
         assert error.code == "CUSTOM_VALIDATION_ERROR"
@@ -196,7 +197,9 @@ class TestFlextOracleOicDataValidationError:
         """Test validation error with custom context."""
         custom_context = {"custom_field": "custom_value", "another_field": 123}
         error = FlextOracleOicDataValidationError(
-            "Custom context error", field_name="test_field", context=custom_context,
+            "Custom context error",
+            field_name="test_field",
+            context=custom_context,
         )
 
         assert "custom_field" in error.context
@@ -254,7 +257,8 @@ class TestFlextOracleOicApiRequestError:
         """Test API request error truncates long response bodies."""
         long_response = "x" * 1000  # 1000 character response
         error = FlextOracleOicApiRequestError(
-            "Long response error", response_body=long_response,
+            "Long response error",
+            response_body=long_response,
         )
 
         # Should be truncated to 500 characters
@@ -266,7 +270,8 @@ class TestFlextOracleOicApiRequestError:
     def test_api_request_error_with_custom_code(self) -> None:
         """Test API request error with custom error code."""
         error = FlextOracleOicApiRequestError(
-            "Custom API error", code="CUSTOM_API_ERROR",
+            "Custom API error",
+            code="CUSTOM_API_ERROR",
         )
 
         assert error.code == "CUSTOM_API_ERROR"
@@ -318,7 +323,8 @@ class TestFlextOracleOicConfigError:
     def test_config_error_with_custom_code(self) -> None:
         """Test configuration error with custom error code."""
         error = FlextOracleOicConfigError(
-            "Custom config error", code="CUSTOM_CONFIG_ERROR",
+            "Custom config error",
+            code="CUSTOM_CONFIG_ERROR",
         )
 
         assert error.code == "CUSTOM_CONFIG_ERROR"
@@ -370,7 +376,8 @@ class TestFlextOracleOicIntegrationPatternError:
     def test_integration_pattern_error_with_custom_code(self) -> None:
         """Test integration pattern error with custom error code."""
         error = FlextOracleOicIntegrationPatternError(
-            "Custom pattern error", code="CUSTOM_PATTERN_ERROR",
+            "Custom pattern error",
+            code="CUSTOM_PATTERN_ERROR",
         )
 
         assert error.code == "CUSTOM_PATTERN_ERROR"
@@ -424,7 +431,8 @@ class TestFlextOracleOicWorkflowExecutionError:
     def test_workflow_execution_error_with_custom_code(self) -> None:
         """Test workflow execution error with custom error code."""
         error = FlextOracleOicWorkflowExecutionError(
-            "Custom workflow error", code="CUSTOM_WORKFLOW_ERROR",
+            "Custom workflow error",
+            code="CUSTOM_WORKFLOW_ERROR",
         )
 
         assert error.code == "CUSTOM_WORKFLOW_ERROR"
@@ -478,7 +486,8 @@ class TestFlextOracleOicOAuth2TokenError:
     def test_oauth2_token_error_with_custom_code(self) -> None:
         """Test OAuth2 token error with custom error code."""
         error = FlextOracleOicOAuth2TokenError(
-            "Custom token error", code="CUSTOM_TOKEN_ERROR",
+            "Custom token error",
+            code="CUSTOM_TOKEN_ERROR",
         )
 
         assert error.code == "CUSTOM_TOKEN_ERROR"

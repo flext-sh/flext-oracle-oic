@@ -498,7 +498,9 @@ class OracleOICExtensionClient(BaseOICClient):
             params["q"] = f"adapterType in ({','.join(type_filter)})"
 
         return await self.paginate_request(
-            "/connections", page_size=page_size, params=params,
+            "/connections",
+            page_size=page_size,
+            params=params,
         )
 
     async def get_packages(
