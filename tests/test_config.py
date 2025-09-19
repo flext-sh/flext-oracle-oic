@@ -133,7 +133,7 @@ class TestOracleOICExtensionSettings:
         )
 
         settings = OracleOICExtensionSettings(
-            connection=custom_connection, auth=custom_auth
+            connection=custom_connection, auth=custom_auth,
         )
 
         assert (

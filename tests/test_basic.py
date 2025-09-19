@@ -35,7 +35,7 @@ class TestBasicFunctionality:
         """Test OracleOICExtensionSettings creation."""
         settings = OracleOICExtensionSettings(
             connection=OICExtensionConnectionConfig(
-                base_url="https://test.integration.ocp.oraclecloud.com"
+                base_url="https://test.integration.ocp.oraclecloud.com",
             ),
             auth=OICExtensionAuthConfig(
                 oauth_client_id="test_client_id",

@@ -129,13 +129,13 @@ class BaseOICAuthenticator(ABC):
 
                 if response_result.is_failure:
                     return FlextResult[str].fail(
-                        f"OAuth request failed: {response_result.error}"
+                        f"OAuth request failed: {response_result.error}",
                     )
 
                 response = response_result.unwrap()
                 if response.status_code >= HTTP_ERROR_STATUS_THRESHOLD:
                     return FlextResult[str].fail(
-                        f"OAuth HTTP error: {response.status_code}"
+                        f"OAuth HTTP error: {response.status_code}",
                     )
 
                 # Handle response.body properly - it could be str, dict, or None
@@ -252,7 +252,7 @@ class BaseOICClient(ABC):
             client_result = await self.get_authenticated_client()
             if client_result.is_failure:
                 return FlextResult[FlextTypes.Core.Dict].fail(
-                    client_result.error or "Client error"
+                    client_result.error or "Client error",
                 )
 
             client = client_result.unwrap()
@@ -269,14 +269,14 @@ class BaseOICClient(ABC):
 
                 if response_result.is_failure:
                     return FlextResult[FlextTypes.Core.Dict].fail(
-                        f"Request failed: {response_result.error}"
+                        f"Request failed: {response_result.error}",
                     )
 
                 response = response_result.unwrap()
 
                 # Parse response body properly - it could be str, dict, or None
                 if response.headers.get("content-type", "").startswith(
-                    "application/json"
+                    "application/json",
                 ):
                     if isinstance(response.body, dict):
                         return FlextResult[FlextTypes.Core.Dict].ok(response.body)
@@ -288,12 +288,12 @@ class BaseOICClient(ABC):
                 # Non-JSON response
                 if isinstance(response.body, str):
                     return FlextResult[FlextTypes.Core.Dict].ok(
-                        {"raw_content": response.body}
+                        {"raw_content": response.body},
                     )
                 if isinstance(response.body, dict):
                     return FlextResult[FlextTypes.Core.Dict].ok(response.body)
                 return FlextResult[FlextTypes.Core.Dict].ok(
-                    {"raw_content": str(response.body)}
+                    {"raw_content": str(response.body)},
                 )
 
         except Exception as e:
@@ -350,19 +350,19 @@ class BaseOICClient(ABC):
                 )
                 if not response_result.success:
                     return FlextResult[list[FlextTypes.Core.Dict]].fail(
-                        response_result.error or "Request failed"
+                        response_result.error or "Request failed",
                     )
 
                 response_data = response_result.data
                 if response_data is None or not isinstance(response_data, dict):
                     return FlextResult[list[FlextTypes.Core.Dict]].fail(
-                        "Invalid response data format"
+                        "Invalid response data format",
                     )
 
                 items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):
                     return FlextResult[list[FlextTypes.Core.Dict]].fail(
-                        "Invalid items format"
+                        "Invalid items format",
                     )
                 items = items_raw
 
@@ -498,7 +498,7 @@ class OracleOICExtensionClient(BaseOICClient):
             params["q"] = f"adapterType in ({','.join(type_filter)})"
 
         return await self.paginate_request(
-            "/connections", page_size=page_size, params=params
+            "/connections", page_size=page_size, params=params,
         )
 
     async def get_packages(

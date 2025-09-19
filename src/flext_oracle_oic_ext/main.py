@@ -72,7 +72,7 @@ def _handle_general_error(message: str, error: Exception) -> NoReturn:
 
 
 @app.command("test-connection")
-def test_connection() -> None:
+async def test_connection() -> None:
     """Test connection to Oracle OIC instance.
 
     EXTENSION Pattern: Command to test Oracle OIC connectivity
@@ -92,7 +92,7 @@ def test_connection() -> None:
 
         # Test connection
         with service:
-            connection_result = service.test_connection()
+            connection_result = await service.test_connection()
             if connection_result.success:
                 logger.info("✅ Oracle OIC connection successful!")
                 typer.echo("✅ Connection to Oracle OIC established successfully")
@@ -106,7 +106,7 @@ def test_connection() -> None:
 
 
 @app.command("list-integrations")
-def list_integrations() -> None:
+async def list_integrations() -> None:
     """List Oracle OIC integrations.
 
     EXTENSION Pattern: Command to list Oracle OIC integrations
@@ -130,7 +130,7 @@ def list_integrations() -> None:
 
         # List integrations
         with service:
-            integrations_result = service.list_integrations()
+            integrations_result = await service.list_integrations()
             if integrations_result.success:
                 integrations = integrations_result.data or []
                 logger.info(f"Found {len(integrations)} integrations")

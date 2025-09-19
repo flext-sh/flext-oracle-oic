@@ -38,7 +38,7 @@ class TestOracleOICExtensionService:
         """Create test settings."""
         return OracleOICExtensionSettings(
             connection=OICExtensionConnectionConfig(
-                base_url="https://test.integration.ocp.oraclecloud.com"
+                base_url="https://test.integration.ocp.oraclecloud.com",
             ),
             auth=OICExtensionAuthConfig(
                 oauth_client_id="test_client_id",
@@ -49,18 +49,18 @@ class TestOracleOICExtensionService:
 
     @pytest.fixture
     def service(
-        self, settings: OracleOICExtensionSettings
+        self, settings: OracleOICExtensionSettings,
     ) -> OracleOICExtensionService:
         """Create test service."""
         return OracleOICExtensionService(settings)
 
     def test_service_initialization(
-        self, service: OracleOICExtensionService, settings: OracleOICExtensionSettings
+        self, service: OracleOICExtensionService, settings: OracleOICExtensionSettings,
     ) -> None:
         """Test service initialization."""
         assert service.settings == settings
         assert hasattr(
-            service, "log_info"
+            service, "log_info",
         )  # FlextMixins.Loggable provides logging methods
         assert getattr(service, "_client", None) is None
 
@@ -71,7 +71,7 @@ class TestOracleOICExtensionService:
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_get_client_success(
-        self, mock_client_class: Mock, service: OracleOICExtensionService
+        self, mock_client_class: Mock, service: OracleOICExtensionService,
     ) -> None:
         """Test successful client creation."""
         mock_client = Mock()
@@ -81,11 +81,11 @@ class TestOracleOICExtensionService:
 
         assert result.is_success
         assert result.value == mock_client
-        assert getattr(service, "_client") == mock_client
+        assert service._client == mock_client
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_get_client_cached(
-        self, mock_client_class: Mock, service: OracleOICExtensionService
+        self, mock_client_class: Mock, service: OracleOICExtensionService,
     ) -> None:
         """Test client caching."""
         mock_client = Mock()
@@ -100,7 +100,7 @@ class TestOracleOICExtensionService:
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_get_client_failure(
-        self, mock_client_class: Mock, service: OracleOICExtensionService
+        self, mock_client_class: Mock, service: OracleOICExtensionService,
     ) -> None:
         """Test client creation failure."""
         mock_client_class.side_effect = Exception("Client creation failed")
@@ -112,7 +112,7 @@ class TestOracleOICExtensionService:
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_list_integrations_success(
-        self, mock_client_class: Mock, service: OracleOICExtensionService
+        self, mock_client_class: Mock, service: OracleOICExtensionService,
     ) -> None:
         """Test successful integration listing."""
         mock_client = Mock()
@@ -127,12 +127,12 @@ class TestOracleOICExtensionService:
         assert result.is_success
         assert result.value == []
         mock_client.get_integrations.assert_called_once_with(
-            status_filter=None, page_size=100
+            status_filter=None, page_size=100,
         )
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_list_integrations_client_failure(
-        self, mock_client_class: Mock, service: OracleOICExtensionService
+        self, mock_client_class: Mock, service: OracleOICExtensionService,
     ) -> None:
         """Test integration listing with client failure."""
         mock_client_class.side_effect = Exception("Client error")
@@ -144,7 +144,7 @@ class TestOracleOICExtensionService:
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_list_integrations_with_filters(
-        self, mock_client_class: Mock, service: OracleOICExtensionService
+        self, mock_client_class: Mock, service: OracleOICExtensionService,
     ) -> None:
         """Test integration listing with filters."""
         mock_client = Mock()
@@ -158,12 +158,12 @@ class TestOracleOICExtensionService:
 
         assert result.is_success
         mock_client.get_integrations.assert_called_once_with(
-            status_filter=["ACTIVE"], page_size=100
+            status_filter=["ACTIVE"], page_size=100,
         )
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_list_connections_success(
-        self, mock_client_class: Mock, service: OracleOICExtensionService
+        self, mock_client_class: Mock, service: OracleOICExtensionService,
     ) -> None:
         """Test successful connection listing."""
         mock_client = Mock()
@@ -176,12 +176,12 @@ class TestOracleOICExtensionService:
         assert result.is_success
         assert result.value == []
         mock_client.get_connections.assert_called_once_with(
-            type_filter=None, page_size=100
+            type_filter=None, page_size=100,
         )
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_list_connections_with_filters(
-        self, mock_client_class: Mock, service: OracleOICExtensionService
+        self, mock_client_class: Mock, service: OracleOICExtensionService,
     ) -> None:
         """Test connection listing with filters."""
         mock_client = Mock()
@@ -195,12 +195,12 @@ class TestOracleOICExtensionService:
 
         assert result.is_success
         mock_client.get_connections.assert_called_once_with(
-            type_filter=["REST"], page_size=100
+            type_filter=["REST"], page_size=100,
         )
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_test_connection_success(
-        self, mock_client_class: Mock, service: OracleOICExtensionService
+        self, mock_client_class: Mock, service: OracleOICExtensionService,
     ) -> None:
         """Test successful connection test."""
         mock_client = Mock()
@@ -215,7 +215,7 @@ class TestOracleOICExtensionService:
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_test_connection_failure(
-        self, mock_client_class: Mock, service: OracleOICExtensionService
+        self, mock_client_class: Mock, service: OracleOICExtensionService,
     ) -> None:
         """Test connection test failure."""
         mock_client = Mock()
@@ -230,7 +230,7 @@ class TestOracleOICExtensionService:
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_deploy_integration_success(
-        self, mock_client_class: Mock, service: OracleOICExtensionService
+        self, mock_client_class: Mock, service: OracleOICExtensionService,
     ) -> None:
         """Test successful integration deployment."""
         mock_client = Mock()
@@ -262,14 +262,14 @@ class TestOICIntegrationPatternService:
         return OICIntegrationPatternService(oic_service)
 
     def test_pattern_service_initialization(
-        self, pattern_service: OICIntegrationPatternService, oic_service: Mock
+        self, pattern_service: OICIntegrationPatternService, oic_service: Mock,
     ) -> None:
         """Test pattern service initialization."""
         assert pattern_service.oic_service == oic_service
         assert pattern_service.logger is not None
 
     def test_apply_message_router_pattern_success(
-        self, pattern_service: OICIntegrationPatternService
+        self, pattern_service: OICIntegrationPatternService,
     ) -> None:
         """Test message router pattern application."""
         source_config: dict[str, object] = {"endpoint": "source_endpoint"}
@@ -279,7 +279,7 @@ class TestOICIntegrationPatternService:
         ]
 
         result = pattern_service.apply_message_router_pattern(
-            source_config, target_configs
+            source_config, target_configs,
         )
 
         assert result.is_success
@@ -289,28 +289,28 @@ class TestOICIntegrationPatternService:
         assert "applied_rules" in result.value
 
     def test_apply_message_router_pattern_empty_targets(
-        self, pattern_service: OICIntegrationPatternService
+        self, pattern_service: OICIntegrationPatternService,
     ) -> None:
         """Test message router pattern with empty targets."""
         source_config: dict[str, object] = {"endpoint": "source_endpoint"}
         target_configs: list[dict[str, object]] = []
 
         result = pattern_service.apply_message_router_pattern(
-            source_config, target_configs
+            source_config, target_configs,
         )
 
         assert result.is_success  # Current implementation doesn't validate inputs
         assert result.value["applied_rules"] == 0
 
     def test_apply_scatter_gather_pattern_success(
-        self, pattern_service: OICIntegrationPatternService
+        self, pattern_service: OICIntegrationPatternService,
     ) -> None:
         """Test scatter-gather pattern application."""
         request_data: dict[str, object] = {"id": "test_request_123", "data": "test"}
         target_endpoints = ["ep1", "ep2"]
 
         result = pattern_service.apply_scatter_gather_pattern(
-            request_data, target_endpoints
+            request_data, target_endpoints,
         )
 
         assert result.is_success
@@ -320,14 +320,14 @@ class TestOICIntegrationPatternService:
         assert "target_count" in result.value
 
     def test_apply_scatter_gather_pattern_invalid_scatter(
-        self, pattern_service: OICIntegrationPatternService
+        self, pattern_service: OICIntegrationPatternService,
     ) -> None:
         """Test scatter-gather pattern with invalid scatter config."""
         request_data: dict[str, object] = {}
         target_endpoints: list[str] = []
 
         result = pattern_service.apply_scatter_gather_pattern(
-            request_data, target_endpoints
+            request_data, target_endpoints,
         )
 
         assert result.is_success  # Method currently doesn't validate input
@@ -342,7 +342,7 @@ class TestLifecycleManager:
         """Create test settings."""
         return OracleOICExtensionSettings(
             connection=OICExtensionConnectionConfig(
-                base_url="https://test.integration.ocp.oraclecloud.com"
+                base_url="https://test.integration.ocp.oraclecloud.com",
             ),
             auth=OICExtensionAuthConfig(
                 oauth_client_id="test_client_id",
@@ -357,7 +357,7 @@ class TestLifecycleManager:
         return LifecycleManager(settings)
 
     def test_manager_initialization(
-        self, manager: LifecycleManager, settings: OracleOICExtensionSettings
+        self, manager: LifecycleManager, settings: OracleOICExtensionSettings,
     ) -> None:
         """Test manager initialization."""
         assert manager.settings == settings
@@ -366,7 +366,7 @@ class TestLifecycleManager:
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_get_client_success(
-        self, mock_client_class: Mock, manager: LifecycleManager
+        self, mock_client_class: Mock, manager: LifecycleManager,
     ) -> None:
         """Test successful client creation."""
         mock_client = Mock()
@@ -379,7 +379,7 @@ class TestLifecycleManager:
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_activate_integration_success(
-        self, mock_client_class: Mock, manager: LifecycleManager
+        self, mock_client_class: Mock, manager: LifecycleManager,
     ) -> None:
         """Test successful integration activation."""
         mock_client = Mock()
@@ -392,12 +392,12 @@ class TestLifecycleManager:
         # result.value should be an IntegrationStatus object, not a boolean
         assert isinstance(result.value, IntegrationStatus)
         mock_client.update_integration.assert_called_once_with(
-            "test_integration_id", {"status": "ACTIVATED"}
+            "test_integration_id", {"status": "ACTIVATED"},
         )
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_activate_integration_client_failure(
-        self, mock_client_class: Mock, manager: LifecycleManager
+        self, mock_client_class: Mock, manager: LifecycleManager,
     ) -> None:
         """Test integration activation with client failure."""
         mock_client_class.side_effect = Exception("Client error")
@@ -409,7 +409,7 @@ class TestLifecycleManager:
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_activate_integration_operation_failure(
-        self, mock_client_class: Mock, manager: LifecycleManager
+        self, mock_client_class: Mock, manager: LifecycleManager,
     ) -> None:
         """Test integration activation operation failure."""
         mock_client = Mock()
@@ -424,7 +424,7 @@ class TestLifecycleManager:
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_deactivate_integration_success(
-        self, mock_client_class: Mock, manager: LifecycleManager
+        self, mock_client_class: Mock, manager: LifecycleManager,
     ) -> None:
         """Test successful integration deactivation."""
         mock_client = Mock()
@@ -437,12 +437,12 @@ class TestLifecycleManager:
         # result.value should be an IntegrationStatus object, not a boolean
         assert isinstance(result.value, IntegrationStatus)
         mock_client.update_integration.assert_called_once_with(
-            "test_integration_id", {"status": "DEACTIVATED"}
+            "test_integration_id", {"status": "DEACTIVATED"},
         )
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
     def test_deactivate_integration_client_failure(
-        self, mock_client_class: Mock, manager: LifecycleManager
+        self, mock_client_class: Mock, manager: LifecycleManager,
     ) -> None:
         """Test integration deactivation with client failure."""
         mock_client_class.side_effect = Exception("Client error")
@@ -467,14 +467,14 @@ class TestMonitoringService:
         return MonitoringService(mock_http_client)
 
     def test_monitoring_service_initialization(
-        self, monitoring_service: MonitoringService, mock_http_client: Mock
+        self, monitoring_service: MonitoringService, mock_http_client: Mock,
     ) -> None:
         """Test monitoring service initialization."""
         assert monitoring_service.client == mock_http_client
         assert monitoring_service.logger is not None
 
     def test_get_health_status_success(
-        self, monitoring_service: MonitoringService, mock_http_client: Mock
+        self, monitoring_service: MonitoringService, mock_http_client: Mock,
     ) -> None:
         """Test successful health status retrieval."""
         mock_response = Mock(spec=HTTPResponseProtocol)
@@ -493,7 +493,7 @@ class TestMonitoringService:
         mock_http_client.get.assert_called_once()
 
     def test_get_health_status_failure(
-        self, monitoring_service: MonitoringService, mock_http_client: Mock
+        self, monitoring_service: MonitoringService, mock_http_client: Mock,
     ) -> None:
         """Test health status retrieval failure."""
         mock_response = Mock(spec=HTTPResponseProtocol)
@@ -507,7 +507,7 @@ class TestMonitoringService:
         assert "error" in result
 
     def test_get_health_status_exception(
-        self, monitoring_service: MonitoringService, mock_http_client: Mock
+        self, monitoring_service: MonitoringService, mock_http_client: Mock,
     ) -> None:
         """Test health status retrieval with exception."""
         mock_http_client.get.side_effect = Exception("Network error")
@@ -519,7 +519,7 @@ class TestMonitoringService:
         assert "Network error" in str(result["error"])
 
     def test_get_performance_metrics_success(
-        self, monitoring_service: MonitoringService, mock_http_client: Mock
+        self, monitoring_service: MonitoringService, mock_http_client: Mock,
     ) -> None:
         """Test successful performance metrics retrieval."""
         mock_response = Mock(spec=HTTPResponseProtocol)
@@ -541,7 +541,7 @@ class TestMonitoringService:
         mock_http_client.get.assert_called_once()
 
     def test_get_performance_metrics_failure(
-        self, monitoring_service: MonitoringService, mock_http_client: Mock
+        self, monitoring_service: MonitoringService, mock_http_client: Mock,
     ) -> None:
         """Test performance metrics retrieval failure."""
         mock_response = Mock(spec=HTTPResponseProtocol)
@@ -555,7 +555,7 @@ class TestMonitoringService:
         assert "error" in result
 
     def test_get_performance_metrics_exception(
-        self, monitoring_service: MonitoringService, mock_http_client: Mock
+        self, monitoring_service: MonitoringService, mock_http_client: Mock,
     ) -> None:
         """Test performance metrics retrieval with exception."""
         mock_http_client.get.side_effect = Exception("Timeout error")
