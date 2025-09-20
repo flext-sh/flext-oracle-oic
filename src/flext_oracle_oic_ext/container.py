@@ -17,7 +17,9 @@ if _utilities_result.is_success:
     # Type annotation: _utilities should be a dict-like object
     if hasattr(_utilities, "get"):
         get_flext_oracle_oic_ext_container = _utilities.get("get_container")
-        configure_flext_oracle_oic_ext_dependencies = _utilities.get("configure_dependencies")
+        configure_flext_oracle_oic_ext_dependencies = _utilities.get(
+            "configure_dependencies"
+        )
         get_flext_oracle_oic_ext_service = _utilities.get("get_service")
     else:
         # Fallback if utilities doesn't have expected interface

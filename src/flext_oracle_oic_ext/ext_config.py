@@ -66,10 +66,10 @@ class OracleOICExtensionConfig(FlextConfig):
 
         # Nested configuration objects with proper default factories
         connection: OracleOICExtensionConfig.ConnectionConfig = Field(
-            default_factory=lambda: OracleOICExtensionConfig.ConnectionConfig(),
+            default_factory=OracleOICExtensionConfig.ConnectionConfig,
         )
         auth: OracleOICExtensionConfig.AuthConfig = Field(
-            default_factory=lambda: OracleOICExtensionConfig.AuthConfig(),
+            default_factory=OracleOICExtensionConfig.AuthConfig,
         )
 
         @model_validator(mode="after")
