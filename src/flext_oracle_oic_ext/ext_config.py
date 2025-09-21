@@ -64,7 +64,7 @@ class OracleOICExtensionConfig(FlextConfig):
         consolidando todas as configurações necessárias.
         """
 
-        # Nested configuration objects with proper default factories
+        # Use forward references for nested types
         connection: OracleOICExtensionConfig.ConnectionConfig = Field(
             default_factory=OracleOICExtensionConfig.ConnectionConfig,
         )

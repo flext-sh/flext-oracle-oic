@@ -15,7 +15,13 @@ from typing import Protocol, Self
 
 from pydantic import ConfigDict, SecretStr
 
-from flext_core import FlextDomainService, FlextLogger, FlextResult, FlextTypes
+from flext_core import (
+    FlextConstants,
+    FlextDomainService,
+    FlextLogger,
+    FlextResult,
+    FlextTypes,
+)
 from flext_oracle_oic_ext.ext_client import (
     OICExtensionAuthenticator,
     OracleOICExtensionClient,
@@ -33,8 +39,7 @@ from flext_oracle_oic_ext.ext_models import (
 
 logger = FlextLogger(__name__)
 
-# HTTP Status Codes
-HTTP_OK = 200
+# HTTP Status Codes - use FlextConstants for standardization
 
 
 class HTTPClientProtocol(Protocol):
@@ -85,6 +90,7 @@ class OracleOICExtensionService(FlextDomainService[list[OICIntegrationInfo]]):
         # Initialize parent FlextDomainService (no parameters needed)
         _ = data  # Use the parameter to avoid unused argument warning
         super().__init__()
+        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
         # Set settings using object.__setattr__ for frozen model
         object.__setattr__(self, "settings", settings)
         # Client is not part of the frozen model - use object.__setattr__
@@ -182,7 +188,7 @@ class OracleOICExtensionService(FlextDomainService[list[OICIntegrationInfo]]):
 
         except Exception as e:
             error_msg = f"Failed to create OIC client: {e}"
-            self.log_error(error_msg, exc_info=True)
+            self.logger.exception(error_msg)
             return FlextResult[OracleOICExtensionClient].fail(error_msg)
 
     async def list_integrations(
@@ -237,15 +243,15 @@ class OracleOICExtensionService(FlextDomainService[list[OICIntegrationInfo]]):
                     )
                     integration_infos.append(integration_info)
                 except Exception as e:
-                    self.log_warning(f"Failed to parse integration: {e}")
+                    self.logger.warning(f"Failed to parse integration: {e}")
                     continue
 
-            self.log_info(f"Retrieved {len(integration_infos)} integrations")
+            self.logger.info(f"Retrieved {len(integration_infos)} integrations")
             return FlextResult[list[OICIntegrationInfo]].ok(integration_infos)
 
         except Exception as e:
             error_msg = f"Failed to list integrations: {e}"
-            self.log_error(error_msg, exc_info=True)
+            self.logger.exception(error_msg)
             return FlextResult[list[OICIntegrationInfo]].fail(error_msg)
 
     async def list_connections(
@@ -299,15 +305,15 @@ class OracleOICExtensionService(FlextDomainService[list[OICIntegrationInfo]]):
                     )
                     connection_infos.append(connection_info)
                 except Exception as e:
-                    self.log_warning(f"Failed to parse connection: {e}")
+                    self.logger.warning(f"Failed to parse connection: {e}")
                     continue
 
-            self.log_info(f"Retrieved {len(connection_infos)} connections")
+            self.logger.info(f"Retrieved {len(connection_infos)} connections")
             return FlextResult[list[OICConnectionInfo]].ok(connection_infos)
 
         except Exception as e:
             error_msg = f"Failed to list connections: {e}"
-            self.log_error(error_msg, exc_info=True)
+            self.logger.exception(error_msg)
             return FlextResult[list[OICConnectionInfo]].fail(error_msg)
 
     async def test_connection(self) -> FlextResult[bool]:
@@ -332,15 +338,15 @@ class OracleOICExtensionService(FlextDomainService[list[OICIntegrationInfo]]):
             integrations_result = await client.get_integrations(page_size=1)
 
             if integrations_result.success:
-                self.log_info("OIC connection test successful")
+                self.logger.info("OIC connection test successful")
                 return FlextResult[bool].ok(data=True)
             error_msg = f"OIC connection test failed: {integrations_result.error}"
-            self.log_error(error_msg)
+            self.logger.error(error_msg)
             return FlextResult[bool].fail(error_msg)
 
         except Exception as e:
             error_msg = f"Connection test error: {e}"
-            self.log_error(error_msg, exc_info=True)
+            self.logger.exception(error_msg)
             return FlextResult[bool].fail(error_msg)
 
     async def deploy_integration(
@@ -384,12 +390,12 @@ class OracleOICExtensionService(FlextDomainService[list[OICIntegrationInfo]]):
             if not integration_id:
                 return FlextResult[str].fail("No integration ID returned")
 
-            self.log_info(f"Integration deployed successfully: {integration_id}")
+            self.logger.info(f"Integration deployed successfully: {integration_id}")
             return FlextResult[str].ok(str(integration_id))
 
         except Exception as e:
             error_msg = f"Failed to deploy integration: {e}"
-            self.log_error(error_msg, exc_info=True)
+            self.logger.exception(error_msg)
             return FlextResult[str].fail(error_msg)
 
     def __enter__(self) -> Self:
@@ -686,7 +692,7 @@ class MonitoringService:
             # Mock health check response
             response = self.client.get("/ic/api/integration/v1/health")
 
-            if response.status_code == HTTP_OK:
+            if response.status_code == FlextConstants.Platform.HTTP_STATUS_OK:
                 health_data = response.json()
                 return {
                     "status": "healthy",
@@ -730,7 +736,7 @@ class MonitoringService:
             # Mock performance metrics response
             response = self.client.get("/ic/api/integration/v1/metrics")
 
-            if response.status_code == HTTP_OK:
+            if response.status_code == FlextConstants.Platform.HTTP_STATUS_OK:
                 metrics_data = response.json()
                 return {
                     "active_integrations": metrics_data.get("active_integrations", 0),

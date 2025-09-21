@@ -66,7 +66,7 @@ def _handle_connection_error(message: str) -> NoReturn:
 
 def _handle_general_error(message: str, error: Exception) -> NoReturn:
     """Handle general error by logging and raising typer.Exit."""
-    logger.error("Error: %s", message)
+    logger.error(f"Error: {message}")
     typer.echo(f"❌ {message}: {error}")
     raise typer.Exit(code=1) from error
 
