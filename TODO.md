@@ -29,7 +29,7 @@
 
 ### FLEXT Ecosystem Integration Analysis
 
-- **Core Patterns**: Must implement FlextDomainService unified class pattern
+- **Core Patterns**: Must implement FlextService unified class pattern
 - **Railway Pattern**: FlextResult usage incomplete
 - **Dependency Injection**: FlextContainer not implemented
 - **Service Architecture**: Needs FLEXT-compliant service layers
@@ -52,7 +52,7 @@
 
 ### FLEXT Ecosystem Compliance Assessment
 
-- **FlextDomainService**: ❌ Not inherited (core violation)
+- **FlextService**: ❌ Not inherited (core violation)
 - **FlextContainer**: ❌ Not implemented (DI missing)
 - **FlextResult Railway**: 🟡 Partial (inconsistent usage)
 - **Unified Class Pattern**: ❌ Multiple classes per module
@@ -71,7 +71,7 @@
    - [ ] Fix 2 MyPy errors: `exceptions.py:283` OIC_TOKEN_ERROR, `test_models.py:61` type mismatch
    - [ ] Replace `import httpx` (ext_client.py:12) with flext-api patterns
    - [ ] Replace `import typer` (main.py:15) with flext-cli patterns
-   - [ ] Implement FlextDomainService inheritance for all service classes
+   - [ ] Implement FlextService inheritance for all service classes
 
 2. **FLEXT Ecosystem Compliance**
    - [ ] Refactor to unified class pattern (single class per module with nested helpers)
@@ -90,7 +90,7 @@
    - [ ] Implement exponential backoff retry strategy following OCI SDK patterns
 
 2. **Enterprise OIC Client Architecture**
-   - [ ] Create unified OracleOICIntegrationService following FlextDomainService pattern
+   - [ ] Create unified OracleOICIntegrationService following FlextService pattern
    - [ ] Implement circuit breaker pattern for fault tolerance
    - [ ] Add comprehensive request/response logging with FlextLogger
    - [ ] Create connection pooling and resource management
@@ -135,7 +135,7 @@
 
 - **Test Coverage**: 60-70% with meaningful integration tests
 - **Type Safety**: Zero MyPy errors in strict mode
-- **FLEXT Compliance**: 100% FlextDomainService pattern compliance
+- **FLEXT Compliance**: 100% FlextService pattern compliance
 - **Oracle OIC**: Functional OAuth2 Gen3 authentication and basic integration patterns
 - **Documentation**: Complete alignment between docs and implementation
 
@@ -162,7 +162,7 @@
 
 1. **Fix MyPy errors**: `exceptions.py:283` OIC_TOKEN_ERROR attribute, `test_models.py:61` type validation
 2. **FLEXT compliance**: Replace direct httpx/typer imports with flext-api/flext-cli patterns
-3. **Architecture refactor**: Begin FlextDomainService inheritance implementation
+3. **Architecture refactor**: Begin FlextService inheritance implementation
 4. **Documentation update**: Complete alignment of all docs with actual implementation
 
 ### Week 2: Foundation Implementation

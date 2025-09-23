@@ -20,7 +20,7 @@
 ### Knowledge Requirements
 
 - Basic understanding of Oracle Integration Cloud concepts
-- Familiarity with FLEXT ecosystem patterns (FlextResult, FlextDomainService)
+- Familiarity with FLEXT ecosystem patterns (FlextResult, FlextService)
 - Python experience with Pydantic and type annotations
 
 ## Installation
@@ -157,7 +157,7 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 
 ### Planned Features 🚧
 
-- **FlextDomainService Implementation**: Complete FLEXT compliance (critical requirement)
+- **FlextService Implementation**: Complete FLEXT compliance (critical requirement)
 - **OAuth2/IDCS Authentication**: Full Oracle cloud authentication
 - **Integration Patterns**: App-driven orchestration, scheduled orchestration
 - **Enterprise Features**: Circuit breaker, retry patterns, monitoring
@@ -167,7 +167,7 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 1. **FLEXT Compliance Violations**:
    - Direct `httpx` import in `ext_client.py:12` (should use flext-api)
    - Direct `typer` import in `main.py:15` (should use flext-cli)
-   - Missing FlextDomainService inheritance
+   - Missing FlextService inheritance
 
 2. **Type Safety Issues**:
    - 2 MyPy errors in `exceptions.py:283` and `test_models.py:61`

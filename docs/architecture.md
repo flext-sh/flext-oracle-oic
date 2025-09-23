@@ -44,7 +44,7 @@ The library follows these core principles from the FLEXT ecosystem:
 
 **FLEXT Ecosystem Compliance**
 
-- Missing FlextDomainService inheritance (critical requirement)
+- Missing FlextService inheritance (critical requirement)
 - Direct httpx/typer imports violate FLEXT abstraction patterns
 - Incomplete FlextContainer dependency injection implementation
 - Multiple classes per module violate unified class pattern
@@ -111,7 +111,7 @@ class LifecycleManager                 # Service lifecycle
 class MonitoringService                # Basic monitoring
 
 # Required FLEXT pattern: Single unified class per module
-class OracleOICIntegrationService(FlextDomainService):
+class OracleOICIntegrationService(FlextService):
     """Unified service with nested helpers."""
 
     class _IntegrationHelper:
@@ -181,7 +181,7 @@ class ServiceClass:
 
 ### Missing FLEXT Integration ❌
 
-**FlextDomainService Inheritance**
+**FlextService Inheritance**
 
 ```python
 # ❌ Current implementation
@@ -189,7 +189,7 @@ class OracleOICExtensionService:
     pass
 
 # ✅ Required FLEXT pattern
-class OracleOICIntegrationService(FlextDomainService):
+class OracleOICIntegrationService(FlextService):
     pass
 ```
 
@@ -291,8 +291,8 @@ tests/
    - Replace `httpx` with `flext-api` patterns
    - Replace `typer` with `flext-cli` patterns
 
-3. **Implement FlextDomainService**
-   - Convert service classes to inherit from FlextDomainService
+3. **Implement FlextService**
+   - Convert service classes to inherit from FlextService
    - Implement unified class pattern with nested helpers
 
 ### Phase 2: Oracle OIC Implementation (Months 2-3)

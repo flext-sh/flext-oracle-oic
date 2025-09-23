@@ -17,9 +17,9 @@ from pydantic import ConfigDict, SecretStr
 
 from flext_core import (
     FlextConstants,
-    FlextDomainService,
     FlextLogger,
     FlextResult,
+    FlextService,
     FlextTypes,
 )
 from flext_oracle_oic_ext.ext_client import (
@@ -61,7 +61,7 @@ class HTTPResponseProtocol(Protocol):
 # ================================
 
 
-class OracleOICExtensionService(FlextDomainService[list[OICIntegrationInfo]]):
+class OracleOICExtensionService(FlextService[list[OICIntegrationInfo]]):
     """Main Oracle OIC Extension service.
 
     FLEXT Compliant: Domain service for Oracle OIC operations
@@ -84,10 +84,10 @@ class OracleOICExtensionService(FlextDomainService[list[OICIntegrationInfo]]):
 
         Args:
             settings: Extension configuration settings
-            **data: Additional initialization data for FlextDomainService
+            **data: Additional initialization data for FlextService
 
         """
-        # Initialize parent FlextDomainService (no parameters needed)
+        # Initialize parent FlextService (no parameters needed)
         _ = data  # Use the parameter to avoid unused argument warning
         super().__init__()
         self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
