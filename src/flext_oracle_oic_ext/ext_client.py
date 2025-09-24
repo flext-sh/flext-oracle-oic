@@ -46,7 +46,7 @@ class BaseOICAuthenticator(ABC):
         self._access_token: str | None = None
 
     @abstractmethod
-    def get_oauth_scopes(self) -> str:
+    def get_oauth_scopes(self: object) -> str:
         """Get OAuth2 scopes for authentication.
 
         Returns:
@@ -74,7 +74,7 @@ class BaseOICAuthenticator(ABC):
         # Fallback to simple scope
         return self.auth_config.oauth_scope or "urn:opc:resource:consumer:all"
 
-    def get_oauth_request_body(self) -> dict[str, str]:
+    def get_oauth_request_body(self: object) -> dict[str, str]:
         """Generate OAuth2 request body for client credentials flow.
 
         Returns:
@@ -86,7 +86,7 @@ class BaseOICAuthenticator(ABC):
             "scope": str(self.get_oauth_scopes()),
         }
 
-    def encode_client_credentials(self) -> str:
+    def encode_client_credentials(self: object) -> str:
         """Encode client credentials for HTTP Basic authentication.
 
         Returns:
@@ -142,7 +142,7 @@ class BaseOICAuthenticator(ABC):
                 if isinstance(response.body, dict):
                     token_data = response.body
                 elif isinstance(response.body, str):
-                    token_data = json_module.loads(response.body)
+                    token_data: dict[str, object] = json_module.loads(response.body)
                 else:
                     return FlextResult[str].fail("Empty or invalid OAuth response body")
 
@@ -189,7 +189,7 @@ class BaseOICClient(ABC):
         self._client: FlextApiClient | None = None
 
     @abstractmethod
-    def get_base_url(self) -> str:
+    def get_base_url(self: object) -> str:
         """Get OIC API base URL."""
 
     async def get_authenticated_client(self) -> FlextResult[FlextApiClient]:
@@ -202,7 +202,9 @@ class BaseOICClient(ABC):
         try:
             if not self._client:
                 # Get OAuth2 token
-                token_result = await self.authenticator.get_access_token()
+                token_result: FlextResult[
+                    object
+                ] = await self.authenticator.get_access_token()
                 if token_result.is_failure:
                     return FlextResult[FlextApiClient].fail(
                         f"Authentication failed: {token_result.error}",
@@ -249,7 +251,7 @@ class BaseOICClient(ABC):
         """
         try:
             # Get authenticated client
-            client_result = await self.get_authenticated_client()
+            client_result: FlextResult[object] = await self.get_authenticated_client()
             if client_result.is_failure:
                 return FlextResult[FlextTypes.Core.Dict].fail(
                     client_result.error or "Client error",
@@ -281,7 +283,9 @@ class BaseOICClient(ABC):
                     if isinstance(response.body, dict):
                         return FlextResult[FlextTypes.Core.Dict].ok(response.body)
                     if isinstance(response.body, str):
-                        parsed_data = json_module.loads(response.body)
+                        parsed_data: dict[str, object] = json_module.loads(
+                            response.body
+                        )
                         return FlextResult[FlextTypes.Core.Dict].ok(parsed_data)
                     return FlextResult[FlextTypes.Core.Dict].fail("Empty JSON response")
 
@@ -359,7 +363,7 @@ class BaseOICClient(ABC):
                         "Invalid response data format",
                     )
 
-                items_raw = response_data.get("items", [])
+                items_raw: list[object] = response_data.get("items", [])
                 if not isinstance(items_raw, list):
                     return FlextResult[list[FlextTypes.Core.Dict]].fail(
                         "Invalid items format",
@@ -383,7 +387,7 @@ class BaseOICClient(ABC):
             self.logger.exception(error_msg)
             return FlextResult[list[FlextTypes.Core.Dict]].fail(error_msg)
 
-    def __enter__(self) -> Self:
+    def __enter__(self: object) -> Self:
         """Context manager entry."""
         return self
 
@@ -411,7 +415,7 @@ class OICExtensionAuthenticator(BaseOICAuthenticator):
     extensions with appropriate scopes.
     """
 
-    def get_oauth_scopes(self) -> str:
+    def get_oauth_scopes(self: object) -> str:
         """Get OAuth2 scopes for OIC Extension."""
         return self.build_oauth_scopes()
 
@@ -423,7 +427,7 @@ class OICTapAuthenticator(BaseOICAuthenticator):
     focused on read operations.
     """
 
-    def get_oauth_scopes(self) -> str:
+    def get_oauth_scopes(self: object) -> str:
         """Get OAuth2 scopes for OIC Tap."""
         return self.build_oauth_scopes()
 
@@ -435,7 +439,7 @@ class OICTargetAuthenticator(BaseOICAuthenticator):
     with write permissions.
     """
 
-    def get_oauth_scopes(self) -> str:
+    def get_oauth_scopes(self: object) -> str:
         """Get OAuth2 scopes for OIC Target."""
         return self.build_oauth_scopes()
 
@@ -447,7 +451,7 @@ class OracleOICExtensionClient(BaseOICClient):
     with complete enterprise functionality.
     """
 
-    def get_base_url(self) -> str:
+    def get_base_url(self: object) -> str:
         """Get OIC API base URL."""
         return f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
 
@@ -564,7 +568,9 @@ class OracleOICExtensionClient(BaseOICClient):
 
         """
         endpoint = f"/integrations/{integration_id}"
-        json_data = {str(k): str(v) for k, v in integration_data.items()}
+        json_data: dict[str, object] = {
+            str(k): str(v) for k, v in integration_data.items()
+        }
         return await self.make_request("PUT", endpoint, json=json_data)
 
     async def create_connection(
@@ -580,7 +586,9 @@ class OracleOICExtensionClient(BaseOICClient):
             FlextResult containing created connection or error
 
         """
-        json_data = {str(k): str(v) for k, v in connection_data.items()}
+        json_data: dict[str, object] = {
+            str(k): str(v) for k, v in connection_data.items()
+        }
         return await self.make_request("POST", "/connections", json=json_data)
 
 

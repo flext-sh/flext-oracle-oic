@@ -14,11 +14,9 @@ from typing import NoReturn
 
 import typer
 
-from flext_core import FlextLogger, FlextTypes
-from flext_oracle_oic_ext import (
-    __version__,
-    create_development_oic_service,
-)
+from flext_core import FlextLogger, FlextResult, FlextTypes
+from flext_oracle_oic_ext import __version__
+from flext_oracle_oic_ext.factory import create_development_oic_service
 
 
 def version_callback(*, value: bool) -> None:
@@ -82,7 +80,8 @@ async def test_connection() -> None:
         logger.info("Testing Oracle OIC connection...")
 
         # Create development service for testing
-        service_result = create_development_oic_service()
+
+        service_result: FlextResult[object] = create_development_oic_service()
         if not service_result.success:
             _handle_service_error(f"Failed to create service: {service_result.error}")
 
@@ -92,7 +91,7 @@ async def test_connection() -> None:
 
         # Test connection
         with service:
-            connection_result = await service.test_connection()
+            connection_result: FlextResult[object] = await service.test_connection()
             if connection_result.success:
                 logger.info("✅ Oracle OIC connection successful!")
                 typer.echo("✅ Connection to Oracle OIC established successfully")
@@ -120,7 +119,7 @@ async def list_integrations() -> None:
         logger.info("Listing Oracle OIC integrations...")
 
         # Create development service
-        service_result = create_development_oic_service()
+        service_result: FlextResult[object] = create_development_oic_service()
         if not service_result.success:
             _handle_service_error(f"Failed to create service: {service_result.error}")
 
@@ -130,7 +129,7 @@ async def list_integrations() -> None:
 
         # List integrations
         with service:
-            integrations_result = await service.list_integrations()
+            integrations_result: FlextResult[object] = await service.list_integrations()
             if integrations_result.success:
                 integrations = integrations_result.data or []
                 logger.info(f"Found {len(integrations)} integrations")
@@ -182,7 +181,7 @@ def main() -> NoReturn:
         sys.exit(1)
 
 
-__all__: FlextTypes.Core.StringList = ["app", "create_development_oic_service", "main"]
+__all__: FlextTypes.Core.StringList = ["app", "main"]
 
 if __name__ == "__main__":
     main()

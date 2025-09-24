@@ -9,7 +9,8 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel, ConfigDict, Field, SecretStr
 
-from flext_core import FlextLogger, FlextTypes
+from flext_core import FlextConfig, FlextLogger, FlextTypes
+from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
 
 logger = FlextLogger(__name__)
 
@@ -19,14 +20,14 @@ logger = FlextLogger(__name__)
 # ================================
 
 
-class OICAuthConfig(BaseModel):
+class OICAuthConfig(FlextConfig):
     """Oracle Integration Cloud authentication configuration.
 
     Padrão EXTENSION: Value Object para configuração de autenticação
     Oracle OIC com validação e segurança.
     """
 
-    model_config = ConfigDict(extra="forbid")
+    model_config: dict[str, object] = ConfigDict(extra="forbid")
 
     oauth_client_id: str = Field(..., description="IDCS OAuth2 client ID")
     oauth_client_secret: SecretStr = Field(..., description="IDCS OAuth2 client secret")
@@ -35,20 +36,34 @@ class OICAuthConfig(BaseModel):
     oauth_scope: str = Field("", description="OAuth2 scope")
 
 
-class OICConnectionConfig(BaseModel):
+class OICConnectionConfig(FlextConfig):
     """Oracle Integration Cloud connection configuration.
 
     Padrão EXTENSION: Value Object para configuração de conexão
     Oracle OIC com validação enterprise.
     """
 
-    model_config = ConfigDict(extra="forbid")
+    model_config: dict[str, object] = ConfigDict(extra="forbid")
 
     base_url: str = Field(..., description="Oracle OIC instance base URL")
-    api_version: str = Field("v1", description="OIC API version")
-    request_timeout: int = Field(30, ge=1, description="Request timeout in seconds")
-    max_retries: int = Field(3, ge=0, description="Maximum retry attempts")
-    verify_ssl: bool = Field(default=True, description="Verify SSL certificates")
+    api_version: str = Field(
+        FlextOracleOicExtConstants.OIC.DEFAULT_API_VERSION,
+        description="OIC API version",
+    )
+    request_timeout: int = Field(
+        FlextOracleOicExtConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
+        ge=FlextOracleOicExtConstants.OIC.MIN_REQUEST_TIMEOUT,
+        description="Request timeout in seconds",
+    )
+    max_retries: int = Field(
+        FlextOracleOicExtConstants.OIC.DEFAULT_MAX_RETRIES,
+        ge=FlextOracleOicExtConstants.OIC.MIN_MAX_RETRIES,
+        description="Maximum retry attempts",
+    )
+    verify_ssl: bool = Field(
+        default=FlextOracleOicExtConstants.OIC.DEFAULT_VERIFY_SSL,
+        description="Verify SSL certificates",
+    )
 
 
 class OICIntegrationInfo(BaseModel):
@@ -58,7 +73,7 @@ class OICIntegrationInfo(BaseModel):
     de uma integração Oracle OIC.
     """
 
-    model_config = ConfigDict(extra="forbid")
+    model_config: dict[str, object] = ConfigDict(extra="forbid")
 
     integration_id: str = Field(..., description="Integration unique identifier")
     name: str = Field(..., description="Integration name")
@@ -76,7 +91,7 @@ class OICConnectionInfo(BaseModel):
     de uma conexão Oracle OIC.
     """
 
-    model_config = ConfigDict(extra="forbid")
+    model_config: dict[str, object] = ConfigDict(extra="forbid")
 
     connection_id: str = Field(..., description="Connection unique identifier")
     name: str = Field(..., description="Connection name")
@@ -93,7 +108,7 @@ class IntegrationStatus(BaseModel):
     de uma integração Oracle OIC.
     """
 
-    model_config = ConfigDict(extra="forbid")
+    model_config: dict[str, object] = ConfigDict(extra="forbid")
 
     integration_id: str = Field(..., description="Integration unique identifier")
     version: str = Field(..., description="Integration version")
@@ -116,7 +131,7 @@ class RequestParams:
     data: FlextTypes.Core.Dict | None = None
     json_data: FlextTypes.Core.Dict | None = None
     headers: FlextTypes.Core.Headers | None = None
-    timeout: int = 30
+    timeout: int = FlextOracleOicExtConstants.OIC.DEFAULT_REQUEST_TIMEOUT
 
 
 # Exports following EXTENSION pattern

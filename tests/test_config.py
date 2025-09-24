@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_oracle_oic_ext.ext_config import (
+from flext_oracle_oic_ext import (
     OICExtensionAuthConfig,
     OICExtensionConnectionConfig,
     OracleOICExtensionSettings,

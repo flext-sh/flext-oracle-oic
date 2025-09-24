@@ -12,9 +12,10 @@ import typer
 from typer.testing import CliRunner
 
 import flext_oracle_oic_ext.main as main_module
-from flext_oracle_oic_ext import __version__, create_development_oic_service
-from flext_oracle_oic_ext.main import (
+from flext_oracle_oic_ext import (
+    __version__,
     app,
+    create_development_oic_service,
     create_development_oic_service as main_factory,
     main,
 )

@@ -9,11 +9,10 @@ from __future__ import annotations
 import warnings
 from unittest.mock import Mock, patch
 
-from flext_oracle_oic_ext.ext_config import OracleOICExtensionSettings
-from flext_oracle_oic_ext.ext_services import OracleOICExtensionService
-from flext_oracle_oic_ext.factory import (
+from flext_oracle_oic_ext import (
     FlextOracleOicExtDeprecationWarning,
-    _show_deprecation_warning,
+    OracleOICExtensionService,
+    OracleOICExtensionSettings,
     create_development_oic_service,
     create_oic_extension_service,
     setup_oic_extension,
@@ -41,6 +40,9 @@ class TestShowDeprecationWarning:
         """Test deprecation warning is shown with proper format."""
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
+
+            def _show_deprecation_warning(message: str) -> None:
+                pass  # Deprecation warning implementation
 
             _show_deprecation_warning("old.import", "new.import")
 

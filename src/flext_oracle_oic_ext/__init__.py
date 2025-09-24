@@ -8,7 +8,41 @@ from __future__ import annotations
 
 import importlib.metadata
 
-from flext_core import FlextConfig, FlextLogger, FlextModels, FlextResult, FlextTypes
+from flext_core import (
+    FlextConfig,
+    FlextLogger,
+    FlextModels,
+    FlextResult,
+    FlextTypes,
+)
+from flext_oracle_oic_ext.cli import app, main
+from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
+from flext_oracle_oic_ext.container import (
+    configure_flext_oracle_oic_ext_dependencies,
+    get_flext_oracle_oic_ext_container,
+    get_flext_oracle_oic_ext_service,
+)
+from flext_oracle_oic_ext.exceptions import (
+    FlextOracleOicApiError,
+    FlextOracleOicApiRequestError,
+    FlextOracleOicAuthenticationError,
+    FlextOracleOicConfigError,
+    FlextOracleOicConfigurationError,
+    FlextOracleOicConnectionError,
+    FlextOracleOicDataValidationError,
+    FlextOracleOicError,
+    FlextOracleOicErrorCodes,
+    FlextOracleOicIntegrationError,
+    FlextOracleOicIntegrationPatternError,
+    FlextOracleOicOAuth2TokenError,
+    FlextOracleOicPatternError,
+    FlextOracleOicTimeoutError,
+    FlextOracleOicTokenError,
+    FlextOracleOicValidationError,
+    FlextOracleOicWorkflowError,
+    FlextOracleOicWorkflowExecutionError,
+    exceptions_all,
+)
 from flext_oracle_oic_ext.ext_client import (
     BaseOICAuthenticator,
     BaseOICClient,
@@ -44,6 +78,8 @@ from flext_oracle_oic_ext.ext_models import (
     RequestParams,
 )
 from flext_oracle_oic_ext.ext_services import (
+    HTTPClientProtocol,
+    HTTPResponseProtocol,
     LifecycleManager,
     MonitoringService,
     OICIntegrationPatternService,
@@ -74,9 +110,30 @@ __all__: FlextTypes.Core.StringList = [
     "FlextConfig",
     "FlextLogger",
     "FlextModels",
+    "FlextOracleOicApiError",
+    "FlextOracleOicApiRequestError",
+    "FlextOracleOicAuthenticationError",
+    "FlextOracleOicConfigError",
+    "FlextOracleOicConfigurationError",
+    "FlextOracleOicConnectionError",
+    "FlextOracleOicDataValidationError",
+    "FlextOracleOicError",
+    "FlextOracleOicErrorCodes",
+    "FlextOracleOicExtConstants",
     "FlextOracleOicExtDeprecationWarning",
+    "FlextOracleOicIntegrationError",
+    "FlextOracleOicIntegrationPatternError",
+    "FlextOracleOicOAuth2TokenError",
+    "FlextOracleOicPatternError",
+    "FlextOracleOicTimeoutError",
+    "FlextOracleOicTokenError",
+    "FlextOracleOicValidationError",
+    "FlextOracleOicWorkflowError",
+    "FlextOracleOicWorkflowExecutionError",
     "FlextResult",
     "FlextTypes",
+    "HTTPClientProtocol",
+    "HTTPResponseProtocol",
     "IntegrationStatus",
     "LifecycleManager",
     "MonitoringService",
@@ -109,7 +166,13 @@ __all__: FlextTypes.Core.StringList = [
     "__version__",
     "__version_info__",
     "_show_deprecation_warning",
+    "app",
+    "configure_flext_oracle_oic_ext_dependencies",
     "create_development_oic_service",
     "create_oic_extension_service",
+    "exceptions_all",
+    "get_flext_oracle_oic_ext_container",
+    "get_flext_oracle_oic_ext_service",
+    "main",
     "setup_oic_extension",
 ]

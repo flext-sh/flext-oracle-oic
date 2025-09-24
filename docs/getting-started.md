@@ -222,7 +222,7 @@ grep -r "from httpx\|from typer" src/
 
 # Should be replaced with:
 # from flext_api import FlextApiClient
-# from flext_cli import FlextCliMain
+# from flext_cli import FlextCliCommands
 ```
 
 ## Next Steps

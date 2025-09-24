@@ -301,6 +301,29 @@ FlextOracleOicIntegrationPatternError = OracleOICExceptions.IntegrationPatternEr
 FlextOracleOicWorkflowExecutionError = OracleOICExceptions.WorkflowExecutionError
 FlextOracleOicOAuth2TokenError = OracleOICExceptions.OAuth2TokenError
 
+# Convenience tuple for importing all exceptions
+exceptions_all = (
+    FlextOracleOicApiError,
+    FlextOracleOicApiRequestError,
+    FlextOracleOicAuthenticationError,
+    FlextOracleOicConfigError,
+    FlextOracleOicConfigurationError,
+    FlextOracleOicConnectionError,
+    FlextOracleOicDataValidationError,
+    FlextOracleOicError,
+    FlextOracleOicErrorCodes,
+    FlextOracleOicIntegrationError,
+    FlextOracleOicIntegrationPatternError,
+    FlextOracleOicOAuth2TokenError,
+    FlextOracleOicPatternError,
+    FlextOracleOicTimeoutError,
+    FlextOracleOicTokenError,
+    FlextOracleOicValidationError,
+    FlextOracleOicWorkflowError,
+    FlextOracleOicWorkflowExecutionError,
+    OracleOICExceptions,
+)
+
 
 __all__: FlextTypes.Core.StringList = [
     "FlextOracleOicApiError",
@@ -322,4 +345,5 @@ __all__: FlextTypes.Core.StringList = [
     "FlextOracleOicWorkflowError",
     "FlextOracleOicWorkflowExecutionError",
     "OracleOICExceptions",
+    "exceptions_all",
 ]

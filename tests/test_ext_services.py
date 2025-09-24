@@ -14,19 +14,17 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from flext_oracle_oic_ext.ext_config import (
-    OICExtensionAuthConfig,
-    OICExtensionConnectionConfig,
-    OracleOICExtensionSettings,
-)
-from flext_oracle_oic_ext.ext_models import IntegrationStatus
-from flext_oracle_oic_ext.ext_services import (
+from flext_oracle_oic_ext import (
     HTTPClientProtocol,
     HTTPResponseProtocol,
+    IntegrationStatus,
     LifecycleManager,
     MonitoringService,
+    OICExtensionAuthConfig,
+    OICExtensionConnectionConfig,
     OICIntegrationPatternService,
     OracleOICExtensionService,
+    OracleOICExtensionSettings,
 )
 
 

@@ -14,6 +14,7 @@ from typing import Literal
 from pydantic import Field, model_validator
 
 from flext_core import FlextConfig, FlextTypes
+from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
 
 # Type definitions outside class to avoid Pydantic field errors
 EnvironmentLiteral = Literal["development", "staging", "production"]
@@ -35,12 +36,12 @@ class OracleOICExtensionConfig(FlextConfig):
         enterprise validation and best practices.
         """
 
-        base_url: str = "https://localhost.integration.ocp.oraclecloud.com"
-        api_version: str = "v1"
-        request_timeout: int = 30
-        max_retries: int = 3
-        use_ssl: bool = True
-        verify_ssl: bool = True
+        base_url: str = FlextOracleOicExtConstants.OIC.DEFAULT_BASE_URL
+        api_version: str = FlextOracleOicExtConstants.OIC.DEFAULT_API_VERSION
+        request_timeout: int = FlextOracleOicExtConstants.OIC.DEFAULT_REQUEST_TIMEOUT
+        max_retries: int = FlextOracleOicExtConstants.OIC.DEFAULT_MAX_RETRIES
+        use_ssl: bool = FlextOracleOicExtConstants.OIC.DEFAULT_USE_SSL
+        verify_ssl: bool = FlextOracleOicExtConstants.OIC.DEFAULT_VERIFY_SSL
 
     class AuthConfig(FlextConfig):
         """Oracle OIC Extension OAuth2 authentication configuration.
@@ -49,13 +50,15 @@ class OracleOICExtensionConfig(FlextConfig):
         with enterprise security.
         """
 
-        oauth_client_id: str = "default_client_id"
-        oauth_client_secret: str = "default_client_" + "secret_value"
-        oauth_token_url: str = (
-            "https://idcs-tenant.identity.oraclecloud.com/" + "oauth2/v1/token"
+        oauth_client_id: str = FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_CLIENT_ID
+        oauth_client_secret: str = (
+            FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_CLIENT_SECRET
         )
-        oauth_client_aud: str | None = None
-        oauth_scope: str = ""
+        oauth_token_url: str = FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_TOKEN_URL
+        oauth_client_aud: str | None = (
+            FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_CLIENT_AUD
+        )
+        oauth_scope: str = FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_SCOPE
 
     class Settings(FlextConfig):
         """Oracle OIC Extension main settings.
@@ -65,15 +68,13 @@ class OracleOICExtensionConfig(FlextConfig):
         """
 
         # Use forward references for nested types
-        connection: OracleOICExtensionConfig.ConnectionConfig = Field(
-            default_factory=OracleOICExtensionConfig.ConnectionConfig,
+        connection: OracleOICExtensionConfig.ConnectionConfig | None = Field(
+            default=None
         )
-        auth: OracleOICExtensionConfig.AuthConfig = Field(
-            default_factory=OracleOICExtensionConfig.AuthConfig,
-        )
+        auth: OracleOICExtensionConfig.AuthConfig | None = Field(default=None)
 
         @model_validator(mode="after")
-        def _validate_settings(self) -> OracleOICExtensionConfig.Settings:
+        def _validate_settings(self: object) -> OracleOICExtensionConfig.Settings:
             """Validate configuration settings after initialization.
 
             With proper default factories, type safety is guaranteed by Pydantic.

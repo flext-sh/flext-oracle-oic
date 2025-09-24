@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_oracle_oic_ext.exceptions import (
+from flext_oracle_oic_ext import (
     FlextOracleOicApiError,
     FlextOracleOicApiRequestError,
     FlextOracleOicAuthenticationError,
