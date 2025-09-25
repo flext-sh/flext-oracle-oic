@@ -22,7 +22,7 @@ class TestCLI:
 
     @patch("flext_oracle_oic_ext.main.app")
     @patch("flext_oracle_oic_ext.main.main")
-    def test_cli_exports_main_components(self, mock_main: Mock, mock_app: Mock) -> None:
+    def test_self(self, mock_main: Mock, mock_app: Mock) -> None:
         """Test CLI exports main app and main function."""
         # Mock the main module components
         mock_app.return_value = Mock()

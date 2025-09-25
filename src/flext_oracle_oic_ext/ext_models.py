@@ -127,7 +127,7 @@ class RequestParams:
 
     method: str
     url: str
-    params: dict[str, str | int | float] | None = None
+    params: dict[str, str | int, float] | None = None
     data: FlextTypes.Core.Dict | None = None
     json_data: FlextTypes.Core.Dict | None = None
     headers: FlextTypes.Core.Headers | None = None

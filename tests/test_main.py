@@ -111,7 +111,7 @@ class TestAppIntegration:
         assert callable(create_development_oic_service)
 
     @patch("flext_oracle_oic_ext.main.create_development_oic_service")
-    def test_app_can_use_factory_functions(self, mock_factory: Mock) -> None:
+    def test_factory_function_usage(self, mock_factory: Mock) -> None:
         """Test app can use factory functions."""
         # Should be able to call factory function from main module
         assert callable(main_factory)
@@ -123,7 +123,7 @@ class TestErrorHandling:
     """Test error handling in main module."""
 
     @patch("sys.exit")
-    def test_main_handles_keyboard_interrupt(self, mock_exit: Mock) -> None:
+    def test_keyboard_interrupt_handling(self, mock_exit: Mock) -> None:
         """Test main handles KeyboardInterrupt gracefully."""
         _ = mock_exit  # Use the parameter to avoid unused argument warning
         with patch("flext_oracle_oic_ext.main.app") as mock_app:
@@ -135,7 +135,7 @@ class TestErrorHandling:
                 pass  # Expected behavior
 
     @patch("sys.exit")
-    def test_main_handles_system_exit(self, mock_exit: Mock) -> None:
+    def test_system_exit_handling(self, mock_exit: Mock) -> None:
         """Test main handles SystemExit gracefully."""
         _ = mock_exit  # Use the parameter to avoid unused argument warning
         with patch("flext_oracle_oic_ext.main.app") as mock_app:

@@ -66,7 +66,7 @@ class TestOracleOICExtensionService:
         )  # FlextMixins.Loggable provides logging methods
         assert getattr(service, "_client", None) is None
 
-    def test_service_context_manager(self, service: OracleOICExtensionService) -> None:
+    def test_self(self, service: OracleOICExtensionService) -> None:
         """Test service as context manager."""
         with service as ctx_service:
             assert ctx_service is service

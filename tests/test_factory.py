@@ -74,7 +74,7 @@ class TestCreateOicExtensionService:
         assert isinstance(result.value, OracleOICExtensionService)
 
     @patch("flext_oracle_oic_ext.factory.OracleOICExtensionService")
-    def test_create_service_failure(self, mock_service_class: Mock) -> None:
+    def test_self(self, mock_service_class: Mock) -> None:
         """Test service creation failure handling."""
         mock_service_class.side_effect = Exception("Service creation failed")
 
@@ -95,7 +95,7 @@ class TestCreateDevelopmentOicService:
         assert isinstance(result.value, OracleOICExtensionService)
 
     @patch("flext_oracle_oic_ext.factory.OracleOICExtensionService")
-    def test_create_development_service_failure(self, mock_service_class: Mock) -> None:
+    def test_self(self, mock_service_class: Mock) -> None:
         """Test development service creation failure."""
         mock_service_class.side_effect = Exception("Dev service failed")
 
@@ -128,7 +128,7 @@ class TestSetupOicExtension:
         assert isinstance(result.value, OracleOICExtensionService)
 
     @patch("flext_oracle_oic_ext.factory.OracleOICExtensionService")
-    def test_setup_extension_failure(self, mock_service_class: Mock) -> None:
+    def test_self(self, mock_service_class: Mock) -> None:
         """Test extension setup failure handling."""
         mock_service_class.side_effect = Exception("Setup failed")
 
