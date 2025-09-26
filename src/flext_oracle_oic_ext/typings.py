@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TypeVar
+from typing import Literal
 
 from flext_core import FlextTypes
 
@@ -21,17 +21,8 @@ from flext_core import FlextTypes
 # ORACLE OIC-SPECIFIC TYPE VARIABLES - Domain-specific TypeVars for OIC operations
 # =============================================================================
 
+
 # Oracle OIC domain TypeVars
-TOicIntegration = TypeVar("TOicIntegration")
-TOicConnection = TypeVar("TOicConnection")
-TOicAdapter = TypeVar("TOicAdapter")
-TOicMessage = TypeVar("TOicMessage")
-TOicTransform = TypeVar("TOicTransform")
-TOicMonitoring = TypeVar("TOicMonitoring")
-TOicWorkflow = TypeVar("TOicWorkflow")
-TOicSecurity = TypeVar("TOicSecurity")
-
-
 class FlextOracleOicExtTypes(FlextTypes):
     """Oracle OIC extension-specific type definitions extending FlextTypes.
 
@@ -186,21 +177,54 @@ class FlextOracleOicExtTypes(FlextTypes):
         ]
         type SecurityCompliance = dict[str, bool | str | dict[str, object]]
 
+    # =========================================================================
+    # ORACLE OIC PROJECT TYPES - Domain-specific project types extending FlextTypes
+    # =========================================================================
+
+    class Project(FlextTypes.Project):
+        """Oracle OIC extension-specific project types extending FlextTypes.Project.
+
+        Adds Oracle OIC integration-specific project types while inheriting
+        generic types from FlextTypes. Follows domain separation principle:
+        Oracle OIC domain owns integration and workflow-specific types.
+        """
+
+        # Oracle OIC-specific project types extending the generic ones
+        type ProjectType = Literal[
+            # Generic types inherited from FlextTypes.Project
+            "library",
+            "application",
+            "service",
+            # Oracle OIC-specific types
+            "oic-integration",
+            "integration-flow",
+            "oic-adapter",
+            "message-processor",
+            "transformation-service",
+            "oic-connector",
+            "workflow-engine",
+            "integration-platform",
+            "oic-monitor",
+            "integration-gateway",
+            "oic-security",
+            "adapter-framework",
+            "integration-api",
+            "oic-extension",
+            "workflow-designer",
+            "integration-hub",
+        ]
+
+        # Oracle OIC-specific project configurations
+        type OicProjectConfig = dict[str, FlextTypes.Core.ConfigValue | object]
+        type IntegrationConfig = dict[str, str | int | bool | list[str]]
+        type WorkflowConfig = dict[str, bool | str | dict[str, object]]
+        type AdapterConfig = dict[str, FlextTypes.Core.ConfigValue | object]
+
 
 # =============================================================================
 # PUBLIC API EXPORTS - Oracle OIC TypeVars and types
 # =============================================================================
 
 __all__: list[str] = [
-    # Oracle OIC Types class
     "FlextOracleOicExtTypes",
-    # Oracle OIC-specific TypeVars
-    "TOicAdapter",
-    "TOicConnection",
-    "TOicIntegration",
-    "TOicMessage",
-    "TOicMonitoring",
-    "TOicSecurity",
-    "TOicTransform",
-    "TOicWorkflow",
 ]

@@ -69,14 +69,6 @@ from flext_oracle_oic_ext.ext_exceptions import (
     OICWorkflowError,
     OracleOICExtensionError,
 )
-from flext_oracle_oic_ext.ext_models import (
-    IntegrationStatus,
-    OICAuthConfig,
-    OICConnectionConfig,
-    OICConnectionInfo,
-    OICIntegrationInfo,
-    RequestParams,
-)
 from flext_oracle_oic_ext.ext_services import (
     HTTPClientProtocol,
     HTTPResponseProtocol,
@@ -93,6 +85,15 @@ from flext_oracle_oic_ext.factory import (
     create_oic_extension_service,
     setup_oic_extension,
 )
+from flext_oracle_oic_ext.models import FlextOracleOicExtModels
+
+# Convenience exports for unified models
+OICAuthConfig = FlextOracleOicExtModels.OICAuthConfig
+OICConnectionConfig = FlextOracleOicExtModels.OICConnectionConfig
+OICIntegrationInfo = FlextOracleOicExtModels.OICIntegrationInfo
+OICConnectionInfo = FlextOracleOicExtModels.OICConnectionInfo
+IntegrationStatus = FlextOracleOicExtModels.IntegrationStatus
+RequestParams = FlextOracleOicExtModels.RequestParams
 
 # Version information
 try:
@@ -121,6 +122,7 @@ __all__: FlextTypes.Core.StringList = [
     "FlextOracleOicErrorCodes",
     "FlextOracleOicExtConstants",
     "FlextOracleOicExtDeprecationWarning",
+    "FlextOracleOicExtModels",
     "FlextOracleOicIntegrationError",
     "FlextOracleOicIntegrationPatternError",
     "FlextOracleOicOAuth2TokenError",

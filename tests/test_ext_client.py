@@ -16,11 +16,10 @@ from pydantic import SecretStr
 from flext_core import FlextResult
 from flext_oracle_oic_ext import (
     BaseOICAuthenticator,
-    OICAuthConfig,
-    OICConnectionConfig,
     OICExtensionAuthenticator,
     OracleOICExtensionClient,
 )
+from flext_oracle_oic_ext.models import FlextOracleOicExtModels
 
 
 class TestBaseOICAuthenticator:
@@ -28,7 +27,7 @@ class TestBaseOICAuthenticator:
 
     def test_base_authenticator_is_abstract(self) -> None:
         """Test BaseOICAuthenticator cannot be instantiated directly."""
-        auth_config = OICAuthConfig(
+        auth_config = FlextOracleOicExtModels.OICAuthConfig(
             oauth_client_id="test_id",
             oauth_client_secret=SecretStr("test_secret"),
             oauth_token_url="https://test.com/token",
@@ -49,9 +48,9 @@ class TestOICExtensionAuthenticator:
     """Test OICExtensionAuthenticator implementation."""
 
     @pytest.fixture
-    def auth_config(self) -> OICAuthConfig:
+    def auth_config(self) -> FlextOracleOicExtModels.OICAuthConfig:
         """Create test auth config."""
-        return OICAuthConfig(
+        return FlextOracleOicExtModels.OICAuthConfig(
             oauth_client_id="test_client_id",
             oauth_client_secret=SecretStr("test_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
@@ -60,14 +59,16 @@ class TestOICExtensionAuthenticator:
         )
 
     @pytest.fixture
-    def authenticator(self, auth_config: OICAuthConfig) -> OICExtensionAuthenticator:
+    def authenticator(
+        self, auth_config: FlextOracleOicExtModels.OICAuthConfig
+    ) -> OICExtensionAuthenticator:
         """Create authenticator instance."""
         return OICExtensionAuthenticator(auth_config)
 
     def test_authenticator_initialization(
         self,
         authenticator: OICExtensionAuthenticator,
-        auth_config: OICAuthConfig,
+        auth_config: FlextOracleOicExtModels.OICAuthConfig,
     ) -> None:
         """Test authenticator initializes properly."""
         assert authenticator.auth_config == auth_config
@@ -84,7 +85,7 @@ class TestOICExtensionAuthenticator:
 
     def test_get_oauth_scopes_default(self) -> None:
         """Test get_oauth_scopes returns default when no audience configured."""
-        auth_config = OICAuthConfig(
+        auth_config = FlextOracleOicExtModels.OICAuthConfig(
             oauth_client_id="test_id",
             oauth_client_secret=SecretStr("test_secret"),
             oauth_token_url="https://test.com/token",
@@ -212,9 +213,9 @@ class TestOracleOICExtensionClient:
     """Test OracleOICExtensionClient main client class."""
 
     @pytest.fixture
-    def connection_config(self) -> OICConnectionConfig:
+    def connection_config(self) -> FlextOracleOicExtModels.OICConnectionConfig:
         """Create test connection config."""
-        return OICConnectionConfig(
+        return FlextOracleOicExtModels.OICConnectionConfig(
             base_url="https://test.integration.ocp.oraclecloud.com",
             api_version="v1",
             request_timeout=30,
@@ -223,9 +224,9 @@ class TestOracleOICExtensionClient:
         )
 
     @pytest.fixture
-    def auth_config(self) -> OICAuthConfig:
+    def auth_config(self) -> FlextOracleOicExtModels.OICAuthConfig:
         """Create test auth config."""
-        return OICAuthConfig(
+        return FlextOracleOicExtModels.OICAuthConfig(
             oauth_client_id="test_client_id",
             oauth_client_secret=SecretStr("test_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
@@ -234,14 +235,16 @@ class TestOracleOICExtensionClient:
         )
 
     @pytest.fixture
-    def authenticator(self, auth_config: OICAuthConfig) -> OICExtensionAuthenticator:
+    def authenticator(
+        self, auth_config: FlextOracleOicExtModels.OICAuthConfig
+    ) -> OICExtensionAuthenticator:
         """Create authenticator."""
         return OICExtensionAuthenticator(auth_config)
 
     @pytest.fixture
     def client(
         self,
-        connection_config: OICConnectionConfig,
+        connection_config: FlextOracleOicExtModels.OICConnectionConfig,
         authenticator: OICExtensionAuthenticator,
     ) -> OracleOICExtensionClient:
         """Create client instance."""
@@ -250,7 +253,7 @@ class TestOracleOICExtensionClient:
     def test_client_initialization(
         self,
         client: OracleOICExtensionClient,
-        connection_config: OICConnectionConfig,
+        connection_config: FlextOracleOicExtModels.OICConnectionConfig,
         authenticator: OICExtensionAuthenticator,
     ) -> None:
         """Test client initializes properly."""

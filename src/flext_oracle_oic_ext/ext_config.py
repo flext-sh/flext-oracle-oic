@@ -9,9 +9,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Literal
+import threading
+from typing import ClassVar, Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 
 from flext_core import FlextConfig, FlextTypes
 from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
@@ -22,93 +23,206 @@ LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 OICApiVersionLiteral = Literal["v1", "v2"]
 
 
-class OracleOICExtensionConfig(FlextConfig):
-    """Unified Oracle OIC Extension configuration following FLEXT patterns.
+class FlextOracleOicExtConfig(FlextConfig):
+    """Single flat Pydantic 2 Settings class for flext-oracle-oic-ext extending FlextConfig.
 
-    Single responsibility class with nested configuration helpers
-    following the unified class pattern from FLEXT architectural standards.
+    Follows standardized pattern:
+    - Extends FlextConfig from flext-core
+    - Flat class structure (no nested classes)
+    - All defaults from FlextOracleOicExtConstants
+    - SecretStr for sensitive data
+    - Singleton pattern with shared dependency injection
     """
 
-    class ConnectionConfig(FlextConfig):
-        """Oracle OIC Extension connection configuration.
+    # Singleton pattern override
+    _global_instance: ClassVar[FlextOracleOicExtConfig | None] = None
+    _lock: ClassVar[threading.Lock] = threading.Lock()
 
-        EXTENSION Pattern: Oracle OIC connection configuration with
-        enterprise validation and best practices.
-        """
+    # Connection Configuration (flattened from ConnectionConfig)
+    base_url: str = Field(
+        default=FlextOracleOicExtConstants.OIC.DEFAULT_BASE_URL,
+        description="Oracle OIC base URL",
+    )
 
-        base_url: str = FlextOracleOicExtConstants.OIC.DEFAULT_BASE_URL
-        api_version: str = FlextOracleOicExtConstants.OIC.DEFAULT_API_VERSION
-        request_timeout: int = FlextOracleOicExtConstants.OIC.DEFAULT_REQUEST_TIMEOUT
-        max_retries: int = FlextOracleOicExtConstants.OIC.DEFAULT_MAX_RETRIES
-        use_ssl: bool = FlextOracleOicExtConstants.OIC.DEFAULT_USE_SSL
-        verify_ssl: bool = FlextOracleOicExtConstants.OIC.DEFAULT_VERIFY_SSL
+    api_version: str = Field(
+        default=FlextOracleOicExtConstants.OIC.DEFAULT_API_VERSION,
+        description="Oracle OIC API version",
+    )
 
-    class AuthConfig(FlextConfig):
-        """Oracle OIC Extension OAuth2 authentication configuration.
+    request_timeout: int = Field(
+        default=FlextOracleOicExtConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
+        description="Request timeout in seconds",
+        ge=1,
+        le=300,
+    )
 
-        EXTENSION Pattern: IDCS OAuth2 authentication configuration
-        with enterprise security.
-        """
+    max_retries: int = Field(
+        default=FlextOracleOicExtConstants.OIC.DEFAULT_MAX_RETRIES,
+        description="Maximum number of retry attempts",
+        ge=0,
+        le=10,
+    )
 
-        oauth_client_id: str = FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_CLIENT_ID
-        oauth_client_secret: str = (
+    use_ssl: bool = Field(
+        default=FlextOracleOicExtConstants.OIC.DEFAULT_USE_SSL,
+        description="Use SSL for connections",
+    )
+
+    verify_ssl: bool = Field(
+        default=FlextOracleOicExtConstants.OIC.DEFAULT_VERIFY_SSL,
+        description="Verify SSL certificates",
+    )
+
+    # Authentication Configuration (flattened from AuthConfig)
+    oauth_client_id: str = Field(
+        default=FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_CLIENT_ID,
+        description="OAuth2 client ID",
+    )
+
+    oauth_client_secret: SecretStr = Field(
+        default_factory=lambda: SecretStr(
             FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_CLIENT_SECRET
-        )
-        oauth_token_url: str = FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_TOKEN_URL
-        oauth_client_aud: str | None = (
-            FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_CLIENT_AUD
-        )
-        oauth_scope: str = FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_SCOPE
+        ),
+        description="OAuth2 client secret (sensitive)",
+    )
 
-    class Settings(FlextConfig):
-        """Oracle OIC Extension main settings.
+    oauth_token_url: str = Field(
+        default=FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_TOKEN_URL,
+        description="OAuth2 token URL",
+    )
 
-        Padrão EXTENSION: Configuração principal da extension Oracle OIC
-        consolidando todas as configurações necessárias.
-        """
+    oauth_client_aud: str | None = Field(
+        default=FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_CLIENT_AUD,
+        description="OAuth2 client audience",
+    )
 
-        # Use forward references for nested types
-        connection: OracleOICExtensionConfig.ConnectionConfig | None = Field(
-            default=None
-        )
-        auth: OracleOICExtensionConfig.AuthConfig | None = Field(default=None)
+    oauth_scope: str = Field(
+        default=FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_SCOPE,
+        description="OAuth2 scope",
+    )
 
-        @model_validator(mode="after")
-        def _validate_settings(self: object) -> OracleOICExtensionConfig.Settings:
-            """Validate configuration settings after initialization.
+    # General Settings (flattened from Settings)
+    enable_monitoring: bool = Field(
+        default=True, description="Enable monitoring features"
+    )
 
-            With proper default factories, type safety is guaranteed by Pydantic.
-            This validator can be used for additional business logic validation.
-            """
-            # Additional validation can be added here if needed
-            # Type safety is already guaranteed by proper default factories
-            return self
+    enable_enterprise_patterns: bool = Field(
+        default=True, description="Enable enterprise patterns"
+    )
 
-        # Use base types from FlextConfig to avoid type conflicts
-        enable_monitoring: bool = True
-        enable_enterprise_patterns: bool = True
-        enable_orchestration: bool = True
+    enable_orchestration: bool = Field(
+        default=True, description="Enable orchestration features"
+    )
 
-    # Main configuration settings (for backward compatibility)
-    enable_monitoring: bool = True
-    enable_enterprise_patterns: bool = True
-    enable_orchestration: bool = True
+    # Field validators
+    @field_validator("base_url")
+    @classmethod
+    def validate_base_url(cls, v: str) -> str:
+        """Validate base URL format."""
+        if not v.startswith(("http://", "https://")):
+            msg = f"Invalid base URL format: {v}. Must start with http:// or https://"
+            raise ValueError(msg)
+        return v.rstrip("/")
+
+    @field_validator("oauth_token_url")
+    @classmethod
+    def validate_oauth_token_url(cls, v: str) -> str:
+        """Validate OAuth token URL format."""
+        if not v.startswith(("http://", "https://")):
+            msg = f"Invalid OAuth token URL format: {v}. Must start with http:// or https://"
+            raise ValueError(msg)
+        return v
+
+    @model_validator(mode="after")
+    def validate_oauth_config(self) -> FlextOracleOicExtConfig:
+        """Validate OAuth configuration consistency."""
+        if self.oauth_client_id and not self.oauth_client_secret:
+            msg = "OAuth client secret is required when client ID is provided"
+            raise ValueError(msg)
+        return self
+
+    # Configuration context methods
+    def get_connection_context(self) -> dict[str, object]:
+        """Get connection configuration context."""
+        return {
+            "base_url": self.base_url,
+            "api_version": self.api_version,
+            "timeout": self.request_timeout,
+            "max_retries": self.max_retries,
+            "use_ssl": self.use_ssl,
+            "verify_ssl": self.verify_ssl,
+        }
+
+    def get_auth_context(self) -> dict[str, object]:
+        """Get authentication configuration context (without secrets)."""
+        return {
+            "client_id": self.oauth_client_id,
+            "token_url": self.oauth_token_url,
+            "audience": self.oauth_client_aud,
+            "scope": self.oauth_scope,
+            "has_secret": self.oauth_client_secret is not None,
+        }
+
+    def get_features_context(self) -> dict[str, object]:
+        """Get feature configuration context."""
+        return {
+            "monitoring": self.enable_monitoring,
+            "enterprise_patterns": self.enable_enterprise_patterns,
+            "orchestration": self.enable_orchestration,
+        }
+
+    # Backward compatibility methods
+    @property
+    def connection(self) -> dict[str, object]:
+        """Backward compatibility: return connection config as dict."""
+        return self.get_connection_context()
+
+    @property
+    def auth(self) -> dict[str, object]:
+        """Backward compatibility: return auth config as dict."""
+        return self.get_auth_context()
+
+    # Singleton pattern override for proper typing
+    @classmethod
+    def get_global_instance(cls) -> FlextOracleOicExtConfig:
+        """Get the global singleton instance of FlextOracleOicExtConfig."""
+        if cls._global_instance is None:
+            with cls._lock:
+                if cls._global_instance is None:
+                    cls._global_instance = cls()
+        return cls._global_instance
+
+    @classmethod
+    def reset_global_instance(cls) -> None:
+        """Reset the global instance (mainly for testing)."""
+        cls._global_instance = None
 
 
 # Backward compatibility aliases
-OICExtensionConnectionConfig = OracleOICExtensionConfig.ConnectionConfig
-OICExtensionAuthConfig = OracleOICExtensionConfig.AuthConfig
-OracleOICExtensionSettings = OracleOICExtensionConfig.Settings
+OracleOICExtensionConfig = (
+    FlextOracleOicExtConfig  # Old name for backward compatibility
+)
+OracleOICExtensionSettings = (
+    FlextOracleOicExtConfig  # Settings alias now points to main config
+)
+OICExtensionConnectionConfig = (
+    FlextOracleOicExtConfig  # Connection config is now part of main config
+)
+OICExtensionAuthConfig = (
+    FlextOracleOicExtConfig  # Auth config is now part of main config
+)
+
 # EnvironmentLiteral, LogLevelLiteral, OICApiVersionLiteral are defined at module level
 
 
-# Exports following EXTENSION pattern
+# Exports following FLEXT standardized pattern
 __all__: FlextTypes.Core.StringList = [
     "EnvironmentLiteral",
+    "FlextOracleOicExtConfig",  # Primary standardized config
     "LogLevelLiteral",
     "OICApiVersionLiteral",
-    "OICExtensionAuthConfig",
-    "OICExtensionConnectionConfig",
-    "OracleOICExtensionConfig",
-    "OracleOICExtensionSettings",
+    "OICExtensionAuthConfig",  # Backward compatibility
+    "OICExtensionConnectionConfig",  # Backward compatibility
+    "OracleOICExtensionConfig",  # Backward compatibility
+    "OracleOICExtensionSettings",  # Backward compatibility
 ]

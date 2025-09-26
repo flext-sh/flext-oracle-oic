@@ -6,12 +6,15 @@ SPDX-License-Identifier: MIT.
 
 from __future__ import annotations
 
+from typing import override
+
 from flext_core import FlextTypes
 
 
 class OracleOICExtension:
     """Oracle OIC Extension placeholder implementation."""
 
+    @override
     def __init__(self: object) -> None:
         """Initialize OIC extension."""
         self.name = "Oracle OIC Extension"

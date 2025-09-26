@@ -8,11 +8,11 @@ from __future__ import annotations
 import base64
 import json as json_module
 from abc import ABC, abstractmethod
-from typing import Self
+from typing import Self, override
 
 from flext_api import FlextApiClient
 from flext_core import FlextLogger, FlextResult, FlextTypes
-from flext_oracle_oic_ext.ext_models import OICAuthConfig, OICConnectionConfig
+from flext_oracle_oic_ext.models import FlextOracleOicExtModels
 
 logger = FlextLogger(__name__)
 
@@ -31,7 +31,9 @@ class BaseOICAuthenticator(ABC):
     with OAuth2 IDCS and token management.
     """
 
-    def __init__(self, auth_config: OICAuthConfig) -> None:
+    @override
+    @override
+    def __init__(self, auth_config: FlextOracleOicExtModels.OICAuthConfig) -> None:
         """Initialize OIC authenticator.
 
         Args:
@@ -67,7 +69,7 @@ class BaseOICAuthenticator(ABC):
         audience = client_aud or self.auth_config.oauth_client_aud
 
         if audience:
-            # Build scope like: "audience:443urn:opc:resource:consumer:all audience:443/ic/api/"
+            # Build scope like: audience:443urn:opc:resource:consumer:all audience:443/ic/api/
             resource_aud = f"{audience}:443urn:opc:resource:consumer:all"
             api_aud = f"{audience}:443/ic/api/"
             return f"{resource_aud} {api_aud}"
@@ -171,9 +173,11 @@ class BaseOICClient(ABC):
     with authentication, retry logic and enterprise error handling.
     """
 
+    @override
+    @override
     def __init__(
         self,
-        connection_config: OICConnectionConfig,
+        connection_config: FlextOracleOicExtModels.OICConnectionConfig,
         authenticator: BaseOICAuthenticator,
     ) -> None:
         """Initialize OIC client.

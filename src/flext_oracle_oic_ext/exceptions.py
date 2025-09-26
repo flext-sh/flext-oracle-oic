@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from enum import Enum
+from typing import override
 
 from flext_core import FlextExceptions, FlextTypes
 
@@ -82,6 +83,7 @@ class OracleOICExceptions:
     class DataValidationError(ValidationError):
         """Oracle OIC Extension data validation errors with field context."""
 
+        @override
         def __init__(
             self,
             message: str,
@@ -113,6 +115,7 @@ class OracleOICExceptions:
     class ApiRequestError(ApiError):
         """Oracle OIC Extension API request errors with HTTP context."""
 
+        @override
         def __init__(
             self,
             message: str,
@@ -149,6 +152,7 @@ class OracleOICExceptions:
     class ConfigError(ConfigurationError):
         """Oracle OIC Extension configuration errors with config context."""
 
+        @override
         def __init__(
             self,
             message: str,
@@ -181,6 +185,7 @@ class OracleOICExceptions:
     class IntegrationPatternError(PatternError):
         """Oracle OIC Extension integration pattern errors with pattern context."""
 
+        @override
         def __init__(
             self,
             message: str,
@@ -215,6 +220,7 @@ class OracleOICExceptions:
     class WorkflowExecutionError(WorkflowError):
         """Oracle OIC Extension workflow execution errors with workflow context."""
 
+        @override
         def __init__(
             self,
             message: str,
@@ -249,6 +255,7 @@ class OracleOICExceptions:
     class OAuth2TokenError(TokenError):
         """Oracle OIC Extension OAuth2 token errors with authentication context."""
 
+        @override
         def __init__(
             self,
             message: str,

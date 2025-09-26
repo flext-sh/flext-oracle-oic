@@ -17,7 +17,6 @@ import pytest
 from flext_oracle_oic_ext import (
     HTTPClientProtocol,
     HTTPResponseProtocol,
-    IntegrationStatus,
     LifecycleManager,
     MonitoringService,
     OICExtensionAuthConfig,
@@ -26,6 +25,7 @@ from flext_oracle_oic_ext import (
     OracleOICExtensionService,
     OracleOICExtensionSettings,
 )
+from flext_oracle_oic_ext.models import FlextOracleOicExtModels
 
 
 class TestOracleOICExtensionService:
@@ -433,8 +433,8 @@ class TestLifecycleManager:
         result = manager.activate_integration("test_integration_id")
 
         assert result.is_success
-        # result.value should be an IntegrationStatus object, not a boolean
-        assert isinstance(result.value, IntegrationStatus)
+        # result.value should be an FlextOracleOicExtModels.IntegrationStatus object, not a boolean
+        assert isinstance(result.value, FlextOracleOicExtModels.IntegrationStatus)
         mock_client.update_integration.assert_called_once_with(
             "test_integration_id",
             {"status": "ACTIVATED"},
@@ -485,8 +485,8 @@ class TestLifecycleManager:
         result = manager.deactivate_integration("test_integration_id")
 
         assert result.is_success
-        # result.value should be an IntegrationStatus object, not a boolean
-        assert isinstance(result.value, IntegrationStatus)
+        # result.value should be an FlextOracleOicExtModels.IntegrationStatus object, not a boolean
+        assert isinstance(result.value, FlextOracleOicExtModels.IntegrationStatus)
         mock_client.update_integration.assert_called_once_with(
             "test_integration_id",
             {"status": "DEACTIVATED"},

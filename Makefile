@@ -6,7 +6,7 @@ SRC_DIR := src
 TESTS_DIR := tests
 
 # Quality standards
-MIN_COVERAGE := 90
+MIN_COVERAGE := 100
 
 # OIC configuration
 OIC_EXT_BASE_URL := https://oic-prod.integration.ocp.oraclecloud.com
@@ -27,36 +27,36 @@ setup: install-dev ## Complete project setup
 	$(POETRY) run pre-commit install
 
 # Quality gates
-validate: lint type-check security test ## Run all quality gates
+validate: lint type-check security test ## Run all quality gates (MANDATORY ORDER)
 
 check: lint type-check ## Quick health check
 
-lint: ## Run linting
-	$(POETRY) run ruff check $(SRC_DIR) $(TESTS_DIR)
+lint: ## Run linting (ZERO TOLERANCE)
+	$(POETRY) run ruff check .
 
 format: ## Format code
-	$(POETRY) run ruff format $(SRC_DIR) $(TESTS_DIR)
+	$(POETRY) run ruff format .
 
-type-check: ## Run type checking
-	$(POETRY) run mypy $(SRC_DIR) --strict
+type-check: ## Run type checking with Pyrefly (ZERO TOLERANCE)
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run pyrefly check .
 
 security: ## Run security scanning
 	$(POETRY) run bandit -r $(SRC_DIR)
 	$(POETRY) run pip-audit
 
 fix: ## Auto-fix issues
-	$(POETRY) run ruff check $(SRC_DIR) $(TESTS_DIR) --fix
-	$(POETRY) run ruff format $(SRC_DIR) $(TESTS_DIR)
+	$(POETRY) run ruff check . --fix
+	$(POETRY) run ruff format .
 
 # Testing
-test: ## Run tests with coverage
+test: ## Run tests with 100% coverage (MANDATORY)
 	$(POETRY) run pytest $(TESTS_DIR) --cov=$(SRC_DIR) --cov-report=term-missing --cov-fail-under=$(MIN_COVERAGE)
 
 test-unit: ## Run unit tests
-	$(POETRY) run pytest $(TESTS_DIR) -m "not integration" -v
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run pytest -m "not integration" -v
 
-test-integration: ## Run integration tests
-	$(POETRY) run pytest $(TESTS_DIR) -m integration -v
+test-integration: ## Run integration tests with Docker
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run pytest -m integration -v
 
 test-oic: ## Run OIC specific tests
 	$(POETRY) run pytest $(TESTS_DIR) -m oic -v
@@ -65,23 +65,23 @@ test-patterns: ## Run integration patterns tests
 	$(POETRY) run pytest $(TESTS_DIR) -m patterns -v
 
 test-fast: ## Run tests without coverage
-	$(POETRY) run pytest $(TESTS_DIR) -v
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run pytest -v
 
 coverage-html: ## Generate HTML coverage report
 	$(POETRY) run pytest $(TESTS_DIR) --cov=$(SRC_DIR) --cov-report=html
 
 # OIC operations
 oic-test: ## Test OIC API connectivity
-	$(POETRY) run python -c "from flext_oracle_oic_ext import test_oic_connectivity; test_oic_connectivity()"
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic_ext import test_oic_connectivity; test_oic_connectivity()"
 
 oic-auth: ## Test OIC OAuth2 authentication
-	$(POETRY) run python -c "from flext_oracle_oic_ext import test_oic_auth; test_oic_auth()"
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic_ext import test_oic_auth; test_oic_auth()"
 
 oic-patterns: ## Test integration patterns
-	$(POETRY) run python -c "from flext_oracle_oic_ext import test_integration_patterns; test_integration_patterns()"
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic_ext import test_integration_patterns; test_integration_patterns()"
 
 oic-deploy: ## Test OIC deployment
-	$(POETRY) run python -c "from flext_oracle_oic_ext import test_oic_deployment; test_oic_deployment()"
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic_ext import test_oic_deployment; test_oic_deployment()"
 
 # Build
 build: ## Build package
@@ -108,14 +108,14 @@ deps-audit: ## Audit dependencies
 
 # Development
 shell: ## Open Python shell
-	$(POETRY) run python
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run python
 
 pre-commit: ## Run pre-commit hooks
 	$(POETRY) run pre-commit run --all-files
 
 # Maintenance
 clean: ## Clean build artifacts
-	rm -rf build/ dist/ *.egg-info/ .pytest_cache/ htmlcov/ .coverage .mypy_cache/ .ruff_cache/
+	rm -rf build/ dist/ *.egg-info/ .pytest_cache/ htmlcov/ .coverage .mypy_cache/ .pyrefly_cache/ .ruff_cache/
 	rm -rf logs/ *.log deployment_*.json orchestration_*.json
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete 2>/dev/null || true
@@ -129,7 +129,7 @@ reset: clean-all setup ## Reset project
 diagnose: ## Project diagnostics
 	@echo "Python: $$(python --version)"
 	@echo "Poetry: $$($(POETRY) --version)"
-	@echo "OIC Extension: $$($(POETRY) run python -c 'import flext_oracle_oic_ext; print(flext_oracle_oic_ext.__version__)' 2>/dev/null || echo 'Not available')"
+	@echo "OIC Extension: $$(PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c 'import flext_oracle_oic_ext; print(flext_oracle_oic_ext.__version__)' 2>/dev/null || echo 'Not available')"
 	@$(POETRY) env info
 
 doctor: diagnose check ## Health check
