@@ -52,9 +52,7 @@ from flext_oracle_oic_ext.ext_client import (
     OracleOICExtensionClient,
 )
 from flext_oracle_oic_ext.ext_config import (
-    OICExtensionAuthConfig,
-    OICExtensionConnectionConfig,
-    OracleOICExtensionSettings,
+    FlextOracleOicExtConfig,
 )
 from flext_oracle_oic_ext.ext_exceptions import (
     OICAPIError,
@@ -86,6 +84,7 @@ from flext_oracle_oic_ext.factory import (
     setup_oic_extension,
 )
 from flext_oracle_oic_ext.models import FlextOracleOicExtModels
+from flext_oracle_oic_ext.utilities import FlextOracleOicExtUtilities
 
 # Convenience exports for unified models
 OICAuthConfig = FlextOracleOicExtModels.OICAuthConfig
@@ -120,9 +119,11 @@ __all__: FlextTypes.Core.StringList = [
     "FlextOracleOicDataValidationError",
     "FlextOracleOicError",
     "FlextOracleOicErrorCodes",
+    "FlextOracleOicExtConfig",
     "FlextOracleOicExtConstants",
     "FlextOracleOicExtDeprecationWarning",
     "FlextOracleOicExtModels",
+    "FlextOracleOicExtUtilities",
     "FlextOracleOicIntegrationError",
     "FlextOracleOicIntegrationPatternError",
     "FlextOracleOicOAuth2TokenError",
@@ -146,9 +147,7 @@ __all__: FlextTypes.Core.StringList = [
     "OICConnectionConfig",
     "OICConnectionError",
     "OICConnectionInfo",
-    "OICExtensionAuthConfig",
     "OICExtensionAuthenticator",
-    "OICExtensionConnectionConfig",
     "OICIntegrationError",
     "OICIntegrationInfo",
     "OICIntegrationPatternService",
@@ -163,7 +162,6 @@ __all__: FlextTypes.Core.StringList = [
     "OracleOICExtensionClient",
     "OracleOICExtensionError",
     "OracleOICExtensionService",
-    "OracleOICExtensionSettings",
     "RequestParams",
     "__version__",
     "__version_info__",

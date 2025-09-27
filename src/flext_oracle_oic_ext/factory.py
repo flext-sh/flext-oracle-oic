@@ -12,7 +12,7 @@ from __future__ import annotations
 import warnings
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
-from flext_oracle_oic_ext.ext_config import OracleOICExtensionSettings
+from flext_oracle_oic_ext.ext_config import FlextOracleOicExtConfig
 from flext_oracle_oic_ext.ext_services import OracleOICExtensionService
 
 logger = FlextLogger(__name__)
@@ -38,7 +38,7 @@ def _show_deprecation_warning(old_import: str, new_import: str) -> None:
 
 
 def create_oic_extension_service(
-    settings: OracleOICExtensionSettings | None = None,
+    settings: FlextOracleOicExtConfig | None = None,
 ) -> FlextResult[OracleOICExtensionService]:
     """Create Oracle OIC Extension service with configuration.
 
@@ -51,7 +51,7 @@ def create_oic_extension_service(
     """
     try:
         if settings is None:
-            settings = OracleOICExtensionSettings()
+            settings = FlextOracleOicExtConfig.get_global_instance()
 
         service = OracleOICExtensionService(settings)
         logger.info("OIC Extension service created successfully")
@@ -71,7 +71,7 @@ def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
 
     """
     try:
-        settings = OracleOICExtensionSettings(
+        settings = FlextOracleOicExtConfig(
             environment="development",
             log_level="DEBUG",
             enable_monitoring=True,
@@ -88,7 +88,7 @@ def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
 
 
 def setup_oic_extension(
-    settings: OracleOICExtensionSettings | None = None,
+    settings: FlextOracleOicExtConfig | None = None,
 ) -> FlextResult[OracleOICExtensionService]:
     """Setup Oracle OIC Extension with configuration.
 
@@ -101,7 +101,7 @@ def setup_oic_extension(
     """
     try:
         if settings is None:
-            settings = OracleOICExtensionSettings()
+            settings = FlextOracleOicExtConfig.get_global_instance()
 
         service = OracleOICExtensionService(settings)
         logger.info("OIC Extension setup completed successfully")

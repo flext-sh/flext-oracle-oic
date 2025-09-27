@@ -178,6 +178,42 @@ class FlextOracleOicExtTypes(FlextTypes):
         type SecurityCompliance = dict[str, bool | str | dict[str, object]]
 
     # =========================================================================
+    # CORE TYPES - Essential Oracle OIC types extending FlextTypes.Core
+    # =========================================================================
+
+    class Core(FlextTypes.Core):
+        """Core Oracle OIC extension types extending FlextTypes.Core.
+
+        Essential domain-specific types for Oracle OIC integration operations.
+        Replaces generic dict[str, object] with semantic Oracle OIC types.
+        """
+
+        # Configuration and connection types
+        type ConfigDict = dict[str, FlextTypes.Core.ConfigValue | object]
+        type ConnectionDict = dict[str, str | int | bool | dict[str, object]]
+        type AuthDict = dict[str, str | dict[str, object]]
+        type ContextDict = dict[str, object]
+
+        # Integration and workflow types
+        type IntegrationDict = dict[str, FlextTypes.Core.JsonValue | dict[str, object]]
+        type WorkflowDict = dict[str, bool | str | dict[str, object]]
+        type AdapterDict = dict[str, FlextTypes.Core.ConfigValue | object]
+        type MessageDict = dict[str, str | bool | dict[str, object]]
+
+        # Data processing types
+        type DataDict = dict[str, object]
+        type ResponseDict = dict[str, object]
+        type RequestDict = dict[str, object]
+        type ResultDict = dict[str, object]
+        type MetricsDict = dict[str, object]
+        type HealthDict = dict[str, object]
+
+        # Collection types for Oracle OIC operations
+        type DataList = list[DataDict]
+        type ConfigList = list[ConfigDict]
+        type StringList = list[str]
+
+    # =========================================================================
     # ORACLE OIC PROJECT TYPES - Domain-specific project types extending FlextTypes
     # =========================================================================
 

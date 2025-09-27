@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from pydantic import ConfigDict, Field, SecretStr
 
-from flext_core import FlextModels, FlextTypes
+from flext_core import FlextConfig, FlextModels, FlextTypes
 from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
 
 
@@ -23,7 +23,7 @@ class FlextOracleOicExtModels(FlextModels):
     OicRecord = dict["str", "object"]
     OicRecords = list[OicRecord]
 
-    class OICAuthConfig(FlextModels.Config):
+    class OICAuthConfig(FlextConfig):
         """Oracle Integration Cloud authentication configuration.
 
         Padrão EXTENSION: Value Object para configuração de autenticação
@@ -40,7 +40,7 @@ class FlextOracleOicExtModels(FlextModels):
         oauth_client_aud: str | None = Field(None, description="OAuth2 audience")
         oauth_scope: str = Field("", description="OAuth2 scope")
 
-    class OICConnectionConfig(FlextModels.Config):
+    class OICConnectionConfig(FlextConfig):
         """Oracle Integration Cloud connection configuration.
 
         Padrão EXTENSION: Value Object para configuração de conexão
