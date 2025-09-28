@@ -8,7 +8,7 @@ from __future__ import annotations
 import base64
 import json as json_module
 from abc import ABC, abstractmethod
-from typing import Self, override
+from typing import Self, cast, override
 
 from flext_api import FlextApiClient
 from flext_core import FlextLogger, FlextResult, FlextTypes
@@ -47,7 +47,7 @@ class BaseOICAuthenticator(ABC):
         self._access_token: str | None = None
 
     @abstractmethod
-    def get_oauth_scopes(self: object) -> str:
+    def get_oauth_scopes(self: Self) -> str:
         """Get OAuth2 scopes for authentication.
 
         Returns:
@@ -75,7 +75,7 @@ class BaseOICAuthenticator(ABC):
         # Fallback to simple scope
         return self.auth_config.oauth_scope or "urn:opc:resource:consumer:all"
 
-    def get_oauth_request_body(self: object) -> dict[str, str]:
+    def get_oauth_request_body(self) -> dict[str, str]:
         """Generate OAuth2 request body for client credentials flow.
 
         Returns:
@@ -87,7 +87,7 @@ class BaseOICAuthenticator(ABC):
             "scope": str(self.get_oauth_scopes()),
         }
 
-    def encode_client_credentials(self: object) -> str:
+    def encode_client_credentials(self) -> str:
         """Encode client credentials for HTTP Basic authentication.
 
         Returns:
@@ -191,7 +191,7 @@ class BaseOICClient(ABC):
         self._client: FlextApiClient | None = None
 
     @abstractmethod
-    def get_base_url(self: object) -> str:
+    def get_base_url(self) -> str:
         """Get OIC API base URL."""
 
     async def get_authenticated_client(self) -> FlextResult[FlextApiClient]:
@@ -204,9 +204,7 @@ class BaseOICClient(ABC):
         try:
             if not self._client:
                 # Get OAuth2 token
-                token_result: FlextResult[
-                    object
-                ] = await self.authenticator.get_access_token()
+                token_result = await self.authenticator.get_access_token()
                 if token_result.is_failure:
                     return FlextResult[FlextApiClient].fail(
                         f"Authentication failed: {token_result.error}",
@@ -236,7 +234,7 @@ class BaseOICClient(ABC):
         endpoint: str,
         params: dict[str, str] | None = None,
         data: dict[str, str] | None = None,
-        json: dict[str, str] | None = None,
+        json: dict[str, object] | None = None,
     ) -> FlextResult[FlextTypes.Core.Dict]:
         """Make authenticated request to OIC API.
 
@@ -253,7 +251,7 @@ class BaseOICClient(ABC):
         """
         try:
             # Get authenticated client
-            client_result: FlextResult[object] = await self.get_authenticated_client()
+            client_result = await self.get_authenticated_client()
             if client_result.is_failure:
                 return FlextResult[FlextTypes.Core.Dict].fail(
                     client_result.error or "Client error",
@@ -268,7 +266,7 @@ class BaseOICClient(ABC):
                     url=endpoint,  # FlextApiClient handles URL building
                     params=params,
                     data=data,
-                    json=json,
+                    json=cast("dict[str, str] | None", json),
                 )
 
                 if response_result.is_failure:
@@ -354,18 +352,18 @@ class BaseOICClient(ABC):
                     endpoint,
                     params=request_params,
                 )
-                if not response_result.success:
+                if response_result.is_failure:
                     return FlextResult[list[FlextTypes.Core.Dict]].fail(
                         response_result.error or "Request failed",
                     )
 
-                response_data = response_result.data
+                response_data = response_result.unwrap()
                 if response_data is None or not isinstance(response_data, dict):
                     return FlextResult[list[FlextTypes.Core.Dict]].fail(
                         "Invalid response data format",
                     )
 
-                items_raw: list[object] = response_data.get("items", [])
+                items_raw = cast("list[dict[str, object]]", response_data.get("items", []))
                 if not isinstance(items_raw, list):
                     return FlextResult[list[FlextTypes.Core.Dict]].fail(
                         "Invalid items format",
@@ -389,7 +387,7 @@ class BaseOICClient(ABC):
             self.logger.exception(error_msg)
             return FlextResult[list[FlextTypes.Core.Dict]].fail(error_msg)
 
-    def __enter__(self: object) -> Self:
+    def __enter__(self) -> Self:
         """Context manager entry."""
         return self
 
@@ -417,7 +415,7 @@ class OICExtensionAuthenticator(BaseOICAuthenticator):
     extensions with appropriate scopes.
     """
 
-    def get_oauth_scopes(self: object) -> str:
+    def get_oauth_scopes(self: Self) -> str:
         """Get OAuth2 scopes for OIC Extension."""
         return self.build_oauth_scopes()
 
@@ -429,7 +427,7 @@ class OICTapAuthenticator(BaseOICAuthenticator):
     focused on read operations.
     """
 
-    def get_oauth_scopes(self: object) -> str:
+    def get_oauth_scopes(self: Self) -> str:
         """Get OAuth2 scopes for OIC Tap."""
         return self.build_oauth_scopes()
 
@@ -453,7 +451,7 @@ class OracleOICExtensionClient(BaseOICClient):
     with complete enterprise functionality.
     """
 
-    def get_base_url(self: object) -> str:
+    def get_base_url(self) -> str:
         """Get OIC API base URL."""
         return f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
 

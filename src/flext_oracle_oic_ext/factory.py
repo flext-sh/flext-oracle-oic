@@ -12,7 +12,7 @@ from __future__ import annotations
 import warnings
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
-from flext_oracle_oic_ext.ext_config import FlextOracleOicExtConfig
+from flext_oracle_oic_ext.config import FlextOracleOicExtConfig
 from flext_oracle_oic_ext.ext_services import OracleOICExtensionService
 
 logger = FlextLogger(__name__)

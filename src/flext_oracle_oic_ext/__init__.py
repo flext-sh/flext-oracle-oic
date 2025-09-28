@@ -9,13 +9,23 @@ from __future__ import annotations
 import importlib.metadata
 
 from flext_core import (
+    E,
+    F,
     FlextConfig,
     FlextLogger,
     FlextModels,
     FlextResult,
     FlextTypes,
+    P,
+    R,
+    T,
+    U,
+    V,
 )
 from flext_oracle_oic_ext.cli import app, main
+from flext_oracle_oic_ext.config import (
+    FlextOracleOicExtConfig,
+)
 from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
 from flext_oracle_oic_ext.container import (
     configure_flext_oracle_oic_ext_dependencies,
@@ -52,7 +62,9 @@ from flext_oracle_oic_ext.ext_client import (
     OracleOICExtensionClient,
 )
 from flext_oracle_oic_ext.ext_config import (
-    FlextOracleOicExtConfig,
+    OICExtensionAuthConfig,
+    OICExtensionConnectionConfig,
+    OracleOICExtensionSettings,
 )
 from flext_oracle_oic_ext.ext_exceptions import (
     OICAPIError,
@@ -107,6 +119,8 @@ logger = FlextLogger(__name__)
 __all__: FlextTypes.Core.StringList = [
     "BaseOICAuthenticator",
     "BaseOICClient",
+    "E",
+    "F",
     "FlextConfig",
     "FlextLogger",
     "FlextModels",
@@ -147,7 +161,9 @@ __all__: FlextTypes.Core.StringList = [
     "OICConnectionConfig",
     "OICConnectionError",
     "OICConnectionInfo",
+    "OICExtensionAuthConfig",
     "OICExtensionAuthenticator",
+    "OICExtensionConnectionConfig",
     "OICIntegrationError",
     "OICIntegrationInfo",
     "OICIntegrationPatternService",
@@ -162,7 +178,13 @@ __all__: FlextTypes.Core.StringList = [
     "OracleOICExtensionClient",
     "OracleOICExtensionError",
     "OracleOICExtensionService",
+    "OracleOICExtensionSettings",
+    "P",
+    "R",
     "RequestParams",
+    "T",
+    "U",
+    "V",
     "__version__",
     "__version_info__",
     "_show_deprecation_warning",

@@ -9,8 +9,8 @@ from __future__ import annotations
 from flext_core import FlextContainer, FlextResult
 
 # Create all module-specific utilities using DRY pattern
-_utilities_result: FlextResult[object] = FlextContainer.create_module_utilities(
-    "flext_oracle_oic_ext"
+_utilities_result: FlextResult[dict[str, object]] = (
+    FlextContainer.create_module_utilities("flext_oracle_oic_ext")
 )
 
 # Extract utilities with proper names for backward compatibility

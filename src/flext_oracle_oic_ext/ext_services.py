@@ -22,13 +22,13 @@ from flext_core import (
     FlextService,
     FlextTypes,
 )
+from flext_oracle_oic_ext.config import (
+    FlextOracleOicExtConfig,
+)
 from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
 from flext_oracle_oic_ext.ext_client import (
     OICExtensionAuthenticator,
     OracleOICExtensionClient,
-)
-from flext_oracle_oic_ext.ext_config import (
-    FlextOracleOicExtConfig,
 )
 from flext_oracle_oic_ext.models import FlextOracleOicExtModels
 from flext_oracle_oic_ext.utilities import FlextOracleOicExtUtilities

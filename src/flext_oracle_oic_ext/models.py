@@ -20,7 +20,7 @@ class FlextOracleOicExtModels(FlextModels):
     """
 
     # Legacy type aliases for backward compatibility
-    OicRecord = dict["str", "object"]
+    OicRecord = dict[str, object]
     OicRecords = list[OicRecord]
 
     class OICAuthConfig(FlextConfig):
@@ -30,7 +30,7 @@ class FlextOracleOicExtModels(FlextModels):
         Oracle OIC com validação e segurança.
         """
 
-        model_config: dict[str, object] = ConfigDict(extra="forbid")
+        model_config = ConfigDict(extra="forbid")
 
         oauth_client_id: str = Field(..., description="IDCS OAuth2 client ID")
         oauth_client_secret: SecretStr = Field(
@@ -47,7 +47,7 @@ class FlextOracleOicExtModels(FlextModels):
         Oracle OIC com validação enterprise.
         """
 
-        model_config: dict[str, object] = ConfigDict(extra="forbid")
+        model_config = ConfigDict(extra="forbid")
 
         base_url: str = Field(..., description="Oracle OIC instance base URL")
         api_version: str = Field(
@@ -76,7 +76,7 @@ class FlextOracleOicExtModels(FlextModels):
         de uma integração Oracle OIC.
         """
 
-        model_config: dict[str, object] = ConfigDict(extra="forbid")
+        model_config = ConfigDict(extra="forbid")
 
         integration_id: str = Field(..., description="Integration unique identifier")
         name: str = Field(..., description="Integration name")
@@ -93,7 +93,7 @@ class FlextOracleOicExtModels(FlextModels):
         de uma conexão Oracle OIC.
         """
 
-        model_config: dict[str, object] = ConfigDict(extra="forbid")
+        model_config = ConfigDict(extra="forbid")
 
         connection_id: str = Field(..., description="Connection unique identifier")
         name: str = Field(..., description="Connection name")
@@ -109,7 +109,7 @@ class FlextOracleOicExtModels(FlextModels):
         de uma integração Oracle OIC.
         """
 
-        model_config: dict[str, object] = ConfigDict(extra="forbid")
+        model_config = ConfigDict(extra="forbid")
 
         integration_id: str = Field(..., description="Integration unique identifier")
         version: str = Field(..., description="Integration version")
@@ -124,7 +124,7 @@ class FlextOracleOicExtModels(FlextModels):
         Oracle OIC API com tipagem forte.
         """
 
-        model_config: dict[str, object] = ConfigDict(extra="forbid")
+        model_config = ConfigDict(extra="forbid")
 
         method: str = Field(..., description="HTTP method")
         url: str = Field(..., description="Request URL")

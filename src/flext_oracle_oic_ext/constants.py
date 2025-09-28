@@ -205,7 +205,7 @@ class FlextOracleOicExtConstants(FlextConstants):
         CONTENT_TYPE_XML: Final[str] = "application/xml"
         CONTENT_TYPE_FORM: Final[str] = "application/x-www-form-urlencoded"
 
-    class Patterns:
+    class OICPatterns:
         """Oracle OIC Integration Pattern constants."""
 
         # Pattern Status
@@ -222,7 +222,7 @@ class FlextOracleOicExtConstants(FlextConstants):
         DEFAULT_APPLIED_RULES: Final[int] = 0
         DEFAULT_TARGET_COUNT: Final[int] = 0
 
-    class Errors:
+    class OICErrors:
         """Oracle OIC Extension specific error constants."""
 
         # Connection Errors
@@ -256,7 +256,7 @@ class FlextOracleOicExtConstants(FlextConstants):
         ERROR_OAUTH_CLIENT_SECRET_REQUIRED: Final[str] = "OAUTH_CLIENT_SECRET_REQUIRED"
         ERROR_OAUTH_TOKEN_URL_REQUIRED: Final[str] = "OAUTH_TOKEN_URL_REQUIRED"
 
-    class Messages:
+    class OICMessages:
         """Oracle OIC Extension specific message constants."""
 
         # Success Messages
