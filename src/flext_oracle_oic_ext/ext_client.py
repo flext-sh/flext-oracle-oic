@@ -32,7 +32,6 @@ class BaseOICAuthenticator(ABC):
     """
 
     @override
-    @override
     def __init__(self, auth_config: FlextOracleOicExtModels.OICAuthConfig) -> None:
         """Initialize OIC authenticator.
 
@@ -173,7 +172,6 @@ class BaseOICClient(ABC):
     with authentication, retry logic and enterprise error handling.
     """
 
-    @override
     @override
     def __init__(
         self,
