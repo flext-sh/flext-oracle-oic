@@ -363,7 +363,9 @@ class BaseOICClient(ABC):
                         "Invalid response data format",
                     )
 
-                items_raw = cast("list[dict[str, object]]", response_data.get("items", []))
+                items_raw = cast(
+                    "list[dict[str, object]]", response_data.get("items", [])
+                )
                 if not isinstance(items_raw, list):
                     return FlextResult[list[FlextTypes.Core.Dict]].fail(
                         "Invalid items format",
@@ -415,7 +417,7 @@ class OICExtensionAuthenticator(BaseOICAuthenticator):
     extensions with appropriate scopes.
     """
 
-    def get_oauth_scopes(self: Self) -> str:
+    def get_oauth_scopes(self) -> str:
         """Get OAuth2 scopes for OIC Extension."""
         return self.build_oauth_scopes()
 
@@ -427,7 +429,7 @@ class OICTapAuthenticator(BaseOICAuthenticator):
     focused on read operations.
     """
 
-    def get_oauth_scopes(self: Self) -> str:
+    def get_oauth_scopes(self) -> str:
         """Get OAuth2 scopes for OIC Tap."""
         return self.build_oauth_scopes()
 
@@ -439,7 +441,7 @@ class OICTargetAuthenticator(BaseOICAuthenticator):
     with write permissions.
     """
 
-    def get_oauth_scopes(self: object) -> str:
+    def get_oauth_scopes(self: Self) -> str:
         """Get OAuth2 scopes for OIC Target."""
         return self.build_oauth_scopes()
 
@@ -539,7 +541,7 @@ class OracleOICExtensionClient(BaseOICClient):
 
     async def create_integration(
         self,
-        integration_data: dict[str, str],
+        integration_data: dict[str, object],
     ) -> FlextResult[FlextTypes.Core.Dict]:
         """Create integration in OIC.
 

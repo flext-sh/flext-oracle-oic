@@ -96,6 +96,7 @@ from flext_oracle_oic_ext.factory import (
     setup_oic_extension,
 )
 from flext_oracle_oic_ext.models import FlextOracleOicExtModels
+from flext_oracle_oic_ext.protocols import FlextOracleOicExtProtocols
 from flext_oracle_oic_ext.utilities import FlextOracleOicExtUtilities
 
 # Convenience exports for unified models
@@ -137,6 +138,7 @@ __all__: FlextTypes.Core.StringList = [
     "FlextOracleOicExtConstants",
     "FlextOracleOicExtDeprecationWarning",
     "FlextOracleOicExtModels",
+    "FlextOracleOicExtProtocols",
     "FlextOracleOicExtUtilities",
     "FlextOracleOicIntegrationError",
     "FlextOracleOicIntegrationPatternError",

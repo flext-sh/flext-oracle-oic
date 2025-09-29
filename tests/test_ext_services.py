@@ -119,7 +119,7 @@ class TestOracleOICExtensionService:
         assert "Client creation failed" in str(result.error)
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
-    def test_list_integrations_success(
+    async def test_list_integrations_success(
         self,
         mock_client_class: Mock,
         service: OracleOICExtensionService,
@@ -132,7 +132,7 @@ class TestOracleOICExtensionService:
         mock_client.get_integrations.return_value = mock_result
         mock_client_class.return_value = mock_client
 
-        result = service.list_integrations()
+        result = await service.list_integrations()
 
         assert result.is_success
         assert result.value == []
@@ -142,7 +142,7 @@ class TestOracleOICExtensionService:
         )
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
-    def test_list_integrations_client_failure(
+    async def test_list_integrations_client_failure(
         self,
         mock_client_class: Mock,
         service: OracleOICExtensionService,
@@ -150,13 +150,13 @@ class TestOracleOICExtensionService:
         """Test integration listing with client failure."""
         mock_client_class.side_effect = Exception("Client error")
 
-        result = service.list_integrations()
+        result = await service.list_integrations()
 
         assert result.is_failure
         assert "Client error" in str(result.error)
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
-    def test_list_integrations_with_filters(
+    async def test_list_integrations_with_filters(
         self,
         mock_client_class: Mock,
         service: OracleOICExtensionService,
@@ -169,7 +169,7 @@ class TestOracleOICExtensionService:
         mock_client.get_integrations.return_value = mock_result
         mock_client_class.return_value = mock_client
 
-        result = service.list_integrations(status_filter=["ACTIVE"])
+        result = await service.list_integrations(status_filter=["ACTIVE"])
 
         assert result.is_success
         mock_client.get_integrations.assert_called_once_with(
@@ -178,7 +178,7 @@ class TestOracleOICExtensionService:
         )
 
     @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
-    def test_list_connections_success(
+    async def test_list_connections_success(
         self,
         mock_client_class: Mock,
         service: OracleOICExtensionService,
@@ -189,7 +189,7 @@ class TestOracleOICExtensionService:
         mock_client.get_connections.return_value.data = []
         mock_client_class.return_value = mock_client
 
-        result = service.list_connections()
+        result = await service.list_connections()
 
         assert result.is_success
         assert result.value == []

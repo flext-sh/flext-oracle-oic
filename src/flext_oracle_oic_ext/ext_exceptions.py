@@ -11,8 +11,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_core import FlextTypes
-
-# Import from the unified exceptions module
 from flext_oracle_oic_ext.exceptions import OracleOICExceptions
 
 

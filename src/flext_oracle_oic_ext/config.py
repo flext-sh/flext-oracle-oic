@@ -317,14 +317,13 @@ class FlextOracleOicExtConfig(FlextConfig):
     def reset_global_instance(cls) -> None:
         """Reset the global FlextOracleOicExtConfig instance (mainly for testing)."""
         # Reset the shared instance by calling the parent class method
-        FlextConfig.reset_shared_instance()
+        FlextConfig.reset_global_instance()
 
     @classmethod
     def reset_shared_instance(cls) -> None:
         """Reset the shared instance for testing purposes."""
         # Clear any cached instance
-        if hasattr(cls, "_shared_instance"):
-            cls._shared_instance = None
+        FlextConfig._global_instance = None
 
 
 __all__ = [
