@@ -104,9 +104,9 @@ class OracleOICExtensionService(
             FlextResult containing list of OIC integrations or error
 
         """
-        # Use run to handle call in sync method
+        # Use method directly (synchronous operation)
         try:
-            return run(self.list_integrations())
+            return self.list_integrations()
         except Exception as e:
             return FlextResult[list[FlextOracleOicExtModels.OICIntegrationInfo]].fail(
                 f"Execution failed: {e}"

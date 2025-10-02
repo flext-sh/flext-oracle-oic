@@ -11,10 +11,10 @@ from __future__ import annotations
 
 from typing import Literal, Self, cast
 
+from flext_core import FlextConfig, FlextResult
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
-from flext_core import FlextConfig, FlextResult
 from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
 from flext_oracle_oic_ext.typings import FlextOracleOicExtTypes
 from flext_oracle_oic_ext.utilities import FlextOracleOicExtUtilities

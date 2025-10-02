@@ -1,50 +1,38 @@
-"""Unit tests for flext-oracle-oic-ext version module.
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
+"""Version metadata tests for flext-oracle-oic-ext."""
 
 from __future__ import annotations
 
-import inspect
+from collections.abc import Mapping
 
-import flext_oracle_oic_ext as version_module
-from flext_oracle_oic_ext import __version__
+from flext_core.metadata import FlextProjectMetadata, FlextProjectPerson
 
-
-def test_version_import() -> None:
-    """Test that version can be imported successfully."""
-    assert __version__ is not None
+from flext_oracle_oic_ext import __version__, __version_info__
+from flext_oracle_oic_ext.version import VERSION, FlextOracleOicExtVersion
 
 
-def test_version_module_functions() -> None:
-    """Test version module has expected functions."""
-    # Test that version module has the expected attributes
-    assert hasattr(version_module, "__version__")
-    assert hasattr(version_module, "__version_info__")
-
-    # Test that version values are correct
-    assert version_module.__version__ == "0.9.0"
-    assert version_module.__version_info__ == (0, 9, 0)
+def test_dunder_alignment() -> None:
+    """Ensure dunder exports are aligned with VERSION."""
+    assert __version__ == VERSION.version
+    assert __version_info__ == VERSION.version_info
 
 
-def test_version_attributes_exist() -> None:
-    """Test that version attributes exist and have expected types."""
-    # Test __version__ exists and is string
-    assert hasattr(version_module, "__version__")
-    assert isinstance(version_module.__version__, str)
-
-    # Test __version_info__ exists and is tuple
-    assert hasattr(version_module, "__version_info__")
-    assert isinstance(version_module.__version_info__, tuple)
+def test_version_metadata_shape() -> None:
+    """Validate that the VERSION object exposes normalized metadata."""
+    assert isinstance(VERSION, FlextOracleOicExtVersion)
+    assert isinstance(VERSION.metadata, FlextProjectMetadata)
+    assert isinstance(VERSION.urls, Mapping)
+    assert VERSION.version_tuple == VERSION.version_info
 
 
-def test_version_centralized_management() -> None:
-    """Test version module structure."""
-    # Get module source to check for proper structure
-    source = inspect.getsource(version_module)
+def test_contacts() -> None:
+    """Primary contacts reflect the pyproject declarations."""
+    assert isinstance(VERSION.author, FlextProjectPerson)
+    assert isinstance(VERSION.maintainer, FlextProjectPerson)
+    assert VERSION.author_name
+    assert VERSION.maintainer_name
 
-    # Test that version module has proper structure
-    assert "__version__" in source
-    assert "__version_info__" in source
-    assert "0.9.0" in source
+
+def test_metadata_passthrough() -> None:
+    """VERSION forwards author and maintainer collections."""
+    assert VERSION.authors == VERSION.metadata.authors
+    assert VERSION.maintainers == VERSION.metadata.maintainers

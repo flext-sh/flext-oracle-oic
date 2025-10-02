@@ -22,6 +22,8 @@ from flext_core import (
     U,
     V,
 )
+from flext_core.metadata import build_metadata_exports
+
 from flext_oracle_oic_ext.cli import app, main
 from flext_oracle_oic_ext.config import (
     FlextOracleOicExtConfig,
@@ -99,7 +101,11 @@ from flext_oracle_oic_ext.models import FlextOracleOicExtModels
 from flext_oracle_oic_ext.protocols import FlextOracleOicExtProtocols
 from flext_oracle_oic_ext.utilities import FlextOracleOicExtUtilities
 
-# Convenience exports for unified models
+# Import VERSION after metadata setup to avoid circular imports
+from flext_oracle_oic_ext.version import VERSION
+
+globals().update(build_metadata_exports(__file__))
+
 OICAuthConfig = FlextOracleOicExtModels.OICAuthConfig
 OICConnectionConfig = FlextOracleOicExtModels.OICConnectionConfig
 OICIntegrationInfo = FlextOracleOicExtModels.OICIntegrationInfo
@@ -107,15 +113,13 @@ OICConnectionInfo = FlextOracleOicExtModels.OICConnectionInfo
 IntegrationStatus = FlextOracleOicExtModels.IntegrationStatus
 RequestParams = FlextOracleOicExtModels.RequestParams
 
-# Version information
 try:
     __version__ = importlib.metadata.version("flext-oracle-oic-ext")
+    __version_info__: tuple[int | str, ...] = VERSION.version_info
 except importlib.metadata.PackageNotFoundError:
     __version__ = "0.9.0"
 
-__version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
 
-# Logger instance
 logger = FlextLogger(__name__)
 __all__: FlextTypes.Core.StringList = [
     "BaseOICAuthenticator",
