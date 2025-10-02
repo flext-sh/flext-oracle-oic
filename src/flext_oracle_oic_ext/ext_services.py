@@ -10,7 +10,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import asyncio
 from typing import Protocol, Self, override
 
 from pydantic import ConfigDict, Extra, SecretStr
@@ -105,9 +104,9 @@ class OracleOICExtensionService(
             FlextResult containing list of OIC integrations or error
 
         """
-        # Use asyncio.run to handle async call in sync method
+        # Use run to handle call in sync method
         try:
-            return asyncio.run(self.list_integrations())
+            return run(self.list_integrations())
         except Exception as e:
             return FlextResult[list[FlextOracleOicExtModels.OICIntegrationInfo]].fail(
                 f"Execution failed: {e}"
@@ -221,7 +220,7 @@ class OracleOICExtensionService(
             self.logger.exception(error_msg)
             return FlextResult[OracleOICExtensionClient].fail(error_msg)
 
-    async def list_integrations(
+    def list_integrations(
         self,
         status_filter: FlextTypes.Core.StringList | None = None,
     ) -> FlextResult[list[FlextOracleOicExtModels.OICIntegrationInfo]]:
@@ -250,7 +249,7 @@ class OracleOICExtensionService(
                 ].fail("No client available")
 
             # Get integrations from OIC
-            integrations_result = await client.get_integrations(
+            integrations_result = client.get_integrations(
                 status_filter=status_filter,
                 page_size=FlextOracleOicExtConstants.OIC.DEFAULT_PAGE_SIZE,
             )
@@ -294,7 +293,7 @@ class OracleOICExtensionService(
                 error_msg
             )
 
-    async def list_connections(
+    def list_connections(
         self,
         type_filter: FlextTypes.Core.StringList | None = None,
     ) -> FlextResult[list[FlextOracleOicExtModels.OICConnectionInfo]]:
@@ -323,7 +322,7 @@ class OracleOICExtensionService(
                 ].fail("No client available")
 
             # Get connections from OIC
-            connections_result = await client.get_connections(
+            connections_result = client.get_connections(
                 type_filter=type_filter,
                 page_size=FlextOracleOicExtConstants.OIC.DEFAULT_PAGE_SIZE,
             )
@@ -366,7 +365,7 @@ class OracleOICExtensionService(
                 error_msg
             )
 
-    async def test_connection(self) -> FlextResult[bool]:
+    def test_connection(self) -> FlextResult[bool]:
         """Test connection to Oracle OIC.
 
         Returns:
@@ -385,7 +384,7 @@ class OracleOICExtensionService(
                 return FlextResult[bool].fail("No client available")
 
             # Try to get integrations as connection test
-            integrations_result: FlextResult[object] = await client.get_integrations(
+            integrations_result: FlextResult[object] = client.get_integrations(
                 page_size=FlextOracleOicExtConstants.OIC.MIN_PAGE_SIZE
             )
 
@@ -401,7 +400,7 @@ class OracleOICExtensionService(
             self.logger.exception(error_msg)
             return FlextResult[bool].fail(error_msg)
 
-    async def deploy_integration(
+    def deploy_integration(
         self,
         integration_data: FlextTypes.Core.Dict,
     ) -> FlextResult[str]:
@@ -429,7 +428,7 @@ class OracleOICExtensionService(
             integration_data_str: dict[str, object] = {
                 k: str(v) for k, v in integration_data.items()
             }
-            create_result: FlextResult[object] = await client.create_integration(
+            create_result: FlextResult[object] = client.create_integration(
                 integration_data_str
             )
 
@@ -650,7 +649,7 @@ class LifecycleManager:
             self.logger.exception(error_msg)
             return FlextResult[OracleOICExtensionClient].fail(error_msg)
 
-    async def activate_integration(
+    def activate_integration(
         self,
         integration_id: str,
     ) -> FlextResult[FlextOracleOicExtModels.IntegrationStatus]:
@@ -680,9 +679,7 @@ class LifecycleManager:
             activation_data: FlextTypes.Core.Dict = {
                 "status": FlextOracleOicExtConstants.Integration.STATUS_ACTIVATED
             }
-            activate_result = await client.update_integration(
-                integration_id, activation_data
-            )
+            activate_result = client.update_integration(integration_id, activation_data)
 
             if not activate_result.success:
                 return FlextResult[FlextOracleOicExtModels.IntegrationStatus].fail(
@@ -708,7 +705,7 @@ class LifecycleManager:
                 error_msg
             )
 
-    async def deactivate_integration(
+    def deactivate_integration(
         self,
         integration_id: str,
     ) -> FlextResult[FlextOracleOicExtModels.IntegrationStatus]:
@@ -738,7 +735,7 @@ class LifecycleManager:
             deactivation_data: FlextTypes.Core.Dict = {
                 "status": FlextOracleOicExtConstants.Integration.STATUS_DEACTIVATED
             }
-            deactivate_result = await client.update_integration(
+            deactivate_result = client.update_integration(
                 integration_id,
                 deactivation_data,
             )
