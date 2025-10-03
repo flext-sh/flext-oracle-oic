@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_core import FlextTypes
-from flext_oracle_oic_ext.exceptions import OracleOICExceptions
+from flext_oracle_oic.exceptions import OracleOICExceptions
 
 
 class OracleOICExtensionExceptions:
@@ -50,7 +50,7 @@ OICPatternError = OracleOICExtensionExceptions.PatternError
 
 
 # Exports following EXTENSION pattern
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTypes.StringList = [
     "OICAPIError",
     "OICAuthenticationError",
     "OICConfigurationError",

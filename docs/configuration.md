@@ -1,12 +1,12 @@
 # Configuration
 
-**Configuration Management for flext-oracle-oic-ext v0.9.9**
+**Configuration Management for flext-oracle-oic v0.9.9**
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
 ## Overview
 
-flext-oracle-oic-ext provides Pydantic-based configuration management following FLEXT ecosystem patterns. The current implementation offers basic configuration structure with type safety and validation.
+flext-oracle-oic provides Pydantic-based configuration management following FLEXT ecosystem patterns. The current implementation offers basic configuration structure with type safety and validation.
 
 > **Implementation Status**: Version 0.9.9 provides foundation configuration models. Full Oracle OIC integration and enterprise features are planned for future releases.
 
@@ -17,7 +17,7 @@ flext-oracle-oic-ext provides Pydantic-based configuration management following 
 Configure Oracle Integration Cloud connection parameters using `OICExtensionConnectionConfig`:
 
 ```python
-from flext_oracle_oic_ext import OICExtensionConnectionConfig
+from flext_oracle_oic import OICExtensionConnectionConfig
 
 # Basic connection configuration
 connection_config = OICExtensionConnectionConfig(
@@ -38,7 +38,7 @@ connection_config = OICExtensionConnectionConfig(
 Configure OAuth2/IDCS authentication using `OICExtensionAuthConfig`:
 
 ```python
-from flext_oracle_oic_ext import OICExtensionAuthConfig
+from flext_oracle_oic import OICExtensionAuthConfig
 
 # OAuth2 authentication setup
 auth_config = OICExtensionAuthConfig(
@@ -60,7 +60,7 @@ auth_config = OICExtensionAuthConfig(
 Combine configuration components using `OracleOICExtensionSettings`:
 
 ```python
-from flext_oracle_oic_ext import OracleOICExtensionSettings
+from flext_oracle_oic import OracleOICExtensionSettings
 
 # Complete configuration
 settings = OracleOICExtensionSettings(
@@ -97,7 +97,7 @@ export ORACLE_OIC_OAUTH_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oa
 
 ```python
 import os
-from flext_oracle_oic_ext import (
+from flext_oracle_oic import (
     OracleOICExtensionSettings,
     OICExtensionConnectionConfig,
     OICExtensionAuthConfig
@@ -127,7 +127,7 @@ settings = OracleOICExtensionSettings(
 Pydantic automatically validates configuration objects:
 
 ```python
-from flext_oracle_oic_ext import OracleOICExtensionSettings, OICExtensionConnectionConfig
+from flext_oracle_oic import OracleOICExtensionSettings, OICExtensionConnectionConfig
 
 try:
     # Invalid configuration - missing required base_url
@@ -180,7 +180,7 @@ Based on the actual Pydantic models implementation:
 
 ```python
 from pydantic import SecretStr
-from flext_oracle_oic_ext import OICExtensionAuthConfig
+from flext_oracle_oic import OICExtensionAuthConfig
 
 # SecretStr prevents accidental logging
 auth_config = OICExtensionAuthConfig(
@@ -206,7 +206,7 @@ print(auth_config.oauth_client_secret)  # Shows SecretStr('**********')
 
 ```python
 import os
-from flext_oracle_oic_ext import (
+from flext_oracle_oic import (
     OracleOICExtensionSettings,
     OICExtensionConnectionConfig,
     OICExtensionAuthConfig
@@ -239,7 +239,7 @@ dev_settings = create_dev_config()
 **Missing Required Fields:**
 
 ```python
-from flext_oracle_oic_ext import OICExtensionConnectionConfig
+from flext_oracle_oic import OICExtensionConnectionConfig
 
 # ❌ This will fail - base_url is required
 try:
@@ -275,7 +275,7 @@ config = OICExtensionConnectionConfig(
 ### Configuration Debugging
 
 ```python
-from flext_oracle_oic_ext import OracleOICExtensionSettings
+from flext_oracle_oic import OracleOICExtensionSettings
 
 # Create and inspect configuration
 settings = OracleOICExtensionSettings(connection=connection_config, auth=auth_config)

@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_oracle_oic_ext import E, F, FlextTypes, P, R, T, U, V
+from flext_oracle_oic import E, F, FlextTypes, P, R, T, U, V
 
 
 class TestFlextTypes:
@@ -17,8 +17,8 @@ class TestFlextTypes:
         # FlextTypes should be a class that inherits from CoreFlextTypes
         assert hasattr(FlextTypes, "Core")
         # Should maintain all core functionality
-        assert hasattr(FlextTypes.Core, "Dict")
-        assert hasattr(FlextTypes.Core, "StringList")
+        assert hasattr(FlextTypes, "Dict")
+        assert hasattr(FlextTypes, "StringList")
 
     def test_exported_types_available(self) -> None:
         """Test all exported types are available."""
@@ -37,5 +37,5 @@ class TestFlextTypes:
         # Should be able to add domain-specific types
         assert issubclass(FlextTypes, object)
         # Can access core types
-        core_dict = FlextTypes.Core.Dict
+        core_dict = FlextTypes.Dict
         assert core_dict is not None

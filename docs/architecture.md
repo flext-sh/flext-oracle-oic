@@ -1,12 +1,12 @@
 # Architecture
 
-**flext-oracle-oic-ext v0.9.9** - Oracle Integration Cloud Architecture Analysis
+**flext-oracle-oic v0.9.9** - Oracle Integration Cloud Architecture Analysis
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
 ## Overview
 
-This document provides an accurate analysis of the current architecture implementation in flext-oracle-oic-ext v0.9.9, identifying both existing capabilities and areas requiring FLEXT ecosystem compliance improvements.
+This document provides an accurate analysis of the current architecture implementation in flext-oracle-oic v0.9.9, identifying both existing capabilities and areas requiring FLEXT ecosystem compliance improvements.
 
 ### Architecture Principles
 
@@ -61,7 +61,7 @@ The library follows these core principles from the FLEXT ecosystem:
 **Current Structure (2,937 lines across 13 modules)**
 
 ```
-src/flext_oracle_oic_ext/
+src/flext_oracle_oic/
 ├── __init__.py              # Module exports and version (65 lines)
 ├── ext_config.py            # Pydantic configuration models (215 lines)
 ├── ext_exceptions.py        # Exception hierarchy (89 lines)

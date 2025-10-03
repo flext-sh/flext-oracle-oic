@@ -1,6 +1,6 @@
 # API Reference
 
-**flext-oracle-oic-ext v0.9.9** - Available APIs and Components
+**flext-oracle-oic v0.9.9** - Available APIs and Components
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
@@ -11,7 +11,7 @@
 The current implementation provides foundation configuration classes and basic service structure. All public APIs are available through the main module import.
 
 ```python
-from flext_oracle_oic_ext import (
+from flext_oracle_oic import (
     # Configuration classes
     OracleOICExtensionSettings,
     OICExtensionConnectionConfig,
@@ -29,7 +29,7 @@ from flext_oracle_oic_ext import (
 Main configuration container for Oracle OIC extension settings.
 
 ```python
-from flext_oracle_oic_ext import OracleOICExtensionSettings, OICExtensionConnectionConfig
+from flext_oracle_oic import OracleOICExtensionSettings, OICExtensionConnectionConfig
 
 # Basic configuration creation
 settings = OracleOICExtensionSettings(
@@ -50,7 +50,7 @@ settings = OracleOICExtensionSettings(
 HTTP connection configuration for Oracle Integration Cloud.
 
 ```python
-from flext_oracle_oic_ext import OICExtensionConnectionConfig
+from flext_oracle_oic import OICExtensionConnectionConfig
 
 # Basic connection configuration
 config = OICExtensionConnectionConfig(
@@ -72,7 +72,7 @@ config = OICExtensionConnectionConfig(
 OAuth2/IDCS authentication configuration for Oracle cloud integration.
 
 ```python
-from flext_oracle_oic_ext import OICExtensionAuthConfig
+from flext_oracle_oic import OICExtensionAuthConfig
 
 # OAuth2 authentication setup
 auth_config = OICExtensionAuthConfig(
@@ -97,7 +97,7 @@ auth_config = OICExtensionAuthConfig(
 
 ```python
 # These components may be available for import but implementation varies
-from flext_oracle_oic_ext.ext_services import (
+from flext_oracle_oic.ext_services import (
     OracleOICExtensionService,    # Main service class
     OICIntegrationPatternService, # Integration patterns (basic)
     LifecycleManager,            # Lifecycle management (basic)
@@ -111,10 +111,10 @@ from flext_oracle_oic_ext.ext_services import (
 
 ```python
 # HTTP client wrapper (needs FLEXT compliance fixes)
-from flext_oracle_oic_ext.ext_client import OracleOICExtensionClient
+from flext_oracle_oic.ext_client import OracleOICExtensionClient
 
 # Authentication components (basic implementation)
-from flext_oracle_oic_ext.ext_services import (
+from flext_oracle_oic.ext_services import (
     BaseOICAuthenticator,
     OICExtensionAuthenticator
 )
@@ -127,7 +127,7 @@ from flext_oracle_oic_ext.ext_services import (
 Basic Pydantic data models are available:
 
 ```python
-from flext_oracle_oic_ext.ext_models import (
+from flext_oracle_oic.ext_models import (
     OICIntegrationInfo,  # Integration metadata
     OICConnectionInfo,   # Connection information
     # Additional models based on actual implementation
@@ -139,7 +139,7 @@ from flext_oracle_oic_ext.ext_models import (
 Oracle OIC-specific exception classes:
 
 ```python
-from flext_oracle_oic_ext.ext_exceptions import (
+from flext_oracle_oic.ext_exceptions import (
     OracleOICExtensionError,    # Base exception
     OICAPIError,                # API operation errors
     OICAuthenticationError,     # Authentication failures
@@ -155,7 +155,7 @@ from flext_oracle_oic_ext.ext_exceptions import (
 ## Factory and Utility Functions
 
 ```python
-from flext_oracle_oic_ext.factory import (
+from flext_oracle_oic.factory import (
     # Factory functions for service creation
     # Implementation details vary
 )
@@ -219,7 +219,7 @@ from flext_oracle_oic_ext.factory import (
 
 ```python
 # Recommended import pattern for current version
-from flext_oracle_oic_ext import (
+from flext_oracle_oic import (
     OracleOICExtensionSettings,
     OICExtensionConnectionConfig,
     OICExtensionAuthConfig
@@ -246,7 +246,7 @@ settings = OracleOICExtensionSettings(
 
 ```python
 # Safe to use for configuration and basic setup
-from flext_oracle_oic_ext import (
+from flext_oracle_oic import (
     OracleOICExtensionSettings,
     OICExtensionConnectionConfig,
     OICExtensionAuthConfig

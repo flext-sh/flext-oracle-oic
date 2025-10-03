@@ -8,7 +8,7 @@ from __future__ import annotations
 from pydantic import ConfigDict, Field, SecretStr
 
 from flext_core import FlextConfig, FlextModels, FlextTypes
-from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
+from flext_oracle_oic.constants import FlextOracleOicExtConstants
 
 
 class FlextOracleOicExtModels(FlextModels):
@@ -20,7 +20,7 @@ class FlextOracleOicExtModels(FlextModels):
     """
 
     # Legacy type aliases for backward compatibility
-    OicRecord = dict[str, object]
+    OicRecord = FlextTypes.Dict
     OicRecords = list[OicRecord]
 
     class OICAuthConfig(FlextConfig):
@@ -131,11 +131,9 @@ class FlextOracleOicExtModels(FlextModels):
         params: dict[str, str | int | float] | None = Field(
             None, description="Query parameters"
         )
-        data: FlextTypes.Core.Dict | None = Field(None, description="Form data")
-        json_data: FlextTypes.Core.Dict | None = Field(None, description="JSON data")
-        headers: FlextTypes.Core.Headers | None = Field(
-            None, description="HTTP headers"
-        )
+        data: FlextTypes.Dict | None = Field(None, description="Form data")
+        json_data: FlextTypes.Dict | None = Field(None, description="JSON data")
+        headers: FlextTypes.StringDict | None = Field(None, description="HTTP headers")
         timeout: int = Field(
             FlextOracleOicExtConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
             description="Request timeout in seconds",

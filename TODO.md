@@ -1,6 +1,6 @@
 # TODO - Oracle Integration Cloud Extension
 
-**Project**: flext-oracle-oic-ext v0.9.9
+**Project**: flext-oracle-oic v0.9.9
 **Status**: Early Development - Comprehensive analysis completed · 1.0.0 Release Preparation
 **Updated**: September 17, 2025
 

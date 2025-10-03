@@ -12,8 +12,8 @@ from __future__ import annotations
 import warnings
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
-from flext_oracle_oic_ext.config import FlextOracleOicExtConfig
-from flext_oracle_oic_ext.ext_services import OracleOICExtensionService
+from flext_oracle_oic.config import FlextOracleOicExtConfig
+from flext_oracle_oic.ext_services import OracleOICExtensionService
 
 logger = FlextLogger(__name__)
 
@@ -113,7 +113,7 @@ def setup_oic_extension(
         return FlextResult[OracleOICExtensionService].fail(error_msg)
 
 
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTypes.StringList = [
     "FlextOracleOicExtDeprecationWarning",
     "_show_deprecation_warning",
     "create_development_oic_service",

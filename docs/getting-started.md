@@ -1,6 +1,6 @@
 # Getting Started
 
-**flext-oracle-oic-ext v0.9.9** - Oracle Integration Cloud client library for the FLEXT ecosystem
+**flext-oracle-oic v0.9.9** - Oracle Integration Cloud client library for the FLEXT ecosystem
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
@@ -30,8 +30,8 @@
 ```bash
 # Navigate to FLEXT workspace
 cd /path/to/flext/workspace
-git clone <repository-url> flext-oracle-oic-ext
-cd flext-oracle-oic-ext
+git clone <repository-url> flext-oracle-oic
+cd flext-oracle-oic
 
 # Install dependencies with development tools
 poetry install --with dev,test
@@ -40,7 +40,7 @@ poetry install --with dev,test
 python -c "from flext_core import FlextResult; print('FLEXT-Core accessible')"
 
 # Verify installation
-python -c "from flext_oracle_oic_ext import OracleOICExtensionSettings; print('Import successful')"
+python -c "from flext_oracle_oic import OracleOICExtensionSettings; print('Import successful')"
 ```
 
 ### Environment Setup
@@ -63,7 +63,7 @@ export ORACLE_OIC_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oauth2/v
 The library provides Pydantic-based configuration following FLEXT patterns:
 
 ```python
-from flext_oracle_oic_ext import (
+from flext_oracle_oic import (
     OracleOICExtensionSettings,
     OICExtensionConnectionConfig,
     OICExtensionAuthConfig
@@ -92,8 +92,8 @@ print(f"Configuration created: {settings.connection.base_url}")
 
 ```python
 # Import available components
-from flext_oracle_oic_ext.ext_config import OracleOICExtensionSettings
-from flext_oracle_oic_ext.ext_models import OICExtensionConnectionConfig, OICExtensionAuthConfig
+from flext_oracle_oic.ext_config import OracleOICExtensionSettings
+from flext_oracle_oic.ext_models import OICExtensionConnectionConfig, OICExtensionAuthConfig
 
 # Basic configuration validation
 try:

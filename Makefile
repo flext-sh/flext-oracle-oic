@@ -1,5 +1,5 @@
 # FLEXT-ORACLE-OIC-EXT Makefile
-PROJECT_NAME := flext-oracle-oic-ext
+PROJECT_NAME := flext-oracle-oic
 PYTHON_VERSION := 3.13
 POETRY := poetry
 SRC_DIR := src
@@ -72,16 +72,16 @@ coverage-html: ## Generate HTML coverage report
 
 # OIC operations
 oic-test: ## Test OIC API connectivity
-	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic_ext import test_oic_connectivity; test_oic_connectivity()"
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic import test_oic_connectivity; test_oic_connectivity()"
 
 oic-auth: ## Test OIC OAuth2 authentication
-	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic_ext import test_oic_auth; test_oic_auth()"
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic import test_oic_auth; test_oic_auth()"
 
 oic-patterns: ## Test integration patterns
-	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic_ext import test_integration_patterns; test_integration_patterns()"
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic import test_integration_patterns; test_integration_patterns()"
 
 oic-deploy: ## Test OIC deployment
-	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic_ext import test_oic_deployment; test_oic_deployment()"
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c "from flext_oracle_oic import test_oic_deployment; test_oic_deployment()"
 
 # Build
 build: ## Build package
@@ -129,7 +129,7 @@ reset: clean-all setup ## Reset project
 diagnose: ## Project diagnostics
 	@echo "Python: $$(python --version)"
 	@echo "Poetry: $$($(POETRY) --version)"
-	@echo "OIC Extension: $$(PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c 'import flext_oracle_oic_ext; print(flext_oracle_oic_ext.__version__)' 2>/dev/null || echo 'Not available')"
+	@echo "OIC Extension: $$(PYTHONPATH=$(SRC_DIR) $(POETRY) run python -c 'import flext_oracle_oic; print(flext_oracle_oic.__version__)' 2>/dev/null || echo 'Not available')"
 	@$(POETRY) env info
 
 doctor: diagnose check ## Health check

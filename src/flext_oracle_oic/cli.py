@@ -6,6 +6,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_oracle_oic_ext.main import app, main
+from flext_oracle_oic.main import app, main
 
 __all__ = ["app", "main"]

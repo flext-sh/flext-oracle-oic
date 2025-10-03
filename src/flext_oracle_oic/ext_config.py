@@ -13,7 +13,7 @@ from pydantic import Field, SecretStr
 from pydantic_settings import SettingsConfigDict
 
 from flext_core import FlextConfig
-from flext_oracle_oic_ext.models import FlextOracleOicExtModels
+from flext_oracle_oic.models import FlextOracleOicExtModels
 
 
 class OICExtensionAuthConfig(FlextOracleOicExtModels.OICAuthConfig):

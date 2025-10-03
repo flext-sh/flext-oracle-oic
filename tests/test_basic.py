@@ -1,4 +1,4 @@
-"""Basic tests for flext-oracle-oic-ext.
+"""Basic tests for flext-oracle-oic.
 
 Tests the actual functionality that exists in the current implementation.
 
@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_oracle_oic_ext import (
+from flext_oracle_oic import (
     OICExtensionAuthConfig,
     OICExtensionConnectionConfig,
     OracleOICExtension,

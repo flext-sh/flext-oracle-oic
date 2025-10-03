@@ -15,8 +15,8 @@ from typing import NoReturn
 import typer
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
-from flext_oracle_oic_ext import __version__
-from flext_oracle_oic_ext.factory import create_development_oic_service
+from flext_oracle_oic import __version__
+from flext_oracle_oic.factory import create_development_oic_service
 
 
 def version_callback(*, value: bool) -> None:
@@ -181,7 +181,7 @@ def main() -> NoReturn:
         sys.exit(1)
 
 
-__all__: FlextTypes.Core.StringList = ["app", "main"]
+__all__: FlextTypes.StringList = ["app", "main"]
 
 if __name__ == "__main__":
     main()

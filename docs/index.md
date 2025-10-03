@@ -1,6 +1,6 @@
 # Documentation Index
 
-**flext-oracle-oic-ext v0.9.9** - Oracle Integration Cloud client library for the FLEXT ecosystem
+**flext-oracle-oic v0.9.9** - Oracle Integration Cloud client library for the FLEXT ecosystem
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 

@@ -13,7 +13,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping
 from enum import Enum
 from typing import override
 
@@ -92,24 +91,36 @@ class OracleOICExceptions:
             field_value: object | None = None,
             validation_rule: str | None = None,
             entity_name: str | None = None,
-            code: str | None = None,
-            context: Mapping[str, object] | None = None,
+            **kwargs: object,
         ) -> None:
             """Initialize Oracle OIC Extension data validation error with field context."""
-            context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
-            if field_name is not None:
-                context_dict["field_name"] = field_name
-            if field_value is not None:
-                context_dict["field_value"] = field_value
-            if validation_rule is not None:
-                context_dict["validation_rule"] = validation_rule
-            if entity_name is not None:
-                context_dict["entity_name"] = entity_name
+            # Store domain-specific attributes before extracting common kwargs
+            self.field_name = field_name
+            self.field_value = field_value
+            self.validation_rule = validation_rule
+            self.entity_name = entity_name
 
+            # Extract common parameters using helper
+            base_context, correlation_id, error_code = self._extract_common_kwargs(
+                kwargs
+            )
+
+            # Build context with validation-specific fields
+            context = self._build_context(
+                base_context,
+                field_name=field_name,
+                field_value=field_value,
+                validation_rule=validation_rule,
+                entity_name=entity_name,
+            )
+
+            # Call parent with complete error information
             super().__init__(
                 message,
-                code=code or OracleOICExceptions.ErrorCodes.OIC_VALIDATION_ERROR.value,
-                context=context_dict,
+                code=error_code
+                or OracleOICExceptions.ErrorCodes.OIC_VALIDATION_ERROR.value,
+                context=context,
+                correlation_id=correlation_id,
             )
 
     class ApiRequestError(ApiError):
@@ -125,28 +136,39 @@ class OracleOICExceptions:
             entity_name: str | None = None,
             endpoint: str | None = None,
             method: str | None = None,
-            code: str | None = None,
-            context: Mapping[str, object] | None = None,
+            **kwargs: object,
         ) -> None:
             """Initialize Oracle OIC Extension API request error with HTTP context."""
-            context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
-            if status_code is not None:
-                context_dict["status_code"] = status_code
-            if response_body is not None:
-                context_dict["response_body"] = response_body[
-                    :500
-                ]  # Truncate for safety
-            if entity_name is not None:
-                context_dict["entity_name"] = entity_name
-            if endpoint is not None:
-                context_dict["endpoint"] = endpoint
-            if method is not None:
-                context_dict["method"] = method
+            # Store domain-specific attributes before extracting common kwargs
+            self.status_code = status_code
+            self.response_body = response_body
+            self.entity_name = entity_name
+            self.endpoint = endpoint
+            self.method = method
 
+            # Extract common parameters using helper
+            base_context, correlation_id, error_code = self._extract_common_kwargs(
+                kwargs
+            )
+
+            # Build context with API-specific fields
+            context = self._build_context(
+                base_context,
+                status_code=status_code,
+                response_body=response_body[:500]
+                if response_body is not None
+                else None,  # Truncate for safety
+                entity_name=entity_name,
+                endpoint=endpoint,
+                method=method,
+            )
+
+            # Call parent with complete error information
             super().__init__(
                 message,
-                code=code or OracleOICExceptions.ErrorCodes.OIC_API_ERROR.value,
-                context=context_dict,
+                code=error_code or OracleOICExceptions.ErrorCodes.OIC_API_ERROR.value,
+                context=context,
+                correlation_id=correlation_id,
             )
 
     class ConfigError(ConfigurationError):
@@ -161,25 +183,36 @@ class OracleOICExceptions:
             config_value: object | None = None,
             config_section: str | None = None,
             valid_range: str | None = None,
-            code: str | None = None,
-            context: Mapping[str, object] | None = None,
+            **kwargs: object,
         ) -> None:
             """Initialize Oracle OIC Extension configuration error with config context."""
-            context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
-            if config_key is not None:
-                context_dict["config_key"] = config_key
-            if config_value is not None:
-                context_dict["config_value"] = config_value
-            if config_section is not None:
-                context_dict["config_section"] = config_section
-            if valid_range is not None:
-                context_dict["valid_range"] = valid_range
+            # Store domain-specific attributes before extracting common kwargs
+            self.config_key = config_key
+            self.config_value = config_value
+            self.config_section = config_section
+            self.valid_range = valid_range
 
+            # Extract common parameters using helper
+            base_context, correlation_id, error_code = self._extract_common_kwargs(
+                kwargs
+            )
+
+            # Build context with configuration-specific fields
+            context = self._build_context(
+                base_context,
+                config_key=config_key,
+                config_value=config_value,
+                config_section=config_section,
+                valid_range=valid_range,
+            )
+
+            # Call parent with complete error information
             super().__init__(
                 message,
-                code=code
+                code=error_code
                 or OracleOICExceptions.ErrorCodes.OIC_CONFIGURATION_ERROR.value,
-                context=context_dict,
+                context=context,
+                correlation_id=correlation_id,
             )
 
     class IntegrationPatternError(PatternError):
@@ -195,26 +228,38 @@ class OracleOICExceptions:
             workflow_id: str | None = None,
             step_id: str | None = None,
             operation: str | None = None,
-            code: str | None = None,
-            context: Mapping[str, object] | None = None,
+            **kwargs: object,
         ) -> None:
             """Initialize Oracle OIC Extension integration pattern error with pattern context."""
-            context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
-            if pattern_name is not None:
-                context_dict["pattern_name"] = pattern_name
-            if pattern_type is not None:
-                context_dict["pattern_type"] = pattern_type
-            if workflow_id is not None:
-                context_dict["workflow_id"] = workflow_id
-            if step_id is not None:
-                context_dict["step_id"] = step_id
-            if operation is not None:
-                context_dict["operation"] = operation
+            # Store domain-specific attributes before extracting common kwargs
+            self.pattern_name = pattern_name
+            self.pattern_type = pattern_type
+            self.workflow_id = workflow_id
+            self.step_id = step_id
+            self.operation = operation
 
+            # Extract common parameters using helper
+            base_context, correlation_id, error_code = self._extract_common_kwargs(
+                kwargs
+            )
+
+            # Build context with pattern-specific fields
+            context = self._build_context(
+                base_context,
+                pattern_name=pattern_name,
+                pattern_type=pattern_type,
+                workflow_id=workflow_id,
+                step_id=step_id,
+                operation=operation,
+            )
+
+            # Call parent with complete error information
             super().__init__(
                 message,
-                code=code or OracleOICExceptions.ErrorCodes.OIC_PATTERN_ERROR.value,
-                context=context_dict,
+                code=error_code
+                or OracleOICExceptions.ErrorCodes.OIC_PATTERN_ERROR.value,
+                context=context,
+                correlation_id=correlation_id,
             )
 
     class WorkflowExecutionError(WorkflowError):
@@ -230,26 +275,35 @@ class OracleOICExceptions:
             step_name: str | None = None,
             status: str | None = None,
             error_code: str | None = None,
-            code: str | None = None,
-            context: Mapping[str, object] | None = None,
+            **kwargs: object,
         ) -> None:
             """Initialize Oracle OIC Extension workflow execution error with workflow context."""
-            context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
-            if workflow_id is not None:
-                context_dict["workflow_id"] = workflow_id
-            if execution_id is not None:
-                context_dict["execution_id"] = execution_id
-            if step_name is not None:
-                context_dict["step_name"] = step_name
-            if status is not None:
-                context_dict["status"] = status
-            if error_code is not None:
-                context_dict["error_code"] = error_code
+            # Store domain-specific attributes before extracting common kwargs
+            self.workflow_id = workflow_id
+            self.execution_id = execution_id
+            self.step_name = step_name
+            self.status = status
+            self.error_code = error_code
 
+            # Extract common parameters using helper
+            base_context, correlation_id, code = self._extract_common_kwargs(kwargs)
+
+            # Build context with workflow-specific fields
+            context = self._build_context(
+                base_context,
+                workflow_id=workflow_id,
+                execution_id=execution_id,
+                step_name=step_name,
+                status=status,
+                error_code=error_code,
+            )
+
+            # Call parent with complete error information
             super().__init__(
                 message,
                 code=code or OracleOICExceptions.ErrorCodes.OIC_WORKFLOW_ERROR.value,
-                context=context_dict,
+                context=context,
+                correlation_id=correlation_id,
             )
 
     class OAuth2TokenError(TokenError):
@@ -265,26 +319,37 @@ class OracleOICExceptions:
             scope: str | None = None,
             grant_type: str | None = None,
             expires_in: int | None = None,
-            code: str | None = None,
-            context: Mapping[str, object] | None = None,
+            **kwargs: object,
         ) -> None:
             """Initialize Oracle OIC Extension OAuth2 token error with authentication context."""
-            context_dict: FlextTypes.Core.Dict = dict(context) if context else {}
-            if token_type is not None:
-                context_dict["token_type"] = token_type
-            if client_id is not None:
-                context_dict["client_id"] = client_id
-            if scope is not None:
-                context_dict["scope"] = scope
-            if grant_type is not None:
-                context_dict["grant_type"] = grant_type
-            if expires_in is not None:
-                context_dict["expires_in"] = expires_in
+            # Store domain-specific attributes before extracting common kwargs
+            self.token_type = token_type
+            self.client_id = client_id
+            self.scope = scope
+            self.grant_type = grant_type
+            self.expires_in = expires_in
 
+            # Extract common parameters using helper
+            base_context, correlation_id, error_code = self._extract_common_kwargs(
+                kwargs
+            )
+
+            # Build context with OAuth2-specific fields
+            context = self._build_context(
+                base_context,
+                token_type=token_type,
+                client_id=client_id,
+                scope=scope,
+                grant_type=grant_type,
+                expires_in=expires_in,
+            )
+
+            # Call parent with complete error information
             super().__init__(
                 message,
-                code=code or OracleOICExceptions.ErrorCodes.OIC_TOKEN_ERROR.value,
-                context=context_dict,
+                code=error_code or OracleOICExceptions.ErrorCodes.OIC_TOKEN_ERROR.value,
+                context=context,
+                correlation_id=correlation_id,
             )
 
 
@@ -332,7 +397,7 @@ exceptions_all = (
 )
 
 
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTypes.StringList = [
     "FlextOracleOicApiError",
     "FlextOracleOicApiRequestError",
     "FlextOracleOicAuthenticationError",

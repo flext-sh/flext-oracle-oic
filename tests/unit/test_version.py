@@ -1,4 +1,4 @@
-"""Version metadata tests for flext-oracle-oic-ext."""
+"""Version metadata tests for flext-oracle-oic."""
 
 from __future__ import annotations
 
@@ -6,8 +6,8 @@ from collections.abc import Mapping
 
 from flext_core.metadata import FlextProjectMetadata, FlextProjectPerson
 
-from flext_oracle_oic_ext import __version__, __version_info__
-from flext_oracle_oic_ext.version import VERSION, FlextOracleOicExtVersion
+from flext_oracle_oic import __version__, __version_info__
+from flext_oracle_oic.version import VERSION, FlextOracleOicExtVersion
 
 
 def test_dunder_alignment() -> None:

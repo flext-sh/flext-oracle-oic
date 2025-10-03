@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import importlib.metadata
 
+from flext_core.metadata import build_metadata_exports
+
 from flext_core import (
     E,
     F,
@@ -22,19 +24,17 @@ from flext_core import (
     U,
     V,
 )
-from flext_core.metadata import build_metadata_exports
-
-from flext_oracle_oic_ext.cli import app, main
-from flext_oracle_oic_ext.config import (
+from flext_oracle_oic.cli import app, main
+from flext_oracle_oic.config import (
     FlextOracleOicExtConfig,
 )
-from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
-from flext_oracle_oic_ext.container import (
+from flext_oracle_oic.constants import FlextOracleOicExtConstants
+from flext_oracle_oic.container import (
     configure_flext_oracle_oic_ext_dependencies,
     get_flext_oracle_oic_ext_container,
     get_flext_oracle_oic_ext_service,
 )
-from flext_oracle_oic_ext.exceptions import (
+from flext_oracle_oic.exceptions import (
     FlextOracleOicApiError,
     FlextOracleOicApiRequestError,
     FlextOracleOicAuthenticationError,
@@ -55,7 +55,7 @@ from flext_oracle_oic_ext.exceptions import (
     FlextOracleOicWorkflowExecutionError,
     exceptions_all,
 )
-from flext_oracle_oic_ext.ext_client import (
+from flext_oracle_oic.ext_client import (
     BaseOICAuthenticator,
     BaseOICClient,
     OICExtensionAuthenticator,
@@ -63,12 +63,12 @@ from flext_oracle_oic_ext.ext_client import (
     OICTargetAuthenticator,
     OracleOICExtensionClient,
 )
-from flext_oracle_oic_ext.ext_config import (
+from flext_oracle_oic.ext_config import (
     OICExtensionAuthConfig,
     OICExtensionConnectionConfig,
     OracleOICExtensionSettings,
 )
-from flext_oracle_oic_ext.ext_exceptions import (
+from flext_oracle_oic.ext_exceptions import (
     OICAPIError,
     OICAuthenticationError,
     OICConfigurationError,
@@ -81,7 +81,7 @@ from flext_oracle_oic_ext.ext_exceptions import (
     OICWorkflowError,
     OracleOICExtensionError,
 )
-from flext_oracle_oic_ext.ext_services import (
+from flext_oracle_oic.ext_services import (
     HTTPClientProtocol,
     HTTPResponseProtocol,
     LifecycleManager,
@@ -89,20 +89,20 @@ from flext_oracle_oic_ext.ext_services import (
     OICIntegrationPatternService,
     OracleOICExtensionService,
 )
-from flext_oracle_oic_ext.extension import OracleOICExtension
-from flext_oracle_oic_ext.factory import (
+from flext_oracle_oic.extension import OracleOICExtension
+from flext_oracle_oic.factory import (
     FlextOracleOicExtDeprecationWarning,
     _show_deprecation_warning,
     create_development_oic_service,
     create_oic_extension_service,
     setup_oic_extension,
 )
-from flext_oracle_oic_ext.models import FlextOracleOicExtModels
-from flext_oracle_oic_ext.protocols import FlextOracleOicExtProtocols
-from flext_oracle_oic_ext.utilities import FlextOracleOicExtUtilities
+from flext_oracle_oic.models import FlextOracleOicExtModels
+from flext_oracle_oic.protocols import FlextOracleOicExtProtocols
+from flext_oracle_oic.utilities import FlextOracleOicExtUtilities
 
 # Import VERSION after metadata setup to avoid circular imports
-from flext_oracle_oic_ext.version import VERSION
+from flext_oracle_oic.version import VERSION
 
 globals().update(build_metadata_exports(__file__))
 
@@ -114,14 +114,14 @@ IntegrationStatus = FlextOracleOicExtModels.IntegrationStatus
 RequestParams = FlextOracleOicExtModels.RequestParams
 
 try:
-    __version__ = importlib.metadata.version("flext-oracle-oic-ext")
+    __version__ = importlib.metadata.version("flext-oracle-oic")
     __version_info__: tuple[int | str, ...] = VERSION.version_info
 except importlib.metadata.PackageNotFoundError:
     __version__ = "0.9.0"
 
 
 logger = FlextLogger(__name__)
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTypes.StringList = [
     "BaseOICAuthenticator",
     "BaseOICClient",
     "E",

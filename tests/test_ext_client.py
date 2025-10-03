@@ -14,12 +14,12 @@ import pytest
 from pydantic import SecretStr
 
 from flext_core import FlextResult
-from flext_oracle_oic_ext import (
+from flext_oracle_oic import (
     BaseOICAuthenticator,
     OICExtensionAuthenticator,
     OracleOICExtensionClient,
 )
-from flext_oracle_oic_ext.models import FlextOracleOicExtModels
+from flext_oracle_oic.models import FlextOracleOicExtModels
 
 
 class TestBaseOICAuthenticator:

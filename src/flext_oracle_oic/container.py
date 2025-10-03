@@ -1,4 +1,4 @@
-"""Container module for flext-oracle-oic-ext.
+"""Container module for flext-oracle-oic.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -6,11 +6,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextContainer, FlextResult
+from flext_core import FlextContainer, FlextResult, FlextTypes
 
 # Create all module-specific utilities using DRY pattern
-_utilities_result: FlextResult[dict[str, object]] = (
-    FlextContainer.create_module_utilities("flext_oracle_oic_ext")
+_utilities_result: FlextResult[FlextTypes.Dict] = (
+    FlextContainer.create_module_utilities("flext_oracle_oic")
 )
 
 # Extract utilities with proper names for backward compatibility
@@ -34,7 +34,7 @@ else:
     configure_flext_oracle_oic_ext_dependencies = None
     get_flext_oracle_oic_ext_service = None
 
-# Initialize flext_oracle_oic_ext dependencies on module import
+# Initialize flext_oracle_oic dependencies on module import
 if callable(configure_flext_oracle_oic_ext_dependencies):
     configure_flext_oracle_oic_ext_dependencies()
 # Skip if not callable - may be a placeholder object

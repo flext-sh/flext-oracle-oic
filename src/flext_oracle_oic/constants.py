@@ -1,6 +1,6 @@
 """Oracle OIC Extension Constants - Unified Constants Pattern.
 
-This module provides centralized constants for the flext-oracle-oic-ext project,
+This module provides centralized constants for the flext-oracle-oic project,
 inheriting from FlextConstants and following FLEXT architectural standards.
 
 FLEXT Unified Constants Pattern: Single FlextOracleOicExtConstants class
@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from flext_core import FlextConstants
+from flext_core import FlextConstants, FlextTypes
 
 
 class FlextOracleOicExtConstants(FlextConstants):
@@ -25,7 +25,7 @@ class FlextOracleOicExtConstants(FlextConstants):
 
     Usage:
         ```python
-        from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
+        from flext_oracle_oic.constants import FlextOracleOicExtConstants
 
         # Access Oracle OIC specific constants
         api_version = FlextOracleOicExtConstants.OIC.DEFAULT_API_VERSION
@@ -51,7 +51,7 @@ class FlextOracleOicExtConstants(FlextConstants):
 
         # API Configuration
         DEFAULT_API_VERSION: Final[str] = "v1"
-        SUPPORTED_API_VERSIONS: Final[list[str]] = ["v1", "v2"]
+        SUPPORTED_API_VERSIONS: Final[FlextTypes.StringList] = ["v1", "v2"]
 
         # Connection Configuration
         DEFAULT_BASE_URL: Final[str] = (
@@ -299,6 +299,6 @@ class FlextOracleOicExtConstants(FlextConstants):
 
 
 # Exports following EXTENSION pattern
-__all__: list[str] = [
+__all__: FlextTypes.StringList = [
     "FlextOracleOicExtConstants",
 ]

@@ -24,4 +24,4 @@ class OracleOICExtension:
         return f"{self.name} - Implementation pending"
 
 
-__all__: FlextTypes.Core.StringList = ["OracleOICExtension"]
+__all__: FlextTypes.StringList = ["OracleOICExtension"]

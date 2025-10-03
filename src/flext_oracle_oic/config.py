@@ -11,13 +11,13 @@ from __future__ import annotations
 
 from typing import Literal, Self, cast
 
-from flext_core import FlextConfig, FlextResult
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
-from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
-from flext_oracle_oic_ext.typings import FlextOracleOicExtTypes
-from flext_oracle_oic_ext.utilities import FlextOracleOicExtUtilities
+from flext_core import FlextConfig, FlextResult, FlextTypes
+from flext_oracle_oic.constants import FlextOracleOicExtConstants
+from flext_oracle_oic.typings import FlextOracleOicExtTypes
+from flext_oracle_oic.utilities import FlextOracleOicExtUtilities
 
 # Type definitions outside class to avoid Pydantic field errors
 EnvironmentLiteral = Literal["development", "staging", "production"]
@@ -26,7 +26,7 @@ OICApiVersionLiteral = Literal["v1", "v2"]
 
 
 class FlextOracleOicExtConfig(FlextConfig):
-    """Single Pydantic 2 Settings class for flext-oracle-oic-ext extending FlextConfig.
+    """Single Pydantic 2 Settings class for flext-oracle-oic extending FlextConfig.
 
     Follows standardized pattern:
     - Extends FlextConfig from flext-core
@@ -127,7 +127,7 @@ class FlextOracleOicExtConfig(FlextConfig):
 
     # Project Identification
     project_name: str = Field(
-        default="flext-oracle-oic-ext",
+        default="flext-oracle-oic",
         description="Project name",
     )
 
@@ -218,7 +218,7 @@ class FlextOracleOicExtConfig(FlextConfig):
             "verify_ssl": self.verify_ssl,
         }
 
-    def get_auth_context(self) -> dict[str, object]:
+    def get_auth_context(self) -> FlextTypes.Dict:
         """Get Oracle OIC authentication configuration context (without secrets)."""
         return {
             "client_id": self.oauth_client_id,
@@ -228,7 +228,7 @@ class FlextOracleOicExtConfig(FlextConfig):
             "has_secret": self.oauth_client_secret is not None,
         }
 
-    def get_features_context(self) -> dict[str, object]:
+    def get_features_context(self) -> FlextTypes.Dict:
         """Get Oracle OIC feature configuration context."""
         return {
             "monitoring": self.enable_monitoring,
@@ -244,7 +244,7 @@ class FlextOracleOicExtConfig(FlextConfig):
         return cast(
             "FlextOracleOicExtConfig",
             cls.get_or_create_shared_instance(
-                project_name="flext-oracle-oic-ext",
+                project_name="flext-oracle-oic",
                 environment=environment,
                 **overrides,
             ),
@@ -255,7 +255,7 @@ class FlextOracleOicExtConfig(FlextConfig):
         """Create default configuration instance using enhanced singleton pattern."""
         return cast(
             "FlextOracleOicExtConfig",
-            cls.get_or_create_shared_instance(project_name="flext-oracle-oic-ext"),
+            cls.get_or_create_shared_instance(project_name="flext-oracle-oic"),
         )
 
     @classmethod
@@ -264,7 +264,7 @@ class FlextOracleOicExtConfig(FlextConfig):
         return cast(
             "FlextOracleOicExtConfig",
             cls.get_or_create_shared_instance(
-                project_name="flext-oracle-oic-ext",
+                project_name="flext-oracle-oic",
                 request_timeout=10,
                 max_retries=1,
                 verify_ssl=False,
@@ -278,7 +278,7 @@ class FlextOracleOicExtConfig(FlextConfig):
         return cast(
             "FlextOracleOicExtConfig",
             cls.get_or_create_shared_instance(
-                project_name="flext-oracle-oic-ext",
+                project_name="flext-oracle-oic",
                 request_timeout=60,
                 max_retries=5,
                 verify_ssl=True,
@@ -294,7 +294,7 @@ class FlextOracleOicExtConfig(FlextConfig):
         return cast(
             "FlextOracleOicExtConfig",
             cls.get_or_create_shared_instance(
-                project_name="flext-oracle-oic-ext",
+                project_name="flext-oracle-oic",
                 base_url="https://test.example.com",
                 oauth_client_id="test_client",
                 oauth_client_secret=SecretStr("test_secret"),
@@ -310,7 +310,7 @@ class FlextOracleOicExtConfig(FlextConfig):
         """Get the global singleton instance using enhanced FlextConfig pattern."""
         return cast(
             "FlextOracleOicExtConfig",
-            cls.get_or_create_shared_instance(project_name="flext-oracle-oic-ext"),
+            cls.get_or_create_shared_instance(project_name="flext-oracle-oic"),
         )
 
     @classmethod

@@ -9,7 +9,7 @@ from __future__ import annotations
 import pytest
 from pydantic import SecretStr, ValidationError
 
-from flext_oracle_oic_ext.models import FlextOracleOicExtModels
+from flext_oracle_oic.models import FlextOracleOicExtModels
 
 
 class TestOICAuthConfig:

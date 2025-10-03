@@ -14,7 +14,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from flext_oracle_oic_ext import (
+from flext_core import FlextTypes
+from flext_oracle_oic import (
     HTTPClientProtocol,
     HTTPResponseProtocol,
     LifecycleManager,
@@ -25,7 +26,7 @@ from flext_oracle_oic_ext import (
     OracleOICExtensionService,
     OracleOICExtensionSettings,
 )
-from flext_oracle_oic_ext.models import FlextOracleOicExtModels
+from flext_oracle_oic.models import FlextOracleOicExtModels
 
 
 class TestOracleOICExtensionService:
@@ -71,7 +72,7 @@ class TestOracleOICExtensionService:
         with service as ctx_service:
             assert ctx_service is service
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_get_client_success(
         self,
         mock_client_class: Mock,
@@ -87,7 +88,7 @@ class TestOracleOICExtensionService:
         assert result.value == mock_client
         assert service._client == mock_client
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_get_client_cached(
         self,
         mock_client_class: Mock,
@@ -104,7 +105,7 @@ class TestOracleOICExtensionService:
         # Should not create new client
         mock_client_class.assert_not_called()
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_get_client_failure(
         self,
         mock_client_class: Mock,
@@ -118,7 +119,7 @@ class TestOracleOICExtensionService:
         assert result.is_failure
         assert "Client creation failed" in str(result.error)
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_list_integrations_success(
         self,
         mock_client_class: Mock,
@@ -141,7 +142,7 @@ class TestOracleOICExtensionService:
             page_size=100,
         )
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_list_integrations_client_failure(
         self,
         mock_client_class: Mock,
@@ -155,7 +156,7 @@ class TestOracleOICExtensionService:
         assert result.is_failure
         assert "Client error" in str(result.error)
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_list_integrations_with_filters(
         self,
         mock_client_class: Mock,
@@ -177,7 +178,7 @@ class TestOracleOICExtensionService:
             page_size=100,
         )
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_list_connections_success(
         self,
         mock_client_class: Mock,
@@ -198,7 +199,7 @@ class TestOracleOICExtensionService:
             page_size=100,
         )
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_list_connections_with_filters(
         self,
         mock_client_class: Mock,
@@ -220,7 +221,7 @@ class TestOracleOICExtensionService:
             page_size=100,
         )
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_test_connection_success(
         self,
         mock_client_class: Mock,
@@ -237,7 +238,7 @@ class TestOracleOICExtensionService:
         assert result.value is True
         mock_client.get_integrations.assert_called_once_with(page_size=1)
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_test_connection_failure(
         self,
         mock_client_class: Mock,
@@ -254,7 +255,7 @@ class TestOracleOICExtensionService:
         assert result.is_failure
         assert "Connection failed" in str(result.error)
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_deploy_integration_success(
         self,
         mock_client_class: Mock,
@@ -268,7 +269,7 @@ class TestOracleOICExtensionService:
         mock_client.create_integration.return_value = mock_result
         mock_client_class.return_value = mock_client
 
-        integration_data: dict[str, object] = {"integration_id": "test_integration_id"}
+        integration_data: FlextTypes.Dict = {"integration_id": "test_integration_id"}
         result = service.deploy_integration(integration_data)
 
         assert result.is_success
@@ -303,8 +304,8 @@ class TestOICIntegrationPatternService:
         pattern_service: OICIntegrationPatternService,
     ) -> None:
         """Test message router pattern application."""
-        source_config: dict[str, object] = {"endpoint": "source_endpoint"}
-        target_configs: list[dict[str, object]] = [
+        source_config: FlextTypes.Dict = {"endpoint": "source_endpoint"}
+        target_configs: list[FlextTypes.Dict] = [
             {"endpoint": "target1"},
             {"endpoint": "target2"},
         ]
@@ -325,8 +326,8 @@ class TestOICIntegrationPatternService:
         pattern_service: OICIntegrationPatternService,
     ) -> None:
         """Test message router pattern with empty targets."""
-        source_config: dict[str, object] = {"endpoint": "source_endpoint"}
-        target_configs: list[dict[str, object]] = []
+        source_config: FlextTypes.Dict = {"endpoint": "source_endpoint"}
+        target_configs: list[FlextTypes.Dict] = []
 
         result = pattern_service.apply_message_router_pattern(
             source_config,
@@ -341,7 +342,7 @@ class TestOICIntegrationPatternService:
         pattern_service: OICIntegrationPatternService,
     ) -> None:
         """Test scatter-gather pattern application."""
-        request_data: dict[str, object] = {"id": "test_request_123", "data": "test"}
+        request_data: FlextTypes.Dict = {"id": "test_request_123", "data": "test"}
         target_endpoints = ["ep1", "ep2"]
 
         result = pattern_service.apply_scatter_gather_pattern(
@@ -360,8 +361,8 @@ class TestOICIntegrationPatternService:
         pattern_service: OICIntegrationPatternService,
     ) -> None:
         """Test scatter-gather pattern with invalid scatter config."""
-        request_data: dict[str, object] = {}
-        target_endpoints: list[str] = []
+        request_data: FlextTypes.Dict = {}
+        target_endpoints: FlextTypes.StringList = []
 
         result = pattern_service.apply_scatter_gather_pattern(
             request_data,
@@ -404,7 +405,7 @@ class TestLifecycleManager:
         assert manager.logger is not None
         assert manager._client is None
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_get_client_success(
         self,
         mock_client_class: Mock,
@@ -419,7 +420,7 @@ class TestLifecycleManager:
         assert result.is_success
         assert result.value == mock_client
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_activate_integration_success(
         self,
         mock_client_class: Mock,
@@ -440,7 +441,7 @@ class TestLifecycleManager:
             {"status": "ACTIVATED"},
         )
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_activate_integration_client_failure(
         self,
         mock_client_class: Mock,
@@ -454,7 +455,7 @@ class TestLifecycleManager:
         assert result.is_failure
         assert "Client error" in str(result.error)
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_activate_integration_operation_failure(
         self,
         mock_client_class: Mock,
@@ -471,7 +472,7 @@ class TestLifecycleManager:
         assert result.is_failure
         assert "Activation failed" in str(result.error)
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_deactivate_integration_success(
         self,
         mock_client_class: Mock,
@@ -492,7 +493,7 @@ class TestLifecycleManager:
             {"status": "DEACTIVATED"},
         )
 
-    @patch("flext_oracle_oic_ext.ext_services.OracleOICExtensionClient")
+    @patch("flext_oracle_oic.ext_services.OracleOICExtensionClient")
     def test_deactivate_integration_client_failure(
         self,
         mock_client_class: Mock,

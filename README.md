@@ -1,4 +1,4 @@
-# flext-oracle-oic-ext
+# flext-oracle-oic
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
@@ -48,7 +48,7 @@ This extension provides Oracle Integration Cloud (OIC) integration capabilities 
 
 ```mermaid
 graph TB
-    Core[FLEXT-Core Foundation] --> OIC[flext-oracle-oic-ext]
+    Core[FLEXT-Core Foundation] --> OIC[flext-oracle-oic]
     OIC --> Services[Oracle OIC Integration Services]
     OIC --> CLI[Oracle OIC CLI Operations]
     OIC --> Patterns[Integration Pattern Execution]
@@ -85,20 +85,20 @@ graph TB
 ```bash
 # FLEXT workspace setup (recommended)
 cd /path/to/flext/workspace
-git clone <repository-url> flext-oracle-oic-ext
-cd flext-oracle-oic-ext
+git clone <repository-url> flext-oracle-oic
+cd flext-oracle-oic
 
 # Install dependencies
 poetry install --with dev,test
 
 # Verify installation
-python -c "from flext_oracle_oic_ext import OracleOICExtensionSettings; print('Import successful')"
+python -c "from flext_oracle_oic import OracleOICExtensionSettings; print('Import successful')"
 ```
 
 ### **Basic Usage**
 
 ```python
-from flext_oracle_oic_ext import (
+from flext_oracle_oic import (
     OracleOICExtensionSettings,
     OICExtensionConnectionConfig,
     OICExtensionAuthConfig
@@ -344,12 +344,12 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## 🆘 Support
 
 - **Documentation**: [docs/](docs/)
-- **Issues**: [GitHub Issues](https://github.com/flext-sh/flext-oracle-oic-ext/issues)
+- **Issues**: [GitHub Issues](https://github.com/flext-sh/flext-oracle-oic/issues)
 - **Security**: Report security issues privately to maintainers
 - **Oracle OIC**: Oracle Integration Cloud specific support and troubleshooting
 
 ---
 
-**flext-oracle-oic-ext v0.9.9** - Oracle Integration Cloud client library enabling secure OAuth2/IDCS authentication and professional integration pattern execution across the FLEXT ecosystem.
+**flext-oracle-oic v0.9.9** - Oracle Integration Cloud client library enabling secure OAuth2/IDCS authentication and professional integration pattern execution across the FLEXT ecosystem.
 
 **Mission**: Provide a professional Oracle Integration Cloud library following FLEXT ecosystem standards that enables reliable, secure, and maintainable Oracle cloud integration solutions for enterprise Python applications.

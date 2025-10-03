@@ -11,8 +11,8 @@ from unittest.mock import Mock, patch
 import typer
 from typer.testing import CliRunner
 
-import flext_oracle_oic_ext.main as main_module
-from flext_oracle_oic_ext import (
+import flext_oracle_oic.main as main_module
+from flext_oracle_oic import (
     __version__,
     app,
     create_development_oic_service,
@@ -46,8 +46,8 @@ class TestMainApp:
 class TestMainFunction:
     """Test main function entry point."""
 
-    @patch("flext_oracle_oic_ext.main.sys.exit")
-    @patch("flext_oracle_oic_ext.main.app")
+    @patch("flext_oracle_oic.main.sys.exit")
+    @patch("flext_oracle_oic.main.app")
     def test_main_function_calls_app(self, mock_app: Mock, mock_exit: Mock) -> None:
         """Test main function calls app()."""
         # Mock sys.exit to prevent actual exit and make code reachable
@@ -89,7 +89,7 @@ class TestCLICommands:
         # Should exit successfully and show version
         assert result.exit_code == 0
 
-    @patch("flext_oracle_oic_ext.main.logger")
+    @patch("flext_oracle_oic.main.logger")
     def test_logger_initialization(self, mock_logger: Mock) -> None:
         """Test logger is properly initialized."""
         _ = mock_logger  # Use the parameter to avoid unused argument warning
@@ -110,7 +110,7 @@ class TestAppIntegration:
         assert __version__ is not None
         assert callable(create_development_oic_service)
 
-    @patch("flext_oracle_oic_ext.main.create_development_oic_service")
+    @patch("flext_oracle_oic.main.create_development_oic_service")
     def test_factory_function_usage(self, mock_factory: Mock) -> None:
         """Test app can use factory functions."""
         # Should be able to call factory function from main module
@@ -126,7 +126,7 @@ class TestErrorHandling:
     def test_keyboard_interrupt_handling(self, mock_exit: Mock) -> None:
         """Test main handles KeyboardInterrupt gracefully."""
         _ = mock_exit  # Use the parameter to avoid unused argument warning
-        with patch("flext_oracle_oic_ext.main.app") as mock_app:
+        with patch("flext_oracle_oic.main.app") as mock_app:
             mock_app.side_effect = KeyboardInterrupt()
 
             try:
@@ -138,7 +138,7 @@ class TestErrorHandling:
     def test_system_exit_handling(self, mock_exit: Mock) -> None:
         """Test main handles SystemExit gracefully."""
         _ = mock_exit  # Use the parameter to avoid unused argument warning
-        with patch("flext_oracle_oic_ext.main.app") as mock_app:
+        with patch("flext_oracle_oic.main.app") as mock_app:
             mock_app.side_effect = SystemExit(1)
 
             try:
