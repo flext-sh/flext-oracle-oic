@@ -13,8 +13,8 @@ import sys
 from typing import NoReturn
 
 import typer
-
 from flext_core import FlextLogger, FlextResult, FlextTypes
+
 from flext_oracle_oic import __version__
 from flext_oracle_oic.factory import create_development_oic_service
 

@@ -6,10 +6,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import importlib.metadata
-
-from flext_core.metadata import build_metadata_exports
-
+# Temporarily disabled due to missing flext_core.metadata
+# import importlib.metadata
+# from flext_core.metadata import build_metadata_exports
 from flext_core import (
     E,
     F,
@@ -24,6 +23,8 @@ from flext_core import (
     U,
     V,
 )
+
+from flext_oracle_oic.api import FlextOracleOic, FlextOracleOicAPI
 from flext_oracle_oic.cli import app, main
 from flext_oracle_oic.config import (
     FlextOracleOicExtConfig,
@@ -81,30 +82,27 @@ from flext_oracle_oic.ext_exceptions import (
     OICWorkflowError,
     OracleOICExtensionError,
 )
-from flext_oracle_oic.ext_services import (
-    HTTPClientProtocol,
-    HTTPResponseProtocol,
-    LifecycleManager,
-    MonitoringService,
-    OICIntegrationPatternService,
-    OracleOICExtensionService,
-)
 from flext_oracle_oic.extension import OracleOICExtension
 from flext_oracle_oic.factory import (
     FlextOracleOicExtDeprecationWarning,
-    _show_deprecation_warning,
     create_development_oic_service,
     create_oic_extension_service,
     setup_oic_extension,
 )
 from flext_oracle_oic.models import FlextOracleOicExtModels
 from flext_oracle_oic.protocols import FlextOracleOicExtProtocols
+from flext_oracle_oic.service import (
+    FlextOracleOicService,
+    HTTPClientProtocol,
+    HTTPResponseProtocol,
+)
 from flext_oracle_oic.utilities import FlextOracleOicExtUtilities
 
 # Import VERSION after metadata setup to avoid circular imports
 from flext_oracle_oic.version import VERSION
 
-globals().update(build_metadata_exports(__file__))
+# Temporarily disabled due to missing flext_core.metadata
+# globals().update(build_metadata_exports(__file__))
 
 OICAuthConfig = FlextOracleOicExtModels.OICAuthConfig
 OICConnectionConfig = FlextOracleOicExtModels.OICConnectionConfig
@@ -113,11 +111,15 @@ OICConnectionInfo = FlextOracleOicExtModels.OICConnectionInfo
 IntegrationStatus = FlextOracleOicExtModels.IntegrationStatus
 RequestParams = FlextOracleOicExtModels.RequestParams
 
-try:
-    __version__ = importlib.metadata.version("flext-oracle-oic")
-    __version_info__: tuple[int | str, ...] = VERSION.version_info
-except importlib.metadata.PackageNotFoundError:
-    __version__ = "0.9.0"
+# Temporarily disabled due to missing flext_core.metadata
+# try:
+#     __version__ = importlib.metadata.version("flext-oracle-oic")
+#     __version_info__: tuple[int | str, ...] = VERSION.version_info
+# except importlib.metadata.PackageNotFoundError:
+#     __version__ = "0.9.0"
+
+__version__ = "0.9.0"
+__version_info__: tuple[int | str, ...] = VERSION.version_info
 
 
 logger = FlextLogger(__name__)
@@ -129,6 +131,8 @@ __all__: FlextTypes.StringList = [
     "FlextConfig",
     "FlextLogger",
     "FlextModels",
+    "FlextOracleOic",
+    "FlextOracleOicAPI",
     "FlextOracleOicApiError",
     "FlextOracleOicApiRequestError",
     "FlextOracleOicAuthenticationError",
@@ -148,6 +152,7 @@ __all__: FlextTypes.StringList = [
     "FlextOracleOicIntegrationPatternError",
     "FlextOracleOicOAuth2TokenError",
     "FlextOracleOicPatternError",
+    "FlextOracleOicService",
     "FlextOracleOicTimeoutError",
     "FlextOracleOicTokenError",
     "FlextOracleOicValidationError",
@@ -158,8 +163,6 @@ __all__: FlextTypes.StringList = [
     "HTTPClientProtocol",
     "HTTPResponseProtocol",
     "IntegrationStatus",
-    "LifecycleManager",
-    "MonitoringService",
     "OICAPIError",
     "OICAuthConfig",
     "OICAuthenticationError",
@@ -172,7 +175,6 @@ __all__: FlextTypes.StringList = [
     "OICExtensionConnectionConfig",
     "OICIntegrationError",
     "OICIntegrationInfo",
-    "OICIntegrationPatternService",
     "OICPatternError",
     "OICTapAuthenticator",
     "OICTargetAuthenticator",
@@ -193,7 +195,6 @@ __all__: FlextTypes.StringList = [
     "V",
     "__version__",
     "__version_info__",
-    "_show_deprecation_warning",
     "app",
     "configure_flext_oracle_oic_ext_dependencies",
     "create_development_oic_service",

@@ -11,10 +11,10 @@ from __future__ import annotations
 
 from typing import Literal, Self, cast
 
+from flext_core import FlextConfig, FlextResult, FlextTypes
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
-from flext_core import FlextConfig, FlextResult, FlextTypes
 from flext_oracle_oic.constants import FlextOracleOicExtConstants
 from flext_oracle_oic.typings import FlextOracleOicExtTypes
 from flext_oracle_oic.utilities import FlextOracleOicExtUtilities
@@ -180,32 +180,36 @@ class FlextOracleOicExtConfig(FlextConfig):
 
     def validate_business_rules(self) -> FlextResult[None]:
         """Validate Oracle OIC Extension specific business rules."""
-        try:
-            # Validate authentication requirements
-            if (
-                not self.oauth_client_id
-                or not self.oauth_client_secret.get_secret_value()
-            ):
-                return FlextResult[None].fail("OAuth credentials are required")
+        # Railway-oriented business rule validation - operations are safe
+        return (
+            FlextResult[object]
+            .ok(None)
+            .flat_map(lambda _: self._validate_oauth_credentials())
+            .flat_map(lambda _: self._validate_connection_settings())
+            .flat_map(lambda _: self._validate_retry_settings())
+        )
 
-            # Validate connection settings
-            if (
-                self.request_timeout
-                < FlextOracleOicExtConstants.OIC.MIN_REQUEST_TIMEOUT
-            ):
-                return FlextResult[None].fail(
-                    f"Request timeout too low (minimum {FlextOracleOicExtConstants.OIC.MIN_REQUEST_TIMEOUT} seconds)"
-                )
+    def _validate_oauth_credentials(self) -> FlextResult[None]:
+        """Validate OAuth credentials are present."""
+        if not self.oauth_client_id or not self.oauth_client_secret.get_secret_value():
+            return FlextResult[None].fail("OAuth credentials are required")
+        return FlextResult[None].ok(None)
 
-            # Validate retry settings
-            if self.max_retries > FlextOracleOicExtConstants.OIC.MAX_MAX_RETRIES:
-                return FlextResult[None].fail(
-                    f"Max retries too high (maximum {FlextOracleOicExtConstants.OIC.MAX_MAX_RETRIES})"
-                )
+    def _validate_connection_settings(self) -> FlextResult[None]:
+        """Validate connection settings are within acceptable ranges."""
+        if self.request_timeout < FlextOracleOicExtConstants.OIC.MIN_REQUEST_TIMEOUT:
+            return FlextResult[None].fail(
+                f"Request timeout too low (minimum {FlextOracleOicExtConstants.OIC.MIN_REQUEST_TIMEOUT} seconds)"
+            )
+        return FlextResult[None].ok(None)
 
-            return FlextResult[None].ok(None)
-        except Exception as e:
-            return FlextResult[None].fail(f"Business rules validation failed: {e}")
+    def _validate_retry_settings(self) -> FlextResult[None]:
+        """Validate retry settings are within acceptable ranges."""
+        if self.max_retries > FlextOracleOicExtConstants.OIC.MAX_MAX_RETRIES:
+            return FlextResult[None].fail(
+                f"Max retries too high (maximum {FlextOracleOicExtConstants.OIC.MAX_MAX_RETRIES})"
+            )
+        return FlextResult[None].ok(None)
 
     def get_connection_context(self) -> FlextOracleOicExtTypes.Core.ContextDict:
         """Get Oracle OIC connection configuration context."""
@@ -322,8 +326,8 @@ class FlextOracleOicExtConfig(FlextConfig):
     @classmethod
     def reset_shared_instance(cls) -> None:
         """Reset the shared instance for testing purposes."""
-        # Clear any cached instance
-        FlextConfig._global_instance = None
+        # Clear any cached instance by setting to None
+        cls._global_instance = None
 
 
 __all__ = [

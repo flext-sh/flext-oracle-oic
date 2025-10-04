@@ -11,9 +11,9 @@ from unittest.mock import Mock, patch
 
 import httpx
 import pytest
+from flext_core import FlextResult
 from pydantic import SecretStr
 
-from flext_core import FlextResult
 from flext_oracle_oic import (
     BaseOICAuthenticator,
     OICExtensionAuthenticator,

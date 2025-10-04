@@ -12,6 +12,7 @@ from __future__ import annotations
 import warnings
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
+
 from flext_oracle_oic.config import FlextOracleOicExtConfig
 from flext_oracle_oic.ext_services import OracleOICExtensionService
 
@@ -49,14 +50,27 @@ def create_oic_extension_service(
       FlextResult containing service instance or error
 
     """
+    # Railway-oriented service creation
+    return (
+        FlextResult[FlextOracleOicExtConfig]
+        .ok(settings)
+        .map(lambda s: s or FlextOracleOicExtConfig.get_global_instance())
+        .flat_map(
+            lambda config: _create_service_instance(
+                config, "OIC Extension service created successfully"
+            )
+        )
+    )
+
+
+def _create_service_instance(
+    config: FlextOracleOicExtConfig, success_message: str
+) -> FlextResult[OracleOICExtensionService]:
+    """Create service instance with proper error handling."""
     try:
-        if settings is None:
-            settings = FlextOracleOicExtConfig.get_global_instance()
-
-        service = OracleOICExtensionService(settings)
-        logger.info("OIC Extension service created successfully")
+        service = OracleOICExtensionService(config)
+        logger.info(success_message)
         return FlextResult[OracleOICExtensionService].ok(service)
-
     except Exception as e:
         error_msg = f"Failed to create OIC Extension service: {e}"
         logger.exception(error_msg)
@@ -70,21 +84,32 @@ def create_development_oic_service() -> FlextResult[OracleOICExtensionService]:
       FlextResult containing development service or error
 
     """
+    # Railway-oriented development service creation
+    return (
+        FlextResult[object]
+        .ok(None)
+        .flat_map(lambda _: _create_development_config())
+        .flat_map(
+            lambda config: _create_service_instance(
+                config, "Development OIC Extension service created"
+            )
+        )
+    )
+
+
+def _create_development_config() -> FlextResult[FlextOracleOicExtConfig]:
+    """Create development configuration."""
     try:
         settings = FlextOracleOicExtConfig(
             environment="development",
             log_level="DEBUG",
             enable_monitoring=True,
         )
-
-        service = OracleOICExtensionService(settings)
-        logger.info("Development OIC Extension service created")
-        return FlextResult[OracleOICExtensionService].ok(service)
-
+        return FlextResult[FlextOracleOicExtConfig].ok(settings)
     except Exception as e:
-        error_msg = f"Failed to create development OIC service: {e}"
+        error_msg = f"Failed to create development config: {e}"
         logger.exception(error_msg)
-        return FlextResult[OracleOICExtensionService].fail(error_msg)
+        return FlextResult[FlextOracleOicExtConfig].fail(error_msg)
 
 
 def setup_oic_extension(
@@ -99,18 +124,17 @@ def setup_oic_extension(
         FlextResult containing configured service or error
 
     """
-    try:
-        if settings is None:
-            settings = FlextOracleOicExtConfig.get_global_instance()
-
-        service = OracleOICExtensionService(settings)
-        logger.info("OIC Extension setup completed successfully")
-        return FlextResult[OracleOICExtensionService].ok(service)
-
-    except Exception as e:
-        error_msg = f"Failed to setup OIC Extension: {e}"
-        logger.exception(error_msg)
-        return FlextResult[OracleOICExtensionService].fail(error_msg)
+    # Railway-oriented extension setup
+    return (
+        FlextResult[FlextOracleOicExtConfig]
+        .ok(settings)
+        .map(lambda s: s or FlextOracleOicExtConfig.get_global_instance())
+        .flat_map(
+            lambda config: _create_service_instance(
+                config, "OIC Extension setup completed successfully"
+            )
+        )
+    )
 
 
 __all__: FlextTypes.StringList = [

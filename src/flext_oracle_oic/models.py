@@ -5,9 +5,9 @@ This module provides data models for Oracle OIC External operations.
 
 from __future__ import annotations
 
+from flext_core import FlextConfig, FlextModels, FlextTypes
 from pydantic import ConfigDict, Field, SecretStr
 
-from flext_core import FlextConfig, FlextModels, FlextTypes
 from flext_oracle_oic.constants import FlextOracleOicExtConstants
 
 

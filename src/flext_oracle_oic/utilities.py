@@ -20,14 +20,13 @@ from datetime import UTC, datetime
 from typing import ClassVar
 from urllib.parse import urljoin, urlparse
 
-from pydantic import SecretStr
-
 from flext_core import (
     FlextLogger,
     FlextResult,
     FlextTypes,
     FlextUtilities,
 )
+from pydantic import SecretStr
 
 __all__ = ["FlextOracleOicExtUtilities"]
 

@@ -13,8 +13,8 @@ import inspect
 from unittest.mock import Mock, patch
 
 import pytest
-
 from flext_core import FlextTypes
+
 from flext_oracle_oic import (
     HTTPClientProtocol,
     HTTPResponseProtocol,
