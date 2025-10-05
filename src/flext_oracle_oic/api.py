@@ -152,7 +152,7 @@ class FlextOracleOic(FlextService[None]):
             FlextResult containing updated integration information.
 
         """
-        return await self._get_service().update_integration(
+          return self._get_service().update_integration(
             integration_id, integration_data
         )
 
@@ -166,7 +166,7 @@ class FlextOracleOic(FlextService[None]):
             FlextResult indicating success or failure.
 
         """
-        return await self._get_service().delete_integration(integration_id)
+        return self._get_service().delete_integration(integration_id)
 
     async def activate_integration(self, integration_id: str) -> FlextResult[None]:
         """Activate Oracle OIC integration.
@@ -178,7 +178,7 @@ class FlextOracleOic(FlextService[None]):
             FlextResult indicating success or failure.
 
         """
-        return await self._get_service().activate_integration(integration_id)
+        return self._get_service().activate_integration(integration_id)
 
     async def deactivate_integration(self, integration_id: str) -> FlextResult[None]:
         """Deactivate Oracle OIC integration.
@@ -190,7 +190,7 @@ class FlextOracleOic(FlextService[None]):
             FlextResult indicating success or failure.
 
         """
-        return await self._get_service().deactivate_integration(integration_id)
+        return self._get_service().deactivate_integration(integration_id)
 
     # Connection and Testing
 
@@ -201,7 +201,7 @@ class FlextOracleOic(FlextService[None]):
             FlextResult containing connection test result.
 
         """
-        return await self._get_service().test_connection()
+        return self._get_service().test_connection()
 
     # Integration Pattern Execution
 
