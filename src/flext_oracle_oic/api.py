@@ -22,6 +22,7 @@ from flext_core import (
     FlextRegistry,
     FlextResult,
     FlextService,
+    FlextTypes,
 )
 
 from flext_oracle_oic.config import FlextOracleOicExtConfig
@@ -104,7 +105,7 @@ class FlextOracleOic(FlextService[None]):
             FlextResult containing list of integration information.
 
         """
-        return await self._get_service().list_integrations()
+        return self._get_service().list_integrations()
 
     async def get_integration(
         self,
@@ -119,7 +120,7 @@ class FlextOracleOic(FlextService[None]):
             FlextResult containing integration information.
 
         """
-        return await self._get_service().get_integration(integration_id)
+        return self._get_service().get_integration(integration_id)
 
     async def create_integration(
         self,
@@ -134,7 +135,7 @@ class FlextOracleOic(FlextService[None]):
             FlextResult containing created integration information.
 
         """
-        return await self._get_service().create_integration(integration_data)
+        return self._get_service().create_integration(integration_data)
 
     async def update_integration(
         self,

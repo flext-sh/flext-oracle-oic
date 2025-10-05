@@ -50,7 +50,7 @@ fix: ## Auto-fix issues
 
 # Testing
 test: ## Run tests with 100% coverage (MANDATORY)
-	$(POETRY) run pytest $(TESTS_DIR) --cov=$(SRC_DIR) --cov-report=term-missing --cov-fail-under=$(MIN_COVERAGE)
+	PYTHONPATH=$(SRC_DIR) $(POETRY) run pytest $(TESTS_DIR) --cov=$(SRC_DIR) --cov-report=term-missing --cov-fail-under=$(MIN_COVERAGE)
 
 test-unit: ## Run unit tests
 	PYTHONPATH=$(SRC_DIR) $(POETRY) run pytest -m "not integration" -v

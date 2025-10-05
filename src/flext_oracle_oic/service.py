@@ -14,8 +14,14 @@ import asyncio
 from typing import Protocol, Self, override
 
 from flext_core import (
+    FlextBus,
     FlextConstants,
+    FlextContainer,
+    FlextContext,
+    FlextDispatcher,
     FlextLogger,
+    FlextProcessors,
+    FlextRegistry,
     FlextResult,
     FlextService,
     FlextTypes,
@@ -81,6 +87,14 @@ class FlextOracleOicService(
         self._authenticator: OICExtensionAuthenticator | None = None
         self._monitoring_client: HTTPClientProtocol | None = None
 
+        # Complete FLEXT ecosystem integration
+        self._container = FlextContainer.get_global()
+        self._context = FlextContext()
+        self._bus = FlextBus()
+        self._dispatcher = FlextDispatcher()
+        self._processors = FlextProcessors()
+        self._registry = FlextRegistry(dispatcher=self._dispatcher)
+
         # Initialize components
         self._initialize_components()
 
@@ -97,7 +111,7 @@ class FlextOracleOicService(
 
             # Create HTTP monitoring client if monitoring is enabled
             if self.settings.enable_monitoring:
-                # TODO(carol): Replace with flext-api client for monitoring
+                # TODO(#123): Replace with flext-api client for monitoring
                 self._monitoring_client = None
 
         except Exception:
@@ -704,91 +718,6 @@ class FlextOracleOicService(
             error_msg = f"Scatter-gather pattern failed: {e}"
             self._logger.exception(error_msg)
             return FlextResult[FlextTypes.Dict].fail(error_msg)
-
-    # Lifecycle Management Methods (from LifecycleManager)
-
-    def activate_integration(
-        self,
-        integration_id: str,
-    ) -> FlextResult[FlextOracleOicExtModels.IntegrationStatus]:
-        """Activate an Oracle OIC integration.
-
-        Args:
-            integration_id: Integration identifier
-
-        Returns:
-            FlextResult containing integration status or error
-
-        """
-        try:
-            client_result = self._get_client()
-            if client_result.is_failure:
-                return FlextResult[FlextOracleOicExtModels.IntegrationStatus].fail(
-                    client_result.error
-                )
-
-            client = client_result.unwrap()
-
-            # Update integration to activate it
-            activation_data = {
-                "status": FlextOracleOicExtConstants.Integration.STATUS_ACTIVATED
-            }
-            activate_result = client.update_integration(integration_id, activation_data)
-
-            if activate_result.is_failure:
-                return FlextResult[None].fail(
-                    activate_result.error or "Activation failed",
-                )
-
-            self._logger.info(f"Integration {integration_id} activated successfully")
-            return FlextResult[None].ok(None)
-
-        except Exception as e:
-            error_msg = f"Failed to activate integration {integration_id}: {e}"
-            self._logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
-
-    def deactivate_integration(
-        self,
-        integration_id: str,
-    ) -> FlextResult[None]:
-        """Deactivate an Oracle OIC integration.
-
-        Args:
-            integration_id: Integration identifier
-
-        Returns:
-            FlextResult indicating success or failure
-
-        """
-        try:
-            client_result = self._get_client()
-            if client_result.is_failure:
-                return FlextResult[None].fail(client_result.error)
-
-            client = client_result.unwrap()
-
-            # Update integration to deactivate it
-            deactivation_data = {
-                "status": FlextOracleOicExtConstants.Integration.STATUS_DEACTIVATED
-            }
-            deactivate_result = client.update_integration(
-                integration_id,
-                deactivation_data,
-            )
-
-            if deactivate_result.is_failure:
-                return FlextResult[None].fail(
-                    deactivate_result.error or "Deactivation failed",
-                )
-
-            self._logger.info(f"Integration {integration_id} deactivated successfully")
-            return FlextResult[None].ok(None)
-
-        except Exception as e:
-            error_msg = f"Failed to deactivate integration {integration_id}: {e}"
-            self._logger.exception(error_msg)
-            return FlextResult[None].fail(error_msg)
 
     # Monitoring Methods (from MonitoringService)
 

@@ -25,7 +25,7 @@ from flext_core import (
 )
 
 from flext_oracle_oic.api import FlextOracleOic, FlextOracleOicAPI
-from flext_oracle_oic.cli import app, main
+from flext_oracle_oic.cli import FlextOracleOicCli, app, main
 from flext_oracle_oic.config import (
     FlextOracleOicExtConfig,
 )
@@ -136,6 +136,7 @@ __all__: FlextTypes.StringList = [
     "FlextOracleOicApiError",
     "FlextOracleOicApiRequestError",
     "FlextOracleOicAuthenticationError",
+    "FlextOracleOicCli",
     "FlextOracleOicConfigError",
     "FlextOracleOicConfigurationError",
     "FlextOracleOicConnectionError",
