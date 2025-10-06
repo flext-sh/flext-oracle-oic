@@ -1,6 +1,6 @@
 """Oracle OIC Extension Exceptions - Unified Class Pattern.
 
-FLEXT Unified Class Pattern: Single OracleOICExceptions class
+FLEXT Unified Class Pattern: Single FlextOracleOicExceptions class
 with nested exception classes following FLEXT architectural standards.
 
 This module provides Oracle OIC Extension-specific exceptions using modern patterns from flext-core.
@@ -186,11 +186,11 @@ class FlextOracleOicExceptions:
 
             # Extract common parameters using helper
             base_context, correlation_id, error_code = (
-                OracleOICExceptions._extract_common_kwargs(kwargs)
+                FlextOracleOicExceptions._extract_common_kwargs(kwargs)
             )
 
             # Build context with validation-specific fields
-            context = OracleOICExceptions._build_context(
+            context = FlextOracleOicExceptions._build_context(
                 base_context,
                 field_name=field_name,
                 field_value=field_value,
@@ -202,7 +202,7 @@ class FlextOracleOicExceptions:
             super().__init__(
                 message,
                 code=error_code
-                or OracleOICExceptions.ErrorCodes.OIC_VALIDATION_ERROR.value,
+                or FlextOracleOicExceptions.ErrorCodes.OIC_VALIDATION_ERROR.value,
                 context=context,
                 correlation_id=correlation_id,
             )
@@ -256,11 +256,11 @@ class FlextOracleOicExceptions:
 
             # Extract common parameters using helper
             base_context, correlation_id, error_code = (
-                OracleOICExceptions._extract_common_kwargs(kwargs)
+                FlextOracleOicExceptions._extract_common_kwargs(kwargs)
             )
 
             # Build context with API-specific fields
-            context = OracleOICExceptions._build_context(
+            context = FlextOracleOicExceptions._build_context(
                 base_context,
                 status_code=status_code,
                 response_body=response_body[:500]
@@ -274,7 +274,8 @@ class FlextOracleOicExceptions:
             # Call parent with complete error information
             super().__init__(
                 message,
-                code=error_code or OracleOICExceptions.ErrorCodes.OIC_API_ERROR.value,
+                code=error_code
+                or FlextOracleOicExceptions.ErrorCodes.OIC_API_ERROR.value,
                 context=context,
                 correlation_id=correlation_id,
             )
@@ -326,11 +327,11 @@ class FlextOracleOicExceptions:
 
             # Extract common parameters using helper
             base_context, correlation_id, error_code = (
-                OracleOICExceptions._extract_common_kwargs(kwargs)
+                FlextOracleOicExceptions._extract_common_kwargs(kwargs)
             )
 
             # Build context with configuration-specific fields
-            context = OracleOICExceptions._build_context(
+            context = FlextOracleOicExceptions._build_context(
                 base_context,
                 config_key=config_key,
                 config_value=config_value,
@@ -342,7 +343,7 @@ class FlextOracleOicExceptions:
             super().__init__(
                 message,
                 code=error_code
-                or OracleOICExceptions.ErrorCodes.OIC_CONFIGURATION_ERROR.value,
+                or FlextOracleOicExceptions.ErrorCodes.OIC_CONFIGURATION_ERROR.value,
                 context=context,
                 correlation_id=correlation_id,
             )
@@ -396,11 +397,11 @@ class FlextOracleOicExceptions:
 
             # Extract common parameters using helper
             base_context, correlation_id, error_code = (
-                OracleOICExceptions._extract_common_kwargs(kwargs)
+                FlextOracleOicExceptions._extract_common_kwargs(kwargs)
             )
 
             # Build context with pattern-specific fields
-            context = OracleOICExceptions._build_context(
+            context = FlextOracleOicExceptions._build_context(
                 base_context,
                 pattern_name=pattern_name,
                 pattern_type=pattern_type,
@@ -413,7 +414,7 @@ class FlextOracleOicExceptions:
             super().__init__(
                 message,
                 code=error_code
-                or OracleOICExceptions.ErrorCodes.OIC_PATTERN_ERROR.value,
+                or FlextOracleOicExceptions.ErrorCodes.OIC_PATTERN_ERROR.value,
                 context=context,
                 correlation_id=correlation_id,
             )
@@ -443,11 +444,11 @@ class FlextOracleOicExceptions:
 
             # Extract common parameters using helper
             base_context, correlation_id, code = (
-                OracleOICExceptions._extract_common_kwargs(kwargs)
+                FlextOracleOicExceptions._extract_common_kwargs(kwargs)
             )
 
             # Build context with workflow-specific fields
-            context = OracleOICExceptions._build_context(
+            context = FlextOracleOicExceptions._build_context(
                 base_context,
                 workflow_id=workflow_id,
                 execution_id=execution_id,
@@ -459,7 +460,8 @@ class FlextOracleOicExceptions:
             # Call parent with complete error information
             super().__init__(
                 message,
-                code=code or OracleOICExceptions.ErrorCodes.OIC_WORKFLOW_ERROR.value,
+                code=code
+                or FlextOracleOicExceptions.ErrorCodes.OIC_WORKFLOW_ERROR.value,
                 context=context,
                 correlation_id=correlation_id,
             )
@@ -489,11 +491,11 @@ class FlextOracleOicExceptions:
 
             # Extract common parameters using helper
             base_context, correlation_id, error_code = (
-                OracleOICExceptions._extract_common_kwargs(kwargs)
+                FlextOracleOicExceptions._extract_common_kwargs(kwargs)
             )
 
             # Build context with OAuth2-specific fields
-            context = OracleOICExceptions._build_context(
+            context = FlextOracleOicExceptions._build_context(
                 base_context,
                 token_type=token_type,
                 client_id=client_id,
@@ -505,7 +507,8 @@ class FlextOracleOicExceptions:
             # Call parent with complete error information
             super().__init__(
                 message,
-                code=error_code or OracleOICExceptions.ErrorCodes.OIC_TOKEN_ERROR.value,
+                code=error_code
+                or FlextOracleOicExceptions.ErrorCodes.OIC_TOKEN_ERROR.value,
                 context=context,
                 correlation_id=correlation_id,
             )
