@@ -63,7 +63,7 @@ class FlextOracleOicService(
         """
         super().__init__()
         self.settings = settings
-        self._logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
         self._client: OracleOICExtensionClient | None = None
         self._authenticator: OICExtensionAuthenticator | None = None
         self._monitoring_client: FlextApiClient | None = None
@@ -101,7 +101,7 @@ class FlextOracleOicService(
                 )
 
         except Exception:
-            self._logger.exception("Failed to initialize service components")
+            self.logger.exception("Failed to initialize service components")
             raise
 
     @override
@@ -156,7 +156,7 @@ class FlextOracleOicService(
             )
 
         except Exception as e:
-            self._logger.exception("Failed to list integrations")
+            self.logger.exception("Failed to list integrations")
             return FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]].fail(
                 f"Integration listing failed: {e!s}"
             )
@@ -205,7 +205,7 @@ class FlextOracleOicService(
             )
 
         except Exception as e:
-            self._logger.exception("Failed to list connections")
+            self.logger.exception("Failed to list connections")
             return FlextResult[list[FlextOracleOicModels.OICConnectionInfo]].fail(
                 f"Connection listing failed: {e!s}"
             )
@@ -245,7 +245,7 @@ class FlextOracleOicService(
             return FlextResult[FlextOracleOicModels.OICIntegrationInfo].ok(integration)
 
         except Exception as e:
-            self._logger.exception(f"Failed to get integration {integration_id}")
+            self.logger.exception(f"Failed to get integration {integration_id}")
             return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
                 f"Integration retrieval failed: {e!s}"
             )
@@ -285,7 +285,7 @@ class FlextOracleOicService(
             return FlextResult[FlextOracleOicModels.OICIntegrationInfo].ok(integration)
 
         except Exception as e:
-            self._logger.exception("Failed to create integration")
+            self.logger.exception("Failed to create integration")
             return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
                 f"Integration creation failed: {e!s}"
             )
@@ -326,7 +326,7 @@ class FlextOracleOicService(
             return FlextResult[FlextOracleOicModels.OICIntegrationInfo].ok(integration)
 
         except Exception as e:
-            self._logger.exception(f"Failed to update integration {integration_id}")
+            self.logger.exception(f"Failed to update integration {integration_id}")
             return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
                 f"Integration update failed: {e!s}"
             )
@@ -352,7 +352,7 @@ class FlextOracleOicService(
             return FlextResult[None].ok(None)
 
         except Exception as e:
-            self._logger.exception(f"Failed to delete integration {integration_id}")
+            self.logger.exception(f"Failed to delete integration {integration_id}")
             return FlextResult[None].fail(f"Integration deletion failed: {e!s}")
 
     def activate_integration(self, integration_id: str) -> FlextResult[None]:
@@ -376,7 +376,7 @@ class FlextOracleOicService(
             return FlextResult[None].ok(None)
 
         except Exception as e:
-            self._logger.exception(f"Failed to activate integration {integration_id}")
+            self.logger.exception(f"Failed to activate integration {integration_id}")
             return FlextResult[None].fail(f"Integration activation failed: {e!s}")
 
     def deactivate_integration(self, integration_id: str) -> FlextResult[None]:
@@ -400,7 +400,7 @@ class FlextOracleOicService(
             return FlextResult[None].ok(None)
 
         except Exception as e:
-            self._logger.exception(f"Failed to deactivate integration {integration_id}")
+            self.logger.exception(f"Failed to deactivate integration {integration_id}")
             return FlextResult[None].fail(f"Integration deactivation failed: {e!s}")
 
     # Connection Testing Methods (from LifecycleManager)
@@ -423,7 +423,7 @@ class FlextOracleOicService(
             return FlextResult[bool].ok(result)
 
         except Exception as e:
-            self._logger.exception("Connection test failed")
+            self.logger.exception("Connection test failed")
             return FlextResult[bool].fail(f"Connection test failed: {e!s}")
 
     # Integration Pattern Execution Methods (from OICIntegrationPatternService)
@@ -455,7 +455,7 @@ class FlextOracleOicService(
             return FlextResult[FlextTypes.Dict].ok(result)
 
         except Exception as e:
-            self._logger.exception(
+            self.logger.exception(
                 f"App-driven orchestration failed for {integration_id}"
             )
             return FlextResult[FlextTypes.Dict].fail(
@@ -489,7 +489,7 @@ class FlextOracleOicService(
             return FlextResult[FlextTypes.Dict].ok(result)
 
         except Exception as e:
-            self._logger.exception(
+            self.logger.exception(
                 f"Scheduled orchestration failed for {integration_id}"
             )
             return FlextResult[FlextTypes.Dict].fail(
@@ -521,7 +521,7 @@ class FlextOracleOicService(
             return FlextResult[FlextTypes.Dict].ok(result)
 
         except Exception as e:
-            self._logger.exception(f"File transfer failed for {integration_id}")
+            self.logger.exception(f"File transfer failed for {integration_id}")
             return FlextResult[FlextTypes.Dict].fail(f"File transfer failed: {e!s}")
 
     # Authentication Methods
@@ -541,7 +541,7 @@ class FlextOracleOicService(
             return FlextResult[str].ok(token)
 
         except Exception as e:
-            self._logger.exception("Token refresh failed")
+            self.logger.exception("Token refresh failed")
             return FlextResult[str].fail(f"Token refresh failed: {e!s}")
 
     def validate_auth_token(self, token: str) -> FlextResult[bool]:
@@ -562,7 +562,7 @@ class FlextOracleOicService(
             return FlextResult[bool].ok(is_valid)
 
         except Exception as e:
-            self._logger.exception("Token validation failed")
+            self.logger.exception("Token validation failed")
             return FlextResult[bool].fail(f"Token validation failed: {e!s}")
 
     def deploy_integration(
@@ -590,11 +590,11 @@ class FlextOracleOicService(
             if not integration_id:
                 return FlextResult[str].fail("No integration ID returned")
 
-            self._logger.info(f"Integration deployed successfully: {integration_id}")
+            self.logger.info(f"Integration deployed successfully: {integration_id}")
             return FlextResult[str].ok(str(integration_id))
 
         except Exception as e:
-            self._logger.exception("Failed to deploy integration")
+            self.logger.exception("Failed to deploy integration")
             return FlextResult[str].fail(f"Integration deployment failed: {e!s}")
 
     # Integration Pattern Methods (from OICIntegrationPatternService)
@@ -615,7 +615,7 @@ class FlextOracleOicService(
 
         """
         try:
-            self._logger.info("Applying message router pattern")
+            self.logger.info("Applying message router pattern")
 
             # Validate pattern configuration using utilities
             pattern_config = {
@@ -648,7 +648,7 @@ class FlextOracleOicService(
 
         except Exception as e:
             error_msg = f"Message router pattern failed: {e}"
-            self._logger.exception(error_msg)
+            self.logger.exception(error_msg)
             return FlextResult[FlextTypes.Dict].fail(error_msg)
 
     def apply_scatter_gather_pattern(
@@ -667,7 +667,7 @@ class FlextOracleOicService(
 
         """
         try:
-            self._logger.info("Applying scatter-gather pattern")
+            self.logger.info("Applying scatter-gather pattern")
 
             # Validate pattern configuration using utilities
             pattern_config = {
@@ -700,7 +700,7 @@ class FlextOracleOicService(
 
         except Exception as e:
             error_msg = f"Scatter-gather pattern failed: {e}"
-            self._logger.exception(error_msg)
+            self.logger.exception(error_msg)
             return FlextResult[FlextTypes.Dict].fail(error_msg)
 
     # Monitoring Methods (from MonitoringService)
@@ -799,13 +799,13 @@ class FlextOracleOicService(
             )[FlextTypes.Dict]
             if validation_result.is_success:
                 return validation_result[FlextTypes.Dict]
-            self._logger.warning(
+            self.logger.warning(
                 f"Health status validation failed: {validation_result.error}"
             )
             return FlextResult[dict].ok(health_data)
 
         except Exception as e:
-            self._logger.exception("Health check failed")
+            self.logger.exception("Health check failed")
             error_health = {
                 "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_ERROR,
                 "components": {
@@ -895,13 +895,11 @@ class FlextOracleOicService(
                     **metrics_data,
                     "analysis": analysis_result.value,
                 })
-            self._logger.warning(
-                f"Performance analysis failed: {analysis_result.error}"
-            )
+            self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
             return FlextResult[dict].ok(metrics_data)
 
         except Exception as e:
-            self._logger.exception("Performance metrics failed")
+            self.logger.exception("Performance metrics failed")
             error_metrics = {
                 "active_integrations": 0,
                 "total_executions": 0,
@@ -1014,7 +1012,7 @@ class FlextOracleOicService(
             return FlextResult[OracleOICExtensionClient].ok(self._client)
 
         except Exception as e:
-            self._logger.exception("Failed to create OIC client")
+            self.logger.exception("Failed to create OIC client")
             return FlextResult[OracleOICExtensionClient].fail(
                 f"Client creation failed: {e!s}"
             )

@@ -21,7 +21,7 @@
     {
       "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/api.py",
       "severity": "error",
-      "message": "\"_logger\" overrides symbol of same name in class \"FlextService\"\n  Variable is mutable so its type is invariant\n    Override type \"FlextLogger\" is not the same as base type \"FlextLogger | None\"",
+      "message": "\"logger\" overrides symbol of same name in class \"FlextService\"\n  Variable is mutable so its type is invariant\n    Override type \"FlextLogger\" is not the same as base type \"FlextLogger | None\"",
       "range": {
         "start": {
           "line": 77,

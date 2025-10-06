@@ -34,7 +34,7 @@ class FlextOracleOicFactory:
     def __init__(self) -> None:
         """Initialize the factory."""
         self._container = FlextContainer.get_global()
-        self._logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
 
     def _show_deprecation_warning(self, old_import: str, new_import: str) -> None:
         """Show deprecation warning for import paths."""
@@ -75,11 +75,11 @@ class FlextOracleOicFactory:
         """Create service instance with proper error handling."""
         try:
             service = FlextOracleOicService(config)
-            self._logger.info(success_message)
+            self.logger.info(success_message)
             return FlextResult[FlextOracleOicService].ok(service)
         except Exception as e:
             error_msg = f"Failed to create OIC Extension service: {e}"
-            self._logger.exception(error_msg)
+            self.logger.exception(error_msg)
             return FlextResult[FlextOracleOicService].fail(error_msg)
 
     def create_development_oic_service(self) -> FlextResult[FlextOracleOicService]:
@@ -112,7 +112,7 @@ class FlextOracleOicFactory:
             return FlextResult[FlextOracleOicConfig].ok(settings)
         except Exception as e:
             error_msg = f"Failed to create development config: {e}"
-            self._logger.exception(error_msg)
+            self.logger.exception(error_msg)
             return FlextResult[FlextOracleOicConfig].fail(error_msg)
 
     def setup_oic_extension(

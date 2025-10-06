@@ -46,7 +46,7 @@ class FlextOracleOicCli(FlextService[None]):
     def __init__(self) -> None:
         """Initialize unified Oracle OIC CLI service."""
         super().__init__()
-        self._logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
 
         # Complete FLEXT ecosystem integration for CLI
         self._container = FlextContainer.get_global()
@@ -113,8 +113,8 @@ class FlextOracleOicCli(FlextService[None]):
 
         """
         try:
-            if self._logger:
-                self._logger.info("Testing Oracle OIC connection...")
+            if self.logger:
+                self.logger.info("Testing Oracle OIC connection...")
 
             # Create development service for testing
             service_result = create_development_oic_service()
@@ -131,8 +131,8 @@ class FlextOracleOicCli(FlextService[None]):
             with service:
                 connection_result = service.test_connection()
                 if connection_result.is_success:
-                    if self._logger:
-                        self._logger.info("✅ Oracle OIC connection successful!")
+                    if self.logger:
+                        self.logger.info("✅ Oracle OIC connection successful!")
                     self.CliOutputHelper.print(
                         "✅ Connection to Oracle OIC established successfully"
                     )
@@ -142,8 +142,8 @@ class FlextOracleOicCli(FlextService[None]):
                 )
 
         except Exception as e:
-            if self._logger:
-                self._logger.exception("Connection test failed")
+            if self.logger:
+                self.logger.exception("Connection test failed")
             return FlextResult[None].fail(f"Connection test failed: {e!s}")
 
     def list_integrations(self) -> FlextResult[None]:
@@ -154,8 +154,8 @@ class FlextOracleOicCli(FlextService[None]):
 
         """
         try:
-            if self._logger:
-                self._logger.info("Listing Oracle OIC integrations...")
+            if self.logger:
+                self.logger.info("Listing Oracle OIC integrations...")
 
             # Create development service
             service_result = create_development_oic_service()
@@ -173,8 +173,8 @@ class FlextOracleOicCli(FlextService[None]):
                 integrations_result = service.list_integrations()
                 if integrations_result.is_success:
                     integrations = integrations_result.unwrap() or []
-                    if self._logger:
-                        self._logger.info(f"Found {len(integrations)} integrations")
+                    if self.logger:
+                        self.logger.info(f"Found {len(integrations)} integrations")
 
                     if integrations:
                         self.CliOutputHelper.print("📋 Oracle OIC Integrations:")
@@ -198,8 +198,8 @@ class FlextOracleOicCli(FlextService[None]):
                 )
 
         except Exception as e:
-            if self._logger:
-                self._logger.exception("List integrations failed")
+            if self.logger:
+                self.logger.exception("List integrations failed")
             return FlextResult[None].fail(f"List integrations failed: {e!s}")
 
     def show_version(self) -> FlextResult[None]:
@@ -216,8 +216,8 @@ class FlextOracleOicCli(FlextService[None]):
             )
             return FlextResult[None].ok(None)
         except Exception as e:
-            if self._logger:
-                self._logger.exception("Version display failed")
+            if self.logger:
+                self.logger.exception("Version display failed")
             return FlextResult[None].fail(f"Version display failed: {e!s}")
 
     def run_command(self, command: str) -> FlextResult[None]:
@@ -311,9 +311,9 @@ class FlextOracleOicCli(FlextService[None]):
     @property
     def logger(self) -> FlextLogger:
         """Get the logger instance (public access for backward compatibility)."""
-        if self._logger is None:
-            self._logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
-        return self._logger
+        if self.logger is None:
+            self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
+        return self.logger
 
 
 # Global CLI instance for backward compatibility

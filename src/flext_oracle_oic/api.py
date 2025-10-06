@@ -75,7 +75,7 @@ class FlextOracleOicApi(FlextService[None]):
         self._registry = FlextRegistry(dispatcher=self._dispatcher)
 
         # Initialize logger
-        self._logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
 
         # Initialize Oracle OIC service
         self._service = self._create_service()
@@ -357,8 +357,8 @@ class FlextOracleOicApi(FlextService[None]):
     def __aenter__(self) -> Self:
         """Async context manager entry."""
         # Log service start
-        if self._logger:
-            self._logger.info(
+        if self.logger:
+            self.logger.info(
                 "Oracle OIC service started", extra=self.get_connection_context()
             )
         return self
@@ -371,8 +371,8 @@ class FlextOracleOicApi(FlextService[None]):
     ) -> None:
         """Async context manager exit."""
         # Log service stop
-        if self._logger:
-            self._logger.info(
+        if self.logger:
+            self.logger.info(
                 "Oracle OIC service stopped", extra=self.get_connection_context()
             )
 

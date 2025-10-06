@@ -176,7 +176,7 @@ from flext_core import FlextLogger
 
 class ServiceClass:
     def __init__(self):
-        self._logger = FlextLogger(__name__)
+        self.logger = FlextLogger(__name__)
 ```
 
 ### Missing FLEXT Integration ❌
