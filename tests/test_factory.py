@@ -10,7 +10,7 @@ import warnings
 from unittest.mock import Mock, patch
 
 from flext_oracle_oic import (
-    FlextOracleOicExtDeprecationWarning,
+    FlextOracleOicDeprecationWarning,
     OracleOICExtensionService,
     OracleOICExtensionSettings,
     create_development_oic_service,
@@ -19,16 +19,16 @@ from flext_oracle_oic import (
 )
 
 
-class TestFlextOracleOicExtDeprecationWarning:
+class TestFlextOracleOicDeprecationWarning:
     """Test custom deprecation warning class."""
 
     def test_deprecation_warning_inheritance(self) -> None:
         """Test deprecation warning inherits from DeprecationWarning."""
-        assert issubclass(FlextOracleOicExtDeprecationWarning, DeprecationWarning)
+        assert issubclass(FlextOracleOicDeprecationWarning, DeprecationWarning)
 
     def test_deprecation_warning_creation(self) -> None:
         """Test deprecation warning can be created."""
-        warning = FlextOracleOicExtDeprecationWarning("test message")
+        warning = FlextOracleOicDeprecationWarning("test message")
         assert isinstance(warning, DeprecationWarning)
         assert str(warning) == "test message"
 
@@ -47,7 +47,7 @@ class TestShowDeprecationWarning:
             _show_deprecation_warning("old.import", "new.import")
 
             assert len(w) == 1
-            assert issubclass(w[0].category, FlextOracleOicExtDeprecationWarning)
+            assert issubclass(w[0].category, FlextOracleOicDeprecationWarning)
             warning_message = str(w[0].message)
             assert "⚠️  DEPRECATED IMPORT: old.import" in warning_message
             assert "✅ USE INSTEAD: new.import" in warning_message

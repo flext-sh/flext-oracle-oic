@@ -19,12 +19,72 @@ from typing import override
 from flext_core import FlextExceptions, FlextTypes
 
 
-class OracleOICExceptions:
+class FlextOracleOicExceptions:
     """Unified Oracle OIC Extension exceptions following FLEXT patterns.
 
     Single responsibility class with nested exception classes
     following the unified class pattern from FLEXT architectural standards.
     """
+
+    @classmethod
+    def _extract_common_kwargs(
+        cls, kwargs: dict[str, object]
+    ) -> tuple[dict[str, object], str | None, str | None]:
+        """Extract common parameters from kwargs for error context building.
+
+        Args:
+            kwargs: Keyword arguments passed to exception constructor
+
+        Returns:
+            Tuple of (base_context, correlation_id, error_code)
+
+        """
+        # Extract known common parameters
+        correlation_id = kwargs.pop("correlation_id", None)
+        error_code = kwargs.pop("error_code", None)
+
+        # Cast to correct types
+        correlation_id = str(correlation_id) if correlation_id is not None else None
+        error_code = str(error_code) if error_code is not None else None
+
+        # Remaining kwargs become base context
+        base_context = kwargs.copy()
+
+        # Ensure proper type casting for return values
+        return (
+            base_context,
+            str(correlation_id) if correlation_id is not None else None,
+            str(error_code) if error_code is not None else None,
+        )
+
+    @classmethod
+    def _build_context(
+        cls, base_context: dict[str, object], **additional_fields: object
+    ) -> str:
+        """Build complete error context from base context and additional fields.
+
+        Args:
+            base_context: Base context dictionary
+            **additional_fields: Additional fields to include in context
+
+        Returns:
+            Context as string representation
+
+        """
+        context = base_context.copy()
+        context.update(additional_fields)
+
+        # Convert context to string representation for FlextExceptions compatibility
+        if not context:
+            return ""
+
+        # Create a readable string representation
+        context_parts = []
+        for key, value in context.items():
+            if value is not None:
+                context_parts.append(f"{key}={value}")
+
+        return "; ".join(context_parts) if context_parts else ""
 
     class ErrorCodes(Enum):
         """Error codes for Oracle OIC Extension domain operations."""
@@ -82,6 +142,30 @@ class OracleOICExceptions:
     class DataValidationError(ValidationError):
         """Oracle OIC Extension data validation errors with field context."""
 
+        @staticmethod
+        def _extract_common_kwargs(
+            kwargs: dict[str, object],
+        ) -> tuple[dict[str, object], str | None, str | None]:
+            """Extract common parameters from kwargs for error context building."""
+            correlation_id = kwargs.pop("correlation_id", None)
+            error_code = kwargs.pop("error_code", None)
+            base_context = kwargs.copy()
+            # Ensure proper type casting for return values
+            return (
+                base_context,
+                str(correlation_id) if correlation_id is not None else None,
+                str(error_code) if error_code is not None else None,
+            )
+
+        @staticmethod
+        def _build_context(
+            base_context: dict[str, object], **additional_fields: object
+        ) -> dict[str, object]:
+            """Build complete error context from base context and additional fields."""
+            context = base_context.copy()
+            context.update(additional_fields)
+            return context
+
         @override
         def __init__(
             self,
@@ -101,12 +185,12 @@ class OracleOICExceptions:
             self.entity_name = entity_name
 
             # Extract common parameters using helper
-            base_context, correlation_id, error_code = self._extract_common_kwargs(
-                kwargs
+            base_context, correlation_id, error_code = (
+                OracleOICExceptions._extract_common_kwargs(kwargs)
             )
 
             # Build context with validation-specific fields
-            context = self._build_context(
+            context = OracleOICExceptions._build_context(
                 base_context,
                 field_name=field_name,
                 field_value=field_value,
@@ -125,6 +209,30 @@ class OracleOICExceptions:
 
     class ApiRequestError(ApiError):
         """Oracle OIC Extension API request errors with HTTP context."""
+
+        @staticmethod
+        def _extract_common_kwargs(
+            kwargs: dict[str, object],
+        ) -> tuple[dict[str, object], str | None, str | None]:
+            """Extract common parameters from kwargs for error context building."""
+            correlation_id = kwargs.pop("correlation_id", None)
+            error_code = kwargs.pop("error_code", None)
+            base_context = kwargs.copy()
+            # Ensure proper type casting for return values
+            return (
+                base_context,
+                str(correlation_id) if correlation_id is not None else None,
+                str(error_code) if error_code is not None else None,
+            )
+
+        @staticmethod
+        def _build_context(
+            base_context: dict[str, object], **additional_fields: object
+        ) -> dict[str, object]:
+            """Build complete error context from base context and additional fields."""
+            context = base_context.copy()
+            context.update(additional_fields)
+            return context
 
         @override
         def __init__(
@@ -147,12 +255,12 @@ class OracleOICExceptions:
             self.method = method
 
             # Extract common parameters using helper
-            base_context, correlation_id, error_code = self._extract_common_kwargs(
-                kwargs
+            base_context, correlation_id, error_code = (
+                OracleOICExceptions._extract_common_kwargs(kwargs)
             )
 
             # Build context with API-specific fields
-            context = self._build_context(
+            context = OracleOICExceptions._build_context(
                 base_context,
                 status_code=status_code,
                 response_body=response_body[:500]
@@ -174,6 +282,30 @@ class OracleOICExceptions:
     class ConfigError(ConfigurationError):
         """Oracle OIC Extension configuration errors with config context."""
 
+        @staticmethod
+        def _extract_common_kwargs(
+            kwargs: dict[str, object],
+        ) -> tuple[dict[str, object], str | None, str | None]:
+            """Extract common parameters from kwargs for error context building."""
+            correlation_id = kwargs.pop("correlation_id", None)
+            error_code = kwargs.pop("error_code", None)
+            base_context = kwargs.copy()
+            # Ensure proper type casting for return values
+            return (
+                base_context,
+                str(correlation_id) if correlation_id is not None else None,
+                str(error_code) if error_code is not None else None,
+            )
+
+        @staticmethod
+        def _build_context(
+            base_context: dict[str, object], **additional_fields: object
+        ) -> dict[str, object]:
+            """Build complete error context from base context and additional fields."""
+            context = base_context.copy()
+            context.update(additional_fields)
+            return context
+
         @override
         def __init__(
             self,
@@ -193,12 +325,12 @@ class OracleOICExceptions:
             self.valid_range = valid_range
 
             # Extract common parameters using helper
-            base_context, correlation_id, error_code = self._extract_common_kwargs(
-                kwargs
+            base_context, correlation_id, error_code = (
+                OracleOICExceptions._extract_common_kwargs(kwargs)
             )
 
             # Build context with configuration-specific fields
-            context = self._build_context(
+            context = OracleOICExceptions._build_context(
                 base_context,
                 config_key=config_key,
                 config_value=config_value,
@@ -217,6 +349,30 @@ class OracleOICExceptions:
 
     class IntegrationPatternError(PatternError):
         """Oracle OIC Extension integration pattern errors with pattern context."""
+
+        @staticmethod
+        def _extract_common_kwargs(
+            kwargs: dict[str, object],
+        ) -> tuple[dict[str, object], str | None, str | None]:
+            """Extract common parameters from kwargs for error context building."""
+            correlation_id = kwargs.pop("correlation_id", None)
+            error_code = kwargs.pop("error_code", None)
+            base_context = kwargs.copy()
+            # Ensure proper type casting for return values
+            return (
+                base_context,
+                str(correlation_id) if correlation_id is not None else None,
+                str(error_code) if error_code is not None else None,
+            )
+
+        @staticmethod
+        def _build_context(
+            base_context: dict[str, object], **additional_fields: object
+        ) -> dict[str, object]:
+            """Build complete error context from base context and additional fields."""
+            context = base_context.copy()
+            context.update(additional_fields)
+            return context
 
         @override
         def __init__(
@@ -239,12 +395,12 @@ class OracleOICExceptions:
             self.operation = operation
 
             # Extract common parameters using helper
-            base_context, correlation_id, error_code = self._extract_common_kwargs(
-                kwargs
+            base_context, correlation_id, error_code = (
+                OracleOICExceptions._extract_common_kwargs(kwargs)
             )
 
             # Build context with pattern-specific fields
-            context = self._build_context(
+            context = OracleOICExceptions._build_context(
                 base_context,
                 pattern_name=pattern_name,
                 pattern_type=pattern_type,
@@ -286,10 +442,12 @@ class OracleOICExceptions:
             self.error_code = error_code
 
             # Extract common parameters using helper
-            base_context, correlation_id, code = self._extract_common_kwargs(kwargs)
+            base_context, correlation_id, code = (
+                OracleOICExceptions._extract_common_kwargs(kwargs)
+            )
 
             # Build context with workflow-specific fields
-            context = self._build_context(
+            context = OracleOICExceptions._build_context(
                 base_context,
                 workflow_id=workflow_id,
                 execution_id=execution_id,
@@ -330,12 +488,12 @@ class OracleOICExceptions:
             self.expires_in = expires_in
 
             # Extract common parameters using helper
-            base_context, correlation_id, error_code = self._extract_common_kwargs(
-                kwargs
+            base_context, correlation_id, error_code = (
+                OracleOICExceptions._extract_common_kwargs(kwargs)
             )
 
             # Build context with OAuth2-specific fields
-            context = self._build_context(
+            context = OracleOICExceptions._build_context(
                 base_context,
                 token_type=token_type,
                 client_id=client_id,
@@ -354,24 +512,24 @@ class OracleOICExceptions:
 
 
 # Backward compatibility aliases
-FlextOracleOicErrorCodes = OracleOICExceptions.ErrorCodes
-FlextOracleOicError = OracleOICExceptions.BaseError
-FlextOracleOicValidationError = OracleOICExceptions.ValidationError
-FlextOracleOicConnectionError = OracleOICExceptions.OICConnectionError
-FlextOracleOicAuthenticationError = OracleOICExceptions.AuthenticationError
-FlextOracleOicConfigurationError = OracleOICExceptions.ConfigurationError
-FlextOracleOicApiError = OracleOICExceptions.ApiError
-FlextOracleOicTimeoutError = OracleOICExceptions.OICTimeoutError
-FlextOracleOicTokenError = OracleOICExceptions.TokenError
-FlextOracleOicIntegrationError = OracleOICExceptions.IntegrationError
-FlextOracleOicWorkflowError = OracleOICExceptions.WorkflowError
-FlextOracleOicPatternError = OracleOICExceptions.PatternError
-FlextOracleOicDataValidationError = OracleOICExceptions.DataValidationError
-FlextOracleOicApiRequestError = OracleOICExceptions.ApiRequestError
-FlextOracleOicConfigError = OracleOICExceptions.ConfigError
-FlextOracleOicIntegrationPatternError = OracleOICExceptions.IntegrationPatternError
-FlextOracleOicWorkflowExecutionError = OracleOICExceptions.WorkflowExecutionError
-FlextOracleOicOAuth2TokenError = OracleOICExceptions.OAuth2TokenError
+FlextOracleOicErrorCodes = FlextOracleOicExceptions.ErrorCodes
+FlextOracleOicError = FlextOracleOicExceptions.BaseError
+FlextOracleOicValidationError = FlextOracleOicExceptions.ValidationError
+FlextOracleOicConnectionError = FlextOracleOicExceptions.OICConnectionError
+FlextOracleOicAuthenticationError = FlextOracleOicExceptions.AuthenticationError
+FlextOracleOicConfigurationError = FlextOracleOicExceptions.ConfigurationError
+FlextOracleOicApiError = FlextOracleOicExceptions.ApiError
+FlextOracleOicTimeoutError = FlextOracleOicExceptions.OICTimeoutError
+FlextOracleOicTokenError = FlextOracleOicExceptions.TokenError
+FlextOracleOicIntegrationError = FlextOracleOicExceptions.IntegrationError
+FlextOracleOicWorkflowError = FlextOracleOicExceptions.WorkflowError
+FlextOracleOicPatternError = FlextOracleOicExceptions.PatternError
+FlextOracleOicDataValidationError = FlextOracleOicExceptions.DataValidationError
+FlextOracleOicApiRequestError = FlextOracleOicExceptions.ApiRequestError
+FlextOracleOicConfigError = FlextOracleOicExceptions.ConfigError
+FlextOracleOicIntegrationPatternError = FlextOracleOicExceptions.IntegrationPatternError
+FlextOracleOicWorkflowExecutionError = FlextOracleOicExceptions.WorkflowExecutionError
+FlextOracleOicOAuth2TokenError = FlextOracleOicExceptions.OAuth2TokenError
 
 # Convenience tuple for importing all exceptions
 exceptions_all = (
@@ -393,7 +551,7 @@ exceptions_all = (
     FlextOracleOicValidationError,
     FlextOracleOicWorkflowError,
     FlextOracleOicWorkflowExecutionError,
-    OracleOICExceptions,
+    FlextOracleOicExceptions,
 )
 
 
@@ -407,6 +565,7 @@ __all__: FlextTypes.StringList = [
     "FlextOracleOicDataValidationError",
     "FlextOracleOicError",
     "FlextOracleOicErrorCodes",
+    "FlextOracleOicExceptions",
     "FlextOracleOicIntegrationError",
     "FlextOracleOicIntegrationPatternError",
     "FlextOracleOicOAuth2TokenError",
@@ -416,6 +575,5 @@ __all__: FlextTypes.StringList = [
     "FlextOracleOicValidationError",
     "FlextOracleOicWorkflowError",
     "FlextOracleOicWorkflowExecutionError",
-    "OracleOICExceptions",
     "exceptions_all",
 ]

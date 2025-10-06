@@ -23,7 +23,7 @@ from flext_core import FlextTypes
 
 
 # Oracle OIC domain TypeVars
-class FlextOracleOicExtTypes(FlextTypes):
+class FlextOracleOicTypes(FlextTypes):
     """Oracle OIC extension-specific type definitions extending FlextTypes.
 
     Domain-specific type system for Oracle OIC integration operations.
@@ -264,5 +264,5 @@ class FlextOracleOicExtTypes(FlextTypes):
 # =============================================================================
 
 __all__: FlextTypes.StringList = [
-    "FlextOracleOicExtTypes",
+    "FlextOracleOicTypes",
 ]

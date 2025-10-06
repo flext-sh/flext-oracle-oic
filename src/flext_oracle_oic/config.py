@@ -15,9 +15,9 @@ from flext_core import FlextConfig, FlextResult, FlextTypes
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
-from flext_oracle_oic.constants import FlextOracleOicExtConstants
-from flext_oracle_oic.typings import FlextOracleOicExtTypes
-from flext_oracle_oic.utilities import FlextOracleOicExtUtilities
+from flext_oracle_oic.constants import FlextOracleOicConstants
+from flext_oracle_oic.typings import FlextOracleOicTypes
+from flext_oracle_oic.utilities import FlextOracleOicUtilities
 
 # Type definitions outside class to avoid Pydantic field errors
 EnvironmentLiteral = Literal["development", "staging", "production"]
@@ -25,13 +25,13 @@ LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 OICApiVersionLiteral = Literal["v1", "v2"]
 
 
-class FlextOracleOicExtConfig(FlextConfig):
+class FlextOracleOicConfig(FlextConfig):
     """Single Pydantic 2 Settings class for flext-oracle-oic extending FlextConfig.
 
     Follows standardized pattern:
     - Extends FlextConfig from flext-core
     - No nested classes within Config
-    - All defaults from FlextOracleOicExtConstants
+    - All defaults from FlextOracleOicConstants
     - Uses enhanced singleton pattern with inverse dependency injection
     - Uses Pydantic 2.11+ features (field_validator, model_validator)
     """
@@ -49,70 +49,70 @@ class FlextOracleOicExtConfig(FlextConfig):
         },
     )
 
-    # Oracle OIC Connection Configuration using FlextOracleOicExtConstants for defaults
+    # Oracle OIC Connection Configuration using FlextOracleOicConstants for defaults
     base_url: str = Field(
-        default=FlextOracleOicExtConstants.OIC.DEFAULT_BASE_URL,
+        default=FlextOracleOicConstants.OIC.DEFAULT_BASE_URL,
         description="Oracle OIC base URL",
     )
 
     api_version: str = Field(
-        default=FlextOracleOicExtConstants.OIC.DEFAULT_API_VERSION,
+        default=FlextOracleOicConstants.OIC.DEFAULT_API_VERSION,
         description="Oracle OIC API version",
     )
 
     request_timeout: int = Field(
-        default=FlextOracleOicExtConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
+        default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
         description="Request timeout in seconds",
         ge=1,
         le=300,
     )
 
     max_retries: int = Field(
-        default=FlextOracleOicExtConstants.OIC.DEFAULT_MAX_RETRIES,
+        default=FlextOracleOicConstants.OIC.DEFAULT_MAX_RETRIES,
         description="Maximum number of retry attempts",
         ge=0,
         le=10,
     )
 
     use_ssl: bool = Field(
-        default=FlextOracleOicExtConstants.OIC.DEFAULT_USE_SSL,
+        default=FlextOracleOicConstants.OIC.DEFAULT_USE_SSL,
         description="Use SSL for connections",
     )
 
     verify_ssl: bool = Field(
-        default=FlextOracleOicExtConstants.OIC.DEFAULT_VERIFY_SSL,
+        default=FlextOracleOicConstants.OIC.DEFAULT_VERIFY_SSL,
         description="Verify SSL certificates",
     )
 
-    # Oracle OIC Authentication Configuration using FlextOracleOicExtConstants for defaults
+    # Oracle OIC Authentication Configuration using FlextOracleOicConstants for defaults
     oauth_client_id: str = Field(
-        default=FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_CLIENT_ID,
+        default=FlextOracleOicConstants.Auth.DEFAULT_OAUTH_CLIENT_ID,
         description="OAuth2 client ID",
     )
 
     oauth_client_secret: SecretStr = Field(
         default_factory=lambda: SecretStr(
-            FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_CLIENT_SECRET
+            FlextOracleOicConstants.Auth.DEFAULT_OAUTH_CLIENT_SECRET
         ),
         description="OAuth2 client secret (sensitive)",
     )
 
     oauth_token_url: str = Field(
-        default=FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_TOKEN_URL,
+        default=FlextOracleOicConstants.Auth.DEFAULT_OAUTH_TOKEN_URL,
         description="OAuth2 token URL",
     )
 
     oauth_client_aud: str | None = Field(
-        default=FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_CLIENT_AUD,
+        default=FlextOracleOicConstants.Auth.DEFAULT_OAUTH_CLIENT_AUD,
         description="OAuth2 client audience",
     )
 
     oauth_scope: str = Field(
-        default=FlextOracleOicExtConstants.Auth.DEFAULT_OAUTH_SCOPE,
+        default=FlextOracleOicConstants.Auth.DEFAULT_OAUTH_SCOPE,
         description="OAuth2 scope",
     )
 
-    # Feature Configuration using FlextOracleOicExtConstants for defaults
+    # Feature Configuration using FlextOracleOicConstants for defaults
     enable_monitoring: bool = Field(
         default=True, description="Enable monitoring features"
     )
@@ -140,8 +140,8 @@ class FlextOracleOicExtConfig(FlextConfig):
     @field_validator("base_url")
     @classmethod
     def validate_base_url(cls, v: str) -> str:
-        """Validate base URL format using FlextOracleOicExtUtilities."""
-        result = FlextOracleOicExtUtilities.ConnectionValidation.validate_base_url(v)
+        """Validate base URL format using FlextOracleOicUtilities."""
+        result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(v)
         if result.is_failure:
             error_msg = result.error
             raise ValueError(error_msg)
@@ -150,9 +150,9 @@ class FlextOracleOicExtConfig(FlextConfig):
     @field_validator("oauth_token_url")
     @classmethod
     def validate_oauth_token_url(cls, v: str) -> str:
-        """Validate OAuth token URL format using FlextOracleOicExtUtilities."""
-        result = FlextOracleOicExtUtilities.AuthenticationValidation.validate_oauth_token_url(
-            v
+        """Validate OAuth token URL format using FlextOracleOicUtilities."""
+        result = (
+            FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_token_url(v)
         )
         if result.is_failure:
             error_msg = result.error
@@ -165,7 +165,7 @@ class FlextOracleOicExtConfig(FlextConfig):
         # Validate OAuth configuration
         if self.oauth_client_id:
             # Validate client ID format
-            client_id_result = FlextOracleOicExtUtilities.AuthenticationValidation.validate_oauth_client_id(
+            client_id_result = FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_client_id(
                 self.oauth_client_id
             )
             if client_id_result.is_failure:
@@ -197,21 +197,21 @@ class FlextOracleOicExtConfig(FlextConfig):
 
     def _validate_connection_settings(self) -> FlextResult[None]:
         """Validate connection settings are within acceptable ranges."""
-        if self.request_timeout < FlextOracleOicExtConstants.OIC.MIN_REQUEST_TIMEOUT:
+        if self.request_timeout < FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT:
             return FlextResult[None].fail(
-                f"Request timeout too low (minimum {FlextOracleOicExtConstants.OIC.MIN_REQUEST_TIMEOUT} seconds)"
+                f"Request timeout too low (minimum {FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT} seconds)"
             )
         return FlextResult[None].ok(None)
 
     def _validate_retry_settings(self) -> FlextResult[None]:
         """Validate retry settings are within acceptable ranges."""
-        if self.max_retries > FlextOracleOicExtConstants.OIC.MAX_MAX_RETRIES:
+        if self.max_retries > FlextOracleOicConstants.OIC.MAX_MAX_RETRIES:
             return FlextResult[None].fail(
-                f"Max retries too high (maximum {FlextOracleOicExtConstants.OIC.MAX_MAX_RETRIES})"
+                f"Max retries too high (maximum {FlextOracleOicConstants.OIC.MAX_MAX_RETRIES})"
             )
         return FlextResult[None].ok(None)
 
-    def get_connection_context(self) -> FlextOracleOicExtTypes.Core.ContextDict:
+    def get_connection_context(self) -> FlextOracleOicTypes.Core.ContextDict:
         """Get Oracle OIC connection configuration context."""
         return {
             "base_url": self.base_url,
@@ -243,10 +243,10 @@ class FlextOracleOicExtConfig(FlextConfig):
     @classmethod
     def create_for_environment(
         cls, environment: str, **overrides: object
-    ) -> FlextOracleOicExtConfig:
+    ) -> FlextOracleOicConfig:
         """Create configuration for specific environment using enhanced singleton pattern."""
         return cast(
-            "FlextOracleOicExtConfig",
+            "FlextOracleOicConfig",
             cls.get_or_create_shared_instance(
                 project_name="flext-oracle-oic",
                 environment=environment,
@@ -255,18 +255,18 @@ class FlextOracleOicExtConfig(FlextConfig):
         )
 
     @classmethod
-    def create_default(cls) -> FlextOracleOicExtConfig:
+    def create_default(cls) -> FlextOracleOicConfig:
         """Create default configuration instance using enhanced singleton pattern."""
         return cast(
-            "FlextOracleOicExtConfig",
+            "FlextOracleOicConfig",
             cls.get_or_create_shared_instance(project_name="flext-oracle-oic"),
         )
 
     @classmethod
-    def create_for_development(cls) -> FlextOracleOicExtConfig:
+    def create_for_development(cls) -> FlextOracleOicConfig:
         """Create configuration optimized for development using enhanced singleton pattern."""
         return cast(
-            "FlextOracleOicExtConfig",
+            "FlextOracleOicConfig",
             cls.get_or_create_shared_instance(
                 project_name="flext-oracle-oic",
                 request_timeout=10,
@@ -277,10 +277,10 @@ class FlextOracleOicExtConfig(FlextConfig):
         )
 
     @classmethod
-    def create_for_production(cls) -> FlextOracleOicExtConfig:
+    def create_for_production(cls) -> FlextOracleOicConfig:
         """Create configuration optimized for production using enhanced singleton pattern."""
         return cast(
-            "FlextOracleOicExtConfig",
+            "FlextOracleOicConfig",
             cls.get_or_create_shared_instance(
                 project_name="flext-oracle-oic",
                 request_timeout=60,
@@ -293,10 +293,10 @@ class FlextOracleOicExtConfig(FlextConfig):
         )
 
     @classmethod
-    def create_for_testing(cls) -> FlextOracleOicExtConfig:
+    def create_for_testing(cls) -> FlextOracleOicConfig:
         """Create configuration optimized for testing using enhanced singleton pattern."""
         return cast(
-            "FlextOracleOicExtConfig",
+            "FlextOracleOicConfig",
             cls.get_or_create_shared_instance(
                 project_name="flext-oracle-oic",
                 base_url="https://test.example.com",
@@ -310,26 +310,17 @@ class FlextOracleOicExtConfig(FlextConfig):
         )
 
     @classmethod
-    def get_global_instance(cls) -> FlextOracleOicExtConfig:
+    def get_global_instance(cls) -> FlextOracleOicConfig:
         """Get the global singleton instance using enhanced FlextConfig pattern."""
         return cast(
-            "FlextOracleOicExtConfig",
+            "FlextOracleOicConfig",
             cls.get_or_create_shared_instance(project_name="flext-oracle-oic"),
         )
 
-    @classmethod
-    def reset_global_instance(cls) -> None:
-        """Reset the global FlextOracleOicExtConfig instance (mainly for testing)."""
-        # Reset the shared instance by calling the parent class method
-        FlextConfig.reset_global_instance()
-
-    @classmethod
-    def reset_shared_instance(cls) -> None:
-        """Reset the shared instance for testing purposes."""
-        # Clear any cached instance by setting to None
-        cls._global_instance = None
+    # Note: FlextOracleOicConfig follows direct instantiation pattern
+    # No global instance methods needed - use FlextOracleOicConfig() directly
 
 
 __all__ = [
-    "FlextOracleOicExtConfig",
+    "FlextOracleOicConfig",
 ]

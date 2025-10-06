@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Self
+from typing import Self, cast
 
 from flext_core import (
     FlextBus,
@@ -18,25 +18,18 @@ from flext_core import (
     FlextContext,
     FlextDispatcher,
     FlextLogger,
-    FlextProcessors,
     FlextRegistry,
     FlextResult,
     FlextService,
     FlextTypes,
 )
 
-from flext_oracle_oic.config import FlextOracleOicExtConfig
-from flext_oracle_oic.models import FlextOracleOicExtModels
-from flext_oracle_oic.service import (
-    FlextOracleOicService,  # Unified service class
-)
-
-# Type aliases for backward compatibility
-FlextOracleOic = "FlextOracleOic"  # Forward reference for class name
-FlextOracleOicAPI = FlextOracleOic  # Common alias pattern
+from flext_oracle_oic.config import FlextOracleOicConfig
+from flext_oracle_oic.models import FlextOracleOicModels
+from flext_oracle_oic.service import FlextOracleOicService
 
 
-class FlextOracleOic(FlextService[None]):
+class FlextOracleOicApi(FlextService[None]):
     """Thin facade for Oracle OIC operations with complete FLEXT integration.
 
     Integrates:
@@ -44,7 +37,6 @@ class FlextOracleOic(FlextService[None]):
     - FlextContainer: Dependency injection for OIC services
     - FlextContext: Operation context management
     - FlextDispatcher: Message routing for OIC patterns
-    - FlextProcessors: Processing utilities for OIC data
     - FlextRegistry: Component registration for OIC extensions
     - FlextLogger: Structured logging for OIC operations
 
@@ -59,7 +51,7 @@ class FlextOracleOic(FlextService[None]):
 
     def __init__(
         self,
-        config: FlextOracleOicExtConfig | None = None,
+        config: FlextOracleOicConfig | None = None,
     ) -> None:
         """Initialize FlextOracleOic facade with complete ecosystem integration.
 
@@ -70,21 +62,23 @@ class FlextOracleOic(FlextService[None]):
         super().__init__()
 
         # Configuration with fallback to global instance
-        self._config = config or FlextOracleOicExtConfig.get_global_instance()
-        self._logger = FlextLogger(__name__)
+        self._config = config or FlextOracleOicConfig()
+        if not isinstance(self._config, FlextOracleOicConfig):
+            msg = "Invalid config type"
+            raise TypeError(msg)
 
         # Complete FLEXT ecosystem integration
         self._container = FlextContainer.get_global()
         self._context = FlextContext()
         self._bus = FlextBus()
         self._dispatcher = FlextDispatcher()
-        self._processors = FlextProcessors()
         self._registry = FlextRegistry(dispatcher=self._dispatcher)
 
-        # Register Oracle OIC service in container
-        self._container.register_singleton(
-            FlextOracleOicService, self._create_service()
-        )
+        # Initialize logger
+        self._logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
+
+        # Initialize Oracle OIC service
+        self._service = self._create_service()
 
         # Initialize context with OIC-specific information
         self._context.set("oracle_oic_base_url", self._config.base_url)
@@ -92,13 +86,15 @@ class FlextOracleOic(FlextService[None]):
 
     def _create_service(self) -> FlextOracleOicService:
         """Create unified Oracle OIC service instance."""
-        return FlextOracleOicService(settings=self._config)
+        return FlextOracleOicService(
+            settings=cast("FlextOracleOicConfig", self._config)
+        )
 
     # Integration Management
 
-    async def list_integrations(
+    def list_integrations(
         self,
-    ) -> FlextResult[list[FlextOracleOicExtModels.OICIntegrationInfo]]:
+    ) -> FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -107,10 +103,10 @@ class FlextOracleOic(FlextService[None]):
         """
         return self._get_service().list_integrations()
 
-    async def get_integration(
+    def get_integration(
         self,
         integration_id: str,
-    ) -> FlextResult[FlextOracleOicExtModels.OICIntegrationInfo]:
+    ) -> FlextResult[FlextOracleOicModels.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
         Args:
@@ -122,10 +118,10 @@ class FlextOracleOic(FlextService[None]):
         """
         return self._get_service().get_integration(integration_id)
 
-    async def create_integration(
+    def create_integration(
         self,
         integration_data: dict,
-    ) -> FlextResult[FlextOracleOicExtModels.OICIntegrationInfo]:
+    ) -> FlextResult[FlextOracleOicModels.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
         Args:
@@ -137,11 +133,11 @@ class FlextOracleOic(FlextService[None]):
         """
         return self._get_service().create_integration(integration_data)
 
-    async def update_integration(
+    def update_integration(
         self,
         integration_id: str,
         integration_data: dict,
-    ) -> FlextResult[FlextOracleOicExtModels.OICIntegrationInfo]:
+    ) -> FlextResult[FlextOracleOicModels.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
         Args:
@@ -152,11 +148,9 @@ class FlextOracleOic(FlextService[None]):
             FlextResult containing updated integration information.
 
         """
-          return self._get_service().update_integration(
-            integration_id, integration_data
-        )
+        return self._get_service().update_integration(integration_id, integration_data)
 
-    async def delete_integration(self, integration_id: str) -> FlextResult[None]:
+    def delete_integration(self, integration_id: str) -> FlextResult[None]:
         """Delete Oracle OIC integration.
 
         Args:
@@ -168,7 +162,7 @@ class FlextOracleOic(FlextService[None]):
         """
         return self._get_service().delete_integration(integration_id)
 
-    async def activate_integration(self, integration_id: str) -> FlextResult[None]:
+    def activate_integration(self, integration_id: str) -> FlextResult[None]:
         """Activate Oracle OIC integration.
 
         Args:
@@ -180,7 +174,7 @@ class FlextOracleOic(FlextService[None]):
         """
         return self._get_service().activate_integration(integration_id)
 
-    async def deactivate_integration(self, integration_id: str) -> FlextResult[None]:
+    def deactivate_integration(self, integration_id: str) -> FlextResult[None]:
         """Deactivate Oracle OIC integration.
 
         Args:
@@ -194,7 +188,7 @@ class FlextOracleOic(FlextService[None]):
 
     # Connection and Testing
 
-    async def test_connection(self) -> FlextResult[bool]:
+    def test_connection(self) -> FlextResult[bool]:
         """Test connection to Oracle OIC instance.
 
         Returns:
@@ -205,7 +199,7 @@ class FlextOracleOic(FlextService[None]):
 
     # Integration Pattern Execution
 
-    async def execute_app_driven_orchestration(
+    def execute_app_driven_orchestration(
         self,
         integration_id: str,
         payload: dict,
@@ -222,11 +216,11 @@ class FlextOracleOic(FlextService[None]):
             FlextResult containing execution result.
 
         """
-        return await self._get_service().execute_app_driven_orchestration(
+        return self._get_service().execute_app_driven_orchestration(
             integration_id, payload, **kwargs
         )
 
-    async def execute_scheduled_orchestration(
+    def execute_scheduled_orchestration(
         self,
         integration_id: str,
         schedule_config: dict,
@@ -243,11 +237,11 @@ class FlextOracleOic(FlextService[None]):
             FlextResult containing execution result.
 
         """
-        return await self._get_service().execute_scheduled_orchestration(
+        return self._get_service().execute_scheduled_orchestration(
             integration_id, schedule_config, **kwargs
         )
 
-    async def execute_file_transfer(
+    def execute_file_transfer(
         self,
         integration_id: str,
         file_config: dict,
@@ -264,42 +258,42 @@ class FlextOracleOic(FlextService[None]):
             FlextResult containing execution result.
 
         """
-        return await self._get_service().execute_file_transfer(
+        return self._get_service().execute_file_transfer(
             integration_id, file_config, **kwargs
         )
 
     # Monitoring and Health
 
-    async def get_health_status(self) -> FlextResult[FlextTypes.Dict]:
+    def get_health_status(self) -> FlextResult[FlextTypes.Dict]:
         """Get Oracle OIC health status.
 
         Returns:
             FlextResult containing health status information.
 
         """
-        return await self._get_service().get_health_status()
+        return self._get_service().get_health_status()
 
-    async def get_performance_metrics(self) -> FlextResult[FlextTypes.Dict]:
+    def get_performance_metrics(self) -> FlextResult[FlextTypes.Dict]:
         """Get Oracle OIC performance metrics.
 
         Returns:
             FlextResult containing performance metrics.
 
         """
-        return await self._get_service().get_performance_metrics()
+        return self._get_service().get_performance_metrics()
 
     # Authentication Management
 
-    async def refresh_auth_token(self) -> FlextResult[str]:
+    def refresh_auth_token(self) -> FlextResult[str]:
         """Refresh OAuth2 authentication token.
 
         Returns:
             FlextResult containing new access token.
 
         """
-        return await self._get_service().refresh_auth_token()
+        return self._get_service().refresh_auth_token()
 
-    async def validate_auth_token(self, token: str) -> FlextResult[bool]:
+    def validate_auth_token(self, token: str) -> FlextResult[bool]:
         """Validate OAuth2 authentication token.
 
         Args:
@@ -309,7 +303,7 @@ class FlextOracleOic(FlextService[None]):
             FlextResult containing validation result.
 
         """
-        return await self._get_service().validate_auth_token(token)
+        return self._get_service().validate_auth_token(token)
 
     # Context and Configuration
 
@@ -320,7 +314,11 @@ class FlextOracleOic(FlextService[None]):
             Dictionary containing connection context information.
 
         """
-        return self._config.get_connection_context()
+        return {
+            "base_url": getattr(self._config, "base_url", ""),
+            "api_version": getattr(self._config, "api_version", ""),
+            "request_timeout": getattr(self._config, "request_timeout", 30),
+        }
 
     def get_auth_context(self) -> dict:
         """Get current authentication configuration context.
@@ -329,7 +327,11 @@ class FlextOracleOic(FlextService[None]):
             Dictionary containing authentication context information.
 
         """
-        return self._config.get_auth_context()
+        return {
+            "oauth_client_id": getattr(self._config, "oauth_client_id", ""),
+            "oauth_token_url": getattr(self._config, "oauth_token_url", ""),
+            "oauth_scope": getattr(self._config, "oauth_scope", ""),
+        }
 
     def get_features_context(self) -> dict:
         """Get current features configuration context.
@@ -338,46 +340,43 @@ class FlextOracleOic(FlextService[None]):
             Dictionary containing features context information.
 
         """
-        return self._config.get_features_context()
+        return {
+            "enable_monitoring": getattr(self._config, "enable_monitoring", False),
+            "use_ssl": getattr(self._config, "use_ssl", True),
+            "verify_ssl": getattr(self._config, "verify_ssl", True),
+        }
 
     # Service Access
 
     def _get_service(self) -> FlextOracleOicService:
         """Get the unified Oracle OIC service instance."""
-        return self._container.resolve(FlextOracleOicService)
+        return self._service
 
     # Lifecycle Management
 
-    async def __aenter__(self) -> Self:
+    def __aenter__(self) -> Self:
         """Async context manager entry."""
-        # Emit service start event
-        await self._bus.publish_async(
-            "oracle_oic.service.started",
-            {
-                "service": "FlextOracleOic",
-                "config": self.get_connection_context(),
-            },
-        )
+        # Log service start
+        if self._logger:
+            self._logger.info(
+                "Oracle OIC service started", extra=self.get_connection_context()
+            )
         return self
 
-    async def __aexit__(
+    def __aexit__(
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
         exc_tb: object,
     ) -> None:
         """Async context manager exit."""
-        # Emit service stop event
-        await self._bus.publish_async(
-            "oracle_oic.service.stopped",
-            {
-                "service": "FlextOracleOic",
-                "config": self.get_connection_context(),
-            },
-        )
+        # Log service stop
+        if self._logger:
+            self._logger.info(
+                "Oracle OIC service stopped", extra=self.get_connection_context()
+            )
 
 
 __all__ = [
-    "FlextOracleOic",
-    "FlextOracleOicAPI",  # Common alias pattern
+    "FlextOracleOicApi",
 ]

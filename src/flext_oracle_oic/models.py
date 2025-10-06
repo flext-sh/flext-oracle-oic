@@ -5,13 +5,13 @@ This module provides data models for Oracle OIC External operations.
 
 from __future__ import annotations
 
-from flext_core import FlextConfig, FlextModels, FlextTypes
-from pydantic import ConfigDict, Field, SecretStr
+from flext_core import FlextModels, FlextTypes
+from pydantic import BaseModel, ConfigDict, Field, SecretStr
 
-from flext_oracle_oic.constants import FlextOracleOicExtConstants
+from flext_oracle_oic.constants import FlextOracleOicConstants
 
 
-class FlextOracleOicExtModels(FlextModels):
+class FlextOracleOicModels(FlextModels):
     """Unified models for Oracle OIC Extension operations.
 
     Extends FlextModels to avoid duplication and ensure consistency.
@@ -23,7 +23,7 @@ class FlextOracleOicExtModels(FlextModels):
     OicRecord = FlextTypes.Dict
     OicRecords = list[OicRecord]
 
-    class OICAuthConfig(FlextConfig):
+    class OICAuthConfig(BaseModel):
         """Oracle Integration Cloud authentication configuration.
 
         Padrão EXTENSION: Value Object para configuração de autenticação
@@ -40,7 +40,7 @@ class FlextOracleOicExtModels(FlextModels):
         oauth_client_aud: str | None = Field(None, description="OAuth2 audience")
         oauth_scope: str = Field("", description="OAuth2 scope")
 
-    class OICConnectionConfig(FlextConfig):
+    class OICConnectionConfig(BaseModel):
         """Oracle Integration Cloud connection configuration.
 
         Padrão EXTENSION: Value Object para configuração de conexão
@@ -51,21 +51,21 @@ class FlextOracleOicExtModels(FlextModels):
 
         base_url: str = Field(..., description="Oracle OIC instance base URL")
         api_version: str = Field(
-            FlextOracleOicExtConstants.OIC.DEFAULT_API_VERSION,
+            FlextOracleOicConstants.OIC.DEFAULT_API_VERSION,
             description="OIC API version",
         )
         request_timeout: int = Field(
-            FlextOracleOicExtConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
-            ge=FlextOracleOicExtConstants.OIC.MIN_REQUEST_TIMEOUT,
+            FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
+            ge=FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT,
             description="Request timeout in seconds",
         )
         max_retries: int = Field(
-            FlextOracleOicExtConstants.OIC.DEFAULT_MAX_RETRIES,
-            ge=FlextOracleOicExtConstants.OIC.MIN_MAX_RETRIES,
+            FlextOracleOicConstants.OIC.DEFAULT_MAX_RETRIES,
+            ge=FlextOracleOicConstants.OIC.MIN_MAX_RETRIES,
             description="Maximum retry attempts",
         )
         verify_ssl: bool = Field(
-            default=FlextOracleOicExtConstants.OIC.DEFAULT_VERIFY_SSL,
+            default=FlextOracleOicConstants.OIC.DEFAULT_VERIFY_SSL,
             description="Verify SSL certificates",
         )
 
@@ -81,7 +81,7 @@ class FlextOracleOicExtModels(FlextModels):
         integration_id: str = Field(..., description="Integration unique identifier")
         name: str = Field(..., description="Integration name")
         status: str = Field(..., description="Integration status")
-        version: str = Field(..., description="Integration version")
+        integration_version: str = Field(..., description="Integration version")
         description: str = Field("", description="Integration description")
         created_by: str = Field("", description="Creator username")
         last_updated: str = Field("", description="Last update timestamp")
@@ -112,7 +112,7 @@ class FlextOracleOicExtModels(FlextModels):
         model_config = ConfigDict(extra="forbid")
 
         integration_id: str = Field(..., description="Integration unique identifier")
-        version: str = Field(..., description="Integration version")
+        integration_version: str = Field(..., description="Integration version")
         status: str = Field(..., description="Integration status")
         last_updated: str = Field("", description="Last update timestamp")
         activated_by: str = Field("", description="User who activated the integration")
@@ -135,6 +135,6 @@ class FlextOracleOicExtModels(FlextModels):
         json_data: FlextTypes.Dict | None = Field(None, description="JSON data")
         headers: FlextTypes.StringDict | None = Field(None, description="HTTP headers")
         timeout: int = Field(
-            FlextOracleOicExtConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
+            FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
             description="Request timeout in seconds",
         )

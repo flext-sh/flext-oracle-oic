@@ -9,7 +9,7 @@ from __future__ import annotations
 import pytest
 from pydantic import SecretStr, ValidationError
 
-from flext_oracle_oic.models import FlextOracleOicExtModels
+from flext_oracle_oic.models import FlextOracleOicModels
 
 
 class TestOICAuthConfig:
@@ -17,7 +17,7 @@ class TestOICAuthConfig:
 
     def test_valid_auth_config(self) -> None:
         """Test valid auth config creation."""
-        config = FlextOracleOicExtModels.OICAuthConfig(
+        config = FlextOracleOicModels.OICAuthConfig(
             oauth_client_id="test_client_id",
             oauth_client_secret=SecretStr("test_client_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
@@ -36,7 +36,7 @@ class TestOICAuthConfig:
 
     def test_auth_config_with_none_audience(self) -> None:
         """Test auth config with None audience."""
-        config = FlextOracleOicExtModels.OICAuthConfig(
+        config = FlextOracleOicModels.OICAuthConfig(
             oauth_client_id="test_client_id",
             oauth_client_secret=SecretStr("test_client_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
@@ -58,7 +58,7 @@ class TestOICAuthConfig:
             "oauth_scope": "",
         }
         with pytest.raises(ValidationError):
-            FlextOracleOicExtModels.OICAuthConfig.model_validate(invalid_data)
+            FlextOracleOicModels.OICAuthConfig.model_validate(invalid_data)
 
 
 class TestOICConnectionConfig:
@@ -66,7 +66,7 @@ class TestOICConnectionConfig:
 
     def test_valid_connection_config(self) -> None:
         """Test valid connection config creation."""
-        config = FlextOracleOicExtModels.OICConnectionConfig(
+        config = FlextOracleOicModels.OICConnectionConfig(
             base_url="https://test.integration.ocp.oraclecloud.com",
             api_version="v1",
             request_timeout=30,
@@ -82,7 +82,7 @@ class TestOICConnectionConfig:
 
     def test_connection_config_defaults(self) -> None:
         """Test connection config with defaults."""
-        config = FlextOracleOicExtModels.OICConnectionConfig(
+        config = FlextOracleOicModels.OICConnectionConfig(
             base_url="https://test.integration.ocp.oraclecloud.com",
             api_version="v1",
             request_timeout=30,
@@ -97,7 +97,7 @@ class TestOICConnectionConfig:
     def test_connection_config_validation_error(self) -> None:
         """Test connection config validation error."""
         with pytest.raises(ValidationError):
-            FlextOracleOicExtModels.OICConnectionConfig(
+            FlextOracleOicModels.OICConnectionConfig(
                 base_url="https://test.integration.ocp.oraclecloud.com",
                 api_version="v1",
                 request_timeout=0,  # Should be >= 1
@@ -110,7 +110,7 @@ class TestOICIntegrationInfo:
 
     def test_valid_integration_info(self) -> None:
         """Test valid integration info creation."""
-        info = FlextOracleOicExtModels.OICIntegrationInfo(
+        info = FlextOracleOicModels.OICIntegrationInfo(
             integration_id="test_integration_id",
             name="Test Integration",
             status="ACTIVE",
@@ -130,7 +130,7 @@ class TestOICIntegrationInfo:
 
     def test_integration_info_defaults(self) -> None:
         """Test integration info with defaults."""
-        info = FlextOracleOicExtModels.OICIntegrationInfo(
+        info = FlextOracleOicModels.OICIntegrationInfo(
             integration_id="test_integration_id",
             name="Test Integration",
             status="ACTIVE",
@@ -150,7 +150,7 @@ class TestOICConnectionInfo:
 
     def test_valid_connection_info(self) -> None:
         """Test valid connection info creation."""
-        info = FlextOracleOicExtModels.OICConnectionInfo(
+        info = FlextOracleOicModels.OICConnectionInfo(
             connection_id="test_connection_id",
             name="Test Connection",
             adapter_type="REST",
@@ -168,7 +168,7 @@ class TestOICConnectionInfo:
 
     def test_connection_info_defaults(self) -> None:
         """Test connection info with defaults."""
-        info = FlextOracleOicExtModels.OICConnectionInfo(
+        info = FlextOracleOicModels.OICConnectionInfo(
             connection_id="test_connection_id",
             name="Test Connection",
             adapter_type="REST",

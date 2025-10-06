@@ -3,7 +3,7 @@
 This module provides centralized constants for the flext-oracle-oic project,
 inheriting from FlextConstants and following FLEXT architectural standards.
 
-FLEXT Unified Constants Pattern: Single FlextOracleOicExtConstants class
+FLEXT Unified Constants Pattern: Single FlextOracleOicConstants class
 inheriting from FlextConstants with flat structure and no duplication.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -17,7 +17,7 @@ from typing import Final
 from flext_core import FlextConstants, FlextTypes
 
 
-class FlextOracleOicExtConstants(FlextConstants):
+class FlextOracleOicConstants(FlextConstants):
     """Oracle OIC Extension constants inheriting from FlextConstants.
 
     Provides centralized constants for Oracle OIC Extension operations,
@@ -25,16 +25,16 @@ class FlextOracleOicExtConstants(FlextConstants):
 
     Usage:
         ```python
-        from flext_oracle_oic.constants import FlextOracleOicExtConstants
+        from flext_oracle_oic.constants import FlextOracleOicConstants
 
         # Access Oracle OIC specific constants
-        api_version = FlextOracleOicExtConstants.OIC.DEFAULT_API_VERSION
-        timeout = FlextOracleOicExtConstants.OIC.DEFAULT_TIMEOUT
-        page_size = FlextOracleOicExtConstants.OIC.DEFAULT_PAGE_SIZE
+        api_version = FlextOracleOicConstants.OIC.DEFAULT_API_VERSION
+        timeout = FlextOracleOicConstants.OIC.DEFAULT_TIMEOUT
+        page_size = FlextOracleOicConstants.OIC.DEFAULT_PAGE_SIZE
 
         # Access inherited FlextConstants
-        http_ok = FlextOracleOicExtConstants.Platform.HTTP_STATUS_OK
-        default_timeout = FlextOracleOicExtConstants.Defaults.TIMEOUT
+        http_ok = FlextOracleOicConstants.Platform.HTTP_STATUS_OK
+        default_timeout = FlextOracleOicConstants.Defaults.TIMEOUT
         ```
 
     **IMPLEMENTATION NOTES**:
@@ -300,5 +300,5 @@ class FlextOracleOicExtConstants(FlextConstants):
 
 # Exports following EXTENSION pattern
 __all__: FlextTypes.StringList = [
-    "FlextOracleOicExtConstants",
+    "FlextOracleOicConstants",
 ]

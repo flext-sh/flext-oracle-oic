@@ -6,35 +6,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-# Temporarily disabled due to missing flext_core.metadata
-# import importlib.metadata
-# from flext_core.metadata import build_metadata_exports
-from flext_core import (
-    E,
-    F,
-    FlextConfig,
-    FlextLogger,
-    FlextModels,
-    FlextResult,
-    FlextTypes,
-    P,
-    R,
-    T,
-    U,
-    V,
-)
-
-from flext_oracle_oic.api import FlextOracleOic, FlextOracleOicAPI
-from flext_oracle_oic.cli import FlextOracleOicCli, app, main
+from flext_oracle_oic.api import FlextOracleOicApi
 from flext_oracle_oic.config import (
-    FlextOracleOicExtConfig,
+    FlextOracleOicConfig,
 )
-from flext_oracle_oic.constants import FlextOracleOicExtConstants
-from flext_oracle_oic.container import (
-    configure_flext_oracle_oic_ext_dependencies,
-    get_flext_oracle_oic_ext_container,
-    get_flext_oracle_oic_ext_service,
-)
+from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.exceptions import (
     FlextOracleOicApiError,
     FlextOracleOicApiRequestError,
@@ -57,152 +33,64 @@ from flext_oracle_oic.exceptions import (
     exceptions_all,
 )
 from flext_oracle_oic.ext_client import (
-    BaseOICAuthenticator,
-    BaseOICClient,
-    OICExtensionAuthenticator,
-    OICTapAuthenticator,
-    OICTargetAuthenticator,
-    OracleOICExtensionClient,
+    FlextOracleOicClient,
 )
-from flext_oracle_oic.ext_config import (
-    OICExtensionAuthConfig,
-    OICExtensionConnectionConfig,
-    OracleOICExtensionSettings,
-)
-from flext_oracle_oic.ext_exceptions import (
-    OICAPIError,
-    OICAuthenticationError,
-    OICConfigurationError,
-    OICConnectionError,
-    OICIntegrationError,
-    OICPatternError,
-    OICTimeoutError,
-    OICTokenError,
-    OICValidationError,
-    OICWorkflowError,
-    OracleOICExtensionError,
-)
-from flext_oracle_oic.extension import OracleOICExtension
 from flext_oracle_oic.factory import (
-    FlextOracleOicExtDeprecationWarning,
+    FlextOracleOicDeprecationWarning,
+    FlextOracleOicFactory,
     create_development_oic_service,
     create_oic_extension_service,
     setup_oic_extension,
 )
-from flext_oracle_oic.models import FlextOracleOicExtModels
-from flext_oracle_oic.protocols import FlextOracleOicExtProtocols
+from flext_oracle_oic.models import (
+    FlextOracleOicModels,
+)
+from flext_oracle_oic.protocols import FlextOracleOicProtocols
 from flext_oracle_oic.service import (
     FlextOracleOicService,
-    HTTPClientProtocol,
-    HTTPResponseProtocol,
 )
-from flext_oracle_oic.utilities import FlextOracleOicExtUtilities
-
-# Import VERSION after metadata setup to avoid circular imports
+from flext_oracle_oic.utilities import FlextOracleOicUtilities
 from flext_oracle_oic.version import VERSION
-
-# Temporarily disabled due to missing flext_core.metadata
-# globals().update(build_metadata_exports(__file__))
-
-OICAuthConfig = FlextOracleOicExtModels.OICAuthConfig
-OICConnectionConfig = FlextOracleOicExtModels.OICConnectionConfig
-OICIntegrationInfo = FlextOracleOicExtModels.OICIntegrationInfo
-OICConnectionInfo = FlextOracleOicExtModels.OICConnectionInfo
-IntegrationStatus = FlextOracleOicExtModels.IntegrationStatus
-RequestParams = FlextOracleOicExtModels.RequestParams
-
-# Temporarily disabled due to missing flext_core.metadata
-# try:
-#     __version__ = importlib.metadata.version("flext-oracle-oic")
-#     __version_info__: tuple[int | str, ...] = VERSION.version_info
-# except importlib.metadata.PackageNotFoundError:
-#     __version__ = "0.9.0"
 
 __version__ = "0.9.0"
 __version_info__: tuple[int | str, ...] = VERSION.version_info
 
 
-logger = FlextLogger(__name__)
-__all__: FlextTypes.StringList = [
-    "BaseOICAuthenticator",
-    "BaseOICClient",
-    "E",
-    "F",
-    "FlextConfig",
-    "FlextLogger",
-    "FlextModels",
-    "FlextOracleOic",
-    "FlextOracleOicAPI",
+__all__ = [
+    # Core classes - direct imports only, no aliases or reexports
+    "FlextOracleOicApi",
     "FlextOracleOicApiError",
     "FlextOracleOicApiRequestError",
     "FlextOracleOicAuthenticationError",
-    "FlextOracleOicCli",
+    "FlextOracleOicClient",
+    "FlextOracleOicConfig",
     "FlextOracleOicConfigError",
     "FlextOracleOicConfigurationError",
     "FlextOracleOicConnectionError",
+    "FlextOracleOicConstants",
     "FlextOracleOicDataValidationError",
+    "FlextOracleOicDeprecationWarning",
     "FlextOracleOicError",
     "FlextOracleOicErrorCodes",
-    "FlextOracleOicExtConfig",
-    "FlextOracleOicExtConstants",
-    "FlextOracleOicExtDeprecationWarning",
-    "FlextOracleOicExtModels",
-    "FlextOracleOicExtProtocols",
-    "FlextOracleOicExtUtilities",
+    "FlextOracleOicFactory",
     "FlextOracleOicIntegrationError",
     "FlextOracleOicIntegrationPatternError",
+    "FlextOracleOicModels",
     "FlextOracleOicOAuth2TokenError",
     "FlextOracleOicPatternError",
+    "FlextOracleOicProtocols",
     "FlextOracleOicService",
     "FlextOracleOicTimeoutError",
     "FlextOracleOicTokenError",
+    "FlextOracleOicUtilities",
     "FlextOracleOicValidationError",
     "FlextOracleOicWorkflowError",
     "FlextOracleOicWorkflowExecutionError",
-    "FlextResult",
-    "FlextTypes",
-    "HTTPClientProtocol",
-    "HTTPResponseProtocol",
-    "IntegrationStatus",
-    "OICAPIError",
-    "OICAuthConfig",
-    "OICAuthenticationError",
-    "OICConfigurationError",
-    "OICConnectionConfig",
-    "OICConnectionError",
-    "OICConnectionInfo",
-    "OICExtensionAuthConfig",
-    "OICExtensionAuthenticator",
-    "OICExtensionConnectionConfig",
-    "OICIntegrationError",
-    "OICIntegrationInfo",
-    "OICPatternError",
-    "OICTapAuthenticator",
-    "OICTargetAuthenticator",
-    "OICTimeoutError",
-    "OICTokenError",
-    "OICValidationError",
-    "OICWorkflowError",
-    "OracleOICExtension",
-    "OracleOICExtensionClient",
-    "OracleOICExtensionError",
-    "OracleOICExtensionService",
-    "OracleOICExtensionSettings",
-    "P",
-    "R",
-    "RequestParams",
-    "T",
-    "U",
-    "V",
+    # Version information
     "__version__",
     "__version_info__",
-    "app",
-    "configure_flext_oracle_oic_ext_dependencies",
     "create_development_oic_service",
     "create_oic_extension_service",
     "exceptions_all",
-    "get_flext_oracle_oic_ext_container",
-    "get_flext_oracle_oic_ext_service",
-    "main",
     "setup_oic_extension",
 ]

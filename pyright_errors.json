@@ -1,0 +1,3883 @@
+{
+  "version": "1.1.405",
+  "time": "1759692499334",
+  "generalDiagnostics": [
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/__init__.py",
+      "severity": "warning",
+      "message": "\"FlextOracleOicCli\" is specified in __all__ but is not present in module",
+      "range": {
+        "start": {
+          "line": 70,
+          "character": 4
+        },
+        "end": {
+          "line": 70,
+          "character": 23
+        }
+      },
+      "rule": "reportUnsupportedDunderAll"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/api.py",
+      "severity": "error",
+      "message": "\"_logger\" overrides symbol of same name in class \"FlextService\"\n  Variable is mutable so its type is invariant\n    Override type \"FlextLogger\" is not the same as base type \"FlextLogger | None\"",
+      "range": {
+        "start": {
+          "line": 77,
+          "character": 13
+        },
+        "end": {
+          "line": 77,
+          "character": 20
+        }
+      },
+      "rule": "reportIncompatibleVariableOverride"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/exceptions.py",
+      "severity": "error",
+      "message": "Argument of type \"dict[str, object]\" cannot be assigned to parameter \"context\" of type \"str | int | float | bool | None\" in function \"__init__\"\n  Type \"dict[str, object]\" is not assignable to type \"str | int | float | bool | None\"\n    \"dict[str, object]\" is not assignable to \"str\"\n    \"dict[str, object]\" is not assignable to \"int\"\n    \"dict[str, object]\" is not assignable to \"float\"\n    \"dict[str, object]\" is not assignable to \"bool\"\n    \"dict[str, object]\" is not assignable to \"None\"",
+      "range": {
+        "start": {
+          "line": 183,
+          "character": 24
+        },
+        "end": {
+          "line": 183,
+          "character": 31
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/exceptions.py",
+      "severity": "error",
+      "message": "Argument of type \"dict[str, object]\" cannot be assigned to parameter \"context\" of type \"str | int | float | bool | None\" in function \"__init__\"\n  Type \"dict[str, object]\" is not assignable to type \"str | int | float | bool | None\"\n    \"dict[str, object]\" is not assignable to \"str\"\n    \"dict[str, object]\" is not assignable to \"int\"\n    \"dict[str, object]\" is not assignable to \"float\"\n    \"dict[str, object]\" is not assignable to \"bool\"\n    \"dict[str, object]\" is not assignable to \"None\"",
+      "range": {
+        "start": {
+          "line": 248,
+          "character": 24
+        },
+        "end": {
+          "line": 248,
+          "character": 31
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/exceptions.py",
+      "severity": "error",
+      "message": "Argument of type \"dict[str, object]\" cannot be assigned to parameter \"context\" of type \"str | int | float | bool | None\" in function \"__init__\"\n  Type \"dict[str, object]\" is not assignable to type \"str | int | float | bool | None\"\n    \"dict[str, object]\" is not assignable to \"str\"\n    \"dict[str, object]\" is not assignable to \"int\"\n    \"dict[str, object]\" is not assignable to \"float\"\n    \"dict[str, object]\" is not assignable to \"bool\"\n    \"dict[str, object]\" is not assignable to \"None\"",
+      "range": {
+        "start": {
+          "line": 309,
+          "character": 24
+        },
+        "end": {
+          "line": 309,
+          "character": 31
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/exceptions.py",
+      "severity": "error",
+      "message": "Argument of type \"dict[str, object]\" cannot be assigned to parameter \"context\" of type \"str | int | float | bool | None\" in function \"__init__\"\n  Type \"dict[str, object]\" is not assignable to type \"str | int | float | bool | None\"\n    \"dict[str, object]\" is not assignable to \"str\"\n    \"dict[str, object]\" is not assignable to \"int\"\n    \"dict[str, object]\" is not assignable to \"float\"\n    \"dict[str, object]\" is not assignable to \"bool\"\n    \"dict[str, object]\" is not assignable to \"None\"",
+      "range": {
+        "start": {
+          "line": 375,
+          "character": 24
+        },
+        "end": {
+          "line": 375,
+          "character": 31
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/exceptions.py",
+      "severity": "error",
+      "message": "Argument of type \"dict[str, object]\" cannot be assigned to parameter \"context\" of type \"str | int | float | bool | None\" in function \"__init__\"\n  Type \"dict[str, object]\" is not assignable to type \"str | int | float | bool | None\"\n    \"dict[str, object]\" is not assignable to \"str\"\n    \"dict[str, object]\" is not assignable to \"int\"\n    \"dict[str, object]\" is not assignable to \"float\"\n    \"dict[str, object]\" is not assignable to \"bool\"\n    \"dict[str, object]\" is not assignable to \"None\"",
+      "range": {
+        "start": {
+          "line": 421,
+          "character": 24
+        },
+        "end": {
+          "line": 421,
+          "character": 31
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/exceptions.py",
+      "severity": "error",
+      "message": "Argument of type \"dict[str, object]\" cannot be assigned to parameter \"context\" of type \"str | int | float | bool | None\" in function \"__init__\"\n  Type \"dict[str, object]\" is not assignable to type \"str | int | float | bool | None\"\n    \"dict[str, object]\" is not assignable to \"str\"\n    \"dict[str, object]\" is not assignable to \"int\"\n    \"dict[str, object]\" is not assignable to \"float\"\n    \"dict[str, object]\" is not assignable to \"bool\"\n    \"dict[str, object]\" is not assignable to \"None\"",
+      "range": {
+        "start": {
+          "line": 467,
+          "character": 24
+        },
+        "end": {
+          "line": 467,
+          "character": 31
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_client.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"body\" for class \"object\"\n  Attribute \"body\" is unknown",
+      "range": {
+        "start": {
+          "line": 173,
+          "character": 32
+        },
+        "end": {
+          "line": 173,
+          "character": 36
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_client.py",
+      "severity": "error",
+      "message": "Arguments missing for parameters \"endpoint\", \"params\", \"data\", \"json\"",
+      "range": {
+        "start": {
+          "line": 305,
+          "character": 41
+        },
+        "end": {
+          "line": 305,
+          "character": 79
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_client.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"headers\" for class \"object\"\n  Attribute \"headers\" is unknown",
+      "range": {
+        "start": {
+          "line": 345,
+          "character": 35
+        },
+        "end": {
+          "line": 345,
+          "character": 42
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_client.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"body\" for class \"object\"\n  Attribute \"body\" is unknown",
+      "range": {
+        "start": {
+          "line": 346,
+          "character": 32
+        },
+        "end": {
+          "line": 346,
+          "character": 36
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Argument of type \"dict[str, str]\" cannot be assigned to parameter \"integration_data\" of type \"Dict\" in function \"create_integration\"\n  \"dict[str, str]\" is not assignable to \"dict[str, object]\"\n    Type parameter \"_VT@dict\" is invariant, but \"str\" is not the same as \"object\"\n    Consider switching from \"dict\" to \"Mapping\" which is covariant in the value type",
+      "range": {
+        "start": {
+          "line": 451,
+          "character": 50
+        },
+        "end": {
+          "line": 451,
+          "character": 70
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_MESSAGE_ROUTER\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_MESSAGE_ROUTER\" is unknown",
+      "range": {
+        "start": {
+          "line": 548,
+          "character": 60
+        },
+        "end": {
+          "line": 548,
+          "character": 82
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_MESSAGE_ID_UNKNOWN\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_MESSAGE_ID_UNKNOWN\" is unknown",
+      "range": {
+        "start": {
+          "line": 550,
+          "character": 59
+        },
+        "end": {
+          "line": 550,
+          "character": 85
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_STATUS_PROCESSED\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_STATUS_PROCESSED\" is unknown",
+      "range": {
+        "start": {
+          "line": 553,
+          "character": 59
+        },
+        "end": {
+          "line": 553,
+          "character": 83
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_SCATTER_GATHER\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_SCATTER_GATHER\" is unknown",
+      "range": {
+        "start": {
+          "line": 600,
+          "character": 60
+        },
+        "end": {
+          "line": 600,
+          "character": 82
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_REQUEST_ID_UNKNOWN\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_REQUEST_ID_UNKNOWN\" is unknown",
+      "range": {
+        "start": {
+          "line": 602,
+          "character": 59
+        },
+        "end": {
+          "line": 602,
+          "character": 85
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_STATUS_PROCESSED\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_STATUS_PROCESSED\" is unknown",
+      "range": {
+        "start": {
+          "line": 605,
+          "character": 59
+        },
+        "end": {
+          "line": 605,
+          "character": 83
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Argument of type \"SecretStr\" cannot be assigned to parameter \"secret_value\" of type \"str\" in function \"__init__\"\n  \"SecretStr\" is not assignable to \"str\"",
+      "range": {
+        "start": {
+          "line": 643,
+          "character": 24
+        },
+        "end": {
+          "line": 643,
+          "character": 57
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Type \"FlextResult[OracleOICExtensionClient]\" is not assignable to declared type \"FlextResult[object]\"\n  \"FlextResult[OracleOICExtensionClient]\" is not assignable to \"FlextResult[object]\"\n    Type parameter \"T_co@FlextResult\" is invariant, but \"OracleOICExtensionClient\" is not the same as \"object\"",
+      "range": {
+        "start": {
+          "line": 687,
+          "character": 49
+        },
+        "end": {
+          "line": 687,
+          "character": 67
+        }
+      },
+      "rule": "reportAssignmentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"update_integration\" for class \"object\"\n  Attribute \"update_integration\" is unknown",
+      "range": {
+        "start": {
+          "line": 703,
+          "character": 37
+        },
+        "end": {
+          "line": 703,
+          "character": 55
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Type \"FlextResult[OracleOICExtensionClient]\" is not assignable to declared type \"FlextResult[object]\"\n  \"FlextResult[OracleOICExtensionClient]\" is not assignable to \"FlextResult[object]\"\n    Type parameter \"T_co@FlextResult\" is invariant, but \"OracleOICExtensionClient\" is not the same as \"object\"",
+      "range": {
+        "start": {
+          "line": 741,
+          "character": 49
+        },
+        "end": {
+          "line": 741,
+          "character": 67
+        }
+      },
+      "rule": "reportAssignmentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/ext_services.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"update_integration\" for class \"object\"\n  Attribute \"update_integration\" is unknown",
+      "range": {
+        "start": {
+          "line": 757,
+          "character": 39
+        },
+        "end": {
+          "line": 757,
+          "character": 57
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/factory.py",
+      "severity": "error",
+      "message": "Argument of type \"FlextOracleOicConfig | None\" cannot be assigned to parameter \"data\" of type \"FlextOracleOicConfig\" in function \"ok\"\n  Type \"FlextOracleOicConfig | None\" is not assignable to type \"FlextOracleOicConfig\"\n    \"None\" is not assignable to \"FlextOracleOicConfig\"",
+      "range": {
+        "start": {
+          "line": 55,
+          "character": 12
+        },
+        "end": {
+          "line": 55,
+          "character": 20
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/factory.py",
+      "severity": "error",
+      "message": "Argument of type \"FlextOracleOicConfig | None\" cannot be assigned to parameter \"data\" of type \"FlextOracleOicConfig\" in function \"ok\"\n  Type \"FlextOracleOicConfig | None\" is not assignable to type \"FlextOracleOicConfig\"\n    \"None\" is not assignable to \"FlextOracleOicConfig\"",
+      "range": {
+        "start": {
+          "line": 129,
+          "character": 12
+        },
+        "end": {
+          "line": 129,
+          "character": 20
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/main.py",
+      "severity": "error",
+      "message": "Type \"int\" is not assignable to return type \"FlextResult[None]\"\n  \"int\" is not assignable to \"FlextResult[None]\"",
+      "range": {
+        "start": {
+          "line": 59,
+          "character": 15
+        },
+        "end": {
+          "line": 59,
+          "character": 29
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/main.py",
+      "severity": "error",
+      "message": "\"info\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 110,
+          "character": 25
+        },
+        "end": {
+          "line": 110,
+          "character": 29
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/main.py",
+      "severity": "error",
+      "message": "\"info\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 127,
+          "character": 33
+        },
+        "end": {
+          "line": 127,
+          "character": 37
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/main.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 137,
+          "character": 25
+        },
+        "end": {
+          "line": 137,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/main.py",
+      "severity": "error",
+      "message": "\"info\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 148,
+          "character": 25
+        },
+        "end": {
+          "line": 148,
+          "character": 29
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/main.py",
+      "severity": "error",
+      "message": "\"info\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 166,
+          "character": 33
+        },
+        "end": {
+          "line": 166,
+          "character": 37
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/main.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 190,
+          "character": 25
+        },
+        "end": {
+          "line": 190,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/main.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 207,
+          "character": 25
+        },
+        "end": {
+          "line": 207,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/main.py",
+      "severity": "error",
+      "message": "Type \"FlextLogger | None\" is not assignable to return type \"FlextLogger\"\n  Type \"FlextLogger | None\" is not assignable to type \"FlextLogger\"\n    \"None\" is not assignable to \"FlextLogger\"",
+      "range": {
+        "start": {
+          "line": 301,
+          "character": 15
+        },
+        "end": {
+          "line": 301,
+          "character": 27
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/models.py",
+      "severity": "error",
+      "message": "\"version\" overrides a field of the same name but is missing a default value",
+      "range": {
+        "start": {
+          "line": 83,
+          "character": 8
+        },
+        "end": {
+          "line": 83,
+          "character": 15
+        }
+      },
+      "rule": "reportGeneralTypeIssues"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/models.py",
+      "severity": "error",
+      "message": "\"version\" overrides symbol of same name in class \"VersionableMixin\"\n  Variable is mutable so its type is invariant\n    Override type \"str\" is not the same as base type \"int\"",
+      "range": {
+        "start": {
+          "line": 83,
+          "character": 8
+        },
+        "end": {
+          "line": 83,
+          "character": 15
+        }
+      },
+      "rule": "reportIncompatibleVariableOverride"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/models.py",
+      "severity": "error",
+      "message": "\"version\" overrides a field of the same name but is missing a default value",
+      "range": {
+        "start": {
+          "line": 114,
+          "character": 8
+        },
+        "end": {
+          "line": 114,
+          "character": 15
+        }
+      },
+      "rule": "reportGeneralTypeIssues"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/models.py",
+      "severity": "error",
+      "message": "\"version\" overrides symbol of same name in class \"VersionableMixin\"\n  Variable is mutable so its type is invariant\n    Override type \"str\" is not the same as base type \"int\"",
+      "range": {
+        "start": {
+          "line": 114,
+          "character": 8
+        },
+        "end": {
+          "line": 114,
+          "character": 15
+        }
+      },
+      "rule": "reportIncompatibleVariableOverride"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Method \"execute\" overrides class \"Service\" in an incompatible manner\n  Positional parameter count mismatch; base method has 1, but override has 3",
+      "range": {
+        "start": {
+          "line": 18,
+          "character": 12
+        },
+        "end": {
+          "line": 18,
+          "character": 19
+        }
+      },
+      "rule": "reportIncompatibleMethodOverride"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Method \"validate_business_rules\" overrides class \"Service\" in an incompatible manner\n  Positional parameter count mismatch; base method has 1, but override has 2\n  Return type mismatch: base method returns type \"FlextResult[None]\", override returns type \"FlextResult[bool]\"\n    \"FlextResult[bool]\" is not assignable to \"FlextResult[None]\"\n      Type parameter \"T_co@FlextResult\" is invariant, but \"bool\" is not the same as \"None\"",
+      "range": {
+        "start": {
+          "line": 33,
+          "character": 12
+        },
+        "end": {
+          "line": 33,
+          "character": 35
+        }
+      },
+      "rule": "reportIncompatibleMethodOverride"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Method \"validate_config\" overrides class \"Service\" in an incompatible manner\n  Positional parameter count mismatch; base method has 1, but override has 2\n  Return type mismatch: base method returns type \"FlextResult[None]\", override returns type \"FlextResult[bool]\"\n    \"FlextResult[bool]\" is not assignable to \"FlextResult[None]\"\n      Type parameter \"T_co@FlextResult\" is invariant, but \"bool\" is not the same as \"None\"",
+      "range": {
+        "start": {
+          "line": 48,
+          "character": 12
+        },
+        "end": {
+          "line": 48,
+          "character": 27
+        }
+      },
+      "rule": "reportIncompatibleMethodOverride"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[bool]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[bool]\"",
+      "range": {
+        "start": {
+          "line": 48,
+          "character": 62
+        },
+        "end": {
+          "line": 48,
+          "character": 79
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Expected indented block",
+      "range": {
+        "start": {
+          "line": 50,
+          "character": 4
+        },
+        "end": {
+          "line": 50,
+          "character": 4
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[bool]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[bool]\"",
+      "range": {
+        "start": {
+          "line": 98,
+          "character": 63
+        },
+        "end": {
+          "line": 98,
+          "character": 80
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Expected indented block",
+      "range": {
+        "start": {
+          "line": 100,
+          "character": 4
+        },
+        "end": {
+          "line": 100,
+          "character": 4
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[list[Dict]]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[list[Dict]]\"",
+      "range": {
+        "start": {
+          "line": 106,
+          "character": 13
+        },
+        "end": {
+          "line": 106,
+          "character": 47
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[Dict]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[Dict]\"",
+      "range": {
+        "start": {
+          "line": 118,
+          "character": 57
+        },
+        "end": {
+          "line": 118,
+          "character": 85
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Expected indented block",
+      "range": {
+        "start": {
+          "line": 120,
+          "character": 8
+        },
+        "end": {
+          "line": 120,
+          "character": 11
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[str]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[str]\"",
+      "range": {
+        "start": {
+          "line": 122,
+          "character": 13
+        },
+        "end": {
+          "line": 122,
+          "character": 29
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[bool]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[bool]\"",
+      "range": {
+        "start": {
+          "line": 135,
+          "character": 13
+        },
+        "end": {
+          "line": 135,
+          "character": 30
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[bool]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[bool]\"",
+      "range": {
+        "start": {
+          "line": 148,
+          "character": 59
+        },
+        "end": {
+          "line": 148,
+          "character": 76
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Expected indented block",
+      "range": {
+        "start": {
+          "line": 150,
+          "character": 4
+        },
+        "end": {
+          "line": 150,
+          "character": 4
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[Dict]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[Dict]\"",
+      "range": {
+        "start": {
+          "line": 158,
+          "character": 13
+        },
+        "end": {
+          "line": 158,
+          "character": 41
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[Dict]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[Dict]\"",
+      "range": {
+        "start": {
+          "line": 174,
+          "character": 13
+        },
+        "end": {
+          "line": 174,
+          "character": 41
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[Dict]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[Dict]\"",
+      "range": {
+        "start": {
+          "line": 190,
+          "character": 13
+        },
+        "end": {
+          "line": 190,
+          "character": 41
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[bool]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[bool]\"",
+      "range": {
+        "start": {
+          "line": 204,
+          "character": 13
+        },
+        "end": {
+          "line": 204,
+          "character": 30
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[Dict]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[Dict]\"",
+      "range": {
+        "start": {
+          "line": 222,
+          "character": 13
+        },
+        "end": {
+          "line": 222,
+          "character": 41
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[Dict]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[Dict]\"",
+      "range": {
+        "start": {
+          "line": 236,
+          "character": 13
+        },
+        "end": {
+          "line": 236,
+          "character": 41
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[Dict]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[Dict]\"",
+      "range": {
+        "start": {
+          "line": 248,
+          "character": 39
+        },
+        "end": {
+          "line": 248,
+          "character": 67
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Expected indented block",
+      "range": {
+        "start": {
+          "line": 249,
+          "character": 0
+        },
+        "end": {
+          "line": 249,
+          "character": 0
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Unexpected indentation",
+      "range": {
+        "start": {
+          "line": 251,
+          "character": 0
+        },
+        "end": {
+          "line": 251,
+          "character": 8
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[bool]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[bool]\"",
+      "range": {
+        "start": {
+          "line": 253,
+          "character": 13
+        },
+        "end": {
+          "line": 253,
+          "character": 30
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[bool]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[bool]\"",
+      "range": {
+        "start": {
+          "line": 265,
+          "character": 37
+        },
+        "end": {
+          "line": 265,
+          "character": 54
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Expected indented block",
+      "range": {
+        "start": {
+          "line": 266,
+          "character": 0
+        },
+        "end": {
+          "line": 266,
+          "character": 0
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Unindent not expected",
+      "range": {
+        "start": {
+          "line": 266,
+          "character": 0
+        },
+        "end": {
+          "line": 266,
+          "character": 3
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Unexpected indentation",
+      "range": {
+        "start": {
+          "line": 268,
+          "character": 0
+        },
+        "end": {
+          "line": 268,
+          "character": 4
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[bool]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[bool]\"",
+      "range": {
+        "start": {
+          "line": 274,
+          "character": 13
+        },
+        "end": {
+          "line": 274,
+          "character": 30
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[bool]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[bool]\"",
+      "range": {
+        "start": {
+          "line": 286,
+          "character": 42
+        },
+        "end": {
+          "line": 286,
+          "character": 59
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Expected indented block",
+      "range": {
+        "start": {
+          "line": 287,
+          "character": 0
+        },
+        "end": {
+          "line": 287,
+          "character": 0
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Unindent not expected",
+      "range": {
+        "start": {
+          "line": 287,
+          "character": 0
+        },
+        "end": {
+          "line": 287,
+          "character": 3
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Unexpected indentation",
+      "range": {
+        "start": {
+          "line": 289,
+          "character": 0
+        },
+        "end": {
+          "line": 289,
+          "character": 8
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[str]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[str]\"",
+      "range": {
+        "start": {
+          "line": 291,
+          "character": 13
+        },
+        "end": {
+          "line": 291,
+          "character": 29
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[bool]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[bool]\"",
+      "range": {
+        "start": {
+          "line": 303,
+          "character": 65
+        },
+        "end": {
+          "line": 303,
+          "character": 82
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Expected indented block",
+      "range": {
+        "start": {
+          "line": 305,
+          "character": 8
+        },
+        "end": {
+          "line": 305,
+          "character": 11
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[Dict]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[Dict]\"",
+      "range": {
+        "start": {
+          "line": 307,
+          "character": 13
+        },
+        "end": {
+          "line": 307,
+          "character": 41
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Unindent not expected",
+      "range": {
+        "start": {
+          "line": 318,
+          "character": 4
+        },
+        "end": {
+          "line": 318,
+          "character": 5
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Expected function or class declaration after decorator",
+      "range": {
+        "start": {
+          "line": 319,
+          "character": 0
+        },
+        "end": {
+          "line": 319,
+          "character": 4
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Unexpected indentation",
+      "range": {
+        "start": {
+          "line": 319,
+          "character": 0
+        },
+        "end": {
+          "line": 319,
+          "character": 4
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[object]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[object]\"",
+      "range": {
+        "start": {
+          "line": 324,
+          "character": 13
+        },
+        "end": {
+          "line": 324,
+          "character": 32
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[object]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[object]\"",
+      "range": {
+        "start": {
+          "line": 342,
+          "character": 13
+        },
+        "end": {
+          "line": 342,
+          "character": 32
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[object]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[object]\"",
+      "range": {
+        "start": {
+          "line": 361,
+          "character": 13
+        },
+        "end": {
+          "line": 361,
+          "character": 32
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[bool]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[bool]\"",
+      "range": {
+        "start": {
+          "line": 376,
+          "character": 13
+        },
+        "end": {
+          "line": 376,
+          "character": 30
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[Dict]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[Dict]\"",
+      "range": {
+        "start": {
+          "line": 394,
+          "character": 13
+        },
+        "end": {
+          "line": 394,
+          "character": 41
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Function with declared return type \"FlextResult[Dict]\" must return value on all code paths\n  \"None\" is not assignable to \"FlextResult[Dict]\"",
+      "range": {
+        "start": {
+          "line": 406,
+          "character": 55
+        },
+        "end": {
+          "line": 406,
+          "character": 83
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Expected indented block",
+      "range": {
+        "start": {
+          "line": 407,
+          "character": 0
+        },
+        "end": {
+          "line": 407,
+          "character": 0
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/protocols.py",
+      "severity": "error",
+      "message": "Unindent not expected",
+      "range": {
+        "start": {
+          "line": 407,
+          "character": 0
+        },
+        "end": {
+          "line": 407,
+          "character": 7
+        }
+      }
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument missing for parameter \"auth_config\"",
+      "range": {
+        "start": {
+          "line": 84,
+          "character": 34
+        },
+        "end": {
+          "line": 89,
+          "character": 13
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"client_id\"",
+      "range": {
+        "start": {
+          "line": 85,
+          "character": 16
+        },
+        "end": {
+          "line": 85,
+          "character": 25
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"client_secret\"",
+      "range": {
+        "start": {
+          "line": 86,
+          "character": 16
+        },
+        "end": {
+          "line": 86,
+          "character": 29
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"token_url\"",
+      "range": {
+        "start": {
+          "line": 87,
+          "character": 16
+        },
+        "end": {
+          "line": 87,
+          "character": 25
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"scope\"",
+      "range": {
+        "start": {
+          "line": 88,
+          "character": 16
+        },
+        "end": {
+          "line": 88,
+          "character": 21
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"refresh_token\" for class \"OICExtensionAuthenticator\"\n  Attribute \"refresh_token\" is unknown",
+      "range": {
+        "start": {
+          "line": 97,
+          "character": 71
+        },
+        "end": {
+          "line": 97,
+          "character": 84
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 103,
+          "character": 25
+        },
+        "end": {
+          "line": 103,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"list_integrations\" for class \"OracleOICExtensionClient\"\n  Attribute \"list_integrations\" is unknown",
+      "range": {
+        "start": {
+          "line": 137,
+          "character": 39
+        },
+        "end": {
+          "line": 137,
+          "character": 56
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument missing for parameter \"created_by\"",
+      "range": {
+        "start": {
+          "line": 142,
+          "character": 30
+        },
+        "end": {
+          "line": 150,
+          "character": 17
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"created_date\"",
+      "range": {
+        "start": {
+          "line": 148,
+          "character": 20
+        },
+        "end": {
+          "line": 148,
+          "character": 32
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 158,
+          "character": 25
+        },
+        "end": {
+          "line": 158,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"list[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 193,
+          "character": 39
+        },
+        "end": {
+          "line": 193,
+          "character": 42
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"str\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 193,
+          "character": 39
+        },
+        "end": {
+          "line": 193,
+          "character": 42
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"get\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 193,
+          "character": 39
+        },
+        "end": {
+          "line": 193,
+          "character": 42
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"list[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 194,
+          "character": 30
+        },
+        "end": {
+          "line": 194,
+          "character": 33
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"str\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 194,
+          "character": 30
+        },
+        "end": {
+          "line": 194,
+          "character": 33
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"get\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 194,
+          "character": 30
+        },
+        "end": {
+          "line": 194,
+          "character": 33
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"list[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 195,
+          "character": 38
+        },
+        "end": {
+          "line": 195,
+          "character": 41
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"str\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 195,
+          "character": 38
+        },
+        "end": {
+          "line": 195,
+          "character": 41
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"get\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 195,
+          "character": 38
+        },
+        "end": {
+          "line": 195,
+          "character": 41
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"list[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 196,
+          "character": 32
+        },
+        "end": {
+          "line": 196,
+          "character": 35
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"str\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 196,
+          "character": 32
+        },
+        "end": {
+          "line": 196,
+          "character": 35
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"get\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 196,
+          "character": 32
+        },
+        "end": {
+          "line": 196,
+          "character": 35
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"list[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 197,
+          "character": 41
+        },
+        "end": {
+          "line": 197,
+          "character": 44
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"str\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 197,
+          "character": 41
+        },
+        "end": {
+          "line": 197,
+          "character": 44
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"get\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 197,
+          "character": 41
+        },
+        "end": {
+          "line": 197,
+          "character": 44
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"list[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 198,
+          "character": 37
+        },
+        "end": {
+          "line": 198,
+          "character": 40
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"str\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 198,
+          "character": 37
+        },
+        "end": {
+          "line": 198,
+          "character": 40
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"get\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 198,
+          "character": 37
+        },
+        "end": {
+          "line": 198,
+          "character": 40
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 207,
+          "character": 25
+        },
+        "end": {
+          "line": 207,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get_integration\" for class \"OracleOICExtensionClient\"\n  Attribute \"get_integration\" is unknown",
+      "range": {
+        "start": {
+          "line": 232,
+          "character": 38
+        },
+        "end": {
+          "line": 232,
+          "character": 53
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument missing for parameter \"created_by\"",
+      "range": {
+        "start": {
+          "line": 234,
+          "character": 26
+        },
+        "end": {
+          "line": 242,
+          "character": 13
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"created_date\"",
+      "range": {
+        "start": {
+          "line": 240,
+          "character": 16
+        },
+        "end": {
+          "line": 240,
+          "character": 28
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 247,
+          "character": 25
+        },
+        "end": {
+          "line": 247,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument missing for parameter \"created_by\"",
+      "range": {
+        "start": {
+          "line": 274,
+          "character": 26
+        },
+        "end": {
+          "line": 282,
+          "character": 13
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 275,
+          "character": 44
+        },
+        "end": {
+          "line": 275,
+          "character": 47
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 276,
+          "character": 34
+        },
+        "end": {
+          "line": 276,
+          "character": 37
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 277,
+          "character": 41
+        },
+        "end": {
+          "line": 277,
+          "character": 44
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 278,
+          "character": 37
+        },
+        "end": {
+          "line": 278,
+          "character": 40
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 279,
+          "character": 36
+        },
+        "end": {
+          "line": 279,
+          "character": 39
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"created_date\"",
+      "range": {
+        "start": {
+          "line": 280,
+          "character": 16
+        },
+        "end": {
+          "line": 280,
+          "character": 28
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 280,
+          "character": 42
+        },
+        "end": {
+          "line": 280,
+          "character": 45
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 281,
+          "character": 42
+        },
+        "end": {
+          "line": 281,
+          "character": 45
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 287,
+          "character": 25
+        },
+        "end": {
+          "line": 287,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument missing for parameter \"created_by\"",
+      "range": {
+        "start": {
+          "line": 315,
+          "character": 26
+        },
+        "end": {
+          "line": 323,
+          "character": 13
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 316,
+          "character": 44
+        },
+        "end": {
+          "line": 316,
+          "character": 47
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 317,
+          "character": 34
+        },
+        "end": {
+          "line": 317,
+          "character": 37
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 318,
+          "character": 41
+        },
+        "end": {
+          "line": 318,
+          "character": 44
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 319,
+          "character": 37
+        },
+        "end": {
+          "line": 319,
+          "character": 40
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 320,
+          "character": 36
+        },
+        "end": {
+          "line": 320,
+          "character": 39
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"created_date\"",
+      "range": {
+        "start": {
+          "line": 321,
+          "character": 16
+        },
+        "end": {
+          "line": 321,
+          "character": 28
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 321,
+          "character": 42
+        },
+        "end": {
+          "line": 321,
+          "character": 45
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 322,
+          "character": 42
+        },
+        "end": {
+          "line": 322,
+          "character": 45
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 328,
+          "character": 25
+        },
+        "end": {
+          "line": 328,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"delete_integration\" for class \"OracleOICExtensionClient\"\n  Attribute \"delete_integration\" is unknown",
+      "range": {
+        "start": {
+          "line": 349,
+          "character": 19
+        },
+        "end": {
+          "line": 349,
+          "character": 37
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 354,
+          "character": 25
+        },
+        "end": {
+          "line": 354,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"activate_integration\" for class \"OracleOICExtensionClient\"\n  Attribute \"activate_integration\" is unknown",
+      "range": {
+        "start": {
+          "line": 373,
+          "character": 19
+        },
+        "end": {
+          "line": 373,
+          "character": 39
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 378,
+          "character": 25
+        },
+        "end": {
+          "line": 378,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"deactivate_integration\" for class \"OracleOICExtensionClient\"\n  Attribute \"deactivate_integration\" is unknown",
+      "range": {
+        "start": {
+          "line": 397,
+          "character": 19
+        },
+        "end": {
+          "line": 397,
+          "character": 41
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 402,
+          "character": 25
+        },
+        "end": {
+          "line": 402,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"test_connection\" for class \"OracleOICExtensionClient\"\n  Attribute \"test_connection\" is unknown",
+      "range": {
+        "start": {
+          "line": 420,
+          "character": 28
+        },
+        "end": {
+          "line": 420,
+          "character": 43
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 425,
+          "character": 25
+        },
+        "end": {
+          "line": 425,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"execute_app_driven_orchestration\" for class \"OracleOICExtensionClient\"\n  Attribute \"execute_app_driven_orchestration\" is unknown",
+      "range": {
+        "start": {
+          "line": 450,
+          "character": 28
+        },
+        "end": {
+          "line": 450,
+          "character": 60
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 457,
+          "character": 25
+        },
+        "end": {
+          "line": 457,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"execute_scheduled_orchestration\" for class \"OracleOICExtensionClient\"\n  Attribute \"execute_scheduled_orchestration\" is unknown",
+      "range": {
+        "start": {
+          "line": 484,
+          "character": 28
+        },
+        "end": {
+          "line": 484,
+          "character": 59
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 491,
+          "character": 25
+        },
+        "end": {
+          "line": 491,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"execute_file_transfer\" for class \"OracleOICExtensionClient\"\n  Attribute \"execute_file_transfer\" is unknown",
+      "range": {
+        "start": {
+          "line": 518,
+          "character": 28
+        },
+        "end": {
+          "line": 518,
+          "character": 49
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 523,
+          "character": 25
+        },
+        "end": {
+          "line": 523,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"refresh_token\" for class \"OICExtensionAuthenticator\"\n  Attribute \"refresh_token\" is unknown",
+      "range": {
+        "start": {
+          "line": 539,
+          "character": 40
+        },
+        "end": {
+          "line": 539,
+          "character": 53
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 543,
+          "character": 25
+        },
+        "end": {
+          "line": 543,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"validate_token\" for class \"OICExtensionAuthenticator\"\n  Attribute \"validate_token\" is unknown",
+      "range": {
+        "start": {
+          "line": 560,
+          "character": 43
+        },
+        "end": {
+          "line": 560,
+          "character": 57
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 564,
+          "character": 25
+        },
+        "end": {
+          "line": 564,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"get\" for class \"FlextResult[Dict]\"\n  Attribute \"get\" is unknown",
+      "range": {
+        "start": {
+          "line": 588,
+          "character": 42
+        },
+        "end": {
+          "line": 588,
+          "character": 45
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"info\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 592,
+          "character": 25
+        },
+        "end": {
+          "line": 592,
+          "character": 29
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 596,
+          "character": 25
+        },
+        "end": {
+          "line": 596,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"info\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 617,
+          "character": 25
+        },
+        "end": {
+          "line": 617,
+          "character": 29
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_MESSAGE_ROUTER\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_MESSAGE_ROUTER\" is unknown",
+      "range": {
+        "start": {
+          "line": 638,
+          "character": 60
+        },
+        "end": {
+          "line": 638,
+          "character": 82
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_MESSAGE_ID_UNKNOWN\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_MESSAGE_ID_UNKNOWN\" is unknown",
+      "range": {
+        "start": {
+          "line": 640,
+          "character": 59
+        },
+        "end": {
+          "line": 640,
+          "character": 85
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_STATUS_PROCESSED\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_STATUS_PROCESSED\" is unknown",
+      "range": {
+        "start": {
+          "line": 643,
+          "character": 59
+        },
+        "end": {
+          "line": 643,
+          "character": 83
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 650,
+          "character": 25
+        },
+        "end": {
+          "line": 650,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"info\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 669,
+          "character": 25
+        },
+        "end": {
+          "line": 669,
+          "character": 29
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_SCATTER_GATHER\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_SCATTER_GATHER\" is unknown",
+      "range": {
+        "start": {
+          "line": 690,
+          "character": 60
+        },
+        "end": {
+          "line": 690,
+          "character": 82
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_REQUEST_ID_UNKNOWN\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_REQUEST_ID_UNKNOWN\" is unknown",
+      "range": {
+        "start": {
+          "line": 692,
+          "character": 59
+        },
+        "end": {
+          "line": 692,
+          "character": 85
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"PATTERN_STATUS_PROCESSED\" for class \"type[Patterns]\"\n  Attribute \"PATTERN_STATUS_PROCESSED\" is unknown",
+      "range": {
+        "start": {
+          "line": 695,
+          "character": 59
+        },
+        "end": {
+          "line": 695,
+          "character": 83
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 702,
+          "character": 25
+        },
+        "end": {
+          "line": 702,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"update\" for class \"str\"\n  Attribute \"update\" is unknown",
+      "range": {
+        "start": {
+          "line": 746,
+          "character": 40
+        },
+        "end": {
+          "line": 746,
+          "character": 46
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument of type \"Dict\" cannot be assigned to parameter \"key\" of type \"int\" in function \"__getitem__\"\n  Type \"Dict\" is not assignable to type \"int\"",
+      "range": {
+        "start": {
+          "line": 794,
+          "character": 32
+        },
+        "end": {
+          "line": 798,
+          "character": 30
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument of type \"dict[str, Unknown] | str\" cannot be assigned to parameter \"health_data\" of type \"Dict\" in function \"validate_health_status\"\n  Type \"dict[str, Unknown] | str\" is not assignable to type \"Dict\"\n    \"str\" is not assignable to \"dict[str, object]\"",
+      "range": {
+        "start": {
+          "line": 796,
+          "character": 20
+        },
+        "end": {
+          "line": 796,
+          "character": 31
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"is_success\" for class \"Dict\"\n  Attribute \"is_success\" is unknown",
+      "range": {
+        "start": {
+          "line": 799,
+          "character": 33
+        },
+        "end": {
+          "line": 799,
+          "character": 43
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"is_success\" for class \"str\"\n  Attribute \"is_success\" is unknown",
+      "range": {
+        "start": {
+          "line": 799,
+          "character": 33
+        },
+        "end": {
+          "line": 799,
+          "character": 43
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"is_success\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 799,
+          "character": 33
+        },
+        "end": {
+          "line": 799,
+          "character": 43
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument of type \"Dict\" cannot be assigned to parameter \"key\" of type \"str\" in function \"__getitem__\"\n  Type \"Dict\" is not assignable to type \"str\"",
+      "range": {
+        "start": {
+          "line": 800,
+          "character": 23
+        },
+        "end": {
+          "line": 800,
+          "character": 57
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument of type \"Dict\" cannot be assigned to parameter \"key\" of type \"SupportsIndex | slice[Any, Any, Any]\" in function \"__getitem__\"\n  Type \"Dict\" is not assignable to type \"SupportsIndex | slice[Any, Any, Any]\"\n    \"__index__\" is not present\n    Type \"Dict\" is not assignable to type \"slice[Any, Any, Any]\"",
+      "range": {
+        "start": {
+          "line": 800,
+          "character": 23
+        },
+        "end": {
+          "line": 800,
+          "character": 57
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Object of type \"None\" is not subscriptable",
+      "range": {
+        "start": {
+          "line": 800,
+          "character": 23
+        },
+        "end": {
+          "line": 800,
+          "character": 40
+        }
+      },
+      "rule": "reportOptionalSubscript"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Type \"object | str | Unknown\" is not assignable to return type \"FlextResult[dict[Unknown, Unknown]]\"\n  Type \"object | str | Unknown\" is not assignable to type \"FlextResult[dict[Unknown, Unknown]]\"\n    \"object\" is not assignable to \"FlextResult[dict[Unknown, Unknown]]\"",
+      "range": {
+        "start": {
+          "line": 800,
+          "character": 23
+        },
+        "end": {
+          "line": 800,
+          "character": 57
+        }
+      },
+      "rule": "reportReturnType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"warning\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 801,
+          "character": 25
+        },
+        "end": {
+          "line": 801,
+          "character": 32
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"error\" for class \"Dict\"\n  Attribute \"error\" is unknown",
+      "range": {
+        "start": {
+          "line": 802,
+          "character": 70
+        },
+        "end": {
+          "line": 802,
+          "character": 75
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"error\" for class \"str\"\n  Attribute \"error\" is unknown",
+      "range": {
+        "start": {
+          "line": 802,
+          "character": 70
+        },
+        "end": {
+          "line": 802,
+          "character": 75
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"error\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 802,
+          "character": 70
+        },
+        "end": {
+          "line": 802,
+          "character": 75
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument of type \"dict[str, Unknown] | str\" cannot be assigned to parameter \"data\" of type \"dict[Unknown, Unknown]\" in function \"ok\"\n  Type \"dict[str, Unknown] | str\" is not assignable to type \"dict[Unknown, Unknown]\"\n    \"str\" is not assignable to \"dict[Unknown, Unknown]\"",
+      "range": {
+        "start": {
+          "line": 804,
+          "character": 40
+        },
+        "end": {
+          "line": 804,
+          "character": 51
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 807,
+          "character": 25
+        },
+        "end": {
+          "line": 807,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument of type \"dict[str, Unknown] | str\" cannot be assigned to parameter \"metrics\" of type \"Dict\" in function \"analyze_performance_metrics\"\n  Type \"dict[str, Unknown] | str\" is not assignable to type \"Dict\"\n    \"str\" is not assignable to \"dict[str, object]\"",
+      "range": {
+        "start": {
+          "line": 887,
+          "character": 20
+        },
+        "end": {
+          "line": 887,
+          "character": 32
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Expected mapping for dictionary unpack operator",
+      "range": {
+        "start": {
+          "line": 894,
+          "character": 20
+        },
+        "end": {
+          "line": 894,
+          "character": 34
+        }
+      },
+      "rule": "reportGeneralTypeIssues"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"warning\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 897,
+          "character": 25
+        },
+        "end": {
+          "line": 897,
+          "character": 32
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument of type \"dict[str, Unknown] | str\" cannot be assigned to parameter \"data\" of type \"dict[Unknown, Unknown]\" in function \"ok\"\n  Type \"dict[str, Unknown] | str\" is not assignable to type \"dict[Unknown, Unknown]\"\n    \"str\" is not assignable to \"dict[Unknown, Unknown]\"",
+      "range": {
+        "start": {
+          "line": 900,
+          "character": 40
+        },
+        "end": {
+          "line": 900,
+          "character": 52
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 903,
+          "character": 25
+        },
+        "end": {
+          "line": 903,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "Argument missing for parameter \"connection_config\"",
+      "range": {
+        "start": {
+          "line": 1003,
+          "character": 31
+        },
+        "end": {
+          "line": 1011,
+          "character": 17
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"base_url\"",
+      "range": {
+        "start": {
+          "line": 1004,
+          "character": 20
+        },
+        "end": {
+          "line": 1004,
+          "character": 28
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"api_version\"",
+      "range": {
+        "start": {
+          "line": 1005,
+          "character": 20
+        },
+        "end": {
+          "line": 1005,
+          "character": 31
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"request_timeout\"",
+      "range": {
+        "start": {
+          "line": 1007,
+          "character": 20
+        },
+        "end": {
+          "line": 1007,
+          "character": 35
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"max_retries\"",
+      "range": {
+        "start": {
+          "line": 1008,
+          "character": 20
+        },
+        "end": {
+          "line": 1008,
+          "character": 31
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"use_ssl\"",
+      "range": {
+        "start": {
+          "line": 1009,
+          "character": 20
+        },
+        "end": {
+          "line": 1009,
+          "character": 27
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "No parameter named \"verify_ssl\"",
+      "range": {
+        "start": {
+          "line": 1010,
+          "character": 20
+        },
+        "end": {
+          "line": 1010,
+          "character": 30
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/service.py",
+      "severity": "error",
+      "message": "\"exception\" is not a known attribute of \"None\"",
+      "range": {
+        "start": {
+          "line": 1016,
+          "character": 25
+        },
+        "end": {
+          "line": 1016,
+          "character": 34
+        }
+      },
+      "rule": "reportOptionalMemberAccess"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/typings.py",
+      "severity": "error",
+      "message": "\"Core\" overrides symbol of same name in class \"FlextTypes\"\n  \"src.flext_oracle_oic.typings.FlextOracleOicTypes.Core\" is not assignable to \"flext_core.typings.FlextTypes.Core\"\n  Type \"type[src.flext_oracle_oic.typings.FlextOracleOicTypes.Core]\" is not assignable to type \"type[flext_core.typings.FlextTypes.Core]\"",
+      "range": {
+        "start": {
+          "line": 185,
+          "character": 10
+        },
+        "end": {
+          "line": 185,
+          "character": 14
+        }
+      },
+      "rule": "reportIncompatibleVariableOverride"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/typings.py",
+      "severity": "error",
+      "message": "\"ConfigDict\" overrides symbol of same name in class \"FlextTypes\"\n  Type \"TypeAliasType\" is not assignable to type \"ConfigDict\"",
+      "range": {
+        "start": {
+          "line": 193,
+          "character": 13
+        },
+        "end": {
+          "line": 193,
+          "character": 23
+        }
+      },
+      "rule": "reportIncompatibleVariableOverride"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/typings.py",
+      "severity": "error",
+      "message": "\"ProjectType\" overrides symbol of same name in class \"Project\"\n  Type \"TypeAliasType\" is not assignable to type \"ProjectType\"\n    Type \"TypeAliasType\" is not assignable to type \"type[Literal['library']]\"\n    Type \"TypeAliasType\" is not assignable to type \"type[Literal['application']]\"\n    Type \"TypeAliasType\" is not assignable to type \"type[Literal['service']]\"\n    Type \"TypeAliasType\" is not assignable to type \"type[Literal['cli']]\"\n    Type \"TypeAliasType\" is not assignable to type \"type[Literal['web']]\"\n    Type \"TypeAliasType\" is not assignable to type \"type[Literal['api']]\"\n    Type \"TypeAliasType\" is not assignable to type \"type[Literal['PYTHON']]\"\n  ...",
+      "range": {
+        "start": {
+          "line": 230,
+          "character": 13
+        },
+        "end": {
+          "line": 230,
+          "character": 24
+        }
+      },
+      "rule": "reportIncompatibleVariableOverride"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "Argument of type \"object\" cannot be assigned to parameter \"name\" of type \"str\" in function \"validate_integration_name\"\n  \"object\" is not assignable to \"str\"",
+      "range": {
+        "start": {
+          "line": 192,
+          "character": 20
+        },
+        "end": {
+          "line": 192,
+          "character": 44
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "Argument of type \"object\" cannot be assigned to parameter \"version\" of type \"str\" in function \"validate_integration_version\"\n  \"object\" is not assignable to \"str\"",
+      "range": {
+        "start": {
+          "line": 201,
+          "character": 20
+        },
+        "end": {
+          "line": 201,
+          "character": 47
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "Argument of type \"object\" cannot be assigned to parameter \"status\" of type \"str\" in function \"validate_integration_status\"\n  \"object\" is not assignable to \"str\"",
+      "range": {
+        "start": {
+          "line": 210,
+          "character": 20
+        },
+        "end": {
+          "line": 210,
+          "character": 46
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "Argument of type \"object\" cannot be assigned to parameter \"obj\" of type \"Sized\" in function \"len\"\n  \"object\" is incompatible with protocol \"Sized\"\n    \"__len__\" is not present",
+      "range": {
+        "start": {
+          "line": 628,
+          "character": 20
+        },
+        "end": {
+          "line": 628,
+          "character": 29
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "\"object\" is not iterable\n  \"__iter__\" method not defined",
+      "range": {
+        "start": {
+          "line": 631,
+          "character": 76
+        },
+        "end": {
+          "line": 631,
+          "character": 85
+        }
+      },
+      "rule": "reportGeneralTypeIssues"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "Argument of type \"object\" cannot be assigned to parameter \"obj\" of type \"Sized\" in function \"len\"\n  \"object\" is incompatible with protocol \"Sized\"\n    \"__len__\" is not present",
+      "range": {
+        "start": {
+          "line": 637,
+          "character": 19
+        },
+        "end": {
+          "line": 637,
+          "character": 30
+        }
+      },
+      "rule": "reportArgumentType"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "\"object\" is not iterable\n  \"__iter__\" method not defined",
+      "range": {
+        "start": {
+          "line": 638,
+          "character": 67
+        },
+        "end": {
+          "line": 638,
+          "character": 75
+        }
+      },
+      "rule": "reportGeneralTypeIssues"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "\"object\" is not iterable\n  \"__iter__\" method not defined",
+      "range": {
+        "start": {
+          "line": 645,
+          "character": 32
+        },
+        "end": {
+          "line": 645,
+          "character": 41
+        }
+      },
+      "rule": "reportGeneralTypeIssues"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"append\" for class \"object\"\n  Attribute \"append\" is unknown",
+      "range": {
+        "start": {
+          "line": 807,
+          "character": 45
+        },
+        "end": {
+          "line": 807,
+          "character": 51
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"append\" for class \"object\"\n  Attribute \"append\" is unknown",
+      "range": {
+        "start": {
+          "line": 810,
+          "character": 52
+        },
+        "end": {
+          "line": 810,
+          "character": 58
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"append\" for class \"object\"\n  Attribute \"append\" is unknown",
+      "range": {
+        "start": {
+          "line": 822,
+          "character": 52
+        },
+        "end": {
+          "line": 822,
+          "character": 58
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"append\" for class \"object\"\n  Attribute \"append\" is unknown",
+      "range": {
+        "start": {
+          "line": 826,
+          "character": 52
+        },
+        "end": {
+          "line": 826,
+          "character": 58
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"append\" for class \"object\"\n  Attribute \"append\" is unknown",
+      "range": {
+        "start": {
+          "line": 838,
+          "character": 45
+        },
+        "end": {
+          "line": 838,
+          "character": 51
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/src/flext_oracle_oic/utilities.py",
+      "severity": "error",
+      "message": "Cannot access attribute \"append\" for class \"object\"\n  Attribute \"append\" is unknown",
+      "range": {
+        "start": {
+          "line": 841,
+          "character": 52
+        },
+        "end": {
+          "line": 841,
+          "character": 58
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_basic.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 10,
+          "character": 5
+        },
+        "end": {
+          "line": 10,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_cli.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 10,
+          "character": 5
+        },
+        "end": {
+          "line": 10,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_config.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 8,
+          "character": 5
+        },
+        "end": {
+          "line": 8,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_container.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 10,
+          "character": 5
+        },
+        "end": {
+          "line": 10,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_exceptions.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 11,
+          "character": 5
+        },
+        "end": {
+          "line": 11,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_ext_client.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 16,
+          "character": 5
+        },
+        "end": {
+          "line": 16,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_ext_client.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic.models\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 21,
+          "character": 5
+        },
+        "end": {
+          "line": 21,
+          "character": 28
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_ext_services.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 17,
+          "character": 5
+        },
+        "end": {
+          "line": 17,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_ext_services.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic.models\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 28,
+          "character": 5
+        },
+        "end": {
+          "line": 28,
+          "character": 28
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_extension.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 8,
+          "character": 5
+        },
+        "end": {
+          "line": 8,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_factory.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 11,
+          "character": 5
+        },
+        "end": {
+          "line": 11,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_factory.py",
+      "severity": "error",
+      "message": "Expected 1 positional argument",
+      "range": {
+        "start": {
+          "line": 46,
+          "character": 52
+        },
+        "end": {
+          "line": 46,
+          "character": 64
+        }
+      },
+      "rule": "reportCallIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_import.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 6,
+          "character": 7
+        },
+        "end": {
+          "line": 6,
+          "character": 23
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_import.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 7,
+          "character": 5
+        },
+        "end": {
+          "line": 7,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_main.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic.main\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 13,
+          "character": 7
+        },
+        "end": {
+          "line": 13,
+          "character": 28
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_main.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 14,
+          "character": 5
+        },
+        "end": {
+          "line": 14,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_models.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic.models\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 11,
+          "character": 5
+        },
+        "end": {
+          "line": 11,
+          "character": 28
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_typings.py",
+      "severity": "error",
+      "message": "\"E\" is unknown import symbol",
+      "range": {
+        "start": {
+          "line": 8,
+          "character": 23
+        },
+        "end": {
+          "line": 8,
+          "character": 24
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_typings.py",
+      "severity": "error",
+      "message": "\"F\" is unknown import symbol",
+      "range": {
+        "start": {
+          "line": 8,
+          "character": 26
+        },
+        "end": {
+          "line": 8,
+          "character": 27
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_typings.py",
+      "severity": "error",
+      "message": "\"P\" is unknown import symbol",
+      "range": {
+        "start": {
+          "line": 8,
+          "character": 41
+        },
+        "end": {
+          "line": 8,
+          "character": 42
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_typings.py",
+      "severity": "error",
+      "message": "\"R\" is unknown import symbol",
+      "range": {
+        "start": {
+          "line": 8,
+          "character": 44
+        },
+        "end": {
+          "line": 8,
+          "character": 45
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_typings.py",
+      "severity": "error",
+      "message": "\"U\" is unknown import symbol",
+      "range": {
+        "start": {
+          "line": 8,
+          "character": 50
+        },
+        "end": {
+          "line": 8,
+          "character": 51
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/test_typings.py",
+      "severity": "error",
+      "message": "\"V\" is unknown import symbol",
+      "range": {
+        "start": {
+          "line": 8,
+          "character": 53
+        },
+        "end": {
+          "line": 8,
+          "character": 54
+        }
+      },
+      "rule": "reportAttributeAccessIssue"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/unit/test_version.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 4,
+          "character": 5
+        },
+        "end": {
+          "line": 4,
+          "character": 21
+        }
+      },
+      "rule": "reportMissingImports"
+    },
+    {
+      "file": "/home/marlonsc/flext/flext-oracle-oic/tests/unit/test_version.py",
+      "severity": "error",
+      "message": "Import \"flext_oracle_oic.version\" could not be resolved",
+      "range": {
+        "start": {
+          "line": 5,
+          "character": 5
+        },
+        "end": {
+          "line": 5,
+          "character": 29
+        }
+      },
+      "rule": "reportMissingImports"
+    }
+  ],
+  "summary": {
+    "filesAnalyzed": 33,
+    "errorCount": 242,
+    "warningCount": 1,
+    "informationCount": 0,
+    "timeInSec": 28.393
+  }
+}

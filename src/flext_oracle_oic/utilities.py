@@ -28,10 +28,10 @@ from flext_core import (
 )
 from pydantic import SecretStr
 
-__all__ = ["FlextOracleOicExtUtilities"]
+__all__ = ["FlextOracleOicUtilities"]
 
 
-class FlextOracleOicExtUtilities(FlextUtilities):
+class FlextOracleOicUtilities(FlextUtilities):
     """Unified Oracle OIC Extension utilities.
 
     Extends FlextUtilities with comprehensive Oracle Integration Cloud
@@ -92,13 +92,13 @@ class FlextOracleOicExtUtilities(FlextUtilities):
 
             if (
                 len(name)
-                < FlextOracleOicExtUtilities.IntegrationValidation.MIN_INTEGRATION_NAME_LENGTH
+                < FlextOracleOicUtilities.IntegrationValidation.MIN_INTEGRATION_NAME_LENGTH
             ):
                 return FlextResult[str].fail("Integration name too short")
 
             if (
                 len(name)
-                > FlextOracleOicExtUtilities.IntegrationValidation.MAX_INTEGRATION_NAME_LENGTH
+                > FlextOracleOicUtilities.IntegrationValidation.MAX_INTEGRATION_NAME_LENGTH
             ):
                 return FlextResult[str].fail("Integration name too long")
 
@@ -127,11 +127,11 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             status = status.upper().strip()
             if (
                 status
-                not in FlextOracleOicExtUtilities.IntegrationValidation.VALID_INTEGRATION_STATUSES
+                not in FlextOracleOicUtilities.IntegrationValidation.VALID_INTEGRATION_STATUSES
             ):
                 valid_statuses = ", ".join(
                     sorted(
-                        FlextOracleOicExtUtilities.IntegrationValidation.VALID_INTEGRATION_STATUSES
+                        FlextOracleOicUtilities.IntegrationValidation.VALID_INTEGRATION_STATUSES
                     )
                 )
                 return FlextResult[str].fail(
@@ -155,7 +155,7 @@ class FlextOracleOicExtUtilities(FlextUtilities):
                 return FlextResult[str].fail("Integration version must be a string")
 
             version = version.strip()
-            if not FlextOracleOicExtUtilities.IntegrationValidation.VERSION_PATTERN.match(
+            if not FlextOracleOicUtilities.IntegrationValidation.VERSION_PATTERN.match(
                 version
             ):
                 return FlextResult[str].fail(
@@ -189,7 +189,7 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             if "name" not in integration_data:
                 errors.append("Integration name is required")
             else:
-                name_result = FlextOracleOicExtUtilities.IntegrationValidation.validate_integration_name(
+                name_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_name(
                     integration_data["name"]
                 )
                 if name_result.is_failure:
@@ -198,7 +198,7 @@ class FlextOracleOicExtUtilities(FlextUtilities):
                     validated_data["name"] = name_result.value
 
             if "version" in integration_data:
-                version_result = FlextOracleOicExtUtilities.IntegrationValidation.validate_integration_version(
+                version_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_version(
                     integration_data["version"]
                 )
                 if version_result.is_failure:
@@ -207,7 +207,7 @@ class FlextOracleOicExtUtilities(FlextUtilities):
                     validated_data["version"] = version_result.value
 
             if "status" in integration_data:
-                status_result = FlextOracleOicExtUtilities.IntegrationValidation.validate_integration_status(
+                status_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_status(
                     integration_data["status"]
                 )
                 if status_result.is_failure:
@@ -258,11 +258,11 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             connection_type = connection_type.upper().strip()
             if (
                 connection_type
-                not in FlextOracleOicExtUtilities.ConnectionValidation.VALID_CONNECTION_TYPES
+                not in FlextOracleOicUtilities.ConnectionValidation.VALID_CONNECTION_TYPES
             ):
                 valid_types = ", ".join(
                     sorted(
-                        FlextOracleOicExtUtilities.ConnectionValidation.VALID_CONNECTION_TYPES
+                        FlextOracleOicUtilities.ConnectionValidation.VALID_CONNECTION_TYPES
                     )
                 )
                 return FlextResult[str].fail(
@@ -288,11 +288,11 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             status = status.upper().strip()
             if (
                 status
-                not in FlextOracleOicExtUtilities.ConnectionValidation.VALID_CONNECTION_STATUSES
+                not in FlextOracleOicUtilities.ConnectionValidation.VALID_CONNECTION_STATUSES
             ):
                 valid_statuses = ", ".join(
                     sorted(
-                        FlextOracleOicExtUtilities.ConnectionValidation.VALID_CONNECTION_STATUSES
+                        FlextOracleOicUtilities.ConnectionValidation.VALID_CONNECTION_STATUSES
                     )
                 )
                 return FlextResult[str].fail(
@@ -376,7 +376,7 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             client_id = client_id.strip()
             if (
                 len(client_id)
-                < FlextOracleOicExtUtilities.AuthenticationValidation.MIN_CLIENT_ID_LENGTH
+                < FlextOracleOicUtilities.AuthenticationValidation.MIN_CLIENT_ID_LENGTH
             ):
                 return FlextResult[str].fail("OAuth client ID cannot be empty")
 
@@ -414,7 +414,7 @@ class FlextOracleOicExtUtilities(FlextUtilities):
 
             if (
                 len(secret_value)
-                < FlextOracleOicExtUtilities.AuthenticationValidation.MIN_CLIENT_SECRET_LENGTH
+                < FlextOracleOicUtilities.AuthenticationValidation.MIN_CLIENT_SECRET_LENGTH
             ):
                 return FlextResult[SecretStr].fail(
                     "OAuth client secret must be at least 8 characters"
@@ -439,15 +439,13 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             token_url = token_url.strip()
             if (
                 len(token_url)
-                < FlextOracleOicExtUtilities.AuthenticationValidation.MIN_TOKEN_URL_LENGTH
+                < FlextOracleOicUtilities.AuthenticationValidation.MIN_TOKEN_URL_LENGTH
             ):
                 return FlextResult[str].fail("OAuth token URL too short")
 
             # Validate URL format
-            url_result = (
-                FlextOracleOicExtUtilities.ConnectionValidation.validate_base_url(
-                    token_url
-                )
+            url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
+                token_url
             )
             if url_result.is_failure:
                 return FlextResult[str].fail(
@@ -494,10 +492,8 @@ class FlextOracleOicExtUtilities(FlextUtilities):
 
             """
             # Validate base URL
-            url_result = (
-                FlextOracleOicExtUtilities.ConnectionValidation.validate_base_url(
-                    base_url
-                )
+            url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
+                base_url
             )
             if url_result.is_failure:
                 return FlextResult[str].fail(f"Base URL validation: {url_result.error}")
@@ -534,10 +530,8 @@ class FlextOracleOicExtUtilities(FlextUtilities):
 
             """
             # Validate base URL
-            url_result = (
-                FlextOracleOicExtUtilities.ConnectionValidation.validate_base_url(
-                    base_url
-                )
+            url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
+                base_url
             )
             if url_result.is_failure:
                 return FlextResult[str].fail(f"Base URL validation: {url_result.error}")
@@ -578,7 +572,7 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             headers: FlextTypes.StringDict = {
                 "Accept": "application/json",
                 "Content-Type": content_type,
-                "User-Agent": "FlextOracleOicExtension/1.0.0",
+                "User-Agent": "FlextOracleOicension/1.0.0",
             }
 
             if auth_token:
@@ -633,7 +627,7 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             # Message Router: Multiple target endpoints from single source
             if (
                 len(endpoints)
-                > FlextOracleOicExtUtilities.PatternAnalysis.MIN_ENDPOINTS_FOR_ROUTER
+                > FlextOracleOicUtilities.PatternAnalysis.MIN_ENDPOINTS_FOR_ROUTER
                 and any(
                     endpoint.get("direction") == "outbound" for endpoint in endpoints
                 )
@@ -672,12 +666,10 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             """
             if (
                 pattern_type
-                not in FlextOracleOicExtUtilities.PatternAnalysis.SUPPORTED_PATTERNS
+                not in FlextOracleOicUtilities.PatternAnalysis.SUPPORTED_PATTERNS
             ):
                 supported = ", ".join(
-                    sorted(
-                        FlextOracleOicExtUtilities.PatternAnalysis.SUPPORTED_PATTERNS
-                    )
+                    sorted(FlextOracleOicUtilities.PatternAnalysis.SUPPORTED_PATTERNS)
                 )
                 return FlextResult[FlextTypes.Dict].fail(
                     f"Unsupported pattern type. Supported: {supported}"
@@ -809,7 +801,7 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             if "average_response_time" in metrics:
                 response_time = metrics["average_response_time"]
                 if isinstance(response_time, (int, float)):
-                    threshold = FlextOracleOicExtUtilities.MonitoringUtilities.PERFORMANCE_THRESHOLDS[
+                    threshold = FlextOracleOicUtilities.MonitoringUtilities.PERFORMANCE_THRESHOLDS[
                         "response_time_ms"
                     ]
                     if response_time > threshold:
@@ -824,7 +816,7 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             if "success_rate" in metrics:
                 success_rate = metrics["success_rate"]
                 if isinstance(success_rate, (int, float)):
-                    threshold = FlextOracleOicExtUtilities.MonitoringUtilities.PERFORMANCE_THRESHOLDS[
+                    threshold = FlextOracleOicUtilities.MonitoringUtilities.PERFORMANCE_THRESHOLDS[
                         "success_rate"
                     ]
                     if success_rate < threshold:
@@ -840,7 +832,7 @@ class FlextOracleOicExtUtilities(FlextUtilities):
             if "error_rate" in metrics:
                 error_rate = metrics["error_rate"]
                 if isinstance(error_rate, (int, float)):
-                    threshold = FlextOracleOicExtUtilities.MonitoringUtilities.PERFORMANCE_THRESHOLDS[
+                    threshold = FlextOracleOicUtilities.MonitoringUtilities.PERFORMANCE_THRESHOLDS[
                         "error_rate"
                     ]
                     if error_rate > threshold:

@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_oracle_oic import E, F, FlextTypes, P, R, T, U, V
+from flext_core import E, F, FlextTypes, P, R, T, U, V
 
 
 class TestFlextTypes:

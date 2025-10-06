@@ -5,7 +5,7 @@ from typing import Protocol, runtime_checkable
 from flext_core import FlextProtocols, FlextResult, FlextTypes
 
 
-class FlextOracleOicExtProtocols(FlextProtocols):
+class FlextOracleOicProtocols(FlextProtocols):
     """Oracle OIC Extension protocols extending FlextProtocols with Oracle OIC-specific interfaces.
 
     This class provides protocol definitions for Oracle Integration Cloud extension operations,
@@ -13,7 +13,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
     """
 
     @runtime_checkable
-    class ExtensionProtocol(FlextProtocols.Domain.Service, Protocol):
+    class ExtensionProtocol(Protocol):
         """Protocol for Oracle OIC extension operations."""
 
         def execute(
@@ -29,6 +29,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[FlextTypes.Dict]: Operation result or error
 
             """
+            ...
 
         def validate_business_rules(
             self, request_data: FlextTypes.Dict
@@ -42,20 +43,14 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[bool]: Validation success status
 
             """
+            ...
 
         def validate_config(self, config: FlextTypes.Dict) -> FlextResult[bool]:
-            """Validate Oracle OIC configuration.
-
-            Args:
-                config: Configuration to validate
-
-            Returns:
-                FlextResult[bool]: Configuration validation status
-
-            """
+            """Validate Oracle OIC extension configuration."""
+            ...
 
     @runtime_checkable
-    class IntegrationProtocol(FlextProtocols.Domain.Service, Protocol):
+    class IntegrationProtocol(Protocol):
         """Protocol for Oracle OIC integration management operations."""
 
         def list_integrations(
@@ -70,6 +65,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[list[FlextTypes.Dict]]: Integration list or error
 
             """
+            ...
 
         def deploy_integration(
             self, integration_id: str, deployment_config: FlextTypes.Dict
@@ -84,6 +80,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[FlextTypes.Dict]: Deployment result or error
 
             """
+            ...
 
         def get_integration_status(
             self, integration_id: str
@@ -97,6 +94,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[FlextTypes.Dict]: Integration status or error
 
             """
+            ...
 
         def activate_integration(self, integration_id: str) -> FlextResult[bool]:
             """Activate Oracle OIC integration.
@@ -108,20 +106,10 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[bool]: Activation success status
 
             """
-
-        def deactivate_integration(self, integration_id: str) -> FlextResult[bool]:
-            """Deactivate Oracle OIC integration.
-
-            Args:
-                integration_id: Integration identifier
-
-            Returns:
-                FlextResult[bool]: Deactivation success status
-
-            """
+            ...
 
     @runtime_checkable
-    class ConnectionProtocol(FlextProtocols.Domain.Service, Protocol):
+    class ConnectionProtocol(Protocol):
         """Protocol for Oracle OIC connection management operations."""
 
         def list_connections(
@@ -136,6 +124,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[list[FlextTypes.Dict]]: Connection list or error
 
             """
+            ...
 
         def test_connection(self, connection_id: str) -> FlextResult[FlextTypes.Dict]:
             """Test Oracle OIC connection.
@@ -147,6 +136,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[FlextTypes.Dict]: Connection test result or error
 
             """
+            ...
 
         def create_connection(
             self, connection_config: FlextTypes.Dict
@@ -160,6 +150,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[str]: Created connection ID or error
 
             """
+            ...
 
         def update_connection(
             self, connection_id: str, connection_config: FlextTypes.Dict
@@ -174,6 +165,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[bool]: Update success status
 
             """
+            ...
 
         def delete_connection(self, connection_id: str) -> FlextResult[bool]:
             """Delete Oracle OIC connection.
@@ -185,9 +177,10 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[bool]: Deletion success status
 
             """
+            ...
 
     @runtime_checkable
-    class PatternProtocol(FlextProtocols.Domain.Service, Protocol):
+    class PatternProtocol(Protocol):
         """Protocol for Oracle OIC integration pattern operations."""
 
         def apply_message_router_pattern(
@@ -205,6 +198,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[FlextTypes.Dict]: Pattern application result or error
 
             """
+            ...
 
         def apply_scatter_gather_pattern(
             self,
@@ -221,6 +215,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[FlextTypes.Dict]: Pattern application result or error
 
             """
+            ...
 
         def apply_aggregator_pattern(
             self,
@@ -237,6 +232,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[FlextTypes.Dict]: Pattern application result or error
 
             """
+            ...
 
         def validate_pattern_compatibility(
             self, pattern_type: str, integration_config: FlextTypes.Dict
@@ -251,9 +247,10 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[bool]: Compatibility validation status
 
             """
+            ...
 
     @runtime_checkable
-    class MonitoringProtocol(FlextProtocols.Domain.Service, Protocol):
+    class MonitoringProtocol(Protocol):
         """Protocol for Oracle OIC monitoring operations."""
 
         def get_integration_metrics(
@@ -269,6 +266,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[FlextTypes.Dict]: Integration metrics or error
 
             """
+            ...
 
         def get_connection_health(
             self, connection_id: str
@@ -282,14 +280,16 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[FlextTypes.Dict]: Connection health status or error
 
             """
+            ...
 
         def get_system_status(self) -> FlextResult[FlextTypes.Dict]:
             """Get Oracle OIC system status.
 
             Returns:
-                FlextResult[FlextTypes.Dict]: System status or error
+                FlextResult[FlextTypes.Dict]: System status or error.
 
             """
+            ...
 
         def start_monitoring(
             self, monitoring_config: FlextTypes.Dict
@@ -303,14 +303,9 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[bool]: Monitoring start status
 
             """
+            ...
 
-        def stop_monitoring(self) -> FlextResult[bool]:
-            """Stop Oracle OIC monitoring.
-
-            Returns:
-                FlextResult[bool]: Monitoring stop status
-
-            """
+        def stop_monitoring(self) -> FlextResult[bool]: ...
 
     @runtime_checkable
     class LifecycleProtocol(FlextProtocols.Domain.Service, Protocol):
@@ -328,14 +323,9 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[bool]: Initialization success status
 
             """
+            ...
 
-        def shutdown_environment(self) -> FlextResult[bool]:
-            """Shutdown Oracle OIC environment.
-
-            Returns:
-                FlextResult[bool]: Shutdown success status
-
-            """
+        def shutdown_environment(self) -> FlextResult[bool]: ...
 
         def backup_configuration(
             self, backup_config: FlextTypes.Dict
@@ -349,17 +339,9 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[str]: Backup location or error
 
             """
+            ...
 
-        def restore_configuration(self, backup_location: str) -> FlextResult[bool]:
-            """Restore Oracle OIC configuration.
-
-            Args:
-                backup_location: Backup location
-
-            Returns:
-                FlextResult[bool]: Restore success status
-
-            """
+        def restore_configuration(self, backup_location: str) -> FlextResult[bool]: ...
 
         def migrate_integrations(
             self, migration_config: FlextTypes.Dict
@@ -373,6 +355,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[FlextTypes.Dict]: Migration result or error
 
             """
+            ...
 
     @runtime_checkable
     class HTTPClientProtocol(FlextProtocols.Domain.Service, Protocol):
@@ -391,6 +374,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[object]: HTTP response or error
 
             """
+            ...
 
         def post(
             self,
@@ -410,6 +394,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[object]: HTTP response or error
 
             """
+            ...
 
         def put(
             self,
@@ -429,6 +414,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[object]: HTTP response or error
 
             """
+            ...
 
         def delete(
             self, url: str, *, headers: FlextTypes.StringDict | None = None
@@ -443,6 +429,7 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[bool]: Delete success status
 
             """
+            ...
 
     @runtime_checkable
     class AuthenticationProtocol(FlextProtocols.Domain.Service, Protocol):
@@ -460,51 +447,11 @@ class FlextOracleOicExtProtocols(FlextProtocols):
                 FlextResult[FlextTypes.Dict]: Authentication result or error
 
             """
+            ...
 
-        def refresh_token(self, refresh_token: str) -> FlextResult[FlextTypes.Dict]:
-            """Refresh Oracle OIC authentication token.
-
-            Args:
-                refresh_token: Refresh token
-
-            Returns:
-                FlextResult[FlextTypes.Dict]: New token information or error
-
-            """
-
-        def validate_token(self, token: str) -> FlextResult[bool]:
-            """Validate Oracle OIC authentication token.
-
-            Args:
-                token: Authentication token
-
-            Returns:
-                FlextResult[bool]: Token validation status
-
-            """
-
-        def revoke_token(self, token: str) -> FlextResult[bool]:
-            """Revoke Oracle OIC authentication token.
-
-            Args:
-                token: Authentication token to revoke
-
-            Returns:
-                FlextResult[bool]: Revocation success status
-
-            """
-
-    # Convenience aliases for easier downstream usage
-    OicExtensionProtocol = ExtensionProtocol
-    OicIntegrationProtocol = IntegrationProtocol
-    OicConnectionProtocol = ConnectionProtocol
-    OicPatternProtocol = PatternProtocol
-    OicMonitoringProtocol = MonitoringProtocol
-    OicLifecycleProtocol = LifecycleProtocol
-    OicHttpClientProtocol = HTTPClientProtocol
-    OicAuthenticationProtocol = AuthenticationProtocol
+        def refresh_token(self, refresh_token: str) -> FlextResult[FlextTypes.Dict]: ...
 
 
 __all__ = [
-    "FlextOracleOicExtProtocols",
+    "FlextOracleOicProtocols",
 ]
