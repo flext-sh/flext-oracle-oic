@@ -305,7 +305,9 @@ class FlextOracleOicProtocols(FlextProtocols):
             """
             ...
 
-        def stop_monitoring(self) -> FlextResult[bool]: ...
+        def stop_monitoring(self) -> FlextResult[bool]:
+            """Stop monitoring operations."""
+            ...
 
     @runtime_checkable
     class LifecycleProtocol(FlextProtocols.Domain.Service, Protocol):
@@ -325,7 +327,9 @@ class FlextOracleOicProtocols(FlextProtocols):
             """
             ...
 
-        def shutdown_environment(self) -> FlextResult[bool]: ...
+        def shutdown_environment(self) -> FlextResult[bool]:
+            """Shutdown the Oracle OIC environment."""
+            ...
 
         def backup_configuration(
             self, backup_config: FlextTypes.Dict
