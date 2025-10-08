@@ -249,8 +249,8 @@ class FlextOracleOicClient:
         client: FlextApiClient,
         method: str,
         endpoint: str,
-        params: FlextTypes.StringDict | None,
-        data: FlextTypes.StringDict | None,
+        _params: FlextTypes.StringDict | None,
+        _data: FlextTypes.StringDict | None,
         json: FlextTypes.Dict | None,
     ) -> FlextResult[object]:
         """Execute the actual API request."""
