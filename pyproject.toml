@@ -27,7 +27,6 @@
     ]
     description = "FLEXT Oracle OIC Extension - Advanced Oracle Integration Cloud Extensions"
     keywords = [
-        "",
         "adapter",
         "enterprise",
         "flext",
