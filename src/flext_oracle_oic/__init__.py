@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from flext_oracle_oic.__version__ import __version__, __version_info__
+
 from flext_oracle_oic.api import FlextOracleOicApi
 from flext_oracle_oic.config import (
     FlextOracleOicConfig,
@@ -52,9 +54,7 @@ from flext_oracle_oic.service import (
 from flext_oracle_oic.utilities import FlextOracleOicUtilities
 from flext_oracle_oic.version import VERSION
 
-__version__ = "0.9.0"
 __version_info__: tuple[int | str, ...] = VERSION.version_info
-
 
 __all__ = [
     # Core classes - direct imports only, no aliases or reexports
