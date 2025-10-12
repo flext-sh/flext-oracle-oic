@@ -6,7 +6,7 @@ This module provides data models for Oracle OIC External operations.
 from __future__ import annotations
 
 from flext_core import FlextCore
-from pydantic import BaseModel, ConfigDict, Field, SecretStr
+from pydantic import ConfigDict, Field, SecretStr
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
 
@@ -23,7 +23,7 @@ class FlextOracleOicModels(FlextCore.Models):
     OicRecord = FlextCore.Types.Dict
     OicRecords = list[OicRecord]
 
-    class OICAuthConfig(BaseModel):
+    class OICAuthConfig(FlextCore.Models.Value):
         """Oracle Integration Cloud authentication configuration.
 
         Padrão EXTENSION: Value Object para configuração de autenticação
@@ -32,15 +32,15 @@ class FlextOracleOicModels(FlextCore.Models):
 
         model_config = ConfigDict(extra="forbid")
 
-        oauth_client_id: str = Field(..., description="IDCS OAuth2 client ID")
-        oauth_client_secret: SecretStr = Field(
-            ..., description="IDCS OAuth2 client secret"
+        oauth_client_id: str = Field(description="IDCS OAuth2 client ID")
+        oauth_client_secret: SecretStr = Field(description="IDCS OAuth2 client secret")
+        oauth_token_url: str = Field(description="IDCS OAuth2 token endpoint")
+        oauth_client_aud: str | None = Field(
+            default=None, description="OAuth2 audience"
         )
-        oauth_token_url: str = Field(..., description="IDCS OAuth2 token endpoint")
-        oauth_client_aud: str | None = Field(None, description="OAuth2 audience")
-        oauth_scope: str = Field("", description="OAuth2 scope")
+        oauth_scope: str = Field(default="", description="OAuth2 scope")
 
-    class OICConnectionConfig(BaseModel):
+    class OICConnectionConfig(FlextCore.Models.Value):
         """Oracle Integration Cloud connection configuration.
 
         Padrão EXTENSION: Value Object para configuração de conexão
@@ -49,18 +49,18 @@ class FlextOracleOicModels(FlextCore.Models):
 
         model_config = ConfigDict(extra="forbid")
 
-        base_url: str = Field(..., description="Oracle OIC instance base URL")
+        base_url: str = Field(description="Oracle OIC instance base URL")
         api_version: str = Field(
-            FlextOracleOicConstants.OIC.DEFAULT_API_VERSION,
+            default=FlextOracleOicConstants.OIC.DEFAULT_API_VERSION,
             description="OIC API version",
         )
         request_timeout: int = Field(
-            FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
+            default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
             ge=FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT,
             description="Request timeout in seconds",
         )
         max_retries: int = Field(
-            FlextOracleOicConstants.OIC.DEFAULT_MAX_RETRIES,
+            default=FlextOracleOicConstants.OIC.DEFAULT_MAX_RETRIES,
             ge=FlextOracleOicConstants.OIC.MIN_MAX_RETRIES,
             description="Maximum retry attempts",
         )
@@ -78,13 +78,13 @@ class FlextOracleOicModels(FlextCore.Models):
 
         model_config = ConfigDict(extra="forbid")
 
-        integration_id: str = Field(..., description="Integration unique identifier")
-        name: str = Field(..., description="Integration name")
-        status: str = Field(..., description="Integration status")
-        integration_version: str = Field(..., description="Integration version")
-        description: str = Field("", description="Integration description")
-        created_by: str = Field("", description="Creator username")
-        last_updated: str = Field("", description="Last update timestamp")
+        integration_id: str = Field(description="Integration unique identifier")
+        name: str = Field(description="Integration name")
+        status: str = Field(description="Integration status")
+        integration_version: str = Field(description="Integration version")
+        description: str = Field(default="", description="Integration description")
+        created_by: str = Field(default="", description="Creator username")
+        last_updated: str = Field(default="", description="Last update timestamp")
 
     class OICConnectionInfo(FlextCore.Models.Entity):
         """Oracle OIC Connection information.
@@ -95,12 +95,12 @@ class FlextOracleOicModels(FlextCore.Models):
 
         model_config = ConfigDict(extra="forbid")
 
-        connection_id: str = Field(..., description="Connection unique identifier")
-        name: str = Field(..., description="Connection name")
-        adapter_type: str = Field(..., description="Adapter type")
-        status: str = Field(..., description="Connection status")
-        connection_type: str = Field(..., description="Connection type")
-        description: str = Field("", description="Connection description")
+        connection_id: str = Field(description="Connection unique identifier")
+        name: str = Field(description="Connection name")
+        adapter_type: str = Field(description="Adapter type")
+        status: str = Field(description="Connection status")
+        connection_type: str = Field(description="Connection type")
+        description: str = Field(default="", description="Connection description")
 
     class IntegrationStatus(FlextCore.Models.Entity):
         """Oracle OIC Integration status information.
@@ -111,11 +111,13 @@ class FlextOracleOicModels(FlextCore.Models):
 
         model_config = ConfigDict(extra="forbid")
 
-        integration_id: str = Field(..., description="Integration unique identifier")
-        integration_version: str = Field(..., description="Integration version")
-        status: str = Field(..., description="Integration status")
-        last_updated: str = Field("", description="Last update timestamp")
-        activated_by: str = Field("", description="User who activated the integration")
+        integration_id: str = Field(description="Integration unique identifier")
+        integration_version: str = Field(description="Integration version")
+        status: str = Field(description="Integration status")
+        last_updated: str = Field(default="", description="Last update timestamp")
+        activated_by: str = Field(
+            default="", description="User who activated the integration"
+        )
 
     class RequestParams(FlextCore.Models.Value):
         """Parameters for OIC API request.
@@ -126,17 +128,19 @@ class FlextOracleOicModels(FlextCore.Models):
 
         model_config = ConfigDict(extra="forbid")
 
-        method: str = Field(..., description="HTTP method")
-        url: str = Field(..., description="Request URL")
+        method: str = Field(description="HTTP method")
+        url: str = Field(description="Request URL")
         params: dict[str, str | int | float] | None = Field(
-            None, description="Query parameters"
+            default=None, description="Query parameters"
         )
-        data: FlextCore.Types.Dict | None = Field(None, description="Form data")
-        json_data: FlextCore.Types.Dict | None = Field(None, description="JSON data")
+        data: FlextCore.Types.Dict | None = Field(default=None, description="Form data")
+        json_data: FlextCore.Types.Dict | None = Field(
+            default=None, description="JSON data"
+        )
         headers: FlextCore.Types.StringDict | None = Field(
-            None, description="HTTP headers"
+            default=None, description="HTTP headers"
         )
         timeout: int = Field(
-            FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
+            default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
             description="Request timeout in seconds",
         )

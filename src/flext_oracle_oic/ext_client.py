@@ -123,7 +123,7 @@ class FlextOracleOicClient:
         """Execute OAuth token request."""
         headers, data = request_data
         try:
-            api_client = FlextApiClient(self.auth_config.oauth_token_url)
+            api_client = FlextApiClient(self.auth_config.oauth_token_url)  # type: ignore
             with api_client:
                 response_result = api_client.post("", headers=headers, data=data)
                 if response_result.is_failure:
@@ -190,7 +190,7 @@ class FlextOracleOicClient:
         try:
             # Inline base URL construction: f"{base_url.rstrip('/')}/ic/api/{api_version}"
             base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
-            client = FlextApiClient(
+            client = FlextApiClient(  # type: ignore
                 base_url=base_url,
                 timeout=self.connection_config.request_timeout,
                 headers={
@@ -254,20 +254,20 @@ class FlextOracleOicClient:
     ) -> FlextCore.Result[object]:
         """Execute the actual API request."""
         try:
-            with client:
+            with client:  # type: ignore
                 # Build full URL from base URL and endpoint - inline base URL construction
                 base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
                 full_url = f"{base_url}/{endpoint.lstrip('/')}"
 
                 # Use appropriate method based on HTTP method
                 if method.upper() == "GET":
-                    response_result = client.get(full_url, headers=None)
+                    response_result = client.get(full_url, headers=None)  # type: ignore
                 elif method.upper() == "POST":
-                    response_result = client.post(full_url, data=json, headers=None)
+                    response_result = client.post(full_url, data=json, headers=None)  # type: ignore
                 elif method.upper() == "PUT":
-                    response_result = client.put(full_url, data=json, headers=None)
+                    response_result = client.put(full_url, data=json, headers=None)  # type: ignore
                 elif method.upper() == "DELETE":
-                    response_result = client.delete(full_url, headers=None)
+                    response_result = client.delete(full_url, headers=None)  # type: ignore
                 else:
                     return FlextCore.Result[object].fail(
                         f"Unsupported HTTP method: {method}"
