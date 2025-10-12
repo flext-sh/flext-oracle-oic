@@ -4,7 +4,7 @@ FLEXT Unified Class Pattern: Single FlextOracleOicExceptions class
 with nested exception classes following FLEXT architectural standards.
 
 This module provides Oracle OIC Extension-specific exceptions using modern patterns from flext-core.
-All exceptions follow the FlextExceptionsMixin pattern with keyword-only arguments and
+All exceptions follow the FlextCore.ExceptionsMixin pattern with keyword-only arguments and
 modern Python 3.13 type aliases for comprehensive error handling in Oracle OIC operations.
 
 Copyright (c) 2025 FLEXT Contributors
@@ -16,7 +16,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import override
 
-from flext_core import FlextExceptions, FlextTypes
+from flext_core import FlextCore
 
 
 class FlextOracleOicExceptions:
@@ -28,8 +28,8 @@ class FlextOracleOicExceptions:
 
     @classmethod
     def _extract_common_kwargs(
-        cls, kwargs: dict[str, object]
-    ) -> tuple[dict[str, object], str | None, str | None]:
+        cls, kwargs: FlextCore.Types.Dict
+    ) -> tuple[FlextCore.Types.Dict, str | None, str | None]:
         """Extract common parameters from kwargs for error context building.
 
         Args:
@@ -59,7 +59,7 @@ class FlextOracleOicExceptions:
 
     @classmethod
     def _build_context(
-        cls, base_context: dict[str, object], **additional_fields: object
+        cls, base_context: FlextCore.Types.Dict, **additional_fields: object
     ) -> str:
         """Build complete error context from base context and additional fields.
 
@@ -74,7 +74,7 @@ class FlextOracleOicExceptions:
         context = base_context.copy()
         context.update(additional_fields)
 
-        # Convert context to string representation for FlextExceptions compatibility
+        # Convert context to string representation for FlextCore.Exceptions compatibility
         if not context:
             return ""
 
@@ -103,49 +103,49 @@ class FlextOracleOicExceptions:
         OIC_TOKEN_ERROR = "OIC_TOKEN_ERROR"  # nosec B105
 
     # Base Oracle OIC Extension exception hierarchy
-    class BaseError(FlextExceptions.BaseError):
+    class BaseError(FlextCore.Exceptions.BaseError):
         """Base Oracle OIC Extension error."""
 
-    class ValidationError(FlextExceptions.BaseError):
+    class ValidationError(FlextCore.Exceptions.BaseError):
         """Oracle OIC Extension validation error."""
 
-    class OICConnectionError(FlextExceptions.BaseError):
+    class OICConnectionError(FlextCore.Exceptions.BaseError):
         """Oracle OIC Extension connection error."""
 
-    class AuthenticationError(FlextExceptions.BaseError):
+    class AuthenticationError(FlextCore.Exceptions.BaseError):
         """Oracle OIC Extension authentication error."""
 
-    class ConfigurationError(FlextExceptions.BaseError):
+    class ConfigurationError(FlextCore.Exceptions.BaseError):
         """Oracle OIC Extension configuration error."""
 
-    class ApiError(FlextExceptions.BaseError):
+    class ApiError(FlextCore.Exceptions.BaseError):
         """Oracle OIC Extension API error."""
 
-    class OICTimeoutError(FlextExceptions.BaseError):
+    class OICTimeoutError(FlextCore.Exceptions.BaseError):
         """Oracle OIC Extension timeout error."""
 
-    class TokenError(FlextExceptions.BaseError):
+    class TokenError(FlextCore.Exceptions.BaseError):
         """Oracle OIC Extension token error."""
 
-    class IntegrationError(FlextExceptions.BaseError):
+    class IntegrationError(FlextCore.Exceptions.BaseError):
         """Oracle OIC Extension integration error."""
 
-    class WorkflowError(FlextExceptions.BaseError):
+    class WorkflowError(FlextCore.Exceptions.BaseError):
         """Oracle OIC Extension workflow error."""
 
-    class PatternError(FlextExceptions.BaseError):
+    class PatternError(FlextCore.Exceptions.BaseError):
         """Oracle OIC Extension pattern error."""
 
     # Domain-specific exceptions for Oracle OIC Extension business logic
-    # Using modern FlextExceptionsMixin pattern with context support
+    # Using modern FlextCore.ExceptionsMixin pattern with context support
 
     class DataValidationError(ValidationError):
         """Oracle OIC Extension data validation errors with field context."""
 
         @staticmethod
         def _extract_common_kwargs(
-            kwargs: dict[str, object],
-        ) -> tuple[dict[str, object], str | None, str | None]:
+            kwargs: FlextCore.Types.Dict,
+        ) -> tuple[FlextCore.Types.Dict, str | None, str | None]:
             """Extract common parameters from kwargs for error context building."""
             correlation_id = kwargs.pop("correlation_id", None)
             error_code = kwargs.pop("error_code", None)
@@ -159,8 +159,8 @@ class FlextOracleOicExceptions:
 
         @staticmethod
         def _build_context(
-            base_context: dict[str, object], **additional_fields: object
-        ) -> dict[str, object]:
+            base_context: FlextCore.Types.Dict, **additional_fields: object
+        ) -> FlextCore.Types.Dict:
             """Build complete error context from base context and additional fields."""
             context = base_context.copy()
             context.update(additional_fields)
@@ -212,8 +212,8 @@ class FlextOracleOicExceptions:
 
         @staticmethod
         def _extract_common_kwargs(
-            kwargs: dict[str, object],
-        ) -> tuple[dict[str, object], str | None, str | None]:
+            kwargs: FlextCore.Types.Dict,
+        ) -> tuple[FlextCore.Types.Dict, str | None, str | None]:
             """Extract common parameters from kwargs for error context building."""
             correlation_id = kwargs.pop("correlation_id", None)
             error_code = kwargs.pop("error_code", None)
@@ -227,8 +227,8 @@ class FlextOracleOicExceptions:
 
         @staticmethod
         def _build_context(
-            base_context: dict[str, object], **additional_fields: object
-        ) -> dict[str, object]:
+            base_context: FlextCore.Types.Dict, **additional_fields: object
+        ) -> FlextCore.Types.Dict:
             """Build complete error context from base context and additional fields."""
             context = base_context.copy()
             context.update(additional_fields)
@@ -285,8 +285,8 @@ class FlextOracleOicExceptions:
 
         @staticmethod
         def _extract_common_kwargs(
-            kwargs: dict[str, object],
-        ) -> tuple[dict[str, object], str | None, str | None]:
+            kwargs: FlextCore.Types.Dict,
+        ) -> tuple[FlextCore.Types.Dict, str | None, str | None]:
             """Extract common parameters from kwargs for error context building."""
             correlation_id = kwargs.pop("correlation_id", None)
             error_code = kwargs.pop("error_code", None)
@@ -300,8 +300,8 @@ class FlextOracleOicExceptions:
 
         @staticmethod
         def _build_context(
-            base_context: dict[str, object], **additional_fields: object
-        ) -> dict[str, object]:
+            base_context: FlextCore.Types.Dict, **additional_fields: object
+        ) -> FlextCore.Types.Dict:
             """Build complete error context from base context and additional fields."""
             context = base_context.copy()
             context.update(additional_fields)
@@ -353,8 +353,8 @@ class FlextOracleOicExceptions:
 
         @staticmethod
         def _extract_common_kwargs(
-            kwargs: dict[str, object],
-        ) -> tuple[dict[str, object], str | None, str | None]:
+            kwargs: FlextCore.Types.Dict,
+        ) -> tuple[FlextCore.Types.Dict, str | None, str | None]:
             """Extract common parameters from kwargs for error context building."""
             correlation_id = kwargs.pop("correlation_id", None)
             error_code = kwargs.pop("error_code", None)
@@ -368,8 +368,8 @@ class FlextOracleOicExceptions:
 
         @staticmethod
         def _build_context(
-            base_context: dict[str, object], **additional_fields: object
-        ) -> dict[str, object]:
+            base_context: FlextCore.Types.Dict, **additional_fields: object
+        ) -> FlextCore.Types.Dict:
             """Build complete error context from base context and additional fields."""
             context = base_context.copy()
             context.update(additional_fields)
@@ -558,7 +558,7 @@ exceptions_all = (
 )
 
 
-__all__: FlextTypes.StringList = [
+__all__: FlextCore.Types.StringList = [
     "FlextOracleOicApiError",
     "FlextOracleOicApiRequestError",
     "FlextOracleOicAuthenticationError",

@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 """
 
 import flext_oracle_oic
-from flext_oracle_oic import OracleOICExtensionSettings
+from flext_oracle_oic import OracleOicExtensionSettings
 
 
 def test_basic_import() -> None:
@@ -15,4 +15,4 @@ def test_basic_import() -> None:
 
 def test_config_import() -> None:
     """Test that we can import config."""
-    assert OracleOICExtensionSettings is not None
+    assert OracleOicExtensionSettings is not None

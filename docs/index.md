@@ -48,7 +48,7 @@ This documentation covers the Oracle Integration Cloud extension for the FLEXT e
 - **OAuth2/IDCS Authentication**: Framework exists but needs complete implementation
 - **Integration Patterns**: App-driven orchestration, scheduled patterns not implemented
 - **Enterprise Features**: Circuit breaker, retry patterns, monitoring
-- **FlextService Compliance**: Service classes need FLEXT inheritance
+- **FlextCore.Service Compliance**: Service classes need FLEXT inheritance
 
 ## Quick Navigation
 
@@ -68,7 +68,7 @@ This documentation covers the Oracle Integration Cloud extension for the FLEXT e
 
 ### Direct Dependencies
 
-- **[flext-core](../../flext-core/README.md)** → Foundation patterns (FlextResult, FlextLogger, FlextContainer)
+- **[flext-core](../../flext-core/README.md)** → Foundation patterns (FlextCore.Result, FlextCore.Logger, FlextCore.Container)
 - **[flext-api](../../flext-api/README.md)** → HTTP client abstractions (needs implementation)
 - **[flext-cli](../../flext-cli/README.md)** → CLI interface patterns (needs implementation)
 
@@ -89,7 +89,7 @@ This documentation covers the Oracle Integration Cloud extension for the FLEXT e
 ### Contributing
 
 1. **Review Current Status**: Understand implementation limitations from documentation
-2. **Follow FLEXT Patterns**: Use FlextResult, FlextService, FlextContainer
+2. **Follow FLEXT Patterns**: Use FlextCore.Result, FlextCore.Service, FlextCore.Container
 3. **Fix Compliance Issues**: Replace direct imports with FLEXT abstractions
 4. **Add Real Tests**: Implement integration tests with Oracle OIC APIs
 

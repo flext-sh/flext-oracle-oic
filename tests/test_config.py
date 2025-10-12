@@ -7,18 +7,18 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_oracle_oic import (
-    OICExtensionAuthConfig,
-    OICExtensionConnectionConfig,
-    OracleOICExtensionSettings,
+    FlextOracleOicAuthConfig,
+    FlextOracleOicConnectionConfig,
+    OracleOicExtensionSettings,
 )
 
 
-class TestOICExtensionConnectionConfig:
-    """Test OICExtensionConnectionConfig."""
+class TestFlextOracleOicConnectionConfig:
+    """Test FlextOracleOicConnectionConfig."""
 
     def test_default_connection_config(self) -> None:
         """Test default connection config."""
-        config = OICExtensionConnectionConfig()
+        config = FlextOracleOicConnectionConfig()
 
         assert config.base_url == "https://localhost.integration.ocp.oraclecloud.com"
         assert config.api_version == "v1"
@@ -29,7 +29,7 @@ class TestOICExtensionConnectionConfig:
 
     def test_custom_connection_config(self) -> None:
         """Test custom connection config."""
-        config = OICExtensionConnectionConfig(
+        config = FlextOracleOicConnectionConfig(
             base_url="https://custom.integration.ocp.oraclecloud.com",
             api_version="v2",
             request_timeout=60,
@@ -46,12 +46,12 @@ class TestOICExtensionConnectionConfig:
         assert config.verify_ssl is False
 
 
-class TestOICExtensionAuthConfig:
-    """Test OICExtensionAuthConfig."""
+class TestFlextOracleOicAuthConfig:
+    """Test FlextOracleOicAuthConfig."""
 
     def test_default_auth_config(self) -> None:
         """Test default auth config."""
-        config = OICExtensionAuthConfig()
+        config = FlextOracleOicAuthConfig()
 
         assert config.oauth_client_id == "default_client_id"
         assert config.oauth_client_secret == "default_client_secret_value"
@@ -64,7 +64,7 @@ class TestOICExtensionAuthConfig:
 
     def test_custom_auth_config(self) -> None:
         """Test custom auth config."""
-        config = OICExtensionAuthConfig(
+        config = FlextOracleOicAuthConfig(
             oauth_client_id="custom_client_id",
             oauth_client_secret="custom_client_secret",
             oauth_token_url="https://custom.identity.oraclecloud.com/oauth2/v1/token",
@@ -82,14 +82,14 @@ class TestOICExtensionAuthConfig:
         assert config.oauth_scope == "custom_scope"
 
 
-class TestOracleOICExtensionSettings:
-    """Test OracleOICExtensionSettings."""
+class TestOracleOicExtensionSettings:
+    """Test OracleOicExtensionSettings."""
 
     def test_default_settings(self) -> None:
         """Test default settings."""
-        settings = OracleOICExtensionSettings()
+        settings = OracleOicExtensionSettings()
 
-        # Test inherited from FlextConfig
+        # Test inherited from FlextCore.Config
         assert settings.environment == "development"
         assert settings.log_level == "INFO"
         assert settings.debug is False
@@ -105,7 +105,7 @@ class TestOracleOICExtensionSettings:
 
     def test_custom_settings(self) -> None:
         """Test custom settings."""
-        settings = OracleOICExtensionSettings(
+        settings = OracleOicExtensionSettings(
             environment="production",
             log_level="ERROR",
             debug=True,
@@ -123,16 +123,16 @@ class TestOracleOICExtensionSettings:
 
     def test_settings_with_custom_configs(self) -> None:
         """Test settings with custom sub-configurations."""
-        custom_connection = OICExtensionConnectionConfig(
+        custom_connection = FlextOracleOicConnectionConfig(
             base_url="https://custom.integration.ocp.oraclecloud.com",
             request_timeout=60,
         )
-        custom_auth = OICExtensionAuthConfig(
+        custom_auth = FlextOracleOicAuthConfig(
             oauth_client_id="custom_client_id",
             oauth_client_secret="custom_client_secret",
         )
 
-        settings = OracleOICExtensionSettings(
+        settings = OracleOicExtensionSettings(
             connection=custom_connection,
             auth=custom_auth,
         )

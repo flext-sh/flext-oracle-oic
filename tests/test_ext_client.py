@@ -11,13 +11,13 @@ from unittest.mock import Mock, patch
 
 import httpx
 import pytest
-from flext_core import FlextResult
+from flext_core import FlextCore
 from pydantic import SecretStr
 
 from flext_oracle_oic import (
     BaseOICAuthenticator,
-    OICExtensionAuthenticator,
-    OracleOICExtensionClient,
+    FlextOracleOicAuthenticator,
+    OracleOicExtensionClient,
 )
 from flext_oracle_oic.models import FlextOracleOicModels
 
@@ -44,8 +44,8 @@ class TestBaseOICAuthenticator:
         # get_oauth_scopes is the only abstract method
 
 
-class TestOICExtensionAuthenticator:
-    """Test OICExtensionAuthenticator implementation."""
+class TestFlextOracleOicAuthenticator:
+    """Test FlextOracleOicAuthenticator implementation."""
 
     @pytest.fixture
     def auth_config(self) -> FlextOracleOicModels.OICAuthConfig:
@@ -61,13 +61,13 @@ class TestOICExtensionAuthenticator:
     @pytest.fixture
     def authenticator(
         self, auth_config: FlextOracleOicModels.OICAuthConfig
-    ) -> OICExtensionAuthenticator:
+    ) -> FlextOracleOicAuthenticator:
         """Create authenticator instance."""
-        return OICExtensionAuthenticator(auth_config)
+        return FlextOracleOicAuthenticator(auth_config)
 
     def test_authenticator_initialization(
         self,
-        authenticator: OICExtensionAuthenticator,
+        authenticator: FlextOracleOicAuthenticator,
         auth_config: FlextOracleOicModels.OICAuthConfig,
     ) -> None:
         """Test authenticator initializes properly."""
@@ -75,7 +75,7 @@ class TestOICExtensionAuthenticator:
         assert authenticator._access_token is None
         assert hasattr(authenticator, "logger")
 
-    def test_get_oauth_scopes(self, authenticator: OICExtensionAuthenticator) -> None:
+    def test_get_oauth_scopes(self, authenticator: FlextOracleOicAuthenticator) -> None:
         """Test get_oauth_scopes returns built scope based on audience."""
         scopes = authenticator.get_oauth_scopes()
         expected = (
@@ -92,7 +92,7 @@ class TestOICExtensionAuthenticator:
             oauth_client_aud=None,
             oauth_scope="",
         )
-        authenticator = OICExtensionAuthenticator(auth_config)
+        authenticator = FlextOracleOicAuthenticator(auth_config)
 
         scopes = authenticator.get_oauth_scopes()
         assert scopes == "urn:opc:resource:consumer:all"
@@ -101,7 +101,7 @@ class TestOICExtensionAuthenticator:
     def test_get_access_token_success(
         self,
         mock_post: Mock,
-        authenticator: OICExtensionAuthenticator,
+        authenticator: FlextOracleOicAuthenticator,
     ) -> None:
         """Test successful access token retrieval."""
         mock_response = Mock()
@@ -123,7 +123,7 @@ class TestOICExtensionAuthenticator:
     def test_get_access_token_http_error(
         self,
         mock_post: Mock,
-        authenticator: OICExtensionAuthenticator,
+        authenticator: FlextOracleOicAuthenticator,
     ) -> None:
         """Test access token retrieval with HTTP error."""
         mock_response = Mock()
@@ -146,7 +146,7 @@ class TestOICExtensionAuthenticator:
     def test_get_access_token_missing_token(
         self,
         mock_post: Mock,
-        authenticator: OICExtensionAuthenticator,
+        authenticator: FlextOracleOicAuthenticator,
     ) -> None:
         """Test access token retrieval with missing token in response."""
         mock_response = Mock()
@@ -163,7 +163,7 @@ class TestOICExtensionAuthenticator:
     def test_get_access_token_exception(
         self,
         mock_post: Mock,
-        authenticator: OICExtensionAuthenticator,
+        authenticator: FlextOracleOicAuthenticator,
     ) -> None:
         """Test access token retrieval with exception."""
         mock_post.side_effect = httpx.ConnectError("Network error")
@@ -175,7 +175,7 @@ class TestOICExtensionAuthenticator:
 
     def test_build_oauth_scopes_with_audience(
         self,
-        authenticator: OICExtensionAuthenticator,
+        authenticator: FlextOracleOicAuthenticator,
     ) -> None:
         """Test build_oauth_scopes with custom audience."""
         scopes = authenticator.build_oauth_scopes("custom_audience")
@@ -184,7 +184,7 @@ class TestOICExtensionAuthenticator:
 
     def test_get_oauth_request_body(
         self,
-        authenticator: OICExtensionAuthenticator,
+        authenticator: FlextOracleOicAuthenticator,
     ) -> None:
         """Test OAuth request body generation."""
         body = authenticator.get_oauth_request_body()
@@ -199,7 +199,7 @@ class TestOICExtensionAuthenticator:
 
     def test_encode_client_credentials(
         self,
-        authenticator: OICExtensionAuthenticator,
+        authenticator: FlextOracleOicAuthenticator,
     ) -> None:
         """Test client credentials encoding."""
         encoded = authenticator.encode_client_credentials()
@@ -209,8 +209,8 @@ class TestOICExtensionAuthenticator:
         assert encoded == expected
 
 
-class TestOracleOICExtensionClient:
-    """Test OracleOICExtensionClient main client class."""
+class TestOracleOicExtensionClient:
+    """Test OracleOicExtensionClient main client class."""
 
     @pytest.fixture
     def connection_config(self) -> FlextOracleOicModels.OICConnectionConfig:
@@ -237,24 +237,24 @@ class TestOracleOICExtensionClient:
     @pytest.fixture
     def authenticator(
         self, auth_config: FlextOracleOicModels.OICAuthConfig
-    ) -> OICExtensionAuthenticator:
+    ) -> FlextOracleOicAuthenticator:
         """Create authenticator."""
-        return OICExtensionAuthenticator(auth_config)
+        return FlextOracleOicAuthenticator(auth_config)
 
     @pytest.fixture
     def client(
         self,
         connection_config: FlextOracleOicModels.OICConnectionConfig,
-        authenticator: OICExtensionAuthenticator,
-    ) -> OracleOICExtensionClient:
+        authenticator: FlextOracleOicAuthenticator,
+    ) -> OracleOicExtensionClient:
         """Create client instance."""
-        return OracleOICExtensionClient(connection_config, authenticator)
+        return OracleOicExtensionClient(connection_config, authenticator)
 
     def test_client_initialization(
         self,
-        client: OracleOICExtensionClient,
+        client: OracleOicExtensionClient,
         connection_config: FlextOracleOicModels.OICConnectionConfig,
-        authenticator: OICExtensionAuthenticator,
+        authenticator: FlextOracleOicAuthenticator,
     ) -> None:
         """Test client initializes properly."""
         assert client.connection_config == connection_config
@@ -262,11 +262,11 @@ class TestOracleOICExtensionClient:
         assert client._client is None
         assert hasattr(client, "logger")
 
-    @patch.object(OICExtensionAuthenticator, "get_access_token")
+    @patch.object(FlextOracleOicAuthenticator, "get_access_token")
     def test_get_authenticated_client_success(
         self,
         mock_get_token: Mock,
-        client: OracleOICExtensionClient,
+        client: OracleOicExtensionClient,
     ) -> None:
         """Test successful authenticated client creation."""
         mock_get_token.return_value.is_success = True
@@ -278,32 +278,32 @@ class TestOracleOICExtensionClient:
         assert result.value is not None
         mock_get_token.assert_called_once()
 
-    @patch.object(OICExtensionAuthenticator, "get_access_token")
+    @patch.object(FlextOracleOicAuthenticator, "get_access_token")
     def test_get_authenticated_client_auth_failure(
         self,
         mock_get_token: Mock,
-        client: OracleOICExtensionClient,
+        client: OracleOicExtensionClient,
     ) -> None:
         """Test authenticated client creation with auth failure."""
         # Mock the authenticator to return a failed result
-        mock_get_token.return_value = FlextResult[str].fail("Auth failed")
+        mock_get_token.return_value = FlextCore.Result[str].fail("Auth failed")
 
         result = client.get_authenticated_client()
 
         assert result.is_failure
         assert "Authentication failed" in str(result.error)
 
-    def test_get_base_url(self, client: OracleOICExtensionClient) -> None:
+    def test_get_base_url(self, client: OracleOicExtensionClient) -> None:
         """Test base URL generation."""
         base_url = client.get_base_url()
         expected = "https://test.integration.ocp.oraclecloud.com/ic/api/v1"
         assert base_url == expected
 
-    @patch.object(OracleOICExtensionClient, "get_authenticated_client")
+    @patch.object(OracleOicExtensionClient, "get_authenticated_client")
     def test_get_integrations_success(
         self,
         mock_get_client: Mock,
-        client: OracleOICExtensionClient,
+        client: OracleOicExtensionClient,
     ) -> None:
         """Test successful integration retrieval."""
         mock_http_client = Mock()
@@ -334,11 +334,11 @@ class TestOracleOICExtensionClient:
         assert len(result.value) == 1
         assert result.value[0]["id"] == "int1"
 
-    @patch.object(OracleOICExtensionClient, "get_authenticated_client")
+    @patch.object(OracleOicExtensionClient, "get_authenticated_client")
     def test_get_integrations_client_failure(
         self,
         mock_get_client: Mock,
-        client: OracleOICExtensionClient,
+        client: OracleOicExtensionClient,
     ) -> None:
         """Test integration retrieval with client failure."""
         mock_get_client.return_value.is_success = False
@@ -349,11 +349,11 @@ class TestOracleOICExtensionClient:
         assert result.is_failure
         assert "Client error" in str(result.error)
 
-    @patch.object(OracleOICExtensionClient, "get_authenticated_client")
+    @patch.object(OracleOicExtensionClient, "get_authenticated_client")
     def test_get_integrations_http_error(
         self,
         mock_get_client: Mock,
-        client: OracleOICExtensionClient,
+        client: OracleOicExtensionClient,
     ) -> None:
         """Test integration retrieval with HTTP error."""
         mock_http_client = Mock()
@@ -370,11 +370,11 @@ class TestOracleOICExtensionClient:
         assert result.is_failure
         assert "HTTP 500" in str(result.error)
 
-    @patch.object(OracleOICExtensionClient, "get_authenticated_client")
+    @patch.object(OracleOicExtensionClient, "get_authenticated_client")
     def test_get_connections_success(
         self,
         mock_get_client: Mock,
-        client: OracleOICExtensionClient,
+        client: OracleOicExtensionClient,
     ) -> None:
         """Test successful connection retrieval."""
         mock_http_client = Mock()
@@ -405,14 +405,14 @@ class TestOracleOICExtensionClient:
         assert len(result.value) == 1
         assert result.value[0]["id"] == "conn1"
 
-    def test_context_manager_enter(self, client: OracleOICExtensionClient) -> None:
+    def test_context_manager_enter(self, client: OracleOicExtensionClient) -> None:
         """Test context manager __enter__ method."""
         with client as result:
             assert result is client
 
     def test_client_authenticator_attribute(
         self,
-        client: OracleOICExtensionClient,
+        client: OracleOicExtensionClient,
     ) -> None:
         """Test client has authenticator attribute."""
         assert client.authenticator is not None
@@ -420,7 +420,7 @@ class TestOracleOICExtensionClient:
 
     def test_client_has_connection_config(
         self,
-        client: OracleOICExtensionClient,
+        client: OracleOicExtensionClient,
     ) -> None:
         """Test client has proper connection configuration."""
         assert client.connection_config is not None

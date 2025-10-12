@@ -11,8 +11,8 @@ from unittest.mock import Mock, patch
 
 from flext_oracle_oic import (
     FlextOracleOicDeprecationWarning,
-    OracleOICExtensionService,
-    OracleOICExtensionSettings,
+    # OracleOicExtensionService,
+    # OracleOicExtensionSettings,
     create_development_oic_service,
     create_oic_extension_service,
     setup_oic_extension,
@@ -62,18 +62,18 @@ class TestCreateOicExtensionService:
         result = create_oic_extension_service(None)
 
         assert result.is_success
-        assert isinstance(result.value, OracleOICExtensionService)
+        assert isinstance(result.value, OracleOicExtensionService)
 
     def test_create_service_with_custom_settings(self) -> None:
         """Test creating service with custom settings."""
-        settings = OracleOICExtensionSettings(environment="test", log_level="INFO")
+        settings = OracleOicExtensionSettings(environment="test", log_level="INFO")
 
         result = create_oic_extension_service(settings)
 
         assert result.is_success
-        assert isinstance(result.value, OracleOICExtensionService)
+        assert isinstance(result.value, OracleOicExtensionService)
 
-    @patch("flext_oracle_oic.factory.OracleOICExtensionService")
+    @patch("flext_oracle_oic.factory.OracleOicExtensionService")
     def test_self(self, mock_service_class: Mock) -> None:
         """Test service creation failure handling."""
         mock_service_class.side_effect = Exception("Service creation failed")
@@ -92,9 +92,9 @@ class TestCreateDevelopmentOicService:
         result = create_development_oic_service()
 
         assert result.is_success
-        assert isinstance(result.value, OracleOICExtensionService)
+        assert isinstance(result.value, OracleOicExtensionService)
 
-    @patch("flext_oracle_oic.factory.OracleOICExtensionService")
+    @patch("flext_oracle_oic.factory.OracleOicExtensionService")
     def test_self(self, mock_service_class: Mock) -> None:
         """Test development service creation failure."""
         mock_service_class.side_effect = Exception("Dev service failed")
@@ -113,11 +113,11 @@ class TestSetupOicExtension:
         result = setup_oic_extension(None)
 
         assert result.is_success
-        assert isinstance(result.value, OracleOICExtensionService)
+        assert isinstance(result.value, OracleOicExtensionService)
 
     def test_setup_extension_with_custom_settings(self) -> None:
         """Test setup extension with custom settings."""
-        settings = OracleOICExtensionSettings(
+        settings = OracleOicExtensionSettings(
             environment="production",
             log_level="ERROR",
         )
@@ -125,9 +125,9 @@ class TestSetupOicExtension:
         result = setup_oic_extension(settings)
 
         assert result.is_success
-        assert isinstance(result.value, OracleOICExtensionService)
+        assert isinstance(result.value, OracleOicExtensionService)
 
-    @patch("flext_oracle_oic.factory.OracleOICExtensionService")
+    @patch("flext_oracle_oic.factory.OracleOicExtensionService")
     def test_self(self, mock_service_class: Mock) -> None:
         """Test extension setup failure handling."""
         mock_service_class.side_effect = Exception("Setup failed")

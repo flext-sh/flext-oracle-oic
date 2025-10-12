@@ -13,9 +13,9 @@ The current implementation provides foundation configuration classes and basic s
 ```python
 from flext_oracle_oic import (
     # Configuration classes
-    OracleOICExtensionSettings,
-    OICExtensionConnectionConfig,
-    OICExtensionAuthConfig,
+    OracleOicExtensionSettings,
+    FlextOracleOicConnectionConfig,
+    FlextOracleOicAuthConfig,
 
     # Basic service classes (implementation varies)
     # Additional components available but may have limited functionality
@@ -24,16 +24,16 @@ from flext_oracle_oic import (
 
 ## Configuration API
 
-### OracleOICExtensionSettings
+### OracleOicExtensionSettings
 
 Main configuration container for Oracle OIC extension settings.
 
 ```python
-from flext_oracle_oic import OracleOICExtensionSettings, OICExtensionConnectionConfig
+from flext_oracle_oic import OracleOicExtensionSettings, FlextOracleOicConnectionConfig
 
 # Basic configuration creation
-settings = OracleOICExtensionSettings(
-    connection=OICExtensionConnectionConfig(
+settings = OracleOicExtensionSettings(
+    connection=FlextOracleOicConnectionConfig(
         base_url="https://your-instance.integration.ocp.oraclecloud.com"
     )
 )
@@ -41,19 +41,19 @@ settings = OracleOICExtensionSettings(
 
 **Constructor Parameters:**
 
-- `connection: OICExtensionConnectionConfig` (required) - Connection configuration
-- `auth: OICExtensionAuthConfig` (optional) - Authentication configuration
+- `connection: FlextOracleOicConnectionConfig` (required) - Connection configuration
+- `auth: FlextOracleOicAuthConfig` (optional) - Authentication configuration
 - Additional parameters may vary based on actual implementation
 
-### OICExtensionConnectionConfig
+### FlextOracleOicConnectionConfig
 
 HTTP connection configuration for Oracle Integration Cloud.
 
 ```python
-from flext_oracle_oic import OICExtensionConnectionConfig
+from flext_oracle_oic import FlextOracleOicConnectionConfig
 
 # Basic connection configuration
-config = OICExtensionConnectionConfig(
+config = FlextOracleOicConnectionConfig(
     base_url="https://your-instance.integration.ocp.oraclecloud.com",
     api_version="v1",
     request_timeout=30
@@ -67,15 +67,15 @@ config = OICExtensionConnectionConfig(
 - `request_timeout: int` (optional) - Request timeout in seconds, defaults to 30
 - Additional parameters based on actual Pydantic model implementation
 
-### OICExtensionAuthConfig
+### FlextOracleOicAuthConfig
 
 OAuth2/IDCS authentication configuration for Oracle cloud integration.
 
 ```python
-from flext_oracle_oic import OICExtensionAuthConfig
+from flext_oracle_oic import FlextOracleOicAuthConfig
 
 # OAuth2 authentication setup
-auth_config = OICExtensionAuthConfig(
+auth_config = FlextOracleOicAuthConfig(
     oauth_client_id="your_client_id",
     oauth_client_secret="your_client_secret",
     oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
@@ -98,7 +98,7 @@ auth_config = OICExtensionAuthConfig(
 ```python
 # These components may be available for import but implementation varies
 from flext_oracle_oic.ext_services import (
-    OracleOICExtensionService,    # Main service class
+    OracleOicExtensionService,    # Main service class
     OICIntegrationPatternService, # Integration patterns (basic)
     LifecycleManager,            # Lifecycle management (basic)
     MonitoringService            # Monitoring (basic)
@@ -111,12 +111,12 @@ from flext_oracle_oic.ext_services import (
 
 ```python
 # HTTP client wrapper (needs FLEXT compliance fixes)
-from flext_oracle_oic.ext_client import OracleOICExtensionClient
+from flext_oracle_oic.ext_client import OracleOicExtensionClient
 
 # Authentication components (basic implementation)
 from flext_oracle_oic.ext_services import (
     BaseOICAuthenticator,
-    OICExtensionAuthenticator
+    FlextOracleOicAuthenticator
 )
 ```
 
@@ -140,7 +140,7 @@ Oracle OIC-specific exception classes:
 
 ```python
 from flext_oracle_oic.ext_exceptions import (
-    OracleOICExtensionError,    # Base exception
+    OracleOicExtensionError,    # Base exception
     OICAPIError,                # API operation errors
     OICAuthenticationError,     # Authentication failures
     OICConfigurationError,      # Configuration issues
@@ -176,7 +176,7 @@ from flext_oracle_oic.factory import (
 
 - Direct `httpx` import in `ext_client.py:12` (should use flext-api)
 - Direct `typer` import in `main.py:15` (should use flext-cli)
-- Missing FlextService inheritance across service classes
+- Missing FlextCore.Service inheritance across service classes
 - Multiple classes per module violate FLEXT unified class pattern
 
 **Oracle OIC Integration Gaps:**
@@ -196,7 +196,7 @@ from flext_oracle_oic.factory import (
 
 1. Fix MyPy errors in exceptions and test files
 2. Replace direct httpx/typer imports with FLEXT abstractions
-3. Implement FlextService inheritance
+3. Implement FlextCore.Service inheritance
 4. Convert to unified class pattern (single class per module)
 
 **Phase 2: Oracle OIC Implementation**
@@ -220,14 +220,14 @@ from flext_oracle_oic.factory import (
 ```python
 # Recommended import pattern for current version
 from flext_oracle_oic import (
-    OracleOICExtensionSettings,
-    OICExtensionConnectionConfig,
-    OICExtensionAuthConfig
+    OracleOicExtensionSettings,
+    FlextOracleOicConnectionConfig,
+    FlextOracleOicAuthConfig
 )
 
 # Create basic configuration
-settings = OracleOICExtensionSettings(
-    connection=OICExtensionConnectionConfig(
+settings = OracleOicExtensionSettings(
+    connection=FlextOracleOicConnectionConfig(
         base_url="https://your-instance.integration.ocp.oraclecloud.com"
     )
 )
@@ -247,14 +247,14 @@ settings = OracleOICExtensionSettings(
 ```python
 # Safe to use for configuration and basic setup
 from flext_oracle_oic import (
-    OracleOICExtensionSettings,
-    OICExtensionConnectionConfig,
-    OICExtensionAuthConfig
+    OracleOicExtensionSettings,
+    FlextOracleOicConnectionConfig,
+    FlextOracleOicAuthConfig
 )
 
 # Configuration validation and type safety works correctly
 try:
-    config = OICExtensionConnectionConfig(
+    config = FlextOracleOicConnectionConfig(
         base_url="https://test-instance.integration.ocp.oraclecloud.com"
     )
     print("✅ Configuration valid")

@@ -5,22 +5,22 @@ This module provides data models for Oracle OIC External operations.
 
 from __future__ import annotations
 
-from flext_core import FlextModels, FlextTypes
+from flext_core import FlextCore
 from pydantic import BaseModel, ConfigDict, Field, SecretStr
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
 
 
-class FlextOracleOicModels(FlextModels):
+class FlextOracleOicModels(FlextCore.Models):
     """Unified models for Oracle OIC Extension operations.
 
-    Extends FlextModels to avoid duplication and ensure consistency.
+    Extends FlextCore.Models to avoid duplication and ensure consistency.
     This class consolidates all Oracle OIC Extension domain models following
     the [Project]Models pattern for centralized Pydantic validation.
     """
 
     # Legacy type aliases for backward compatibility
-    OicRecord = FlextTypes.Dict
+    OicRecord = FlextCore.Types.Dict
     OicRecords = list[OicRecord]
 
     class OICAuthConfig(BaseModel):
@@ -69,7 +69,7 @@ class FlextOracleOicModels(FlextModels):
             description="Verify SSL certificates",
         )
 
-    class OICIntegrationInfo(FlextModels.Entity):
+    class OICIntegrationInfo(FlextCore.Models.Entity):
         """Oracle OIC Integration information.
 
         Padrão EXTENSION: Value Object representando informações
@@ -86,7 +86,7 @@ class FlextOracleOicModels(FlextModels):
         created_by: str = Field("", description="Creator username")
         last_updated: str = Field("", description="Last update timestamp")
 
-    class OICConnectionInfo(FlextModels.Entity):
+    class OICConnectionInfo(FlextCore.Models.Entity):
         """Oracle OIC Connection information.
 
         Padrão EXTENSION: Value Object representando informações
@@ -102,7 +102,7 @@ class FlextOracleOicModels(FlextModels):
         connection_type: str = Field(..., description="Connection type")
         description: str = Field("", description="Connection description")
 
-    class IntegrationStatus(FlextModels.Entity):
+    class IntegrationStatus(FlextCore.Models.Entity):
         """Oracle OIC Integration status information.
 
         Padrão EXTENSION: Value Object representando status
@@ -117,7 +117,7 @@ class FlextOracleOicModels(FlextModels):
         last_updated: str = Field("", description="Last update timestamp")
         activated_by: str = Field("", description="User who activated the integration")
 
-    class RequestParams(FlextModels.Value):
+    class RequestParams(FlextCore.Models.Value):
         """Parameters for OIC API request.
 
         Padrão EXTENSION: Value Object para parâmetros de requisição
@@ -131,9 +131,11 @@ class FlextOracleOicModels(FlextModels):
         params: dict[str, str | int | float] | None = Field(
             None, description="Query parameters"
         )
-        data: FlextTypes.Dict | None = Field(None, description="Form data")
-        json_data: FlextTypes.Dict | None = Field(None, description="JSON data")
-        headers: FlextTypes.StringDict | None = Field(None, description="HTTP headers")
+        data: FlextCore.Types.Dict | None = Field(None, description="Form data")
+        json_data: FlextCore.Types.Dict | None = Field(None, description="JSON data")
+        headers: FlextCore.Types.StringDict | None = Field(
+            None, description="HTTP headers"
+        )
         timeout: int = Field(
             FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
             description="Request timeout in seconds",

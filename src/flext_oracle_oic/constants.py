@@ -1,10 +1,10 @@
 """Oracle OIC Extension Constants - Unified Constants Pattern.
 
 This module provides centralized constants for the flext-oracle-oic project,
-inheriting from FlextConstants and following FLEXT architectural standards.
+inheriting from FlextCore.Constants and following FLEXT architectural standards.
 
 FLEXT Unified Constants Pattern: Single FlextOracleOicConstants class
-inheriting from FlextConstants with flat structure and no duplication.
+inheriting from FlextCore.Constants with flat structure and no duplication.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -14,11 +14,11 @@ from __future__ import annotations
 
 from typing import Final
 
-from flext_core import FlextConstants, FlextTypes
+from flext_core import FlextCore
 
 
-class FlextOracleOicConstants(FlextConstants):
-    """Oracle OIC Extension constants inheriting from FlextConstants.
+class FlextOracleOicConstants(FlextCore.Constants):
+    """Oracle OIC Extension constants inheriting from FlextCore.Constants.
 
     Provides centralized constants for Oracle OIC Extension operations,
     following FLEXT architectural standards with flat structure and no duplication.
@@ -32,16 +32,16 @@ class FlextOracleOicConstants(FlextConstants):
         timeout = FlextOracleOicConstants.OIC.DEFAULT_TIMEOUT
         page_size = FlextOracleOicConstants.OIC.DEFAULT_PAGE_SIZE
 
-        # Access inherited FlextConstants
+        # Access inherited FlextCore.Constants
         http_ok = FlextOracleOicConstants.Platform.HTTP_STATUS_OK
         default_timeout = FlextOracleOicConstants.Defaults.TIMEOUT
         ```
 
     **IMPLEMENTATION NOTES**:
-    - Inherits all constants from FlextConstants base class
+    - Inherits all constants from FlextCore.Constants base class
     - Flat structure with nested namespaces for organization
     - Single source of truth for all Oracle OIC Extension constants
-    - No duplication with FlextConstants or other modules
+    - No duplication with FlextCore.Constants or other modules
     - Type-safe constants with Final annotations
     - Comprehensive documentation and usage examples
     """
@@ -51,7 +51,7 @@ class FlextOracleOicConstants(FlextConstants):
 
         # API Configuration
         DEFAULT_API_VERSION: Final[str] = "v1"
-        SUPPORTED_API_VERSIONS: Final[FlextTypes.StringList] = ["v1", "v2"]
+        SUPPORTED_API_VERSIONS: Final[FlextCore.Types.StringList] = ["v1", "v2"]
 
         # Connection Configuration
         DEFAULT_BASE_URL: Final[str] = (
@@ -181,6 +181,9 @@ class FlextOracleOicConstants(FlextConstants):
     class API:
         """Oracle OIC API constants."""
 
+        # HTTP Status Codes
+        HTTP_ERROR_STATUS_THRESHOLD: Final[int] = 400
+
         # API Endpoints
         ENDPOINT_HEALTH: Final[str] = "/ic/api/integration/v1/health"
         ENDPOINT_METRICS: Final[str] = "/ic/api/integration/v1/metrics"
@@ -299,6 +302,6 @@ class FlextOracleOicConstants(FlextConstants):
 
 
 # Exports following EXTENSION pattern
-__all__: FlextTypes.StringList = [
+__all__: FlextCore.Types.StringList = [
     "FlextOracleOicConstants",
 ]

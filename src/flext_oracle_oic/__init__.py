@@ -51,9 +51,6 @@ from flext_oracle_oic.service import (
     FlextOracleOicService,
 )
 from flext_oracle_oic.utilities import FlextOracleOicUtilities
-from flext_oracle_oic.version import VERSION
-
-__version_info__: tuple[int | str, ...] = VERSION.version_info
 
 __all__ = [
     # Core classes - direct imports only, no aliases or reexports

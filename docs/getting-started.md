@@ -20,7 +20,7 @@
 ### Knowledge Requirements
 
 - Basic understanding of Oracle Integration Cloud concepts
-- Familiarity with FLEXT ecosystem patterns (FlextResult, FlextService)
+- Familiarity with FLEXT ecosystem patterns (FlextCore.Result, FlextCore.Service)
 - Python experience with Pydantic and type annotations
 
 ## Installation
@@ -37,10 +37,10 @@ cd flext-oracle-oic
 poetry install --with dev,test
 
 # Verify FLEXT-core access
-python -c "from flext_core import FlextResult; print('FLEXT-Core accessible')"
+python -c "from flext_core import FlextCore; print('FLEXT-Core accessible')"
 
 # Verify installation
-python -c "from flext_oracle_oic import OracleOICExtensionSettings; print('Import successful')"
+python -c "from flext_oracle_oic import OracleOicExtensionSettings; print('Import successful')"
 ```
 
 ### Environment Setup
@@ -64,19 +64,19 @@ The library provides Pydantic-based configuration following FLEXT patterns:
 
 ```python
 from flext_oracle_oic import (
-    OracleOICExtensionSettings,
-    OICExtensionConnectionConfig,
-    OICExtensionAuthConfig
+    OracleOicExtensionSettings,
+    FlextOracleOicConnectionConfig,
+    FlextOracleOicAuthConfig
 )
 
 # Create configuration following FLEXT patterns
-settings = OracleOICExtensionSettings(
-    connection=OICExtensionConnectionConfig(
+settings = OracleOicExtensionSettings(
+    connection=FlextOracleOicConnectionConfig(
         base_url="https://your-oic-instance.integration.ocp.oraclecloud.com",
         api_version="v1",
         request_timeout=30
     ),
-    auth=OICExtensionAuthConfig(
+    auth=FlextOracleOicAuthConfig(
         oauth_client_id="your_client_id",
         oauth_client_secret="your_client_secret",
         oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
@@ -92,13 +92,13 @@ print(f"Configuration created: {settings.connection.base_url}")
 
 ```python
 # Import available components
-from flext_oracle_oic.ext_config import OracleOICExtensionSettings
-from flext_oracle_oic.ext_models import OICExtensionConnectionConfig, OICExtensionAuthConfig
+from flext_oracle_oic.ext_config import OracleOicExtensionSettings
+from flext_oracle_oic.ext_models import FlextOracleOicConnectionConfig, FlextOracleOicAuthConfig
 
 # Basic configuration validation
 try:
-    config = OracleOICExtensionSettings(
-        connection=OICExtensionConnectionConfig(
+    config = OracleOicExtensionSettings(
+        connection=FlextOracleOicConnectionConfig(
             base_url="https://test.integration.ocp.oraclecloud.com",
             api_version="v1"
         )
@@ -157,7 +157,7 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 
 ### Planned Features 🚧
 
-- **FlextService Implementation**: Complete FLEXT compliance (critical requirement)
+- **FlextCore.Service Implementation**: Complete FLEXT compliance (critical requirement)
 - **OAuth2/IDCS Authentication**: Full Oracle cloud authentication
 - **Integration Patterns**: App-driven orchestration, scheduled orchestration
 - **Enterprise Features**: Circuit breaker, retry patterns, monitoring
@@ -167,7 +167,7 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 1. **FLEXT Compliance Violations**:
    - Direct `httpx` import in `ext_client.py:12` (should use flext-api)
    - Direct `typer` import in `main.py:15` (should use flext-cli)
-   - Missing FlextService inheritance
+   - Missing FlextCore.Service inheritance
 
 2. **Type Safety Issues**:
    - 2 MyPy errors in `exceptions.py:283` and `test_models.py:61`
@@ -186,7 +186,7 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 # Verify FLEXT workspace structure
 ls -la ../flext-core/src/flext_core/
 export PYTHONPATH="$(pwd)/../flext-core/src:$PYTHONPATH"
-python -c "from flext_core import FlextResult; print('Success')"
+python -c "from flext_core import FlextCore; print('Success')"
 ```
 
 **Quality Gate Failures**

@@ -12,12 +12,12 @@ from __future__ import annotations
 
 import warnings
 
-from flext_core import FlextContainer, FlextLogger, FlextResult, FlextTypes
+from flext_core import FlextCore
 
 from flext_oracle_oic.config import FlextOracleOicConfig
 from flext_oracle_oic.service import FlextOracleOicService
 
-logger = FlextLogger(__name__)
+logger = FlextCore.Logger(__name__)
 
 
 class FlextOracleOicFactory:
@@ -28,13 +28,13 @@ class FlextOracleOicFactory:
     management, and dependency injection.
     """
 
-    class DeprecationWarning(DeprecationWarning):
+    class FlextDeprecationWarning(DeprecationWarning):
         """Custom deprecation warning for FLEXT ORACLE OIC EXT import changes."""
 
     def __init__(self) -> None:
         """Initialize the factory."""
-        self._container = FlextContainer.get_global()
-        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
+        self._container = FlextCore.Container.get_global()
+        self.logger = FlextCore.Logger(f"{__name__}.{self.__class__.__name__}")
 
     def _show_deprecation_warning(self, old_import: str, new_import: str) -> None:
         """Show deprecation warning for import paths."""
@@ -46,52 +46,50 @@ class FlextOracleOicFactory:
         ]
         warnings.warn(
             "\n".join(message_parts),
-            self.DeprecationWarning,
+            self.FlextDeprecationWarning,
             stacklevel=3,
         )
 
     def create_oic_extension_service(
         self,
-        settings: FlextOracleOicConfig | None = None,
-    ) -> FlextResult[FlextOracleOicService]:
+    ) -> FlextCore.Result[FlextOracleOicService]:
         """Create Oracle OIC Extension service with configuration.
 
-        Args:
-          settings: Configuration settings (uses defaults if None)
+        Uses singleton config pattern - no config parameter needed.
 
         Returns:
-          FlextResult containing service instance or error
+          FlextCore.Result containing service instance or error
 
         """
-        # Railway-oriented service creation
-        config = settings or FlextOracleOicConfig.get_global_instance()
+        # Railway-oriented service creation - uses singleton config
+        config = FlextOracleOicConfig.get_global_instance()
         return self._create_service_instance(
             config, "OIC Extension service created successfully"
         )
 
     def _create_service_instance(
         self, config: FlextOracleOicConfig, success_message: str
-    ) -> FlextResult[FlextOracleOicService]:
+    ) -> FlextCore.Result[FlextOracleOicService]:
         """Create service instance with proper error handling."""
         try:
-            service = FlextOracleOicService(config)
+            service = FlextOracleOicService()
             self.logger.info(success_message)
-            return FlextResult[FlextOracleOicService].ok(service)
+            return FlextCore.Result[FlextOracleOicService].ok(service)
         except Exception as e:
             error_msg = f"Failed to create OIC Extension service: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[FlextOracleOicService].fail(error_msg)
+            return FlextCore.Result[FlextOracleOicService].fail(error_msg)
 
-    def create_development_oic_service(self) -> FlextResult[FlextOracleOicService]:
+    def create_development_oic_service(self) -> FlextCore.Result[FlextOracleOicService]:
         """Create OIC Extension service for development.
 
         Returns:
-          FlextResult containing development service or error
+          FlextCore.Result containing development service or error
 
         """
         # Railway-oriented development service creation
         return (
-            FlextResult[object]
+            FlextCore.Result[object]
             .ok(None)
             .flat_map(lambda _: self._create_development_config())
             .flat_map(
@@ -101,7 +99,7 @@ class FlextOracleOicFactory:
             )
         )
 
-    def _create_development_config(self) -> FlextResult[FlextOracleOicConfig]:
+    def _create_development_config(self) -> FlextCore.Result[FlextOracleOicConfig]:
         """Create development configuration."""
         try:
             settings = FlextOracleOicConfig(
@@ -109,27 +107,25 @@ class FlextOracleOicFactory:
                 log_level="DEBUG",
                 enable_monitoring=True,
             )
-            return FlextResult[FlextOracleOicConfig].ok(settings)
+            return FlextCore.Result[FlextOracleOicConfig].ok(settings)
         except Exception as e:
             error_msg = f"Failed to create development config: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[FlextOracleOicConfig].fail(error_msg)
+            return FlextCore.Result[FlextOracleOicConfig].fail(error_msg)
 
     def setup_oic_extension(
         self,
-        settings: FlextOracleOicConfig | None = None,
-    ) -> FlextResult[FlextOracleOicService]:
+    ) -> FlextCore.Result[FlextOracleOicService]:
         """Setup Oracle OIC Extension with configuration.
 
-        Args:
-            settings: Configuration settings (uses defaults if None)
+        Uses singleton config pattern - no config parameter needed.
 
         Returns:
-            FlextResult containing configured service or error
+            FlextCore.Result containing configured service or error
 
         """
-        # Railway-oriented extension setup
-        config = settings or FlextOracleOicConfig.get_global_instance()
+        # Railway-oriented extension setup - uses singleton config
+        config = FlextOracleOicConfig.get_global_instance()
         return self._create_service_instance(
             config, "OIC Extension setup completed successfully"
         )
@@ -139,30 +135,26 @@ class FlextOracleOicFactory:
 _factory_instance = FlextOracleOicFactory()
 
 
-def create_oic_extension_service(
-    settings: FlextOracleOicConfig | None = None,
-) -> FlextResult[FlextOracleOicService]:
+def create_oic_extension_service() -> FlextCore.Result[FlextOracleOicService]:
     """Create Oracle OIC Extension service with configuration (backward compatibility)."""
-    return _factory_instance.create_oic_extension_service(settings)
+    return _factory_instance.create_oic_extension_service()
 
 
-def create_development_oic_service() -> FlextResult[FlextOracleOicService]:
+def create_development_oic_service() -> FlextCore.Result[FlextOracleOicService]:
     """Create OIC Extension service for development (backward compatibility)."""
     return _factory_instance.create_development_oic_service()
 
 
-def setup_oic_extension(
-    settings: FlextOracleOicConfig | None = None,
-) -> FlextResult[FlextOracleOicService]:
+def setup_oic_extension() -> FlextCore.Result[FlextOracleOicService]:
     """Setup Oracle OIC Extension with configuration (backward compatibility)."""
-    return _factory_instance.setup_oic_extension(settings)
+    return _factory_instance.setup_oic_extension()
 
 
 # Backward compatibility warning
-FlextOracleOicDeprecationWarning = FlextOracleOicFactory.DeprecationWarning
+FlextOracleOicDeprecationWarning = FlextOracleOicFactory.FlextDeprecationWarning
 
 
-__all__: FlextTypes.StringList = [
+__all__: FlextCore.Types.StringList = [
     "FlextOracleOicDeprecationWarning",
     "FlextOracleOicFactory",
     "create_development_oic_service",

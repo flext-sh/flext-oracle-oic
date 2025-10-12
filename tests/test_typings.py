@@ -6,36 +6,29 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import E, F, FlextTypes, P, R, T, U, V
+from flext_core import FlextCore
 
 
 class TestFlextTypes:
-    """Test FlextTypes domain-specific types."""
+    """Test FlextCore.Types domain-specific types."""
 
     def test_flext_types_inheritance(self) -> None:
-        """Test FlextTypes inherits from CoreFlextTypes."""
-        # FlextTypes should be a class that inherits from CoreFlextTypes
-        assert hasattr(FlextTypes, "Core")
+        """Test FlextCore.Types inherits from CoreFlextTypes."""
+        # FlextCore.Types should be a class that inherits from CoreFlextTypes
+        assert hasattr(FlextCore.Types, "Core")
         # Should maintain all core functionality
-        assert hasattr(FlextTypes, "Dict")
-        assert hasattr(FlextTypes, "StringList")
+        assert hasattr(FlextCore.Types, "Dict")
+        assert hasattr(FlextCore.Types, "StringList")
 
     def test_exported_types_available(self) -> None:
         """Test all exported types are available."""
-        # All types should be importable and available
-        assert E is not None
-        assert F is not None
-        assert FlextTypes is not None
-        assert P is not None
-        assert R is not None
-        assert T is not None
-        assert U is not None
-        assert V is not None
+        # FlextCore.Types should be available
+        assert FlextCore.Types is not None
 
     def test_flext_types_can_be_extended(self) -> None:
-        """Test FlextTypes can be extended for domain-specific types."""
+        """Test FlextCore.Types can be extended for domain-specific types."""
         # Should be able to add domain-specific types
-        assert issubclass(FlextTypes, object)
+        assert issubclass(FlextCore.Types, object)
         # Can access core types
-        core_dict = FlextTypes.Dict
+        core_dict = FlextCore.Types.Dict
         assert core_dict is not None

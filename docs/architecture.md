@@ -12,8 +12,8 @@ This document provides an accurate analysis of the current architecture implemen
 
 The library follows these core principles from the FLEXT ecosystem:
 
-1. **Railway-Oriented Programming**: FlextResult[T] for type-safe error handling
-2. **Dependency Injection**: FlextContainer for service management
+1. **Railway-Oriented Programming**: FlextCore.Result[T] for type-safe error handling
+2. **Dependency Injection**: FlextCore.Container for service management
 3. **Domain-Driven Design**: Rich domain models for Oracle OIC concepts
 4. **Clean Architecture**: Separation of concerns across layers
 5. **Type Safety**: Complete Python 3.13+ type annotations
@@ -36,17 +36,17 @@ The library follows these core principles from the FLEXT ecosystem:
 
 **FLEXT Integration (Partial)**
 
-- FlextResult usage for some error handling patterns
-- FlextLogger integration for structured logging
+- FlextCore.Result usage for some error handling patterns
+- FlextCore.Logger integration for structured logging
 - Basic import structure for FLEXT ecosystem components
 
 ### Architecture Gaps ⚠️
 
 **FLEXT Ecosystem Compliance**
 
-- Missing FlextService inheritance (critical requirement)
+- Missing FlextCore.Service inheritance (critical requirement)
 - Direct httpx/typer imports violate FLEXT abstraction patterns
-- Incomplete FlextContainer dependency injection implementation
+- Incomplete FlextCore.Container dependency injection implementation
 - Multiple classes per module violate unified class pattern
 
 **Oracle OIC Integration**
@@ -81,7 +81,7 @@ src/flext_oracle_oic/
 
 ### Configuration Management
 
-**OracleOICExtensionSettings**
+**OracleOicExtensionSettings**
 
 - Main configuration container using Pydantic
 - Environment variable integration for Oracle OIC settings
@@ -105,13 +105,13 @@ src/flext_oracle_oic/
 
 ```python
 # ext_services.py contains multiple classes (violates FLEXT unified pattern)
-class OracleOICExtensionService        # Main service class
+class OracleOicExtensionService        # Main service class
 class OICIntegrationPatternService     # Integration patterns
 class LifecycleManager                 # Service lifecycle
 class MonitoringService                # Basic monitoring
 
 # Required FLEXT pattern: Single unified class per module
-class OracleOICIntegrationService(FlextService):
+class OracleOicIntegrationService(FlextCore.Service):
     """Unified service with nested helpers."""
 
     class _IntegrationHelper:
@@ -157,50 +157,50 @@ from flext_api import FlextApiClient
 
 ### Currently Implemented ✅
 
-**FlextResult Railway Pattern (Partial)**
+**FlextCore.Result Railway Pattern (Partial)**
 
 ```python
-from flext_core import FlextResult
+from flext_core import FlextCore
 
-def validate_connection(config: dict) -> FlextResult[ConnectionInfo]:
-    """Example of current FlextResult usage."""
+def validate_connection(config: dict) -> FlextCore.Result[ConnectionInfo]:
+    """Example of current FlextCore.Result usage."""
     if not config.get('base_url'):
-        return FlextResult[ConnectionInfo].fail("Base URL required")
-    return FlextResult[ConnectionInfo].ok(ConnectionInfo(**config))
+        return FlextCore.Result[ConnectionInfo].fail("Base URL required")
+    return FlextCore.Result[ConnectionInfo].ok(ConnectionInfo(**config))
 ```
 
-**FlextLogger Integration**
+**FlextCore.Logger Integration**
 
 ```python
-from flext_core import FlextLogger
+from flext_core import FlextCore
 
 class ServiceClass:
     def __init__(self):
-        self.logger = FlextLogger(__name__)
+        self.logger = FlextCore.Logger(__name__)
 ```
 
 ### Missing FLEXT Integration ❌
 
-**FlextService Inheritance**
+**FlextCore.Service Inheritance**
 
 ```python
 # ❌ Current implementation
-class OracleOICExtensionService:
+class OracleOicExtensionService:
     pass
 
 # ✅ Required FLEXT pattern
-class OracleOICIntegrationService(FlextService):
+class OracleOicIntegrationService(FlextCore.Service):
     pass
 ```
 
-**FlextContainer Dependency Injection**
+**FlextCore.Container Dependency Injection**
 
 ```python
 # ❌ Current: Manual service creation
-service = OracleOICExtensionService(config)
+service = OracleOicExtensionService(config)
 
 # ✅ Required: Container-managed dependencies
-container = FlextContainer.get_global()
+container = FlextCore.Container.get_global()
 service = container.get("oic_service").unwrap()
 ```
 
@@ -291,8 +291,8 @@ tests/
    - Replace `httpx` with `flext-api` patterns
    - Replace `typer` with `flext-cli` patterns
 
-3. **Implement FlextService**
-   - Convert service classes to inherit from FlextService
+3. **Implement FlextCore.Service**
+   - Convert service classes to inherit from FlextCore.Service
    - Implement unified class pattern with nested helpers
 
 ### Phase 2: Oracle OIC Implementation (Months 2-3)
