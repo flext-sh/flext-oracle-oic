@@ -35,12 +35,12 @@ This extension provides Oracle Integration Cloud (OIC) integration capabilities 
 
 ### **FLEXT-Core Integration Status**
 
-| Pattern             | Status | Description                                                       |
-| ------------------- | ------ | ----------------------------------------------------------------- |
-| **FlextCore.Result[T]**  | 🟡 65% | Partial usage implemented, needs completion across all operations |
-| **FlextCore.Service**    | 🔴 0%  | Not implemented - critical requirement for FLEXT compliance       |
-| **FlextCore.Container**  | 🔴 0%  | Not implemented - dependency injection missing                    |
-| **Unified Classes** | 🔴 15% | Multiple classes per module violate FLEXT patterns                |
+| Pattern                 | Status | Description                                                       |
+| ----------------------- | ------ | ----------------------------------------------------------------- |
+| **FlextCore.Result[T]** | 🟡 65% | Partial usage implemented, needs completion across all operations |
+| **FlextCore.Service**   | 🔴 0%  | Not implemented - critical requirement for FLEXT compliance       |
+| **FlextCore.Container** | 🔴 0%  | Not implemented - dependency injection missing                    |
+| **Unified Classes**     | 🔴 15% | Multiple classes per module violate FLEXT patterns                |
 
 > **Status**: 🔴 Critical · 1.0.0 Release Preparation | 🟡 Partial | 🟢 Complete
 
@@ -68,13 +68,13 @@ graph TB
 
 ### **Current Implementation vs FLEXT Standards**
 
-| Component                | Current State                | FLEXT Standard                 | Required Action                      |
-| ------------------------ | ---------------------------- | ------------------------------ | ------------------------------------ |
-| **Service Architecture** | Multiple classes per module  | Single FlextCore.Service per module | Refactor to unified pattern          |
+| Component                | Current State                     | FLEXT Standard                      | Required Action                      |
+| ------------------------ | --------------------------------- | ----------------------------------- | ------------------------------------ |
+| **Service Architecture** | Multiple classes per module       | Single FlextCore.Service per module | Refactor to unified pattern          |
 | **Error Handling**       | Mixed FlextCore.Result/exceptions | Consistent FlextCore.Result railway | Complete pattern implementation      |
-| **HTTP Client**          | Direct httpx usage           | flext-api abstractions         | Replace with FLEXT patterns          |
-| **CLI Interface**        | Direct typer usage           | flext-cli patterns             | Implement FLEXT CLI interface        |
-| **Testing**              | 21% unit tests only          | 70%+ with integration tests    | Add contract and integration testing |
+| **HTTP Client**          | Direct httpx usage                | flext-api abstractions              | Replace with FLEXT patterns          |
+| **CLI Interface**        | Direct typer usage                | flext-cli patterns                  | Implement FLEXT CLI interface        |
+| **Testing**              | 21% unit tests only               | 70%+ with integration tests         | Add contract and integration testing |
 
 ---
 
