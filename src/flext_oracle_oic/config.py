@@ -215,6 +215,10 @@ class FlextOracleOicConfig(FlextCore.Config):
         cls, environment: str, **overrides: object
     ) -> FlextOracleOicConfig:
         """Create configuration for specific environment using enhanced singleton pattern."""
+        # Environment parameter reserved for future use - validate it's not empty
+        if not environment.strip():
+            msg = "Environment name cannot be empty"
+            raise ValueError(msg)
         return cls(**overrides)
 
     @classmethod

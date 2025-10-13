@@ -193,8 +193,8 @@ class FlextOracleOicTypes(FlextCore.Types):
     # CORE TYPES - Essential Oracle OIC types extending FlextCore.Types
     # =========================================================================
 
-    class Core(FlextCore.Types):
-        """Core Oracle OIC extension types extending FlextCore.Types.
+    class OicCore:
+        """Core Oracle OIC extension types.
 
         Essential domain-specific types for Oracle OIC integration operations.
         Replaces generic FlextCore.Types.Dict with semantic Oracle OIC types.
@@ -231,12 +231,12 @@ class FlextOracleOicTypes(FlextCore.Types):
     # ORACLE OIC PROJECT TYPES - Domain-specific project types extending FlextCore.Types
     # =========================================================================
 
-    class Project(FlextCore.Types.Project):
-        """Oracle OIC extension-specific project types extending FlextCore.Types.Project.
+    class OicProject:
+        """Oracle OIC extension-specific project types.
 
-        Adds Oracle OIC integration-specific project types while inheriting
-        generic types from FlextCore.Types. Follows domain separation principle:
-        Oracle OIC domain owns integration and workflow-specific types.
+        Adds Oracle OIC integration-specific project types.
+        Follows domain separation principle: Oracle OIC domain owns integration
+        and workflow-specific types.
         """
 
         # Oracle OIC-specific project types extending the generic ones

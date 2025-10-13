@@ -68,10 +68,11 @@ class FlextOracleOicFactory:
         )
 
     def _create_service_instance(
-        self, config: FlextOracleOicConfig, success_message: str
+        self, _config: FlextOracleOicConfig, success_message: str
     ) -> FlextCore.Result[FlextOracleOicService]:
         """Create service instance with proper error handling."""
         try:
+            # Note: config parameter reserved for future use with custom configurations
             service = FlextOracleOicService()
             self.logger.info(success_message)
             return FlextCore.Result[FlextOracleOicService].ok(service)

@@ -13,7 +13,7 @@ from __future__ import annotations
 from typing import Protocol, Self, override
 
 from flext_core import FlextCore
-from pydantic import ConfigDict, Extra
+from pydantic import ConfigDict
 
 from flext_oracle_oic.config import (
     FlextOracleOicConfig,
@@ -39,14 +39,18 @@ class FlextOracleOicExtServices(
     class HTTPClientProtocol(Protocol):
         """Protocol for HTTP client used by MonitoringService."""
 
-        def get(self, url: str) -> FlextOracleOicExtServices.HTTPResponseProtocol: ...
+        def get(self, url: str) -> FlextOracleOicExtServices.HTTPResponseProtocol:
+            """Execute HTTP GET request."""
+            ...
 
     class HTTPResponseProtocol(Protocol):
         """Protocol for HTTP response."""
 
         status_code: int
 
-        def json(self: Self) -> FlextCore.Types.Dict: ...
+        def json(self: Self) -> FlextCore.Types.Dict:
+            """Parse response as JSON."""
+            ...
 
     class OracleOicExtensionService(
         FlextCore.Service[list[FlextOracleOicModels.OICIntegrationInfo]]
@@ -61,7 +65,7 @@ class FlextOracleOicExtServices(
         model_config = ConfigDict(
             frozen=True,
             validate_assignment=True,
-            extra=Extra.forbid,
+            extra="forbid",
             arbitrary_types_allowed=True,
         )
 
@@ -375,7 +379,7 @@ class FlextOracleOicExtServices(
             self, connections_data: list[FlextCore.Types.Dict]
         ) -> FlextCore.Result[list[FlextOracleOicModels.OICConnectionInfo]]:
             """Parse connection data into domain models."""
-            connection_infos: list[object] = []
+            connection_infos: list[FlextOracleOicModels.OICConnectionInfo] = []
             for connection in connections_data:
                 try:
                     connection_info = FlextOracleOicModels.OICConnectionInfo(
@@ -505,7 +509,9 @@ class FlextOracleOicExtServices(
         """
 
         @override
-        def __init__(self, oic_service: FlextOracleOicExtensionService) -> None:
+        def __init__(
+            self, oic_service: FlextOracleOicExtServices.OracleOicExtensionService
+        ) -> None:
             """Initialize OIC pattern service.
 
             Args:
@@ -594,7 +600,8 @@ class FlextOracleOicExtServices(
                 }
 
                 validation_result = FlextOracleOicUtilities.PatternAnalysis.validate_pattern_configuration(
-                    "scatter_gather", pattern_config
+                    "scatter_gather",
+                    pattern_config,
                 )
 
                 if validation_result.is_failure:
@@ -811,7 +818,9 @@ class FlextOracleOicExtServices(
         """
 
         @override
-        def __init__(self, client: HTTPClientProtocol) -> None:
+        def __init__(
+            self, client: FlextOracleOicExtServices.HTTPClientProtocol
+        ) -> None:
             """Initialize monitoring service.
 
             Args:
@@ -866,12 +875,10 @@ class FlextOracleOicExtServices(
                         "error": f"HTTP {response.status_code}",
                     }
 
-                # Validate health status using utilities
-                validation_result = (
-                    FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
+                    # Validate health status using utilities
+                    validation_result = FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
                         raw_health
                     )
-                )
                 if validation_result.is_success:
                     return validation_result.value
                 self.logger.warning(

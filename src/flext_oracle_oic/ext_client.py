@@ -14,7 +14,12 @@ import base64
 import json as json_module
 from typing import Self, cast
 
-from flext_api import FlextApiClient
+try:
+    from flext_api import FlextApiClient
+except ImportError:
+    # Type stub for when flext_api is not available
+    from typing import Any
+    FlextApiClient = Any  # type: ignore
 from flext_core import FlextCore
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
@@ -123,7 +128,10 @@ class FlextOracleOicClient:
         """Execute OAuth token request."""
         headers, data = request_data
         try:
-            api_client = FlextApiClient(self.auth_config.oauth_token_url)  # type: ignore
+            if FlextApiClient is None:
+                return FlextCore.Result[object].fail("FlextApiClient not available")
+
+            api_client = FlextApiClient(self.auth_config.oauth_token_url)
             with api_client:
                 response_result = api_client.post("", headers=headers, data=data)
                 if response_result.is_failure:
@@ -188,9 +196,14 @@ class FlextOracleOicClient:
     def _build_client_with_token(self, token: str) -> FlextCore.Result[FlextApiClient]:
         """Build client with access token."""
         try:
+            if FlextApiClient is None:
+                return FlextCore.Result[FlextApiClient].fail(
+                    "FlextApiClient not available"
+                )
+
             # Inline base URL construction: f"{base_url.rstrip('/')}/ic/api/{api_version}"
             base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
-            client = FlextApiClient(  # type: ignore
+            client = FlextApiClient(
                 base_url=base_url,
                 timeout=self.connection_config.request_timeout,
                 headers={
@@ -254,20 +267,23 @@ class FlextOracleOicClient:
     ) -> FlextCore.Result[object]:
         """Execute the actual API request."""
         try:
-            with client:  # type: ignore
+            if client is None:
+                return FlextCore.Result[object].fail("Client not available")
+
+            with client:
                 # Build full URL from base URL and endpoint - inline base URL construction
                 base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
                 full_url = f"{base_url}/{endpoint.lstrip('/')}"
 
                 # Use appropriate method based on HTTP method
                 if method.upper() == "GET":
-                    response_result = client.get(full_url, headers=None)  # type: ignore
+                    response_result = client.get(full_url, headers=None)
                 elif method.upper() == "POST":
-                    response_result = client.post(full_url, data=json, headers=None)  # type: ignore
+                    response_result = client.post(full_url, data=json, headers=None)
                 elif method.upper() == "PUT":
-                    response_result = client.put(full_url, data=json, headers=None)  # type: ignore
+                    response_result = client.put(full_url, data=json, headers=None)
                 elif method.upper() == "DELETE":
-                    response_result = client.delete(full_url, headers=None)  # type: ignore
+                    response_result = client.delete(full_url, headers=None)
                 else:
                     return FlextCore.Result[object].fail(
                         f"Unsupported HTTP method: {method}"
@@ -477,7 +493,7 @@ class FlextOracleOicClient:
         exc_tb: object,
     ) -> None:
         """Context manager exit."""
-        if self._client:
+        if self._client is not None:
             self._client.close()
             self._client = None
 

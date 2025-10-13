@@ -655,8 +655,8 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def validate_pattern_configuration(
-            pattern_type: str, configuration: FlextCore.Types.Dict
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            pattern_type: str, configuration: dict[str, object] | object
+        ) -> FlextCore.Result[dict[str, object]]:
             """Validate Oracle OIC integration pattern configuration.
 
             Args:
@@ -723,8 +723,8 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def validate_health_status(
-            health_data: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            health_data: dict[str, object],
+        ) -> FlextCore.Result[dict[str, object]]:
             """Validate Oracle OIC health check data.
 
             Args:
@@ -779,8 +779,8 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def analyze_performance_metrics(
-            metrics: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            metrics: dict[str, object],
+        ) -> FlextCore.Result[dict[str, object]]:
             """Analyze Oracle OIC performance metrics.
 
             Args:
