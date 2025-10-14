@@ -49,7 +49,7 @@ class TestOICAuthConfig:
 
     def test_auth_config_validation_error(self) -> None:
         """Test auth config validation error."""
-        # Test validation with invalid data using dict construction
+        # Test validation with invalid data using dict[str, object] construction
         invalid_data = {
             "oauth_client_id": "test_client_id",
             "oauth_client_secret": 123,  # Invalid type - will fail at runtime validation

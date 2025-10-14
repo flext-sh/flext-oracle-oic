@@ -295,7 +295,7 @@ class FlextOracleOicApi(FlextCore.Service[None]):
 
     # Context and Configuration
 
-    def get_connection_context(self) -> dict:
+    def get_connection_context(self) -> dict[str, object]:
         """Get current connection configuration context.
 
         Returns:
@@ -308,7 +308,7 @@ class FlextOracleOicApi(FlextCore.Service[None]):
             "request_timeout": getattr(self._config, "request_timeout", 30),
         }
 
-    def get_auth_context(self) -> dict:
+    def get_auth_context(self) -> dict[str, object]:
         """Get current authentication configuration context.
 
         Returns:
@@ -321,7 +321,7 @@ class FlextOracleOicApi(FlextCore.Service[None]):
             "oauth_scope": getattr(self._config, "oauth_scope", ""),
         }
 
-    def get_features_context(self) -> dict:
+    def get_features_context(self) -> dict[str, object]:
         """Get current features configuration context.
 
         Returns:
