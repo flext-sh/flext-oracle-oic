@@ -11,6 +11,7 @@ from __future__ import annotations
 
 try:
     from importlib.metadata import metadata
+
     _metadata = metadata("flext_oracle_oic")
     __version__ = _metadata["Version"]
     __version_info__ = tuple(

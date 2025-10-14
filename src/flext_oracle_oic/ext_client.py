@@ -18,8 +18,8 @@ try:
     from flext_api import FlextApiClient
 except ImportError:
     # Type stub for when flext_api is not available
-    from typing import Any
-    FlextApiClient = Any  # type: ignore
+
+    FlextApiClient = object
 from flext_core import FlextCore
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
