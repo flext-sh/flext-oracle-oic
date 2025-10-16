@@ -748,22 +748,20 @@ class FlextOracleOicService(
                             == FlextConstants.Platform.HTTP_STATUS_OK
                         ):
                             health_data = response.json()
-                            health_data.update(
-                                {
-                                    "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_HEALTHY,
-                                    "components": {
-                                        FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY
-                                        },
-                                        FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY
-                                        },
-                                        FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY
-                                        },
+                            health_data.update({
+                                "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_HEALTHY,
+                                "components": {
+                                    FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
+                                        "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY
                                     },
-                                }
-                            )
+                                    FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
+                                        "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY
+                                    },
+                                    FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                                        "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY
+                                    },
+                                },
+                            })
                         else:
                             health_data = {
                                 "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_UNHEALTHY,
@@ -897,12 +895,10 @@ class FlextOracleOicService(
 
             if analysis_result.is_success:
                 # Combine raw metrics with analysis
-                return FlextResult[dict].ok(
-                    {
-                        **metrics_data,
-                        "analysis": analysis_result.value,
-                    }
-                )
+                return FlextResult[dict].ok({
+                    **metrics_data,
+                    "analysis": analysis_result.value,
+                })
             self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
             return FlextResult[dict].ok(metrics_data)
 
@@ -923,12 +919,10 @@ class FlextOracleOicService(
                 )
             )
             if analysis_result.is_success:
-                return FlextResult[dict].ok(
-                    {
-                        **error_metrics,
-                        "analysis": analysis_result.value,
-                    }
-                )
+                return FlextResult[dict].ok({
+                    **error_metrics,
+                    "analysis": analysis_result.value,
+                })
             return FlextResult[dict].ok(error_metrics)
 
     # Business Rules Validation
