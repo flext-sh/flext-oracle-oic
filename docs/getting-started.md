@@ -20,7 +20,7 @@
 ### Knowledge Requirements
 
 - Basic understanding of Oracle Integration Cloud concepts
-- Familiarity with FLEXT ecosystem patterns (FlextCore.Result, FlextCore.Service)
+- Familiarity with FLEXT ecosystem patterns (FlextResult, FlextService)
 - Python experience with Pydantic and type annotations
 
 ## Installation
@@ -37,7 +37,26 @@ cd flext-oracle-oic
 poetry install --with dev,test
 
 # Verify FLEXT-core access
-python -c "from flext_core import FlextCore; print('FLEXT-Core accessible')"
+python -c "from flext_core import FlextBus
+from flext_core import FlextConfig
+from flext_core import FlextConstants
+from flext_core import FlextContainer
+from flext_core import FlextContext
+from flext_core import FlextDecorators
+from flext_core import FlextDispatcher
+from flext_core import FlextExceptions
+from flext_core import FlextHandlers
+from flext_core import FlextLogger
+from flext_core import FlextMixins
+from flext_core import FlextModels
+from flext_core import FlextProcessors
+from flext_core import FlextProtocols
+from flext_core import FlextRegistry
+from flext_core import FlextResult
+from flext_core import FlextRuntime
+from flext_core import FlextService
+from flext_core import FlextTypes
+from flext_core import FlextUtilities; print('FLEXT-Core accessible')"
 
 # Verify installation
 python -c "from flext_oracle_oic import OracleOicExtensionSettings; print('Import successful')"
@@ -157,7 +176,7 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 
 ### Planned Features 🚧
 
-- **FlextCore.Service Implementation**: Complete FLEXT compliance (critical requirement)
+- **FlextService Implementation**: Complete FLEXT compliance (critical requirement)
 - **OAuth2/IDCS Authentication**: Full Oracle cloud authentication
 - **Integration Patterns**: App-driven orchestration, scheduled orchestration
 - **Enterprise Features**: Circuit breaker, retry patterns, monitoring
@@ -167,7 +186,7 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 1. **FLEXT Compliance Violations**:
    - Direct `httpx` import in `ext_client.py:12` (should use flext-api)
    - Direct `typer` import in `main.py:15` (should use flext-cli)
-   - Missing FlextCore.Service inheritance
+   - Missing FlextService inheritance
 
 2. **Type Safety Issues**:
    - 2 MyPy errors in `exceptions.py:283` and `test_models.py:61`
@@ -186,7 +205,26 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 # Verify FLEXT workspace structure
 ls -la ../flext-core/src/flext_core/
 export PYTHONPATH="$(pwd)/../flext-core/src:$PYTHONPATH"
-python -c "from flext_core import FlextCore; print('Success')"
+python -c "from flext_core import FlextBus
+from flext_core import FlextConfig
+from flext_core import FlextConstants
+from flext_core import FlextContainer
+from flext_core import FlextContext
+from flext_core import FlextDecorators
+from flext_core import FlextDispatcher
+from flext_core import FlextExceptions
+from flext_core import FlextHandlers
+from flext_core import FlextLogger
+from flext_core import FlextMixins
+from flext_core import FlextModels
+from flext_core import FlextProcessors
+from flext_core import FlextProtocols
+from flext_core import FlextRegistry
+from flext_core import FlextResult
+from flext_core import FlextRuntime
+from flext_core import FlextService
+from flext_core import FlextTypes
+from flext_core import FlextUtilities; print('Success')"
 ```
 
 **Quality Gate Failures**

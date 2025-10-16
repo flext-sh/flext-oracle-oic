@@ -90,7 +90,7 @@ class TestOracleOicExtensionSettings:
         """Test default settings."""
         settings = OracleOicExtensionSettings()
 
-        # Test inherited from FlextCore.Config
+        # Test inherited from FlextConfig
         assert settings.environment == "development"
         assert settings.log_level == "INFO"
         assert settings.debug is False

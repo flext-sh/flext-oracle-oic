@@ -2,7 +2,7 @@
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
-**Oracle Integration Cloud client library for the FLEXT ecosystem** providing **OAuth2/IDCS authentication** and **integration pattern execution** using **FlextCore.Service patterns** with **professional OIC 2025 architecture**.
+**Oracle Integration Cloud client library for the FLEXT ecosystem** providing **OAuth2/IDCS authentication** and **integration pattern execution** using **FlextService patterns** with **professional OIC 2025 architecture**.
 
 > **⚠️ STATUS**: Early Development (v0.9.9) - Foundation implemented, requires FLEXT compliance and Oracle OIC 2025 patterns
 
@@ -18,12 +18,12 @@ This extension provides Oracle Integration Cloud (OIC) integration capabilities 
 
 1. **Oracle OIC Authentication** - OAuth2 client credentials flow with IDCS Gen3 simplifications
 2. **Integration Pattern Execution** - App-driven orchestration, scheduled orchestration, file transfer patterns
-3. **FLEXT Integration** - FlextCore.Service architecture with FlextCore.Result railway patterns
+3. **FLEXT Integration** - FlextService architecture with FlextResult railway patterns
 4. **Enterprise Security** - Secure credential management with encryption and token lifecycle
 
 ### **Integration Points**
 
-- **[flext-core](../flext-core/README.md)** → Uses FlextCore.Result, FlextCore.Service, FlextCore.Container for foundation patterns
+- **[flext-core](../flext-core/README.md)** → Uses FlextResult, FlextService, FlextContainer for foundation patterns
 - **[flext-api](../flext-api/README.md)** → HTTP client abstractions for Oracle OIC REST API operations
 - **[flext-cli](../flext-cli/README.md)** → CLI interface for Oracle OIC deployment and management operations
 - **[flext-tap-oracle-oic](../flext-tap-oracle-oic/README.md)** → Data extraction from Oracle Integration Cloud
@@ -35,12 +35,12 @@ This extension provides Oracle Integration Cloud (OIC) integration capabilities 
 
 ### **FLEXT-Core Integration Status**
 
-| Pattern                 | Status | Description                                                       |
-| ----------------------- | ------ | ----------------------------------------------------------------- |
-| **FlextCore.Result[T]** | 🟡 65% | Partial usage implemented, needs completion across all operations |
-| **FlextCore.Service**   | 🔴 0%  | Not implemented - critical requirement for FLEXT compliance       |
-| **FlextCore.Container** | 🔴 0%  | Not implemented - dependency injection missing                    |
-| **Unified Classes**     | 🔴 15% | Multiple classes per module violate FLEXT patterns                |
+| Pattern             | Status | Description                                                       |
+| ------------------- | ------ | ----------------------------------------------------------------- |
+| **FlextResult[T]**  | 🟡 65% | Partial usage implemented, needs completion across all operations |
+| **FlextService**    | 🔴 0%  | Not implemented - critical requirement for FLEXT compliance       |
+| **FlextContainer**  | 🔴 0%  | Not implemented - dependency injection missing                    |
+| **Unified Classes** | 🔴 15% | Multiple classes per module violate FLEXT patterns                |
 
 > **Status**: 🔴 Critical · 1.0.0 Release Preparation | 🟡 Partial | 🟢 Complete
 
@@ -68,13 +68,13 @@ graph TB
 
 ### **Current Implementation vs FLEXT Standards**
 
-| Component                | Current State                     | FLEXT Standard                      | Required Action                      |
-| ------------------------ | --------------------------------- | ----------------------------------- | ------------------------------------ |
-| **Service Architecture** | Multiple classes per module       | Single FlextCore.Service per module | Refactor to unified pattern          |
-| **Error Handling**       | Mixed FlextCore.Result/exceptions | Consistent FlextCore.Result railway | Complete pattern implementation      |
-| **HTTP Client**          | Direct httpx usage                | flext-api abstractions              | Replace with FLEXT patterns          |
-| **CLI Interface**        | Direct typer usage                | flext-cli patterns                  | Implement FLEXT CLI interface        |
-| **Testing**              | 21% unit tests only               | 70%+ with integration tests         | Add contract and integration testing |
+| Component                | Current State                | FLEXT Standard                 | Required Action                      |
+| ------------------------ | ---------------------------- | ------------------------------ | ------------------------------------ |
+| **Service Architecture** | Multiple classes per module  | Single FlextService per module | Refactor to unified pattern          |
+| **Error Handling**       | Mixed FlextResult/exceptions | Consistent FlextResult railway | Complete pattern implementation      |
+| **HTTP Client**          | Direct httpx usage           | flext-api abstractions         | Replace with FLEXT patterns          |
+| **CLI Interface**        | Direct typer usage           | flext-cli patterns             | Implement FLEXT CLI interface        |
+| **Testing**              | 21% unit tests only          | 70%+ with integration tests    | Add contract and integration testing |
 
 ---
 
@@ -118,7 +118,7 @@ settings = OracleOicExtensionSettings(
     )
 )
 
-# Note: Full FlextCore.Service implementation in development
+# Note: Full FlextService implementation in development
 # Current implementation provides configuration and basic patterns
 ```
 
@@ -128,7 +128,7 @@ settings = OracleOicExtensionSettings(
 - ✅ **Basic Authentication**: OAuth2/IDCS configuration framework
 - ✅ **Module Structure**: Organized service and client architecture
 - 🟡 **CLI Interface**: Basic commands available (needs flext-cli integration)
-- ❌ **FLEXT Compliance**: Requires FlextCore.Service implementation
+- ❌ **FLEXT Compliance**: Requires FlextService implementation
 - ❌ **Production Integration**: OAuth2 Gen3 authentication needs completion
 
 ---
@@ -164,7 +164,7 @@ Current quality requirements following FLEXT ecosystem standards:
 - **Type Safety**: MyPy strict mode with zero tolerance for type errors
 - **Code Quality**: Ruff linting with professional standards
 - **Test Coverage**: Target 70%+ with meaningful integration tests
-- **FLEXT Compliance**: Complete FlextCore.Service architecture implementation
+- **FLEXT Compliance**: Complete FlextService architecture implementation
 - **Security**: Secure credential management and Oracle cloud authentication
 
 ---
@@ -186,7 +186,7 @@ tests/
 
 Following FLEXT ecosystem testing patterns with Oracle OIC focus:
 
-- **Unit Tests**: Component behavior with FlextCore.Result patterns
+- **Unit Tests**: Component behavior with FlextResult patterns
 - **Integration Tests**: Real Oracle OIC API interactions
 - **Contract Tests**: Oracle OIC API compliance verification
 - **Mock Tests**: Isolated testing with Oracle OIC endpoint mocking
@@ -224,7 +224,7 @@ Current status aligned with FLEXT ecosystem requirements:
 
 **Direct Dependencies:**
 
-- **[flext-core](../flext-core/README.md)** - Foundation patterns (FlextCore.Result, FlextCore.Service, FlextCore.Container)
+- **[flext-core](../flext-core/README.md)** - Foundation patterns (FlextResult, FlextService, FlextContainer)
 - **[flext-api](../flext-api/README.md)** - HTTP client abstractions for Oracle OIC REST operations
 - **[flext-cli](../flext-cli/README.md)** - CLI framework for Oracle OIC management commands
 
@@ -239,10 +239,10 @@ Current status aligned with FLEXT ecosystem requirements:
 
 **Critical Issues (Must Resolve):**
 
-- FlextCore.Service inheritance not implemented
-- FlextCore.Container dependency injection missing
+- FlextService inheritance not implemented
+- FlextContainer dependency injection missing
 - Direct httpx/typer imports violate FLEXT standards
-- Mixed FlextCore.Result/exception error handling patterns
+- Mixed FlextResult/exception error handling patterns
 
 **Oracle OIC 2025 Requirements:**
 
@@ -263,9 +263,9 @@ Foundation implemented with configuration management and basic service structure
 
 **FLEXT Ecosystem Compliance:**
 
-- Implement FlextCore.Service architecture patterns
+- Implement FlextService architecture patterns
 - Replace direct imports with FLEXT abstractions
-- Complete FlextCore.Result railway pattern implementation
+- Complete FlextResult railway pattern implementation
 - Achieve zero MyPy errors in strict mode
 
 ### **Version 0.10.0**
@@ -309,9 +309,9 @@ Foundation implemented with configuration management and basic service structure
 All contributions must meet FLEXT ecosystem standards:
 
 - [ ] All changes pass `make validate` (lint + type + test)
-- [ ] FlextCore.Service inheritance implemented
-- [ ] FlextCore.Result railway pattern used consistently
-- [ ] FlextCore.Container dependency injection utilized
+- [ ] FlextService inheritance implemented
+- [ ] FlextResult railway pattern used consistently
+- [ ] FlextContainer dependency injection utilized
 - [ ] No direct httpx/typer imports (use flext-api/flext-cli)
 - [ ] Type safety maintained (zero MyPy errors in strict mode)
 

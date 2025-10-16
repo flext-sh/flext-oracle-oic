@@ -12,8 +12,8 @@ This document provides an accurate analysis of the current architecture implemen
 
 The library follows these core principles from the FLEXT ecosystem:
 
-1. **Railway-Oriented Programming**: FlextCore.Result[T] for type-safe error handling
-2. **Dependency Injection**: FlextCore.Container for service management
+1. **Railway-Oriented Programming**: FlextResult[T] for type-safe error handling
+2. **Dependency Injection**: FlextContainer for service management
 3. **Domain-Driven Design**: Rich domain models for Oracle OIC concepts
 4. **Clean Architecture**: Separation of concerns across layers
 5. **Type Safety**: Complete Python 3.13+ type annotations
@@ -36,17 +36,17 @@ The library follows these core principles from the FLEXT ecosystem:
 
 **FLEXT Integration (Partial)**
 
-- FlextCore.Result usage for some error handling patterns
-- FlextCore.Logger integration for structured logging
+- FlextResult usage for some error handling patterns
+- FlextLogger integration for structured logging
 - Basic import structure for FLEXT ecosystem components
 
 ### Architecture Gaps ⚠️
 
 **FLEXT Ecosystem Compliance**
 
-- Missing FlextCore.Service inheritance (critical requirement)
+- Missing FlextService inheritance (critical requirement)
 - Direct httpx/typer imports violate FLEXT abstraction patterns
-- Incomplete FlextCore.Container dependency injection implementation
+- Incomplete FlextContainer dependency injection implementation
 - Multiple classes per module violate unified class pattern
 
 **Oracle OIC Integration**
@@ -111,7 +111,7 @@ class LifecycleManager                 # Service lifecycle
 class MonitoringService                # Basic monitoring
 
 # Required FLEXT pattern: Single unified class per module
-class OracleOicIntegrationService(FlextCore.Service):
+class OracleOicIntegrationService(FlextService):
     """Unified service with nested helpers."""
 
     class _IntegrationHelper:
@@ -157,31 +157,69 @@ from flext_api import FlextApiClient
 
 ### Currently Implemented ✅
 
-**FlextCore.Result Railway Pattern (Partial)**
+**FlextResult Railway Pattern (Partial)**
 
 ```python
-from flext_core import FlextCore
+from flext_core import FlextBus
+from flext_core import FlextConfig
+from flext_core import FlextConstants
+from flext_core import FlextContainer
+from flext_core import FlextContext
+from flext_core import FlextDecorators
+from flext_core import FlextDispatcher
+from flext_core import FlextExceptions
+from flext_core import FlextHandlers
+from flext_core import FlextLogger
+from flext_core import FlextMixins
+from flext_core import FlextModels
+from flext_core import FlextProcessors
+from flext_core import FlextProtocols
+from flext_core import FlextRegistry
+from flext_core import FlextResult
+from flext_core import FlextRuntime
+from flext_core import FlextService
+from flext_core import FlextTypes
+from flext_core import FlextUtilities
 
-def validate_connection(config: dict) -> FlextCore.Result[ConnectionInfo]:
-    """Example of current FlextCore.Result usage."""
+def validate_connection(config: dict) -> FlextResult[ConnectionInfo]:
+    """Example of current FlextResult usage."""
     if not config.get('base_url'):
-        return FlextCore.Result[ConnectionInfo].fail("Base URL required")
-    return FlextCore.Result[ConnectionInfo].ok(ConnectionInfo(**config))
+        return FlextResult[ConnectionInfo].fail("Base URL required")
+    return FlextResult[ConnectionInfo].ok(ConnectionInfo(**config))
 ```
 
-**FlextCore.Logger Integration**
+**FlextLogger Integration**
 
 ```python
-from flext_core import FlextCore
+from flext_core import FlextBus
+from flext_core import FlextConfig
+from flext_core import FlextConstants
+from flext_core import FlextContainer
+from flext_core import FlextContext
+from flext_core import FlextDecorators
+from flext_core import FlextDispatcher
+from flext_core import FlextExceptions
+from flext_core import FlextHandlers
+from flext_core import FlextLogger
+from flext_core import FlextMixins
+from flext_core import FlextModels
+from flext_core import FlextProcessors
+from flext_core import FlextProtocols
+from flext_core import FlextRegistry
+from flext_core import FlextResult
+from flext_core import FlextRuntime
+from flext_core import FlextService
+from flext_core import FlextTypes
+from flext_core import FlextUtilities
 
 class ServiceClass:
     def __init__(self):
-        self.logger = FlextCore.Logger(__name__)
+        self.logger = FlextLogger(__name__)
 ```
 
 ### Missing FLEXT Integration ❌
 
-**FlextCore.Service Inheritance**
+**FlextService Inheritance**
 
 ```python
 # ❌ Current implementation
@@ -189,18 +227,18 @@ class OracleOicExtensionService:
     pass
 
 # ✅ Required FLEXT pattern
-class OracleOicIntegrationService(FlextCore.Service):
+class OracleOicIntegrationService(FlextService):
     pass
 ```
 
-**FlextCore.Container Dependency Injection**
+**FlextContainer Dependency Injection**
 
 ```python
 # ❌ Current: Manual service creation
 service = OracleOicExtensionService(config)
 
 # ✅ Required: Container-managed dependencies
-container = FlextCore.Container.get_global()
+container = FlextContainer.get_global()
 service = container.get("oic_service").unwrap()
 ```
 
@@ -291,8 +329,8 @@ tests/
    - Replace `httpx` with `flext-api` patterns
    - Replace `typer` with `flext-cli` patterns
 
-3. **Implement FlextCore.Service**
-   - Convert service classes to inherit from FlextCore.Service
+3. **Implement FlextService**
+   - Convert service classes to inherit from FlextService
    - Implement unified class pattern with nested helpers
 
 ### Phase 2: Oracle OIC Implementation (Months 2-3)

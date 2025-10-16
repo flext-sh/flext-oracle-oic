@@ -1,14 +1,14 @@
 """Oracle OIC Extension utilities module.
 
 This module provides domain-specific utilities for Oracle Integration Cloud (OIC)
-operations, extending FlextCore.Utilities with nested classes for comprehensive
+operations, extending FlextUtilities with nested classes for comprehensive
 Oracle OIC integration functionality.
 
 **FLEXT COMPLIANCE**: Follows [Project]Utilities pattern with:
-- Single unified class extending FlextCore.Utilities
+- Single unified class extending FlextUtilities
 - Nested classes for domain-specific functionality
 - Python 3.13+ advanced features and Pydantic 2.11+
-- Railway-oriented programming with FlextCore.Result
+- Railway-oriented programming with FlextResult
 - Type-safe operations with proper validation
 - SOLID principles with clean separation of concerns
 """
@@ -20,16 +20,16 @@ from datetime import UTC, datetime
 from typing import ClassVar
 from urllib.parse import urljoin, urlparse
 
-from flext_core import FlextCore
+from flext_core import FlextLogger, FlextResult, FlextTypes, FlextUtilities
 from pydantic import SecretStr
 
 __all__ = ["FlextOracleOicUtilities"]
 
 
-class FlextOracleOicUtilities(FlextCore.Utilities):
+class FlextOracleOicUtilities(FlextUtilities):
     """Unified Oracle OIC Extension utilities.
 
-    Extends FlextCore.Utilities with comprehensive Oracle Integration Cloud
+    Extends FlextUtilities with comprehensive Oracle Integration Cloud
     functionality organized in domain-specific nested classes.
 
     **DOMAIN COVERAGE**:
@@ -42,7 +42,7 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
 
     **DESIGN PRINCIPLES**:
     - Single responsibility per nested class
-    - Immutable operations with FlextCore.Result
+    - Immutable operations with FlextResult
     - Type-safe validation with Pydantic 2.11+
     - Railway-oriented error handling
     - No side effects in utility functions
@@ -54,70 +54,72 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
         # Integration validation constants
         MIN_INTEGRATION_NAME_LENGTH: ClassVar[int] = 1
         MAX_INTEGRATION_NAME_LENGTH: ClassVar[int] = 100
-        VALID_INTEGRATION_STATUSES: ClassVar[frozenset[str]] = frozenset({
-            "ACTIVATED",
-            "DEACTIVATED",
-            "DRAFT",
-            "PUBLISHED",
-            "RUNNING",
-            "STOPPED",
-            "ERROR",
-        })
+        VALID_INTEGRATION_STATUSES: ClassVar[frozenset[str]] = frozenset(
+            {
+                "ACTIVATED",
+                "DEACTIVATED",
+                "DRAFT",
+                "PUBLISHED",
+                "RUNNING",
+                "STOPPED",
+                "ERROR",
+            }
+        )
         VERSION_PATTERN: ClassVar[re.Pattern[str]] = re.compile(
             r"^\d{2}\.\d{2}\.\d{4}$"
         )
 
         @staticmethod
-        def validate_integration_name(name: str) -> FlextCore.Result[str]:
+        def validate_integration_name(name: str) -> FlextResult[str]:
             """Validate Oracle OIC integration name.
 
             Args:
                 name: Integration name to validate
 
             Returns:
-                FlextCore.Result containing validated name or validation error
+                FlextResult containing validated name or validation error
 
             """
             if not isinstance(name, str):
-                return FlextCore.Result[str].fail("Integration name must be a string")
+                return FlextResult[str].fail("Integration name must be a string")
 
             name = name.strip()
             if not name:
-                return FlextCore.Result[str].fail("Integration name cannot be empty")
+                return FlextResult[str].fail("Integration name cannot be empty")
 
             if (
                 len(name)
                 < FlextOracleOicUtilities.IntegrationValidation.MIN_INTEGRATION_NAME_LENGTH
             ):
-                return FlextCore.Result[str].fail("Integration name too short")
+                return FlextResult[str].fail("Integration name too short")
 
             if (
                 len(name)
                 > FlextOracleOicUtilities.IntegrationValidation.MAX_INTEGRATION_NAME_LENGTH
             ):
-                return FlextCore.Result[str].fail("Integration name too long")
+                return FlextResult[str].fail("Integration name too long")
 
             # Check for invalid characters (OIC naming rules)
             if not re.match(r"^[a-zA-Z0-9_\-\s]+$", name):
-                return FlextCore.Result[str].fail(
+                return FlextResult[str].fail(
                     "Integration name contains invalid characters"
                 )
 
-            return FlextCore.Result[str].ok(name)
+            return FlextResult[str].ok(name)
 
         @staticmethod
-        def validate_integration_status(status: str) -> FlextCore.Result[str]:
+        def validate_integration_status(status: str) -> FlextResult[str]:
             """Validate Oracle OIC integration status.
 
             Args:
                 status: Integration status to validate
 
             Returns:
-                FlextCore.Result containing validated status or error
+                FlextResult containing validated status or error
 
             """
             if not isinstance(status, str):
-                return FlextCore.Result[str].fail("Integration status must be a string")
+                return FlextResult[str].fail("Integration status must be a string")
 
             status = status.upper().strip()
             if (
@@ -129,57 +131,55 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                         FlextOracleOicUtilities.IntegrationValidation.VALID_INTEGRATION_STATUSES
                     )
                 )
-                return FlextCore.Result[str].fail(
+                return FlextResult[str].fail(
                     f"Invalid integration status. Valid: {valid_statuses}"
                 )
 
-            return FlextCore.Result[str].ok(status)
+            return FlextResult[str].ok(status)
 
         @staticmethod
-        def validate_integration_version(version: str) -> FlextCore.Result[str]:
+        def validate_integration_version(version: str) -> FlextResult[str]:
             """Validate Oracle OIC integration version format.
 
             Args:
                 version: Version string to validate (format: XX.XX.XXXX)
 
             Returns:
-                FlextCore.Result containing validated version or error
+                FlextResult containing validated version or error
 
             """
             if not isinstance(version, str):
-                return FlextCore.Result[str].fail(
-                    "Integration version must be a string"
-                )
+                return FlextResult[str].fail("Integration version must be a string")
 
             version = version.strip()
             if not FlextOracleOicUtilities.IntegrationValidation.VERSION_PATTERN.match(
                 version
             ):
-                return FlextCore.Result[str].fail(
+                return FlextResult[str].fail(
                     "Invalid version format. Expected: XX.XX.XXXX"
                 )
 
-            return FlextCore.Result[str].ok(version)
+            return FlextResult[str].ok(version)
 
         @staticmethod
         def validate_integration_data(
-            integration_data: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            integration_data: FlextTypes.Dict,
+        ) -> FlextResult[FlextTypes.Dict]:
             """Validate complete Oracle OIC integration data.
 
             Args:
                 integration_data: Integration configuration data
 
             Returns:
-                FlextCore.Result containing validated data or validation errors
+                FlextResult containing validated data or validation errors
 
             """
             if not isinstance(integration_data, dict):
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     "Integration data must be a dictionary"
                 )
 
-            errors: FlextCore.Types.StringList = []
+            errors: FlextTypes.StringList = []
             validated_data = integration_data.copy()
 
             # Validate required fields
@@ -213,44 +213,48 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                     validated_data["status"] = status_result.value
 
             if errors:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Integration validation failed: {'; '.join(errors)}"
                 )
 
-            return FlextCore.Result[FlextCore.Types.Dict].ok(validated_data)
+            return FlextResult[FlextTypes.Dict].ok(validated_data)
 
     class ConnectionValidation:
         """Oracle OIC connection validation utilities."""
 
         # Connection validation constants
-        VALID_CONNECTION_TYPES: ClassVar[frozenset[str]] = frozenset({
-            "REST",
-            "SOAP",
-            "DATABASE",
-            "FILE",
-            "FTP",
-            "SFTP",
-        })
-        VALID_CONNECTION_STATUSES: ClassVar[frozenset[str]] = frozenset({
-            "ACTIVE",
-            "INACTIVE",
-            "ERROR",
-            "UNKNOWN",
-        })
+        VALID_CONNECTION_TYPES: ClassVar[frozenset[str]] = frozenset(
+            {
+                "REST",
+                "SOAP",
+                "DATABASE",
+                "FILE",
+                "FTP",
+                "SFTP",
+            }
+        )
+        VALID_CONNECTION_STATUSES: ClassVar[frozenset[str]] = frozenset(
+            {
+                "ACTIVE",
+                "INACTIVE",
+                "ERROR",
+                "UNKNOWN",
+            }
+        )
 
         @staticmethod
-        def validate_connection_type(connection_type: str) -> FlextCore.Result[str]:
+        def validate_connection_type(connection_type: str) -> FlextResult[str]:
             """Validate Oracle OIC connection type.
 
             Args:
                 connection_type: Connection type to validate
 
             Returns:
-                FlextCore.Result containing validated type or error
+                FlextResult containing validated type or error
 
             """
             if not isinstance(connection_type, str):
-                return FlextCore.Result[str].fail("Connection type must be a string")
+                return FlextResult[str].fail("Connection type must be a string")
 
             connection_type = connection_type.upper().strip()
             if (
@@ -262,25 +266,25 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                         FlextOracleOicUtilities.ConnectionValidation.VALID_CONNECTION_TYPES
                     )
                 )
-                return FlextCore.Result[str].fail(
+                return FlextResult[str].fail(
                     f"Invalid connection type. Valid: {valid_types}"
                 )
 
-            return FlextCore.Result[str].ok(connection_type)
+            return FlextResult[str].ok(connection_type)
 
         @staticmethod
-        def validate_connection_status(status: str) -> FlextCore.Result[str]:
+        def validate_connection_status(status: str) -> FlextResult[str]:
             """Validate Oracle OIC connection status.
 
             Args:
                 status: Connection status to validate
 
             Returns:
-                FlextCore.Result containing validated status or error
+                FlextResult containing validated status or error
 
             """
             if not isinstance(status, str):
-                return FlextCore.Result[str].fail("Connection status must be a string")
+                return FlextResult[str].fail("Connection status must be a string")
 
             status = status.upper().strip()
             if (
@@ -292,56 +296,56 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                         FlextOracleOicUtilities.ConnectionValidation.VALID_CONNECTION_STATUSES
                     )
                 )
-                return FlextCore.Result[str].fail(
+                return FlextResult[str].fail(
                     f"Invalid connection status. Valid: {valid_statuses}"
                 )
 
-            return FlextCore.Result[str].ok(status)
+            return FlextResult[str].ok(status)
 
         @staticmethod
-        def validate_base_url(base_url: str) -> FlextCore.Result[str]:
+        def validate_base_url(base_url: str) -> FlextResult[str]:
             """Validate Oracle OIC base URL format.
 
             Args:
                 base_url: Base URL to validate
 
             Returns:
-                FlextCore.Result containing validated URL or error
+                FlextResult containing validated URL or error
 
             """
             if not isinstance(base_url, str):
-                return FlextCore.Result[str].fail("Base URL must be a string")
+                return FlextResult[str].fail("Base URL must be a string")
 
             base_url = base_url.strip()
             if not base_url:
-                return FlextCore.Result[str].fail("Base URL cannot be empty")
+                return FlextResult[str].fail("Base URL cannot be empty")
 
             # Parse URL
             try:
                 parsed = urlparse(base_url)
                 if not parsed.scheme:
-                    return FlextCore.Result[str].fail(
+                    return FlextResult[str].fail(
                         "Base URL must include protocol (https://)"
                     )
 
                 if parsed.scheme not in {"http", "https"}:
-                    return FlextCore.Result[str].fail(
+                    return FlextResult[str].fail(
                         "Base URL must use HTTP or HTTPS protocol"
                     )
 
                 if not parsed.netloc:
-                    return FlextCore.Result[str].fail("Base URL must include domain")
+                    return FlextResult[str].fail("Base URL must include domain")
 
                 # Oracle OIC URLs should typically use HTTPS
                 if parsed.scheme == "http":
-                    FlextCore.Logger(__name__).warning(
+                    FlextLogger(__name__).warning(
                         "Base URL uses HTTP instead of HTTPS - consider security implications"
                     )
 
-                return FlextCore.Result[str].ok(base_url.rstrip("/"))
+                return FlextResult[str].ok(base_url.rstrip("/"))
 
             except Exception as e:
-                return FlextCore.Result[str].fail(f"Invalid URL format: {e}")
+                return FlextResult[str].fail(f"Invalid URL format: {e}")
 
     class AuthenticationValidation:
         """Oracle OIC authentication validation utilities."""
@@ -350,62 +354,64 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
         MIN_CLIENT_ID_LENGTH: ClassVar[int] = 1
         MIN_TOKEN_URL_LENGTH: ClassVar[int] = 10
         MIN_CLIENT_SECRET_LENGTH: ClassVar[int] = 8
-        VALID_AUTH_TYPES: ClassVar[frozenset[str]] = frozenset({
-            "oauth2",
-            "basic",
-            "bearer",
-        })
+        VALID_AUTH_TYPES: ClassVar[frozenset[str]] = frozenset(
+            {
+                "oauth2",
+                "basic",
+                "bearer",
+            }
+        )
 
         @staticmethod
-        def validate_oauth_client_id(client_id: str) -> FlextCore.Result[str]:
+        def validate_oauth_client_id(client_id: str) -> FlextResult[str]:
             """Validate OAuth2 client ID.
 
             Args:
                 client_id: OAuth2 client ID to validate
 
             Returns:
-                FlextCore.Result containing validated client ID or error
+                FlextResult containing validated client ID or error
 
             """
             if not isinstance(client_id, str):
-                return FlextCore.Result[str].fail("OAuth client ID must be a string")
+                return FlextResult[str].fail("OAuth client ID must be a string")
 
             client_id = client_id.strip()
             if (
                 len(client_id)
                 < FlextOracleOicUtilities.AuthenticationValidation.MIN_CLIENT_ID_LENGTH
             ):
-                return FlextCore.Result[str].fail("OAuth client ID cannot be empty")
+                return FlextResult[str].fail("OAuth client ID cannot be empty")
 
             # Check for basic format (alphanumeric, hyphens, underscores)
             if not re.match(r"^[a-zA-Z0-9_\-\.]+$", client_id):
-                return FlextCore.Result[str].fail(
+                return FlextResult[str].fail(
                     "OAuth client ID contains invalid characters"
                 )
 
-            return FlextCore.Result[str].ok(client_id)
+            return FlextResult[str].ok(client_id)
 
         @staticmethod
         def validate_oauth_client_secret(
             client_secret: SecretStr,
-        ) -> FlextCore.Result[SecretStr]:
+        ) -> FlextResult[SecretStr]:
             """Validate OAuth2 client secret.
 
             Args:
                 client_secret: OAuth2 client secret to validate
 
             Returns:
-                FlextCore.Result containing validated secret or error
+                FlextResult containing validated secret or error
 
             """
             if not isinstance(client_secret, SecretStr):
-                return FlextCore.Result[SecretStr].fail(
+                return FlextResult[SecretStr].fail(
                     "OAuth client secret must be SecretStr"
                 )
 
             secret_value = client_secret.get_secret_value()
             if not secret_value or not secret_value.strip():
-                return FlextCore.Result[SecretStr].fail(
+                return FlextResult[SecretStr].fail(
                     "OAuth client secret cannot be empty"
                 )
 
@@ -413,49 +419,49 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                 len(secret_value)
                 < FlextOracleOicUtilities.AuthenticationValidation.MIN_CLIENT_SECRET_LENGTH
             ):
-                return FlextCore.Result[SecretStr].fail(
+                return FlextResult[SecretStr].fail(
                     "OAuth client secret must be at least 8 characters"
                 )
 
-            return FlextCore.Result[SecretStr].ok(client_secret)
+            return FlextResult[SecretStr].ok(client_secret)
 
         @staticmethod
-        def validate_oauth_token_url(token_url: str) -> FlextCore.Result[str]:
+        def validate_oauth_token_url(token_url: str) -> FlextResult[str]:
             """Validate OAuth2 token endpoint URL.
 
             Args:
                 token_url: OAuth2 token URL to validate
 
             Returns:
-                FlextCore.Result containing validated URL or error
+                FlextResult containing validated URL or error
 
             """
             if not isinstance(token_url, str):
-                return FlextCore.Result[str].fail("OAuth token URL must be a string")
+                return FlextResult[str].fail("OAuth token URL must be a string")
 
             token_url = token_url.strip()
             if (
                 len(token_url)
                 < FlextOracleOicUtilities.AuthenticationValidation.MIN_TOKEN_URL_LENGTH
             ):
-                return FlextCore.Result[str].fail("OAuth token URL too short")
+                return FlextResult[str].fail("OAuth token URL too short")
 
             # Validate URL format
             url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
                 token_url
             )
             if url_result.is_failure:
-                return FlextCore.Result[str].fail(
+                return FlextResult[str].fail(
                     f"Token URL validation: {url_result.error}"
                 )
 
             # Additional OAuth-specific validation
             if "/oauth" not in token_url.lower() and "/token" not in token_url.lower():
-                FlextCore.Logger(__name__).warning(
+                FlextLogger(__name__).warning(
                     "Token URL may not be a standard OAuth endpoint"
                 )
 
-            return FlextCore.Result[str].ok(token_url)
+            return FlextResult[str].ok(token_url)
 
     class APIRequestBuilder:
         """Oracle OIC API request construction utilities."""
@@ -463,20 +469,22 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
         # API request constants
         DEFAULT_TIMEOUT: ClassVar[int] = 30
         MAX_TIMEOUT: ClassVar[int] = 300
-        VALID_HTTP_METHODS: ClassVar[frozenset[str]] = frozenset({
-            "GET",
-            "POST",
-            "PUT",
-            "DELETE",
-            "PATCH",
-            "HEAD",
-            "OPTIONS",
-        })
+        VALID_HTTP_METHODS: ClassVar[frozenset[str]] = frozenset(
+            {
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "HEAD",
+                "OPTIONS",
+            }
+        )
 
         @staticmethod
         def build_integration_endpoint(
             base_url: str, api_version: str = "v1", integration_id: str | None = None
-        ) -> FlextCore.Result[str]:
+        ) -> FlextResult[str]:
             """Build Oracle OIC integration API endpoint.
 
             Args:
@@ -485,7 +493,7 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                 integration_id: Optional specific integration ID
 
             Returns:
-                FlextCore.Result containing constructed endpoint URL or error
+                FlextResult containing constructed endpoint URL or error
 
             """
             # Validate base URL
@@ -493,9 +501,7 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                 base_url
             )
             if url_result.is_failure:
-                return FlextCore.Result[str].fail(
-                    f"Base URL validation: {url_result.error}"
-                )
+                return FlextResult[str].fail(f"Base URL validation: {url_result.error}")
 
             validated_base_url = url_result.value
 
@@ -503,7 +509,7 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
             path_parts = ["ic", "api", "integration", api_version, "integrations"]
             if integration_id:
                 if not isinstance(integration_id, str) or not integration_id.strip():
-                    return FlextCore.Result[str].fail(
+                    return FlextResult[str].fail(
                         "Integration ID must be non-empty string"
                     )
                 path_parts.append(integration_id.strip())
@@ -511,12 +517,12 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
             endpoint_path = "/" + "/".join(path_parts)
             full_url = urljoin(validated_base_url + "/", endpoint_path.lstrip("/"))
 
-            return FlextCore.Result[str].ok(full_url)
+            return FlextResult[str].ok(full_url)
 
         @staticmethod
         def build_connection_endpoint(
             base_url: str, api_version: str = "v1", connection_id: str | None = None
-        ) -> FlextCore.Result[str]:
+        ) -> FlextResult[str]:
             """Build Oracle OIC connection API endpoint.
 
             Args:
@@ -525,7 +531,7 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                 connection_id: Optional specific connection ID
 
             Returns:
-                FlextCore.Result containing constructed endpoint URL or error
+                FlextResult containing constructed endpoint URL or error
 
             """
             # Validate base URL
@@ -533,9 +539,7 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                 base_url
             )
             if url_result.is_failure:
-                return FlextCore.Result[str].fail(
-                    f"Base URL validation: {url_result.error}"
-                )
+                return FlextResult[str].fail(f"Base URL validation: {url_result.error}")
 
             validated_base_url = url_result.value
 
@@ -543,7 +547,7 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
             path_parts = ["ic", "api", "integration", api_version, "connections"]
             if connection_id:
                 if not isinstance(connection_id, str) or not connection_id.strip():
-                    return FlextCore.Result[str].fail(
+                    return FlextResult[str].fail(
                         "Connection ID must be non-empty string"
                     )
                 path_parts.append(connection_id.strip())
@@ -551,14 +555,14 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
             endpoint_path = "/" + "/".join(path_parts)
             full_url = urljoin(validated_base_url + "/", endpoint_path.lstrip("/"))
 
-            return FlextCore.Result[str].ok(full_url)
+            return FlextResult[str].ok(full_url)
 
         @staticmethod
         def build_request_headers(
             auth_token: str | None = None,
             content_type: str = "application/json",
-            additional_headers: FlextCore.Types.StringDict | None = None,
-        ) -> FlextCore.Result[FlextCore.Types.StringDict]:
+            additional_headers: FlextTypes.StringDict | None = None,
+        ) -> FlextResult[FlextTypes.StringDict]:
             """Build Oracle OIC API request headers.
 
             Args:
@@ -567,10 +571,10 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                 additional_headers: Optional additional headers
 
             Returns:
-                FlextCore.Result containing constructed headers or error
+                FlextResult containing constructed headers or error
 
             """
-            headers: FlextCore.Types.StringDict = {
+            headers: FlextTypes.StringDict = {
                 "Accept": "application/json",
                 "Content-Type": content_type,
                 "User-Agent": "FlextOracleOicension/1.0.0",
@@ -578,49 +582,49 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
 
             if auth_token:
                 if not isinstance(auth_token, str) or not auth_token.strip():
-                    return FlextCore.Result[FlextCore.Types.StringDict].fail(
+                    return FlextResult[FlextTypes.StringDict].fail(
                         "Auth token must be non-empty string"
                     )
                 headers["Authorization"] = f"Bearer {auth_token.strip()}"
 
             if additional_headers:
                 if not isinstance(additional_headers, dict):
-                    return FlextCore.Result[FlextCore.Types.StringDict].fail(
+                    return FlextResult[FlextTypes.StringDict].fail(
                         "Additional headers must be a dictionary"
                     )
                 headers.update(additional_headers)
 
-            return FlextCore.Result[FlextCore.Types.StringDict].ok(headers)
+            return FlextResult[FlextTypes.StringDict].ok(headers)
 
     class PatternAnalysis:
         """Oracle OIC integration pattern analysis utilities."""
 
         # Pattern analysis constants
-        SUPPORTED_PATTERNS: ClassVar[frozenset[str]] = frozenset({
-            "message_router",
-            "scatter_gather",
-            "publish_subscribe",
-            "request_reply",
-        })
+        SUPPORTED_PATTERNS: ClassVar[frozenset[str]] = frozenset(
+            {
+                "message_router",
+                "scatter_gather",
+                "publish_subscribe",
+                "request_reply",
+            }
+        )
         MIN_ENDPOINTS_FOR_ROUTER: ClassVar[int] = 2
 
         @staticmethod
         def analyze_integration_pattern(
-            integration_data: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[str]:
+            integration_data: FlextTypes.Dict,
+        ) -> FlextResult[str]:
             """Analyze Oracle OIC integration to determine pattern type.
 
             Args:
                 integration_data: Integration configuration data
 
             Returns:
-                FlextCore.Result containing detected pattern or analysis error
+                FlextResult containing detected pattern or analysis error
 
             """
             if not isinstance(integration_data, dict):
-                return FlextCore.Result[str].fail(
-                    "Integration data must be a dictionary"
-                )
+                return FlextResult[str].fail("Integration data must be a dictionary")
 
             # Analyze based on common OIC integration characteristics
             endpoints = integration_data.get("endpoints", [])
@@ -635,28 +639,28 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                     endpoint.get("direction") == "outbound" for endpoint in endpoints
                 )
             ):
-                return FlextCore.Result[str].ok("message_router")
+                return FlextResult[str].ok("message_router")
 
             # Scatter-Gather: Multiple parallel calls with aggregation
             if len(connections) > 1 and any(
                 "aggregate" in str(mapping).lower() for mapping in mappings
             ):
-                return FlextCore.Result[str].ok("scatter_gather")
+                return FlextResult[str].ok("scatter_gather")
 
             # Publish-Subscribe: Event-driven pattern
             if any(
                 "event" in str(endpoint).lower() or "publish" in str(endpoint).lower()
                 for endpoint in endpoints
             ):
-                return FlextCore.Result[str].ok("publish_subscribe")
+                return FlextResult[str].ok("publish_subscribe")
 
             # Request-Reply: Synchronous pattern (default)
-            return FlextCore.Result[str].ok("request_reply")
+            return FlextResult[str].ok("request_reply")
 
         @staticmethod
         def validate_pattern_configuration(
             pattern_type: str, configuration: dict[str, object] | object
-        ) -> FlextCore.Result[dict[str, object]]:
+        ) -> FlextResult[dict[str, object]]:
             """Validate Oracle OIC integration pattern configuration.
 
             Args:
@@ -664,7 +668,7 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                 configuration: Pattern-specific configuration
 
             Returns:
-                FlextCore.Result containing validated configuration or error
+                FlextResult containing validated configuration or error
 
             """
             if (
@@ -674,12 +678,12 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                 supported = ", ".join(
                     sorted(FlextOracleOicUtilities.PatternAnalysis.SUPPORTED_PATTERNS)
                 )
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Unsupported pattern type. Supported: {supported}"
                 )
 
             if not isinstance(configuration, dict):
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     "Configuration must be a dictionary"
                 )
 
@@ -688,13 +692,13 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
             # Pattern-specific validation
             if pattern_type == "message_router":
                 if "routing_rules" not in configuration:
-                    return FlextCore.Result[FlextCore.Types.Dict].fail(
+                    return FlextResult[FlextTypes.Dict].fail(
                         "Message router pattern requires routing_rules"
                     )
 
             elif pattern_type == "scatter_gather":
                 if "target_services" not in configuration:
-                    return FlextCore.Result[FlextCore.Types.Dict].fail(
+                    return FlextResult[FlextTypes.Dict].fail(
                         "Scatter-gather pattern requires target_services"
                     )
                 if "aggregation_strategy" not in configuration:
@@ -704,18 +708,18 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                 pattern_type == "publish_subscribe"
                 and "event_types" not in configuration
             ):
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     "Publish-subscribe pattern requires event_types"
                 )
 
-            return FlextCore.Result[FlextCore.Types.Dict].ok(validated_config)
+            return FlextResult[FlextTypes.Dict].ok(validated_config)
 
     class MonitoringUtilities:
         """Oracle OIC monitoring and health check utilities."""
 
         # Monitoring constants
         HEALTH_CHECK_TIMEOUT: ClassVar[int] = 10
-        PERFORMANCE_THRESHOLDS: ClassVar[FlextCore.Types.FloatDict] = {
+        PERFORMANCE_THRESHOLDS: ClassVar[FlextTypes.FloatDict] = {
             "response_time_ms": 5000.0,
             "success_rate": 0.95,
             "error_rate": 0.05,
@@ -724,18 +728,18 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
         @staticmethod
         def validate_health_status(
             health_data: dict[str, object],
-        ) -> FlextCore.Result[dict[str, object]]:
+        ) -> FlextResult[dict[str, object]]:
             """Validate Oracle OIC health check data.
 
             Args:
                 health_data: Health check response data
 
             Returns:
-                FlextCore.Result containing validated health data or error
+                FlextResult containing validated health data or error
 
             """
             if not isinstance(health_data, dict):
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     "Health data must be a dictionary"
                 )
 
@@ -743,13 +747,13 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
 
             # Validate required health fields
             if "status" not in health_data:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     "Health data must include status"
                 )
 
             status = health_data["status"]
             if status not in {"healthy", "unhealthy", "error", "unknown"}:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     "Invalid health status. Valid: healthy, unhealthy, error, unknown"
                 )
 
@@ -757,17 +761,17 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
             if "components" in health_data:
                 components = health_data["components"]
                 if not isinstance(components, dict):
-                    return FlextCore.Result[FlextCore.Types.Dict].fail(
+                    return FlextResult[FlextTypes.Dict].fail(
                         "Components must be a dictionary"
                     )
 
                 for component_name, component_data in components.items():
                     if not isinstance(component_data, dict):
-                        return FlextCore.Result[FlextCore.Types.Dict].fail(
+                        return FlextResult[FlextTypes.Dict].fail(
                             f"Component {component_name} data must be a dictionary"
                         )
                     if "status" not in component_data:
-                        return FlextCore.Result[FlextCore.Types.Dict].fail(
+                        return FlextResult[FlextTypes.Dict].fail(
                             f"Component {component_name} must have status"
                         )
 
@@ -775,27 +779,25 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
             if "timestamp" not in validated_data:
                 validated_data["timestamp"] = datetime.now(UTC).isoformat()
 
-            return FlextCore.Result[FlextCore.Types.Dict].ok(validated_data)
+            return FlextResult[FlextTypes.Dict].ok(validated_data)
 
         @staticmethod
         def analyze_performance_metrics(
             metrics: dict[str, object],
-        ) -> FlextCore.Result[dict[str, object]]:
+        ) -> FlextResult[dict[str, object]]:
             """Analyze Oracle OIC performance metrics.
 
             Args:
                 metrics: Performance metrics data
 
             Returns:
-                FlextCore.Result containing analysis results or error
+                FlextResult containing analysis results or error
 
             """
             if not isinstance(metrics, dict):
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
-                    "Metrics must be a dictionary"
-                )
+                return FlextResult[FlextTypes.Dict].fail("Metrics must be a dictionary")
 
-            analysis: FlextCore.Types.Dict = {
+            analysis: FlextTypes.Dict = {
                 "overall_health": "healthy",
                 "warnings": [],
                 "critical_issues": [],
@@ -848,4 +850,4 @@ class FlextOracleOicUtilities(FlextCore.Utilities):
                             "Review error logs and implement error handling improvements"
                         )
 
-            return FlextCore.Result[FlextCore.Types.Dict].ok(analysis)
+            return FlextResult[FlextTypes.Dict].ok(analysis)

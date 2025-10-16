@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from typing import Literal, Self
 
-from flext_core import FlextCore
+from flext_core import FlextConfig, FlextResult
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
@@ -25,11 +25,11 @@ LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 OICApiVersionLiteral = Literal["v1", "v2"]
 
 
-class FlextOracleOicConfig(FlextCore.Config):
-    """Single Pydantic 2 Settings class for flext-oracle-oic extending FlextCore.Config.
+class FlextOracleOicConfig(FlextConfig):
+    """Single Pydantic 2 Settings class for flext-oracle-oic extending FlextConfig.
 
     Follows standardized pattern:
-    - Extends FlextCore.Config from flext-core
+    - Extends FlextConfig from flext-core
     - No nested classes within Config
     - All defaults from FlextOracleOicConstants
     - Uses enhanced singleton pattern with inverse dependency injection
@@ -40,12 +40,12 @@ class FlextOracleOicConfig(FlextCore.Config):
         env_prefix="FLEXT_ORACLE_OIC_EXT_",
         case_sensitive=False,
         extra="allow",
-        # Inherit enhanced Pydantic 2.11+ features from FlextCore.Config
+        # Inherit enhanced Pydantic 2.11+ features from FlextConfig
         validate_assignment=True,
         str_strip_whitespace=True,
         json_schema_extra={
             "title": "FLEXT Oracle OIC Extension Configuration",
-            "description": "Oracle OIC Extension configuration extending FlextCore.Config",
+            "description": "Oracle OIC Extension configuration extending FlextConfig",
         },
     )
 
@@ -178,38 +178,38 @@ class FlextOracleOicConfig(FlextCore.Config):
 
         return self
 
-    def validate_business_rules(self) -> FlextCore.Result[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate Oracle OIC Extension specific business rules."""
         # Railway-oriented business rule validation - operations are safe
         return (
-            FlextCore.Result[object]
+            FlextResult[object]
             .ok(None)
             .flat_map(lambda _: self._validate_oauth_credentials())
             .flat_map(lambda _: self._validate_connection_settings())
             .flat_map(lambda _: self._validate_retry_settings())
         )
 
-    def _validate_oauth_credentials(self) -> FlextCore.Result[None]:
+    def _validate_oauth_credentials(self) -> FlextResult[None]:
         """Validate OAuth credentials are present."""
         if not self.oauth_client_id or not self.oauth_client_secret.get_secret_value():
-            return FlextCore.Result[None].fail("OAuth credentials are required")
-        return FlextCore.Result[None].ok(None)
+            return FlextResult[None].fail("OAuth credentials are required")
+        return FlextResult[None].ok(None)
 
-    def _validate_connection_settings(self) -> FlextCore.Result[None]:
+    def _validate_connection_settings(self) -> FlextResult[None]:
         """Validate connection settings are within acceptable ranges."""
         if self.request_timeout < FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT:
-            return FlextCore.Result[None].fail(
+            return FlextResult[None].fail(
                 f"Request timeout too low (minimum {FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT} seconds)"
             )
-        return FlextCore.Result[None].ok(None)
+        return FlextResult[None].ok(None)
 
-    def _validate_retry_settings(self) -> FlextCore.Result[None]:
+    def _validate_retry_settings(self) -> FlextResult[None]:
         """Validate retry settings are within acceptable ranges."""
         if self.max_retries > FlextOracleOicConstants.OIC.MAX_MAX_RETRIES:
-            return FlextCore.Result[None].fail(
+            return FlextResult[None].fail(
                 f"Max retries too high (maximum {FlextOracleOicConstants.OIC.MAX_MAX_RETRIES})"
             )
-        return FlextCore.Result[None].ok(None)
+        return FlextResult[None].ok(None)
 
     @classmethod
     def create_for_environment(
@@ -264,7 +264,7 @@ class FlextOracleOicConfig(FlextCore.Config):
 
     @classmethod
     def get_global_instance(cls) -> FlextOracleOicConfig:
-        """Get the global singleton instance using enhanced FlextCore.Config pattern."""
+        """Get the global singleton instance using enhanced FlextConfig pattern."""
         return cls()
 
     # Note: FlextOracleOicConfig follows direct instantiation pattern

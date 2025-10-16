@@ -176,7 +176,7 @@ from flext_oracle_oic.factory import (
 
 - Direct `httpx` import in `ext_client.py:12` (should use flext-api)
 - Direct `typer` import in `main.py:15` (should use flext-cli)
-- Missing FlextCore.Service inheritance across service classes
+- Missing FlextService inheritance across service classes
 - Multiple classes per module violate FLEXT unified class pattern
 
 **Oracle OIC Integration Gaps:**
@@ -196,7 +196,7 @@ from flext_oracle_oic.factory import (
 
 1. Fix MyPy errors in exceptions and test files
 2. Replace direct httpx/typer imports with FLEXT abstractions
-3. Implement FlextCore.Service inheritance
+3. Implement FlextService inheritance
 4. Convert to unified class pattern (single class per module)
 
 **Phase 2: Oracle OIC Implementation**

@@ -280,7 +280,7 @@ from __future__ import annotations
 #     ) -> None:
 #         """Test authenticated client creation with auth failure."""
 #         # Mock the authenticator to return a failed result
-#         mock_get_token.return_value = FlextCore.Result[str].fail("Auth failed")
+#         mock_get_token.return_value = FlextResult[str].fail("Auth failed")
 #
 #         result = client.get_authenticated_client()
 #
