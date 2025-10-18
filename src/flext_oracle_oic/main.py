@@ -24,7 +24,6 @@ from flext_core import (
     FlextRegistry,
     FlextResult,
     FlextService,
-    FlextTypes,
 )
 
 from flext_oracle_oic import __version__
@@ -282,7 +281,7 @@ class FlextOracleOicCli(FlextService[None]):
 
         return parser
 
-    def run_cli(self, args: FlextTypes.StringList | None = None) -> int:
+    def run_cli(self, args: list[str] | None = None) -> int:
         """Run the CLI with the given arguments.
 
         Args:
@@ -353,7 +352,7 @@ def show_version() -> None:
     _backward_compat.show_version()
 
 
-__all__: FlextTypes.StringList = [
+__all__: list[str] = [
     "FlextOracleOicCli",
     "list_integrations",
     "main",

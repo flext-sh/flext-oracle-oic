@@ -21,7 +21,6 @@ from flext_core import (
     FlextRegistry,
     FlextResult,
     FlextService,
-    FlextTypes,
 )
 
 from flext_oracle_oic.config import FlextOracleOicConfig
@@ -202,7 +201,7 @@ class FlextOracleOicApi(FlextService[None]):
         integration_id: str,
         payload: dict,
         **kwargs: object,
-    ) -> FlextResult[FlextTypes.Dict]:
+    ) -> FlextResult[dict[str, object]]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -223,7 +222,7 @@ class FlextOracleOicApi(FlextService[None]):
         integration_id: str,
         schedule_config: dict,
         **kwargs: object,
-    ) -> FlextResult[FlextTypes.Dict]:
+    ) -> FlextResult[dict[str, object]]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -244,7 +243,7 @@ class FlextOracleOicApi(FlextService[None]):
         integration_id: str,
         file_config: dict,
         **kwargs: object,
-    ) -> FlextResult[FlextTypes.Dict]:
+    ) -> FlextResult[dict[str, object]]:
         """Execute file transfer pattern.
 
         Args:
@@ -262,7 +261,7 @@ class FlextOracleOicApi(FlextService[None]):
 
     # Monitoring and Health
 
-    def get_health_status(self) -> FlextResult[FlextTypes.Dict]:
+    def get_health_status(self) -> FlextResult[dict[str, object]]:
         """Get Oracle OIC health status.
 
         Returns:
@@ -271,7 +270,7 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._get_service().get_health_status()
 
-    def get_performance_metrics(self) -> FlextResult[FlextTypes.Dict]:
+    def get_performance_metrics(self) -> FlextResult[dict[str, object]]:
         """Get Oracle OIC performance metrics.
 
         Returns:

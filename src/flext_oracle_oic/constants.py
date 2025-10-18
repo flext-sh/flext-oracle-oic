@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from flext_core import FlextConstants, FlextTypes
+from flext_core import FlextConstants
 
 
 class FlextOracleOicConstants(FlextConstants):
@@ -52,7 +52,7 @@ class FlextOracleOicConstants(FlextConstants):
 
         # API Configuration
         DEFAULT_API_VERSION: Final[str] = "v1"
-        SUPPORTED_API_VERSIONS: Final[FlextTypes.StringList] = ["v1", "v2"]
+        SUPPORTED_API_VERSIONS: Final[list[str]] = ["v1", "v2"]
 
         # Connection Configuration
         DEFAULT_BASE_URL: Final[str] = (
@@ -303,6 +303,6 @@ class FlextOracleOicConstants(FlextConstants):
 
 
 # Exports following EXTENSION pattern
-__all__: FlextTypes.StringList = [
+__all__: list[str] = [
     "FlextOracleOicConstants",
 ]

@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import warnings
 
-from flext_core import FlextContainer, FlextLogger, FlextResult, FlextTypes
+from flext_core import FlextContainer, FlextLogger, FlextResult
 
 from flext_oracle_oic.config import FlextOracleOicConfig
 from flext_oracle_oic.service import FlextOracleOicService
@@ -156,7 +156,7 @@ def setup_oic_extension() -> FlextResult[FlextOracleOicService]:
 FlextOracleOicDeprecationWarning = FlextOracleOicFactory.FlextDeprecationWarning
 
 
-__all__: FlextTypes.StringList = [
+__all__: list[str] = [
     "FlextOracleOicDeprecationWarning",
     "FlextOracleOicFactory",
     "create_development_oic_service",

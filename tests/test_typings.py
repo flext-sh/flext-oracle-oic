@@ -31,5 +31,5 @@ class TestFlextTypes:
         # Should be able to add domain-specific types
         assert issubclass(FlextTypes, object)
         # Can access core types
-        core_dict = FlextTypes.Dict
+        core_dict = dict[str, object]
         assert core_dict is not None

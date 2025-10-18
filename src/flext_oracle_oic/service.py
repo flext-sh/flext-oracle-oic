@@ -24,7 +24,6 @@ from flext_core import (
     FlextRegistry,
     FlextResult,
     FlextService,
-    FlextTypes,
 )
 
 from flext_oracle_oic.config import FlextOracleOicConfig
@@ -160,7 +159,7 @@ class FlextOracleOicService(
 
     def list_connections(
         self,
-        type_filter: FlextTypes.StringList | None = None,
+        type_filter: list[str] | None = None,
     ) -> FlextResult[list[FlextOracleOicModels.OICConnectionInfo]]:
         """List Oracle OIC connections.
 
@@ -434,7 +433,7 @@ class FlextOracleOicService(
 
     def execute_app_driven_orchestration(
         self, integration_id: str, payload: dict, **kwargs: object
-    ) -> FlextResult[FlextTypes.Dict]:
+    ) -> FlextResult[dict[str, object]]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -449,26 +448,26 @@ class FlextOracleOicService(
         try:
             client_result = self._get_client()
             if client_result.is_failure:
-                return FlextResult[FlextTypes.Dict].fail(client_result.error)
+                return FlextResult[dict[str, object]].fail(client_result.error)
 
             client = client_result.unwrap()
             result = client.execute_app_driven_orchestration(
                 integration_id, payload, **kwargs
             )
 
-            return FlextResult[FlextTypes.Dict].ok(result)
+            return FlextResult[dict[str, object]].ok(result)
 
         except Exception as e:
             self.logger.exception(
                 f"App-driven orchestration failed for {integration_id}"
             )
-            return FlextResult[FlextTypes.Dict].fail(
+            return FlextResult[dict[str, object]].fail(
                 f"Orchestration execution failed: {e!s}"
             )
 
     def execute_scheduled_orchestration(
         self, integration_id: str, schedule_config: dict, **kwargs: object
-    ) -> FlextResult[FlextTypes.Dict]:
+    ) -> FlextResult[dict[str, object]]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -483,26 +482,26 @@ class FlextOracleOicService(
         try:
             client_result = self._get_client()
             if client_result.is_failure:
-                return FlextResult[FlextTypes.Dict].fail(client_result.error)
+                return FlextResult[dict[str, object]].fail(client_result.error)
 
             client = client_result.unwrap()
             result = client.execute_scheduled_orchestration(
                 integration_id, schedule_config, **kwargs
             )
 
-            return FlextResult[FlextTypes.Dict].ok(result)
+            return FlextResult[dict[str, object]].ok(result)
 
         except Exception as e:
             self.logger.exception(
                 f"Scheduled orchestration failed for {integration_id}"
             )
-            return FlextResult[FlextTypes.Dict].fail(
+            return FlextResult[dict[str, object]].fail(
                 f"Scheduled orchestration failed: {e!s}"
             )
 
     def execute_file_transfer(
         self, integration_id: str, file_config: dict, **kwargs: object
-    ) -> FlextResult[FlextTypes.Dict]:
+    ) -> FlextResult[dict[str, object]]:
         """Execute file transfer pattern.
 
         Args:
@@ -517,16 +516,16 @@ class FlextOracleOicService(
         try:
             client_result = self._get_client()
             if client_result.is_failure:
-                return FlextResult[FlextTypes.Dict].fail(client_result.error)
+                return FlextResult[dict[str, object]].fail(client_result.error)
 
             client = client_result.unwrap()
             result = client.execute_file_transfer(integration_id, file_config, **kwargs)
 
-            return FlextResult[FlextTypes.Dict].ok(result)
+            return FlextResult[dict[str, object]].ok(result)
 
         except Exception as e:
             self.logger.exception(f"File transfer failed for {integration_id}")
-            return FlextResult[FlextTypes.Dict].fail(f"File transfer failed: {e!s}")
+            return FlextResult[dict[str, object]].fail(f"File transfer failed: {e!s}")
 
     # Authentication Methods
 
@@ -605,9 +604,9 @@ class FlextOracleOicService(
 
     def apply_message_router_pattern(
         self,
-        message_data: FlextTypes.Dict,
-        routing_rules: list[FlextTypes.Dict],
-    ) -> FlextResult[FlextTypes.Dict]:
+        message_data: dict[str, object],
+        routing_rules: list[dict[str, object]],
+    ) -> FlextResult[dict[str, object]]:
         """Apply message router pattern to OIC integration using FlextOracleOicUtilities.
 
         Args:
@@ -634,7 +633,7 @@ class FlextOracleOicService(
             )
 
             if validation_result.is_failure:
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     f"Pattern validation failed: {validation_result.error}"
                 )
 
@@ -648,18 +647,18 @@ class FlextOracleOicService(
                 "status": FlextOracleOicConstants.Patterns.PATTERN_STATUS_PROCESSED,
             }
 
-            return FlextResult[FlextTypes.Dict].ok(routing_result)
+            return FlextResult[dict[str, object]].ok(routing_result)
 
         except Exception as e:
             error_msg = f"Message router pattern failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[FlextTypes.Dict].fail(error_msg)
+            return FlextResult[dict[str, object]].fail(error_msg)
 
     def apply_scatter_gather_pattern(
         self,
-        request_data: FlextTypes.Dict,
-        target_endpoints: FlextTypes.StringList,
-    ) -> FlextResult[FlextTypes.Dict]:
+        request_data: dict[str, object],
+        target_endpoints: list[str],
+    ) -> FlextResult[dict[str, object]]:
         """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
         Args:
@@ -686,7 +685,7 @@ class FlextOracleOicService(
             )
 
             if validation_result.is_failure:
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     f"Pattern validation failed: {validation_result.error}"
                 )
 
@@ -700,12 +699,12 @@ class FlextOracleOicService(
                 "status": FlextOracleOicConstants.Patterns.PATTERN_STATUS_PROCESSED,
             }
 
-            return FlextResult[FlextTypes.Dict].ok(scatter_result)
+            return FlextResult[dict[str, object]].ok(scatter_result)
 
         except Exception as e:
             error_msg = f"Scatter-gather pattern failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[FlextTypes.Dict].fail(error_msg)
+            return FlextResult[dict[str, object]].fail(error_msg)
 
     # Monitoring Methods (from MonitoringService)
 
@@ -800,9 +799,9 @@ class FlextOracleOicService(
                 FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
                     health_data
                 )
-            )[FlextTypes.Dict]
+            )[dict[str, object]]
             if validation_result.is_success:
-                return validation_result[FlextTypes.Dict]
+                return validation_result[dict[str, object]]
             self.logger.warning(
                 f"Health status validation failed: {validation_result.error}"
             )
@@ -847,7 +846,7 @@ class FlextOracleOicService(
         """
         try:
             if not self._monitoring_client:
-                # Mock perform[FlextTypes.Dict]etrics response
+                # Mock perform[dict[str, object]]etrics response
                 metrics_data = {
                     "active_integrations": 0,
                     "total_executions": 0,

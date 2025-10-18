@@ -161,8 +161,8 @@ class FlextOracleOicUtilities(FlextUtilities):
 
         @staticmethod
         def validate_integration_data(
-            integration_data: FlextTypes.Dict,
-        ) -> FlextResult[FlextTypes.Dict]:
+            integration_data: dict[str, object],
+        ) -> FlextResult[dict[str, object]]:
             """Validate complete Oracle OIC integration data.
 
             Args:
@@ -173,11 +173,11 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             """
             if not isinstance(integration_data, dict):
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     "Integration data must be a dictionary"
                 )
 
-            errors: FlextTypes.StringList = []
+            errors: list[str] = []
             validated_data = integration_data.copy()
 
             # Validate required fields
@@ -211,11 +211,11 @@ class FlextOracleOicUtilities(FlextUtilities):
                     validated_data["status"] = status_result.value
 
             if errors:
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     f"Integration validation failed: {'; '.join(errors)}"
                 )
 
-            return FlextResult[FlextTypes.Dict].ok(validated_data)
+            return FlextResult[dict[str, object]].ok(validated_data)
 
     class ConnectionValidation:
         """Oracle OIC connection validation utilities."""
@@ -551,8 +551,8 @@ class FlextOracleOicUtilities(FlextUtilities):
         def build_request_headers(
             auth_token: str | None = None,
             content_type: str = "application/json",
-            additional_headers: FlextTypes.StringDict | None = None,
-        ) -> FlextResult[FlextTypes.StringDict]:
+            additional_headers: dict[str, str] | None = None,
+        ) -> FlextResult[dict[str, str]]:
             """Build Oracle OIC API request headers.
 
             Args:
@@ -564,7 +564,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                 FlextResult containing constructed headers or error
 
             """
-            headers: FlextTypes.StringDict = {
+            headers: dict[str, str] = {
                 "Accept": "application/json",
                 "Content-Type": content_type,
                 "User-Agent": "FlextOracleOicension/1.0.0",
@@ -572,19 +572,19 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             if auth_token:
                 if not isinstance(auth_token, str) or not auth_token.strip():
-                    return FlextResult[FlextTypes.StringDict].fail(
+                    return FlextResult[dict[str, str]].fail(
                         "Auth token must be non-empty string"
                     )
                 headers["Authorization"] = f"Bearer {auth_token.strip()}"
 
             if additional_headers:
                 if not isinstance(additional_headers, dict):
-                    return FlextResult[FlextTypes.StringDict].fail(
+                    return FlextResult[dict[str, str]].fail(
                         "Additional headers must be a dictionary"
                     )
                 headers.update(additional_headers)
 
-            return FlextResult[FlextTypes.StringDict].ok(headers)
+            return FlextResult[dict[str, str]].ok(headers)
 
     class PatternAnalysis:
         """Oracle OIC integration pattern analysis utilities."""
@@ -600,7 +600,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
         @staticmethod
         def analyze_integration_pattern(
-            integration_data: FlextTypes.Dict,
+            integration_data: dict[str, object],
         ) -> FlextResult[str]:
             """Analyze Oracle OIC integration to determine pattern type.
 
@@ -666,12 +666,12 @@ class FlextOracleOicUtilities(FlextUtilities):
                 supported = ", ".join(
                     sorted(FlextOracleOicUtilities.PatternAnalysis.SUPPORTED_PATTERNS)
                 )
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     f"Unsupported pattern type. Supported: {supported}"
                 )
 
             if not isinstance(configuration, dict):
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     "Configuration must be a dictionary"
                 )
 
@@ -680,13 +680,13 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Pattern-specific validation
             if pattern_type == "message_router":
                 if "routing_rules" not in configuration:
-                    return FlextResult[FlextTypes.Dict].fail(
+                    return FlextResult[dict[str, object]].fail(
                         "Message router pattern requires routing_rules"
                     )
 
             elif pattern_type == "scatter_gather":
                 if "target_services" not in configuration:
-                    return FlextResult[FlextTypes.Dict].fail(
+                    return FlextResult[dict[str, object]].fail(
                         "Scatter-gather pattern requires target_services"
                     )
                 if "aggregation_strategy" not in configuration:
@@ -696,11 +696,11 @@ class FlextOracleOicUtilities(FlextUtilities):
                 pattern_type == "publish_subscribe"
                 and "event_types" not in configuration
             ):
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     "Publish-subscribe pattern requires event_types"
                 )
 
-            return FlextResult[FlextTypes.Dict].ok(validated_config)
+            return FlextResult[dict[str, object]].ok(validated_config)
 
     class MonitoringUtilities:
         """Oracle OIC monitoring and health check utilities."""
@@ -727,7 +727,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             """
             if not isinstance(health_data, dict):
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     "Health data must be a dictionary"
                 )
 
@@ -735,13 +735,13 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             # Validate required health fields
             if "status" not in health_data:
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     "Health data must include status"
                 )
 
             status = health_data["status"]
             if status not in {"healthy", "unhealthy", "error", "unknown"}:
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     "Invalid health status. Valid: healthy, unhealthy, error, unknown"
                 )
 
@@ -749,17 +749,17 @@ class FlextOracleOicUtilities(FlextUtilities):
             if "components" in health_data:
                 components = health_data["components"]
                 if not isinstance(components, dict):
-                    return FlextResult[FlextTypes.Dict].fail(
+                    return FlextResult[dict[str, object]].fail(
                         "Components must be a dictionary"
                     )
 
                 for component_name, component_data in components.items():
                     if not isinstance(component_data, dict):
-                        return FlextResult[FlextTypes.Dict].fail(
+                        return FlextResult[dict[str, object]].fail(
                             f"Component {component_name} data must be a dictionary"
                         )
                     if "status" not in component_data:
-                        return FlextResult[FlextTypes.Dict].fail(
+                        return FlextResult[dict[str, object]].fail(
                             f"Component {component_name} must have status"
                         )
 
@@ -767,7 +767,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             if "timestamp" not in validated_data:
                 validated_data["timestamp"] = datetime.now(UTC).isoformat()
 
-            return FlextResult[FlextTypes.Dict].ok(validated_data)
+            return FlextResult[dict[str, object]].ok(validated_data)
 
         @staticmethod
         def analyze_performance_metrics(
@@ -783,9 +783,11 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             """
             if not isinstance(metrics, dict):
-                return FlextResult[FlextTypes.Dict].fail("Metrics must be a dictionary")
+                return FlextResult[dict[str, object]].fail(
+                    "Metrics must be a dictionary"
+                )
 
-            analysis: FlextTypes.Dict = {
+            analysis: dict[str, object] = {
                 "overall_health": "healthy",
                 "warnings": [],
                 "critical_issues": [],
@@ -838,4 +840,4 @@ class FlextOracleOicUtilities(FlextUtilities):
                             "Review error logs and implement error handling improvements"
                         )
 
-            return FlextResult[FlextTypes.Dict].ok(analysis)
+            return FlextResult[dict[str, object]].ok(analysis)
