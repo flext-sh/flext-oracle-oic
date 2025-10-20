@@ -133,7 +133,10 @@ class FlextOracleOicClient:
             if FlextApiClient is None:
                 return FlextResult[object].fail("FlextApiClient not available")
 
-            api_client = FlextApiClient(self.auth_config.oauth_token_url)
+            from flext_api.config import FlextApiConfig
+
+            api_config = FlextApiConfig(base_url=self.auth_config.oauth_token_url)
+            api_client = FlextApiClient(api_config)
             with api_client:
                 response_result = api_client.post("", headers=headers, data=data)
                 if response_result.is_failure:
@@ -201,7 +204,9 @@ class FlextOracleOicClient:
 
             # Inline base URL construction: f"{base_url.rstrip('/')}/ic/api/{api_version}"
             base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
-            client = FlextApiClient(
+            from flext_api.config import FlextApiConfig
+
+            api_config = FlextApiConfig(
                 base_url=base_url,
                 timeout=self.connection_config.request_timeout,
                 headers={
@@ -210,6 +215,7 @@ class FlextOracleOicClient:
                     "Accept": "application/json",
                 },
             )
+            client = FlextApiClient(api_config)
             self._client = client
             return FlextResult[FlextApiClient].ok(client)
         except Exception as e:

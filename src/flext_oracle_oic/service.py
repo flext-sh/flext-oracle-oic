@@ -80,7 +80,9 @@ class FlextOracleOicService(
 
             # Create HTTP monitoring client if monitoring is enabled
             if self.settings.enable_monitoring:
-                self._monitoring_client = FlextApiClient(
+                from flext_api.config import FlextApiConfig
+
+                api_config = FlextApiConfig(
                     base_url=self.settings.base_url,
                     timeout=self.settings.request_timeout,
                     headers={
@@ -88,6 +90,7 @@ class FlextOracleOicService(
                         "Content-Type": "application/json",
                     },
                 )
+                self._monitoring_client = FlextApiClient(api_config)
 
         except Exception:
             self.logger.exception("Failed to initialize service components")
