@@ -103,7 +103,7 @@ class FlextOracleOicService(
         """Execute main service operation - list all integrations.
 
         Returns:
-            FlextResult containing list of OIC integrations.
+        FlextResult containing list of OIC integrations.
 
         """
         return self.list_integrations()
@@ -116,7 +116,7 @@ class FlextOracleOicService(
         """List all Oracle OIC integrations.
 
         Returns:
-            FlextResult containing list of integration information.
+        FlextResult containing list of integration information.
 
         """
         try:
@@ -167,10 +167,10 @@ class FlextOracleOicService(
         """List Oracle OIC connections.
 
         Args:
-            type_filter: Filter by connection type
+        type_filter: Filter by connection type
 
         Returns:
-            FlextResult containing connection info list or error
+        FlextResult containing connection info list or error
 
         """
         try:
@@ -222,10 +222,10 @@ class FlextOracleOicService(
         """Get specific Oracle OIC integration by ID.
 
         Args:
-            integration_id: The integration identifier.
+        integration_id: The integration identifier.
 
         Returns:
-            FlextResult containing integration information.
+        FlextResult containing integration information.
 
         """
         try:
@@ -262,10 +262,10 @@ class FlextOracleOicService(
         """Create new Oracle OIC integration.
 
         Args:
-            integration_data: Integration configuration data.
+        integration_data: Integration configuration data.
 
         Returns:
-            FlextResult containing created integration information.
+        FlextResult containing created integration information.
 
         """
         try:
@@ -302,11 +302,11 @@ class FlextOracleOicService(
         """Update existing Oracle OIC integration.
 
         Args:
-            integration_id: The integration identifier.
-            integration_data: Updated integration configuration.
+        integration_id: The integration identifier.
+        integration_data: Updated integration configuration.
 
         Returns:
-            FlextResult containing updated integration information.
+        FlextResult containing updated integration information.
 
         """
         try:
@@ -341,10 +341,10 @@ class FlextOracleOicService(
         """Delete Oracle OIC integration.
 
         Args:
-            integration_id: The integration identifier.
+        integration_id: The integration identifier.
 
         Returns:
-            FlextResult indicating success or failure.
+        FlextResult indicating success or failure.
 
         """
         try:
@@ -365,10 +365,10 @@ class FlextOracleOicService(
         """Activate Oracle OIC integration.
 
         Args:
-            integration_id: The integration identifier.
+        integration_id: The integration identifier.
 
         Returns:
-            FlextResult indicating success or failure.
+        FlextResult indicating success or failure.
 
         """
         try:
@@ -389,10 +389,10 @@ class FlextOracleOicService(
         """Deactivate Oracle OIC integration.
 
         Args:
-            integration_id: The integration identifier.
+        integration_id: The integration identifier.
 
         Returns:
-            FlextResult indicating success or failure.
+        FlextResult indicating success or failure.
 
         """
         try:
@@ -415,7 +415,7 @@ class FlextOracleOicService(
         """Test connection to Oracle OIC instance.
 
         Returns:
-            FlextResult containing connection test result.
+        FlextResult containing connection test result.
 
         """
         try:
@@ -440,12 +440,12 @@ class FlextOracleOicService(
         """Execute app-driven orchestration pattern.
 
         Args:
-            integration_id: The integration identifier.
-            payload: Orchestration payload data.
-            **kwargs: Additional execution parameters.
+        integration_id: The integration identifier.
+        payload: Orchestration payload data.
+        **kwargs: Additional execution parameters.
 
         Returns:
-            FlextResult containing execution result.
+        FlextResult containing execution result.
 
         """
         try:
@@ -474,12 +474,12 @@ class FlextOracleOicService(
         """Execute scheduled orchestration pattern.
 
         Args:
-            integration_id: The integration identifier.
-            schedule_config: Schedule configuration.
-            **kwargs: Additional execution parameters.
+        integration_id: The integration identifier.
+        schedule_config: Schedule configuration.
+        **kwargs: Additional execution parameters.
 
         Returns:
-            FlextResult containing execution result.
+        FlextResult containing execution result.
 
         """
         try:
@@ -508,12 +508,12 @@ class FlextOracleOicService(
         """Execute file transfer pattern.
 
         Args:
-            integration_id: The integration identifier.
-            file_config: File transfer configuration.
-            **kwargs: Additional execution parameters.
+        integration_id: The integration identifier.
+        file_config: File transfer configuration.
+        **kwargs: Additional execution parameters.
 
         Returns:
-            FlextResult containing execution result.
+        FlextResult containing execution result.
 
         """
         try:
@@ -536,7 +536,7 @@ class FlextOracleOicService(
         """Refresh OAuth2 authentication token.
 
         Returns:
-            FlextResult containing new access token.
+        FlextResult containing new access token.
 
         """
         try:
@@ -554,10 +554,10 @@ class FlextOracleOicService(
         """Validate OAuth2 authentication token.
 
         Args:
-            token: Token to validate.
+        token: Token to validate.
 
         Returns:
-            FlextResult containing validation result.
+        FlextResult containing validation result.
 
         """
         try:
@@ -578,10 +578,10 @@ class FlextOracleOicService(
         """Deploy integration to Oracle OIC.
 
         Args:
-            integration_data: Integration configuration
+        integration_data: Integration configuration
 
         Returns:
-            FlextResult containing integration ID or error
+        FlextResult containing integration ID or error
 
         """
         try:
@@ -613,11 +613,11 @@ class FlextOracleOicService(
         """Apply message router pattern to OIC integration using FlextOracleOicUtilities.
 
         Args:
-            message_data: Message to route
-            routing_rules: Routing rules configuration
+        message_data: Message to route
+        routing_rules: Routing rules configuration
 
         Returns:
-            FlextResult containing routing result or error
+        FlextResult containing routing result or error
 
         """
         try:
@@ -665,11 +665,11 @@ class FlextOracleOicService(
         """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
         Args:
-            request_data: Request to scatter
-            target_endpoints: Target endpoints for scatter
+        request_data: Request to scatter
+        target_endpoints: Target endpoints for scatter
 
         Returns:
-            FlextResult containing scatter-gather result or error
+        FlextResult containing scatter-gather result or error
 
         """
         try:
@@ -715,7 +715,7 @@ class FlextOracleOicService(
         """Get Oracle OIC health status using FlextOracleOicUtilities.
 
         Returns:
-            FlextResult containing validated health status information
+        FlextResult containing validated health status information
 
         """
         try:
@@ -844,7 +844,7 @@ class FlextOracleOicService(
         """Get Oracle OIC performance metrics with analysis using FlextOracleOicUtilities.
 
         Returns:
-            FlextResult containing performance metrics with analysis
+        FlextResult containing performance metrics with analysis
 
         """
         try:
@@ -933,7 +933,7 @@ class FlextOracleOicService(
         """Validate Oracle OIC service business rules.
 
         Returns:
-            FlextResult indicating validation success or failure.
+        FlextResult indicating validation success or failure.
 
         """
         # Validate settings exist
@@ -992,7 +992,7 @@ class FlextOracleOicService(
         """Get or create Oracle OIC client instance.
 
         Returns:
-            FlextResult containing the client instance.
+        FlextResult containing the client instance.
 
         """
         try:

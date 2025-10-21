@@ -53,8 +53,8 @@ class FlextOracleOicClient:
         """Initialize unified Oracle OIC client.
 
         Args:
-            connection_config: OIC connection configuration
-            auth_config: OIC authentication configuration
+        connection_config: OIC connection configuration
+        auth_config: OIC authentication configuration
 
         """
         self.connection_config = connection_config

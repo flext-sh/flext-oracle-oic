@@ -41,7 +41,7 @@ class FlextOracleOicFactory:
         """Show deprecation warning for import paths."""
         message_parts = [
             f"⚠️  DEPRECATED IMPORT: {old_import}",
-            f"✅ USE INSTEAD: {new_import}",
+            f"USE INSTEAD: {new_import}",
             "🔗 This will be removed in version 1.0.0",
             "📖 See FLEXT ORACLE OIC EXT docs for migration guide",
         ]
@@ -59,7 +59,7 @@ class FlextOracleOicFactory:
         Uses singleton config pattern - no config parameter needed.
 
         Returns:
-          FlextResult containing service instance or error
+        FlextResult containing service instance or error
 
         """
         # Railway-oriented service creation - uses singleton config
@@ -86,7 +86,7 @@ class FlextOracleOicFactory:
         """Create OIC Extension service for development.
 
         Returns:
-          FlextResult containing development service or error
+        FlextResult containing development service or error
 
         """
         # Railway-oriented development service creation
@@ -123,7 +123,7 @@ class FlextOracleOicFactory:
         Uses singleton config pattern - no config parameter needed.
 
         Returns:
-            FlextResult containing configured service or error
+        FlextResult containing configured service or error
 
         """
         # Railway-oriented extension setup - uses singleton config

@@ -22,11 +22,11 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Execute Oracle OIC extension operation.
 
             Args:
-                operation: Operation name to execute
-                params: Operation parameters
+            operation: Operation name to execute
+            params: Operation parameters
 
             Returns:
-                FlextResult[dict[str, object]]: Operation result or error
+            FlextResult[dict[str, object]]: Operation result or error
 
             """
             ...
@@ -37,10 +37,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Validate Oracle OIC business rules.
 
             Args:
-                request_data: Request data to validate
+            request_data: Request data to validate
 
             Returns:
-                FlextResult[bool]: Validation success status
+            FlextResult[bool]: Validation success status
 
             """
             ...
@@ -59,10 +59,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """List Oracle OIC integrations.
 
             Args:
-                filters: Optional filters for integration listing
+            filters: Optional filters for integration listing
 
             Returns:
-                FlextResult[list[dict[str, object]]]: Integration list or error
+            FlextResult[list[dict[str, object]]]: Integration list or error
 
             """
             ...
@@ -73,11 +73,11 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Deploy Oracle OIC integration.
 
             Args:
-                integration_id: Integration identifier
-                deployment_config: Deployment configuration
+            integration_id: Integration identifier
+            deployment_config: Deployment configuration
 
             Returns:
-                FlextResult[dict[str, object]]: Deployment result or error
+            FlextResult[dict[str, object]]: Deployment result or error
 
             """
             ...
@@ -88,10 +88,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Get Oracle OIC integration status.
 
             Args:
-                integration_id: Integration identifier
+            integration_id: Integration identifier
 
             Returns:
-                FlextResult[dict[str, object]]: Integration status or error
+            FlextResult[dict[str, object]]: Integration status or error
 
             """
             ...
@@ -100,10 +100,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Activate Oracle OIC integration.
 
             Args:
-                integration_id: Integration identifier
+            integration_id: Integration identifier
 
             Returns:
-                FlextResult[bool]: Activation success status
+            FlextResult[bool]: Activation success status
 
             """
             ...
@@ -118,10 +118,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """List Oracle OIC connections.
 
             Args:
-                connection_type: Optional connection type filter
+            connection_type: Optional connection type filter
 
             Returns:
-                FlextResult[list[dict[str, object]]]: Connection list or error
+            FlextResult[list[dict[str, object]]]: Connection list or error
 
             """
             ...
@@ -130,10 +130,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Test Oracle OIC connection.
 
             Args:
-                connection_id: Connection identifier
+            connection_id: Connection identifier
 
             Returns:
-                FlextResult[dict[str, object]]: Connection test result or error
+            FlextResult[dict[str, object]]: Connection test result or error
 
             """
             ...
@@ -144,10 +144,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Create Oracle OIC connection.
 
             Args:
-                connection_config: Connection configuration
+            connection_config: Connection configuration
 
             Returns:
-                FlextResult[str]: Created connection ID or error
+            FlextResult[str]: Created connection ID or error
 
             """
             ...
@@ -158,11 +158,11 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Update Oracle OIC connection.
 
             Args:
-                connection_id: Connection identifier
-                connection_config: Updated connection configuration
+            connection_id: Connection identifier
+            connection_config: Updated connection configuration
 
             Returns:
-                FlextResult[bool]: Update success status
+            FlextResult[bool]: Update success status
 
             """
             ...
@@ -171,10 +171,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Delete Oracle OIC connection.
 
             Args:
-                connection_id: Connection identifier
+            connection_id: Connection identifier
 
             Returns:
-                FlextResult[bool]: Deletion success status
+            FlextResult[bool]: Deletion success status
 
             """
             ...
@@ -191,11 +191,11 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Apply message router pattern to Oracle OIC integration.
 
             Args:
-                integration_config: Integration configuration
-                routing_rules: Message routing rules
+            integration_config: Integration configuration
+            routing_rules: Message routing rules
 
             Returns:
-                FlextResult[dict[str, object]]: Pattern application result or error
+            FlextResult[dict[str, object]]: Pattern application result or error
 
             """
             ...
@@ -208,11 +208,11 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Apply scatter-gather pattern to Oracle OIC integration.
 
             Args:
-                integration_config: Integration configuration
-                scatter_config: Scatter-gather configuration
+            integration_config: Integration configuration
+            scatter_config: Scatter-gather configuration
 
             Returns:
-                FlextResult[dict[str, object]]: Pattern application result or error
+            FlextResult[dict[str, object]]: Pattern application result or error
 
             """
             ...
@@ -225,11 +225,11 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Apply aggregator pattern to Oracle OIC integration.
 
             Args:
-                integration_config: Integration configuration
-                aggregation_rules: Aggregation rules
+            integration_config: Integration configuration
+            aggregation_rules: Aggregation rules
 
             Returns:
-                FlextResult[dict[str, object]]: Pattern application result or error
+            FlextResult[dict[str, object]]: Pattern application result or error
 
             """
             ...
@@ -240,11 +240,11 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Validate pattern compatibility with integration.
 
             Args:
-                pattern_type: Integration pattern type
-                integration_config: Integration configuration
+            pattern_type: Integration pattern type
+            integration_config: Integration configuration
 
             Returns:
-                FlextResult[bool]: Compatibility validation status
+            FlextResult[bool]: Compatibility validation status
 
             """
             ...
@@ -259,11 +259,11 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Get Oracle OIC integration metrics.
 
             Args:
-                integration_id: Integration identifier
-                time_range: Time range for metrics
+            integration_id: Integration identifier
+            time_range: Time range for metrics
 
             Returns:
-                FlextResult[dict[str, object]]: Integration metrics or error
+            FlextResult[dict[str, object]]: Integration metrics or error
 
             """
             ...
@@ -274,10 +274,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Get Oracle OIC connection health status.
 
             Args:
-                connection_id: Connection identifier
+            connection_id: Connection identifier
 
             Returns:
-                FlextResult[dict[str, object]]: Connection health status or error
+            FlextResult[dict[str, object]]: Connection health status or error
 
             """
             ...
@@ -286,7 +286,7 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Get Oracle OIC system status.
 
             Returns:
-                FlextResult[dict[str, object]]: System status or error.
+            FlextResult[dict[str, object]]: System status or error.
 
             """
             ...
@@ -297,10 +297,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Start Oracle OIC monitoring.
 
             Args:
-                monitoring_config: Monitoring configuration
+            monitoring_config: Monitoring configuration
 
             Returns:
-                FlextResult[bool]: Monitoring start status
+            FlextResult[bool]: Monitoring start status
 
             """
             ...
@@ -319,10 +319,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Initialize Oracle OIC environment.
 
             Args:
-                environment_config: Environment configuration
+            environment_config: Environment configuration
 
             Returns:
-                FlextResult[bool]: Initialization success status
+            FlextResult[bool]: Initialization success status
 
             """
             ...
@@ -337,10 +337,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Backup Oracle OIC configuration.
 
             Args:
-                backup_config: Backup configuration
+            backup_config: Backup configuration
 
             Returns:
-                FlextResult[str]: Backup location or error
+            FlextResult[str]: Backup location or error
 
             """
             ...
@@ -355,10 +355,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Migrate Oracle OIC integrations.
 
             Args:
-                migration_config: Migration configuration
+            migration_config: Migration configuration
 
             Returns:
-                FlextResult[dict[str, object]]: Migration result or error
+            FlextResult[dict[str, object]]: Migration result or error
 
             """
             ...
@@ -373,11 +373,11 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Execute HTTP GET request.
 
             Args:
-                url: Request URL
-                headers: Optional HTTP headers
+            url: Request URL
+            headers: Optional HTTP headers
 
             Returns:
-                FlextResult[object]: HTTP response or error
+            FlextResult[object]: HTTP response or error
 
             """
             ...
@@ -392,12 +392,12 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Execute HTTP POST request.
 
             Args:
-                url: Request URL
-                data: Request data
-                headers: Optional HTTP headers
+            url: Request URL
+            data: Request data
+            headers: Optional HTTP headers
 
             Returns:
-                FlextResult[object]: HTTP response or error
+            FlextResult[object]: HTTP response or error
 
             """
             ...
@@ -412,12 +412,12 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Execute HTTP PUT request.
 
             Args:
-                url: Request URL
-                data: Request data
-                headers: Optional HTTP headers
+            url: Request URL
+            data: Request data
+            headers: Optional HTTP headers
 
             Returns:
-                FlextResult[object]: HTTP response or error
+            FlextResult[object]: HTTP response or error
 
             """
             ...
@@ -428,11 +428,11 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Execute HTTP DELETE request.
 
             Args:
-                url: Request URL
-                headers: Optional HTTP headers
+            url: Request URL
+            headers: Optional HTTP headers
 
             Returns:
-                FlextResult[bool]: Delete success status
+            FlextResult[bool]: Delete success status
 
             """
             ...
@@ -447,10 +447,10 @@ class FlextOracleOicProtocols(FlextProtocols):
             """Authenticate with Oracle OIC.
 
             Args:
-                credentials: Authentication credentials
+            credentials: Authentication credentials
 
             Returns:
-                FlextResult[dict[str, object]]: Authentication result or error
+            FlextResult[dict[str, object]]: Authentication result or error
 
             """
             ...

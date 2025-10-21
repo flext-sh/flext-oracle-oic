@@ -25,26 +25,26 @@ class FlextOracleOicConstants(FlextConstants):
     following FLEXT architectural standards with flat structure and no duplication.
 
     Usage:
-        ```python
-        from flext_oracle_oic.constants import FlextOracleOicConstants
+    ```python
+    from flext_oracle_oic.constants import FlextOracleOicConstants
 
-        # Access Oracle OIC specific constants
-        api_version = FlextOracleOicConstants.OIC.DEFAULT_API_VERSION
-        timeout = FlextOracleOicConstants.OIC.DEFAULT_TIMEOUT
-        page_size = FlextOracleOicConstants.OIC.DEFAULT_PAGE_SIZE
+    # Access Oracle OIC specific constants
+    api_version = FlextOracleOicConstants.OIC.DEFAULT_API_VERSION
+    timeout = FlextOracleOicConstants.OIC.DEFAULT_TIMEOUT
+    page_size = FlextOracleOicConstants.OIC.DEFAULT_PAGE_SIZE
 
-        # Access inherited FlextConstants
-        http_ok = FlextOracleOicConstants.Platform.HTTP_STATUS_OK
-        default_timeout = FlextOracleOicConstants.Defaults.TIMEOUT
-        ```
+    # Access inherited FlextConstants
+    http_ok = FlextOracleOicConstants.Platform.HTTP_STATUS_OK
+    default_timeout = FlextOracleOicConstants.Defaults.TIMEOUT
+    ```
 
-    **IMPLEMENTATION NOTES**:
+    IMPLEMENTATION NOTES:
     - Inherits all constants from FlextConstants base class
     - Flat structure with nested namespaces for organization
     - Single source of truth for all Oracle OIC Extension constants
     - No duplication with FlextConstants or other modules
     - Type-safe constants with Final annotations
-    - Comprehensive documentation and usage examples
+    - Complete documentation and usage examples
     """
 
     class OIC:

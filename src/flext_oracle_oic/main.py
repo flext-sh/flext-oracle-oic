@@ -86,21 +86,21 @@ class FlextOracleOicCli(FlextService[None]):
             """Test connection to Oracle OIC instance (backward compatibility)."""
             result = self._cli_instance.test_connection()
             if result.is_failure:
-                self._cli_instance.CliOutputHelper.print(f"❌ {result.error}")
+                self._cli_instance.CliOutputHelper.print(f"{result.error}")
                 sys.exit(1)
 
         def list_integrations(self) -> None:
             """List Oracle OIC integrations (backward compatibility)."""
             result = self._cli_instance.list_integrations()
             if result.is_failure:
-                self._cli_instance.CliOutputHelper.print(f"❌ {result.error}")
+                self._cli_instance.CliOutputHelper.print(f"{result.error}")
                 sys.exit(1)
 
         def show_version(self) -> None:
             """Show Oracle OIC Extension version (backward compatibility)."""
             result = self._cli_instance.show_version()
             if result.is_failure:
-                self._cli_instance.CliOutputHelper.print(f"❌ {result.error}")
+                self._cli_instance.CliOutputHelper.print(f"{result.error}")
                 sys.exit(1)
 
     # CLI Command Methods
@@ -109,7 +109,7 @@ class FlextOracleOicCli(FlextService[None]):
         """Test connection to Oracle OIC instance.
 
         Returns:
-            FlextResult indicating success or failure.
+        FlextResult indicating success or failure.
 
         """
         try:
@@ -132,9 +132,9 @@ class FlextOracleOicCli(FlextService[None]):
                 connection_result = service.test_connection()
                 if connection_result.is_success:
                     if self.logger:
-                        self.logger.info("✅ Oracle OIC connection successful!")
+                        self.logger.info("Oracle OIC connection successful!")
                     self.CliOutputHelper.print(
-                        "✅ Connection to Oracle OIC established successfully"
+                        "Connection to Oracle OIC established successfully"
                     )
                     return FlextResult[None].ok(None)
                 return FlextResult[None].fail(
@@ -150,7 +150,7 @@ class FlextOracleOicCli(FlextService[None]):
         """List Oracle OIC integrations.
 
         Returns:
-            FlextResult indicating success or failure.
+        FlextResult indicating success or failure.
 
         """
         try:
@@ -206,7 +206,7 @@ class FlextOracleOicCli(FlextService[None]):
         """Show Oracle OIC Extension version.
 
         Returns:
-            FlextResult indicating success or failure.
+        FlextResult indicating success or failure.
 
         """
         try:
@@ -224,10 +224,10 @@ class FlextOracleOicCli(FlextService[None]):
         """Run the specified CLI command.
 
         Args:
-            command: The command to run ('test-connection', 'list-integrations', 'version').
+        command: The command to run ('test-connection', 'list-integrations', 'version').
 
         Returns:
-            FlextResult indicating success or failure.
+        FlextResult indicating success or failure.
 
         """
         commands = {
@@ -285,10 +285,10 @@ class FlextOracleOicCli(FlextService[None]):
         """Run the CLI with the given arguments.
 
         Args:
-            args: Command line arguments (defaults to sys.argv[1:]).
+        args: Command line arguments (defaults to sys.argv[1:]).
 
         Returns:
-            Exit code (0 for success, non-zero for failure).
+        Exit code (0 for success, non-zero for failure).
 
         """
         parser = self.create_parser()

@@ -55,7 +55,7 @@ class FlextOracleOicApi(FlextService[None]):
         """Initialize FlextOracleOic facade with complete ecosystem integration.
 
         Args:
-            config: Oracle OIC configuration. If None, uses global instance.
+        config: Oracle OIC configuration. If None, uses global instance.
 
         """
         super().__init__()
@@ -95,7 +95,7 @@ class FlextOracleOicApi(FlextService[None]):
         """List all Oracle OIC integrations.
 
         Returns:
-            FlextResult containing list of integration information.
+        FlextResult containing list of integration information.
 
         """
         return self._get_service().list_integrations()
@@ -107,10 +107,10 @@ class FlextOracleOicApi(FlextService[None]):
         """Get specific Oracle OIC integration by ID.
 
         Args:
-            integration_id: The integration identifier.
+        integration_id: The integration identifier.
 
         Returns:
-            FlextResult containing integration information.
+        FlextResult containing integration information.
 
         """
         return self._get_service().get_integration(integration_id)
@@ -122,10 +122,10 @@ class FlextOracleOicApi(FlextService[None]):
         """Create new Oracle OIC integration.
 
         Args:
-            integration_data: Integration configuration data.
+        integration_data: Integration configuration data.
 
         Returns:
-            FlextResult containing created integration information.
+        FlextResult containing created integration information.
 
         """
         return self._get_service().create_integration(integration_data)
@@ -138,11 +138,11 @@ class FlextOracleOicApi(FlextService[None]):
         """Update existing Oracle OIC integration.
 
         Args:
-            integration_id: The integration identifier.
-            integration_data: Updated integration configuration.
+        integration_id: The integration identifier.
+        integration_data: Updated integration configuration.
 
         Returns:
-            FlextResult containing updated integration information.
+        FlextResult containing updated integration information.
 
         """
         return self._get_service().update_integration(integration_id, integration_data)
@@ -151,10 +151,10 @@ class FlextOracleOicApi(FlextService[None]):
         """Delete Oracle OIC integration.
 
         Args:
-            integration_id: The integration identifier.
+        integration_id: The integration identifier.
 
         Returns:
-            FlextResult indicating success or failure.
+        FlextResult indicating success or failure.
 
         """
         return self._get_service().delete_integration(integration_id)
@@ -163,10 +163,10 @@ class FlextOracleOicApi(FlextService[None]):
         """Activate Oracle OIC integration.
 
         Args:
-            integration_id: The integration identifier.
+        integration_id: The integration identifier.
 
         Returns:
-            FlextResult indicating success or failure.
+        FlextResult indicating success or failure.
 
         """
         return self._get_service().activate_integration(integration_id)
@@ -175,10 +175,10 @@ class FlextOracleOicApi(FlextService[None]):
         """Deactivate Oracle OIC integration.
 
         Args:
-            integration_id: The integration identifier.
+        integration_id: The integration identifier.
 
         Returns:
-            FlextResult indicating success or failure.
+        FlextResult indicating success or failure.
 
         """
         return self._get_service().deactivate_integration(integration_id)
@@ -189,7 +189,7 @@ class FlextOracleOicApi(FlextService[None]):
         """Test connection to Oracle OIC instance.
 
         Returns:
-            FlextResult containing connection test result.
+        FlextResult containing connection test result.
 
         """
         return self._get_service().test_connection()
@@ -205,12 +205,12 @@ class FlextOracleOicApi(FlextService[None]):
         """Execute app-driven orchestration pattern.
 
         Args:
-            integration_id: The integration identifier.
-            payload: Orchestration payload data.
-            **kwargs: Additional execution parameters.
+        integration_id: The integration identifier.
+        payload: Orchestration payload data.
+        **kwargs: Additional execution parameters.
 
         Returns:
-            FlextResult containing execution result.
+        FlextResult containing execution result.
 
         """
         return self._get_service().execute_app_driven_orchestration(
@@ -226,12 +226,12 @@ class FlextOracleOicApi(FlextService[None]):
         """Execute scheduled orchestration pattern.
 
         Args:
-            integration_id: The integration identifier.
-            schedule_config: Schedule configuration.
-            **kwargs: Additional execution parameters.
+        integration_id: The integration identifier.
+        schedule_config: Schedule configuration.
+        **kwargs: Additional execution parameters.
 
         Returns:
-            FlextResult containing execution result.
+        FlextResult containing execution result.
 
         """
         return self._get_service().execute_scheduled_orchestration(
@@ -247,12 +247,12 @@ class FlextOracleOicApi(FlextService[None]):
         """Execute file transfer pattern.
 
         Args:
-            integration_id: The integration identifier.
-            file_config: File transfer configuration.
-            **kwargs: Additional execution parameters.
+        integration_id: The integration identifier.
+        file_config: File transfer configuration.
+        **kwargs: Additional execution parameters.
 
         Returns:
-            FlextResult containing execution result.
+        FlextResult containing execution result.
 
         """
         return self._get_service().execute_file_transfer(
@@ -265,7 +265,7 @@ class FlextOracleOicApi(FlextService[None]):
         """Get Oracle OIC health status.
 
         Returns:
-            FlextResult containing health status information.
+        FlextResult containing health status information.
 
         """
         return self._get_service().get_health_status()
@@ -274,7 +274,7 @@ class FlextOracleOicApi(FlextService[None]):
         """Get Oracle OIC performance metrics.
 
         Returns:
-            FlextResult containing performance metrics.
+        FlextResult containing performance metrics.
 
         """
         return self._get_service().get_performance_metrics()
@@ -285,7 +285,7 @@ class FlextOracleOicApi(FlextService[None]):
         """Refresh OAuth2 authentication token.
 
         Returns:
-            FlextResult containing new access token.
+        FlextResult containing new access token.
 
         """
         return self._get_service().refresh_auth_token()
@@ -294,10 +294,10 @@ class FlextOracleOicApi(FlextService[None]):
         """Validate OAuth2 authentication token.
 
         Args:
-            token: Token to validate.
+        token: Token to validate.
 
         Returns:
-            FlextResult containing validation result.
+        FlextResult containing validation result.
 
         """
         return self._get_service().validate_auth_token(token)
@@ -308,7 +308,7 @@ class FlextOracleOicApi(FlextService[None]):
         """Get current connection configuration context.
 
         Returns:
-            Dictionary containing connection context information.
+        Dictionary containing connection context information.
 
         """
         return {
@@ -321,7 +321,7 @@ class FlextOracleOicApi(FlextService[None]):
         """Get current authentication configuration context.
 
         Returns:
-            Dictionary containing authentication context information.
+        Dictionary containing authentication context information.
 
         """
         return {
@@ -334,7 +334,7 @@ class FlextOracleOicApi(FlextService[None]):
         """Get current features configuration context.
 
         Returns:
-            Dictionary containing features context information.
+        Dictionary containing features context information.
 
         """
         return {

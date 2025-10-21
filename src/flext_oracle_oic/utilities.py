@@ -1,13 +1,13 @@
 """Oracle OIC Extension utilities module.
 
 This module provides domain-specific utilities for Oracle Integration Cloud (OIC)
-operations, extending FlextUtilities with nested classes for comprehensive
+operations, extending FlextUtilities with nested classes for complete
 Oracle OIC integration functionality.
 
-**FLEXT COMPLIANCE**: Follows [Project]Utilities pattern with:
+FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 - Single unified class extending FlextUtilities
 - Nested classes for domain-specific functionality
-- Python 3.13+ advanced features and Pydantic 2.11+
+- Python 3.13+ features and Pydantic 2.11+
 - Railway-oriented programming with FlextResult
 - Type-safe operations with proper validation
 - SOLID principles with clean separation of concerns
@@ -29,10 +29,10 @@ __all__ = ["FlextOracleOicUtilities"]
 class FlextOracleOicUtilities(FlextUtilities):
     """Unified Oracle OIC Extension utilities.
 
-    Extends FlextUtilities with comprehensive Oracle Integration Cloud
+    Extends FlextUtilities with complete Oracle Integration Cloud
     functionality organized in domain-specific nested classes.
 
-    **DOMAIN COVERAGE**:
+    DOMAIN COVERAGE:
     - Integration validation and lifecycle management
     - Connection testing and configuration validation
     - Authentication and security operations
@@ -40,7 +40,7 @@ class FlextOracleOicUtilities(FlextUtilities):
     - Pattern-based integration analysis
     - Monitoring and health check utilities
 
-    **DESIGN PRINCIPLES**:
+    DESIGN PRINCIPLES:
     - Single responsibility per nested class
     - Immutable operations with FlextResult
     - Type-safe validation with Pydantic 2.11+
@@ -72,10 +72,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate Oracle OIC integration name.
 
             Args:
-                name: Integration name to validate
+            name: Integration name to validate
 
             Returns:
-                FlextResult containing validated name or validation error
+            FlextResult containing validated name or validation error
 
             """
             if not isinstance(name, str):
@@ -110,10 +110,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate Oracle OIC integration status.
 
             Args:
-                status: Integration status to validate
+            status: Integration status to validate
 
             Returns:
-                FlextResult containing validated status or error
+            FlextResult containing validated status or error
 
             """
             if not isinstance(status, str):
@@ -140,10 +140,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate Oracle OIC integration version format.
 
             Args:
-                version: Version string to validate (format: XX.XX.XXXX)
+            version: Version string to validate (format: XX.XX.XXXX)
 
             Returns:
-                FlextResult containing validated version or error
+            FlextResult containing validated version or error
 
             """
             if not isinstance(version, str):
@@ -166,10 +166,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate complete Oracle OIC integration data.
 
             Args:
-                integration_data: Integration configuration data
+            integration_data: Integration configuration data
 
             Returns:
-                FlextResult containing validated data or validation errors
+            FlextResult containing validated data or validation errors
 
             """
             if not isinstance(integration_data, dict):
@@ -241,10 +241,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate Oracle OIC connection type.
 
             Args:
-                connection_type: Connection type to validate
+            connection_type: Connection type to validate
 
             Returns:
-                FlextResult containing validated type or error
+            FlextResult containing validated type or error
 
             """
             if not isinstance(connection_type, str):
@@ -271,10 +271,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate Oracle OIC connection status.
 
             Args:
-                status: Connection status to validate
+            status: Connection status to validate
 
             Returns:
-                FlextResult containing validated status or error
+            FlextResult containing validated status or error
 
             """
             if not isinstance(status, str):
@@ -301,10 +301,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate Oracle OIC base URL format.
 
             Args:
-                base_url: Base URL to validate
+            base_url: Base URL to validate
 
             Returns:
-                FlextResult containing validated URL or error
+            FlextResult containing validated URL or error
 
             """
             if not isinstance(base_url, str):
@@ -359,10 +359,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate OAuth2 client ID.
 
             Args:
-                client_id: OAuth2 client ID to validate
+            client_id: OAuth2 client ID to validate
 
             Returns:
-                FlextResult containing validated client ID or error
+            FlextResult containing validated client ID or error
 
             """
             if not isinstance(client_id, str):
@@ -390,10 +390,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate OAuth2 client secret.
 
             Args:
-                client_secret: OAuth2 client secret to validate
+            client_secret: OAuth2 client secret to validate
 
             Returns:
-                FlextResult containing validated secret or error
+            FlextResult containing validated secret or error
 
             """
             if not isinstance(client_secret, SecretStr):
@@ -422,10 +422,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate OAuth2 token endpoint URL.
 
             Args:
-                token_url: OAuth2 token URL to validate
+            token_url: OAuth2 token URL to validate
 
             Returns:
-                FlextResult containing validated URL or error
+            FlextResult containing validated URL or error
 
             """
             if not isinstance(token_url, str):
@@ -478,12 +478,12 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Build Oracle OIC integration API endpoint.
 
             Args:
-                base_url: OIC instance base URL
-                api_version: API version (default: v1)
-                integration_id: Optional specific integration ID
+            base_url: OIC instance base URL
+            api_version: API version (default: v1)
+            integration_id: Optional specific integration ID
 
             Returns:
-                FlextResult containing constructed endpoint URL or error
+            FlextResult containing constructed endpoint URL or error
 
             """
             # Validate base URL
@@ -516,12 +516,12 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Build Oracle OIC connection API endpoint.
 
             Args:
-                base_url: OIC instance base URL
-                api_version: API version (default: v1)
-                connection_id: Optional specific connection ID
+            base_url: OIC instance base URL
+            api_version: API version (default: v1)
+            connection_id: Optional specific connection ID
 
             Returns:
-                FlextResult containing constructed endpoint URL or error
+            FlextResult containing constructed endpoint URL or error
 
             """
             # Validate base URL
@@ -556,12 +556,12 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Build Oracle OIC API request headers.
 
             Args:
-                auth_token: Optional authentication token
-                content_type: Content type header (default: application/json)
-                additional_headers: Optional additional headers
+            auth_token: Optional authentication token
+            content_type: Content type header (default: application/json)
+            additional_headers: Optional additional headers
 
             Returns:
-                FlextResult containing constructed headers or error
+            FlextResult containing constructed headers or error
 
             """
             headers: dict[str, str] = {
@@ -605,10 +605,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Analyze Oracle OIC integration to determine pattern type.
 
             Args:
-                integration_data: Integration configuration data
+            integration_data: Integration configuration data
 
             Returns:
-                FlextResult containing detected pattern or analysis error
+            FlextResult containing detected pattern or analysis error
 
             """
             if not isinstance(integration_data, dict):
@@ -652,11 +652,11 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate Oracle OIC integration pattern configuration.
 
             Args:
-                pattern_type: Integration pattern type
-                configuration: Pattern-specific configuration
+            pattern_type: Integration pattern type
+            configuration: Pattern-specific configuration
 
             Returns:
-                FlextResult containing validated configuration or error
+            FlextResult containing validated configuration or error
 
             """
             if (
@@ -720,10 +720,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Validate Oracle OIC health check data.
 
             Args:
-                health_data: Health check response data
+            health_data: Health check response data
 
             Returns:
-                FlextResult containing validated health data or error
+            FlextResult containing validated health data or error
 
             """
             if not isinstance(health_data, dict):
@@ -776,10 +776,10 @@ class FlextOracleOicUtilities(FlextUtilities):
             """Analyze Oracle OIC performance metrics.
 
             Args:
-                metrics: Performance metrics data
+            metrics: Performance metrics data
 
             Returns:
-                FlextResult containing analysis results or error
+            FlextResult containing analysis results or error
 
             """
             if not isinstance(metrics, dict):

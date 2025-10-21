@@ -106,7 +106,7 @@ class FlextOracleOicExtServices(
             """Execute the main domain service operation.
 
             Returns:
-                FlextResult containing list of OIC integrations or error
+            FlextResult containing list of OIC integrations or error
 
             """
             # Railway-oriented execution - delegate to list_integrations
@@ -116,7 +116,7 @@ class FlextOracleOicExtServices(
             """Validate Oracle OIC service business rules using FlextOracleOicUtilities.
 
             Returns:
-                FlextResult[None]: The validation result
+            FlextResult[None]: The validation result
 
             """
             # Validate settings exist
@@ -169,7 +169,7 @@ class FlextOracleOicExtServices(
             """Validate service configuration.
 
             Returns:
-                FlextResult[None]: The validation result
+            FlextResult[None]: The validation result
 
             """
             return self.validate_business_rules()
@@ -178,7 +178,7 @@ class FlextOracleOicExtServices(
             """Get authenticated OIC client.
 
             Returns:
-                FlextResult containing client or error
+            FlextResult containing client or error
 
             """
             # Railway-oriented client creation
@@ -271,10 +271,10 @@ class FlextOracleOicExtServices(
             """List Oracle OIC integrations.
 
             Args:
-                status_filter: Filter by integration status
+            status_filter: Filter by integration status
 
             Returns:
-                FlextResult containing integration info list or error
+            FlextResult containing integration info list or error
 
             """
             # Railway-oriented integration listing
@@ -347,10 +347,10 @@ class FlextOracleOicExtServices(
             """List Oracle OIC connections.
 
             Args:
-                type_filter: Filter by connection type
+            type_filter: Filter by connection type
 
             Returns:
-                FlextResult containing connection info list or error
+            FlextResult containing connection info list or error
 
             """
             # Railway-oriented connection listing
@@ -407,7 +407,7 @@ class FlextOracleOicExtServices(
             """Test connection to Oracle OIC.
 
             Returns:
-                FlextResult containing connection status or error
+            FlextResult containing connection status or error
 
             """
             # Railway-oriented connection testing
@@ -436,10 +436,10 @@ class FlextOracleOicExtServices(
             """Deploy integration to Oracle OIC.
 
             Args:
-                integration_data: Integration configuration
+            integration_data: Integration configuration
 
             Returns:
-                FlextResult containing integration ID or error
+            FlextResult containing integration ID or error
 
             """
             # Railway-oriented integration deployment
@@ -518,10 +518,10 @@ class FlextOracleOicExtServices(
             """Initialize OIC pattern service.
 
             Args:
-                oic_service: Main OIC extension service
+            oic_service: Main OIC extension service
 
             Returns:
-                object: Description of return value.
+            object: Description of return value.
 
             """
             self.oic_service = oic_service
@@ -535,11 +535,11 @@ class FlextOracleOicExtServices(
             """Apply message router pattern to OIC integration using FlextOracleOicUtilities.
 
             Args:
-                message_data: Message to route
-                routing_rules: Routing rules configuration
+            message_data: Message to route
+            routing_rules: Routing rules configuration
 
             Returns:
-                FlextResult containing routing result or error
+            FlextResult containing routing result or error
 
             """
             try:
@@ -586,11 +586,11 @@ class FlextOracleOicExtServices(
             """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
             Args:
-                request_data: Request to scatter
-                target_endpoints: Target endpoints for scatter
+            request_data: Request to scatter
+            target_endpoints: Target endpoints for scatter
 
             Returns:
-                FlextResult containing scatter-gather result or error
+            FlextResult containing scatter-gather result or error
 
             """
             try:
@@ -689,10 +689,10 @@ class FlextOracleOicExtServices(
             """Activate an Oracle OIC integration.
 
             Args:
-                integration_id: Integration identifier
+            integration_id: Integration identifier
 
             Returns:
-                FlextResult containing integration status or error
+            FlextResult containing integration status or error
 
             """
             try:
@@ -747,10 +747,10 @@ class FlextOracleOicExtServices(
             """Deactivate an Oracle OIC integration.
 
             Args:
-                integration_id: Integration identifier
+            integration_id: Integration identifier
 
             Returns:
-                FlextResult containing integration status or error
+            FlextResult containing integration status or error
 
             """
             try:
@@ -815,7 +815,7 @@ class FlextOracleOicExtServices(
             """Initialize monitoring service.
 
             Args:
-                client: HTTP client (requests.Session or mock)
+            client: HTTP client (requests.Session or mock)
 
             """
             self.client = client
@@ -825,7 +825,7 @@ class FlextOracleOicExtServices(
             """Get Oracle OIC health status using FlextOracleOicUtilities.
 
             Returns:
-                Dictionary containing validated health status information
+            Dictionary containing validated health status information
 
             """
             try:
@@ -911,7 +911,7 @@ class FlextOracleOicExtServices(
             """Get Oracle OIC performance metrics with analysis using FlextOracleOicUtilities.
 
             Returns:
-                Dictionary containing performance metrics with analysis
+            Dictionary containing performance metrics with analysis
 
             """
             try:
