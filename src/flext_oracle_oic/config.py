@@ -13,7 +13,7 @@ from __future__ import annotations
 from typing import Literal, Self
 
 from flext_core import FlextConfig, FlextResult
-from pydantic import Field, SecretStr, field_validator, model_validator
+from pydantic import AnyUrl, Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
@@ -50,7 +50,7 @@ class FlextOracleOicConfig(FlextConfig):
     )
 
     # Oracle OIC Connection Configuration using FlextOracleOicConstants for defaults
-    base_url: str = Field(
+    base_url: AnyUrl = Field(
         default=FlextOracleOicConstants.OIC.DEFAULT_BASE_URL,
         description="Oracle OIC base URL",
     )
@@ -97,7 +97,7 @@ class FlextOracleOicConfig(FlextConfig):
         description="OAuth2 client secret (sensitive)",
     )
 
-    oauth_token_url: str = Field(
+    oauth_token_url: AnyUrl = Field(
         default=FlextOracleOicConstants.Auth.DEFAULT_OAUTH_TOKEN_URL,
         description="OAuth2 token URL",
     )
@@ -135,29 +135,6 @@ class FlextOracleOicConfig(FlextConfig):
         default="0.9.0",
         description="Project version",
     )
-
-    # Pydantic 2.11+ field validators
-    @field_validator("base_url")
-    @classmethod
-    def validate_base_url(cls, v: str) -> str:
-        """Validate base URL format using FlextOracleOicUtilities."""
-        result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(v)
-        if result.is_failure:
-            error_msg = result.error
-            raise ValueError(error_msg)
-        return result.value
-
-    @field_validator("oauth_token_url")
-    @classmethod
-    def validate_oauth_token_url(cls, v: str) -> str:
-        """Validate OAuth token URL format using FlextOracleOicUtilities."""
-        result = (
-            FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_token_url(v)
-        )
-        if result.is_failure:
-            error_msg = result.error
-            raise ValueError(error_msg)
-        return result.value
 
     @model_validator(mode="after")
     def validate_oracle_oic_configuration_consistency(self) -> Self:

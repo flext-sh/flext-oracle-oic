@@ -22,7 +22,7 @@ try:
     __author__ = _metadata["Author"]
     __author_email__ = _metadata["Author-Email"]
     __license__ = _metadata["License"]
-    __url__ = _metadata["Home-Page"]
+    __url__ = _metadata.get("Home-Page", "")
 except Exception:
     # Fallback for development when package is not installed
     __version__ = "0.9.9"

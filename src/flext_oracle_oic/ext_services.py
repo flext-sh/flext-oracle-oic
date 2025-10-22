@@ -127,15 +127,7 @@ class FlextOracleOicExtServices(
             if not self.settings.base_url:
                 return FlextResult[None].fail("Base URL is required")
 
-            base_url_result = (
-                FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
-                    self.settings.base_url
-                )
-            )
-            if base_url_result.is_failure:
-                return FlextResult[None].fail(
-                    f"Base URL validation: {base_url_result.error}"
-                )
+            # Base URL validation already performed by Pydantic AnyUrl type
 
             # Validate auth settings using utilities
             if not self.settings.oauth_client_id:
@@ -155,13 +147,7 @@ class FlextOracleOicExtServices(
             if not self.settings.oauth_token_url:
                 return FlextResult[None].fail("OAuth token URL is required")
 
-            token_url_result = FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_token_url(
-                self.settings.oauth_token_url
-            )
-            if token_url_result.is_failure:
-                return FlextResult[None].fail(
-                    f"OAuth token URL validation: {token_url_result.error}"
-                )
+            # Token URL validation already performed by Pydantic AnyUrl type
 
             return FlextResult[None].ok(None)
 

@@ -18,9 +18,9 @@ from __future__ import annotations
 import re
 from datetime import UTC, datetime
 from typing import ClassVar
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin
 
-from flext_core import FlextLogger, FlextResult, FlextTypes, FlextUtilities
+from flext_core import FlextResult, FlextTypes, FlextUtilities
 from pydantic import SecretStr
 
 __all__ = ["FlextOracleOicUtilities"]
@@ -296,51 +296,6 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             return FlextResult[str].ok(status)
 
-        @staticmethod
-        def validate_base_url(base_url: str) -> FlextResult[str]:
-            """Validate Oracle OIC base URL format.
-
-            Args:
-            base_url: Base URL to validate
-
-            Returns:
-            FlextResult containing validated URL or error
-
-            """
-            if not isinstance(base_url, str):
-                return FlextResult[str].fail("Base URL must be a string")
-
-            base_url = base_url.strip()
-            if not base_url:
-                return FlextResult[str].fail("Base URL cannot be empty")
-
-            # Parse URL
-            try:
-                parsed = urlparse(base_url)
-                if not parsed.scheme:
-                    return FlextResult[str].fail(
-                        "Base URL must include protocol (https://)"
-                    )
-
-                if parsed.scheme not in {"http", "https"}:
-                    return FlextResult[str].fail(
-                        "Base URL must use HTTP or HTTPS protocol"
-                    )
-
-                if not parsed.netloc:
-                    return FlextResult[str].fail("Base URL must include domain")
-
-                # Oracle OIC URLs should typically use HTTPS
-                if parsed.scheme == "http":
-                    FlextLogger(__name__).warning(
-                        "Base URL uses HTTP instead of HTTPS - consider security implications"
-                    )
-
-                return FlextResult[str].ok(base_url.rstrip("/"))
-
-            except Exception as e:
-                return FlextResult[str].fail(f"Invalid URL format: {e}")
-
     class AuthenticationValidation:
         """Oracle OIC authentication validation utilities."""
 
@@ -416,44 +371,6 @@ class FlextOracleOicUtilities(FlextUtilities):
                 )
 
             return FlextResult[SecretStr].ok(client_secret)
-
-        @staticmethod
-        def validate_oauth_token_url(token_url: str) -> FlextResult[str]:
-            """Validate OAuth2 token endpoint URL.
-
-            Args:
-            token_url: OAuth2 token URL to validate
-
-            Returns:
-            FlextResult containing validated URL or error
-
-            """
-            if not isinstance(token_url, str):
-                return FlextResult[str].fail("OAuth token URL must be a string")
-
-            token_url = token_url.strip()
-            if (
-                len(token_url)
-                < FlextOracleOicUtilities.AuthenticationValidation.MIN_TOKEN_URL_LENGTH
-            ):
-                return FlextResult[str].fail("OAuth token URL too short")
-
-            # Validate URL format
-            url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
-                token_url
-            )
-            if url_result.is_failure:
-                return FlextResult[str].fail(
-                    f"Token URL validation: {url_result.error}"
-                )
-
-            # Additional OAuth-specific validation
-            if "/oauth" not in token_url.lower() and "/token" not in token_url.lower():
-                FlextLogger(__name__).warning(
-                    "Token URL may not be a standard OAuth endpoint"
-                )
-
-            return FlextResult[str].ok(token_url)
 
     class APIRequestBuilder:
         """Oracle OIC API request construction utilities."""
