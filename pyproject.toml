@@ -18,12 +18,13 @@
     dependencies = [
         "httpx (>=0.28.1)",
         "meltano[edk] (>=3.0.0)",
-        "pydantic (>=2.11.7)",
-        "pydantic-settings (>=2.10.1)",
+        "pydantic (>=2.12.3)",
+        "pydantic-settings (>=2.11.0)",
         "requests (>=2.31.0)",
         "tenacity (>=9.1.2)",
         "typer (>=0.12.0)",
         "urllib3 (>=2.0.0)",
+        "pydantic-core (>=2.41.4)",
     ]
     description = "FLEXT Oracle OIC Extension - Advanced Oracle Integration Cloud Extensions"
     keywords = [
@@ -109,7 +110,7 @@
             develop = true
             path    = "../flext-core"
 
-        [tool.poetry.dependencies.flext-observability]
+                        [tool.poetry.dependencies.flext-observability]
             develop = true
             path    = "../flext-observability"
 
@@ -127,19 +128,21 @@
         radon          = ">=6.0.1"
         ruff           = ">=0.12.3"
         vulture        = ">=2.13"
+        meltano-edk    = {git = "https://github.com/meltano/edk.git"}
 
     [tool.poetry.group.test.dependencies]
-        factory-boy         = ">=3.3.1"
+        
+        
+factory-boy         = ">=3.3.1"
         faker               = ">=37.4.0"
         hypothesis          = ">=6.125.0"
         pytest              = ">=8.4.0"
         pytest-benchmark    = ">=5.1.0"
         pytest-clarity      = ">=1.0.1"
-        pytest-cov          = ">=6.2.0"
+        pytest-cov = "=7.0.0"
         pytest-deadfixtures = ">=2.2.1"
         pytest-env          = ">=1.1.5"
         pytest-mock         = ">=3.14.0"
-        pytest-randomly     = ">=3.16.0"
         pytest-sugar        = ">=1.0.0"
         pytest-timeout      = ">=2.4.0"
         pytest-xdist        = ">=3.8.0"
@@ -156,6 +159,3 @@
     [tool.poetry.group.security.dependencies]
         bandit    = ">=1.8.0"
         pip-audit = ">=2.7.3"
-
-        [tool.poetry.group.dev.dependencies.meltano-edk]
-            git = "https://github.com/meltano/edk.git"
