@@ -243,7 +243,7 @@ class FlextOracleOicExtServices(
             """Create client instance."""
             try:
                 client = FlextOracleOicClient(connection_config, auth_config)
-                setattr(self, "_client", client)
+                self._client = client
                 return FlextResult[FlextOracleOicClient].ok(client)
             except Exception as e:
                 error_msg = f"Failed to create OIC client instance: {e}"

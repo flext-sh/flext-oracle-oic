@@ -164,7 +164,7 @@ class FlextOracleOicClient:
         try:
             # Handle response.body properly - it could be str, dict, or None
             if hasattr(response, "body"):
-                body = getattr(response, "body")
+                body = response.body
             else:
                 return FlextResult[str].fail("Invalid response format")
 
@@ -309,8 +309,8 @@ class FlextOracleOicClient:
         try:
             # Parse response body properly - it could be str, dict, or None
             if hasattr(response, "headers") and hasattr(response, "body"):
-                headers = getattr(response, "headers")
-                body = getattr(response, "body")
+                headers = response.headers
+                body = response.body
 
                 if headers.get("content-type", "").startswith("application/json"):
                     if isinstance(body, dict):
