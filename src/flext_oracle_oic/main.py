@@ -16,7 +16,6 @@ import sys
 from typing import NoReturn
 
 from flext_core import (
-    FlextBus,
     FlextContainer,
     FlextContext,
     FlextDispatcher,
@@ -51,7 +50,6 @@ class FlextOracleOicCli(FlextService[None]):
         # Complete FLEXT ecosystem integration for CLI
         self._container = FlextContainer.get_global()
         self._context = FlextContext()
-        self._bus = FlextBus()
         self._dispatcher = FlextDispatcher()
         self._registry = FlextRegistry(dispatcher=self._dispatcher)
 

@@ -14,7 +14,6 @@ from __future__ import annotations
 from typing import Self
 
 from flext_core import (
-    FlextBus,
     FlextContainer,
     FlextContext,
     FlextDispatcher,
@@ -69,7 +68,6 @@ class FlextOracleOicApi(FlextService[None]):
         # Complete FLEXT ecosystem integration
         self._container = FlextContainer.get_global()
         self._context = FlextContext()
-        self._bus = FlextBus()
         self._dispatcher = FlextDispatcher()
         self._registry = FlextRegistry(dispatcher=self._dispatcher)
 
