@@ -15,14 +15,9 @@ import base64
 import json as json_module
 from typing import Self, cast
 
+from flext_api import FlextApiClient
+from flext_api.config import FlextApiConfig
 from flext_core import FlextLogger, FlextResult
-
-try:
-    from flext_api import FlextApiClient
-except ImportError:
-    # Type stub for when flext_api is not available
-
-    FlextApiClient = object
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.models import FlextOracleOicModels
@@ -60,7 +55,7 @@ class FlextOracleOicClient:
         self.connection_config = connection_config
         self.auth_config = auth_config
         self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
-        self._client: FlextApiClient | None = None
+        self._client: object | None = None
         self._access_token: str | None = None
 
     # Authentication Methods
@@ -130,11 +125,6 @@ class FlextOracleOicClient:
         """Execute OAuth token request."""
         headers, data = request_data
         try:
-            if FlextApiClient is None:
-                return FlextResult[object].fail("FlextApiClient not available")
-
-            from flext_api.config import FlextApiConfig
-
             api_config = FlextApiConfig(base_url=self.auth_config.oauth_token_url)
             api_client = FlextApiClient(api_config)
             with api_client:
@@ -192,19 +182,15 @@ class FlextOracleOicClient:
         return token
 
     # Client Methods
-    def _create_authenticated_client(self) -> FlextResult[FlextApiClient]:
+    def _create_authenticated_client(self) -> FlextResult[object]:
         """Create new authenticated client."""
         return self.get_access_token().flat_map(self._build_client_with_token)
 
-    def _build_client_with_token(self, token: str) -> FlextResult[FlextApiClient]:
+    def _build_client_with_token(self, token: str) -> FlextResult[object]:
         """Build client with access token."""
         try:
-            if FlextApiClient is None:
-                return FlextResult[FlextApiClient].fail("FlextApiClient not available")
-
             # Inline base URL construction: f"{base_url.rstrip('/')}/ic/api/{api_version}"
             base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
-            from flext_api.config import FlextApiConfig
 
             api_config = FlextApiConfig(
                 base_url=base_url,
@@ -215,13 +201,14 @@ class FlextOracleOicClient:
                     "Accept": "application/json",
                 },
             )
+
             client = FlextApiClient(api_config)
             self._client = client
-            return FlextResult[FlextApiClient].ok(client)
+            return FlextResult[object].ok(client)
         except Exception as e:
             error_msg = f"Failed to create authenticated client: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[FlextApiClient].fail(error_msg)
+            return FlextResult[object].fail(error_msg)
 
     def make_request(
         self,
@@ -247,7 +234,7 @@ class FlextOracleOicClient:
             .flat_map(
                 lambda req_data: (
                     # Inline get_authenticated_client logic
-                    FlextResult[FlextApiClient].ok(self._client)
+                    FlextResult[object].ok(self._client)
                     if self._client is not None
                     else self._create_authenticated_client()
                 ).map(lambda client: (client, req_data))
