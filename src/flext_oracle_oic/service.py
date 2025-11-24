@@ -531,7 +531,7 @@ class FlextOracleOicService(
                 integration_id, payload, **kwargs
             )
 
-            return FlextResult[dict[str, object]].ok(result)
+            return FlextResult[dict[str, object]].ok(orchestration_result)
 
         except Exception as e:
             self.logger.exception(
@@ -1101,6 +1101,4 @@ class FlextOracleOicService(
 
 __all__ = [
     "FlextOracleOicService",
-]
-
 ]
