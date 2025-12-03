@@ -1,11 +1,11 @@
 """Oracle OIC Extension utilities module.
 
 This module provides domain-specific utilities for Oracle Integration Cloud (OIC)
-operations, extending FlextUtilities with nested classes for complete
+operations, extending u with nested classes for complete
 Oracle OIC integration functionality.
 
 FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
-- Single unified class extending FlextUtilities
+- Single unified class extending u
 - Nested classes for domain-specific functionality
 - Python 3.13+ features and Pydantic 2.11+
 - Railway-oriented programming with FlextResult
@@ -20,16 +20,16 @@ from datetime import UTC, datetime
 from typing import ClassVar
 from urllib.parse import urljoin
 
-from flext_core import FlextResult, FlextTypes, FlextUtilities
+from flext_core import FlextResult, t, u
 from pydantic import SecretStr
 
 __all__ = ["FlextOracleOicUtilities"]
 
 
-class FlextOracleOicUtilities(FlextUtilities):
+class FlextOracleOicUtilities(u):
     """Unified Oracle OIC Extension utilities.
 
-    Extends FlextUtilities with complete Oracle Integration Cloud
+    Extends ue Oracle Integration Cloud
     functionality organized in domain-specific nested classes.
 
     DOMAIN COVERAGE:
@@ -624,7 +624,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
         # Monitoring constants
         HEALTH_CHECK_TIMEOUT: ClassVar[int] = 10
-        PERFORMANCE_THRESHOLDS: ClassVar[FlextTypes.FloatDict] = {
+        PERFORMANCE_THRESHOLDS: ClassVar[t.FloatDict] = {
             "response_time_ms": 5000.0,
             "success_rate": 0.95,
             "error_rate": 0.05,
