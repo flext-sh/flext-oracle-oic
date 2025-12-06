@@ -120,7 +120,8 @@ class FlextOracleOicClient:
             return FlextResult[tuple[dict, dict]].fail(error_msg)
 
     def _execute_token_request(
-        self, request_data: tuple[dict, dict]
+        self,
+        request_data: tuple[dict, dict],
     ) -> FlextResult[object]:
         """Execute OAuth token request."""
         headers, data = request_data
@@ -131,7 +132,7 @@ class FlextOracleOicClient:
                 response_result = api_client.post("", headers=headers, data=data)
                 if response_result.is_failure:
                     return FlextResult[object].fail(
-                        f"OAuth request failed: {response_result.error}"
+                        f"OAuth request failed: {response_result.error}",
                     )
 
                 response = response_result.unwrap()
@@ -140,7 +141,7 @@ class FlextOracleOicClient:
                     >= FlextOracleOicConstants.API.HTTP_ERROR_STATUS_THRESHOLD
                 ):
                     return FlextResult[object].fail(
-                        f"OAuth HTTP error: {response.status_code}"
+                        f"OAuth HTTP error: {response.status_code}",
                     )
 
                 return FlextResult[object].ok(response)
@@ -237,12 +238,13 @@ class FlextOracleOicClient:
                     FlextResult[object].ok(self._client)
                     if self._client is not None
                     else self._create_authenticated_client()
-                ).map(lambda client: (client, req_data))
+                ).map(lambda client: (client, req_data)),
             )
             .flat_map(
                 lambda client_req: self._execute_api_request(
-                    client_req[0], *client_req[1]
-                )
+                    client_req[0],
+                    *client_req[1],
+                ),
             )
             .flat_map(self._parse_api_response)
         )
@@ -277,12 +279,12 @@ class FlextOracleOicClient:
                     response_result = client.delete(full_url, headers=None)
                 else:
                     return FlextResult[object].fail(
-                        f"Unsupported HTTP method: {method}"
+                        f"Unsupported HTTP method: {method}",
                     )
 
                 if response_result.is_failure:
                     return FlextResult[object].fail(
-                        f"Request failed: {response_result.error}"
+                        f"Request failed: {response_result.error}",
                     )
 
                 return FlextResult[object].ok(response_result.unwrap())
@@ -360,7 +362,8 @@ class FlextOracleOicClient:
                     )
 
                 items_raw = cast(
-                    "list[dict[str, object]]", response_data.get("items", [])
+                    "list[dict[str, object]]",
+                    response_data.get("items", []),
                 )
                 if not isinstance(items_raw, list):
                     return FlextResult[list[dict[str, object]]].fail(

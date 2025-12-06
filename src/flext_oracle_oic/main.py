@@ -59,7 +59,7 @@ class FlextOracleOicCli(FlextService[None]):
         if exit_code == 0:
             return FlextResult[None].ok(None)
         return FlextResult[None].fail(
-            f"CLI execution failed with exit code {exit_code}"
+            f"CLI execution failed with exit code {exit_code}",
         )
 
     # Nested Helper Classes
@@ -118,7 +118,7 @@ class FlextOracleOicCli(FlextService[None]):
             service_result = create_development_oic_service()
             if service_result.is_failure:
                 return FlextResult[None].fail(
-                    f"Failed to create service: {service_result.error}"
+                    f"Failed to create service: {service_result.error}",
                 )
 
             service = service_result.unwrap()
@@ -132,11 +132,11 @@ class FlextOracleOicCli(FlextService[None]):
                     if self.logger:
                         self.logger.info("Oracle OIC connection successful!")
                     self.CliOutputHelper.print(
-                        "Connection to Oracle OIC established successfully"
+                        "Connection to Oracle OIC established successfully",
                     )
                     return FlextResult[None].ok(None)
                 return FlextResult[None].fail(
-                    f"Connection failed: {connection_result.error}"
+                    f"Connection failed: {connection_result.error}",
                 )
 
         except Exception as e:
@@ -159,7 +159,7 @@ class FlextOracleOicCli(FlextService[None]):
             service_result = create_development_oic_service()
             if service_result.is_failure:
                 return FlextResult[None].fail(
-                    f"Failed to create service: {service_result.error}"
+                    f"Failed to create service: {service_result.error}",
                 )
 
             service = service_result.unwrap()
@@ -167,38 +167,64 @@ class FlextOracleOicCli(FlextService[None]):
                 return FlextResult[None].fail("Service is None")
 
             # List integrations
-            with service:
-                integrations_result = service.list_integrations()
-                if integrations_result.is_success:
-                    integrations = integrations_result.unwrap() or []
-                    if self.logger:
-                        self.logger.info(f"Found {len(integrations)} integrations")
-
-                    if integrations:
-                        self.CliOutputHelper.print("📋 Oracle OIC Integrations:")
-                        for integration in integrations:
-                            self.CliOutputHelper.print(
-                                f"  • {integration.name} (ID: {integration.integration_id})"
-                            )
-                            self.CliOutputHelper.print(
-                                f"    Status: {integration.status}, Version: {integration.integration_version}"
-                            )
-                            if integration.description:
-                                self.CliOutputHelper.print(
-                                    f"    Description: {integration.description}"
-                                )
-                            self.CliOutputHelper.print("")
-                    else:
-                        self.CliOutputHelper.print("📋 No integrations found")
-                    return FlextResult[None].ok(None)
-                return FlextResult[None].fail(
-                    f"Failed to list integrations: {integrations_result.error}"
-                )
+            return self._list_integrations_with_service(service)
 
         except Exception as e:
             if self.logger:
                 self.logger.exception("List integrations failed")
             return FlextResult[None].fail(f"List integrations failed: {e!s}")
+
+    def _list_integrations_with_service(
+        self,
+        service: object,
+    ) -> FlextResult[None]:
+        """List integrations using the provided service.
+
+        Args:
+            service: Oracle OIC service instance
+
+        Returns:
+            FlextResult[None]: Success or failure result
+
+        """
+        with service:
+            integrations_result = service.list_integrations()
+            if integrations_result.is_failure:
+                return FlextResult[None].fail(
+                    f"Failed to list integrations: {integrations_result.error}",
+                )
+
+            integrations = integrations_result.unwrap() or []
+            if self.logger:
+                self.logger.info(f"Found {len(integrations)} integrations")
+
+            self._print_integrations(integrations)
+            return FlextResult[None].ok(None)
+
+    def _print_integrations(self, integrations: list[object]) -> None:
+        """Print integrations to CLI output.
+
+        Args:
+            integrations: List of integration objects
+
+        """
+        if not integrations:
+            self.CliOutputHelper.print("📋 No integrations found")
+            return
+
+        self.CliOutputHelper.print("📋 Oracle OIC Integrations:")
+        for integration in integrations:
+            self.CliOutputHelper.print(
+                f"  • {integration.name} (ID: {integration.integration_id})",
+            )
+            self.CliOutputHelper.print(
+                f"    Status: {integration.status}, Version: {integration.integration_version}",
+            )
+            if integration.description:
+                self.CliOutputHelper.print(
+                    f"    Description: {integration.description}",
+                )
+            self.CliOutputHelper.print("")
 
     def show_version(self) -> FlextResult[None]:
         """Show Oracle OIC Extension version.
@@ -210,7 +236,7 @@ class FlextOracleOicCli(FlextService[None]):
         try:
             self.CliOutputHelper.print(f"Oracle OIC Extension v{__version__}")
             self.CliOutputHelper.print(
-                "FLEXT CLI Pattern: Enterprise Oracle Integration Cloud"
+                "FLEXT CLI Pattern: Enterprise Oracle Integration Cloud",
             )
             return FlextResult[None].ok(None)
         except Exception as e:

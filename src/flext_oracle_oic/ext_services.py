@@ -36,7 +36,7 @@ logger = FlextLogger(__name__)
 
 
 class FlextOracleOicExtServices(
-    FlextService[list[FlextOracleOicModels.OICIntegrationInfo]]
+    FlextService[list[FlextOracleOicModels.OICIntegrationInfo]],
 ):
     """Single unified Oracle OIC Extension services class.
 
@@ -60,7 +60,7 @@ class FlextOracleOicExtServices(
             ...
 
     class OracleOicExtensionService(
-        FlextService[list[FlextOracleOicModels.OICIntegrationInfo]]
+        FlextService[list[FlextOracleOicModels.OICIntegrationInfo]],
     ):
         """Main Oracle OIC Extension service.
 
@@ -134,11 +134,11 @@ class FlextOracleOicExtServices(
                 return FlextResult[None].fail("OAuth client ID is required")
 
             client_id_result = FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_client_id(
-                self.settings.oauth_client_id
+                self.settings.oauth_client_id,
             )
             if client_id_result.is_failure:
                 return FlextResult[None].fail(
-                    f"OAuth client ID validation: {client_id_result.error}"
+                    f"OAuth client ID validation: {client_id_result.error}",
                 )
 
             if not self.settings.oauth_client_secret:
@@ -187,11 +187,13 @@ class FlextOracleOicExtServices(
                 .flat_map(lambda _: self._create_auth_config())
                 .flat_map(
                     lambda auth_config: self._create_connection_config().map(
-                        lambda conn_config: (auth_config, conn_config)
-                    )
+                        lambda conn_config: (auth_config, conn_config),
+                    ),
                 )
                 .flat_map(
-                    lambda configs: self._create_client_instance(configs[0], configs[1])
+                    lambda configs: self._create_client_instance(
+                        configs[0], configs[1]
+                    ),
                 )
             )
 
@@ -226,13 +228,13 @@ class FlextOracleOicExtServices(
                     verify_ssl=self.settings.verify_ssl,
                 )
                 return FlextResult[FlextOracleOicModels.OICConnectionConfig].ok(
-                    connection_config
+                    connection_config,
                 )
             except Exception as e:
                 error_msg = f"Failed to create connection config: {e}"
                 self.logger.exception(error_msg)
                 return FlextResult[FlextOracleOicModels.OICConnectionConfig].fail(
-                    error_msg
+                    error_msg,
                 )
 
         def _create_client_instance(
@@ -267,7 +269,7 @@ class FlextOracleOicExtServices(
             return (
                 self._get_oic_client()
                 .flat_map(
-                    lambda client: self._fetch_integrations(client, status_filter)
+                    lambda client: self._fetch_integrations(client, status_filter),
                 )
                 .flat_map(self._parse_integration_models)
             )
@@ -277,7 +279,7 @@ class FlextOracleOicExtServices(
             client_result = self._get_client()
             if client_result.is_failure:
                 return FlextResult[FlextOracleOicClient].fail(
-                    client_result.error or "Client creation failed"
+                    client_result.error or "Client creation failed",
                 )
             client = client_result.unwrap()
             return FlextResult[FlextOracleOicClient].ok(client)
@@ -294,14 +296,15 @@ class FlextOracleOicExtServices(
             )
             if integrations_result.is_failure:
                 return FlextResult[list[dict[str, object]]].fail(
-                    integrations_result.error or "Failed to fetch integrations"
+                    integrations_result.error or "Failed to fetch integrations",
                 )
             return FlextResult[list[dict[str, object]]].ok(
-                integrations_result.unwrap() or []
+                integrations_result.unwrap() or [],
             )
 
         def _parse_integration_models(
-            self, integrations_data: list[dict[str, object]]
+            self,
+            integrations_data: list[dict[str, object]],
         ) -> FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]]:
             """Parse integration data into domain models."""
             integration_infos: list[object] = []
@@ -318,12 +321,12 @@ class FlextOracleOicExtServices(
                     )
                     integration_infos.append(integration_info)
                 except Exception as e:
-                    self.logger.warning(f"Failed to parse integration: {e}")
+                    self.logger.warning("Failed to parse integration: %s", e)
                     continue
 
             self.logger.info(f"Retrieved {len(integration_infos)} integrations")
             return FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]].ok(
-                integration_infos
+                integration_infos,
             )
 
         def list_connections(
@@ -358,14 +361,15 @@ class FlextOracleOicExtServices(
             )
             if connections_result.is_failure:
                 return FlextResult[list[dict[str, object]]].fail(
-                    connections_result.error or "Connections fetch failed"
+                    connections_result.error or "Connections fetch failed",
                 )
             return FlextResult[list[dict[str, object]]].ok(
-                connections_result.unwrap() or []
+                connections_result.unwrap() or [],
             )
 
         def _parse_connection_models(
-            self, connections_data: list[dict[str, object]]
+            self,
+            connections_data: list[dict[str, object]],
         ) -> FlextResult[list[FlextOracleOicModels.OICConnectionInfo]]:
             """Parse connection data into domain models."""
             connection_infos: list[FlextOracleOicModels.OICConnectionInfo] = []
@@ -381,12 +385,12 @@ class FlextOracleOicExtServices(
                     )
                     connection_infos.append(connection_info)
                 except Exception as e:
-                    self.logger.warning(f"Failed to parse connection: {e}")
+                    self.logger.warning("Failed to parse connection: %s", e)
                     continue
 
             self.logger.info(f"Retrieved {len(connection_infos)} connections")
             return FlextResult[list[FlextOracleOicModels.OICConnectionInfo]].ok(
-                connection_infos
+                connection_infos,
             )
 
         def test_connection(self) -> FlextResult[bool]:
@@ -400,11 +404,12 @@ class FlextOracleOicExtServices(
             return self._get_oic_client().flat_map(self._perform_connection_test)
 
         def _perform_connection_test(
-            self, client: FlextOracleOicClient
+            self,
+            client: FlextOracleOicClient,
         ) -> FlextResult[bool]:
             """Perform actual connection test by fetching minimal data."""
             integrations_result = client.get_integrations(
-                page_size=FlextOracleOicConstants.OIC.MIN_PAGE_SIZE
+                page_size=FlextOracleOicConstants.OIC.MIN_PAGE_SIZE,
             )
 
             if integrations_result.is_success:
@@ -434,15 +439,17 @@ class FlextOracleOicExtServices(
                 .ok(integration_data)
                 .flat_map(
                     lambda data: self._get_oic_client().map(
-                        lambda client: (client, data)
-                    )
+                        lambda client: (client, data),
+                    ),
                 )
                 .flat_map(lambda client_data: self._create_integration(*client_data))
                 .flat_map(self._extract_integration_id)
             )
 
         def _create_integration(
-            self, client: FlextOracleOicClient, data: dict[str, object]
+            self,
+            client: FlextOracleOicClient,
+            data: dict[str, object],
         ) -> FlextResult[dict[str, object]]:
             """Create integration via OIC client."""
             integration_data_str: dict[str, object] = {
@@ -452,26 +459,27 @@ class FlextOracleOicExtServices(
 
             if create_result.is_failure:
                 return FlextResult[dict[str, object]].fail(
-                    create_result.error or "Create integration failed"
+                    create_result.error or "Create integration failed",
                 )
 
             created_integration = create_result.unwrap()
             if not created_integration:
                 return FlextResult[dict[str, object]].fail(
-                    "No integration data returned"
+                    "No integration data returned",
                 )
 
             return FlextResult[dict[str, object]].ok(created_integration)
 
         def _extract_integration_id(
-            self, integration_data: dict[str, object]
+            self,
+            integration_data: dict[str, object],
         ) -> FlextResult[str]:
             """Extract integration ID from creation result."""
             integration_id = integration_data.get("id", "")
             if not integration_id:
                 return FlextResult[str].fail("No integration ID returned")
 
-            self.logger.info(f"Integration deployed successfully: {integration_id}")
+            self.logger.info("Integration deployed successfully: %s", integration_id)
             return FlextResult[str].ok(str(integration_id))
 
         def __enter__(self: Self) -> Self:
@@ -499,7 +507,8 @@ class FlextOracleOicExtServices(
 
         @override
         def __init__(
-            self, oic_service: FlextOracleOicExtServices.OracleOicExtensionService
+            self,
+            oic_service: FlextOracleOicExtServices.OracleOicExtensionService,
         ) -> None:
             """Initialize OIC pattern service.
 
@@ -538,12 +547,13 @@ class FlextOracleOicExtServices(
                 }
 
                 validation_result = FlextOracleOicUtilities.PatternAnalysis.validate_pattern_configuration(
-                    "message_router", pattern_config
+                    "message_router",
+                    pattern_config,
                 )
 
                 if validation_result.is_failure:
                     return FlextResult[dict[str, object]].fail(
-                        f"Pattern validation failed: {validation_result.error}"
+                        f"Pattern validation failed: {validation_result.error}",
                     )
 
                 # Apply validated pattern
@@ -595,7 +605,7 @@ class FlextOracleOicExtServices(
 
                 if validation_result.is_failure:
                     return FlextResult[dict[str, object]].fail(
-                        f"Pattern validation failed: {validation_result.error}"
+                        f"Pattern validation failed: {validation_result.error}",
                     )
 
                 # Apply validated pattern
@@ -691,15 +701,16 @@ class FlextOracleOicExtServices(
                 client = client_result.unwrap()
                 if client is None:
                     return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
-                        "No client available"
+                        "No client available",
                     )
 
                 # Update integration to activate it
                 activation_data: dict[str, object] = {
-                    "status": FlextOracleOicConstants.Integration.STATUS_ACTIVATED
+                    "status": FlextOracleOicConstants.Integration.STATUS_ACTIVATED,
                 }
                 activate_result = client.update_integration(
-                    integration_id, activation_data
+                    integration_id,
+                    activation_data,
                 )
 
                 if not activate_result.success:
@@ -716,14 +727,16 @@ class FlextOracleOicExtServices(
                     activated_by=FlextOracleOicConstants.Integration.DEFAULT_ACTIVATED_BY,
                 )
 
-                self.logger.info(f"Integration {integration_id} activated successfully")
+                self.logger.info(
+                    "Integration %s activated successfully", integration_id
+                )
                 return FlextResult[FlextOracleOicModels.IntegrationStatus].ok(status)
 
             except Exception as e:
                 error_msg = f"Failed to activate integration {integration_id}: {e}"
                 self.logger.exception(error_msg)
                 return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
-                    error_msg
+                    error_msg,
                 )
 
         def deactivate_integration(
@@ -749,12 +762,12 @@ class FlextOracleOicExtServices(
                 client = client_result.unwrap()
                 if client is None:
                     return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
-                        "No client available"
+                        "No client available",
                     )
 
                 # Update integration to deactivate it
                 deactivation_data: dict[str, object] = {
-                    "status": FlextOracleOicConstants.Integration.STATUS_DEACTIVATED
+                    "status": FlextOracleOicConstants.Integration.STATUS_DEACTIVATED,
                 }
                 deactivate_result = client.update_integration(
                     integration_id,
@@ -776,7 +789,8 @@ class FlextOracleOicExtServices(
                 )
 
                 self.logger.info(
-                    f"Integration {integration_id} deactivated successfully"
+                    "Integration %s deactivated successfully",
+                    integration_id,
                 )
                 return FlextResult[FlextOracleOicModels.IntegrationStatus].ok(status)
 
@@ -784,7 +798,7 @@ class FlextOracleOicExtServices(
                 error_msg = f"Failed to deactivate integration {integration_id}: {e}"
                 self.logger.exception(error_msg)
                 return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
-                    error_msg
+                    error_msg,
                 )
 
     class MonitoringService:
@@ -796,7 +810,8 @@ class FlextOracleOicExtServices(
 
         @override
         def __init__(
-            self, client: FlextOracleOicExtServices.HTTPClientProtocol
+            self,
+            client: FlextOracleOicExtServices.HTTPClientProtocol,
         ) -> None:
             """Initialize monitoring service.
 
@@ -824,13 +839,13 @@ class FlextOracleOicExtServices(
                         "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_HEALTHY,
                         "components": {
                             FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY
+                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
                             },
                             FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY
+                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
                             },
                             FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY
+                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
                             },
                         },
                         "timestamp": health_data.get("timestamp", ""),
@@ -840,13 +855,13 @@ class FlextOracleOicExtServices(
                         "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_UNHEALTHY,
                         "components": {
                             FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN
+                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
                             },
                             FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN
+                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
                             },
                             FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN
+                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
                             },
                         },
                         "error": f"HTTP {response.status_code}",
@@ -854,12 +869,12 @@ class FlextOracleOicExtServices(
 
                     # Validate health status using utilities
                     validation_result = FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
-                        raw_health
+                        raw_health,
                     )
                 if validation_result.is_success:
                     return validation_result.value
                 self.logger.warning(
-                    f"Health status validation failed: {validation_result.error}"
+                    f"Health status validation failed: {validation_result.error}",
                 )
                 return raw_health
 
@@ -869,13 +884,13 @@ class FlextOracleOicExtServices(
                     "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_ERROR,
                     "components": {
                         FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN
+                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
                         },
                         FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN
+                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
                         },
                         FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN
+                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
                         },
                     },
                     "error": str(e),
@@ -884,7 +899,7 @@ class FlextOracleOicExtServices(
                 # Validate error health status as well
                 validation_result = (
                     FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
-                        error_health
+                        error_health,
                     )
                 )
                 return (
@@ -908,12 +923,14 @@ class FlextOracleOicExtServices(
                     metrics_data: dict[str, object] = response.json()
                     raw_metrics = {
                         "active_integrations": metrics_data.get(
-                            "active_integrations", 0
+                            "active_integrations",
+                            0,
                         ),
                         "total_executions": metrics_data.get("total_executions", 0),
                         "success_rate": metrics_data.get("success_rate", 0.0),
                         "average_response_time": metrics_data.get(
-                            "avg_response_time", 0.0
+                            "avg_response_time",
+                            0.0,
                         ),
                         "timestamp": metrics_data.get("timestamp", ""),
                     }
@@ -928,14 +945,14 @@ class FlextOracleOicExtServices(
 
                 # Analyze performance metrics using utilities
                 analysis_result = FlextOracleOicUtilities.MonitoringUtilities.analyze_performance_metrics(
-                    raw_metrics
+                    raw_metrics,
                 )
 
                 if analysis_result.is_success:
                     # Combine raw metrics with analysis
                     return {**raw_metrics, "analysis": analysis_result.value}
                 self.logger.warning(
-                    f"Performance analysis failed: {analysis_result.error}"
+                    f"Performance analysis failed: {analysis_result.error}",
                 )
                 return raw_metrics
 
@@ -951,7 +968,7 @@ class FlextOracleOicExtServices(
 
                 # Try to analyze error metrics as well
                 analysis_result = FlextOracleOicUtilities.MonitoringUtilities.analyze_performance_metrics(
-                    error_metrics
+                    error_metrics,
                 )
                 if analysis_result.is_success:
                     return {**error_metrics, "analysis": analysis_result.value}

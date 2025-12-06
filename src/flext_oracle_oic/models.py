@@ -36,7 +36,8 @@ class FlextOracleOicModels(FlextModels):
         oauth_client_secret: SecretStr = Field(description="IDCS OAuth2 client secret")
         oauth_token_url: str = Field(description="IDCS OAuth2 token endpoint")
         oauth_client_aud: str | None = Field(
-            default=None, description="OAuth2 audience"
+            default=None,
+            description="OAuth2 audience",
         )
         oauth_scope: str = Field(default="", description="OAuth2 scope")
 
@@ -116,7 +117,8 @@ class FlextOracleOicModels(FlextModels):
         status: str = Field(description="Integration status")
         last_updated: str = Field(default="", description="Last update timestamp")
         activated_by: str = Field(
-            default="", description="User who activated the integration"
+            default="",
+            description="User who activated the integration",
         )
 
     class RequestParams(FlextModels.Value):
@@ -131,11 +133,13 @@ class FlextOracleOicModels(FlextModels):
         method: str = Field(description="HTTP method")
         url: str = Field(description="Request URL")
         params: dict[str, str | int | float] | None = Field(
-            default=None, description="Query parameters"
+            default=None,
+            description="Query parameters",
         )
         data: dict[str, object] | None = Field(default=None, description="Form data")
         json_data: dict[str, object] | None = Field(
-            default=None, description="JSON data"
+            default=None,
+            description="JSON data",
         )
         headers: dict[str, str] | None = Field(default=None, description="HTTP headers")
         timeout: int = Field(

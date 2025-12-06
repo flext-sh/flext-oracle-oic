@@ -7,6 +7,15 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from flext_core import (
+    FlextDecorators as d,
+    FlextExceptions as e,
+    FlextHandlers as h,
+    FlextMixins as x,
+    FlextResult as r,
+    FlextService as s,
+)
+
 from flext_oracle_oic.__version__ import __version__, __version_info__
 from flext_oracle_oic.api import FlextOracleOicApi
 from flext_oracle_oic.config import (
@@ -30,7 +39,17 @@ from flext_oracle_oic.protocols import FlextOracleOicProtocols
 from flext_oracle_oic.service import (
     FlextOracleOicService,
 )
+from flext_oracle_oic.typings import FlextOracleOicTypes
 from flext_oracle_oic.utilities import FlextOracleOicUtilities
+
+# Domain-specific aliases (extending flext-core base classes)
+u = FlextOracleOicUtilities  # Utilities (FlextOracleOicUtilities extends FlextUtilities)
+m = FlextOracleOicModels  # Models (FlextOracleOicModels extends FlextModels)
+c = FlextOracleOicConstants  # Constants (FlextOracleOicConstants extends FlextConstants)
+t = FlextOracleOicTypes  # Types (FlextOracleOicTypes extends FlextTypes)
+p = FlextOracleOicProtocols  # Protocols (FlextOracleOicProtocols extends FlextProtocols)
+
+# Global aliases from flext-core (already imported with aliases above)
 
 __all__ = [
     "FlextOracleOicApi",
@@ -42,10 +61,24 @@ __all__ = [
     "FlextOracleOicModels",
     "FlextOracleOicProtocols",
     "FlextOracleOicService",
+    "FlextOracleOicTypes",
     "FlextOracleOicUtilities",
     "__version__",
     "__version_info__",
+    # Domain-specific aliases
+    "c",
     "create_development_oic_service",
     "create_oic_extension_service",
+    # Global aliases
+    "d",
+    "e",
+    "h",
+    "m",
+    "p",
+    "r",
+    "s",
     "setup_oic_extension",
+    "t",
+    "u",
+    "x",
 ]

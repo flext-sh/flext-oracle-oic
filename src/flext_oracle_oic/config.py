@@ -92,7 +92,7 @@ class FlextOracleOicConfig(FlextConfig):
 
     oauth_client_secret: SecretStr = Field(
         default_factory=lambda: SecretStr(
-            FlextOracleOicConstants.Auth.DEFAULT_OAUTH_CLIENT_SECRET
+            FlextOracleOicConstants.Auth.DEFAULT_OAUTH_CLIENT_SECRET,
         ),
         description="OAuth2 client secret (sensitive)",
     )
@@ -114,15 +114,18 @@ class FlextOracleOicConfig(FlextConfig):
 
     # Feature Configuration using FlextOracleOicConstants for defaults
     enable_monitoring: bool = Field(
-        default=True, description="Enable monitoring features"
+        default=True,
+        description="Enable monitoring features",
     )
 
     enable_enterprise_patterns: bool = Field(
-        default=True, description="Enable enterprise patterns"
+        default=True,
+        description="Enable enterprise patterns",
     )
 
     enable_orchestration: bool = Field(
-        default=True, description="Enable orchestration features"
+        default=True,
+        description="Enable orchestration features",
     )
 
     # Project Identification
@@ -143,7 +146,7 @@ class FlextOracleOicConfig(FlextConfig):
         if self.oauth_client_id:
             # Validate client ID format
             client_id_result = FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_client_id(
-                self.oauth_client_id
+                self.oauth_client_id,
             )
             if client_id_result.is_failure:
                 error_msg = f"OAuth client ID validation: {client_id_result.error}"
@@ -176,7 +179,7 @@ class FlextOracleOicConfig(FlextConfig):
         """Validate connection settings are within acceptable ranges."""
         if self.request_timeout < FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT:
             return FlextResult[None].fail(
-                f"Request timeout too low (minimum {FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT} seconds)"
+                f"Request timeout too low (minimum {FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT} seconds)",
             )
         return FlextResult[None].ok(None)
 
@@ -184,13 +187,15 @@ class FlextOracleOicConfig(FlextConfig):
         """Validate retry settings are within acceptable ranges."""
         if self.max_retries > FlextOracleOicConstants.OIC.MAX_MAX_RETRIES:
             return FlextResult[None].fail(
-                f"Max retries too high (maximum {FlextOracleOicConstants.OIC.MAX_MAX_RETRIES})"
+                f"Max retries too high (maximum {FlextOracleOicConstants.OIC.MAX_MAX_RETRIES})",
             )
         return FlextResult[None].ok(None)
 
     @classmethod
     def create_for_environment(
-        cls, environment: str, **overrides: object
+        cls,
+        environment: str,
+        **overrides: object,
     ) -> FlextOracleOicConfig:
         """Create configuration for specific environment using enhanced singleton pattern."""
         # Environment parameter reserved for future use - validate it's not empty

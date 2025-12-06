@@ -20,13 +20,14 @@ from datetime import UTC, datetime
 from typing import ClassVar
 from urllib.parse import urljoin
 
-from flext_core import FlextResult, t, u
+from flext_core import FlextResult, t
+from flext_core.utilities import FlextUtilities
 from pydantic import SecretStr
 
-__all__ = ["FlextOracleOicUtilities"]
+__all__ = ["FlextOracleOicUtilities", "u"]
 
 
-class FlextOracleOicUtilities(u):
+class FlextOracleOicUtilities(FlextUtilities):
     """Unified Oracle OIC Extension utilities.
 
     Extends ue Oracle Integration Cloud
@@ -64,7 +65,7 @@ class FlextOracleOicUtilities(u):
             "ERROR",
         })
         VERSION_PATTERN: ClassVar[re.Pattern[str]] = re.compile(
-            r"^\d{2}\.\d{2}\.\d{4}$"
+            r"^\d{2}\.\d{2}\.\d{4}$",
         )
 
         @staticmethod
@@ -100,7 +101,7 @@ class FlextOracleOicUtilities(u):
             # Check for invalid characters (OIC naming rules)
             if not re.match(r"^[a-zA-Z0-9_\-\s]+$", name):
                 return FlextResult[str].fail(
-                    "Integration name contains invalid characters"
+                    "Integration name contains invalid characters",
                 )
 
             return FlextResult[str].ok(name)
@@ -126,11 +127,11 @@ class FlextOracleOicUtilities(u):
             ):
                 valid_statuses = ", ".join(
                     sorted(
-                        FlextOracleOicUtilities.IntegrationValidation.VALID_INTEGRATION_STATUSES
-                    )
+                        FlextOracleOicUtilities.IntegrationValidation.VALID_INTEGRATION_STATUSES,
+                    ),
                 )
                 return FlextResult[str].fail(
-                    f"Invalid integration status. Valid: {valid_statuses}"
+                    f"Invalid integration status. Valid: {valid_statuses}",
                 )
 
             return FlextResult[str].ok(status)
@@ -151,10 +152,10 @@ class FlextOracleOicUtilities(u):
 
             version = version.strip()
             if not FlextOracleOicUtilities.IntegrationValidation.VERSION_PATTERN.match(
-                version
+                version,
             ):
                 return FlextResult[str].fail(
-                    "Invalid version format. Expected: XX.XX.XXXX"
+                    "Invalid version format. Expected: XX.XX.XXXX",
                 )
 
             return FlextResult[str].ok(version)
@@ -174,7 +175,7 @@ class FlextOracleOicUtilities(u):
             """
             if not isinstance(integration_data, dict):
                 return FlextResult[dict[str, object]].fail(
-                    "Integration data must be a dictionary"
+                    "Integration data must be a dictionary",
                 )
 
             errors: list[str] = []
@@ -185,7 +186,7 @@ class FlextOracleOicUtilities(u):
                 errors.append("Integration name is required")
             else:
                 name_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_name(
-                    integration_data["name"]
+                    integration_data["name"],
                 )
                 if name_result.is_failure:
                     errors.append(f"Name validation: {name_result.error}")
@@ -194,7 +195,7 @@ class FlextOracleOicUtilities(u):
 
             if "version" in integration_data:
                 version_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_version(
-                    integration_data["version"]
+                    integration_data["version"],
                 )
                 if version_result.is_failure:
                     errors.append(f"Version validation: {version_result.error}")
@@ -203,7 +204,7 @@ class FlextOracleOicUtilities(u):
 
             if "status" in integration_data:
                 status_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_status(
-                    integration_data["status"]
+                    integration_data["status"],
                 )
                 if status_result.is_failure:
                     errors.append(f"Status validation: {status_result.error}")
@@ -212,7 +213,7 @@ class FlextOracleOicUtilities(u):
 
             if errors:
                 return FlextResult[dict[str, object]].fail(
-                    f"Integration validation failed: {'; '.join(errors)}"
+                    f"Integration validation failed: {'; '.join(errors)}",
                 )
 
             return FlextResult[dict[str, object]].ok(validated_data)
@@ -257,11 +258,11 @@ class FlextOracleOicUtilities(u):
             ):
                 valid_types = ", ".join(
                     sorted(
-                        FlextOracleOicUtilities.ConnectionValidation.VALID_CONNECTION_TYPES
-                    )
+                        FlextOracleOicUtilities.ConnectionValidation.VALID_CONNECTION_TYPES,
+                    ),
                 )
                 return FlextResult[str].fail(
-                    f"Invalid connection type. Valid: {valid_types}"
+                    f"Invalid connection type. Valid: {valid_types}",
                 )
 
             return FlextResult[str].ok(connection_type)
@@ -287,11 +288,11 @@ class FlextOracleOicUtilities(u):
             ):
                 valid_statuses = ", ".join(
                     sorted(
-                        FlextOracleOicUtilities.ConnectionValidation.VALID_CONNECTION_STATUSES
-                    )
+                        FlextOracleOicUtilities.ConnectionValidation.VALID_CONNECTION_STATUSES,
+                    ),
                 )
                 return FlextResult[str].fail(
-                    f"Invalid connection status. Valid: {valid_statuses}"
+                    f"Invalid connection status. Valid: {valid_statuses}",
                 )
 
             return FlextResult[str].ok(status)
@@ -333,7 +334,7 @@ class FlextOracleOicUtilities(u):
             # Check for basic format (alphanumeric, hyphens, underscores)
             if not re.match(r"^[a-zA-Z0-9_\-\.]+$", client_id):
                 return FlextResult[str].fail(
-                    "OAuth client ID contains invalid characters"
+                    "OAuth client ID contains invalid characters",
                 )
 
             return FlextResult[str].ok(client_id)
@@ -353,13 +354,13 @@ class FlextOracleOicUtilities(u):
             """
             if not isinstance(client_secret, SecretStr):
                 return FlextResult[SecretStr].fail(
-                    "OAuth client secret must be SecretStr"
+                    "OAuth client secret must be SecretStr",
                 )
 
             secret_value = client_secret.get_secret_value()
             if not secret_value or not secret_value.strip():
                 return FlextResult[SecretStr].fail(
-                    "OAuth client secret cannot be empty"
+                    "OAuth client secret cannot be empty",
                 )
 
             if (
@@ -367,7 +368,7 @@ class FlextOracleOicUtilities(u):
                 < FlextOracleOicUtilities.AuthenticationValidation.MIN_CLIENT_SECRET_LENGTH
             ):
                 return FlextResult[SecretStr].fail(
-                    "OAuth client secret must be at least 8 characters"
+                    "OAuth client secret must be at least 8 characters",
                 )
 
             return FlextResult[SecretStr].ok(client_secret)
@@ -390,7 +391,9 @@ class FlextOracleOicUtilities(u):
 
         @staticmethod
         def build_integration_endpoint(
-            base_url: str, api_version: str = "v1", integration_id: str | None = None
+            base_url: str,
+            api_version: str = "v1",
+            integration_id: str | None = None,
         ) -> FlextResult[str]:
             """Build Oracle OIC integration API endpoint.
 
@@ -405,7 +408,7 @@ class FlextOracleOicUtilities(u):
             """
             # Validate base URL
             url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
-                base_url
+                base_url,
             )
             if url_result.is_failure:
                 return FlextResult[str].fail(f"Base URL validation: {url_result.error}")
@@ -417,7 +420,7 @@ class FlextOracleOicUtilities(u):
             if integration_id:
                 if not isinstance(integration_id, str) or not integration_id.strip():
                     return FlextResult[str].fail(
-                        "Integration ID must be non-empty string"
+                        "Integration ID must be non-empty string",
                     )
                 path_parts.append(integration_id.strip())
 
@@ -428,7 +431,9 @@ class FlextOracleOicUtilities(u):
 
         @staticmethod
         def build_connection_endpoint(
-            base_url: str, api_version: str = "v1", connection_id: str | None = None
+            base_url: str,
+            api_version: str = "v1",
+            connection_id: str | None = None,
         ) -> FlextResult[str]:
             """Build Oracle OIC connection API endpoint.
 
@@ -443,7 +448,7 @@ class FlextOracleOicUtilities(u):
             """
             # Validate base URL
             url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
-                base_url
+                base_url,
             )
             if url_result.is_failure:
                 return FlextResult[str].fail(f"Base URL validation: {url_result.error}")
@@ -455,7 +460,7 @@ class FlextOracleOicUtilities(u):
             if connection_id:
                 if not isinstance(connection_id, str) or not connection_id.strip():
                     return FlextResult[str].fail(
-                        "Connection ID must be non-empty string"
+                        "Connection ID must be non-empty string",
                     )
                 path_parts.append(connection_id.strip())
 
@@ -490,14 +495,14 @@ class FlextOracleOicUtilities(u):
             if auth_token:
                 if not isinstance(auth_token, str) or not auth_token.strip():
                     return FlextResult[dict[str, str]].fail(
-                        "Auth token must be non-empty string"
+                        "Auth token must be non-empty string",
                     )
                 headers["Authorization"] = f"Bearer {auth_token.strip()}"
 
             if additional_headers:
                 if not isinstance(additional_headers, dict):
                     return FlextResult[dict[str, str]].fail(
-                        "Additional headers must be a dictionary"
+                        "Additional headers must be a dictionary",
                     )
                 headers.update(additional_headers)
 
@@ -564,7 +569,8 @@ class FlextOracleOicUtilities(u):
 
         @staticmethod
         def validate_pattern_configuration(
-            pattern_type: str, configuration: dict[str, object] | object
+            pattern_type: str,
+            configuration: dict[str, object] | object,
         ) -> FlextResult[dict[str, object]]:
             """Validate Oracle OIC integration pattern configuration.
 
@@ -581,15 +587,15 @@ class FlextOracleOicUtilities(u):
                 not in FlextOracleOicUtilities.PatternAnalysis.SUPPORTED_PATTERNS
             ):
                 supported = ", ".join(
-                    sorted(FlextOracleOicUtilities.PatternAnalysis.SUPPORTED_PATTERNS)
+                    sorted(FlextOracleOicUtilities.PatternAnalysis.SUPPORTED_PATTERNS),
                 )
                 return FlextResult[dict[str, object]].fail(
-                    f"Unsupported pattern type. Supported: {supported}"
+                    f"Unsupported pattern type. Supported: {supported}",
                 )
 
             if not isinstance(configuration, dict):
                 return FlextResult[dict[str, object]].fail(
-                    "Configuration must be a dictionary"
+                    "Configuration must be a dictionary",
                 )
 
             validated_config = configuration.copy()
@@ -598,13 +604,13 @@ class FlextOracleOicUtilities(u):
             if pattern_type == "message_router":
                 if "routing_rules" not in configuration:
                     return FlextResult[dict[str, object]].fail(
-                        "Message router pattern requires routing_rules"
+                        "Message router pattern requires routing_rules",
                     )
 
             elif pattern_type == "scatter_gather":
                 if "target_services" not in configuration:
                     return FlextResult[dict[str, object]].fail(
-                        "Scatter-gather pattern requires target_services"
+                        "Scatter-gather pattern requires target_services",
                     )
                 if "aggregation_strategy" not in configuration:
                     validated_config["aggregation_strategy"] = "collect_all"
@@ -614,7 +620,7 @@ class FlextOracleOicUtilities(u):
                 and "event_types" not in configuration
             ):
                 return FlextResult[dict[str, object]].fail(
-                    "Publish-subscribe pattern requires event_types"
+                    "Publish-subscribe pattern requires event_types",
                 )
 
             return FlextResult[dict[str, object]].ok(validated_config)
@@ -645,7 +651,7 @@ class FlextOracleOicUtilities(u):
             """
             if not isinstance(health_data, dict):
                 return FlextResult[dict[str, object]].fail(
-                    "Health data must be a dictionary"
+                    "Health data must be a dictionary",
                 )
 
             validated_data = health_data.copy()
@@ -653,13 +659,13 @@ class FlextOracleOicUtilities(u):
             # Validate required health fields
             if "status" not in health_data:
                 return FlextResult[dict[str, object]].fail(
-                    "Health data must include status"
+                    "Health data must include status",
                 )
 
             status = health_data["status"]
             if status not in {"healthy", "unhealthy", "error", "unknown"}:
                 return FlextResult[dict[str, object]].fail(
-                    "Invalid health status. Valid: healthy, unhealthy, error, unknown"
+                    "Invalid health status. Valid: healthy, unhealthy, error, unknown",
                 )
 
             # Validate components if present
@@ -667,17 +673,17 @@ class FlextOracleOicUtilities(u):
                 components = health_data["components"]
                 if not isinstance(components, dict):
                     return FlextResult[dict[str, object]].fail(
-                        "Components must be a dictionary"
+                        "Components must be a dictionary",
                     )
 
                 for component_name, component_data in components.items():
                     if not isinstance(component_data, dict):
                         return FlextResult[dict[str, object]].fail(
-                            f"Component {component_name} data must be a dictionary"
+                            f"Component {component_name} data must be a dictionary",
                         )
                     if "status" not in component_data:
                         return FlextResult[dict[str, object]].fail(
-                            f"Component {component_name} must have status"
+                            f"Component {component_name} must have status",
                         )
 
             # Add timestamp if not present
@@ -701,7 +707,7 @@ class FlextOracleOicUtilities(u):
             """
             if not isinstance(metrics, dict):
                 return FlextResult[dict[str, object]].fail(
-                    "Metrics must be a dictionary"
+                    "Metrics must be a dictionary",
                 )
 
             analysis: dict[str, object] = {
@@ -720,10 +726,10 @@ class FlextOracleOicUtilities(u):
                     ]
                     if response_time > threshold:
                         analysis["warnings"].append(
-                            f"High response time: {response_time}ms (threshold: {threshold}ms)"
+                            f"High response time: {response_time}ms (threshold: {threshold}ms)",
                         )
                         analysis["recommendations"].append(
-                            "Consider optimizing integration mappings or connection pooling"
+                            "Consider optimizing integration mappings or connection pooling",
                         )
 
             # Analyze success rate
@@ -735,11 +741,11 @@ class FlextOracleOicUtilities(u):
                     ]
                     if success_rate < threshold:
                         analysis["critical_issues"].append(
-                            f"Low success rate: {success_rate:.2%} (threshold: {threshold:.2%})"
+                            f"Low success rate: {success_rate:.2%} (threshold: {threshold:.2%})",
                         )
                         analysis["overall_health"] = "unhealthy"
                         analysis["recommendations"].append(
-                            "Investigate integration failures and error patterns"
+                            "Investigate integration failures and error patterns",
                         )
 
             # Analyze error rate
@@ -751,10 +757,13 @@ class FlextOracleOicUtilities(u):
                     ]
                     if error_rate > threshold:
                         analysis["warnings"].append(
-                            f"High error rate: {error_rate:.2%} (threshold: {threshold:.2%})"
+                            f"High error rate: {error_rate:.2%} (threshold: {threshold:.2%})",
                         )
                         analysis["recommendations"].append(
-                            "Review error logs and implement error handling improvements"
+                            "Review error logs and implement error handling improvements",
                         )
 
             return FlextResult[dict[str, object]].ok(analysis)
+
+
+u = FlextOracleOicUtilities

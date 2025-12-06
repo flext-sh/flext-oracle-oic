@@ -212,7 +212,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return self._get_service().execute_app_driven_orchestration(
-            integration_id, payload, **kwargs
+            integration_id,
+            payload,
+            **kwargs,
         )
 
     def execute_scheduled_orchestration(
@@ -233,7 +235,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return self._get_service().execute_scheduled_orchestration(
-            integration_id, schedule_config, **kwargs
+            integration_id,
+            schedule_config,
+            **kwargs,
         )
 
     def execute_file_transfer(
@@ -254,7 +258,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return self._get_service().execute_file_transfer(
-            integration_id, file_config, **kwargs
+            integration_id,
+            file_config,
+            **kwargs,
         )
 
     # Monitoring and Health
@@ -353,7 +359,8 @@ class FlextOracleOicApi(FlextService[None]):
         """Async context manager entry."""
         # Log service start
         self.logger.info(
-            "Oracle OIC service started", extra=self.get_connection_context()
+            "Oracle OIC service started",
+            extra=self.get_connection_context(),
         )
         return self
 
@@ -366,7 +373,8 @@ class FlextOracleOicApi(FlextService[None]):
         """Async context manager exit."""
         # Log service stop
         self.logger.info(
-            "Oracle OIC service stopped", extra=self.get_connection_context()
+            "Oracle OIC service stopped",
+            extra=self.get_connection_context(),
         )
 
 

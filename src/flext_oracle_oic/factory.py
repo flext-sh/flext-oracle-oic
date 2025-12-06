@@ -65,11 +65,14 @@ class FlextOracleOicFactory:
         # Railway-oriented service creation - uses singleton config
         config = FlextOracleOicConfig.get_global_instance()
         return self._create_service_instance(
-            config, "OIC Extension service created successfully"
+            config,
+            "OIC Extension service created successfully",
         )
 
     def _create_service_instance(
-        self, _config: FlextOracleOicConfig, success_message: str
+        self,
+        _config: FlextOracleOicConfig,
+        success_message: str,
     ) -> FlextResult[FlextOracleOicService]:
         """Create service instance with proper error handling."""
         try:
@@ -96,8 +99,9 @@ class FlextOracleOicFactory:
             .flat_map(lambda _: self._create_development_config())
             .flat_map(
                 lambda config: self._create_service_instance(
-                    config, "Development OIC Extension service created"
-                )
+                    config,
+                    "Development OIC Extension service created",
+                ),
             )
         )
 
@@ -129,7 +133,8 @@ class FlextOracleOicFactory:
         # Railway-oriented extension setup - uses singleton config
         config = FlextOracleOicConfig.get_global_instance()
         return self._create_service_instance(
-            config, "OIC Extension setup completed successfully"
+            config,
+            "OIC Extension setup completed successfully",
         )
 
 
@@ -152,8 +157,9 @@ def setup_oic_extension() -> FlextResult[FlextOracleOicService]:
     return _factory_instance.setup_oic_extension()
 
 
-# Backward compatibility warning
-FlextOracleOicDeprecationWarning = FlextOracleOicFactory.FlextDeprecationWarning
+# Backward compatibility warning class with real inheritance
+class FlextOracleOicDeprecationWarning(FlextOracleOicFactory.FlextDeprecationWarning):
+    """FlextOracleOicDeprecationWarning - real inheritance from FlextDeprecationWarning."""
 
 
 __all__: list[str] = [
