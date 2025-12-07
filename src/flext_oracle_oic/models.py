@@ -26,8 +26,8 @@ class FlextOracleOicModels(FlextModels):
     class OICAuthConfig(FlextModels.Value):
         """Oracle Integration Cloud authentication configuration.
 
-        Padrão EXTENSION: Value Object para configuração de autenticação
-        Oracle OIC com validação e segurança.
+        EXTENSION Pattern: Value Object for authentication configuration
+        Oracle OIC with validation and security.
         """
 
         model_config = ConfigDict(extra="forbid")
@@ -44,8 +44,8 @@ class FlextOracleOicModels(FlextModels):
     class OICConnectionConfig(FlextModels.Value):
         """Oracle Integration Cloud connection configuration.
 
-        Padrão EXTENSION: Value Object para configuração de conexão
-        Oracle OIC com validação enterprise.
+        EXTENSION Pattern: Value Object for connection configuration
+        Oracle OIC with enterprise validation.
         """
 
         model_config = ConfigDict(extra="forbid")
@@ -73,8 +73,8 @@ class FlextOracleOicModels(FlextModels):
     class OICIntegrationInfo(FlextModels.Entity):
         """Oracle OIC Integration information.
 
-        Padrão EXTENSION: Value Object representando informações
-        de uma integração Oracle OIC.
+        EXTENSION Pattern: Value Object representing information
+        for an Oracle OIC integration.
         """
 
         model_config = ConfigDict(extra="forbid")
@@ -90,8 +90,8 @@ class FlextOracleOicModels(FlextModels):
     class OICConnectionInfo(FlextModels.Entity):
         """Oracle OIC Connection information.
 
-        Padrão EXTENSION: Value Object representando informações
-        de uma conexão Oracle OIC.
+        EXTENSION Pattern: Value Object representing information
+        for an Oracle OIC connection.
         """
 
         model_config = ConfigDict(extra="forbid")
@@ -106,8 +106,8 @@ class FlextOracleOicModels(FlextModels):
     class IntegrationStatus(FlextModels.Entity):
         """Oracle OIC Integration status information.
 
-        Padrão EXTENSION: Value Object representando status
-        de uma integração Oracle OIC.
+        EXTENSION Pattern: Value Object representing status
+        for an Oracle OIC integration.
         """
 
         model_config = ConfigDict(extra="forbid")
@@ -124,7 +124,7 @@ class FlextOracleOicModels(FlextModels):
     class RequestParams(FlextModels.Value):
         """Parameters for OIC API request.
 
-        Padrão EXTENSION: Value Object para parâmetros de requisição
+        EXTENSION Pattern: Value Object for request parameters
         Oracle OIC API com tipagem forte.
         """
 

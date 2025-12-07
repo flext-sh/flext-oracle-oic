@@ -2,8 +2,9 @@
 
 from typing import Protocol, runtime_checkable
 
-from flext_core import FlextResult
-from flext_core.protocols import FlextProtocols as p
+from flext_core.protocols import FlextProtocols
+
+p = FlextProtocols
 
 
 class FlextOracleOicProtocols(p):
@@ -21,7 +22,7 @@ class FlextOracleOicProtocols(p):
             self,
             operation: str,
             params: dict[str, object] | None = None,
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Execute Oracle OIC extension operation.
 
             Args:
@@ -37,7 +38,7 @@ class FlextOracleOicProtocols(p):
         def validate_business_rules(
             self,
             request_data: dict[str, object],
-        ) -> FlextResult[bool]:
+        ) -> FlextProtocols.Result[bool]:
             """Validate Oracle OIC business rules.
 
             Args:
@@ -49,7 +50,9 @@ class FlextOracleOicProtocols(p):
             """
             ...
 
-        def validate_config(self, config: dict[str, object]) -> FlextResult[bool]:
+        def validate_config(
+            self, config: dict[str, object]
+        ) -> FlextProtocols.Result[bool]:
             """Validate Oracle OIC extension configuration."""
             ...
 
@@ -61,7 +64,7 @@ class FlextOracleOicProtocols(p):
             self,
             *,
             filters: dict[str, object] | None = None,
-        ) -> FlextResult[list[dict[str, object]]]:
+        ) -> FlextProtocols.Result[list[dict[str, object]]]:
             """List Oracle OIC integrations.
 
             Args:
@@ -77,7 +80,7 @@ class FlextOracleOicProtocols(p):
             self,
             integration_id: str,
             deployment_config: dict[str, object],
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Deploy Oracle OIC integration.
 
             Args:
@@ -93,7 +96,7 @@ class FlextOracleOicProtocols(p):
         def get_integration_status(
             self,
             integration_id: str,
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Get Oracle OIC integration status.
 
             Args:
@@ -105,7 +108,9 @@ class FlextOracleOicProtocols(p):
             """
             ...
 
-        def activate_integration(self, integration_id: str) -> FlextResult[bool]:
+        def activate_integration(
+            self, integration_id: str
+        ) -> FlextProtocols.Result[bool]:
             """Activate Oracle OIC integration.
 
             Args:
@@ -125,7 +130,7 @@ class FlextOracleOicProtocols(p):
             self,
             *,
             connection_type: str | None = None,
-        ) -> FlextResult[list[dict[str, object]]]:
+        ) -> FlextProtocols.Result[list[dict[str, object]]]:
             """List Oracle OIC connections.
 
             Args:
@@ -137,7 +142,9 @@ class FlextOracleOicProtocols(p):
             """
             ...
 
-        def test_connection(self, connection_id: str) -> FlextResult[dict[str, object]]:
+        def test_connection(
+            self, connection_id: str
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Test Oracle OIC connection.
 
             Args:
@@ -152,7 +159,7 @@ class FlextOracleOicProtocols(p):
         def create_connection(
             self,
             connection_config: dict[str, object],
-        ) -> FlextResult[str]:
+        ) -> FlextProtocols.Result[str]:
             """Create Oracle OIC connection.
 
             Args:
@@ -168,7 +175,7 @@ class FlextOracleOicProtocols(p):
             self,
             connection_id: str,
             connection_config: dict[str, object],
-        ) -> FlextResult[bool]:
+        ) -> FlextProtocols.Result[bool]:
             """Update Oracle OIC connection.
 
             Args:
@@ -181,7 +188,7 @@ class FlextOracleOicProtocols(p):
             """
             ...
 
-        def delete_connection(self, connection_id: str) -> FlextResult[bool]:
+        def delete_connection(self, connection_id: str) -> FlextProtocols.Result[bool]:
             """Delete Oracle OIC connection.
 
             Args:
@@ -201,7 +208,7 @@ class FlextOracleOicProtocols(p):
             self,
             integration_config: dict[str, object],
             routing_rules: list[dict[str, object]],
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Apply message router pattern to Oracle OIC integration.
 
             Args:
@@ -218,7 +225,7 @@ class FlextOracleOicProtocols(p):
             self,
             integration_config: dict[str, object],
             scatter_config: dict[str, object],
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Apply scatter-gather pattern to Oracle OIC integration.
 
             Args:
@@ -235,7 +242,7 @@ class FlextOracleOicProtocols(p):
             self,
             integration_config: dict[str, object],
             aggregation_rules: dict[str, object],
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Apply aggregator pattern to Oracle OIC integration.
 
             Args:
@@ -252,7 +259,7 @@ class FlextOracleOicProtocols(p):
             self,
             pattern_type: str,
             integration_config: dict[str, object],
-        ) -> FlextResult[bool]:
+        ) -> FlextProtocols.Result[bool]:
             """Validate pattern compatibility with integration.
 
             Args:
@@ -274,7 +281,7 @@ class FlextOracleOicProtocols(p):
             integration_id: str,
             *,
             time_range: str = "1h",
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Get Oracle OIC integration metrics.
 
             Args:
@@ -290,7 +297,7 @@ class FlextOracleOicProtocols(p):
         def get_connection_health(
             self,
             connection_id: str,
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Get Oracle OIC connection health status.
 
             Args:
@@ -302,7 +309,7 @@ class FlextOracleOicProtocols(p):
             """
             ...
 
-        def get_system_status(self) -> FlextResult[dict[str, object]]:
+        def get_system_status(self) -> FlextProtocols.Result[dict[str, object]]:
             """Get Oracle OIC system status.
 
             Returns:
@@ -314,7 +321,7 @@ class FlextOracleOicProtocols(p):
         def start_monitoring(
             self,
             monitoring_config: dict[str, object],
-        ) -> FlextResult[bool]:
+        ) -> FlextProtocols.Result[bool]:
             """Start Oracle OIC monitoring.
 
             Args:
@@ -326,7 +333,7 @@ class FlextOracleOicProtocols(p):
             """
             ...
 
-        def stop_monitoring(self) -> FlextResult[bool]:
+        def stop_monitoring(self) -> FlextProtocols.Result[bool]:
             """Stop monitoring operations."""
             ...
 
@@ -337,7 +344,7 @@ class FlextOracleOicProtocols(p):
         def initialize_environment(
             self,
             environment_config: dict[str, object],
-        ) -> FlextResult[bool]:
+        ) -> FlextProtocols.Result[bool]:
             """Initialize Oracle OIC environment.
 
             Args:
@@ -349,14 +356,14 @@ class FlextOracleOicProtocols(p):
             """
             ...
 
-        def shutdown_environment(self) -> FlextResult[bool]:
+        def shutdown_environment(self) -> FlextProtocols.Result[bool]:
             """Shutdown the Oracle OIC environment."""
             ...
 
         def backup_configuration(
             self,
             backup_config: dict[str, object],
-        ) -> FlextResult[str]:
+        ) -> FlextProtocols.Result[str]:
             """Backup Oracle OIC configuration.
 
             Args:
@@ -368,14 +375,16 @@ class FlextOracleOicProtocols(p):
             """
             ...
 
-        def restore_configuration(self, backup_location: str) -> FlextResult[bool]:
+        def restore_configuration(
+            self, backup_location: str
+        ) -> FlextProtocols.Result[bool]:
             """Restore Oracle OIC configuration from backup."""
             ...
 
         def migrate_integrations(
             self,
             migration_config: dict[str, object],
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Migrate Oracle OIC integrations.
 
             Args:
@@ -396,7 +405,7 @@ class FlextOracleOicProtocols(p):
             url: str,
             *,
             headers: dict[str, str] | None = None,
-        ) -> FlextResult[object]:
+        ) -> FlextProtocols.Result[object]:
             """Execute HTTP GET request.
 
             Args:
@@ -415,7 +424,7 @@ class FlextOracleOicProtocols(p):
             data: dict[str, object] | None = None,
             *,
             headers: dict[str, str] | None = None,
-        ) -> FlextResult[object]:
+        ) -> FlextProtocols.Result[object]:
             """Execute HTTP POST request.
 
             Args:
@@ -435,7 +444,7 @@ class FlextOracleOicProtocols(p):
             data: dict[str, object] | None = None,
             *,
             headers: dict[str, str] | None = None,
-        ) -> FlextResult[object]:
+        ) -> FlextProtocols.Result[object]:
             """Execute HTTP PUT request.
 
             Args:
@@ -454,7 +463,7 @@ class FlextOracleOicProtocols(p):
             url: str,
             *,
             headers: dict[str, str] | None = None,
-        ) -> FlextResult[bool]:
+        ) -> FlextProtocols.Result[bool]:
             """Execute HTTP DELETE request.
 
             Args:
@@ -474,7 +483,7 @@ class FlextOracleOicProtocols(p):
         def authenticate(
             self,
             credentials: dict[str, object],
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Authenticate with Oracle OIC.
 
             Args:
@@ -486,11 +495,17 @@ class FlextOracleOicProtocols(p):
             """
             ...
 
-        def refresh_token(self, refresh_token: str) -> FlextResult[dict[str, object]]:
+        def refresh_token(
+            self, refresh_token: str
+        ) -> FlextProtocols.Result[dict[str, object]]:
             """Refresh OAuth2 access token."""
             ...
 
 
+# Runtime alias for simplified usage
+p = FlextOracleOicProtocols
+
 __all__ = [
     "FlextOracleOicProtocols",
+    "p",
 ]

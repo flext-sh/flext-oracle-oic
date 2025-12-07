@@ -17,8 +17,8 @@ from flext_core import (
     FlextConstants,
     FlextContainer,
     FlextLogger,
-    FlextResult,
     FlextService,
+    r,
 )
 from pydantic import ConfigDict
 
@@ -102,7 +102,7 @@ class FlextOracleOicExtServices(
         @override
         def execute(
             self: Self,
-        ) -> FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]]:
+        ) -> r[list[FlextOracleOicModels.OICIntegrationInfo]]:
             """Execute the main domain service operation.
 
             Returns:
@@ -112,55 +112,55 @@ class FlextOracleOicExtServices(
             # Railway-oriented execution - delegate to list_integrations
             return self.list_integrations()
 
-        def validate_business_rules(self: Self) -> FlextResult[None]:
+        def validate_business_rules(self: Self) -> r[None]:
             """Validate Oracle OIC service business rules using FlextOracleOicUtilities.
 
             Returns:
-            FlextResult[None]: The validation result
+            r[None]: The validation result
 
             """
             # Validate settings exist
             if not self.settings:
-                return FlextResult[None].fail("Settings are required")
+                return r[None].fail("Settings are required")
 
             # Validate connection settings using utilities
             if not self.settings.base_url:
-                return FlextResult[None].fail("Base URL is required")
+                return r[None].fail("Base URL is required")
 
             # Base URL validation already performed by Pydantic AnyUrl type
 
             # Validate auth settings using utilities
             if not self.settings.oauth_client_id:
-                return FlextResult[None].fail("OAuth client ID is required")
+                return r[None].fail("OAuth client ID is required")
 
             client_id_result = FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_client_id(
                 self.settings.oauth_client_id,
             )
             if client_id_result.is_failure:
-                return FlextResult[None].fail(
+                return r[None].fail(
                     f"OAuth client ID validation: {client_id_result.error}",
                 )
 
             if not self.settings.oauth_client_secret:
-                return FlextResult[None].fail("OAuth client secret is required")
+                return r[None].fail("OAuth client secret is required")
 
             if not self.settings.oauth_token_url:
-                return FlextResult[None].fail("OAuth token URL is required")
+                return r[None].fail("OAuth token URL is required")
 
             # Token URL validation already performed by Pydantic AnyUrl type
 
-            return FlextResult[None].ok(None)
+            return r[None].ok(None)
 
-        def validate_config(self: Self) -> FlextResult[None]:
+        def validate_config(self: Self) -> r[None]:
             """Validate service configuration.
 
             Returns:
-            FlextResult[None]: The validation result
+            r[None]: The validation result
 
             """
             return self.validate_business_rules()
 
-        def _get_client(self: Self) -> FlextResult[FlextOracleOicClient]:
+        def _get_client(self: Self) -> r[FlextOracleOicClient]:
             """Get authenticated OIC client.
 
             Returns:
@@ -168,21 +168,17 @@ class FlextOracleOicExtServices(
 
             """
             # Railway-oriented client creation
-            return (
-                FlextResult[object]
-                .ok(None)
-                .flat_map(lambda _: self._get_or_create_client())
-            )
+            return r[object].ok(None).flat_map(lambda _: self._get_or_create_client())
 
-        def _get_or_create_client(self) -> FlextResult[FlextOracleOicClient]:
+        def _get_or_create_client(self) -> r[FlextOracleOicClient]:
             """Get existing client or create new one."""
             client = getattr(self, "_client", None)
             if client:
-                return FlextResult[FlextOracleOicClient].ok(client)
+                return r[FlextOracleOicClient].ok(client)
 
             # Create new client using railway pattern
             return (
-                FlextResult[object]
+                r[object]
                 .ok(None)
                 .flat_map(lambda _: self._create_auth_config())
                 .flat_map(
@@ -199,7 +195,7 @@ class FlextOracleOicExtServices(
 
         def _create_auth_config(
             self,
-        ) -> FlextResult[FlextOracleOicModels.OICAuthConfig]:
+        ) -> r[FlextOracleOicModels.OICAuthConfig]:
             """Create authentication configuration."""
             try:
                 auth_config = FlextOracleOicModels.OICAuthConfig(
@@ -209,15 +205,15 @@ class FlextOracleOicExtServices(
                     oauth_client_aud=self.settings.oauth_client_aud,
                     oauth_scope=self.settings.oauth_scope,
                 )
-                return FlextResult[FlextOracleOicModels.OICAuthConfig].ok(auth_config)
+                return r[FlextOracleOicModels.OICAuthConfig].ok(auth_config)
             except Exception as e:
                 error_msg = f"Failed to create auth config: {e}"
                 self.logger.exception(error_msg)
-                return FlextResult[FlextOracleOicModels.OICAuthConfig].fail(error_msg)
+                return r[FlextOracleOicModels.OICAuthConfig].fail(error_msg)
 
         def _create_connection_config(
             self,
-        ) -> FlextResult[FlextOracleOicModels.OICConnectionConfig]:
+        ) -> r[FlextOracleOicModels.OICConnectionConfig]:
             """Create connection configuration."""
             try:
                 connection_config = FlextOracleOicModels.OICConnectionConfig(
@@ -227,13 +223,13 @@ class FlextOracleOicExtServices(
                     max_retries=self.settings.max_retries,
                     verify_ssl=self.settings.verify_ssl,
                 )
-                return FlextResult[FlextOracleOicModels.OICConnectionConfig].ok(
+                return r[FlextOracleOicModels.OICConnectionConfig].ok(
                     connection_config,
                 )
             except Exception as e:
                 error_msg = f"Failed to create connection config: {e}"
                 self.logger.exception(error_msg)
-                return FlextResult[FlextOracleOicModels.OICConnectionConfig].fail(
+                return r[FlextOracleOicModels.OICConnectionConfig].fail(
                     error_msg,
                 )
 
@@ -241,21 +237,21 @@ class FlextOracleOicExtServices(
             self,
             auth_config: FlextOracleOicModels.OICAuthConfig,
             connection_config: FlextOracleOicModels.OICConnectionConfig,
-        ) -> FlextResult[FlextOracleOicClient]:
+        ) -> r[FlextOracleOicClient]:
             """Create client instance."""
             try:
                 client = FlextOracleOicClient(connection_config, auth_config)
                 self._client = client
-                return FlextResult[FlextOracleOicClient].ok(client)
+                return r[FlextOracleOicClient].ok(client)
             except Exception as e:
                 error_msg = f"Failed to create OIC client instance: {e}"
                 self.logger.exception(error_msg)
-                return FlextResult[FlextOracleOicClient].fail(error_msg)
+                return r[FlextOracleOicClient].fail(error_msg)
 
         def list_integrations(
             self,
             status_filter: list[str] | None = None,
-        ) -> FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]]:
+        ) -> r[list[FlextOracleOicModels.OICIntegrationInfo]]:
             """List Oracle OIC integrations.
 
             Args:
@@ -274,38 +270,38 @@ class FlextOracleOicExtServices(
                 .flat_map(self._parse_integration_models)
             )
 
-        def _get_oic_client(self) -> FlextResult[FlextOracleOicClient]:
+        def _get_oic_client(self) -> r[FlextOracleOicClient]:
             """Get authenticated OIC client."""
             client_result = self._get_client()
             if client_result.is_failure:
-                return FlextResult[FlextOracleOicClient].fail(
+                return r[FlextOracleOicClient].fail(
                     client_result.error or "Client creation failed",
                 )
             client = client_result.unwrap()
-            return FlextResult[FlextOracleOicClient].ok(client)
+            return r[FlextOracleOicClient].ok(client)
 
         def _fetch_integrations(
             self,
             client: FlextOracleOicClient,
             status_filter: list[str] | None,
-        ) -> FlextResult[list[dict[str, object]]]:
+        ) -> r[list[dict[str, object]]]:
             """Fetch integrations from OIC API."""
             integrations_result = client.get_integrations(
                 status_filter=status_filter,
                 page_size=FlextOracleOicConstants.OIC.DEFAULT_PAGE_SIZE,
             )
             if integrations_result.is_failure:
-                return FlextResult[list[dict[str, object]]].fail(
+                return r[list[dict[str, object]]].fail(
                     integrations_result.error or "Failed to fetch integrations",
                 )
-            return FlextResult[list[dict[str, object]]].ok(
+            return r[list[dict[str, object]]].ok(
                 integrations_result.unwrap() or [],
             )
 
         def _parse_integration_models(
             self,
             integrations_data: list[dict[str, object]],
-        ) -> FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]]:
+        ) -> r[list[FlextOracleOicModels.OICIntegrationInfo]]:
             """Parse integration data into domain models."""
             integration_infos: list[object] = []
             for integration in integrations_data:
@@ -325,14 +321,14 @@ class FlextOracleOicExtServices(
                     continue
 
             self.logger.info(f"Retrieved {len(integration_infos)} integrations")
-            return FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]].ok(
+            return r[list[FlextOracleOicModels.OICIntegrationInfo]].ok(
                 integration_infos,
             )
 
         def list_connections(
             self,
             type_filter: list[str] | None = None,
-        ) -> FlextResult[list[FlextOracleOicModels.OICConnectionInfo]]:
+        ) -> r[list[FlextOracleOicModels.OICConnectionInfo]]:
             """List Oracle OIC connections.
 
             Args:
@@ -353,24 +349,24 @@ class FlextOracleOicExtServices(
             self,
             client: FlextOracleOicClient,
             type_filter: list[str] | None,
-        ) -> FlextResult[list[dict[str, object]]]:
+        ) -> r[list[dict[str, object]]]:
             """Fetch connections from OIC API."""
             connections_result = client.get_connections(
                 type_filter=type_filter,
                 page_size=FlextOracleOicConstants.OIC.DEFAULT_PAGE_SIZE,
             )
             if connections_result.is_failure:
-                return FlextResult[list[dict[str, object]]].fail(
+                return r[list[dict[str, object]]].fail(
                     connections_result.error or "Connections fetch failed",
                 )
-            return FlextResult[list[dict[str, object]]].ok(
+            return r[list[dict[str, object]]].ok(
                 connections_result.unwrap() or [],
             )
 
         def _parse_connection_models(
             self,
             connections_data: list[dict[str, object]],
-        ) -> FlextResult[list[FlextOracleOicModels.OICConnectionInfo]]:
+        ) -> r[list[FlextOracleOicModels.OICConnectionInfo]]:
             """Parse connection data into domain models."""
             connection_infos: list[FlextOracleOicModels.OICConnectionInfo] = []
             for connection in connections_data:
@@ -389,11 +385,11 @@ class FlextOracleOicExtServices(
                     continue
 
             self.logger.info(f"Retrieved {len(connection_infos)} connections")
-            return FlextResult[list[FlextOracleOicModels.OICConnectionInfo]].ok(
+            return r[list[FlextOracleOicModels.OICConnectionInfo]].ok(
                 connection_infos,
             )
 
-        def test_connection(self) -> FlextResult[bool]:
+        def test_connection(self) -> r[bool]:
             """Test connection to Oracle OIC.
 
             Returns:
@@ -406,7 +402,7 @@ class FlextOracleOicExtServices(
         def _perform_connection_test(
             self,
             client: FlextOracleOicClient,
-        ) -> FlextResult[bool]:
+        ) -> r[bool]:
             """Perform actual connection test by fetching minimal data."""
             integrations_result = client.get_integrations(
                 page_size=FlextOracleOicConstants.OIC.MIN_PAGE_SIZE,
@@ -414,16 +410,16 @@ class FlextOracleOicExtServices(
 
             if integrations_result.is_success:
                 self.logger.info("OIC connection test successful")
-                return FlextResult[bool].ok(True)
+                return r[bool].ok(True)
 
             error_msg = f"OIC connection test failed: {integrations_result.error}"
             self.logger.error(error_msg)
-            return FlextResult[bool].fail(error_msg)
+            return r[bool].fail(error_msg)
 
         def deploy_integration(
             self,
             integration_data: dict[str, object],
-        ) -> FlextResult[str]:
+        ) -> r[str]:
             """Deploy integration to Oracle OIC.
 
             Args:
@@ -435,7 +431,7 @@ class FlextOracleOicExtServices(
             """
             # Railway-oriented integration deployment
             return (
-                FlextResult[dict[str, object]]
+                r[dict[str, object]]
                 .ok(integration_data)
                 .flat_map(
                     lambda data: self._get_oic_client().map(
@@ -450,7 +446,7 @@ class FlextOracleOicExtServices(
             self,
             client: FlextOracleOicClient,
             data: dict[str, object],
-        ) -> FlextResult[dict[str, object]]:
+        ) -> r[dict[str, object]]:
             """Create integration via OIC client."""
             integration_data_str: dict[str, object] = {
                 k: str(v) for k, v in data.items()
@@ -458,29 +454,29 @@ class FlextOracleOicExtServices(
             create_result = client.create_integration(integration_data_str)
 
             if create_result.is_failure:
-                return FlextResult[dict[str, object]].fail(
+                return r[dict[str, object]].fail(
                     create_result.error or "Create integration failed",
                 )
 
             created_integration = create_result.unwrap()
             if not created_integration:
-                return FlextResult[dict[str, object]].fail(
+                return r[dict[str, object]].fail(
                     "No integration data returned",
                 )
 
-            return FlextResult[dict[str, object]].ok(created_integration)
+            return r[dict[str, object]].ok(created_integration)
 
         def _extract_integration_id(
             self,
             integration_data: dict[str, object],
-        ) -> FlextResult[str]:
+        ) -> r[str]:
             """Extract integration ID from creation result."""
             integration_id = integration_data.get("id", "")
             if not integration_id:
-                return FlextResult[str].fail("No integration ID returned")
+                return r[str].fail("No integration ID returned")
 
             self.logger.info("Integration deployed successfully: %s", integration_id)
-            return FlextResult[str].ok(str(integration_id))
+            return r[str].ok(str(integration_id))
 
         def __enter__(self: Self) -> Self:
             """Context manager entry."""
@@ -501,8 +497,8 @@ class FlextOracleOicExtServices(
     class OICIntegrationPatternService:
         """Oracle OIC Integration Pattern service.
 
-        Padrão EXTENSION: Serviço para padrões enterprise de integração
-        Oracle OIC como Message Router, Scatter-Gather, etc.
+        EXTENSION Pattern: Service for enterprise integration patterns
+        Oracle OIC such as Message Router, Scatter-Gather, etc.
         """
 
         @override
@@ -526,7 +522,7 @@ class FlextOracleOicExtServices(
             self,
             message_data: dict[str, object],
             routing_rules: list[dict[str, object]],
-        ) -> FlextResult[dict[str, object]]:
+        ) -> r[dict[str, object]]:
             """Apply message router pattern to OIC integration using FlextOracleOicUtilities.
 
             Args:
@@ -552,7 +548,7 @@ class FlextOracleOicExtServices(
                 )
 
                 if validation_result.is_failure:
-                    return FlextResult[dict[str, object]].fail(
+                    return r[dict[str, object]].fail(
                         f"Pattern validation failed: {validation_result.error}",
                     )
 
@@ -567,18 +563,18 @@ class FlextOracleOicExtServices(
                     "status": FlextOracleOicConstants.OICPatterns.PATTERN_STATUS_PROCESSED,
                 }
 
-                return FlextResult[dict[str, object]].ok(routing_result)
+                return r[dict[str, object]].ok(routing_result)
 
             except Exception as e:
                 error_msg = f"Message router pattern failed: {e}"
                 self.logger.exception(error_msg)
-                return FlextResult[dict[str, object]].fail(error_msg)
+                return r[dict[str, object]].fail(error_msg)
 
         def apply_scatter_gather_pattern(
             self,
             request_data: dict[str, object],
             target_endpoints: list[str],
-        ) -> FlextResult[dict[str, object]]:
+        ) -> r[dict[str, object]]:
             """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
             Args:
@@ -604,7 +600,7 @@ class FlextOracleOicExtServices(
                 )
 
                 if validation_result.is_failure:
-                    return FlextResult[dict[str, object]].fail(
+                    return r[dict[str, object]].fail(
                         f"Pattern validation failed: {validation_result.error}",
                     )
 
@@ -619,18 +615,18 @@ class FlextOracleOicExtServices(
                     "status": FlextOracleOicConstants.OICPatterns.PATTERN_STATUS_PROCESSED,
                 }
 
-                return FlextResult[dict[str, object]].ok(scatter_result)
+                return r[dict[str, object]].ok(scatter_result)
 
             except Exception as e:
                 error_msg = f"Scatter-gather pattern failed: {e}"
                 self.logger.exception(error_msg)
-                return FlextResult[dict[str, object]].fail(error_msg)
+                return r[dict[str, object]].fail(error_msg)
 
     class LifecycleManager:
         """Oracle OIC Integration Lifecycle Manager.
 
-        Padrão EXTENSION: Gerenciador de ciclo de vida de integrações
-        Oracle OIC com operações de ativação, desativação e monitoramento.
+        EXTENSION Pattern: Integration lifecycle manager
+        Oracle OIC with activation, deactivation, and monitoring operations.
         """
 
         @override
@@ -643,7 +639,7 @@ class FlextOracleOicExtServices(
             self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
             self._client: FlextOracleOicClient | None = None
 
-        def _get_client(self: Self) -> FlextResult[FlextOracleOicClient]:
+        def _get_client(self: Self) -> r[FlextOracleOicClient]:
             """Get authenticated OIC client."""
             try:
                 if not self._client:
@@ -671,17 +667,17 @@ class FlextOracleOicExtServices(
                         auth_config,
                     )
 
-                return FlextResult[FlextOracleOicClient].ok(self._client)
+                return r[FlextOracleOicClient].ok(self._client)
 
             except Exception as e:
                 error_msg = f"Failed to create OIC client: {e}"
                 self.logger.exception(error_msg)
-                return FlextResult[FlextOracleOicClient].fail(error_msg)
+                return r[FlextOracleOicClient].fail(error_msg)
 
         def activate_integration(
             self,
             integration_id: str,
-        ) -> FlextResult[FlextOracleOicModels.IntegrationStatus]:
+        ) -> r[FlextOracleOicModels.IntegrationStatus]:
             """Activate an Oracle OIC integration.
 
             Args:
@@ -694,13 +690,13 @@ class FlextOracleOicExtServices(
             try:
                 client_result = self._get_client()
                 if not client_result.success:
-                    return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.IntegrationStatus].fail(
                         client_result.error or "Client creation failed",
                     )
 
                 client = client_result.unwrap()
                 if client is None:
-                    return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.IntegrationStatus].fail(
                         "No client available",
                     )
 
@@ -714,7 +710,7 @@ class FlextOracleOicExtServices(
                 )
 
                 if not activate_result.success:
-                    return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.IntegrationStatus].fail(
                         activate_result.error or "Activation failed",
                     )
 
@@ -730,19 +726,19 @@ class FlextOracleOicExtServices(
                 self.logger.info(
                     "Integration %s activated successfully", integration_id
                 )
-                return FlextResult[FlextOracleOicModels.IntegrationStatus].ok(status)
+                return r[FlextOracleOicModels.IntegrationStatus].ok(status)
 
             except Exception as e:
                 error_msg = f"Failed to activate integration {integration_id}: {e}"
                 self.logger.exception(error_msg)
-                return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
+                return r[FlextOracleOicModels.IntegrationStatus].fail(
                     error_msg,
                 )
 
         def deactivate_integration(
             self,
             integration_id: str,
-        ) -> FlextResult[FlextOracleOicModels.IntegrationStatus]:
+        ) -> r[FlextOracleOicModels.IntegrationStatus]:
             """Deactivate an Oracle OIC integration.
 
             Args:
@@ -755,13 +751,13 @@ class FlextOracleOicExtServices(
             try:
                 client_result = self._get_client()
                 if not client_result.success:
-                    return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.IntegrationStatus].fail(
                         client_result.error or "Client creation failed",
                     )
 
                 client = client_result.unwrap()
                 if client is None:
-                    return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.IntegrationStatus].fail(
                         "No client available",
                     )
 
@@ -775,7 +771,7 @@ class FlextOracleOicExtServices(
                 )
 
                 if not deactivate_result.success:
-                    return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.IntegrationStatus].fail(
                         deactivate_result.error or "Deactivation failed",
                     )
 
@@ -792,20 +788,20 @@ class FlextOracleOicExtServices(
                     "Integration %s deactivated successfully",
                     integration_id,
                 )
-                return FlextResult[FlextOracleOicModels.IntegrationStatus].ok(status)
+                return r[FlextOracleOicModels.IntegrationStatus].ok(status)
 
             except Exception as e:
                 error_msg = f"Failed to deactivate integration {integration_id}: {e}"
                 self.logger.exception(error_msg)
-                return FlextResult[FlextOracleOicModels.IntegrationStatus].fail(
+                return r[FlextOracleOicModels.IntegrationStatus].fail(
                     error_msg,
                 )
 
     class MonitoringService:
         """Oracle OIC Monitoring Service.
 
-        Padrão EXTENSION: Serviço de monitoramento Oracle OIC
-        com verificações de saúde e métricas de performance.
+        EXTENSION Pattern: Oracle OIC monitoring service
+        with health checks and performance metrics.
         """
 
         @override

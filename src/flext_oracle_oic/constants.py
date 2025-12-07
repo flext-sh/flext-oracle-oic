@@ -303,6 +303,9 @@ class FlextOracleOicConstants(FlextConstants):
 
 
 # Exports following EXTENSION pattern
+c = FlextOracleOicConstants
+
 __all__: list[str] = [
     "FlextOracleOicConstants",
+    "c",
 ]

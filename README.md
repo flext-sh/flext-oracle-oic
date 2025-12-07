@@ -23,11 +23,11 @@ This extension provides Oracle Integration Cloud (OIC) integration capabilities 
 
 ### **Integration Points**
 
-- **[flext-core](../flext-core/README.md)** → Uses FlextResult, FlextService, FlextContainer for foundation patterns
-- **[flext-api](../flext-api/README.md)** → HTTP client abstractions for Oracle OIC REST API operations
-- **[flext-cli](../flext-cli/README.md)** → CLI interface for Oracle OIC deployment and management operations
-- **[flext-tap-oracle-oic](../flext-tap-oracle-oic/README.md)** → Data extraction from Oracle Integration Cloud
-- **[flext-target-oracle-oic](../flext-target-oracle-oic/README.md)** → Data loading to Oracle Integration Cloud
+- **[flext-core](https://github.com/organization/flext/tree/main/flext-core/README.md)** → Uses FlextResult, FlextService, FlextContainer for foundation patterns
+- **[flext-api](https://github.com/organization/flext/tree/main/flext-api/README.md)** → HTTP client abstractions for Oracle OIC REST API operations
+- **[flext-cli](https://github.com/organization/flext/tree/main/flext-cli/README.md)** → CLI interface for Oracle OIC deployment and management operations
+- **[flext-tap-oracle-oic](https://github.com/organization/flext/tree/main/flext-tap-oracle-oic/README.md)** → Data extraction from Oracle Integration Cloud
+- **[flext-target-oracle-oic](https://github.com/organization/flext/tree/main/flext-target-oracle-oic/README.md)** → Data loading to Oracle Integration Cloud
 
 ---
 
@@ -224,14 +224,14 @@ Current status aligned with FLEXT ecosystem requirements:
 
 **Direct Dependencies:**
 
-- **[flext-core](../flext-core/README.md)** - Foundation patterns (FlextResult, FlextService, FlextContainer)
-- **[flext-api](../flext-api/README.md)** - HTTP client abstractions for Oracle OIC REST operations
-- **[flext-cli](../flext-cli/README.md)** - CLI framework for Oracle OIC management commands
+- **[flext-core](https://github.com/organization/flext/tree/main/flext-core/README.md)** - Foundation patterns (FlextResult, FlextService, FlextContainer)
+- **[flext-api](https://github.com/organization/flext/tree/main/flext-api/README.md)** - HTTP client abstractions for Oracle OIC REST operations
+- **[flext-cli](https://github.com/organization/flext/tree/main/flext-cli/README.md)** - CLI framework for Oracle OIC management commands
 
 **Service Dependencies:**
 
-- **[flext-tap-oracle-oic](../flext-tap-oracle-oic/README.md)** - Depends on this for Oracle OIC data extraction
-- **[flext-target-oracle-oic](../flext-target-oracle-oic/README.md)** - Depends on this for Oracle OIC data loading
+- **[flext-tap-oracle-oic](https://github.com/organization/flext/tree/main/flext-tap-oracle-oic/README.md)** - Depends on this for Oracle OIC data extraction
+- **[flext-target-oracle-oic](https://github.com/organization/flext/tree/main/flext-target-oracle-oic/README.md)** - Depends on this for Oracle OIC data loading
 
 **Integration Points:** 4 major connections with FLEXT ecosystem Oracle projects
 

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from flext_core import FlextTypes, t as t_core
+from flext_core import FlextTypes
 
 # =============================================================================
 # ORACLE OIC-SPECIFIC TYPE VARIABLES - Domain-specific TypeVars for OIC operations
@@ -24,7 +24,7 @@ from flext_core import FlextTypes, t as t_core
 
 
 # Oracle OIC domain TypeVars
-class FlextOracleOicTypes(t_core):
+class FlextOracleOicTypes(FlextTypes):
     """Oracle OIC extension-specific type definitions extending t.
 
     Domain-specific type system for Oracle OIC integration operations.

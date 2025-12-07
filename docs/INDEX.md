@@ -62,20 +62,20 @@ This documentation covers the Oracle Integration Cloud extension for the FLEXT e
 
 1. **[Architecture](architecture.md)** → Implementation analysis and compliance issues
 2. **[Development Roadmap](../TODO.md)** → Evidence-based development plan
-3. **[FLEXT Core Integration](../../flext-core/README.md)** → Foundation patterns and standards
+3. **[FLEXT Core Integration](https://github.com/organization/flext/tree/main/flext-core/README.md)** → Foundation patterns and standards
 
 ## Integration with FLEXT Ecosystem
 
 ### Direct Dependencies
 
-- **[flext-core](../../flext-core/README.md)** → Foundation patterns (FlextResult, FlextLogger, FlextContainer)
-- **[flext-api](../../flext-api/README.md)** → HTTP client abstractions (needs implementation)
-- **[flext-cli](../../flext-cli/README.md)** → CLI interface patterns (needs implementation)
+- **[flext-core](https://github.com/organization/flext/tree/main/flext-core/README.md)** → Foundation patterns (FlextResult, FlextLogger, FlextContainer)
+- **[flext-api](https://github.com/organization/flext/tree/main/flext-api/README.md)** → HTTP client abstractions (needs implementation)
+- **[flext-cli](https://github.com/organization/flext/tree/main/flext-cli/README.md)** → CLI interface patterns (needs implementation)
 
 ### Service Dependencies
 
-- **[flext-tap-oracle-oic](../../flext-tap-oracle-oic/README.md)** → Depends on this for OIC data extraction
-- **[flext-target-oracle-oic](../../flext-target-oracle-oic/README.md)** → Depends on this for OIC data loading
+- **[flext-tap-oracle-oic](https://github.com/organization/flext/tree/main/flext-tap-oracle-oic/README.md)** → Depends on this for OIC data extraction
+- **[flext-target-oracle-oic](https://github.com/organization/flext/tree/main/flext-target-oracle-oic/README.md)** → Depends on this for OIC data loading
 
 ## Development Guidelines
 

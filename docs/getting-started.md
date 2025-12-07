@@ -9,7 +9,7 @@
 ### Required Software
 
 - **Python 3.13+** with Poetry for dependency management
-- **FLEXT workspace** setup with access to [flext-core](../../flext-core/README.md)
+- **FLEXT workspace** setup with access to [flext-core](https://github.com/organization/flext/tree/main/flext-core/README.md)
 - **Git** for version control
 
 ### Optional for Testing
@@ -267,7 +267,7 @@ grep -r "from httpx\|from typer" src/
 
 1. **Review Current Implementation**: See [architecture.md](architecture.md) for detailed analysis
 2. **Check Development Roadmap**: See [../TODO.md](../TODO.md) for evidence-based development plan
-3. **Understand FLEXT Patterns**: Review [flext-core documentation](../../flext-core/README.md)
+3. **Understand FLEXT Patterns**: Review [flext-core documentation](https://github.com/organization/flext/tree/main/flext-core/README.md)
 4. **Review Configuration**: See [configuration.md](configuration.md) for detailed settings
 
 ## Getting Help
