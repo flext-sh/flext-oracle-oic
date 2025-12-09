@@ -52,15 +52,17 @@ class FlextOracleOicUtilities(u_core):
         # Integration validation constants
         MIN_INTEGRATION_NAME_LENGTH: ClassVar[int] = 1
         MAX_INTEGRATION_NAME_LENGTH: ClassVar[int] = 100
-        VALID_INTEGRATION_STATUSES: ClassVar[frozenset[str]] = frozenset({
-            "ACTIVATED",
-            "DEACTIVATED",
-            "DRAFT",
-            "PUBLISHED",
-            "RUNNING",
-            "STOPPED",
-            "ERROR",
-        })
+        VALID_INTEGRATION_STATUSES: ClassVar[frozenset[str]] = frozenset(
+            {
+                "ACTIVATED",
+                "DEACTIVATED",
+                "DRAFT",
+                "PUBLISHED",
+                "RUNNING",
+                "STOPPED",
+                "ERROR",
+            }
+        )
         VERSION_PATTERN: ClassVar[re.Pattern[str]] = re.compile(
             r"^\d{2}\.\d{2}\.\d{4}$",
         )
@@ -219,20 +221,24 @@ class FlextOracleOicUtilities(u_core):
         """Oracle OIC connection validation utilities."""
 
         # Connection validation constants
-        VALID_CONNECTION_TYPES: ClassVar[frozenset[str]] = frozenset({
-            "REST",
-            "SOAP",
-            "DATABASE",
-            "FILE",
-            "FTP",
-            "SFTP",
-        })
-        VALID_CONNECTION_STATUSES: ClassVar[frozenset[str]] = frozenset({
-            "ACTIVE",
-            "INACTIVE",
-            "ERROR",
-            "UNKNOWN",
-        })
+        VALID_CONNECTION_TYPES: ClassVar[frozenset[str]] = frozenset(
+            {
+                "REST",
+                "SOAP",
+                "DATABASE",
+                "FILE",
+                "FTP",
+                "SFTP",
+            }
+        )
+        VALID_CONNECTION_STATUSES: ClassVar[frozenset[str]] = frozenset(
+            {
+                "ACTIVE",
+                "INACTIVE",
+                "ERROR",
+                "UNKNOWN",
+            }
+        )
 
         @staticmethod
         def validate_connection_type(connection_type: str) -> r[str]:
@@ -301,11 +307,13 @@ class FlextOracleOicUtilities(u_core):
         MIN_CLIENT_ID_LENGTH: ClassVar[int] = 1
         MIN_TOKEN_URL_LENGTH: ClassVar[int] = 10
         MIN_CLIENT_SECRET_LENGTH: ClassVar[int] = 8
-        VALID_AUTH_TYPES: ClassVar[frozenset[str]] = frozenset({
-            "oauth2",
-            "basic",
-            "bearer",
-        })
+        VALID_AUTH_TYPES: ClassVar[frozenset[str]] = frozenset(
+            {
+                "oauth2",
+                "basic",
+                "bearer",
+            }
+        )
 
         @staticmethod
         def validate_oauth_client_id(client_id: str) -> r[str]:
@@ -376,15 +384,17 @@ class FlextOracleOicUtilities(u_core):
         # API request constants
         DEFAULT_TIMEOUT: ClassVar[int] = 30
         MAX_TIMEOUT: ClassVar[int] = 300
-        VALID_HTTP_METHODS: ClassVar[frozenset[str]] = frozenset({
-            "GET",
-            "POST",
-            "PUT",
-            "DELETE",
-            "PATCH",
-            "HEAD",
-            "OPTIONS",
-        })
+        VALID_HTTP_METHODS: ClassVar[frozenset[str]] = frozenset(
+            {
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "HEAD",
+                "OPTIONS",
+            }
+        )
 
         @staticmethod
         def build_integration_endpoint(
@@ -509,12 +519,14 @@ class FlextOracleOicUtilities(u_core):
         """Oracle OIC integration pattern analysis utilities."""
 
         # Pattern analysis constants
-        SUPPORTED_PATTERNS: ClassVar[frozenset[str]] = frozenset({
-            "message_router",
-            "scatter_gather",
-            "publish_subscribe",
-            "request_reply",
-        })
+        SUPPORTED_PATTERNS: ClassVar[frozenset[str]] = frozenset(
+            {
+                "message_router",
+                "scatter_gather",
+                "publish_subscribe",
+                "request_reply",
+            }
+        )
         MIN_ENDPOINTS_FOR_ROUTER: ClassVar[int] = 2
 
         @staticmethod
