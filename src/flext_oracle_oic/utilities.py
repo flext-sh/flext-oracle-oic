@@ -23,8 +23,6 @@ from urllib.parse import urljoin
 from flext_core import r, t, u as u_core
 from pydantic import SecretStr
 
-__all__ = ["FlextOracleOicUtilities", "u"]
-
 
 class FlextOracleOicUtilities(u_core):
     """Unified Oracle OIC Extension utilities.
@@ -766,3 +764,5 @@ class FlextOracleOicUtilities(u_core):
 
 
 u = FlextOracleOicUtilities
+
+__all__ = ["FlextOracleOicUtilities", "u"]

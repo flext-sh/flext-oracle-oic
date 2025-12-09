@@ -294,10 +294,10 @@ Foundation implemented with configuration management and basic service structure
 - **[Architecture](docs/architecture.md)** - FLEXT patterns and Oracle OIC integration
 - **[API Reference](docs/api-reference.md)** - Complete API documentation
 - **[Configuration](docs/configuration.md)** - OAuth2/IDCS settings and environment management
-- **[Development](docs/development.md)** - Contributing guidelines and FLEXT compliance
-- **[Integration](docs/integration.md)** - FLEXT ecosystem integration patterns
-- **[Examples](docs/examples/)** - Oracle OIC integration examples
-- **[Troubleshooting](docs/troubleshooting.md)** - Common Oracle cloud issues
+- **Development** - Contributing guidelines and FLEXT compliance (*Documentation coming soon*)
+- **Integration** - FLEXT ecosystem integration patterns (*Documentation coming soon*)
+- **Examples** - Oracle OIC integration examples (*Documentation coming soon*)
+- **Troubleshooting** - Common Oracle cloud issues (*Documentation coming soon*)
 - **[TODO & Roadmap](TODO.md)** - Evidence-based development roadmap
 
 ---

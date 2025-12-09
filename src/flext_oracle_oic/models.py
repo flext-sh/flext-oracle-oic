@@ -6,6 +6,7 @@ This module provides data models for Oracle OIC External operations.
 from __future__ import annotations
 
 from flext_core import FlextModels
+from flext_core.utilities import u
 from pydantic import ConfigDict, Field, SecretStr
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
@@ -18,6 +19,14 @@ class FlextOracleOicModels(FlextModels):
     This class consolidates all Oracle OIC Extension domain models following
     the [Project]Models pattern for centralized Pydantic validation.
     """
+
+    def __init_subclass__(cls, **kwargs: object) -> None:
+        """Warn when FlextOracleOicModels is subclassed directly."""
+        super().__init_subclass__(**kwargs)
+        u.Deprecation.warn_once(
+            f"subclass:{cls.__name__}",
+            "Subclassing FlextOracleOicModels is deprecated. Use FlextModels.Oic instead.",
+        )
 
     # Legacy type aliases for backward compatibility
     OicRecord = dict[str, object]
@@ -146,3 +155,10 @@ class FlextOracleOicModels(FlextModels):
             default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
             description="Request timeout in seconds",
         )
+
+
+# Short aliases
+m = FlextOracleOicModels
+m_oic = FlextOracleOicModels
+
+__all__ = ["FlextOracleOicModels", "m", "m_oic"]

@@ -274,3 +274,20 @@ API will be enhanced with:
 ---
 
 This API reference reflects the actual implementation status as of September 17, 2025. Version 0.9.9 provides foundation configuration and basic service structure, with significant enhancements planned for FLEXT compliance and Oracle OIC integration.
+
+## Related Documentation
+
+**Within Project**:
+- [Getting Started](getting-started.md) - Installation and basic usage
+- [Architecture](architecture.md) - Architecture and design patterns
+- [Integration](integration.md) - Integration patterns
+- [Troubleshooting](troubleshooting.md) - Common issues
+
+**Across Projects**:
+- [flext-core Foundation](https://github.com/organization/flext/tree/main/flext-core/docs/api-reference/foundation.md) - Core APIs and patterns
+- [flext-core Railway-Oriented Programming](https://github.com/organization/flext/tree/main/flext-core/docs/guides/railway-oriented-programming.md) - FlextResult patterns
+- [flext-db-oracle Integration](https://github.com/organization/flext/tree/main/flext-db-oracle/CLAUDE.md) - Oracle database integration
+
+**External Resources**:
+- [PEP 257 - Docstring Conventions](https://peps.python.org/pep-0257/)
+- [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)

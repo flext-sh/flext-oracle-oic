@@ -13,7 +13,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Final
+from enum import StrEnum
+from typing import Final, Literal
 
 from flext_core import FlextConstants
 
@@ -96,22 +97,66 @@ class FlextOracleOicConstants(FlextConstants):
         MIN_TOKEN_EXPIRY_SECONDS: Final[int] = 300  # 5 minutes
         MAX_TOKEN_EXPIRY_SECONDS: Final[int] = 86400  # 24 hours
 
-        # Authentication Types
-        AUTH_TYPE_OAUTH2: Final[str] = "oauth2"
-        AUTH_TYPE_BASIC: Final[str] = "basic"
-        AUTH_TYPE_BEARER: Final[str] = "bearer"
+        class AuthType(StrEnum):
+            """Authentication types.
+
+            DRY Pattern: This StrEnum is the single source of truth for authentication types.
+            All authentication type-related constants and Literal types MUST reference this enum.
+            """
+
+            OAUTH2 = "oauth2"
+            BASIC = "basic"
+            BEARER = "bearer"
+
+        # Backward compatibility aliases
+        AUTH_TYPE_OAUTH2: Final[str] = AuthType.OAUTH2
+        AUTH_TYPE_BASIC: Final[str] = AuthType.BASIC
+        AUTH_TYPE_BEARER: Final[str] = AuthType.BEARER
+
+        # PEP 695 Literal type referencing StrEnum members
+        type AuthTypeLiteral = Literal[
+            AuthType.OAUTH2,
+            AuthType.BASIC,
+            AuthType.BEARER,
+        ]
 
     class Integration:
         """Oracle OIC Integration constants."""
 
-        # Integration Status
-        STATUS_ACTIVATED: Final[str] = "ACTIVATED"
-        STATUS_DEACTIVATED: Final[str] = "DEACTIVATED"
-        STATUS_DRAFT: Final[str] = "DRAFT"
-        STATUS_PUBLISHED: Final[str] = "PUBLISHED"
-        STATUS_RUNNING: Final[str] = "RUNNING"
-        STATUS_STOPPED: Final[str] = "STOPPED"
-        STATUS_ERROR: Final[str] = "ERROR"
+        class Status(StrEnum):
+            """Integration status values.
+
+            DRY Pattern: This StrEnum is the single source of truth for integration statuses.
+            All integration status-related constants and Literal types MUST reference this enum.
+            """
+
+            ACTIVATED = "ACTIVATED"
+            DEACTIVATED = "DEACTIVATED"
+            DRAFT = "DRAFT"
+            PUBLISHED = "PUBLISHED"
+            RUNNING = "RUNNING"
+            STOPPED = "STOPPED"
+            ERROR = "ERROR"
+
+        # Backward compatibility aliases
+        STATUS_ACTIVATED: Final[str] = Status.ACTIVATED
+        STATUS_DEACTIVATED: Final[str] = Status.DEACTIVATED
+        STATUS_DRAFT: Final[str] = Status.DRAFT
+        STATUS_PUBLISHED: Final[str] = Status.PUBLISHED
+        STATUS_RUNNING: Final[str] = Status.RUNNING
+        STATUS_STOPPED: Final[str] = Status.STOPPED
+        STATUS_ERROR: Final[str] = Status.ERROR
+
+        # PEP 695 Literal type referencing StrEnum members
+        type StatusLiteral = Literal[
+            Status.ACTIVATED,
+            Status.DEACTIVATED,
+            Status.DRAFT,
+            Status.PUBLISHED,
+            Status.RUNNING,
+            Status.STOPPED,
+            Status.ERROR,
+        ]
 
         # Integration Versions
         DEFAULT_VERSION: Final[str] = "01.00.0000"
@@ -132,41 +177,122 @@ class FlextOracleOicConstants(FlextConstants):
     class Connection:
         """Oracle OIC Connection constants."""
 
-        # Connection Status
-        STATUS_ACTIVE: Final[str] = "ACTIVE"
-        STATUS_INACTIVE: Final[str] = "INACTIVE"
-        STATUS_ERROR: Final[str] = "ERROR"
-        STATUS_UNKNOWN: Final[str] = "unknown"
+        class Status(StrEnum):
+            """Connection status values.
 
-        # Connection Types
-        TYPE_REST: Final[str] = "REST"
-        TYPE_SOAP: Final[str] = "SOAP"
-        TYPE_DATABASE: Final[str] = "DATABASE"
-        TYPE_FILE: Final[str] = "FILE"
-        TYPE_FTP: Final[str] = "FTP"
-        TYPE_SFTP: Final[str] = "SFTP"
+            DRY Pattern: This StrEnum is the single source of truth for connection statuses.
+            All connection status-related constants and Literal types MUST reference this enum.
+            """
 
-        # Adapter Types
-        ADAPTER_TYPE_REST: Final[str] = "REST"
-        ADAPTER_TYPE_SOAP: Final[str] = "SOAP"
-        ADAPTER_TYPE_DATABASE: Final[str] = "DATABASE"
-        ADAPTER_TYPE_FILE: Final[str] = "FILE"
-        ADAPTER_TYPE_FTP: Final[str] = "FTP"
-        ADAPTER_TYPE_SFTP: Final[str] = "SFTP"
+            ACTIVE = "ACTIVE"
+            INACTIVE = "INACTIVE"
+            ERROR = "ERROR"
+            UNKNOWN = "unknown"
+
+        # Backward compatibility aliases
+        STATUS_ACTIVE: Final[str] = Status.ACTIVE
+        STATUS_INACTIVE: Final[str] = Status.INACTIVE
+        STATUS_ERROR: Final[str] = Status.ERROR
+        STATUS_UNKNOWN: Final[str] = Status.UNKNOWN
+
+        class Type(StrEnum):
+            """Connection type values.
+
+            DRY Pattern: This StrEnum is the single source of truth for connection types.
+            All connection type-related constants and Literal types MUST reference this enum.
+            Note: ADAPTER_TYPE_* constants are aliases to these values.
+            """
+
+            REST = "REST"
+            SOAP = "SOAP"
+            DATABASE = "DATABASE"
+            FILE = "FILE"
+            FTP = "FTP"
+            SFTP = "SFTP"
+
+        # Backward compatibility aliases
+        TYPE_REST: Final[str] = Type.REST
+        TYPE_SOAP: Final[str] = Type.SOAP
+        TYPE_DATABASE: Final[str] = Type.DATABASE
+        TYPE_FILE: Final[str] = Type.FILE
+        TYPE_FTP: Final[str] = Type.FTP
+        TYPE_SFTP: Final[str] = Type.SFTP
+
+        # Adapter Types (aliases to Type enum)
+        ADAPTER_TYPE_REST: Final[str] = Type.REST
+        ADAPTER_TYPE_SOAP: Final[str] = Type.SOAP
+        ADAPTER_TYPE_DATABASE: Final[str] = Type.DATABASE
+        ADAPTER_TYPE_FILE: Final[str] = Type.FILE
+        ADAPTER_TYPE_FTP: Final[str] = Type.FTP
+        ADAPTER_TYPE_SFTP: Final[str] = Type.SFTP
+
+        # PEP 695 Literal types referencing StrEnum members
+        type StatusLiteral = Literal[
+            Status.ACTIVE,
+            Status.INACTIVE,
+            Status.ERROR,
+            Status.UNKNOWN,
+        ]
+
+        type TypeLiteral = Literal[
+            Type.REST,
+            Type.SOAP,
+            Type.DATABASE,
+            Type.FILE,
+            Type.FTP,
+            Type.SFTP,
+        ]
 
     class Monitoring:
         """Oracle OIC Monitoring constants."""
 
-        # Health Status
-        HEALTH_STATUS_HEALTHY: Final[str] = "healthy"
-        HEALTH_STATUS_UNHEALTHY: Final[str] = "unhealthy"
-        HEALTH_STATUS_ERROR: Final[str] = "error"
-        HEALTH_STATUS_UNKNOWN: Final[str] = "unknown"
+        class HealthStatus(StrEnum):
+            """Health status values.
 
-        # Component Status
-        COMPONENT_STATUS_HEALTHY: Final[str] = "healthy"
-        COMPONENT_STATUS_UNHEALTHY: Final[str] = "unhealthy"
-        COMPONENT_STATUS_UNKNOWN: Final[str] = "unknown"
+            DRY Pattern: This StrEnum is the single source of truth for health statuses.
+            All health status-related constants and Literal types MUST reference this enum.
+            """
+
+            HEALTHY = "healthy"
+            UNHEALTHY = "unhealthy"
+            ERROR = "error"
+            UNKNOWN = "unknown"
+
+        # Backward compatibility aliases
+        HEALTH_STATUS_HEALTHY: Final[str] = HealthStatus.HEALTHY
+        HEALTH_STATUS_UNHEALTHY: Final[str] = HealthStatus.UNHEALTHY
+        HEALTH_STATUS_ERROR: Final[str] = HealthStatus.ERROR
+        HEALTH_STATUS_UNKNOWN: Final[str] = HealthStatus.UNKNOWN
+
+        class ComponentStatus(StrEnum):
+            """Component status values.
+
+            DRY Pattern: This StrEnum is the single source of truth for component statuses.
+            All component status-related constants and Literal types MUST reference this enum.
+            """
+
+            HEALTHY = "healthy"
+            UNHEALTHY = "unhealthy"
+            UNKNOWN = "unknown"
+
+        # Backward compatibility aliases
+        COMPONENT_STATUS_HEALTHY: Final[str] = ComponentStatus.HEALTHY
+        COMPONENT_STATUS_UNHEALTHY: Final[str] = ComponentStatus.UNHEALTHY
+        COMPONENT_STATUS_UNKNOWN: Final[str] = ComponentStatus.UNKNOWN
+
+        # PEP 695 Literal types referencing StrEnum members
+        type HealthStatusLiteral = Literal[
+            HealthStatus.HEALTHY,
+            HealthStatus.UNHEALTHY,
+            HealthStatus.ERROR,
+            HealthStatus.UNKNOWN,
+        ]
+
+        type ComponentStatusLiteral = Literal[
+            ComponentStatus.HEALTHY,
+            ComponentStatus.UNHEALTHY,
+            ComponentStatus.UNKNOWN,
+        ]
 
         # Component Types
         COMPONENT_DATABASE: Final[str] = "database"
@@ -191,12 +317,34 @@ class FlextOracleOicConstants(FlextConstants):
         ENDPOINT_INTEGRATIONS: Final[str] = "/ic/api/integration/v1/integrations"
         ENDPOINT_CONNECTIONS: Final[str] = "/ic/api/integration/v1/connections"
 
-        # API Methods
-        METHOD_GET: Final[str] = "GET"
-        METHOD_POST: Final[str] = "POST"
-        METHOD_PUT: Final[str] = "PUT"
-        METHOD_DELETE: Final[str] = "DELETE"
-        METHOD_PATCH: Final[str] = "PATCH"
+        class Method(StrEnum):
+            """HTTP method values.
+
+            DRY Pattern: This StrEnum is the single source of truth for HTTP methods.
+            All HTTP method-related constants and Literal types MUST reference this enum.
+            """
+
+            GET = "GET"
+            POST = "POST"
+            PUT = "PUT"
+            DELETE = "DELETE"
+            PATCH = "PATCH"
+
+        # Backward compatibility aliases
+        METHOD_GET: Final[str] = Method.GET
+        METHOD_POST: Final[str] = Method.POST
+        METHOD_PUT: Final[str] = Method.PUT
+        METHOD_DELETE: Final[str] = Method.DELETE
+        METHOD_PATCH: Final[str] = Method.PATCH
+
+        # PEP 695 Literal type referencing StrEnum members
+        type MethodLiteral = Literal[
+            Method.GET,
+            Method.POST,
+            Method.PUT,
+            Method.DELETE,
+            Method.PATCH,
+        ]
 
         # API Headers
         HEADER_CONTENT_TYPE: Final[str] = "Content-Type"
@@ -212,10 +360,28 @@ class FlextOracleOicConstants(FlextConstants):
     class OICPatterns:
         """Oracle OIC Integration Pattern constants."""
 
-        # Pattern Status
-        PATTERN_STATUS_PROCESSED: Final[str] = "processed"
-        PATTERN_STATUS_FAILED: Final[str] = "failed"
-        PATTERN_STATUS_PENDING: Final[str] = "pending"
+        class PatternStatus(StrEnum):
+            """Pattern status values.
+
+            DRY Pattern: This StrEnum is the single source of truth for pattern statuses.
+            All pattern status-related constants and Literal types MUST reference this enum.
+            """
+
+            PROCESSED = "processed"
+            FAILED = "failed"
+            PENDING = "pending"
+
+        # Backward compatibility aliases
+        PATTERN_STATUS_PROCESSED: Final[str] = PatternStatus.PROCESSED
+        PATTERN_STATUS_FAILED: Final[str] = PatternStatus.FAILED
+        PATTERN_STATUS_PENDING: Final[str] = PatternStatus.PENDING
+
+        # PEP 695 Literal type referencing StrEnum members
+        type PatternStatusLiteral = Literal[
+            PatternStatus.PROCESSED,
+            PatternStatus.FAILED,
+            PatternStatus.PENDING,
+        ]
 
         # Pattern Identifiers
         PATTERN_ID_UNKNOWN: Final[str] = "unknown"
