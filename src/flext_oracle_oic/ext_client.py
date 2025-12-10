@@ -135,7 +135,7 @@ class FlextOracleOicClient:
                         f"OAuth request failed: {response_result.error}",
                     )
 
-                response = response_result.unwrap()
+                response = response_result.value
                 if (
                     response.status_code
                     >= FlextOracleOicConstants.API.HTTP_ERROR_STATUS_THRESHOLD
@@ -287,7 +287,7 @@ class FlextOracleOicClient:
                         f"Request failed: {response_result.error}",
                     )
 
-                return FlextResult[object].ok(response_result.unwrap())
+                return FlextResult[object].ok(response_result.value)
         except Exception as e:
             error_msg = f"OIC API request failed: {e}"
             self.logger.exception(error_msg)
@@ -355,7 +355,7 @@ class FlextOracleOicClient:
                         response_result.error or "Request failed",
                     )
 
-                response_data = response_result.unwrap()
+                response_data = response_result.value
                 if response_data is None or not isinstance(response_data, dict):
                     return FlextResult[list[dict[str, object]]].fail(
                         "Invalid response data format",

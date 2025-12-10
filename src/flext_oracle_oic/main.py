@@ -121,7 +121,7 @@ class FlextOracleOicCli(FlextService[None]):
                     f"Failed to create service: {service_result.error}",
                 )
 
-            service = service_result.unwrap()
+            service = service_result.value
             if service is None:
                 return FlextResult[None].fail("Service is None")
 
@@ -162,7 +162,7 @@ class FlextOracleOicCli(FlextService[None]):
                     f"Failed to create service: {service_result.error}",
                 )
 
-            service = service_result.unwrap()
+            service = service_result.value
             if service is None:
                 return FlextResult[None].fail("Service is None")
 
@@ -194,7 +194,7 @@ class FlextOracleOicCli(FlextService[None]):
                     f"Failed to list integrations: {integrations_result.error}",
                 )
 
-            integrations = integrations_result.unwrap() or []
+            integrations = integrations_result.value or []
             if self.logger:
                 self.logger.info(f"Found {len(integrations)} integrations")
 

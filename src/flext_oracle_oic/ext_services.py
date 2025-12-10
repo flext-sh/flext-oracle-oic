@@ -277,7 +277,7 @@ class FlextOracleOicExtServices(
                 return r[FlextOracleOicClient].fail(
                     client_result.error or "Client creation failed",
                 )
-            client = client_result.unwrap()
+            client = client_result.value
             return r[FlextOracleOicClient].ok(client)
 
         def _fetch_integrations(
@@ -295,7 +295,7 @@ class FlextOracleOicExtServices(
                     integrations_result.error or "Failed to fetch integrations",
                 )
             return r[list[dict[str, object]]].ok(
-                integrations_result.unwrap() or [],
+                integrations_result.value or [],
             )
 
         def _parse_integration_models(
@@ -360,7 +360,7 @@ class FlextOracleOicExtServices(
                     connections_result.error or "Connections fetch failed",
                 )
             return r[list[dict[str, object]]].ok(
-                connections_result.unwrap() or [],
+                connections_result.value or [],
             )
 
         def _parse_connection_models(
@@ -458,7 +458,7 @@ class FlextOracleOicExtServices(
                     create_result.error or "Create integration failed",
                 )
 
-            created_integration = create_result.unwrap()
+            created_integration = create_result.value
             if not created_integration:
                 return r[dict[str, object]].fail(
                     "No integration data returned",
@@ -694,7 +694,7 @@ class FlextOracleOicExtServices(
                         client_result.error or "Client creation failed",
                     )
 
-                client = client_result.unwrap()
+                client = client_result.value
                 if client is None:
                     return r[FlextOracleOicModels.IntegrationStatus].fail(
                         "No client available",
@@ -755,7 +755,7 @@ class FlextOracleOicExtServices(
                         client_result.error or "Client creation failed",
                     )
 
-                client = client_result.unwrap()
+                client = client_result.value
                 if client is None:
                     return r[FlextOracleOicModels.IntegrationStatus].fail(
                         "No client available",
