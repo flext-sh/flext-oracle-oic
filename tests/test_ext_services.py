@@ -363,10 +363,10 @@ from __future__ import annotations
 #     def settings(self) -> FlextOracleOicSettings:
 #         """Create test settings."""
 #         return FlextOracleOicSettings(
-#             connection=FlextOracleOicConnectionConfig(
+#             connection=FlextOracleOicConnectionSettings(
 #                 base_url="https://test.integration.ocp.oraclecloud.com",
 #             ),
-#             auth=FlextOracleOicAuthConfig(
+#             auth=FlextOracleOicAuthSettings(
 #                 oauth_client_id="test_client_id",
 #                 oauth_client_secret="test_client_secret",
 #                 oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",

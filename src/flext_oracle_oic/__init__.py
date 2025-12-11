@@ -19,7 +19,7 @@ from flext_core import (
 from flext_oracle_oic.__version__ import __version__, __version_info__
 from flext_oracle_oic.api import FlextOracleOicApi
 from flext_oracle_oic.config import (
-    FlextOracleOicConfig,
+    FlextOracleOicSettings,
 )
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import (
@@ -54,13 +54,13 @@ p = FlextOracleOicProtocols  # Protocols (FlextOracleOicProtocols extends FlextP
 __all__ = [
     "FlextOracleOicApi",
     "FlextOracleOicClient",
-    "FlextOracleOicConfig",
     "FlextOracleOicConstants",
     "FlextOracleOicDeprecationWarning",
     "FlextOracleOicFactory",
     "FlextOracleOicModels",
     "FlextOracleOicProtocols",
     "FlextOracleOicService",
+    "FlextOracleOicSettings",
     "FlextOracleOicTypes",
     "FlextOracleOicUtilities",
     "__version__",

@@ -15,7 +15,7 @@ import warnings
 
 from flext_core import FlextContainer, FlextLogger, FlextResult
 
-from flext_oracle_oic.config import FlextOracleOicConfig
+from flext_oracle_oic.config import FlextOracleOicSettings
 from flext_oracle_oic.service import FlextOracleOicService
 
 logger = FlextLogger(__name__)
@@ -63,7 +63,7 @@ class FlextOracleOicFactory:
 
         """
         # Railway-oriented service creation - uses singleton config
-        config = FlextOracleOicConfig.get_global_instance()
+        config = FlextOracleOicSettings.get_global_instance()
         return self._create_service_instance(
             config,
             "OIC Extension service created successfully",
@@ -71,7 +71,7 @@ class FlextOracleOicFactory:
 
     def _create_service_instance(
         self,
-        _config: FlextOracleOicConfig,
+        _config: FlextOracleOicSettings,
         success_message: str,
     ) -> FlextResult[FlextOracleOicService]:
         """Create service instance with proper error handling."""
@@ -105,19 +105,19 @@ class FlextOracleOicFactory:
             )
         )
 
-    def _create_development_config(self) -> FlextResult[FlextOracleOicConfig]:
+    def _create_development_config(self) -> FlextResult[FlextOracleOicSettings]:
         """Create development configuration."""
         try:
-            settings = FlextOracleOicConfig(
+            settings = FlextOracleOicSettings(
                 environment="development",
                 log_level="DEBUG",
                 enable_monitoring=True,
             )
-            return FlextResult[FlextOracleOicConfig].ok(settings)
+            return FlextResult[FlextOracleOicSettings].ok(settings)
         except Exception as e:
             error_msg = f"Failed to create development config: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[FlextOracleOicConfig].fail(error_msg)
+            return FlextResult[FlextOracleOicSettings].fail(error_msg)
 
     def setup_oic_extension(
         self,
@@ -131,7 +131,7 @@ class FlextOracleOicFactory:
 
         """
         # Railway-oriented extension setup - uses singleton config
-        config = FlextOracleOicConfig.get_global_instance()
+        config = FlextOracleOicSettings.get_global_instance()
         return self._create_service_instance(
             config,
             "OIC Extension setup completed successfully",

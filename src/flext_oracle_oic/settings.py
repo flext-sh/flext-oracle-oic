@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from typing import Literal, Self
 
-from flext_core import FlextConfig, FlextResult
+from flext_core import FlextResult, FlextSettings
 from pydantic import AnyUrl, Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
 
@@ -25,11 +25,11 @@ LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 OICApiVersionLiteral = Literal["v1", "v2"]
 
 
-class FlextOracleOicConfig(FlextConfig):
-    """Single Pydantic 2 Settings class for flext-oracle-oic extending FlextConfig.
+class FlextOracleOicSettings(FlextSettings):
+    """Single Pydantic 2 Settings class for flext-oracle-oic extending FlextSettings.
 
     Follows standardized pattern:
-    - Extends FlextConfig from flext-core
+    - Extends FlextSettings from flext-core
     - No nested classes within Config
     - All defaults from FlextOracleOicConstants
     - Uses enhanced singleton pattern with inverse dependency injection
@@ -40,12 +40,12 @@ class FlextOracleOicConfig(FlextConfig):
         env_prefix="FLEXT_ORACLE_OIC_EXT_",
         case_sensitive=False,
         extra="allow",
-        # Inherit enhanced Pydantic 2.11+ features from FlextConfig
+        # Inherit enhanced Pydantic 2.11+ features from FlextSettings
         validate_assignment=True,
         str_strip_whitespace=True,
         json_schema_extra={
             "title": "FLEXT Oracle OIC Extension Configuration",
-            "description": "Oracle OIC Extension configuration extending FlextConfig",
+            "description": "Oracle OIC Extension configuration extending FlextSettings",
         },
     )
 
@@ -196,7 +196,7 @@ class FlextOracleOicConfig(FlextConfig):
         cls,
         environment: str,
         **overrides: object,
-    ) -> FlextOracleOicConfig:
+    ) -> FlextOracleOicSettings:
         """Create configuration for specific environment using enhanced singleton pattern."""
         # Environment parameter reserved for future use - validate it's not empty
         if not environment.strip():
@@ -205,12 +205,12 @@ class FlextOracleOicConfig(FlextConfig):
         return cls(**overrides)
 
     @classmethod
-    def create_default(cls) -> FlextOracleOicConfig:
+    def create_default(cls) -> FlextOracleOicSettings:
         """Create default configuration instance using enhanced singleton pattern."""
         return cls()
 
     @classmethod
-    def create_for_development(cls) -> FlextOracleOicConfig:
+    def create_for_development(cls) -> FlextOracleOicSettings:
         """Create configuration optimized for development using enhanced singleton pattern."""
         return cls(
             request_timeout=10,
@@ -220,7 +220,7 @@ class FlextOracleOicConfig(FlextConfig):
         )
 
     @classmethod
-    def create_for_production(cls) -> FlextOracleOicConfig:
+    def create_for_production(cls) -> FlextOracleOicSettings:
         """Create configuration optimized for production using enhanced singleton pattern."""
         return cls(
             request_timeout=60,
@@ -232,7 +232,7 @@ class FlextOracleOicConfig(FlextConfig):
         )
 
     @classmethod
-    def create_for_testing(cls) -> FlextOracleOicConfig:
+    def create_for_testing(cls) -> FlextOracleOicSettings:
         """Create configuration optimized for testing using enhanced singleton pattern."""
         return cls(
             base_url="https://test.example.com",
@@ -245,14 +245,14 @@ class FlextOracleOicConfig(FlextConfig):
         )
 
     @classmethod
-    def get_global_instance(cls) -> FlextOracleOicConfig:
-        """Get the global singleton instance using enhanced FlextConfig pattern."""
+    def get_global_instance(cls) -> FlextOracleOicSettings:
+        """Get the global singleton instance using enhanced FlextSettings pattern."""
         return cls()
 
-    # Note: FlextOracleOicConfig follows direct instantiation pattern
-    # No global instance methods needed - use FlextOracleOicConfig() directly
+    # Note: FlextOracleOicSettings follows direct instantiation pattern
+    # No global instance methods needed - use FlextOracleOicSettings() directly
 
 
 __all__ = [
-    "FlextOracleOicConfig",
+    "FlextOracleOicSettings",
 ]

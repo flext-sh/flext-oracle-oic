@@ -15,7 +15,7 @@ import asyncio
 from typing import Self, override
 
 from flext_api import FlextApiClient
-from flext_api.config import FlextApiConfig
+from flext_api.settings import FlextApiSettings
 from flext_core import (
     FlextConstants,
     FlextContainer,
@@ -26,7 +26,7 @@ from flext_core import (
     FlextService,
 )
 
-from flext_oracle_oic.config import FlextOracleOicConfig
+from flext_oracle_oic.config import FlextOracleOicSettings
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import (
     FlextOracleOicClient,
@@ -55,7 +55,7 @@ class FlextOracleOicService(
         Uses singleton config pattern - no config parameter needed.
         """
         super().__init__()
-        self.settings = FlextOracleOicConfig.get_global_instance()
+        self.settings = FlextOracleOicSettings.get_global_instance()
         # Logger is inherited from parent class
         self._client: FlextOracleOicClient | None = None
         self._monitoring_client: FlextApiClient | None = None
@@ -80,7 +80,7 @@ class FlextOracleOicService(
 
             # Create HTTP monitoring client if monitoring is enabled
             if self.settings.enable_monitoring:
-                api_config = FlextApiConfig(
+                api_config = FlextApiSettings(
                     base_url=self.settings.base_url,
                     timeout=self.settings.request_timeout,
                     headers={

@@ -22,7 +22,7 @@ from flext_core import (
     FlextService,
 )
 
-from flext_oracle_oic.config import FlextOracleOicConfig
+from flext_oracle_oic.config import FlextOracleOicSettings
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
 
@@ -49,7 +49,7 @@ class FlextOracleOicApi(FlextService[None]):
 
     def __init__(
         self,
-        config: FlextOracleOicConfig | None = None,
+        config: FlextOracleOicSettings | None = None,
     ) -> None:
         """Initialize FlextOracleOic facade with complete ecosystem integration.
 
@@ -60,8 +60,8 @@ class FlextOracleOicApi(FlextService[None]):
         super().__init__()
 
         # Configuration with fallback to global instance
-        self._config = config or FlextOracleOicConfig()
-        if not isinstance(self._config, FlextOracleOicConfig):
+        self._config = config or FlextOracleOicSettings()
+        if not isinstance(self._config, FlextOracleOicSettings):
             msg = "Invalid config type"
             raise TypeError(msg)
 

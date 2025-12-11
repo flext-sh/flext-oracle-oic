@@ -23,7 +23,7 @@ from flext_core import (
 from pydantic import ConfigDict
 
 from flext_oracle_oic.config import (
-    FlextOracleOicConfig,
+    FlextOracleOicSettings,
 )
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import (
@@ -77,7 +77,7 @@ class FlextOracleOicExtServices(
         )
 
         # Service-specific fields
-        settings: FlextOracleOicConfig
+        settings: FlextOracleOicSettings
 
         @override
         def __init__(self, **data: object) -> None:
@@ -89,7 +89,7 @@ class FlextOracleOicExtServices(
             _ = data  # Use the parameter to avoid unused argument warning
             super().__init__()
             # Get settings from global singleton
-            settings = FlextOracleOicConfig.get_global_instance()
+            settings = FlextOracleOicSettings.get_global_instance()
             # Set settings using object.__setattr__ for frozen model
             object.__setattr__(self, "settings", settings)
             # Client is not part of the frozen model - use object.__setattr__
@@ -635,7 +635,7 @@ class FlextOracleOicExtServices(
 
             Uses singleton config pattern - no config parameter needed.
             """
-            self.settings = FlextOracleOicConfig.get_global_instance()
+            self.settings = FlextOracleOicSettings.get_global_instance()
             self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
             self._client: FlextOracleOicClient | None = None
 

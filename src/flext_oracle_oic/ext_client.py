@@ -16,7 +16,7 @@ import json as json_module
 from typing import Self, cast
 
 from flext_api import FlextApiClient
-from flext_api.config import FlextApiConfig
+from flext_api.settings import FlextApiSettings
 from flext_core import FlextLogger, FlextResult
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
@@ -126,7 +126,7 @@ class FlextOracleOicClient:
         """Execute OAuth token request."""
         headers, data = request_data
         try:
-            api_config = FlextApiConfig(base_url=self.auth_config.oauth_token_url)
+            api_config = FlextApiSettings(base_url=self.auth_config.oauth_token_url)
             api_client = FlextApiClient(api_config)
             with api_client:
                 response_result = api_client.post("", headers=headers, data=data)
@@ -193,7 +193,7 @@ class FlextOracleOicClient:
             # Inline base URL construction: f"{base_url.rstrip('/')}/ic/api/{api_version}"
             base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
 
-            api_config = FlextApiConfig(
+            api_config = FlextApiSettings(
                 base_url=base_url,
                 timeout=self.connection_config.request_timeout,
                 headers={

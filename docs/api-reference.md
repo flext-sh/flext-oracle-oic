@@ -14,8 +14,8 @@ The current implementation provides foundation configuration classes and basic s
 from flext_oracle_oic import (
     # Configuration classes
     OracleOicExtensionSettings,
-    FlextOracleOicConnectionConfig,
-    FlextOracleOicAuthConfig,
+    FlextOracleOicConnectionSettings,
+    FlextOracleOicAuthSettings,
 
     # Basic service classes (implementation varies)
     # Additional components available but may have limited functionality
@@ -29,11 +29,11 @@ from flext_oracle_oic import (
 Main configuration container for Oracle OIC extension settings.
 
 ```python
-from flext_oracle_oic import OracleOicExtensionSettings, FlextOracleOicConnectionConfig
+from flext_oracle_oic import OracleOicExtensionSettings, FlextOracleOicConnectionSettings
 
 # Basic configuration creation
 settings = OracleOicExtensionSettings(
-    connection=FlextOracleOicConnectionConfig(
+    connection=FlextOracleOicConnectionSettings(
         base_url="https://your-instance.integration.ocp.oraclecloud.com"
     )
 )
@@ -41,19 +41,19 @@ settings = OracleOicExtensionSettings(
 
 **Constructor Parameters:**
 
-- `connection: FlextOracleOicConnectionConfig` (required) - Connection configuration
-- `auth: FlextOracleOicAuthConfig` (optional) - Authentication configuration
+- `connection: FlextOracleOicConnectionSettings` (required) - Connection configuration
+- `auth: FlextOracleOicAuthSettings` (optional) - Authentication configuration
 - Additional parameters may vary based on actual implementation
 
-### FlextOracleOicConnectionConfig
+### FlextOracleOicConnectionSettings
 
 HTTP connection configuration for Oracle Integration Cloud.
 
 ```python
-from flext_oracle_oic import FlextOracleOicConnectionConfig
+from flext_oracle_oic import FlextOracleOicConnectionSettings
 
 # Basic connection configuration
-config = FlextOracleOicConnectionConfig(
+config = FlextOracleOicConnectionSettings(
     base_url="https://your-instance.integration.ocp.oraclecloud.com",
     api_version="v1",
     request_timeout=30
@@ -67,15 +67,15 @@ config = FlextOracleOicConnectionConfig(
 - `request_timeout: int` (optional) - Request timeout in seconds, defaults to 30
 - Additional parameters based on actual Pydantic model implementation
 
-### FlextOracleOicAuthConfig
+### FlextOracleOicAuthSettings
 
 OAuth2/IDCS authentication configuration for Oracle cloud integration.
 
 ```python
-from flext_oracle_oic import FlextOracleOicAuthConfig
+from flext_oracle_oic import FlextOracleOicAuthSettings
 
 # OAuth2 authentication setup
-auth_config = FlextOracleOicAuthConfig(
+auth_config = FlextOracleOicAuthSettings(
     oauth_client_id="your_client_id",
     oauth_client_secret="your_client_secret",
     oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
@@ -221,13 +221,13 @@ from flext_oracle_oic.factory import (
 # Recommended import pattern for current version
 from flext_oracle_oic import (
     OracleOicExtensionSettings,
-    FlextOracleOicConnectionConfig,
-    FlextOracleOicAuthConfig
+    FlextOracleOicConnectionSettings,
+    FlextOracleOicAuthSettings
 )
 
 # Create basic configuration
 settings = OracleOicExtensionSettings(
-    connection=FlextOracleOicConnectionConfig(
+    connection=FlextOracleOicConnectionSettings(
         base_url="https://your-instance.integration.ocp.oraclecloud.com"
     )
 )
@@ -248,13 +248,13 @@ settings = OracleOicExtensionSettings(
 # Safe to use for configuration and basic setup
 from flext_oracle_oic import (
     OracleOicExtensionSettings,
-    FlextOracleOicConnectionConfig,
-    FlextOracleOicAuthConfig
+    FlextOracleOicConnectionSettings,
+    FlextOracleOicAuthSettings
 )
 
 # Configuration validation and type safety works correctly
 try:
-    config = FlextOracleOicConnectionConfig(
+    config = FlextOracleOicConnectionSettings(
         base_url="https://test-instance.integration.ocp.oraclecloud.com"
     )
     print("✅ Configuration valid")

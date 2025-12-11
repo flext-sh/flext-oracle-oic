@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_oracle_oic import (
-    FlextOracleOicConfig,
     FlextOracleOicModels,
+    FlextOracleOicSettings,
 )
 
 
@@ -21,12 +21,12 @@ class TestBasicFunctionality:
     def test_flext_oracle_oic_basic(self) -> None:
         """Test basic FlextOracleOic functionality."""
         # Test that we can import and create config
-        config = FlextOracleOicConfig()
+        config = FlextOracleOicSettings()
         assert config.base_url is not None
 
     def test_flext_oracle_oic_config(self) -> None:
-        """Test FlextOracleOicConfig creation."""
-        config = FlextOracleOicConfig(
+        """Test FlextOracleOicSettings creation."""
+        config = FlextOracleOicSettings(
             base_url="https://test.integration.ocp.oraclecloud.com",
             oauth_client_id="test_client_id",
             oauth_client_secret="test_client_secret",

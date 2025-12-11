@@ -38,7 +38,7 @@ poetry install --with dev,test
 
 # Verify FLEXT-core access
 python -c "from flext_core import FlextBus
-from flext_core import FlextConfig
+from flext_core import FlextSettings
 from flext_core import FlextConstants
 from flext_core import FlextContainer
 from flext_core import FlextContext
@@ -84,18 +84,18 @@ The library provides Pydantic-based configuration following FLEXT patterns:
 ```python
 from flext_oracle_oic import (
     OracleOicExtensionSettings,
-    FlextOracleOicConnectionConfig,
-    FlextOracleOicAuthConfig
+    FlextOracleOicConnectionSettings,
+    FlextOracleOicAuthSettings
 )
 
 # Create configuration following FLEXT patterns
 settings = OracleOicExtensionSettings(
-    connection=FlextOracleOicConnectionConfig(
+    connection=FlextOracleOicConnectionSettings(
         base_url="https://your-oic-instance.integration.ocp.oraclecloud.com",
         api_version="v1",
         request_timeout=30
     ),
-    auth=FlextOracleOicAuthConfig(
+    auth=FlextOracleOicAuthSettings(
         oauth_client_id="your_client_id",
         oauth_client_secret="your_client_secret",
         oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
@@ -112,12 +112,12 @@ print(f"Configuration created: {settings.connection.base_url}")
 ```python
 # Import available components
 from flext_oracle_oic.ext_config import OracleOicExtensionSettings
-from flext_oracle_oic.ext_models import FlextOracleOicConnectionConfig, FlextOracleOicAuthConfig
+from flext_oracle_oic.ext_models import FlextOracleOicConnectionSettings, FlextOracleOicAuthSettings
 
 # Basic configuration validation
 try:
     config = OracleOicExtensionSettings(
-        connection=FlextOracleOicConnectionConfig(
+        connection=FlextOracleOicConnectionSettings(
             base_url="https://test.integration.ocp.oraclecloud.com",
             api_version="v1"
         )
@@ -206,7 +206,7 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 ls -la ../flext-core/src/flext_core/
 export PYTHONPATH="$(pwd)/../flext-core/src:$PYTHONPATH"
 python -c "from flext_core import FlextBus
-from flext_core import FlextConfig
+from flext_core import FlextSettings
 from flext_core import FlextConstants
 from flext_core import FlextContainer
 from flext_core import FlextContext
