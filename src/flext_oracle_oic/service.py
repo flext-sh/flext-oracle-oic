@@ -26,12 +26,12 @@ from flext_core import (
     FlextService,
 )
 
-from flext_oracle_oic.config import FlextOracleOicSettings
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import (
     FlextOracleOicClient,
 )
 from flext_oracle_oic.models import FlextOracleOicModels
+from flext_oracle_oic.settings import FlextOracleOicSettings
 from flext_oracle_oic.utilities import FlextOracleOicUtilities
 
 

@@ -15,8 +15,8 @@ import warnings
 
 from flext_core import FlextContainer, FlextLogger, FlextResult
 
-from flext_oracle_oic.config import FlextOracleOicSettings
 from flext_oracle_oic.service import FlextOracleOicService
+from flext_oracle_oic.settings import FlextOracleOicSettings
 
 logger = FlextLogger(__name__)
 
