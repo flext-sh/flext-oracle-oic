@@ -22,14 +22,14 @@ from flext_core import (
 )
 from pydantic import ConfigDict
 
+from flext_oracle_oic.config import (
+    FlextOracleOicSettings,
+)
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import (
     FlextOracleOicClient,
 )
 from flext_oracle_oic.models import FlextOracleOicModels
-from flext_oracle_oic.settings import (
-    FlextOracleOicSettings,
-)
 from flext_oracle_oic.utilities import FlextOracleOicUtilities
 
 logger = FlextLogger(__name__)

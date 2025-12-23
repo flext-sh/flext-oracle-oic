@@ -18,6 +18,9 @@ from flext_core import (
 
 from flext_oracle_oic.__version__ import __version__, __version_info__
 from flext_oracle_oic.api import FlextOracleOicApi
+from flext_oracle_oic.config import (
+    FlextOracleOicSettings,
+)
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import (
     FlextOracleOicClient,
@@ -35,9 +38,6 @@ from flext_oracle_oic.models import (
 from flext_oracle_oic.protocols import FlextOracleOicProtocols
 from flext_oracle_oic.service import (
     FlextOracleOicService,
-)
-from flext_oracle_oic.settings import (
-    FlextOracleOicSettings,
 )
 from flext_oracle_oic.typings import FlextOracleOicTypes
 from flext_oracle_oic.utilities import FlextOracleOicUtilities
