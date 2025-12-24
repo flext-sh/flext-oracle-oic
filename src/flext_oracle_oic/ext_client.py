@@ -17,8 +17,8 @@ from typing import Self, cast
 
 from flext_api import FlextApiClient
 from flext_api.settings import FlextApiSettings
-from flext_core import FlextLogger, FlextResult
 
+from flext import FlextLogger, FlextResult
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.models import FlextOracleOicModels
 

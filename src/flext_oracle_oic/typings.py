@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from flext_core import FlextTypes
+from flext import FlextTypes
 
 # =============================================================================
 # ORACLE OIC-SPECIFIC TYPE VARIABLES - Domain-specific TypeVars for OIC operations
@@ -43,10 +43,10 @@ class FlextOracleOicTypes(FlextTypes):
         type IntegrationFlow = list[dict[str, str | dict[str, FlextTypes.JsonValue]]]
         type IntegrationMapping = dict[str, str | list[str] | dict[str, object]]
         type IntegrationMetadata = dict[
-            str, str | int | dict[str, FlextTypes.JsonValue]
+            str, str | int | dict[str, FlextTypes.JsonValue],
         ]
         type IntegrationMonitoring = dict[
-            str, bool | int | dict[str, FlextTypes.JsonValue]
+            str, bool | int | dict[str, FlextTypes.JsonValue],
         ]
         type IntegrationSecurity = dict[str, str | bool | dict[str, object]]
 
@@ -61,7 +61,7 @@ class FlextOracleOicTypes(FlextTypes):
         type ConnectionPool = dict[str, int | bool | dict[str, object]]
         type ConnectionSecurity = dict[str, str | bool | dict[str, object]]
         type ConnectionMonitoring = dict[
-            str, int | float | dict[str, FlextTypes.JsonValue]
+            str, int | float | dict[str, FlextTypes.JsonValue],
         ]
         type ConnectionLifecycle = dict[str, str | bool | dict[str, object]]
         type ConnectionValidation = dict[str, bool | str | list[str]]
@@ -76,7 +76,7 @@ class FlextOracleOicTypes(FlextTypes):
         type AdapterConfiguration = dict[str, str | bool | dict[str, object]]
         type AdapterCapabilities = list[dict[str, str | bool | dict[str, object]]]
         type AdapterMetadata = dict[
-            str, str | list[str] | dict[str, FlextTypes.JsonValue]
+            str, str | list[str] | dict[str, FlextTypes.JsonValue],
         ]
         type AdapterBinding = dict[str, str | dict[str, FlextTypes.JsonValue]]
         type AdapterTransformation = list[dict[str, str | dict[str, object]]]
@@ -96,7 +96,7 @@ class FlextOracleOicTypes(FlextTypes):
         ]
         type MessageValidation = dict[str, bool | str | list[str] | dict[str, object]]
         type MessageRouting = dict[
-            str, str | list[str] | dict[str, FlextTypes.JsonValue]
+            str, str | list[str] | dict[str, FlextTypes.JsonValue],
         ]
         type MessageTracking = dict[str, str | int | dict[str, FlextTypes.JsonValue]]
 
@@ -112,10 +112,10 @@ class FlextOracleOicTypes(FlextTypes):
         type TransformationValidation = dict[str, bool | str | list[str]]
         type TransformationEngine = dict[str, str | bool | dict[str, object]]
         type TransformationResult = dict[
-            str, bool | object | dict[str, FlextTypes.JsonValue]
+            str, bool | object | dict[str, FlextTypes.JsonValue],
         ]
         type TransformationMetrics = dict[
-            str, int | float | dict[str, FlextTypes.JsonValue]
+            str, int | float | dict[str, FlextTypes.JsonValue],
         ]
 
     # =========================================================================
@@ -127,11 +127,11 @@ class FlextOracleOicTypes(FlextTypes):
 
         type MonitoringConfiguration = dict[str, bool | str | int | dict[str, object]]
         type MonitoringMetrics = dict[
-            str, int | float | dict[str, FlextTypes.JsonValue]
+            str, int | float | dict[str, FlextTypes.JsonValue],
         ]
         type MonitoringAlerts = list[dict[str, str | int | bool | dict[str, object]]]
         type MonitoringDashboard = dict[
-            str, str | list[dict[str, FlextTypes.JsonValue]]
+            str, str | list[dict[str, FlextTypes.JsonValue]],
         ]
         type MonitoringReports = dict[str, str | list[dict[str, object]]]
         type MonitoringThresholds = dict[str, int | float | bool]

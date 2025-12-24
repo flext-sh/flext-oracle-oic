@@ -16,15 +16,13 @@ from typing import Self, override
 
 from flext_api import FlextApiClient
 from flext_api.settings import FlextApiSettings
-from flext_core import (
-    FlextConstants,
+from flext import FlextConstants,
     FlextContainer,
     FlextContext,
     FlextDispatcher,
     FlextRegistry,
     FlextResult,
-    FlextService,
-)
+    FlextService
 
 from flext_oracle_oic.config import FlextOracleOicSettings
 from flext_oracle_oic.constants import FlextOracleOicConstants

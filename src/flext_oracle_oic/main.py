@@ -15,15 +15,13 @@ import argparse
 import sys
 from typing import NoReturn
 
-from flext_core import (
-    FlextContainer,
+from flext import FlextContainer,
     FlextContext,
     FlextDispatcher,
     FlextLogger,
     FlextRegistry,
     FlextResult,
-    FlextService,
-)
+    FlextService
 
 from flext_oracle_oic import __version__
 from flext_oracle_oic.factory import create_development_oic_service

@@ -13,8 +13,7 @@ from __future__ import annotations
 
 import warnings
 
-from flext_core import FlextContainer, FlextLogger, FlextResult
-
+from flext import FlextContainer, FlextLogger, FlextResult
 from flext_oracle_oic.config import FlextOracleOicSettings
 from flext_oracle_oic.service import FlextOracleOicService
 

@@ -20,8 +20,9 @@ from datetime import UTC, datetime
 from typing import ClassVar
 from urllib.parse import urljoin
 
-from flext_core import r, t, u as u_core
 from pydantic import SecretStr
+
+from flext import r, t, u as u_core
 
 
 class FlextOracleOicUtilities(u_core):

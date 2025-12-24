@@ -13,13 +13,11 @@ from __future__ import annotations
 
 from typing import Protocol, Self, override
 
-from flext_core import (
-    FlextConstants,
+from flext import FlextConstants,
     FlextContainer,
     FlextLogger,
     FlextService,
-    r,
-)
+    r
 from pydantic import ConfigDict
 
 from flext_oracle_oic.config import (
@@ -188,7 +186,7 @@ class FlextOracleOicExtServices(
                 )
                 .flat_map(
                     lambda configs: self._create_client_instance(
-                        configs[0], configs[1]
+                        configs[0], configs[1],
                     ),
                 )
             )
@@ -724,7 +722,7 @@ class FlextOracleOicExtServices(
                 )
 
                 self.logger.info(
-                    "Integration %s activated successfully", integration_id
+                    "Integration %s activated successfully", integration_id,
                 )
                 return r[FlextOracleOicModels.IntegrationStatus].ok(status)
 
