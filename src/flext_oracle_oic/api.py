@@ -13,12 +13,14 @@ from __future__ import annotations
 
 from typing import Self
 
-from flext import FlextContainer,
+from flext_core import (
+    FlextContainer,
     FlextContext,
     FlextDispatcher,
     FlextRegistry,
     FlextResult,
-    FlextService
+    FlextService,
+)
 
 from flext_oracle_oic.config import FlextOracleOicSettings
 from flext_oracle_oic.models import FlextOracleOicModels

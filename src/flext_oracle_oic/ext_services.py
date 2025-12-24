@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from typing import Protocol, Self, override
 
-from flext import FlextConstants,
+from flext_core import  FlextConstants,
     FlextContainer,
     FlextLogger,
     FlextService,

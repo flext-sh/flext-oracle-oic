@@ -16,7 +16,7 @@ from typing import Self, override
 
 from flext_api import FlextApiClient
 from flext_api.settings import FlextApiSettings
-from flext import FlextConstants,
+from flext_core import  FlextConstants,
     FlextContainer,
     FlextContext,
     FlextDispatcher,

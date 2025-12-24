@@ -15,7 +15,7 @@ import argparse
 import sys
 from typing import NoReturn
 
-from flext import FlextContainer,
+from flext_core import  FlextContainer,
     FlextContext,
     FlextDispatcher,
     FlextLogger,
