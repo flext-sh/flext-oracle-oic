@@ -13,11 +13,13 @@ from __future__ import annotations
 
 from typing import Protocol, Self, override
 
-from flext_core import  FlextConstants,
+from flext_core import (
+    FlextConstants,
     FlextContainer,
     FlextLogger,
     FlextService,
-    r
+    r,
+)
 from pydantic import ConfigDict
 
 from flext_oracle_oic.config import (

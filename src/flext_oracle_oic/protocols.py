@@ -1,4 +1,10 @@
-"""Oracle OIC Extension protocols for FLEXT ecosystem."""
+"""Oracle OIC Extension protocols for FLEXT ecosystem.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
+
+from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
@@ -51,7 +57,8 @@ class FlextOracleOicProtocols(p):
             ...
 
         def validate_config(
-            self, config: dict[str, object],
+            self,
+            config: dict[str, object],
         ) -> FlextProtocols.Result[bool]:
             """Validate Oracle OIC extension configuration."""
             ...
@@ -109,7 +116,8 @@ class FlextOracleOicProtocols(p):
             ...
 
         def activate_integration(
-            self, integration_id: str,
+            self,
+            integration_id: str,
         ) -> FlextProtocols.Result[bool]:
             """Activate Oracle OIC integration.
 
@@ -143,7 +151,8 @@ class FlextOracleOicProtocols(p):
             ...
 
         def test_connection(
-            self, connection_id: str,
+            self,
+            connection_id: str,
         ) -> FlextProtocols.Result[dict[str, object]]:
             """Test Oracle OIC connection.
 
@@ -376,7 +385,8 @@ class FlextOracleOicProtocols(p):
             ...
 
         def restore_configuration(
-            self, backup_location: str,
+            self,
+            backup_location: str,
         ) -> FlextProtocols.Result[bool]:
             """Restore Oracle OIC configuration from backup."""
             ...
@@ -496,7 +506,8 @@ class FlextOracleOicProtocols(p):
             ...
 
         def refresh_token(
-            self, refresh_token: str,
+            self,
+            refresh_token: str,
         ) -> FlextProtocols.Result[dict[str, object]]:
             """Refresh OAuth2 access token."""
             ...

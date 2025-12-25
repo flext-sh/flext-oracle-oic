@@ -7,12 +7,14 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import  FlextDecorators as d,
+from flext_core import (
+    FlextDecorators as d,
     FlextExceptions as e,
     FlextHandlers as h,
     FlextMixins as x,
     FlextResult as r,
-    FlextService as s
+    FlextService as s,
+)
 
 from flext_oracle_oic.__version__ import __version__, __version_info__
 from flext_oracle_oic.api import FlextOracleOicApi
