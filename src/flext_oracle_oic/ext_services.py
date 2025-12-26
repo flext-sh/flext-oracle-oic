@@ -188,7 +188,8 @@ class FlextOracleOicExtServices(
                 )
                 .flat_map(
                     lambda configs: self._create_client_instance(
-                        configs[0], configs[1],
+                        configs[0],
+                        configs[1],
                     ),
                 )
             )
@@ -263,7 +264,8 @@ class FlextOracleOicExtServices(
             """
             # Railway-oriented integration listing
             return (
-                self._get_oic_client()
+                self
+                ._get_oic_client()
                 .flat_map(
                     lambda client: self._fetch_integrations(client, status_filter),
                 )
@@ -340,7 +342,8 @@ class FlextOracleOicExtServices(
             """
             # Railway-oriented connection listing
             return (
-                self._get_oic_client()
+                self
+                ._get_oic_client()
                 .flat_map(lambda client: self._fetch_connections(client, type_filter))
                 .flat_map(self._parse_connection_models)
             )
@@ -724,7 +727,8 @@ class FlextOracleOicExtServices(
                 )
 
                 self.logger.info(
-                    "Integration %s activated successfully", integration_id,
+                    "Integration %s activated successfully",
+                    integration_id,
                 )
                 return r[FlextOracleOicModels.IntegrationStatus].ok(status)
 
