@@ -265,8 +265,7 @@ class FlextOracleOicExtServices(
             """
             # Railway-oriented integration listing
             return (
-                self
-                ._get_oic_client()
+                self._get_oic_client()
                 .flat_map(
                     lambda client: self._fetch_integrations(client, status_filter),
                 )
@@ -343,8 +342,7 @@ class FlextOracleOicExtServices(
             """
             # Railway-oriented connection listing
             return (
-                self
-                ._get_oic_client()
+                self._get_oic_client()
                 .flat_map(lambda client: self._fetch_connections(client, type_filter))
                 .flat_map(self._parse_connection_models)
             )

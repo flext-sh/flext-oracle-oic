@@ -13,10 +13,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+import re
 from enum import StrEnum
 from typing import Final, Literal
 
-from flext_core import FlextConstants
+from flext_core import FlextConstants, t
 
 
 class FlextOracleOicConstants(FlextConstants):
@@ -466,6 +467,79 @@ class FlextOracleOicConstants(FlextConstants):
         MESSAGE_CONNECTION_PARSE_FAILED: Final[str] = (
             "Failed to parse connection: {error}"
         )
+
+    class Validation:
+        """Oracle OIC validation constants."""
+
+        # Integration validation
+        MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
+        MAX_INTEGRATION_NAME_LENGTH: Final[int] = 100
+        VALID_INTEGRATION_STATUSES: Final[frozenset[str]] = frozenset({
+            "ACTIVATED",
+            "DEACTIVATED",
+            "DRAFT",
+            "PUBLISHED",
+            "RUNNING",
+            "STOPPED",
+            "ERROR",
+        })
+        VERSION_PATTERN: Final[re.Pattern[str]] = re.compile(r"^\d{2}\.\d{2}\.\d{4}$")
+
+        # Connection validation
+        VALID_CONNECTION_TYPES: Final[frozenset[str]] = frozenset({
+            "REST",
+            "SOAP",
+            "DATABASE",
+            "FILE",
+            "FTP",
+            "SFTP",
+        })
+        VALID_CONNECTION_STATUSES: Final[frozenset[str]] = frozenset({
+            "ACTIVE",
+            "INACTIVE",
+            "ERROR",
+            "UNKNOWN",
+        })
+
+        # Authentication validation
+        MIN_CLIENT_ID_LENGTH: Final[int] = 1
+        MIN_TOKEN_URL_LENGTH: Final[int] = 10
+        MIN_CLIENT_SECRET_LENGTH: Final[int] = 8
+        VALID_AUTH_TYPES: Final[frozenset[str]] = frozenset({
+            "oauth2",
+            "basic",
+            "bearer",
+        })
+
+        # API request configuration
+        DEFAULT_TIMEOUT: Final[int] = 30
+        MAX_TIMEOUT: Final[int] = 300
+        VALID_HTTP_METHODS: Final[frozenset[str]] = frozenset({
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE",
+            "PATCH",
+            "HEAD",
+            "OPTIONS",
+        })
+
+        # Pattern analysis
+        SUPPORTED_PATTERNS: Final[frozenset[str]] = frozenset({
+            "message_router",
+            "scatter_gather",
+            "publish_subscribe",
+            "request_reply",
+        })
+        MIN_ENDPOINTS_FOR_ROUTER: Final[int] = 2
+
+        # Monitoring
+        HEALTH_CHECK_TIMEOUT: Final[int] = 10
+        PERFORMANCE_THRESHOLDS: Final[t.FloatDict] = {
+            "response_time_ms": 5000.0,
+            "success_rate": 0.95,
+            "error_rate": 0.05,
+        }
 
 
 # Exports following EXTENSION pattern
