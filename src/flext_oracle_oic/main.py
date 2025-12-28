@@ -23,6 +23,7 @@ from flext_core import (
     FlextRegistry,
     FlextResult,
     FlextService,
+    FlextTypes as t,
 )
 
 from flext_oracle_oic import __version__
@@ -201,7 +202,7 @@ class FlextOracleOicCli(FlextService[None]):
             self._print_integrations(integrations)
             return FlextResult[None].ok(None)
 
-    def _print_integrations(self, integrations: list[object]) -> None:
+    def _print_integrations(self, integrations: list[t.GeneralValueType]) -> None:
         """Print integrations to CLI output.
 
         Args:

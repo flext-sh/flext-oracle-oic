@@ -25,6 +25,7 @@ from flext_core import (
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
 from flext_oracle_oic.settings import FlextOracleOicSettings
+from flext_oracle_oic.typings import t
 
 
 class FlextOracleOicApi(FlextService[None]):
@@ -199,7 +200,7 @@ class FlextOracleOicApi(FlextService[None]):
         integration_id: str,
         payload: dict,
         **kwargs: object,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -222,7 +223,7 @@ class FlextOracleOicApi(FlextService[None]):
         integration_id: str,
         schedule_config: dict,
         **kwargs: object,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -245,7 +246,7 @@ class FlextOracleOicApi(FlextService[None]):
         integration_id: str,
         file_config: dict,
         **kwargs: object,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Execute file transfer pattern.
 
         Args:
@@ -265,7 +266,7 @@ class FlextOracleOicApi(FlextService[None]):
 
     # Monitoring and Health
 
-    def get_health_status(self) -> FlextResult[dict[str, object]]:
+    def get_health_status(self) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Get Oracle OIC health status.
 
         Returns:
@@ -274,7 +275,7 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._get_service().get_health_status()
 
-    def get_performance_metrics(self) -> FlextResult[dict[str, object]]:
+    def get_performance_metrics(self) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Get Oracle OIC performance metrics.
 
         Returns:
@@ -308,7 +309,7 @@ class FlextOracleOicApi(FlextService[None]):
 
     # Context and Configuration
 
-    def get_connection_context(self) -> dict[str, object]:
+    def get_connection_context(self) -> dict[str, t.GeneralValueType]:
         """Get current connection configuration context.
 
         Returns:
@@ -321,7 +322,7 @@ class FlextOracleOicApi(FlextService[None]):
             "request_timeout": getattr(self._config, "request_timeout", 30),
         }
 
-    def get_auth_context(self) -> dict[str, object]:
+    def get_auth_context(self) -> dict[str, t.GeneralValueType]:
         """Get current authentication configuration context.
 
         Returns:
@@ -334,7 +335,7 @@ class FlextOracleOicApi(FlextService[None]):
             "oauth_scope": getattr(self._config, "oauth_scope", ""),
         }
 
-    def get_features_context(self) -> dict[str, object]:
+    def get_features_context(self) -> dict[str, t.GeneralValueType]:
         """Get current features configuration context.
 
         Returns:

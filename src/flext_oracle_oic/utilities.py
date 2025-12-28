@@ -159,8 +159,8 @@ class FlextOracleOicUtilities(u_core):
 
         @staticmethod
         def validate_integration_data(
-            integration_data: dict[str, object],
-        ) -> r[dict[str, object]]:
+            integration_data: dict[str, t.GeneralValueType],
+        ) -> r[dict[str, t.GeneralValueType]]:
             """Validate complete Oracle OIC integration data.
 
             Args:
@@ -171,7 +171,7 @@ class FlextOracleOicUtilities(u_core):
 
             """
             if not isinstance(integration_data, dict):
-                return r[dict[str, object]].fail(
+                return r[dict[str, t.GeneralValueType]].fail(
                     "Integration data must be a dictionary",
                 )
 
@@ -209,11 +209,11 @@ class FlextOracleOicUtilities(u_core):
                     validated_data["status"] = status_result.value
 
             if errors:
-                return r[dict[str, object]].fail(
+                return r[dict[str, t.GeneralValueType]].fail(
                     f"Integration validation failed: {'; '.join(errors)}",
                 )
 
-            return r[dict[str, object]].ok(validated_data)
+            return r[dict[str, t.GeneralValueType]].ok(validated_data)
 
     class ConnectionValidation:
         """Oracle OIC connection validation utilities."""
@@ -519,7 +519,7 @@ class FlextOracleOicUtilities(u_core):
 
         @staticmethod
         def analyze_integration_pattern(
-            integration_data: dict[str, object],
+            integration_data: dict[str, t.GeneralValueType],
         ) -> r[str]:
             """Analyze Oracle OIC integration to determine pattern type.
 
@@ -567,8 +567,8 @@ class FlextOracleOicUtilities(u_core):
         @staticmethod
         def validate_pattern_configuration(
             pattern_type: str,
-            configuration: dict[str, object] | object,
-        ) -> r[dict[str, object]]:
+            configuration: dict[str, t.GeneralValueType] | object,
+        ) -> r[dict[str, t.GeneralValueType]]:
             """Validate Oracle OIC integration pattern configuration.
 
             Args:
@@ -586,12 +586,12 @@ class FlextOracleOicUtilities(u_core):
                 supported = ", ".join(
                     sorted(FlextOracleOicUtilities.PatternAnalysis.SUPPORTED_PATTERNS),
                 )
-                return r[dict[str, object]].fail(
+                return r[dict[str, t.GeneralValueType]].fail(
                     f"Unsupported pattern type. Supported: {supported}",
                 )
 
             if not isinstance(configuration, dict):
-                return r[dict[str, object]].fail(
+                return r[dict[str, t.GeneralValueType]].fail(
                     "Configuration must be a dictionary",
                 )
 
@@ -600,13 +600,13 @@ class FlextOracleOicUtilities(u_core):
             # Pattern-specific validation
             if pattern_type == "message_router":
                 if "routing_rules" not in configuration:
-                    return r[dict[str, object]].fail(
+                    return r[dict[str, t.GeneralValueType]].fail(
                         "Message router pattern requires routing_rules",
                     )
 
             elif pattern_type == "scatter_gather":
                 if "target_services" not in configuration:
-                    return r[dict[str, object]].fail(
+                    return r[dict[str, t.GeneralValueType]].fail(
                         "Scatter-gather pattern requires target_services",
                     )
                 if "aggregation_strategy" not in configuration:
@@ -616,11 +616,11 @@ class FlextOracleOicUtilities(u_core):
                 pattern_type == "publish_subscribe"
                 and "event_types" not in configuration
             ):
-                return r[dict[str, object]].fail(
+                return r[dict[str, t.GeneralValueType]].fail(
                     "Publish-subscribe pattern requires event_types",
                 )
 
-            return r[dict[str, object]].ok(validated_config)
+            return r[dict[str, t.GeneralValueType]].ok(validated_config)
 
     class MonitoringUtilities:
         """Oracle OIC monitoring and health check utilities."""
@@ -635,8 +635,8 @@ class FlextOracleOicUtilities(u_core):
 
         @staticmethod
         def validate_health_status(
-            health_data: dict[str, object],
-        ) -> r[dict[str, object]]:
+            health_data: dict[str, t.GeneralValueType],
+        ) -> r[dict[str, t.GeneralValueType]]:
             """Validate Oracle OIC health check data.
 
             Args:
@@ -647,7 +647,7 @@ class FlextOracleOicUtilities(u_core):
 
             """
             if not isinstance(health_data, dict):
-                return r[dict[str, object]].fail(
+                return r[dict[str, t.GeneralValueType]].fail(
                     "Health data must be a dictionary",
                 )
 
@@ -655,13 +655,13 @@ class FlextOracleOicUtilities(u_core):
 
             # Validate required health fields
             if "status" not in health_data:
-                return r[dict[str, object]].fail(
+                return r[dict[str, t.GeneralValueType]].fail(
                     "Health data must include status",
                 )
 
             status = health_data["status"]
             if status not in {"healthy", "unhealthy", "error", "unknown"}:
-                return r[dict[str, object]].fail(
+                return r[dict[str, t.GeneralValueType]].fail(
                     "Invalid health status. Valid: healthy, unhealthy, error, unknown",
                 )
 
@@ -669,17 +669,17 @@ class FlextOracleOicUtilities(u_core):
             if "components" in health_data:
                 components = health_data["components"]
                 if not isinstance(components, dict):
-                    return r[dict[str, object]].fail(
+                    return r[dict[str, t.GeneralValueType]].fail(
                         "Components must be a dictionary",
                     )
 
                 for component_name, component_data in components.items():
                     if not isinstance(component_data, dict):
-                        return r[dict[str, object]].fail(
+                        return r[dict[str, t.GeneralValueType]].fail(
                             f"Component {component_name} data must be a dictionary",
                         )
                     if "status" not in component_data:
-                        return r[dict[str, object]].fail(
+                        return r[dict[str, t.GeneralValueType]].fail(
                             f"Component {component_name} must have status",
                         )
 
@@ -687,12 +687,12 @@ class FlextOracleOicUtilities(u_core):
             if "timestamp" not in validated_data:
                 validated_data["timestamp"] = datetime.now(UTC).isoformat()
 
-            return r[dict[str, object]].ok(validated_data)
+            return r[dict[str, t.GeneralValueType]].ok(validated_data)
 
         @staticmethod
         def analyze_performance_metrics(
-            metrics: dict[str, object],
-        ) -> r[dict[str, object]]:
+            metrics: dict[str, t.GeneralValueType],
+        ) -> r[dict[str, t.GeneralValueType]]:
             """Analyze Oracle OIC performance metrics.
 
             Args:
@@ -703,11 +703,11 @@ class FlextOracleOicUtilities(u_core):
 
             """
             if not isinstance(metrics, dict):
-                return r[dict[str, object]].fail(
+                return r[dict[str, t.GeneralValueType]].fail(
                     "Metrics must be a dictionary",
                 )
 
-            analysis: dict[str, object] = {
+            analysis: dict[str, t.GeneralValueType] = {
                 "overall_health": "healthy",
                 "warnings": [],
                 "critical_issues": [],
@@ -760,7 +760,7 @@ class FlextOracleOicUtilities(u_core):
                             "Review error logs and implement error handling improvements",
                         )
 
-            return r[dict[str, object]].ok(analysis)
+            return r[dict[str, t.GeneralValueType]].ok(analysis)
 
 
 u = FlextOracleOicUtilities

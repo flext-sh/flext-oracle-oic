@@ -13,11 +13,11 @@ from __future__ import annotations
 
 import base64
 import json as json_module
-from typing import Self, cast
+from typing import Self
 
 from flext_api import FlextApiClient
 from flext_api.settings import FlextApiSettings
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes as t
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.models import FlextOracleOicModels
@@ -217,8 +217,8 @@ class FlextOracleOicClient:
         endpoint: str,
         params: dict[str, str] | None = None,
         data: dict[str, str] | None = None,
-        json: dict[str, object] | None = None,
-    ) -> FlextResult[dict[str, object]]:
+        json: dict[str, t.GeneralValueType] | None = None,
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Make authenticated request to OIC API."""
         # Railway-oriented API request execution
         return (
@@ -228,7 +228,7 @@ class FlextOracleOicClient:
                     str,
                     dict[str, str] | None,
                     dict[str, str] | None,
-                    dict[str, object] | None,
+                    dict[str, t.GeneralValueType] | None,
                 ]
             ]
             .ok((method, endpoint, params, data, json))
@@ -256,7 +256,7 @@ class FlextOracleOicClient:
         endpoint: str,
         _params: dict[str, str] | None,
         _data: dict[str, str] | None,
-        json: dict[str, object] | None,
+        json: dict[str, t.GeneralValueType] | None,
     ) -> FlextResult[object]:
         """Execute the actual API request."""
         try:
@@ -293,7 +293,9 @@ class FlextOracleOicClient:
             self.logger.exception(error_msg)
             return FlextResult[object].fail(error_msg)
 
-    def _parse_api_response(self, response: object) -> FlextResult[dict[str, object]]:
+    def _parse_api_response(
+        self, response: object
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Parse API response based on content type."""
         try:
             # Parse response body properly - it could be str, dict, or None
@@ -303,34 +305,44 @@ class FlextOracleOicClient:
 
                 if headers.get("content-type", "").startswith("application/json"):
                     if isinstance(body, dict):
-                        return FlextResult[dict[str, object]].ok(body)
+                        return FlextResult[dict[str, t.GeneralValueType]].ok(body)
                     if isinstance(body, str):
                         parsed_data = json_module.loads(body)
-                        return FlextResult[dict[str, object]].ok(parsed_data)
-                    return FlextResult[dict[str, object]].fail("Empty JSON response")
+                        return FlextResult[dict[str, t.GeneralValueType]].ok(
+                            parsed_data
+                        )
+                    return FlextResult[dict[str, t.GeneralValueType]].fail(
+                        "Empty JSON response"
+                    )
 
                 # Non-JSON response
                 if isinstance(body, str):
-                    return FlextResult[dict[str, object]].ok({"raw_content": body})
+                    return FlextResult[dict[str, t.GeneralValueType]].ok({
+                        "raw_content": body
+                    })
                 if isinstance(body, dict):
-                    return FlextResult[dict[str, object]].ok(body)
-                return FlextResult[dict[str, object]].ok({"raw_content": str(body)})
+                    return FlextResult[dict[str, t.GeneralValueType]].ok(body)
+                return FlextResult[dict[str, t.GeneralValueType]].ok({
+                    "raw_content": str(body)
+                })
 
-            return FlextResult[dict[str, object]].fail("Invalid response format")
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
+                "Invalid response format"
+            )
         except Exception as e:
             error_msg = f"Failed to parse API response: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[dict[str, object]].fail(error_msg)
+            return FlextResult[dict[str, t.GeneralValueType]].fail(error_msg)
 
     def paginate_request(
         self,
         endpoint: str,
         page_size: int = 100,
         params: dict[str, str] | None = None,
-    ) -> FlextResult[list[dict[str, object]]]:
+    ) -> FlextResult[list[dict[str, t.GeneralValueType]]]:
         """Paginate through OIC API responses."""
         try:
-            all_records: list[dict[str, object]] = []
+            all_records: list[dict[str, t.GeneralValueType]] = []
             offset = 0
             base_params: dict[str, str] = params or {}
 
@@ -351,25 +363,25 @@ class FlextOracleOicClient:
                     params=request_params,
                 )
                 if response_result.is_failure:
-                    return FlextResult[list[dict[str, object]]].fail(
+                    return FlextResult[list[dict[str, t.GeneralValueType]]].fail(
                         response_result.error or "Request failed",
                     )
 
                 response_data = response_result.value
                 if response_data is None or not isinstance(response_data, dict):
-                    return FlextResult[list[dict[str, object]]].fail(
+                    return FlextResult[list[dict[str, t.GeneralValueType]]].fail(
                         "Invalid response data format",
                     )
 
-                items_raw = cast(
-                    "list[dict[str, object]]",
-                    response_data.get("items", []),
-                )
+                items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):
-                    return FlextResult[list[dict[str, object]]].fail(
+                    return FlextResult[list[dict[str, t.GeneralValueType]]].fail(
                         "Invalid items format",
                     )
-                items = items_raw
+                # Build typed list from validated items
+                items: list[dict[str, t.GeneralValueType]] = [
+                    item for item in items_raw if isinstance(item, dict)
+                ]
 
                 # Add items to collection
                 all_records.extend(items)
@@ -381,19 +393,19 @@ class FlextOracleOicClient:
 
                 offset += page_size
 
-            return FlextResult[list[dict[str, object]]].ok(all_records)
+            return FlextResult[list[dict[str, t.GeneralValueType]]].ok(all_records)
 
         except Exception as e:
             error_msg = f"OIC pagination failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[list[dict[str, object]]].fail(error_msg)
+            return FlextResult[list[dict[str, t.GeneralValueType]]].fail(error_msg)
 
     # Integration Methods
     def get_integrations(
         self,
         status_filter: list[str] | None = None,
         page_size: int = 100,
-    ) -> FlextResult[list[dict[str, object]]]:
+    ) -> FlextResult[list[dict[str, t.GeneralValueType]]]:
         """Get integration flows from OIC."""
         params: dict[str, str] = {}
 
@@ -410,7 +422,7 @@ class FlextOracleOicClient:
         self,
         type_filter: list[str] | None = None,
         page_size: int = 100,
-    ) -> FlextResult[list[dict[str, object]]]:
+    ) -> FlextResult[list[dict[str, t.GeneralValueType]]]:
         """Get adapter connections from OIC."""
         params: dict[str, str] = {}
 
@@ -426,42 +438,42 @@ class FlextOracleOicClient:
     def get_packages(
         self,
         page_size: int = 100,
-    ) -> FlextResult[list[dict[str, object]]]:
+    ) -> FlextResult[list[dict[str, t.GeneralValueType]]]:
         """Get integration packages from OIC."""
         return self.paginate_request("/packages", page_size=page_size)
 
     def get_lookups(
         self,
         page_size: int = 100,
-    ) -> FlextResult[list[dict[str, object]]]:
+    ) -> FlextResult[list[dict[str, t.GeneralValueType]]]:
         """Get lookup tables from OIC."""
         return self.paginate_request("/lookups", page_size=page_size)
 
     def create_integration(
         self,
-        integration_data: dict[str, object],
-    ) -> FlextResult[dict[str, object]]:
+        integration_data: dict[str, t.GeneralValueType],
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Create integration in OIC."""
         return self.make_request("POST", "/integrations", json=integration_data)
 
     def update_integration(
         self,
         integration_id: str,
-        integration_data: dict[str, object],
-    ) -> FlextResult[dict[str, object]]:
+        integration_data: dict[str, t.GeneralValueType],
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Update integration in OIC."""
         endpoint = f"/integrations/{integration_id}"
-        json_data: dict[str, object] = {
+        json_data: dict[str, t.GeneralValueType] = {
             str(k): str(v) for k, v in integration_data.items()
         }
         return self.make_request("PUT", endpoint, json=json_data)
 
     def create_connection(
         self,
-        connection_data: dict[str, object],
-    ) -> FlextResult[dict[str, object]]:
+        connection_data: dict[str, t.GeneralValueType],
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Create connection in OIC."""
-        json_data: dict[str, object] = {
+        json_data: dict[str, t.GeneralValueType] = {
             str(k): str(v) for k, v in connection_data.items()
         }
         return self.make_request("POST", "/connections", json=json_data)

@@ -5,7 +5,7 @@ This module provides data models for Oracle OIC External operations.
 
 from __future__ import annotations
 
-from flext_core import FlextModels
+from flext_core import FlextModels, FlextTypes
 from flext_core.utilities import u
 from pydantic import ConfigDict, Field, SecretStr
 
@@ -29,7 +29,7 @@ class FlextOracleOicModels(FlextModels):
         )
 
     # Legacy type aliases for backward compatibility
-    OicRecord = dict[str, object]
+    OicRecord = dict[str, FlextTypes.GeneralValueType]
     OicRecords = list[OicRecord]
 
     class OICAuthConfig(FlextModels.Value):
@@ -145,8 +145,10 @@ class FlextOracleOicModels(FlextModels):
             default=None,
             description="Query parameters",
         )
-        data: dict[str, object] | None = Field(default=None, description="Form data")
-        json_data: dict[str, object] | None = Field(
+        data: dict[str, FlextTypes.GeneralValueType] | None = Field(
+            default=None, description="Form data"
+        )
+        json_data: dict[str, FlextTypes.GeneralValueType] | None = Field(
             default=None,
             description="JSON data",
         )
