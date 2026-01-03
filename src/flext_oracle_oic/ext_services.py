@@ -265,7 +265,8 @@ class FlextOracleOicExtServices(
             """
             # Railway-oriented integration listing
             return (
-                self._get_oic_client()
+                self
+                ._get_oic_client()
                 .flat_map(
                     lambda client: self._fetch_integrations(client, status_filter),
                 )
@@ -342,7 +343,8 @@ class FlextOracleOicExtServices(
             """
             # Railway-oriented connection listing
             return (
-                self._get_oic_client()
+                self
+                ._get_oic_client()
                 .flat_map(lambda client: self._fetch_connections(client, type_filter))
                 .flat_map(self._parse_connection_models)
             )
@@ -691,7 +693,7 @@ class FlextOracleOicExtServices(
             """
             try:
                 client_result = self._get_client()
-                if not client_result.success:
+                if not client_result.is_success:
                     return r[FlextOracleOicModels.IntegrationStatus].fail(
                         client_result.error or "Client creation failed",
                     )
@@ -711,7 +713,7 @@ class FlextOracleOicExtServices(
                     activation_data,
                 )
 
-                if not activate_result.success:
+                if not activate_result.is_success:
                     return r[FlextOracleOicModels.IntegrationStatus].fail(
                         activate_result.error or "Activation failed",
                     )
@@ -753,7 +755,7 @@ class FlextOracleOicExtServices(
             """
             try:
                 client_result = self._get_client()
-                if not client_result.success:
+                if not client_result.is_success:
                     return r[FlextOracleOicModels.IntegrationStatus].fail(
                         client_result.error or "Client creation failed",
                     )
@@ -773,7 +775,7 @@ class FlextOracleOicExtServices(
                     deactivation_data,
                 )
 
-                if not deactivate_result.success:
+                if not deactivate_result.is_success:
                     return r[FlextOracleOicModels.IntegrationStatus].fail(
                         deactivate_result.error or "Deactivation failed",
                     )
