@@ -32,131 +32,134 @@ class FlextOracleOicModels(FlextModels):
     OicRecord = dict[str, FlextTypes.GeneralValueType]
     OicRecords = list[OicRecord]
 
-    class OICAuthConfig(FlextModels.Value):
-        """Oracle Integration Cloud authentication configuration.
+    class OracleOic:
+        """OracleOic domain namespace."""
 
-        EXTENSION Pattern: Value Object for authentication configuration
-        Oracle OIC with validation and security.
-        """
+        class OICAuthConfig(FlextModels.Value):
+            """Oracle Integration Cloud authentication configuration.
 
-        model_config = ConfigDict(extra="forbid")
+            EXTENSION Pattern: Value Object for authentication configuration
+            Oracle OIC with validation and security.
+            """
 
-        oauth_client_id: str = Field(description="IDCS OAuth2 client ID")
-        oauth_client_secret: SecretStr = Field(description="IDCS OAuth2 client secret")
-        oauth_token_url: str = Field(description="IDCS OAuth2 token endpoint")
-        oauth_client_aud: str | None = Field(
-            default=None,
-            description="OAuth2 audience",
-        )
-        oauth_scope: str = Field(default="", description="OAuth2 scope")
+            model_config = ConfigDict(extra="forbid")
 
-    class OICConnectionConfig(FlextModels.Value):
-        """Oracle Integration Cloud connection configuration.
+            oauth_client_id: str = Field(description="IDCS OAuth2 client ID")
+            oauth_client_secret: SecretStr = Field(description="IDCS OAuth2 client secret")
+            oauth_token_url: str = Field(description="IDCS OAuth2 token endpoint")
+            oauth_client_aud: str | None = Field(
+                default=None,
+                description="OAuth2 audience",
+            )
+            oauth_scope: str = Field(default="", description="OAuth2 scope")
 
-        EXTENSION Pattern: Value Object for connection configuration
-        Oracle OIC with enterprise validation.
-        """
+        class OICConnectionConfig(FlextModels.Value):
+            """Oracle Integration Cloud connection configuration.
 
-        model_config = ConfigDict(extra="forbid")
+            EXTENSION Pattern: Value Object for connection configuration
+            Oracle OIC with enterprise validation.
+            """
 
-        base_url: str = Field(description="Oracle OIC instance base URL")
-        api_version: str = Field(
-            default=FlextOracleOicConstants.OIC.DEFAULT_API_VERSION,
-            description="OIC API version",
-        )
-        request_timeout: int = Field(
-            default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
-            ge=FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT,
-            description="Request timeout in seconds",
-        )
-        max_retries: int = Field(
-            default=FlextOracleOicConstants.OIC.DEFAULT_MAX_RETRIES,
-            ge=FlextOracleOicConstants.OIC.MIN_MAX_RETRIES,
-            description="Maximum retry attempts",
-        )
-        verify_ssl: bool = Field(
-            default=FlextOracleOicConstants.OIC.DEFAULT_VERIFY_SSL,
-            description="Verify SSL certificates",
-        )
+            model_config = ConfigDict(extra="forbid")
 
-    class OICIntegrationInfo(FlextModels.Entity):
-        """Oracle OIC Integration information.
+            base_url: str = Field(description="Oracle OIC instance base URL")
+            api_version: str = Field(
+                default=FlextOracleOicConstants.OIC.DEFAULT_API_VERSION,
+                description="OIC API version",
+            )
+            request_timeout: int = Field(
+                default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
+                ge=FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT,
+                description="Request timeout in seconds",
+            )
+            max_retries: int = Field(
+                default=FlextOracleOicConstants.OIC.DEFAULT_MAX_RETRIES,
+                ge=FlextOracleOicConstants.OIC.MIN_MAX_RETRIES,
+                description="Maximum retry attempts",
+            )
+            verify_ssl: bool = Field(
+                default=FlextOracleOicConstants.OIC.DEFAULT_VERIFY_SSL,
+                description="Verify SSL certificates",
+            )
 
-        EXTENSION Pattern: Value Object representing information
-        for an Oracle OIC integration.
-        """
+        class OICIntegrationInfo(FlextModels.Entity):
+            """Oracle OIC Integration information.
 
-        model_config = ConfigDict(extra="forbid")
+            EXTENSION Pattern: Value Object representing information
+            for an Oracle OIC integration.
+            """
 
-        integration_id: str = Field(description="Integration unique identifier")
-        name: str = Field(description="Integration name")
-        status: str = Field(description="Integration status")
-        integration_version: str = Field(description="Integration version")
-        description: str = Field(default="", description="Integration description")
-        created_by: str = Field(default="", description="Creator username")
-        last_updated: str = Field(default="", description="Last update timestamp")
+            model_config = ConfigDict(extra="forbid")
 
-    class OICConnectionInfo(FlextModels.Entity):
-        """Oracle OIC Connection information.
+            integration_id: str = Field(description="Integration unique identifier")
+            name: str = Field(description="Integration name")
+            status: str = Field(description="Integration status")
+            integration_version: str = Field(description="Integration version")
+            description: str = Field(default="", description="Integration description")
+            created_by: str = Field(default="", description="Creator username")
+            last_updated: str = Field(default="", description="Last update timestamp")
 
-        EXTENSION Pattern: Value Object representing information
-        for an Oracle OIC connection.
-        """
+        class OICConnectionInfo(FlextModels.Entity):
+            """Oracle OIC Connection information.
 
-        model_config = ConfigDict(extra="forbid")
+            EXTENSION Pattern: Value Object representing information
+            for an Oracle OIC connection.
+            """
 
-        connection_id: str = Field(description="Connection unique identifier")
-        name: str = Field(description="Connection name")
-        adapter_type: str = Field(description="Adapter type")
-        status: str = Field(description="Connection status")
-        connection_type: str = Field(description="Connection type")
-        description: str = Field(default="", description="Connection description")
+            model_config = ConfigDict(extra="forbid")
 
-    class IntegrationStatus(FlextModels.Entity):
-        """Oracle OIC Integration status information.
+            connection_id: str = Field(description="Connection unique identifier")
+            name: str = Field(description="Connection name")
+            adapter_type: str = Field(description="Adapter type")
+            status: str = Field(description="Connection status")
+            connection_type: str = Field(description="Connection type")
+            description: str = Field(default="", description="Connection description")
 
-        EXTENSION Pattern: Value Object representing status
-        for an Oracle OIC integration.
-        """
+        class IntegrationStatus(FlextModels.Entity):
+            """Oracle OIC Integration status information.
 
-        model_config = ConfigDict(extra="forbid")
+            EXTENSION Pattern: Value Object representing status
+            for an Oracle OIC integration.
+            """
 
-        integration_id: str = Field(description="Integration unique identifier")
-        integration_version: str = Field(description="Integration version")
-        status: str = Field(description="Integration status")
-        last_updated: str = Field(default="", description="Last update timestamp")
-        activated_by: str = Field(
-            default="",
-            description="User who activated the integration",
-        )
+            model_config = ConfigDict(extra="forbid")
 
-    class RequestParams(FlextModels.Value):
-        """Parameters for OIC API request.
+            integration_id: str = Field(description="Integration unique identifier")
+            integration_version: str = Field(description="Integration version")
+            status: str = Field(description="Integration status")
+            last_updated: str = Field(default="", description="Last update timestamp")
+            activated_by: str = Field(
+                default="",
+                description="User who activated the integration",
+            )
 
-        EXTENSION Pattern: Value Object for request parameters
-        Oracle OIC API com tipagem forte.
-        """
+        class RequestParams(FlextModels.Value):
+            """Parameters for OIC API request.
 
-        model_config = ConfigDict(extra="forbid")
+            EXTENSION Pattern: Value Object for request parameters
+            Oracle OIC API com tipagem forte.
+            """
 
-        method: str = Field(description="HTTP method")
-        url: str = Field(description="Request URL")
-        params: dict[str, str | int | float] | None = Field(
-            default=None,
-            description="Query parameters",
-        )
-        data: dict[str, FlextTypes.GeneralValueType] | None = Field(
-            default=None, description="Form data"
-        )
-        json_data: dict[str, FlextTypes.GeneralValueType] | None = Field(
-            default=None,
-            description="JSON data",
-        )
-        headers: dict[str, str] | None = Field(default=None, description="HTTP headers")
-        timeout: int = Field(
-            default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
-            description="Request timeout in seconds",
-        )
+            model_config = ConfigDict(extra="forbid")
+
+            method: str = Field(description="HTTP method")
+            url: str = Field(description="Request URL")
+            params: dict[str, str | int | float] | None = Field(
+                default=None,
+                description="Query parameters",
+            )
+            data: dict[str, FlextTypes.GeneralValueType] | None = Field(
+                default=None, description="Form data"
+            )
+            json_data: dict[str, FlextTypes.GeneralValueType] | None = Field(
+                default=None,
+                description="JSON data",
+            )
+            headers: dict[str, str] | None = Field(default=None, description="HTTP headers")
+            timeout: int = Field(
+                default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
+                description="Request timeout in seconds",
+            )
 
 
 # Short aliases

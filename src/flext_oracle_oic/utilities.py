@@ -47,7 +47,7 @@ class FlextOracleOicUtilities(u_core):
     - No side effects in utility functions
     """
 
-    class IntegrationValidation:
+    class OracleOic:
         """Oracle OIC integration validation utilities."""
 
         @staticmethod

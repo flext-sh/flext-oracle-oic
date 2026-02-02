@@ -36,7 +36,7 @@ class FlextOracleOicTypes(FlextTypes):
     # INTEGRATION TYPES - Complex OIC integration types
     # =========================================================================
 
-    class Integration:
+    class OracleOic:
         """Oracle OIC integration complex types."""
 
         type IntegrationConfiguration = dict[
@@ -295,23 +295,6 @@ class FlextOracleOicTypes(FlextTypes):
             str, bool | str | dict[str, FlextTypes.GeneralValueType]
         ]
         type AdapterConfig = dict[str, FlextTypes.GeneralValueType]
-
-    class OracleOic:
-        """OracleOic types namespace for cross-project access.
-
-        Provides organized access to all OracleOic types for other FLEXT projects.
-        Usage: Other projects can reference `t.OracleOic.Integration.*`, `t.OracleOic.Project.*`, etc.
-        This enables consistent namespace patterns for cross-project type access.
-
-        Examples:
-            from flext_oracle_oic.typings import t
-            config: t.OracleOic.Integration.IntegrationConfiguration = ...
-            flow: t.OracleOic.Integration.IntegrationFlow = ...
-
-        Note: Namespace composition via inheritance - no aliases needed.
-        Access parent namespaces directly through inheritance.
-
-        """
 
 
 # Alias for simplified usage

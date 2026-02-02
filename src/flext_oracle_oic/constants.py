@@ -49,7 +49,7 @@ class FlextOracleOicConstants(FlextConstants):
     - Complete documentation and usage examples
     """
 
-    class OIC:
+    class OracleOic:
         """Oracle Integration Cloud specific constants."""
 
         # API Configuration
