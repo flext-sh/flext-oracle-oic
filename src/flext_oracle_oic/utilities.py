@@ -68,10 +68,10 @@ class FlextOracleOicUtilities(u_core):
             if not name:
                 return r[str].fail("Integration name cannot be empty")
 
-            if len(name) < c.OracleOic.Validation.MIN_INTEGRATION_NAME_LENGTH:
+            if len(name) < c.OracleOicValidation.MIN_INTEGRATION_NAME_LENGTH:
                 return r[str].fail("Integration name too short")
 
-            if len(name) > c.OracleOic.Validation.MAX_INTEGRATION_NAME_LENGTH:
+            if len(name) > c.OracleOicValidation.MAX_INTEGRATION_NAME_LENGTH:
                 return r[str].fail("Integration name too long")
 
             # Check for invalid characters (OIC naming rules)
@@ -97,9 +97,9 @@ class FlextOracleOicUtilities(u_core):
                 return r[str].fail("Integration status must be a string")
 
             status = status.upper().strip()
-            if status not in c.OracleOic.Validation.VALID_INTEGRATION_STATUSES:
+            if status not in c.OracleOicValidation.VALID_INTEGRATION_STATUSES:
                 valid_statuses = ", ".join(
-                    sorted(c.OracleOic.Validation.VALID_INTEGRATION_STATUSES),
+                    sorted(c.OracleOicValidation.VALID_INTEGRATION_STATUSES),
                 )
                 return r[str].fail(
                     f"Invalid integration status. Valid: {valid_statuses}",
@@ -122,7 +122,7 @@ class FlextOracleOicUtilities(u_core):
                 return r[str].fail("Integration version must be a string")
 
             version = version.strip()
-            if not c.OracleOic.Validation.VERSION_PATTERN.match(version):
+            if not c.OracleOicValidation.VERSION_PATTERN.match(version):
                 return r[str].fail(
                     "Invalid version format. Expected: XX.XX.XXXX",
                 )
@@ -187,8 +187,31 @@ class FlextOracleOicUtilities(u_core):
 
             return r[dict[str, t.GeneralValueType]].ok(validated_data)
 
+    # Alias for callers that reference IntegrationValidation
+    IntegrationValidation = OracleOic
+
     class ConnectionValidation:
         """Oracle OIC connection validation utilities."""
+
+        @staticmethod
+        def validate_base_url(base_url: str) -> r[str]:
+            """Validate Oracle OIC base URL.
+
+            Args:
+            base_url: Base URL to validate
+
+            Returns:
+            FlextResult containing validated URL or error
+
+            """
+            if not isinstance(base_url, str):
+                return r[str].fail("Base URL must be a string")
+            base_url = base_url.strip()
+            if not base_url:
+                return r[str].fail("Base URL cannot be empty")
+            if not base_url.startswith(("http://", "https://")):
+                return r[str].fail("Base URL must start with http:// or https://")
+            return r[str].ok(base_url)
 
         @staticmethod
         def validate_connection_type(connection_type: str) -> r[str]:
@@ -205,9 +228,9 @@ class FlextOracleOicUtilities(u_core):
                 return r[str].fail("Connection type must be a string")
 
             connection_type = connection_type.upper().strip()
-            if connection_type not in c.OracleOic.Validation.VALID_CONNECTION_TYPES:
+            if connection_type not in c.OracleOicValidation.VALID_CONNECTION_TYPES:
                 valid_types = ", ".join(
-                    sorted(c.OracleOic.Validation.VALID_CONNECTION_TYPES),
+                    sorted(c.OracleOicValidation.VALID_CONNECTION_TYPES),
                 )
                 return r[str].fail(
                     f"Invalid connection type. Valid: {valid_types}",
@@ -230,9 +253,9 @@ class FlextOracleOicUtilities(u_core):
                 return r[str].fail("Connection status must be a string")
 
             status = status.upper().strip()
-            if status not in c.OracleOic.Validation.VALID_CONNECTION_STATUSES:
+            if status not in c.OracleOicValidation.VALID_CONNECTION_STATUSES:
                 valid_statuses = ", ".join(
-                    sorted(c.OracleOic.Validation.VALID_CONNECTION_STATUSES),
+                    sorted(c.OracleOicValidation.VALID_CONNECTION_STATUSES),
                 )
                 return r[str].fail(
                     f"Invalid connection status. Valid: {valid_statuses}",
@@ -258,7 +281,7 @@ class FlextOracleOicUtilities(u_core):
                 return r[str].fail("OAuth client ID must be a string")
 
             client_id = client_id.strip()
-            if len(client_id) < c.OracleOic.Validation.MIN_CLIENT_ID_LENGTH:
+            if len(client_id) < c.OracleOicValidation.MIN_CLIENT_ID_LENGTH:
                 return r[str].fail("OAuth client ID cannot be empty")
 
             # Check for basic format (alphanumeric, hyphens, underscores)
@@ -293,7 +316,7 @@ class FlextOracleOicUtilities(u_core):
                     "OAuth client secret cannot be empty",
                 )
 
-            if len(secret_value) < c.OracleOic.Validation.MIN_CLIENT_SECRET_LENGTH:
+            if len(secret_value) < c.OracleOicValidation.MIN_CLIENT_SECRET_LENGTH:
                 return r[SecretStr].fail(
                     "OAuth client secret must be at least 8 characters",
                 )
@@ -447,7 +470,7 @@ class FlextOracleOicUtilities(u_core):
             mappings = integration_data.get("mappings", [])
 
             # Message Router: Multiple target endpoints from single source
-            if len(endpoints) > c.OracleOic.Validation.MIN_ENDPOINTS_FOR_ROUTER and any(
+            if len(endpoints) > c.OracleOicValidation.MIN_ENDPOINTS_FOR_ROUTER and any(
                 endpoint.get("direction") == "outbound" for endpoint in endpoints
             ):
                 return r[str].ok("message_router")
@@ -483,9 +506,9 @@ class FlextOracleOicUtilities(u_core):
             FlextResult containing validated configuration or error
 
             """
-            if pattern_type not in c.OracleOic.Validation.SUPPORTED_PATTERNS:
+            if pattern_type not in c.OracleOicValidation.SUPPORTED_PATTERNS:
                 supported = ", ".join(
-                    sorted(c.OracleOic.Validation.SUPPORTED_PATTERNS),
+                    sorted(c.OracleOicValidation.SUPPORTED_PATTERNS),
                 )
                 return r[dict[str, t.GeneralValueType]].fail(
                     f"Unsupported pattern type. Supported: {supported}",
@@ -611,7 +634,7 @@ class FlextOracleOicUtilities(u_core):
             if "average_response_time" in metrics:
                 response_time = metrics["average_response_time"]
                 if isinstance(response_time, (int, float)):
-                    threshold = c.OracleOic.Validation.PERFORMANCE_THRESHOLDS[
+                    threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
                         "response_time_ms"
                     ]
                     if response_time > threshold:
@@ -626,7 +649,7 @@ class FlextOracleOicUtilities(u_core):
             if "success_rate" in metrics:
                 success_rate = metrics["success_rate"]
                 if isinstance(success_rate, (int, float)):
-                    threshold = c.OracleOic.Validation.PERFORMANCE_THRESHOLDS[
+                    threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
                         "success_rate"
                     ]
                     if success_rate < threshold:
@@ -642,7 +665,7 @@ class FlextOracleOicUtilities(u_core):
             if "error_rate" in metrics:
                 error_rate = metrics["error_rate"]
                 if isinstance(error_rate, (int, float)):
-                    threshold = c.OracleOic.Validation.PERFORMANCE_THRESHOLDS[
+                    threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
                         "error_rate"
                     ]
                     if error_rate > threshold:

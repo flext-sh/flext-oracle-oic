@@ -240,6 +240,7 @@ class FlextOracleOicTypes(FlextTypes):
 
         # Data processing types
         type DataDict = dict[str, FlextTypes.GeneralValueType]
+        type ConfigDict = dict[str, FlextTypes.GeneralValueType]
         type ResponseDict = dict[str, FlextTypes.GeneralValueType]
         type RequestDict = dict[str, FlextTypes.GeneralValueType]
         type ResultDict = dict[str, FlextTypes.GeneralValueType]
@@ -247,8 +248,8 @@ class FlextOracleOicTypes(FlextTypes):
         type HealthDict = dict[str, FlextTypes.GeneralValueType]
 
         # Collection types for Oracle OIC operations
-        type DataList = list[DataDict]
-        type ConfigList = list[ConfigDict]
+        type DataList = list[dict[str, FlextTypes.GeneralValueType]]
+        type ConfigList = list[dict[str, FlextTypes.GeneralValueType]]
         type StringList = list[str]
 
     # =========================================================================

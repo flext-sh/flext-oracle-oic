@@ -18,7 +18,10 @@ from flext_core import (
 
 from flext_oracle_oic.__version__ import __version__, __version_info__
 from flext_oracle_oic.api import FlextOracleOicApi
-from flext_oracle_oic.constants import FlextOracleOicConstants
+from flext_oracle_oic.constants import (
+    FlextOracleOicConstants,
+    FlextOracleOicConstants as c,
+)
 from flext_oracle_oic.ext_client import (
     FlextOracleOicClient,
 )
@@ -29,27 +32,22 @@ from flext_oracle_oic.factory import (
     create_oic_extension_service,
     setup_oic_extension,
 )
-from flext_oracle_oic.models import (
-    FlextOracleOicModels,
+from flext_oracle_oic.models import FlextOracleOicModels, FlextOracleOicModels as m
+from flext_oracle_oic.protocols import (
+    FlextOracleOicProtocols,
+    FlextOracleOicProtocols as p,
 )
-from flext_oracle_oic.protocols import FlextOracleOicProtocols
 from flext_oracle_oic.service import (
     FlextOracleOicService,
 )
 from flext_oracle_oic.settings import (
     FlextOracleOicSettings,
 )
-from flext_oracle_oic.typings import FlextOracleOicTypes
-from flext_oracle_oic.utilities import FlextOracleOicUtilities
-
-# Domain-specific aliases (extending flext-core base classes)
-u = FlextOracleOicUtilities  # Utilities (FlextOracleOicUtilities extends FlextUtilities)
-m = FlextOracleOicModels  # Models (FlextOracleOicModels extends FlextModels)
-c = FlextOracleOicConstants  # Constants (FlextOracleOicConstants extends FlextConstants)
-t = FlextOracleOicTypes  # Types (FlextOracleOicTypes extends FlextTypes)
-p = FlextOracleOicProtocols  # Protocols (FlextOracleOicProtocols extends FlextProtocols)
-
-# Global aliases from flext-core (already imported with aliases above)
+from flext_oracle_oic.typings import FlextOracleOicTypes, FlextOracleOicTypes as t
+from flext_oracle_oic.utilities import (
+    FlextOracleOicUtilities,
+    FlextOracleOicUtilities as u,
+)
 
 __all__ = [
     "FlextOracleOicApi",

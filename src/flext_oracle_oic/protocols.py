@@ -22,10 +22,10 @@ class FlextOracleOicProtocols(p):
     integration management, connection handling, pattern implementation, and monitoring.
     """
 
-    @runtime_checkable
     class OracleOic:
         """OracleOic domain namespace."""
 
+        @runtime_checkable
         class ExtensionProtocol(Protocol):
             """Protocol for Oracle OIC extension operations."""
 
@@ -202,7 +202,9 @@ class FlextOracleOicProtocols(p):
                 """
                 ...
 
-            def delete_connection(self, connection_id: str) -> FlextProtocols.Result[bool]:
+            def delete_connection(
+                self, connection_id: str
+            ) -> FlextProtocols.Result[bool]:
                 """Delete Oracle OIC connection.
 
                 Args:

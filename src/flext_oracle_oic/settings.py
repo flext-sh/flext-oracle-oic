@@ -13,7 +13,7 @@ from __future__ import annotations
 from typing import Literal, Self
 
 from flext_core import FlextResult, FlextSettings
-from pydantic import AnyUrl, Field, SecretStr, model_validator
+from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
@@ -50,7 +50,7 @@ class FlextOracleOicSettings(FlextSettings):
     )
 
     # Oracle OIC Connection Configuration using FlextOracleOicConstants for defaults
-    base_url: AnyUrl = Field(
+    base_url: str = Field(
         default=FlextOracleOicConstants.OIC.DEFAULT_BASE_URL,
         description="Oracle OIC base URL",
     )
@@ -97,7 +97,7 @@ class FlextOracleOicSettings(FlextSettings):
         description="OAuth2 client secret (sensitive)",
     )
 
-    oauth_token_url: AnyUrl = Field(
+    oauth_token_url: str = Field(
         default=FlextOracleOicConstants.Auth.DEFAULT_OAUTH_TOKEN_URL,
         description="OAuth2 token URL",
     )
@@ -195,14 +195,18 @@ class FlextOracleOicSettings(FlextSettings):
     def create_for_environment(
         cls,
         environment: str,
-        **overrides: object,
+        overrides: dict[str, str | int | float | bool | bytes | bytearray | None]
+        | None = None,
     ) -> FlextOracleOicSettings:
         """Create configuration for specific environment using enhanced singleton pattern."""
         # Environment parameter reserved for future use - validate it's not empty
         if not environment.strip():
             msg = "Environment name cannot be empty"
             raise ValueError(msg)
-        return cls(**overrides)
+        base = cls()
+        if overrides:
+            return base.model_copy(update=overrides)
+        return base
 
     @classmethod
     def create_default(cls) -> FlextOracleOicSettings:

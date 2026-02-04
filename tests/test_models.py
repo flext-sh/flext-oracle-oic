@@ -116,7 +116,7 @@ class TestOICIntegrationInfo:
             integration_id="test_integration_id",
             name="Test Integration",
             status="ACTIVE",
-            version="1.0.0",
+            integration_version="1.0.0",
             description="Test integration description",
             created_by="test_user",
             last_updated="2025-01-08T10:00:00Z",
@@ -125,7 +125,7 @@ class TestOICIntegrationInfo:
         assert info.integration_id == "test_integration_id"
         assert info.name == "Test Integration"
         assert info.status == "ACTIVE"
-        assert info.version == "1.0.0"
+        assert info.integration_version == "1.0.0"
         assert info.description == "Test integration description"
         assert info.created_by == "test_user"
         assert info.last_updated == "2025-01-08T10:00:00Z"
@@ -136,7 +136,7 @@ class TestOICIntegrationInfo:
             integration_id="test_integration_id",
             name="Test Integration",
             status="ACTIVE",
-            version="1.0.0",
+            integration_version="1.0.0",
             description="",
             created_by="",
             last_updated="",

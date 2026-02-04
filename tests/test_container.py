@@ -7,52 +7,31 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from unittest.mock import Mock, patch
-
-
-
-    configure_flext_oracle_oic_ext_dependencies,
-    container,
-    get_flext_oracle_oic_ext_container,
-    get_flext_oracle_oic_ext_service,
+from flext_oracle_oic import (
+    create_development_oic_service,
+    create_oic_extension_service,
+    setup_oic_extension,
 )
 
 
 class TestContainer:
-    """Test container module functionality."""
+    """Test factory/extension setup (replaces legacy container module)."""
 
     def test_get_container_available(self) -> None:
-        """Test get_flext_oracle_oic_ext_container is callable."""
-        assert callable(get_flext_oracle_oic_ext_container)
+        """Test create_development_oic_service is callable."""
+        assert callable(create_development_oic_service)
 
     def test_configure_dependencies_available(self) -> None:
-        """Test configure_flext_oracle_oic_ext_dependencies is callable."""
-        assert callable(configure_flext_oracle_oic_ext_dependencies)
+        """Test setup_oic_extension is callable."""
+        assert callable(setup_oic_extension)
 
     def test_get_service_available(self) -> None:
-        """Test get_flext_oracle_oic_ext_service is callable."""
-        assert callable(get_flext_oracle_oic_ext_service)
+        """Test create_oic_extension_service is callable."""
+        assert callable(create_oic_extension_service)
 
-    @patch("flext_oracle_oic.container._utilities")
-    def test_self(self, mock_utilities: Mock) -> None:
-        """Test container utilities are properly created."""
-        # Verify utilities dictionary structure
-        mock_utilities.__getitem__.side_effect = lambda _: Mock()
-
-        # Import to trigger module creation
-
-        # Verify module utilities were accessed
-        assert hasattr(container, "get_flext_oracle_oic_ext_container")
-        assert hasattr(container, "configure_flext_oracle_oic_ext_dependencies")
-        assert hasattr(container, "get_flext_oracle_oic_ext_service")
-
-    def test_module_initialization(self) -> None:
-        """Test module initialization logic."""
-        # Test that configure_dependencies is called if callable
-        assert configure_flext_oracle_oic_ext_dependencies is not None
-
-        # Should be able to call without errors
-        if callable(configure_flext_oracle_oic_ext_dependencies):
-            # Test that the function is callable - actual execution may require dependencies
-            # In unit tests, we just verify the function exists and is callable
-            assert callable(configure_flext_oracle_oic_ext_dependencies)
+    def test_factory_functions_available(self) -> None:
+        """Test factory exports are present and callable."""
+        assert create_development_oic_service is not None
+        assert setup_oic_extension is not None
+        assert create_oic_extension_service is not None
+        assert callable(setup_oic_extension)

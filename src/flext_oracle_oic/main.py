@@ -19,15 +19,15 @@ from flext_core import (
     FlextContainer,
     FlextContext,
     FlextDispatcher,
-    FlextLogger,
     FlextRegistry,
     FlextResult,
     FlextService,
-    FlextTypes as t,
 )
 
 from flext_oracle_oic import __version__
 from flext_oracle_oic.factory import create_development_oic_service
+from flext_oracle_oic.models import FlextOracleOicModels
+from flext_oracle_oic.service import FlextOracleOicService
 
 # CLI output helper moved into FlextOracleOicCli class
 
@@ -163,10 +163,10 @@ class FlextOracleOicCli(FlextService[None]):
                     f"Failed to create service: {service_result.error}",
                 )
 
-            service = service_result.value
-            if service is None:
+            raw_service = service_result.value
+            if raw_service is None:
                 return FlextResult[None].fail("Service is None")
-
+            service: FlextOracleOicService = raw_service
             # List integrations
             return self._list_integrations_with_service(service)
 
@@ -188,21 +188,25 @@ class FlextOracleOicCli(FlextService[None]):
             FlextResult[None]: Success or failure result
 
         """
-        with service:
-            integrations_result = service.list_integrations()
-            if integrations_result.is_failure:
-                return FlextResult[None].fail(
-                    f"Failed to list integrations: {integrations_result.error}",
-                )
+        if not isinstance(service, FlextOracleOicService):
+            return FlextResult[None].fail("Invalid service type")
+        integrations_result = service.list_integrations()
+        if integrations_result.is_failure:
+            return FlextResult[None].fail(
+                f"Failed to list integrations: {integrations_result.error}",
+            )
 
-            integrations = integrations_result.value or []
-            if self.logger:
-                self.logger.info(f"Found {len(integrations)} integrations")
+        integrations = integrations_result.value or []
+        if self.logger:
+            self.logger.info(f"Found {len(integrations)} integrations")
 
-            self._print_integrations(integrations)
-            return FlextResult[None].ok(None)
+        self._print_integrations(integrations)
+        return FlextResult[None].ok(None)
 
-    def _print_integrations(self, integrations: list[t.GeneralValueType]) -> None:
+    def _print_integrations(
+        self,
+        integrations: list[FlextOracleOicModels.OICIntegrationInfo],
+    ) -> None:
         """Print integrations to CLI output.
 
         Args:
@@ -332,11 +336,6 @@ class FlextOracleOicCli(FlextService[None]):
         # No command provided
         parser.print_help()
         return 1
-
-    @property
-    def logger(self) -> FlextLogger:
-        """Get the logger instance."""
-        return self.logger
 
 
 # Global CLI instance for backward compatibility

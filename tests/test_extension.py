@@ -7,21 +7,18 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_oracle_oic import OracleOicExtension
+from flext_oracle_oic import FlextOracleOicApi
 
 
 class TestOracleOicExtension:
-    """Test cases for OracleOicExtension basic functionality."""
+    """Test cases for Oracle OIC API (extension facade) functionality."""
 
-    def test_extension_initialization(self) -> None:
-        """Test extension initialization."""
-        ext = OracleOicExtension()
-        assert ext.name == "Oracle OIC Extension"
+    def test_api_class_exists(self) -> None:
+        """Test FlextOracleOicApi class is available."""
+        assert FlextOracleOicApi is not None
+        assert hasattr(FlextOracleOicApi, "list_integrations")
 
-    def test_get_info(self) -> None:
-        """Test get_info method."""
-        ext = OracleOicExtension()
-        info = ext.get_info()
-        assert "Oracle OIC Extension" in info
-        assert "Implementation pending" in info
-        assert isinstance(info, str)
+    def test_api_has_required_methods(self) -> None:
+        """Test API class exposes expected methods."""
+        assert callable(getattr(FlextOracleOicApi, "list_integrations", None))
+        assert hasattr(FlextOracleOicApi, "list_integrations")

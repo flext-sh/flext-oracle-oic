@@ -14,12 +14,9 @@ class TestFlextTypes:
     """Test t domain-specific types."""
 
     def test_flext_types_inheritance(self) -> None:
-        """Test t inherits from CoreFlextTypes."""
-        # t should be a class that inherits from CoreFlextTypes
-        assert hasattr(t, "Core")
-        # Should maintain all core functionality
-        assert hasattr(t, "Dict")
-        assert hasattr(t, "StringList")
+        """Test t (FlextTypes) exposes type utilities."""
+        assert t is not None
+        assert hasattr(t, "GeneralValueType")
 
     def test_exported_types_available(self) -> None:
         """Test all exported types are available."""

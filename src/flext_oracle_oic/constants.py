@@ -17,7 +17,7 @@ import re
 from enum import StrEnum
 from typing import Final, Literal
 
-from flext_core import FlextConstants, t
+from flext_core import FlextConstants
 
 
 class FlextOracleOicConstants(FlextConstants):
@@ -81,6 +81,8 @@ class FlextOracleOicConstants(FlextConstants):
         DEFAULT_BACKOFF_MULTIPLIER: Final[float] = 2.0
         DEFAULT_MAX_DELAY_SECONDS: Final[float] = 60.0
 
+    OIC = OracleOic  # alias for backward compatibility
+
     class Auth:
         """Oracle OIC Authentication constants."""
 
@@ -115,11 +117,7 @@ class FlextOracleOicConstants(FlextConstants):
         AUTH_TYPE_BEARER: Final[str] = AuthType.BEARER
 
         # PEP 695 Literal type referencing StrEnum members
-        type AuthTypeLiteral = Literal[
-            AuthType.OAUTH2,
-            AuthType.BASIC,
-            AuthType.BEARER,
-        ]
+        type AuthTypeLiteral = Literal["oauth2", "basic", "bearer"]
 
     class Integration:
         """Oracle OIC Integration constants."""
@@ -150,13 +148,13 @@ class FlextOracleOicConstants(FlextConstants):
 
         # PEP 695 Literal type referencing StrEnum members
         type StatusLiteral = Literal[
-            Status.ACTIVATED,
-            Status.DEACTIVATED,
-            Status.DRAFT,
-            Status.PUBLISHED,
-            Status.RUNNING,
-            Status.STOPPED,
-            Status.ERROR,
+            "ACTIVATED",
+            "DEACTIVATED",
+            "DRAFT",
+            "PUBLISHED",
+            "RUNNING",
+            "STOPPED",
+            "ERROR",
         ]
 
         # Integration Versions
@@ -228,21 +226,9 @@ class FlextOracleOicConstants(FlextConstants):
         ADAPTER_TYPE_SFTP: Final[str] = Type.SFTP
 
         # PEP 695 Literal types referencing StrEnum members
-        type StatusLiteral = Literal[
-            Status.ACTIVE,
-            Status.INACTIVE,
-            Status.ERROR,
-            Status.UNKNOWN,
-        ]
+        type StatusLiteral = Literal["ACTIVE", "INACTIVE", "ERROR", "unknown"]
 
-        type TypeLiteral = Literal[
-            Type.REST,
-            Type.SOAP,
-            Type.DATABASE,
-            Type.FILE,
-            Type.FTP,
-            Type.SFTP,
-        ]
+        type TypeLiteral = Literal["REST", "SOAP", "DATABASE", "FILE", "FTP", "SFTP"]
 
     class Monitoring:
         """Oracle OIC Monitoring constants."""
@@ -282,18 +268,8 @@ class FlextOracleOicConstants(FlextConstants):
         COMPONENT_STATUS_UNKNOWN: Final[str] = ComponentStatus.UNKNOWN
 
         # PEP 695 Literal types referencing StrEnum members
-        type HealthStatusLiteral = Literal[
-            HealthStatus.HEALTHY,
-            HealthStatus.UNHEALTHY,
-            HealthStatus.ERROR,
-            HealthStatus.UNKNOWN,
-        ]
-
-        type ComponentStatusLiteral = Literal[
-            ComponentStatus.HEALTHY,
-            ComponentStatus.UNHEALTHY,
-            ComponentStatus.UNKNOWN,
-        ]
+        type HealthStatusLiteral = Literal["healthy", "unhealthy", "error", "unknown"]
+        type ComponentStatusLiteral = Literal["healthy", "unhealthy", "unknown"]
 
         # Component Types
         COMPONENT_DATABASE: Final[str] = "database"
@@ -310,6 +286,7 @@ class FlextOracleOicConstants(FlextConstants):
         """Oracle OIC API constants."""
 
         # HTTP Status Codes
+        HTTP_STATUS_OK: Final[int] = 200
         HTTP_ERROR_STATUS_THRESHOLD: Final[int] = 400
 
         # API Endpoints
@@ -339,13 +316,7 @@ class FlextOracleOicConstants(FlextConstants):
         METHOD_PATCH: Final[str] = Method.PATCH
 
         # PEP 695 Literal type referencing StrEnum members
-        type MethodLiteral = Literal[
-            Method.GET,
-            Method.POST,
-            Method.PUT,
-            Method.DELETE,
-            Method.PATCH,
-        ]
+        type MethodLiteral = Literal["GET", "POST", "PUT", "DELETE", "PATCH"]
 
         # API Headers
         HEADER_CONTENT_TYPE: Final[str] = "Content-Type"
@@ -357,6 +328,8 @@ class FlextOracleOicConstants(FlextConstants):
         CONTENT_TYPE_JSON: Final[str] = "application/json"
         CONTENT_TYPE_XML: Final[str] = "application/xml"
         CONTENT_TYPE_FORM: Final[str] = "application/x-www-form-urlencoded"
+
+    OIC = OracleOic
 
     class OICPatterns:
         """Oracle OIC Integration Pattern constants."""
@@ -378,11 +351,7 @@ class FlextOracleOicConstants(FlextConstants):
         PATTERN_STATUS_PENDING: Final[str] = PatternStatus.PENDING
 
         # PEP 695 Literal type referencing StrEnum members
-        type PatternStatusLiteral = Literal[
-            PatternStatus.PROCESSED,
-            PatternStatus.FAILED,
-            PatternStatus.PENDING,
-        ]
+        type PatternStatusLiteral = Literal["processed", "failed", "pending"]
 
         # Pattern Identifiers
         PATTERN_ID_UNKNOWN: Final[str] = "unknown"
@@ -392,6 +361,10 @@ class FlextOracleOicConstants(FlextConstants):
         # Pattern Configuration
         DEFAULT_APPLIED_RULES: Final[int] = 0
         DEFAULT_TARGET_COUNT: Final[int] = 0
+
+        # Pattern identifiers (aliases for Integration.PATTERN_*)
+        PATTERN_MESSAGE_ROUTER: Final[str] = "message_router"
+        PATTERN_SCATTER_GATHER: Final[str] = "scatter_gather"
 
     class OICErrors:
         """Oracle OIC Extension specific error constants."""
@@ -468,8 +441,8 @@ class FlextOracleOicConstants(FlextConstants):
             "Failed to parse connection: {error}"
         )
 
-    class Validation:
-        """Oracle OIC validation constants."""
+    class OracleOicValidation:
+        """Oracle OIC validation constants (named to avoid overriding FlextConstants.Validation)."""
 
         # Integration validation
         MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
@@ -535,7 +508,7 @@ class FlextOracleOicConstants(FlextConstants):
 
         # Monitoring
         HEALTH_CHECK_TIMEOUT: Final[int] = 10
-        PERFORMANCE_THRESHOLDS: Final[t.FloatDict] = {
+        PERFORMANCE_THRESHOLDS: Final[dict[str, float]] = {
             "response_time_ms": 5000.0,
             "success_rate": 0.95,
             "error_rate": 0.05,

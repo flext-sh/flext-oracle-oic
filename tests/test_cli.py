@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from unittest.mock import Mock, patch
 
-from flext_oracle_oic import app, main
+from flext_oracle_oic.main import FlextOracleOicCli, main
 
 
 class TestCLI:
@@ -17,20 +17,13 @@ class TestCLI:
 
     def test_imports_available(self) -> None:
         """Test that CLI imports are available."""
-        # Should be able to import app and main
-        assert app is not None
         assert main is not None
+        assert FlextOracleOicCli is not None
+        assert callable(main)
 
-    @patch("flext_oracle_oic.main.app")
     @patch("flext_oracle_oic.main.main")
-    def test_self(self, mock_main: Mock, mock_app: Mock) -> None:
-        """Test CLI exports main app and main function."""
-        # Mock the main module components
-        mock_app.return_value = Mock()
-        mock_main.return_value = Mock()
-
-        # Verify imports work without error
-        assert app is not None
+    def test_cli_main_callable(self, mock_main: Mock) -> None:
+        """Test CLI main is callable."""
+        mock_main.return_value = None
+        assert callable(main)
         assert main is not None
-        assert hasattr(app, "__name__") or callable(app)
-        assert hasattr(main, "__name__") or callable(main)

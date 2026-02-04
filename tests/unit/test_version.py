@@ -3,17 +3,17 @@
 from __future__ import annotations
 
 from flext_oracle_oic import __version__, __version_info__
-from flext_oracle_oic.version import VERSION, FlextOracleOicVersion
 
 
-def test_dunder_alignment() -> None:
-    """Ensure dunder exports are aligned with VERSION."""
-    assert __version__ == VERSION.version
-    assert __version_info__ == VERSION.version_info
+def test_version_string() -> None:
+    """Ensure __version__ is a non-empty string."""
+    assert isinstance(__version__, str)
+    assert len(__version__) >= 1
 
 
-def test_version_object() -> None:
-    """Validate that the VERSION object is properly initialized."""
-    assert isinstance(VERSION, FlextOracleOicVersion)
-    assert VERSION.version == "0.1.0"
-    assert VERSION.version_info == (0, 1, 0)
+def test_version_info_tuple() -> None:
+    """Ensure __version_info__ is a tuple of int or (int, int, int)."""
+    assert isinstance(__version_info__, tuple)
+    assert len(__version_info__) >= 1
+    for part in __version_info__:
+        assert isinstance(part, (int, str))

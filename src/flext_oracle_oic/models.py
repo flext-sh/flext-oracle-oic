@@ -45,7 +45,9 @@ class FlextOracleOicModels(FlextModels):
             model_config = ConfigDict(extra="forbid")
 
             oauth_client_id: str = Field(description="IDCS OAuth2 client ID")
-            oauth_client_secret: SecretStr = Field(description="IDCS OAuth2 client secret")
+            oauth_client_secret: SecretStr = Field(
+                description="IDCS OAuth2 client secret"
+            )
             oauth_token_url: str = Field(description="IDCS OAuth2 token endpoint")
             oauth_client_aud: str | None = Field(
                 default=None,
@@ -155,11 +157,20 @@ class FlextOracleOicModels(FlextModels):
                 default=None,
                 description="JSON data",
             )
-            headers: dict[str, str] | None = Field(default=None, description="HTTP headers")
+            headers: dict[str, str] | None = Field(
+                default=None, description="HTTP headers"
+            )
             timeout: int = Field(
                 default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
                 description="Request timeout in seconds",
             )
+
+    # Top-level aliases for OracleOic nested models (api/service compatibility)
+    OICIntegrationInfo = OracleOic.OICIntegrationInfo
+    OICConnectionInfo = OracleOic.OICConnectionInfo
+    IntegrationStatus = OracleOic.IntegrationStatus
+    OICConnectionConfig = OracleOic.OICConnectionConfig
+    OICAuthConfig = OracleOic.OICAuthConfig
 
 
 # Short aliases

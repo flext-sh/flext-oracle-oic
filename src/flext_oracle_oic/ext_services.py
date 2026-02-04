@@ -14,7 +14,6 @@ from __future__ import annotations
 from typing import Protocol, Self, override
 
 from flext_core import (
-    FlextConstants,
     FlextContainer,
     FlextLogger,
     FlextService,
@@ -23,14 +22,12 @@ from flext_core import (
 )
 from pydantic import ConfigDict
 
-from flext_oracle_oic.config import (
-    FlextOracleOicSettings,
-)
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import (
     FlextOracleOicClient,
 )
 from flext_oracle_oic.models import FlextOracleOicModels
+from flext_oracle_oic.settings import FlextOracleOicSettings
 from flext_oracle_oic.utilities import FlextOracleOicUtilities
 
 logger = FlextLogger(__name__)
@@ -113,44 +110,44 @@ class FlextOracleOicExtServices(
             # Railway-oriented execution - delegate to list_integrations
             return self.list_integrations()
 
-        def validate_business_rules(self: Self) -> r[None]:
+        def validate_business_rules(self: Self) -> r[bool]:
             """Validate Oracle OIC service business rules using FlextOracleOicUtilities.
 
             Returns:
-            r[None]: The validation result
+            r[bool]: The validation result (True if valid).
 
             """
             # Validate settings exist
             if not self.settings:
-                return r[None].fail("Settings are required")
+                return r[bool].fail("Settings are required")
 
             # Validate connection settings using utilities
             if not self.settings.base_url:
-                return r[None].fail("Base URL is required")
+                return r[bool].fail("Base URL is required")
 
             # Base URL validation already performed by Pydantic AnyUrl type
 
             # Validate auth settings using utilities
             if not self.settings.oauth_client_id:
-                return r[None].fail("OAuth client ID is required")
+                return r[bool].fail("OAuth client ID is required")
 
             client_id_result = FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_client_id(
                 self.settings.oauth_client_id,
             )
             if client_id_result.is_failure:
-                return r[None].fail(
+                return r[bool].fail(
                     f"OAuth client ID validation: {client_id_result.error}",
                 )
 
             if not self.settings.oauth_client_secret:
-                return r[None].fail("OAuth client secret is required")
+                return r[bool].fail("OAuth client secret is required")
 
             if not self.settings.oauth_token_url:
-                return r[None].fail("OAuth token URL is required")
+                return r[bool].fail("OAuth token URL is required")
 
             # Token URL validation already performed by Pydantic AnyUrl type
 
-            return r[None].ok(None)
+            return r[bool].ok(True)
 
         def validate_config(self: Self) -> r[None]:
             """Validate service configuration.
@@ -159,7 +156,12 @@ class FlextOracleOicExtServices(
             r[None]: The validation result
 
             """
-            return self.validate_business_rules()
+            result = self.validate_business_rules()
+            return (
+                r[None].ok(None)
+                if result.is_success
+                else r[None].fail(result.error or "Validation failed")
+            )
 
         def _get_client(self: Self) -> r[FlextOracleOicClient]:
             """Get authenticated OIC client.
@@ -203,7 +205,7 @@ class FlextOracleOicExtServices(
                 auth_config = FlextOracleOicModels.OICAuthConfig(
                     oauth_client_id=self.settings.oauth_client_id,
                     oauth_client_secret=self.settings.oauth_client_secret,
-                    oauth_token_url=self.settings.oauth_token_url,
+                    oauth_token_url=str(self.settings.oauth_token_url),
                     oauth_client_aud=self.settings.oauth_client_aud,
                     oauth_scope=self.settings.oauth_scope,
                 )
@@ -219,7 +221,7 @@ class FlextOracleOicExtServices(
             """Create connection configuration."""
             try:
                 connection_config = FlextOracleOicModels.OICConnectionConfig(
-                    base_url=self.settings.base_url,
+                    base_url=str(self.settings.base_url),
                     api_version=self.settings.api_version,
                     request_timeout=self.settings.request_timeout,
                     max_retries=self.settings.max_retries,
@@ -291,7 +293,7 @@ class FlextOracleOicExtServices(
             """Fetch integrations from OIC API."""
             integrations_result = client.get_integrations(
                 status_filter=status_filter,
-                page_size=FlextOracleOicConstants.OIC.DEFAULT_PAGE_SIZE,
+                page_size=FlextOracleOicConstants.OracleOic.DEFAULT_PAGE_SIZE,
             )
             if integrations_result.is_failure:
                 return r[list[dict[str, t.GeneralValueType]]].fail(
@@ -357,7 +359,7 @@ class FlextOracleOicExtServices(
             """Fetch connections from OIC API."""
             connections_result = client.get_connections(
                 type_filter=type_filter,
-                page_size=FlextOracleOicConstants.OIC.DEFAULT_PAGE_SIZE,
+                page_size=FlextOracleOicConstants.OracleOic.DEFAULT_PAGE_SIZE,
             )
             if connections_result.is_failure:
                 return r[list[dict[str, t.GeneralValueType]]].fail(
@@ -651,14 +653,14 @@ class FlextOracleOicExtServices(
                     auth_config = FlextOracleOicModels.OICAuthConfig(
                         oauth_client_id=self.settings.oauth_client_id,
                         oauth_client_secret=self.settings.oauth_client_secret,
-                        oauth_token_url=self.settings.oauth_token_url,
+                        oauth_token_url=str(self.settings.oauth_token_url),
                         oauth_client_aud=self.settings.oauth_client_aud,
                         oauth_scope=self.settings.oauth_scope,
                     )
 
                     # Create connection config from settings (using flat structure)
                     connection_config = FlextOracleOicModels.OICConnectionConfig(
-                        base_url=self.settings.base_url,
+                        base_url=str(self.settings.base_url),
                         api_version=self.settings.api_version,
                         request_timeout=self.settings.request_timeout,
                         max_retries=self.settings.max_retries,
@@ -834,7 +836,7 @@ class FlextOracleOicExtServices(
                 # Mock health check response
                 response = self.client.get(FlextOracleOicConstants.API.ENDPOINT_HEALTH)
 
-                if response.status_code == FlextConstants.Platform.HTTP_STATUS_OK:
+                if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
                     health_data: dict[str, t.GeneralValueType] = response.json()
                     raw_health = {
                         "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_HEALTHY,
@@ -867,11 +869,9 @@ class FlextOracleOicExtServices(
                         },
                         "error": f"HTTP {response.status_code}",
                     }
-
-                    # Validate health status using utilities
-                    validation_result = FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
-                        raw_health,
-                    )
+                validation_result = FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
+                    raw_health,
+                )
                 if validation_result.is_success:
                     return validation_result.value
                 self.logger.warning(
@@ -920,7 +920,7 @@ class FlextOracleOicExtServices(
                 # Mock performance metrics response
                 response = self.client.get("/ic/api/integration/v1/metrics")
 
-                if response.status_code == FlextConstants.Platform.HTTP_STATUS_OK:
+                if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
                     metrics_data: dict[str, t.GeneralValueType] = response.json()
                     raw_metrics = {
                         "active_integrations": metrics_data.get(

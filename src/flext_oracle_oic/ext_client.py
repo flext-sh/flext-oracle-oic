@@ -15,7 +15,7 @@ import base64
 import json as json_module
 from typing import Self
 
-from flext_api import FlextApiClient
+from flext_api import FlextApi
 from flext_api.settings import FlextApiSettings
 from flext_core import FlextLogger, FlextResult, FlextTypes as t
 
@@ -55,7 +55,7 @@ class FlextOracleOicClient:
         self.connection_config = connection_config
         self.auth_config = auth_config
         self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
-        self._client: object | None = None
+        self._client: FlextApi | None = None
         self._access_token: str | None = None
 
     # Authentication Methods
@@ -127,24 +127,21 @@ class FlextOracleOicClient:
         headers, data = request_data
         try:
             api_config = FlextApiSettings(base_url=self.auth_config.oauth_token_url)
-            api_client = FlextApiClient(api_config)
-            with api_client:
-                response_result = api_client.post("", headers=headers, data=data)
-                if response_result.is_failure:
-                    return FlextResult[object].fail(
-                        f"OAuth request failed: {response_result.error}",
-                    )
-
-                response = response_result.value
-                if (
-                    response.status_code
-                    >= FlextOracleOicConstants.API.HTTP_ERROR_STATUS_THRESHOLD
-                ):
-                    return FlextResult[object].fail(
-                        f"OAuth HTTP error: {response.status_code}",
-                    )
-
-                return FlextResult[object].ok(response)
+            api_client = FlextApi(api_config)
+            response_result = api_client.post("", data=data, headers=headers)
+            if response_result.is_failure:
+                return FlextResult[object].fail(
+                    f"OAuth request failed: {response_result.error}",
+                )
+            response = response_result.value
+            if (
+                response.status_code
+                >= FlextOracleOicConstants.API.HTTP_ERROR_STATUS_THRESHOLD
+            ):
+                return FlextResult[object].fail(
+                    f"OAuth HTTP error: {response.status_code}",
+                )
+            return FlextResult[object].ok(response)
         except Exception as e:
             error_msg = f"OAuth token request failed: {e}"
             self.logger.exception(error_msg)
@@ -183,11 +180,11 @@ class FlextOracleOicClient:
         return token
 
     # Client Methods
-    def _create_authenticated_client(self) -> FlextResult[object]:
+    def _create_authenticated_client(self) -> FlextResult[FlextApi]:
         """Create new authenticated client."""
         return self.get_access_token().flat_map(self._build_client_with_token)
 
-    def _build_client_with_token(self, token: str) -> FlextResult[object]:
+    def _build_client_with_token(self, token: str) -> FlextResult[FlextApi]:
         """Build client with access token."""
         try:
             # Inline base URL construction: f"{base_url.rstrip('/')}/ic/api/{api_version}"
@@ -203,13 +200,13 @@ class FlextOracleOicClient:
                 },
             )
 
-            client = FlextApiClient(api_config)
+            client = FlextApi(api_config)
             self._client = client
-            return FlextResult[object].ok(client)
+            return FlextResult[FlextApi].ok(client)
         except Exception as e:
             error_msg = f"Failed to create authenticated client: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[object].fail(error_msg)
+            return FlextResult[FlextApi].fail(error_msg)
 
     def make_request(
         self,
@@ -234,8 +231,7 @@ class FlextOracleOicClient:
             .ok((method, endpoint, params, data, json))
             .flat_map(
                 lambda req_data: (
-                    # Inline get_authenticated_client logic
-                    FlextResult[object].ok(self._client)
+                    FlextResult[FlextApi].ok(self._client)
                     if self._client is not None
                     else self._create_authenticated_client()
                 ).map(lambda client: (client, req_data)),
@@ -251,7 +247,7 @@ class FlextOracleOicClient:
 
     def _execute_api_request(
         self,
-        client: FlextApiClient,
+        client: FlextApi,
         method: str,
         endpoint: str,
         _params: dict[str, str] | None,
@@ -262,32 +258,25 @@ class FlextOracleOicClient:
         try:
             if client is None:
                 return FlextResult[object].fail("Client not available")
-
-            with client:
-                # Build full URL from base URL and endpoint - inline base URL construction
-                base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
-                full_url = f"{base_url}/{endpoint.lstrip('/')}"
-
-                # Use appropriate method based on HTTP method
-                if method.upper() == "GET":
-                    response_result = client.get(full_url, headers=None)
-                elif method.upper() == "POST":
-                    response_result = client.post(full_url, data=json, headers=None)
-                elif method.upper() == "PUT":
-                    response_result = client.put(full_url, data=json, headers=None)
-                elif method.upper() == "DELETE":
-                    response_result = client.delete(full_url, headers=None)
-                else:
-                    return FlextResult[object].fail(
-                        f"Unsupported HTTP method: {method}",
-                    )
-
-                if response_result.is_failure:
-                    return FlextResult[object].fail(
-                        f"Request failed: {response_result.error}",
-                    )
-
-                return FlextResult[object].ok(response_result.value)
+            base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
+            full_url = f"{base_url}/{endpoint.lstrip('/')}"
+            if method.upper() == "GET":
+                response_result = client.get(full_url, headers=None)
+            elif method.upper() == "POST":
+                response_result = client.post(full_url, data=json, headers=None)
+            elif method.upper() == "PUT":
+                response_result = client.put(full_url, data=json, headers=None)
+            elif method.upper() == "DELETE":
+                response_result = client.delete(full_url, headers=None)
+            else:
+                return FlextResult[object].fail(
+                    f"Unsupported HTTP method: {method}",
+                )
+            if response_result.is_failure:
+                return FlextResult[object].fail(
+                    f"Request failed: {response_result.error}",
+                )
+            return FlextResult[object].ok(response_result.value)
         except Exception as e:
             error_msg = f"OIC API request failed: {e}"
             self.logger.exception(error_msg)
@@ -478,6 +467,28 @@ class FlextOracleOicClient:
         }
         return self.make_request("POST", "/connections", json=json_data)
 
+    def execute_scheduled_orchestration(
+        self,
+        integration_id: str,
+        schedule_config: dict[str, t.GeneralValueType],
+        **_kwargs: object,
+    ) -> dict[str, t.GeneralValueType]:
+        """Execute scheduled orchestration for an integration."""
+        endpoint = f"/integrations/{integration_id}/schedules"
+        result = self.make_request("POST", endpoint, json=schedule_config)
+        return result.value if result.is_success else {}
+
+    def execute_file_transfer(
+        self,
+        integration_id: str,
+        file_config: dict[str, t.GeneralValueType],
+        **_kwargs: object,
+    ) -> dict[str, t.GeneralValueType]:
+        """Execute file transfer pattern for an integration."""
+        endpoint = f"/integrations/{integration_id}/files"
+        result = self.make_request("POST", endpoint, json=file_config)
+        return result.value if result.is_success else {}
+
     def __enter__(self) -> Self:
         """Context manager entry."""
         return self
@@ -490,7 +501,9 @@ class FlextOracleOicClient:
     ) -> None:
         """Context manager exit."""
         if self._client is not None:
-            self._client.close()
+            close_fn = getattr(self._client, "close", None)
+            if callable(close_fn):
+                close_fn()
             self._client = None
 
 
