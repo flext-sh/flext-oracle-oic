@@ -867,7 +867,10 @@ class FlextOracleOicService(
 
                 if response_result.is_success:
                     response = response_result.value
-                    if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
+                    if (
+                        response.status_code
+                        == FlextOracleOicConstants.API.HTTP_STATUS_OK
+                    ):
                         base_health: dict[str, t.GeneralValueType] = (
                             dict(response.body)
                             if isinstance(response.body, dict)
@@ -923,7 +926,9 @@ class FlextOracleOicService(
 
             # Validate health status using utilities
             health_data_dict: dict[str, t.GeneralValueType] = (
-                health_data if isinstance(health_data, dict) else {"status": str(health_data)}
+                health_data
+                if isinstance(health_data, dict)
+                else {"status": str(health_data)}
             )
             validation_result = (
                 FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
@@ -993,7 +998,10 @@ class FlextOracleOicService(
 
                 if response_result.is_success:
                     response = response_result.value
-                    if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
+                    if (
+                        response.status_code
+                        == FlextOracleOicConstants.API.HTTP_STATUS_OK
+                    ):
                         metrics_data = (
                             dict(response.body)
                             if isinstance(response.body, dict)

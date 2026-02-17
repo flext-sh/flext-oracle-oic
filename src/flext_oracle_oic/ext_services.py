@@ -869,8 +869,10 @@ class FlextOracleOicExtServices(
                         },
                         "error": f"HTTP {response.status_code}",
                     }
-                validation_result = FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
-                    raw_health,
+                validation_result = (
+                    FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
+                        raw_health,
+                    )
                 )
                 if validation_result.is_success:
                     return validation_result.value

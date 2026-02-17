@@ -329,8 +329,6 @@ class FlextOracleOicConstants(FlextConstants):
         CONTENT_TYPE_XML: Final[str] = "application/xml"
         CONTENT_TYPE_FORM: Final[str] = "application/x-www-form-urlencoded"
 
-    OIC = OracleOic
-
     class OICPatterns:
         """Oracle OIC Integration Pattern constants."""
 
