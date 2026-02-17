@@ -146,7 +146,7 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._get_service().update_integration(integration_id, integration_data)
 
-    def delete_integration(self, integration_id: str) -> FlextResult[None]:
+    def delete_integration(self, integration_id: str) -> FlextResult[bool]:
         """Delete Oracle OIC integration.
 
         Args:
@@ -158,7 +158,7 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._get_service().delete_integration(integration_id)
 
-    def activate_integration(self, integration_id: str) -> FlextResult[None]:
+    def activate_integration(self, integration_id: str) -> FlextResult[bool]:
         """Activate Oracle OIC integration.
 
         Args:
@@ -170,7 +170,7 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._get_service().activate_integration(integration_id)
 
-    def deactivate_integration(self, integration_id: str) -> FlextResult[None]:
+    def deactivate_integration(self, integration_id: str) -> FlextResult[bool]:
         """Deactivate Oracle OIC integration.
 
         Args:

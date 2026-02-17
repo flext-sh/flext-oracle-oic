@@ -98,11 +98,11 @@ class FlextOracleOicClient:
             .map(self._store_and_return_token)
         )
 
-    def _validate_token_url(self) -> FlextResult[None]:
+    def _validate_token_url(self) -> FlextResult[bool]:
         """Validate that OAuth token URL is configured."""
         if not self.auth_config.oauth_token_url:
-            return FlextResult[None].fail("OAuth token URL not configured")
-        return FlextResult[None].ok(None)
+            return FlextResult[bool].fail("OAuth token URL not configured")
+        return FlextResult[bool].ok(value=True)
 
     def _prepare_oauth_request(self) -> FlextResult[tuple[dict, dict]]:
         """Prepare OAuth request headers and data."""

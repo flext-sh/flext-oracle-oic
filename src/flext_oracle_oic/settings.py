@@ -158,7 +158,7 @@ class FlextOracleOicSettings(FlextSettings):
 
         return self
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[bool]:
         """Validate Oracle OIC Extension specific business rules."""
         # Railway-oriented business rule validation - operations are safe
         return (
@@ -169,27 +169,27 @@ class FlextOracleOicSettings(FlextSettings):
             .flat_map(lambda _: self._validate_retry_settings())
         )
 
-    def _validate_oauth_credentials(self) -> FlextResult[None]:
+    def _validate_oauth_credentials(self) -> FlextResult[bool]:
         """Validate OAuth credentials are present."""
         if not self.oauth_client_id or not self.oauth_client_secret.get_secret_value():
-            return FlextResult[None].fail("OAuth credentials are required")
-        return FlextResult[None].ok(None)
+            return FlextResult[bool].fail("OAuth credentials are required")
+        return FlextResult[bool].ok(value=True)
 
-    def _validate_connection_settings(self) -> FlextResult[None]:
+    def _validate_connection_settings(self) -> FlextResult[bool]:
         """Validate connection settings are within acceptable ranges."""
         if self.request_timeout < FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT:
-            return FlextResult[None].fail(
+            return FlextResult[bool].fail(
                 f"Request timeout too low (minimum {FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT} seconds)",
             )
-        return FlextResult[None].ok(None)
+        return FlextResult[bool].ok(value=True)
 
-    def _validate_retry_settings(self) -> FlextResult[None]:
+    def _validate_retry_settings(self) -> FlextResult[bool]:
         """Validate retry settings are within acceptable ranges."""
         if self.max_retries > FlextOracleOicConstants.OIC.MAX_MAX_RETRIES:
-            return FlextResult[None].fail(
+            return FlextResult[bool].fail(
                 f"Max retries too high (maximum {FlextOracleOicConstants.OIC.MAX_MAX_RETRIES})",
             )
-        return FlextResult[None].ok(None)
+        return FlextResult[bool].ok(value=True)
 
     @classmethod
     def create_for_environment(

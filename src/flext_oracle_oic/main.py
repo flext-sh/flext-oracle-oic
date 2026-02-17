@@ -54,12 +54,12 @@ class FlextOracleOicCli(FlextService[None]):
         self._dispatcher = FlextDispatcher()
         self._registry = FlextRegistry(dispatcher=self._dispatcher)
 
-    def execute(self) -> FlextResult[None]:
+    def execute(self) -> FlextResult[bool]:
         """Execute main CLI operation - run with default arguments."""
         exit_code = self.run_cli()
         if exit_code == 0:
-            return FlextResult[None].ok(None)
-        return FlextResult[None].fail(
+            return FlextResult[bool].ok(value=True)
+        return FlextResult[bool].fail(
             f"CLI execution failed with exit code {exit_code}",
         )
 
@@ -104,7 +104,7 @@ class FlextOracleOicCli(FlextService[None]):
 
     # CLI Command Methods
 
-    def test_connection(self) -> FlextResult[None]:
+    def test_connection(self) -> FlextResult[bool]:
         """Test connection to Oracle OIC instance.
 
         Returns:
@@ -118,13 +118,13 @@ class FlextOracleOicCli(FlextService[None]):
             # Create development service for testing
             service_result = create_development_oic_service()
             if service_result.is_failure:
-                return FlextResult[None].fail(
+                return FlextResult[bool].fail(
                     f"Failed to create service: {service_result.error}",
                 )
 
             service = service_result.value
             if service is None:
-                return FlextResult[None].fail("Service is None")
+                return FlextResult[bool].fail("Service is None")
 
             # Test connection
             with service:
@@ -135,17 +135,17 @@ class FlextOracleOicCli(FlextService[None]):
                     self.CliOutputHelper.print(
                         "Connection to Oracle OIC established successfully",
                     )
-                    return FlextResult[None].ok(None)
-                return FlextResult[None].fail(
+                    return FlextResult[bool].ok(value=True)
+                return FlextResult[bool].fail(
                     f"Connection failed: {connection_result.error}",
                 )
 
         except Exception as e:
             if self.logger:
                 self.logger.exception("Connection test failed")
-            return FlextResult[None].fail(f"Connection test failed: {e!s}")
+            return FlextResult[bool].fail(f"Connection test failed: {e!s}")
 
-    def list_integrations(self) -> FlextResult[None]:
+    def list_integrations(self) -> FlextResult[bool]:
         """List Oracle OIC integrations.
 
         Returns:
@@ -159,13 +159,13 @@ class FlextOracleOicCli(FlextService[None]):
             # Create development service
             service_result = create_development_oic_service()
             if service_result.is_failure:
-                return FlextResult[None].fail(
+                return FlextResult[bool].fail(
                     f"Failed to create service: {service_result.error}",
                 )
 
             raw_service = service_result.value
             if raw_service is None:
-                return FlextResult[None].fail("Service is None")
+                return FlextResult[bool].fail("Service is None")
             service: FlextOracleOicService = raw_service
             # List integrations
             return self._list_integrations_with_service(service)
@@ -173,26 +173,26 @@ class FlextOracleOicCli(FlextService[None]):
         except Exception as e:
             if self.logger:
                 self.logger.exception("List integrations failed")
-            return FlextResult[None].fail(f"List integrations failed: {e!s}")
+            return FlextResult[bool].fail(f"List integrations failed: {e!s}")
 
     def _list_integrations_with_service(
         self,
         service: object,
-    ) -> FlextResult[None]:
+    ) -> FlextResult[bool]:
         """List integrations using the provided service.
 
         Args:
             service: Oracle OIC service instance
 
         Returns:
-            FlextResult[None]: Success or failure result
+            FlextResult[bool]: Success or failure result
 
         """
         if not isinstance(service, FlextOracleOicService):
-            return FlextResult[None].fail("Invalid service type")
+            return FlextResult[bool].fail("Invalid service type")
         integrations_result = service.list_integrations()
         if integrations_result.is_failure:
-            return FlextResult[None].fail(
+            return FlextResult[bool].fail(
                 f"Failed to list integrations: {integrations_result.error}",
             )
 
@@ -201,7 +201,7 @@ class FlextOracleOicCli(FlextService[None]):
             self.logger.info(f"Found {len(integrations)} integrations")
 
         self._print_integrations(integrations)
-        return FlextResult[None].ok(None)
+        return FlextResult[bool].ok(value=True)
 
     def _print_integrations(
         self,
@@ -231,7 +231,7 @@ class FlextOracleOicCli(FlextService[None]):
                 )
             self.CliOutputHelper.print("")
 
-    def show_version(self) -> FlextResult[None]:
+    def show_version(self) -> FlextResult[bool]:
         """Show Oracle OIC Extension version.
 
         Returns:
@@ -243,13 +243,13 @@ class FlextOracleOicCli(FlextService[None]):
             self.CliOutputHelper.print(
                 "FLEXT CLI Pattern: Enterprise Oracle Integration Cloud",
             )
-            return FlextResult[None].ok(None)
+            return FlextResult[bool].ok(value=True)
         except Exception as e:
             if self.logger:
                 self.logger.exception("Version display failed")
-            return FlextResult[None].fail(f"Version display failed: {e!s}")
+            return FlextResult[bool].fail(f"Version display failed: {e!s}")
 
-    def run_command(self, command: str) -> FlextResult[None]:
+    def run_command(self, command: str) -> FlextResult[bool]:
         """Run the specified CLI command.
 
         Args:
@@ -266,7 +266,7 @@ class FlextOracleOicCli(FlextService[None]):
         }
 
         if command not in commands:
-            return FlextResult[None].fail(f"Unknown command: {command}")
+            return FlextResult[bool].fail(f"Unknown command: {command}")
 
         return commands[command]()
 

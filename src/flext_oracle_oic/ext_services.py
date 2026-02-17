@@ -147,7 +147,7 @@ class FlextOracleOicExtServices(
 
             # Token URL validation already performed by Pydantic AnyUrl type
 
-            return r[bool].ok(True)
+            return r[bool].ok(value=True)
 
         def validate_config(self: Self) -> r[None]:
             """Validate service configuration.
@@ -416,7 +416,7 @@ class FlextOracleOicExtServices(
 
             if integrations_result.is_success:
                 self.logger.info("OIC connection test successful")
-                return r[bool].ok(True)
+                return r[bool].ok(value=True)
 
             error_msg = f"OIC connection test failed: {integrations_result.error}"
             self.logger.error(error_msg)
@@ -837,7 +837,7 @@ class FlextOracleOicExtServices(
                 response = self.client.get(FlextOracleOicConstants.API.ENDPOINT_HEALTH)
 
                 if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
-                    health_data: dict[str, t.GeneralValueType] = response.json()
+                    health_data: dict[str, t.GeneralValueType] = response.model_dump_json()
                     raw_health = {
                         "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_HEALTHY,
                         "components": {
@@ -923,7 +923,7 @@ class FlextOracleOicExtServices(
                 response = self.client.get("/ic/api/integration/v1/metrics")
 
                 if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
-                    metrics_data: dict[str, t.GeneralValueType] = response.json()
+                    metrics_data: dict[str, t.GeneralValueType] = response.model_dump_json()
                     raw_metrics = {
                         "active_integrations": metrics_data.get(
                             "active_integrations",

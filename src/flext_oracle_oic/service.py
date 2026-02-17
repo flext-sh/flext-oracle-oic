@@ -384,7 +384,7 @@ class FlextOracleOicService(
                 f"Integration update failed: {e!s}",
             )
 
-    def delete_integration(self, integration_id: str) -> FlextResult[None]:
+    def delete_integration(self, integration_id: str) -> FlextResult[bool]:
         """Delete Oracle OIC integration.
 
         Args:
@@ -398,7 +398,7 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return FlextResult[None].fail(error_msg)
+                return FlextResult[bool].fail(error_msg)
 
             client = client_result.value
             # Delete integration using update with status DELETED or make_request
@@ -408,15 +408,15 @@ class FlextOracleOicService(
             )
             if delete_result.is_failure:
                 error_msg = delete_result.error or "Failed to delete integration"
-                return FlextResult[None].fail(error_msg)
+                return FlextResult[bool].fail(error_msg)
 
-            return FlextResult[None].ok(None)
+            return FlextResult[bool].ok(value=True)
 
         except Exception as e:
             self.logger.exception(f"Failed to delete integration {integration_id}")
-            return FlextResult[None].fail(f"Integration deletion failed: {e!s}")
+            return FlextResult[bool].fail(f"Integration deletion failed: {e!s}")
 
-    def activate_integration(self, integration_id: str) -> FlextResult[None]:
+    def activate_integration(self, integration_id: str) -> FlextResult[bool]:
         """Activate Oracle OIC integration.
 
         Args:
@@ -430,7 +430,7 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return FlextResult[None].fail(error_msg)
+                return FlextResult[bool].fail(error_msg)
 
             client = client_result.value
             # Activate integration using make_request
@@ -440,15 +440,15 @@ class FlextOracleOicService(
             )
             if activate_result.is_failure:
                 error_msg = activate_result.error or "Failed to activate integration"
-                return FlextResult[None].fail(error_msg)
+                return FlextResult[bool].fail(error_msg)
 
-            return FlextResult[None].ok(None)
+            return FlextResult[bool].ok(value=True)
 
         except Exception as e:
             self.logger.exception(f"Failed to activate integration {integration_id}")
-            return FlextResult[None].fail(f"Integration activation failed: {e!s}")
+            return FlextResult[bool].fail(f"Integration activation failed: {e!s}")
 
-    def deactivate_integration(self, integration_id: str) -> FlextResult[None]:
+    def deactivate_integration(self, integration_id: str) -> FlextResult[bool]:
         """Deactivate Oracle OIC integration.
 
         Args:
@@ -462,7 +462,7 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return FlextResult[None].fail(error_msg)
+                return FlextResult[bool].fail(error_msg)
 
             client = client_result.value
             # Deactivate integration using make_request
@@ -474,13 +474,13 @@ class FlextOracleOicService(
                 error_msg = (
                     deactivate_result.error or "Failed to deactivate integration"
                 )
-                return FlextResult[None].fail(error_msg)
+                return FlextResult[bool].fail(error_msg)
 
-            return FlextResult[None].ok(None)
+            return FlextResult[bool].ok(value=True)
 
         except Exception as e:
             self.logger.exception(f"Failed to deactivate integration {integration_id}")
-            return FlextResult[None].fail(f"Integration deactivation failed: {e!s}")
+            return FlextResult[bool].fail(f"Integration deactivation failed: {e!s}")
 
     # Connection Testing Methods (from LifecycleManager)
 
@@ -1105,7 +1105,7 @@ class FlextOracleOicService(
 
         # Token URL validation already performed by Pydantic AnyUrl type
 
-        return FlextResult[bool].ok(True)
+        return FlextResult[bool].ok(value=True)
 
     # Private Helper Methods
 
