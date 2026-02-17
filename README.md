@@ -6,7 +6,9 @@
 
 **FLEXT-Oracle-OIC** is the Oracle Integration Cloud (OIC) client library for the FLEXT ecosystem. It provides secure patterns for authentication, integration orchestration, and deployment management, fully compliant with OIC Gen3 standards.
 
-Part of the [FLEXT](https://github.com/flext-sh/flext) ecosystem.
+**Reviewed**: 2026-02-17 | **Version**: 0.10.0-dev
+
+Part of the [FLEXT](https://github.com/flext/flext) ecosystem.
 
 ## 🚀 Key Features
 
