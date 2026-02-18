@@ -58,6 +58,14 @@
         flext-oracle-oic = "flext_oracle_oic.cli:main"
         oracle-oic-ext       = "flext_oracle_oic.cli:main"
 
+    [tool.pyrefly]
+        search-path = [
+            "../typings",
+            "../typings/generated",
+            "src",
+            "tests",
+        ]
+
 [tool.ruff]
     extend = "../ruff-shared.toml"
 
