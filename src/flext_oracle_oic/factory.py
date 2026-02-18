@@ -94,7 +94,8 @@ class FlextOracleOicFactory:
         """
         # Railway-oriented development service creation
         return (
-            FlextResult[bool].ok(value=True)
+            FlextResult[bool]
+            .ok(value=True)
             .flat_map(lambda _: self._create_development_config())
             .flat_map(
                 lambda config: self._create_service_instance(

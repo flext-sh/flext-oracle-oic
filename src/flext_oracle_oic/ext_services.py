@@ -837,7 +837,9 @@ class FlextOracleOicExtServices(
                 response = self.client.get(FlextOracleOicConstants.API.ENDPOINT_HEALTH)
 
                 if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
-                    health_data: dict[str, t.GeneralValueType] = response.model_dump_json()
+                    health_data: dict[str, t.GeneralValueType] = (
+                        response.model_dump_json()
+                    )
                     raw_health = {
                         "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_HEALTHY,
                         "components": {
@@ -923,7 +925,9 @@ class FlextOracleOicExtServices(
                 response = self.client.get("/ic/api/integration/v1/metrics")
 
                 if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
-                    metrics_data: dict[str, t.GeneralValueType] = response.model_dump_json()
+                    metrics_data: dict[str, t.GeneralValueType] = (
+                        response.model_dump_json()
+                    )
                     raw_metrics = {
                         "active_integrations": metrics_data.get(
                             "active_integrations",
