@@ -1,7 +1,7 @@
 # Getting Started
 
-
 <!-- TOC START -->
+
 - [Prerequisites](#prerequisites)
   - [Required Software](#required-software)
   - [Optional for Testing](#optional-for-testing)
@@ -16,9 +16,9 @@
   - [Essential Commands](#essential-commands)
   - [Testing Commands](#testing-commands)
 - [Current Implementation Status](#current-implementation-status)
-  - [Available Features ✅](#available-features-)
-  - [Planned Features 🚧](#planned-features-)
-  - [Known Limitations ⚠️](#known-limitations-)
+  - [Available Features ✅](#available-features)
+  - [Planned Features 🚧](#planned-features)
+  - [Known Limitations ⚠️](#known-limitations)
 - [Troubleshooting](#troubleshooting)
   - [Common Installation Issues](#common-installation-issues)
   - [Development Issues](#development-issues)
@@ -27,6 +27,7 @@
   - [Resources](#resources)
   - [Support Channels](#support-channels)
 - [Related Documentation](#related-documentation)
+
 <!-- TOC END -->
 
 **flext-oracle-oic v0.9.9** - Oracle Integration Cloud client library for the FLEXT ecosystem
@@ -213,14 +214,17 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 ### Known Limitations ⚠️
 
 1. **FLEXT Compliance Violations**:
+
    - Direct `httpx` import in `ext_client.py:12` (should use flext-api)
    - Direct `typer` import in `main.py:15` (should use flext-cli)
    - Missing FlextService inheritance
 
-2. **Type Safety Issues**:
+1. **Type Safety Issues**:
+
    - 2 MyPy errors in `exceptions.py:283` and `test_models.py:61`
 
-3. **Test Coverage**:
+1. **Test Coverage**:
+
    - Current: 21% coverage (measured)
    - Target: 70%+ with integration tests
 
@@ -295,9 +299,9 @@ grep -r "from httpx\|from typer" src/
 ## Next Steps
 
 1. **Review Current Implementation**: See [architecture.md](architecture.md) for detailed analysis
-2. **Check Development Roadmap**: See [../TODO.md](../TODO.md) for evidence-based development plan
-3. **Understand FLEXT Patterns**: Review [flext-core documentation](https://github.com/organization/flext/tree/main/flext-core/README.md)
-4. **Review Configuration**: See [configuration.md](configuration.md) for detailed settings
+1. **Check Development Roadmap**: See [../TODO.md](../TODO.md) for evidence-based development plan
+1. **Understand FLEXT Patterns**: Review [flext-core documentation](https://github.com/organization/flext/tree/main/flext-core/README.md)
+1. **Review Configuration**: See [configuration.md](configuration.md) for detailed settings
 
 ## Getting Help
 
@@ -313,7 +317,7 @@ grep -r "from httpx\|from typer" src/
 - **Questions**: Check existing documentation and README files first
 - **Contributing**: Follow development guidelines in [../TODO.md](../TODO.md)
 
----
+______________________________________________________________________
 
 This guide reflects the actual current implementation status as of September 17, 2025. The library is in early development (v0.9.9) with foundation configuration and basic service structure implemented. Full Oracle OIC integration capabilities are planned for future releases following the evidence-based roadmap in TODO.md.
 

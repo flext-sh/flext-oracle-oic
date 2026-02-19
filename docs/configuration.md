@@ -1,7 +1,7 @@
 # Configuration
 
-
 <!-- TOC START -->
+
 - [Overview](#overview)
 - [Current Configuration Components](#current-configuration-components)
   - [Connection Configuration](#connection-configuration)
@@ -13,8 +13,8 @@
 - [Configuration Validation](#configuration-validation)
   - [Current Validation Rules](#current-validation-rules)
 - [Current Implementation Limitations](#current-implementation-limitations)
-  - [Available Features ✅](#available-features-)
-  - [Missing Features ⚠️](#missing-features-)
+  - [Available Features ✅](#available-features)
+  - [Missing Features ⚠️](#missing-features)
 - [Security Considerations](#security-considerations)
   - [Current Security Status](#current-security-status)
 - [Development Workflow](#development-workflow)
@@ -23,6 +23,7 @@
   - [Common Configuration Issues](#common-configuration-issues)
   - [Configuration Debugging](#configuration-debugging)
 - [Future Enhancements](#future-enhancements)
+
 <!-- TOC END -->
 
 **Configuration Management for flext-oracle-oic v0.9.9**
@@ -327,6 +328,6 @@ The configuration system will be enhanced in future releases with:
 - **Oracle Cloud Integration**: Native Oracle Vault and IDCS integration
 - **Dynamic Configuration**: Runtime configuration updates and validation
 
----
+______________________________________________________________________
 
 This configuration guide reflects the actual implementation status as of September 17, 2025. The basic Pydantic configuration foundation is implemented, with advanced features planned for future releases.

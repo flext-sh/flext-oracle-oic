@@ -1,14 +1,15 @@
 <!-- Generated from docs/guides/security.md for flext-oracle-oic. -->
+
 <!-- Source of truth: workspace docs/guides/. -->
 
 # flext-oracle-oic - Security Guide
 
 > Project profile: `flext-oracle-oic`
 
-
-
 <!-- TOC START -->
+
 - No sections found
+
 <!-- TOC END -->
 
 Security practices are governed by project-specific policies and central architecture ADRs.
