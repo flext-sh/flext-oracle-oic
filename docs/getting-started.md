@@ -1,5 +1,34 @@
 # Getting Started
 
+
+<!-- TOC START -->
+- [Prerequisites](#prerequisites)
+  - [Required Software](#required-software)
+  - [Optional for Testing](#optional-for-testing)
+  - [Knowledge Requirements](#knowledge-requirements)
+- [Installation](#installation)
+  - [Development Installation (Recommended)](#development-installation-recommended)
+  - [Environment Setup](#environment-setup)
+- [Basic Usage](#basic-usage)
+  - [Configuration Management](#configuration-management)
+  - [Current Capabilities](#current-capabilities)
+- [Development Commands](#development-commands)
+  - [Essential Commands](#essential-commands)
+  - [Testing Commands](#testing-commands)
+- [Current Implementation Status](#current-implementation-status)
+  - [Available Features ✅](#available-features-)
+  - [Planned Features 🚧](#planned-features-)
+  - [Known Limitations ⚠️](#known-limitations-)
+- [Troubleshooting](#troubleshooting)
+  - [Common Installation Issues](#common-installation-issues)
+  - [Development Issues](#development-issues)
+- [Next Steps](#next-steps)
+- [Getting Help](#getting-help)
+  - [Resources](#resources)
+  - [Support Channels](#support-channels)
+- [Related Documentation](#related-documentation)
+<!-- TOC END -->
+
 **flext-oracle-oic v0.9.9** - Oracle Integration Cloud client library for the FLEXT ecosystem
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)

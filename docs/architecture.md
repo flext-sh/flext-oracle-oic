@@ -1,5 +1,38 @@
 # Architecture
 
+
+<!-- TOC START -->
+- [Overview](#overview)
+  - [Architecture Principles](#architecture-principles)
+- [Current Implementation Analysis](#current-implementation-analysis)
+  - [Implemented Components ✅](#implemented-components-)
+  - [Architecture Gaps ⚠️](#architecture-gaps-)
+  - [Module Organization](#module-organization)
+- [Architecture Components](#architecture-components)
+  - [Configuration Management](#configuration-management)
+  - [Service Architecture](#service-architecture)
+  - [Client Layer](#client-layer)
+  - [Domain Models](#domain-models)
+- [FLEXT Ecosystem Integration](#flext-ecosystem-integration)
+  - [Currently Implemented ✅](#currently-implemented-)
+  - [Missing FLEXT Integration ❌](#missing-flext-integration-)
+- [Critical Architecture Issues](#critical-architecture-issues)
+  - [1. FLEXT Compliance Violations](#1-flext-compliance-violations)
+  - [2. Oracle OIC Integration Gaps](#2-oracle-oic-integration-gaps)
+- [Testing Architecture](#testing-architecture)
+  - [Current Test Status (21% Coverage)](#current-test-status-21-coverage)
+  - [Required Testing Strategy](#required-testing-strategy)
+- [Roadmap to FLEXT Compliance](#roadmap-to-flext-compliance)
+  - [Phase 1: Critical Fixes (Immediate)](#phase-1-critical-fixes-immediate)
+  - [Phase 2: Oracle OIC Implementation (Months 2-3)](#phase-2-oracle-oic-implementation-months-2-3)
+  - [Phase 3: Production Readiness (Month 4+)](#phase-3-production-readiness-month-4)
+- [Integration with FLEXT Ecosystem](#integration-with-flext-ecosystem)
+  - [Direct Dependencies](#direct-dependencies)
+  - [Service Dependencies](#service-dependencies)
+  - [Cross-References](#cross-references)
+- [Related Documentation](#related-documentation)
+<!-- TOC END -->
+
 **flext-oracle-oic v0.9.9** - Oracle Integration Cloud Architecture Analysis
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)

@@ -1,5 +1,27 @@
 # Documentation Index
 
+
+<!-- TOC START -->
+- [Overview](#overview)
+- [Documentation Structure](#documentation-structure)
+  - [Getting Started](#getting-started)
+  - [Technical Reference](#technical-reference)
+  - [Planning and Development](#planning-and-development)
+- [Current Implementation Status](#current-implementation-status)
+  - [Available Features ✅](#available-features-)
+  - [Critical Issues ⚠️](#critical-issues-)
+  - [Missing Features ❌](#missing-features-)
+- [Quick Navigation](#quick-navigation)
+  - [For Users](#for-users)
+  - [For Developers](#for-developers)
+- [Integration with FLEXT Ecosystem](#integration-with-flext-ecosystem)
+  - [Direct Dependencies](#direct-dependencies)
+  - [Service Dependencies](#service-dependencies)
+- [Development Guidelines](#development-guidelines)
+  - [Quality Standards](#quality-standards)
+  - [Contributing](#contributing)
+<!-- TOC END -->
+
 **flext-oracle-oic v0.9.9** - Oracle Integration Cloud client library for the FLEXT ecosystem
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
