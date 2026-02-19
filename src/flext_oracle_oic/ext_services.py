@@ -307,7 +307,7 @@ class FlextOracleOicExtServices(
             integrations_data: list[dict[str, t.GeneralValueType]],
         ) -> r[list[FlextOracleOicModels.OICIntegrationInfo]]:
             """Parse integration data into domain models."""
-            integration_infos: list[t.GeneralValueType] = []
+            integration_infos: list[FlextOracleOicModels.OICIntegrationInfo] = []
             for integration in integrations_data:
                 try:
                     integration_info = FlextOracleOicModels.OICIntegrationInfo(
@@ -321,7 +321,7 @@ class FlextOracleOicExtServices(
                     )
                     integration_infos.append(integration_info)
                 except Exception as e:
-                    self.logger.warning("Failed to parse integration: %s", e)
+                    self.logger.warning(f"Failed to parse integration: {e}")
                     continue
 
             self.logger.info(f"Retrieved {len(integration_infos)} integrations")
@@ -386,7 +386,7 @@ class FlextOracleOicExtServices(
                     )
                     connection_infos.append(connection_info)
                 except Exception as e:
-                    self.logger.warning("Failed to parse connection: %s", e)
+                    self.logger.warning(f"Failed to parse connection: {e}")
                     continue
 
             self.logger.info(f"Retrieved {len(connection_infos)} connections")
@@ -836,10 +836,8 @@ class FlextOracleOicExtServices(
                 response = self.client.get(FlextOracleOicConstants.API.ENDPOINT_HEALTH)
 
                 if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
-                    health_data: dict[str, t.GeneralValueType] = (
-                        response.model_dump_json()
-                    )
-                    raw_health = {
+                    health_data = response.json()
+                    raw_health: dict[str, t.GeneralValueType] = {
                         "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_HEALTHY,
                         "components": {
                             FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
@@ -884,7 +882,7 @@ class FlextOracleOicExtServices(
 
             except Exception as e:
                 self.logger.exception("Health check failed")
-                error_health = {
+                error_health: dict[str, t.GeneralValueType] = {
                     "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_ERROR,
                     "components": {
                         FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
@@ -924,10 +922,8 @@ class FlextOracleOicExtServices(
                 response = self.client.get("/ic/api/integration/v1/metrics")
 
                 if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
-                    metrics_data: dict[str, t.GeneralValueType] = (
-                        response.model_dump_json()
-                    )
-                    raw_metrics = {
+                    metrics_data = response.json()
+                    raw_metrics: dict[str, t.GeneralValueType] = {
                         "active_integrations": metrics_data.get(
                             "active_integrations",
                             0,
@@ -956,7 +952,11 @@ class FlextOracleOicExtServices(
 
                 if analysis_result.is_success:
                     # Combine raw metrics with analysis
-                    return {**raw_metrics, "analysis": analysis_result.value}
+                    analyzed_metrics: dict[str, t.GeneralValueType] = {
+                        **raw_metrics,
+                        "analysis": analysis_result.value,
+                    }
+                    return analyzed_metrics
                 self.logger.warning(
                     f"Performance analysis failed: {analysis_result.error}",
                 )
@@ -964,7 +964,7 @@ class FlextOracleOicExtServices(
 
             except Exception as e:
                 self.logger.exception("Performance metrics failed")
-                error_metrics = {
+                error_metrics: dict[str, t.GeneralValueType] = {
                     "active_integrations": 0,
                     "total_executions": 0,
                     "success_rate": 0.0,
@@ -977,7 +977,11 @@ class FlextOracleOicExtServices(
                     error_metrics,
                 )
                 if analysis_result.is_success:
-                    return {**error_metrics, "analysis": analysis_result.value}
+                    analyzed_error_metrics: dict[str, t.GeneralValueType] = {
+                        **error_metrics,
+                        "analysis": analysis_result.value,
+                    }
+                    return analyzed_error_metrics
                 return error_metrics
 
 

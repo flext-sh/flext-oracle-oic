@@ -153,31 +153,47 @@ class FlextOracleOicUtilities(u_core):
             if "name" not in integration_data:
                 errors.append("Integration name is required")
             else:
-                name_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_name(
-                    integration_data["name"],
-                )
-                if name_result.is_failure:
-                    errors.append(f"Name validation: {name_result.error}")
+                raw_name = integration_data["name"]
+                if not isinstance(raw_name, str):
+                    errors.append("Name validation: Integration name must be a string")
                 else:
-                    validated_data["name"] = name_result.value
+                    name_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_name(
+                        raw_name,
+                    )
+                    if name_result.is_failure:
+                        errors.append(f"Name validation: {name_result.error}")
+                    else:
+                        validated_data["name"] = name_result.value
 
             if "version" in integration_data:
-                version_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_version(
-                    integration_data["version"],
-                )
-                if version_result.is_failure:
-                    errors.append(f"Version validation: {version_result.error}")
+                raw_version = integration_data["version"]
+                if not isinstance(raw_version, str):
+                    errors.append(
+                        "Version validation: Integration version must be a string",
+                    )
                 else:
-                    validated_data["version"] = version_result.value
+                    version_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_version(
+                        raw_version,
+                    )
+                    if version_result.is_failure:
+                        errors.append(f"Version validation: {version_result.error}")
+                    else:
+                        validated_data["version"] = version_result.value
 
             if "status" in integration_data:
-                status_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_status(
-                    integration_data["status"],
-                )
-                if status_result.is_failure:
-                    errors.append(f"Status validation: {status_result.error}")
+                raw_status = integration_data["status"]
+                if not isinstance(raw_status, str):
+                    errors.append(
+                        "Status validation: Integration status must be a string",
+                    )
                 else:
-                    validated_data["status"] = status_result.value
+                    status_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_status(
+                        raw_status,
+                    )
+                    if status_result.is_failure:
+                        errors.append(f"Status validation: {status_result.error}")
+                    else:
+                        validated_data["status"] = status_result.value
 
             if errors:
                 return r[dict[str, t.GeneralValueType]].fail(
@@ -464,9 +480,21 @@ class FlextOracleOicUtilities(u_core):
                 return r[str].fail("Integration data must be a dictionary")
 
             # Analyze based on common OIC integration characteristics
-            endpoints = integration_data.get("endpoints", [])
-            connections = integration_data.get("connections", [])
-            mappings = integration_data.get("mappings", [])
+            endpoints_raw = integration_data.get("endpoints", [])
+            connections_raw = integration_data.get("connections", [])
+            mappings_raw = integration_data.get("mappings", [])
+
+            endpoints: list[dict[str, t.GeneralValueType]] = (
+                [endpoint for endpoint in endpoints_raw if isinstance(endpoint, dict)]
+                if isinstance(endpoints_raw, list)
+                else []
+            )
+            connections: list[t.GeneralValueType] = (
+                list(connections_raw) if isinstance(connections_raw, list) else []
+            )
+            mappings: list[t.GeneralValueType] = (
+                list(mappings_raw) if isinstance(mappings_raw, list) else []
+            )
 
             # Message Router: Multiple target endpoints from single source
             if len(endpoints) > c.OracleOicValidation.MIN_ENDPOINTS_FOR_ROUTER and any(
@@ -622,12 +650,10 @@ class FlextOracleOicUtilities(u_core):
                     "Metrics must be a dictionary",
                 )
 
-            analysis: dict[str, t.GeneralValueType] = {
-                "overall_health": "healthy",
-                "warnings": [],
-                "critical_issues": [],
-                "recommendations": [],
-            }
+            overall_health = "healthy"
+            warnings: list[str] = []
+            critical_issues: list[str] = []
+            recommendations: list[str] = []
 
             # Analyze response time
             if "average_response_time" in metrics:
@@ -637,10 +663,10 @@ class FlextOracleOicUtilities(u_core):
                         "response_time_ms"
                     ]
                     if response_time > threshold:
-                        analysis["warnings"].append(
+                        warnings.append(
                             f"High response time: {response_time}ms (threshold: {threshold}ms)",
                         )
-                        analysis["recommendations"].append(
+                        recommendations.append(
                             "Consider optimizing integration mappings or connection pooling",
                         )
 
@@ -652,11 +678,11 @@ class FlextOracleOicUtilities(u_core):
                         "success_rate"
                     ]
                     if success_rate < threshold:
-                        analysis["critical_issues"].append(
+                        critical_issues.append(
                             f"Low success rate: {success_rate:.2%} (threshold: {threshold:.2%})",
                         )
-                        analysis["overall_health"] = "unhealthy"
-                        analysis["recommendations"].append(
+                        overall_health = "unhealthy"
+                        recommendations.append(
                             "Investigate integration failures and error patterns",
                         )
 
@@ -668,13 +694,18 @@ class FlextOracleOicUtilities(u_core):
                         "error_rate"
                     ]
                     if error_rate > threshold:
-                        analysis["warnings"].append(
+                        warnings.append(
                             f"High error rate: {error_rate:.2%} (threshold: {threshold:.2%})",
                         )
-                        analysis["recommendations"].append(
+                        recommendations.append(
                             "Review error logs and implement error handling improvements",
                         )
-
+            analysis: dict[str, t.GeneralValueType] = {
+                "overall_health": overall_health,
+                "warnings": warnings,
+                "critical_issues": critical_issues,
+                "recommendations": recommendations,
+            }
             return r[dict[str, t.GeneralValueType]].ok(analysis)
 
 

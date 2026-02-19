@@ -53,12 +53,12 @@ class FlextOracleOicCli(FlextService[None]):
         self._dispatcher = FlextDispatcher()
         self._registry = FlextRegistry(dispatcher=self._dispatcher)
 
-    def execute(self) -> FlextResult[bool]:
+    def execute(self) -> FlextResult[None]:
         """Execute main CLI operation - run with default arguments."""
         exit_code = self.run_cli()
         if exit_code == 0:
-            return FlextResult[bool].ok(value=True)
-        return FlextResult[bool].fail(
+            return FlextResult[None].ok(None)
+        return FlextResult[None].fail(
             f"CLI execution failed with exit code {exit_code}",
         )
 

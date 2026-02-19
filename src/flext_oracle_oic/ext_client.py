@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import base64
 import json as json_module
+from collections.abc import Mapping, Sequence
 from typing import Self
 
 from flext_api import FlextApi
@@ -257,14 +258,31 @@ class FlextOracleOicClient:
         try:
             if client is None:
                 return FlextResult[object].fail("Client not available")
+            request_data: (
+                dict[
+                    str,
+                    Mapping[str, object]
+                    | Sequence[object]
+                    | bool
+                    | float
+                    | int
+                    | str
+                    | None,
+                ]
+                | None
+            ) = (
+                {key: self._to_api_payload(value) for key, value in json.items()}
+                if json is not None
+                else None
+            )
             base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
             full_url = f"{base_url}/{endpoint.lstrip('/')}"
             if method.upper() == "GET":
                 response_result = client.get(full_url, headers=None)
             elif method.upper() == "POST":
-                response_result = client.post(full_url, data=json, headers=None)
+                response_result = client.post(full_url, data=request_data, headers=None)
             elif method.upper() == "PUT":
-                response_result = client.put(full_url, data=json, headers=None)
+                response_result = client.put(full_url, data=request_data, headers=None)
             elif method.upper() == "DELETE":
                 response_result = client.delete(full_url, headers=None)
             else:
@@ -280,6 +298,19 @@ class FlextOracleOicClient:
             error_msg = f"OIC API request failed: {e}"
             self.logger.exception(error_msg)
             return FlextResult[object].fail(error_msg)
+
+    def _to_api_payload(
+        self,
+        value: object,
+    ) -> Mapping[str, object] | Sequence[object] | bool | float | int | str | None:
+        """Normalize GeneralValueType into flext-api request body value type."""
+        if isinstance(value, (str, int, float, bool)) or value is None:
+            return value
+        if isinstance(value, dict):
+            return {str(key): self._to_api_payload(item) for key, item in value.items()}
+        if isinstance(value, (list, tuple)):
+            return [self._to_api_payload(item) for item in value]
+        return str(value)
 
     def _parse_api_response(
         self, response: object

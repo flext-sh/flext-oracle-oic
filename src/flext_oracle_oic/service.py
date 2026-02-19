@@ -503,7 +503,12 @@ class FlextOracleOicService(
                 error_msg = test_result.error or "Connection test failed"
                 return FlextResult[bool].fail(error_msg)
             result_data = test_result.value
-            is_connected = result_data.get("status", "").lower() == "healthy"
+            status_value = result_data.get("status", "")
+            is_connected = (
+                status_value.lower() == "healthy"
+                if isinstance(status_value, str)
+                else False
+            )
 
             return FlextResult[bool].ok(is_connected)
 
@@ -875,7 +880,7 @@ class FlextOracleOicService(
                             if isinstance(response.body, dict)
                             else {"raw": response.body}
                         )
-                        health_data = {
+                        health_data: dict[str, t.GeneralValueType] = {
                             **base_health,
                             "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_HEALTHY,
                             "components": {
@@ -943,7 +948,7 @@ class FlextOracleOicService(
 
         except Exception as e:
             self.logger.exception("Health check failed")
-            error_health = {
+            error_health: dict[str, t.GeneralValueType] = {
                 "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_ERROR,
                 "components": {
                     FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
@@ -1023,9 +1028,25 @@ class FlextOracleOicService(
                         "error": f"Request failed: {response_result.error}",
                     }
 
-            metrics_dict: dict[str, t.GeneralValueType] = (
-                metrics_data if isinstance(metrics_data, dict) else {}
-            )
+            metrics_dict: dict[str, t.GeneralValueType] = {}
+            if isinstance(metrics_data, dict):
+                for key, value in metrics_data.items():
+                    metrics_dict[str(key)] = (
+                        value
+                        if isinstance(
+                            value,
+                            (
+                                str,
+                                int,
+                                float,
+                                bool,
+                                dict,
+                                list,
+                                type(None),
+                            ),
+                        )
+                        else str(value)
+                    )
             analysis_result = (
                 FlextOracleOicUtilities.MonitoringUtilities.analyze_performance_metrics(
                     metrics_dict,
@@ -1042,7 +1063,7 @@ class FlextOracleOicService(
 
         except Exception as e:
             self.logger.exception("Performance metrics failed")
-            error_metrics = {
+            error_metrics: dict[str, t.GeneralValueType] = {
                 "active_integrations": 0,
                 "total_executions": 0,
                 "success_rate": 0.0,

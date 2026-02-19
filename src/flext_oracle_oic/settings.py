@@ -240,7 +240,6 @@ class FlextOracleOicSettings(FlextSettings):
         return cls(
             base_url="https://test.example.com",
             oauth_client_id="test_client",
-            oauth_client_secret=SecretStr("test_secret"),
             request_timeout=5,
             max_retries=1,
             verify_ssl=False,
