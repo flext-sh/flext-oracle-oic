@@ -4,7 +4,7 @@ requires = [ "poetry-core>=2.0", "poetry-core>=2" ]
 
 [project]
 name = "flext-oracle-oic"
-version = "0.10.0"
+version = "0.11.0"
 description = "FLEXT Oracle OIC Extension - Advanced Oracle Integration Cloud Extensions"
 readme = "README.md"
 keywords = [
