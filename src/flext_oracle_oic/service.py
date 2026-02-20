@@ -186,7 +186,7 @@ class FlextOracleOicService(
             client = client_result.value
             connections_result = client.get_connections(
                 type_filter=type_filter,
-                page_size=FlextOracleOicConstants.OIC.DEFAULT_PAGE_SIZE,
+                page_size=FlextOracleOicConstants.OracleOic.DEFAULT_PAGE_SIZE,
             )
 
             if connections_result.is_failure:
@@ -771,7 +771,7 @@ class FlextOracleOicService(
                     FlextOracleOicConstants.OICPatterns.PATTERN_MESSAGE_ID_UNKNOWN,
                 ),
                 "applied_rules": len(routing_rules),
-                "status": FlextOracleOicConstants.OICPatterns.PATTERN_STATUS_PROCESSED,
+                "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
             }
 
             return FlextResult[dict[str, t.GeneralValueType]].ok(routing_result)
@@ -825,7 +825,7 @@ class FlextOracleOicService(
                     FlextOracleOicConstants.OICPatterns.PATTERN_REQUEST_ID_UNKNOWN,
                 ),
                 "target_count": len(target_endpoints),
-                "status": FlextOracleOicConstants.OICPatterns.PATTERN_STATUS_PROCESSED,
+                "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
             }
 
             return FlextResult[dict[str, t.GeneralValueType]].ok(scatter_result)
@@ -848,16 +848,16 @@ class FlextOracleOicService(
             if not self._monitoring_client:
                 # Mock health check response
                 health_data = {
-                    "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_HEALTHY,
+                    "status": FlextOracleOicConstants.Monitoring.HealthStatus.HEALTHY,
                     "components": {
                         FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
+                            "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
                         },
                         FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
+                            "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
                         },
                         FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
+                            "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
                         },
                     },
                     "timestamp": asyncio.get_event_loop().time(),
@@ -882,47 +882,47 @@ class FlextOracleOicService(
                         )
                         health_data: dict[str, t.GeneralValueType] = {
                             **base_health,
-                            "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_HEALTHY,
+                            "status": FlextOracleOicConstants.Monitoring.HealthStatus.HEALTHY,
                             "components": {
                                 FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                                    "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
+                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
                                 },
                                 FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                                    "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
+                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
                                 },
                                 FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                    "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
+                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
                                 },
                             },
                         }
                     else:
                         health_data = {
-                            "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_UNHEALTHY,
+                            "status": FlextOracleOicConstants.Monitoring.HealthStatus.UNHEALTHY,
                             "components": {
                                 FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                                    "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                                 },
                                 FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                                    "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                                 },
                                 FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                    "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                                 },
                             },
                             "error": f"HTTP {response.status_code}",
                         }
                 else:
                     health_data = {
-                        "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_ERROR,
+                        "status": FlextOracleOicConstants.Monitoring.HealthStatus.ERROR,
                         "components": {
                             FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                             },
                             FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                             },
                             FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                             },
                         },
                         "error": f"Request failed: {response_result.error}",
@@ -949,16 +949,16 @@ class FlextOracleOicService(
         except Exception as e:
             self.logger.exception("Health check failed")
             error_health: dict[str, t.GeneralValueType] = {
-                "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_ERROR,
+                "status": FlextOracleOicConstants.Monitoring.HealthStatus.ERROR,
                 "components": {
                     FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                        "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                        "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                     },
                     FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                        "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                        "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                     },
                     FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                        "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                        "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                     },
                 },
                 "error": str(e),

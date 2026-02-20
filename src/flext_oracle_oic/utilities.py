@@ -157,8 +157,10 @@ class FlextOracleOicUtilities(u_core):
                 if not isinstance(raw_name, str):
                     errors.append("Name validation: Integration name must be a string")
                 else:
-                    name_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_name(
-                        raw_name,
+                    name_result = (
+                        FlextOracleOicUtilities.OracleOic.validate_integration_name(
+                            raw_name,
+                        )
                     )
                     if name_result.is_failure:
                         errors.append(f"Name validation: {name_result.error}")
@@ -172,8 +174,10 @@ class FlextOracleOicUtilities(u_core):
                         "Version validation: Integration version must be a string",
                     )
                 else:
-                    version_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_version(
-                        raw_version,
+                    version_result = (
+                        FlextOracleOicUtilities.OracleOic.validate_integration_version(
+                            raw_version,
+                        )
                     )
                     if version_result.is_failure:
                         errors.append(f"Version validation: {version_result.error}")
@@ -187,8 +191,10 @@ class FlextOracleOicUtilities(u_core):
                         "Status validation: Integration status must be a string",
                     )
                 else:
-                    status_result = FlextOracleOicUtilities.IntegrationValidation.validate_integration_status(
-                        raw_status,
+                    status_result = (
+                        FlextOracleOicUtilities.OracleOic.validate_integration_status(
+                            raw_status,
+                        )
                     )
                     if status_result.is_failure:
                         errors.append(f"Status validation: {status_result.error}")
@@ -201,9 +207,6 @@ class FlextOracleOicUtilities(u_core):
                 )
 
             return r[dict[str, t.GeneralValueType]].ok(validated_data)
-
-    # Alias for callers that reference IntegrationValidation
-    IntegrationValidation = OracleOic
 
     class ConnectionValidation:
         """Oracle OIC connection validation utilities."""

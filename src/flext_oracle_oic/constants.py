@@ -31,9 +31,9 @@ class FlextOracleOicConstants(FlextConstants):
     from flext_oracle_oic.constants import FlextOracleOicConstants
 
     # Access Oracle OIC specific constants
-    api_version = FlextOracleOicConstants.OIC.DEFAULT_API_VERSION
-    timeout = FlextOracleOicConstants.OIC.DEFAULT_TIMEOUT
-    page_size = FlextOracleOicConstants.OIC.DEFAULT_PAGE_SIZE
+    api_version = FlextOracleOicConstants.OracleOic.DEFAULT_API_VERSION
+    timeout = FlextOracleOicConstants.OracleOic.DEFAULT_TIMEOUT
+    page_size = FlextOracleOicConstants.OracleOic.DEFAULT_PAGE_SIZE
 
     # Access inherited FlextConstants
     http_ok = FlextOracleOicConstants.Platform.HTTP_STATUS_OK
@@ -80,8 +80,6 @@ class FlextOracleOicConstants(FlextConstants):
         MAX_MAX_RETRIES: Final[int] = 10
         DEFAULT_BACKOFF_MULTIPLIER: Final[float] = 2.0
         DEFAULT_MAX_DELAY_SECONDS: Final[float] = 60.0
-
-    OIC = OracleOic  # alias for backward compatibility
 
     class Auth:
         """Oracle OIC Authentication constants."""

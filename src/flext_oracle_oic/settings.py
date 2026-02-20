@@ -50,36 +50,36 @@ class FlextOracleOicSettings(FlextSettings):
 
     # Oracle OIC Connection Configuration using FlextOracleOicConstants for defaults
     base_url: str = Field(
-        default=FlextOracleOicConstants.OIC.DEFAULT_BASE_URL,
+        default=FlextOracleOicConstants.OracleOic.DEFAULT_BASE_URL,
         description="Oracle OIC base URL",
     )
 
     api_version: str = Field(
-        default=FlextOracleOicConstants.OIC.DEFAULT_API_VERSION,
+        default=FlextOracleOicConstants.OracleOic.DEFAULT_API_VERSION,
         description="Oracle OIC API version",
     )
 
     request_timeout: int = Field(
-        default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
+        default=FlextOracleOicConstants.OracleOic.DEFAULT_REQUEST_TIMEOUT,
         description="Request timeout in seconds",
         ge=1,
         le=300,
     )
 
     max_retries: int = Field(
-        default=FlextOracleOicConstants.OIC.DEFAULT_MAX_RETRIES,
+        default=FlextOracleOicConstants.OracleOic.DEFAULT_MAX_RETRIES,
         description="Maximum number of retry attempts",
         ge=0,
         le=10,
     )
 
     use_ssl: bool = Field(
-        default=FlextOracleOicConstants.OIC.DEFAULT_USE_SSL,
+        default=FlextOracleOicConstants.OracleOic.DEFAULT_USE_SSL,
         description="Use SSL for connections",
     )
 
     verify_ssl: bool = Field(
-        default=FlextOracleOicConstants.OIC.DEFAULT_VERIFY_SSL,
+        default=FlextOracleOicConstants.OracleOic.DEFAULT_VERIFY_SSL,
         description="Verify SSL certificates",
     )
 
@@ -176,17 +176,17 @@ class FlextOracleOicSettings(FlextSettings):
 
     def _validate_connection_settings(self) -> FlextResult[bool]:
         """Validate connection settings are within acceptable ranges."""
-        if self.request_timeout < FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT:
+        if self.request_timeout < FlextOracleOicConstants.OracleOic.MIN_REQUEST_TIMEOUT:
             return FlextResult[bool].fail(
-                f"Request timeout too low (minimum {FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT} seconds)",
+                f"Request timeout too low (minimum {FlextOracleOicConstants.OracleOic.MIN_REQUEST_TIMEOUT} seconds)",
             )
         return FlextResult[bool].ok(value=True)
 
     def _validate_retry_settings(self) -> FlextResult[bool]:
         """Validate retry settings are within acceptable ranges."""
-        if self.max_retries > FlextOracleOicConstants.OIC.MAX_MAX_RETRIES:
+        if self.max_retries > FlextOracleOicConstants.OracleOic.MAX_MAX_RETRIES:
             return FlextResult[bool].fail(
-                f"Max retries too high (maximum {FlextOracleOicConstants.OIC.MAX_MAX_RETRIES})",
+                f"Max retries too high (maximum {FlextOracleOicConstants.OracleOic.MAX_MAX_RETRIES})",
             )
         return FlextResult[bool].ok(value=True)
 

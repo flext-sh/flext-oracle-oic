@@ -65,21 +65,21 @@ class FlextOracleOicModels(FlextModels):
 
             base_url: str = Field(description="Oracle OIC instance base URL")
             api_version: str = Field(
-                default=FlextOracleOicConstants.OIC.DEFAULT_API_VERSION,
+                default=FlextOracleOicConstants.OracleOic.DEFAULT_API_VERSION,
                 description="OIC API version",
             )
             request_timeout: int = Field(
-                default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
-                ge=FlextOracleOicConstants.OIC.MIN_REQUEST_TIMEOUT,
+                default=FlextOracleOicConstants.OracleOic.DEFAULT_REQUEST_TIMEOUT,
+                ge=FlextOracleOicConstants.OracleOic.MIN_REQUEST_TIMEOUT,
                 description="Request timeout in seconds",
             )
             max_retries: int = Field(
-                default=FlextOracleOicConstants.OIC.DEFAULT_MAX_RETRIES,
-                ge=FlextOracleOicConstants.OIC.MIN_MAX_RETRIES,
+                default=FlextOracleOicConstants.OracleOic.DEFAULT_MAX_RETRIES,
+                ge=FlextOracleOicConstants.OracleOic.MIN_MAX_RETRIES,
                 description="Maximum retry attempts",
             )
             verify_ssl: bool = Field(
-                default=FlextOracleOicConstants.OIC.DEFAULT_VERIFY_SSL,
+                default=FlextOracleOicConstants.OracleOic.DEFAULT_VERIFY_SSL,
                 description="Verify SSL certificates",
             )
 
@@ -159,10 +159,11 @@ class FlextOracleOicModels(FlextModels):
             headers: dict[str, str] | None = Field(
                 default=None, description="HTTP headers"
             )
-            timeout: int = Field(
-                default=FlextOracleOicConstants.OIC.DEFAULT_REQUEST_TIMEOUT,
-                description="Request timeout in seconds",
-            )
+
+    timeout: int = Field(
+        default=FlextOracleOicConstants.OracleOic.DEFAULT_REQUEST_TIMEOUT,
+        description="Request timeout in seconds",
+    )
 
     # Top-level aliases for OracleOic nested models (api/service compatibility)
     OICIntegrationInfo = OracleOic.OICIntegrationInfo

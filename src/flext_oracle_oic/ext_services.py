@@ -410,7 +410,7 @@ class FlextOracleOicExtServices(
         ) -> r[bool]:
             """Perform actual connection test by fetching minimal data."""
             integrations_result = client.get_integrations(
-                page_size=FlextOracleOicConstants.OIC.MIN_PAGE_SIZE,
+                page_size=FlextOracleOicConstants.OracleOic.MIN_PAGE_SIZE,
             )
 
             if integrations_result.is_success:
@@ -565,7 +565,7 @@ class FlextOracleOicExtServices(
                         FlextOracleOicConstants.OICPatterns.PATTERN_MESSAGE_ID_UNKNOWN,
                     ),
                     "applied_rules": len(routing_rules),
-                    "status": FlextOracleOicConstants.OICPatterns.PATTERN_STATUS_PROCESSED,
+                    "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
                 }
 
                 return r[dict[str, t.GeneralValueType]].ok(routing_result)
@@ -617,7 +617,7 @@ class FlextOracleOicExtServices(
                         FlextOracleOicConstants.OICPatterns.PATTERN_REQUEST_ID_UNKNOWN,
                     ),
                     "target_count": len(target_endpoints),
-                    "status": FlextOracleOicConstants.OICPatterns.PATTERN_STATUS_PROCESSED,
+                    "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
                 }
 
                 return r[dict[str, t.GeneralValueType]].ok(scatter_result)
@@ -707,7 +707,7 @@ class FlextOracleOicExtServices(
 
                 # Update integration to activate it
                 activation_data: dict[str, t.GeneralValueType] = {
-                    "status": FlextOracleOicConstants.Integration.STATUS_ACTIVATED,
+                    "status": FlextOracleOicConstants.Integration.Status.ACTIVATED,
                 }
                 activate_result = client.update_integration(
                     integration_id,
@@ -723,7 +723,7 @@ class FlextOracleOicExtServices(
                 status = FlextOracleOicModels.IntegrationStatus(
                     integration_id=integration_id,
                     integration_version=FlextOracleOicConstants.Integration.DEFAULT_VERSION,
-                    status=FlextOracleOicConstants.Integration.STATUS_ACTIVATED,
+                    status=FlextOracleOicConstants.Integration.Status.ACTIVATED,
                     last_updated=FlextOracleOicConstants.Integration.DEFAULT_LAST_UPDATED,
                     activated_by=FlextOracleOicConstants.Integration.DEFAULT_ACTIVATED_BY,
                 )
@@ -769,7 +769,7 @@ class FlextOracleOicExtServices(
 
                 # Update integration to deactivate it
                 deactivation_data: dict[str, t.GeneralValueType] = {
-                    "status": FlextOracleOicConstants.Integration.STATUS_DEACTIVATED,
+                    "status": FlextOracleOicConstants.Integration.Status.DEACTIVATED,
                 }
                 deactivate_result = client.update_integration(
                     integration_id,
@@ -785,7 +785,7 @@ class FlextOracleOicExtServices(
                 status = FlextOracleOicModels.IntegrationStatus(
                     integration_id=integration_id,
                     integration_version=FlextOracleOicConstants.Integration.DEFAULT_VERSION,
-                    status=FlextOracleOicConstants.Integration.STATUS_DEACTIVATED,
+                    status=FlextOracleOicConstants.Integration.Status.DEACTIVATED,
                     last_updated=FlextOracleOicConstants.Integration.DEFAULT_LAST_UPDATED,
                     activated_by=FlextOracleOicConstants.Integration.DEFAULT_ACTIVATED_BY,
                 )
@@ -838,32 +838,32 @@ class FlextOracleOicExtServices(
                 if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
                     health_data = response.json()
                     raw_health: dict[str, t.GeneralValueType] = {
-                        "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_HEALTHY,
+                        "status": FlextOracleOicConstants.Monitoring.HealthStatus.HEALTHY,
                         "components": {
                             FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
+                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
                             },
                             FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
+                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
                             },
                             FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_HEALTHY,
+                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
                             },
                         },
                         "timestamp": health_data.get("timestamp", ""),
                     }
                 else:
                     raw_health = {
-                        "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_UNHEALTHY,
+                        "status": FlextOracleOicConstants.Monitoring.HealthStatus.UNHEALTHY,
                         "components": {
                             FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                             },
                             FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                             },
                             FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                             },
                         },
                         "error": f"HTTP {response.status_code}",
@@ -883,16 +883,16 @@ class FlextOracleOicExtServices(
             except Exception as e:
                 self.logger.exception("Health check failed")
                 error_health: dict[str, t.GeneralValueType] = {
-                    "status": FlextOracleOicConstants.Monitoring.HEALTH_STATUS_ERROR,
+                    "status": FlextOracleOicConstants.Monitoring.HealthStatus.ERROR,
                     "components": {
                         FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                            "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                         },
                         FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                            "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                         },
                         FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                            "status": FlextOracleOicConstants.Monitoring.COMPONENT_STATUS_UNKNOWN,
+                            "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
                         },
                     },
                     "error": str(e),
