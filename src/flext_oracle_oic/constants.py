@@ -109,11 +109,6 @@ class FlextOracleOicConstants(FlextConstants):
             BASIC = "basic"
             BEARER = "bearer"
 
-        # Backward compatibility aliases
-        AUTH_TYPE_OAUTH2: Final[str] = AuthType.OAUTH2
-        AUTH_TYPE_BASIC: Final[str] = AuthType.BASIC
-        AUTH_TYPE_BEARER: Final[str] = AuthType.BEARER
-
         # PEP 695 Literal type referencing StrEnum members
         type AuthTypeLiteral = Literal["oauth2", "basic", "bearer"]
 
@@ -134,15 +129,6 @@ class FlextOracleOicConstants(FlextConstants):
             RUNNING = "RUNNING"
             STOPPED = "STOPPED"
             ERROR = "ERROR"
-
-        # Backward compatibility aliases
-        STATUS_ACTIVATED: Final[str] = Status.ACTIVATED
-        STATUS_DEACTIVATED: Final[str] = Status.DEACTIVATED
-        STATUS_DRAFT: Final[str] = Status.DRAFT
-        STATUS_PUBLISHED: Final[str] = Status.PUBLISHED
-        STATUS_RUNNING: Final[str] = Status.RUNNING
-        STATUS_STOPPED: Final[str] = Status.STOPPED
-        STATUS_ERROR: Final[str] = Status.ERROR
 
         # PEP 695 Literal type referencing StrEnum members
         type StatusLiteral = Literal[
@@ -186,12 +172,6 @@ class FlextOracleOicConstants(FlextConstants):
             ERROR = "ERROR"
             UNKNOWN = "unknown"
 
-        # Backward compatibility aliases
-        STATUS_ACTIVE: Final[str] = Status.ACTIVE
-        STATUS_INACTIVE: Final[str] = Status.INACTIVE
-        STATUS_ERROR: Final[str] = Status.ERROR
-        STATUS_UNKNOWN: Final[str] = Status.UNKNOWN
-
         class Type(StrEnum):
             """Connection type values.
 
@@ -206,22 +186,6 @@ class FlextOracleOicConstants(FlextConstants):
             FILE = "FILE"
             FTP = "FTP"
             SFTP = "SFTP"
-
-        # Backward compatibility aliases
-        TYPE_REST: Final[str] = Type.REST
-        TYPE_SOAP: Final[str] = Type.SOAP
-        TYPE_DATABASE: Final[str] = Type.DATABASE
-        TYPE_FILE: Final[str] = Type.FILE
-        TYPE_FTP: Final[str] = Type.FTP
-        TYPE_SFTP: Final[str] = Type.SFTP
-
-        # Adapter Types (aliases to Type enum)
-        ADAPTER_TYPE_REST: Final[str] = Type.REST
-        ADAPTER_TYPE_SOAP: Final[str] = Type.SOAP
-        ADAPTER_TYPE_DATABASE: Final[str] = Type.DATABASE
-        ADAPTER_TYPE_FILE: Final[str] = Type.FILE
-        ADAPTER_TYPE_FTP: Final[str] = Type.FTP
-        ADAPTER_TYPE_SFTP: Final[str] = Type.SFTP
 
         # PEP 695 Literal types referencing StrEnum members
         type StatusLiteral = Literal["ACTIVE", "INACTIVE", "ERROR", "unknown"]
@@ -243,12 +207,6 @@ class FlextOracleOicConstants(FlextConstants):
             ERROR = "error"
             UNKNOWN = "unknown"
 
-        # Backward compatibility aliases
-        HEALTH_STATUS_HEALTHY: Final[str] = HealthStatus.HEALTHY
-        HEALTH_STATUS_UNHEALTHY: Final[str] = HealthStatus.UNHEALTHY
-        HEALTH_STATUS_ERROR: Final[str] = HealthStatus.ERROR
-        HEALTH_STATUS_UNKNOWN: Final[str] = HealthStatus.UNKNOWN
-
         class ComponentStatus(StrEnum):
             """Component status values.
 
@@ -259,11 +217,6 @@ class FlextOracleOicConstants(FlextConstants):
             HEALTHY = "healthy"
             UNHEALTHY = "unhealthy"
             UNKNOWN = "unknown"
-
-        # Backward compatibility aliases
-        COMPONENT_STATUS_HEALTHY: Final[str] = ComponentStatus.HEALTHY
-        COMPONENT_STATUS_UNHEALTHY: Final[str] = ComponentStatus.UNHEALTHY
-        COMPONENT_STATUS_UNKNOWN: Final[str] = ComponentStatus.UNKNOWN
 
         # PEP 695 Literal types referencing StrEnum members
         type HealthStatusLiteral = Literal["healthy", "unhealthy", "error", "unknown"]
@@ -306,13 +259,6 @@ class FlextOracleOicConstants(FlextConstants):
             DELETE = "DELETE"
             PATCH = "PATCH"
 
-        # Backward compatibility aliases
-        METHOD_GET: Final[str] = Method.GET
-        METHOD_POST: Final[str] = Method.POST
-        METHOD_PUT: Final[str] = Method.PUT
-        METHOD_DELETE: Final[str] = Method.DELETE
-        METHOD_PATCH: Final[str] = Method.PATCH
-
         # PEP 695 Literal type referencing StrEnum members
         type MethodLiteral = Literal["GET", "POST", "PUT", "DELETE", "PATCH"]
 
@@ -340,11 +286,6 @@ class FlextOracleOicConstants(FlextConstants):
             PROCESSED = "processed"
             FAILED = "failed"
             PENDING = "pending"
-
-        # Backward compatibility aliases
-        PATTERN_STATUS_PROCESSED: Final[str] = PatternStatus.PROCESSED
-        PATTERN_STATUS_FAILED: Final[str] = PatternStatus.FAILED
-        PATTERN_STATUS_PENDING: Final[str] = PatternStatus.PENDING
 
         # PEP 695 Literal type referencing StrEnum members
         type PatternStatusLiteral = Literal["processed", "failed", "pending"]
