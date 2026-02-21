@@ -89,7 +89,7 @@ class FlextOracleOicApi(FlextService[None]):
 
     def list_integrations(
         self,
-    ) -> FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]]:
+    ) -> FlextResult[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -101,7 +101,7 @@ class FlextOracleOicApi(FlextService[None]):
     def get_integration(
         self,
         integration_id: str,
-    ) -> FlextResult[FlextOracleOicModels.OICIntegrationInfo]:
+    ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
         Args:
@@ -115,8 +115,8 @@ class FlextOracleOicApi(FlextService[None]):
 
     def create_integration(
         self,
-        integration_data: dict,
-    ) -> FlextResult[FlextOracleOicModels.OICIntegrationInfo]:
+        integration_data: dict[str, t.GeneralValueType],
+    ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
         Args:
@@ -131,8 +131,8 @@ class FlextOracleOicApi(FlextService[None]):
     def update_integration(
         self,
         integration_id: str,
-        integration_data: dict,
-    ) -> FlextResult[FlextOracleOicModels.OICIntegrationInfo]:
+        integration_data: dict[str, t.GeneralValueType],
+    ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
         Args:
@@ -197,7 +197,7 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_app_driven_orchestration(
         self,
         integration_id: str,
-        payload: dict,
+        payload: dict[str, t.GeneralValueType],
         **kwargs: object,
     ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Execute app-driven orchestration pattern.
@@ -220,7 +220,7 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
-        schedule_config: dict,
+        schedule_config: dict[str, t.GeneralValueType],
         **kwargs: object,
     ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Execute scheduled orchestration pattern.
@@ -243,7 +243,7 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_file_transfer(
         self,
         integration_id: str,
-        file_config: dict,
+        file_config: dict[str, t.GeneralValueType],
         **kwargs: object,
     ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Execute file transfer pattern.

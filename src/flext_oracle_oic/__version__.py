@@ -30,9 +30,9 @@ except Exception:
     __title__ = "flext-oracle-oic"
     __description__ = "Oracle OIC Extension for FLEXT ecosystem"
     __author__ = "FLEXT Team"
-    __author_email__ = None
+    __author_email__ = ""
     __license__ = "MIT"
-    __url__ = None
+    __url__ = ""
 
 __all__ = [
     "__author__",

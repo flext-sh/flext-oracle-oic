@@ -42,8 +42,8 @@ class FlextOracleOicClient:
 
     def __init__(
         self,
-        connection_config: FlextOracleOicModels.OICConnectionConfig,
-        auth_config: FlextOracleOicModels.OICAuthConfig,
+        connection_config: FlextOracleOicModels.OracleOic.OICConnectionConfig,
+        auth_config: FlextOracleOicModels.OracleOic.OICAuthConfig,
     ) -> None:
         """Initialize unified Oracle OIC client.
 
@@ -89,8 +89,8 @@ class FlextOracleOicClient:
         """Get access token using OAuth2 client credentials flow."""
         # Railway-oriented OAuth2 token retrieval
         return (
-            FlextResult[object]
-            .ok(None)
+            FlextResult[bool]
+            .ok(True)
             .flat_map(lambda _: self._validate_token_url())
             .flat_map(lambda _: self._prepare_oauth_request())
             .flat_map(self._execute_token_request)
@@ -104,7 +104,9 @@ class FlextOracleOicClient:
             return FlextResult[bool].fail("OAuth token URL not configured")
         return FlextResult[bool].ok(value=True)
 
-    def _prepare_oauth_request(self) -> FlextResult[tuple[dict, dict]]:
+    def _prepare_oauth_request(
+        self,
+    ) -> FlextResult[tuple[dict[str, str], dict[str, str]]]:
         """Prepare OAuth request headers and data."""
         try:
             encoded_credentials = self.encode_client_credentials()
@@ -113,22 +115,28 @@ class FlextOracleOicClient:
                 "Content-Type": "application/x-www-form-urlencoded",
             }
             data = self.get_oauth_request_body()
-            return FlextResult[tuple[dict, dict]].ok((headers, data))
+            return FlextResult[tuple[dict[str, str], dict[str, str]]].ok((
+                headers,
+                data,
+            ))
         except Exception as e:
             error_msg = f"Failed to prepare OAuth request: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[tuple[dict, dict]].fail(error_msg)
+            return FlextResult[tuple[dict[str, str], dict[str, str]]].fail(error_msg)
 
     def _execute_token_request(
         self,
-        request_data: tuple[dict, dict],
+        request_data: tuple[dict[str, str], dict[str, str]],
     ) -> FlextResult[object]:
         """Execute OAuth token request."""
         headers, data = request_data
         try:
             api_config = FlextApiSettings(base_url=self.auth_config.oauth_token_url)
             api_client = FlextApi(api_config)
-            response_result = api_client.post("", data=data, headers=headers)
+            oauth_data = {
+                key: self._to_api_payload(value) for key, value in data.items()
+            }
+            response_result = api_client.post("", data=oauth_data, headers=headers)
             if response_result.is_failure:
                 return FlextResult[object].fail(
                     f"OAuth request failed: {response_result.error}",
@@ -151,9 +159,8 @@ class FlextOracleOicClient:
         """Parse access token from OAuth response."""
         try:
             # Handle response.body properly - it could be str, dict, or None
-            if hasattr(response, "body"):
-                body = response.body
-            else:
+            body = getattr(response, "body", None)
+            if body is None:
                 return FlextResult[str].fail("Invalid response format")
 
             if isinstance(body, dict):
@@ -318,11 +325,12 @@ class FlextOracleOicClient:
         """Parse API response based on content type."""
         try:
             # Parse response body properly - it could be str, dict, or None
-            if hasattr(response, "headers") and hasattr(response, "body"):
-                headers = response.headers
-                body = response.body
+            headers = getattr(response, "headers", None)
+            body = getattr(response, "body", None)
+            if isinstance(headers, Mapping):
+                content_type = str(headers.get("content-type", ""))
 
-                if headers.get("content-type", "").startswith("application/json"):
+                if content_type.startswith("application/json"):
                     if isinstance(body, dict):
                         return FlextResult[dict[str, t.GeneralValueType]].ok(body)
                     if isinstance(body, str):

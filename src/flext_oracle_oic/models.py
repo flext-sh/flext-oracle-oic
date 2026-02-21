@@ -165,12 +165,21 @@ class FlextOracleOicModels(FlextModels):
         description="Request timeout in seconds",
     )
 
-    # Top-level aliases for OracleOic nested models (api/service compatibility)
-    OICIntegrationInfo = OracleOic.OICIntegrationInfo
-    OICConnectionInfo = OracleOic.OICConnectionInfo
-    IntegrationStatus = OracleOic.IntegrationStatus
-    OICConnectionConfig = OracleOic.OICConnectionConfig
-    OICAuthConfig = OracleOic.OICAuthConfig
+    # Top-level compatibility classes for OracleOic nested models
+    class OICIntegrationInfo(OracleOic.OICIntegrationInfo):
+        """Compatibility model for integration info references."""
+
+    class OICConnectionInfo(OracleOic.OICConnectionInfo):
+        """Compatibility model for connection info references."""
+
+    class IntegrationStatus(OracleOic.IntegrationStatus):
+        """Compatibility model for integration status references."""
+
+    class OICConnectionConfig(OracleOic.OICConnectionConfig):
+        """Compatibility model for connection config references."""
+
+    class OICAuthConfig(OracleOic.OICAuthConfig):
+        """Compatibility model for auth config references."""
 
 
 # Short aliases

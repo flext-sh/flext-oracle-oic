@@ -240,7 +240,6 @@ class FlextOracleOicTypes(FlextTypes):
 
         # Data processing types
         type DataDict = dict[str, FlextTypes.GeneralValueType]
-        type ConfigDict = dict[str, FlextTypes.GeneralValueType]
         type ResponseDict = dict[str, FlextTypes.GeneralValueType]
         type RequestDict = dict[str, FlextTypes.GeneralValueType]
         type ResultDict = dict[str, FlextTypes.GeneralValueType]

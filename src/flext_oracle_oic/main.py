@@ -204,7 +204,7 @@ class FlextOracleOicCli(FlextService[None]):
 
     def _print_integrations(
         self,
-        integrations: list[FlextOracleOicModels.OICIntegrationInfo],
+        integrations: list[FlextOracleOicModels.OracleOic.OICIntegrationInfo],
     ) -> None:
         """Print integrations to CLI output.
 

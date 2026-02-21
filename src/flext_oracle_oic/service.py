@@ -37,7 +37,7 @@ from flext_oracle_oic.utilities import FlextOracleOicUtilities
 
 
 class FlextOracleOicService(
-    FlextService[list[FlextOracleOicModels.OICIntegrationInfo]],
+    FlextService[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]],
 ):
     """Unified Oracle OIC Extension Service - Single Class Pattern.
 
@@ -95,11 +95,34 @@ class FlextOracleOicService(
             FlextLogger(__name__).exception("Failed to initialize service components")
             raise
 
+    @staticmethod
+    def _as_text(value: t.GeneralValueType, default: str = "") -> str:
+        """Normalize optional OIC values into strings for model construction."""
+        if isinstance(value, str):
+            return value
+        if value is None:
+            return default
+        return str(value)
+
+    @staticmethod
+    def _to_general_value(value: object) -> t.GeneralValueType:
+        """Normalize arbitrary runtime values into GeneralValueType."""
+        if isinstance(value, (str, int, float, bool)) or value is None:
+            return value
+        if isinstance(value, dict):
+            return {
+                str(k): FlextOracleOicService._to_general_value(v)
+                for k, v in value.items()
+            }
+        if isinstance(value, (list, tuple)):
+            return [FlextOracleOicService._to_general_value(v) for v in value]
+        return str(value)
+
     @override
     def execute(
         self: Self,
         **kwargs: object,
-    ) -> FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]]:
+    ) -> FlextResult[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """Execute main service operation - list all integrations.
 
         Returns:
@@ -112,7 +135,7 @@ class FlextOracleOicService(
 
     def list_integrations(
         self,
-    ) -> FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]]:
+    ) -> FlextResult[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -123,7 +146,9 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]].fail(
+                return FlextResult[
+                    list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
+                ].fail(
                     error_msg,
                 )
 
@@ -132,7 +157,9 @@ class FlextOracleOicService(
 
             if integrations_result.is_failure:
                 error_msg = integrations_result.error or "Failed to get integrations"
-                return FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]].fail(
+                return FlextResult[
+                    list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
+                ].fail(
                     error_msg,
                 )
 
@@ -141,31 +168,35 @@ class FlextOracleOicService(
             # Convert to domain models
             integrations = []
             for item in integrations_data:
-                integration = FlextOracleOicModels.OICIntegrationInfo(
-                    integration_id=item.get("id", ""),
-                    name=item.get("name", ""),
-                    description=item.get("description", ""),
-                    integration_version=item.get("version", "1.0"),
-                    status=item.get("status", "UNKNOWN"),
-                    created_by=item.get("createdBy", ""),
-                    last_updated=item.get("lastUpdated", ""),
+                integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
+                    integration_id=self._as_text(item.get("id"), ""),
+                    name=self._as_text(item.get("name"), ""),
+                    description=self._as_text(item.get("description"), ""),
+                    integration_version=self._as_text(item.get("version"), "1.0"),
+                    status=self._as_text(item.get("status"), "UNKNOWN"),
+                    created_by=self._as_text(item.get("createdBy"), ""),
+                    last_updated=self._as_text(item.get("lastUpdated"), ""),
                 )
                 integrations.append(integration)
 
-            return FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]].ok(
+            return FlextResult[
+                list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
+            ].ok(
                 integrations,
             )
 
         except Exception as e:
             FlextLogger(__name__).exception("Failed to list integrations")
-            return FlextResult[list[FlextOracleOicModels.OICIntegrationInfo]].fail(
+            return FlextResult[
+                list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
+            ].fail(
                 f"Integration listing failed: {e!s}",
             )
 
     def list_connections(
         self,
         type_filter: list[str] | None = None,
-    ) -> FlextResult[list[FlextOracleOicModels.OICConnectionInfo]]:
+    ) -> FlextResult[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
         """List Oracle OIC connections.
 
         Args:
@@ -179,7 +210,9 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return FlextResult[list[FlextOracleOicModels.OICConnectionInfo]].fail(
+                return FlextResult[
+                    list[FlextOracleOicModels.OracleOic.OICConnectionInfo]
+                ].fail(
                     error_msg,
                 )
 
@@ -191,7 +224,9 @@ class FlextOracleOicService(
 
             if connections_result.is_failure:
                 error_msg = connections_result.error or "Failed to get connections"
-                return FlextResult[list[FlextOracleOicModels.OICConnectionInfo]].fail(
+                return FlextResult[
+                    list[FlextOracleOicModels.OracleOic.OICConnectionInfo]
+                ].fail(
                     error_msg,
                 )
 
@@ -200,30 +235,34 @@ class FlextOracleOicService(
             # Convert to domain models
             connections = []
             for item in connections_data:
-                connection = FlextOracleOicModels.OICConnectionInfo(
-                    connection_id=item.get("id", ""),
-                    name=item.get("name", ""),
-                    adapter_type=item.get("adapterType", ""),
-                    status=item.get("status", "UNKNOWN"),
-                    connection_type=item.get("connectionType", ""),
-                    description=item.get("description", ""),
+                connection = FlextOracleOicModels.OracleOic.OICConnectionInfo(
+                    connection_id=self._as_text(item.get("id"), ""),
+                    name=self._as_text(item.get("name"), ""),
+                    adapter_type=self._as_text(item.get("adapterType"), ""),
+                    status=self._as_text(item.get("status"), "UNKNOWN"),
+                    connection_type=self._as_text(item.get("connectionType"), ""),
+                    description=self._as_text(item.get("description"), ""),
                 )
                 connections.append(connection)
 
-            return FlextResult[list[FlextOracleOicModels.OICConnectionInfo]].ok(
+            return FlextResult[
+                list[FlextOracleOicModels.OracleOic.OICConnectionInfo]
+            ].ok(
                 connections,
             )
 
         except Exception as e:
             self.logger.exception("Failed to list connections")
-            return FlextResult[list[FlextOracleOicModels.OICConnectionInfo]].fail(
+            return FlextResult[
+                list[FlextOracleOicModels.OracleOic.OICConnectionInfo]
+            ].fail(
                 f"Connection listing failed: {e!s}",
             )
 
     def get_integration(
         self,
         integration_id: str,
-    ) -> FlextResult[FlextOracleOicModels.OICIntegrationInfo]:
+    ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
         Args:
@@ -237,7 +276,9 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
+                return FlextResult[
+                    FlextOracleOicModels.OracleOic.OICIntegrationInfo
+                ].fail(
                     error_msg,
                 )
 
@@ -246,7 +287,9 @@ class FlextOracleOicService(
             integrations_result = client.get_integrations()
             if integrations_result.is_failure:
                 error_msg = integrations_result.error or "Failed to get integrations"
-                return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
+                return FlextResult[
+                    FlextOracleOicModels.OracleOic.OICIntegrationInfo
+                ].fail(
                     error_msg,
                 )
 
@@ -260,33 +303,40 @@ class FlextOracleOicService(
                 None,
             )
             if not integration_data:
-                return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
+                return FlextResult[
+                    FlextOracleOicModels.OracleOic.OICIntegrationInfo
+                ].fail(
                     f"Integration {integration_id} not found",
                 )
 
-            integration = FlextOracleOicModels.OICIntegrationInfo(
-                integration_id=integration_data.get("id", integration_id)
-                or integration_id,
-                name=integration_data.get("name", "") or "",
-                description=integration_data.get("description", "") or "",
-                integration_version=integration_data.get("version", "1.0") or "1.0",
-                status=integration_data.get("status", "UNKNOWN") or "UNKNOWN",
-                created_by=integration_data.get("createdBy", "") or "",
-                last_updated=integration_data.get("lastUpdated", "") or "",
+            integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
+                integration_id=self._as_text(
+                    integration_data.get("id"), integration_id
+                ),
+                name=self._as_text(integration_data.get("name"), ""),
+                description=self._as_text(integration_data.get("description"), ""),
+                integration_version=self._as_text(
+                    integration_data.get("version"), "1.0"
+                ),
+                status=self._as_text(integration_data.get("status"), "UNKNOWN"),
+                created_by=self._as_text(integration_data.get("createdBy"), ""),
+                last_updated=self._as_text(integration_data.get("lastUpdated"), ""),
             )
 
-            return FlextResult[FlextOracleOicModels.OICIntegrationInfo].ok(integration)
+            return FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo].ok(
+                integration
+            )
 
         except Exception as e:
             self.logger.exception(f"Failed to get integration {integration_id}")
-            return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
+            return FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                 f"Integration retrieval failed: {e!s}",
             )
 
     def create_integration(
         self,
-        integration_data: dict,
-    ) -> FlextResult[FlextOracleOicModels.OICIntegrationInfo]:
+        integration_data: dict[str, t.GeneralValueType],
+    ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
         Args:
@@ -300,7 +350,9 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
+                return FlextResult[
+                    FlextOracleOicModels.OracleOic.OICIntegrationInfo
+                ].fail(
                     error_msg,
                 )
 
@@ -308,35 +360,39 @@ class FlextOracleOicService(
             created_result = client.create_integration(integration_data)
             if created_result.is_failure:
                 error_msg = created_result.error or "Failed to create integration"
-                return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
+                return FlextResult[
+                    FlextOracleOicModels.OracleOic.OICIntegrationInfo
+                ].fail(
                     error_msg,
                 )
 
             created_data = created_result.value
 
-            integration = FlextOracleOicModels.OICIntegrationInfo(
-                integration_id=created_data.get("id", "") or "",
-                name=created_data.get("name", "") or "",
-                description=created_data.get("description", "") or "",
-                integration_version=created_data.get("version", "1.0") or "1.0",
-                status=created_data.get("status", "DRAFT") or "DRAFT",
-                created_by=created_data.get("createdBy", "") or "",
-                last_updated=created_data.get("lastUpdated", "") or "",
+            integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
+                integration_id=self._as_text(created_data.get("id"), ""),
+                name=self._as_text(created_data.get("name"), ""),
+                description=self._as_text(created_data.get("description"), ""),
+                integration_version=self._as_text(created_data.get("version"), "1.0"),
+                status=self._as_text(created_data.get("status"), "DRAFT"),
+                created_by=self._as_text(created_data.get("createdBy"), ""),
+                last_updated=self._as_text(created_data.get("lastUpdated"), ""),
             )
 
-            return FlextResult[FlextOracleOicModels.OICIntegrationInfo].ok(integration)
+            return FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo].ok(
+                integration
+            )
 
         except Exception as e:
             self.logger.exception("Failed to create integration")
-            return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
+            return FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                 f"Integration creation failed: {e!s}",
             )
 
     def update_integration(
         self,
         integration_id: str,
-        integration_data: dict,
-    ) -> FlextResult[FlextOracleOicModels.OICIntegrationInfo]:
+        integration_data: dict[str, t.GeneralValueType],
+    ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
         Args:
@@ -351,7 +407,9 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
+                return FlextResult[
+                    FlextOracleOicModels.OracleOic.OICIntegrationInfo
+                ].fail(
                     error_msg,
                 )
 
@@ -359,27 +417,31 @@ class FlextOracleOicService(
             updated_result = client.update_integration(integration_id, integration_data)
             if updated_result.is_failure:
                 error_msg = updated_result.error or "Failed to update integration"
-                return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
+                return FlextResult[
+                    FlextOracleOicModels.OracleOic.OICIntegrationInfo
+                ].fail(
                     error_msg,
                 )
 
             updated_data = updated_result.value
 
-            integration = FlextOracleOicModels.OICIntegrationInfo(
-                integration_id=updated_data.get("id", integration_id) or integration_id,
-                name=updated_data.get("name", "") or "",
-                description=updated_data.get("description", "") or "",
-                integration_version=updated_data.get("version", "1.0") or "1.0",
-                status=updated_data.get("status", "UNKNOWN") or "UNKNOWN",
-                created_by=updated_data.get("createdBy", "") or "",
-                last_updated=updated_data.get("lastUpdated", "") or "",
+            integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
+                integration_id=self._as_text(updated_data.get("id"), integration_id),
+                name=self._as_text(updated_data.get("name"), ""),
+                description=self._as_text(updated_data.get("description"), ""),
+                integration_version=self._as_text(updated_data.get("version"), "1.0"),
+                status=self._as_text(updated_data.get("status"), "UNKNOWN"),
+                created_by=self._as_text(updated_data.get("createdBy"), ""),
+                last_updated=self._as_text(updated_data.get("lastUpdated"), ""),
             )
 
-            return FlextResult[FlextOracleOicModels.OICIntegrationInfo].ok(integration)
+            return FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo].ok(
+                integration
+            )
 
         except Exception as e:
             self.logger.exception(f"Failed to update integration {integration_id}")
-            return FlextResult[FlextOracleOicModels.OICIntegrationInfo].fail(
+            return FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                 f"Integration update failed: {e!s}",
             )
 
@@ -521,7 +583,7 @@ class FlextOracleOicService(
     def execute_app_driven_orchestration(
         self,
         integration_id: str,
-        payload: dict,
+        payload: dict[str, t.GeneralValueType],
         **_kwargs: object,
     ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Execute app-driven orchestration pattern.
@@ -570,7 +632,7 @@ class FlextOracleOicService(
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
-        schedule_config: dict,
+        schedule_config: dict[str, t.GeneralValueType],
         **kwargs: object,
     ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Execute scheduled orchestration pattern.
@@ -611,7 +673,7 @@ class FlextOracleOicService(
     def execute_file_transfer(
         self,
         integration_id: str,
-        file_config: dict,
+        file_config: dict[str, t.GeneralValueType],
         **kwargs: object,
     ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Execute file transfer pattern.
@@ -690,7 +752,7 @@ class FlextOracleOicService(
 
     def deploy_integration(
         self,
-        integration_data: dict,
+        integration_data: dict[str, t.GeneralValueType],
     ) -> FlextResult[str]:
         """Deploy integration to Oracle OIC.
 
@@ -845,6 +907,7 @@ class FlextOracleOicService(
 
         """
         try:
+            health_data: dict[str, t.GeneralValueType]
             if not self._monitoring_client:
                 # Mock health check response
                 health_data = {
@@ -876,11 +939,14 @@ class FlextOracleOicService(
                         == FlextOracleOicConstants.API.HTTP_STATUS_OK
                     ):
                         base_health: dict[str, t.GeneralValueType] = (
-                            dict(response.body)
+                            {
+                                str(k): self._to_general_value(v)
+                                for k, v in response.body.items()
+                            }
                             if isinstance(response.body, dict)
-                            else {"raw": response.body}
+                            else {"raw": self._to_general_value(response.body)}
                         )
-                        health_data: dict[str, t.GeneralValueType] = {
+                        health_data = {
                             **base_health,
                             "status": FlextOracleOicConstants.Monitoring.HealthStatus.HEALTHY,
                             "components": {
@@ -984,6 +1050,7 @@ class FlextOracleOicService(
 
         """
         try:
+            metrics_data: dict[str, t.GeneralValueType]
             if not self._monitoring_client:
                 # Mock perform[dict[str, t.GeneralValueType]]etrics response
                 metrics_data = {
@@ -1007,7 +1074,10 @@ class FlextOracleOicService(
                         == FlextOracleOicConstants.API.HTTP_STATUS_OK
                     ):
                         metrics_data = (
-                            dict(response.body)
+                            {
+                                str(k): self._to_general_value(v)
+                                for k, v in response.body.items()
+                            }
                             if isinstance(response.body, dict)
                             else {}
                         )
@@ -1031,22 +1101,7 @@ class FlextOracleOicService(
             metrics_dict: dict[str, t.GeneralValueType] = {}
             if isinstance(metrics_data, dict):
                 for key, value in metrics_data.items():
-                    metrics_dict[str(key)] = (
-                        value
-                        if isinstance(
-                            value,
-                            (
-                                str,
-                                int,
-                                float,
-                                bool,
-                                dict,
-                                list,
-                                type(None),
-                            ),
-                        )
-                        else str(value)
-                    )
+                    metrics_dict[str(key)] = self._to_general_value(value)
             analysis_result = (
                 FlextOracleOicUtilities.MonitoringUtilities.analyze_performance_metrics(
                     metrics_dict,
