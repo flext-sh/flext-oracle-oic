@@ -11,11 +11,11 @@ from typing import Protocol, runtime_checkable
 from flext_core.protocols import FlextProtocols
 from flext_core.typings import FlextTypes
 
-_core_p = FlextProtocols
+p = FlextProtocols
 t = FlextTypes
 
 
-class FlextOracleOicProtocols(_core_p):
+class FlextOracleOicProtocols(p):
     """Oracle OIC Extension protocols extending p with Oracle OIC-specific interfaces.
 
     This class provides protocol definitions for Oracle Integration Cloud extension operations,
@@ -356,7 +356,7 @@ class FlextOracleOicProtocols(_core_p):
                 ...
 
         @runtime_checkable
-        class LifecycleProtocol(_core_p.Service, Protocol):
+        class LifecycleProtocol(p.Service, Protocol):
             """Protocol for Oracle OIC lifecycle management operations."""
 
             def initialize_environment(
@@ -416,7 +416,7 @@ class FlextOracleOicProtocols(_core_p):
                 ...
 
         @runtime_checkable
-        class HTTPClientProtocol(_core_p.Service, Protocol):
+        class HTTPClientProtocol(p.Service, Protocol):
             """Protocol for HTTP client operations used by Oracle OIC services."""
 
             def get(
@@ -496,7 +496,7 @@ class FlextOracleOicProtocols(_core_p):
                 ...
 
         @runtime_checkable
-        class AuthenticationProtocol(_core_p.Service, Protocol):
+        class AuthenticationProtocol(p.Service, Protocol):
             """Protocol for Oracle OIC authentication operations."""
 
             def authenticate(

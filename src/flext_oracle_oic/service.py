@@ -25,7 +25,7 @@ from flext_core import (
     FlextRegistry,
     FlextResult,
     FlextService,
-    FlextTypes as t,
+    t,
 )
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import (

@@ -17,8 +17,8 @@ from flext_core import (
     FlextContainer,
     FlextLogger,
     FlextService,
-    FlextTypes as t,
     r,
+    t,
 )
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import (

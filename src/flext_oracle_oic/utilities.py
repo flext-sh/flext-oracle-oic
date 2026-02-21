@@ -19,12 +19,12 @@ import re
 from datetime import UTC, datetime
 from urllib.parse import urljoin
 
-from flext_core import r, t, u as u_core
+from flext_core import r, t, u
 from flext_oracle_oic.constants import c
 from pydantic import SecretStr
 
 
-class FlextOracleOicUtilities(u_core):
+class FlextOracleOicUtilities(u):
     """Unified Oracle OIC Extension utilities.
 
     Extends ue Oracle Integration Cloud
