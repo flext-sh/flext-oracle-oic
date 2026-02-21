@@ -6,7 +6,6 @@ This module provides data models for Oracle OIC External operations.
 from __future__ import annotations
 
 from flext_core import FlextModels, FlextTypes
-from flext_core.utilities import u
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from pydantic import ConfigDict, Field, SecretStr
 
@@ -18,14 +17,6 @@ class FlextOracleOicModels(FlextModels):
     This class consolidates all Oracle OIC Extension domain models following
     the [Project]Models pattern for centralized Pydantic validation.
     """
-
-    def __init_subclass__(cls, **kwargs: object) -> None:
-        """Warn when FlextOracleOicModels is subclassed directly."""
-        super().__init_subclass__(**kwargs)
-        u.Deprecation.warn_once(
-            f"subclass:{cls.__name__}",
-            "Subclassing FlextOracleOicModels is deprecated. Use FlextModels.Oic instead.",
-        )
 
     # Legacy type aliases for backward compatibility
     OicRecord = dict[str, FlextTypes.GeneralValueType]
@@ -165,25 +156,8 @@ class FlextOracleOicModels(FlextModels):
         description="Request timeout in seconds",
     )
 
-    # Top-level compatibility classes for OracleOic nested models
-    class OICIntegrationInfo(OracleOic.OICIntegrationInfo):
-        """Compatibility model for integration info references."""
-
-    class OICConnectionInfo(OracleOic.OICConnectionInfo):
-        """Compatibility model for connection info references."""
-
-    class IntegrationStatus(OracleOic.IntegrationStatus):
-        """Compatibility model for integration status references."""
-
-    class OICConnectionConfig(OracleOic.OICConnectionConfig):
-        """Compatibility model for connection config references."""
-
-    class OICAuthConfig(OracleOic.OICAuthConfig):
-        """Compatibility model for auth config references."""
-
 
 # Short aliases
 m = FlextOracleOicModels
-m_oic = FlextOracleOicModels
 
-__all__ = ["FlextOracleOicModels", "m", "m_oic"]
+__all__ = ["FlextOracleOicModels", "m"]
