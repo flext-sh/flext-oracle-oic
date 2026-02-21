@@ -18,10 +18,6 @@ class FlextOracleOicModels(FlextModels):
     the [Project]Models pattern for centralized Pydantic validation.
     """
 
-    # Legacy type aliases for backward compatibility
-    OicRecord = dict[str, FlextTypes.GeneralValueType]
-    OicRecords = list[OicRecord]
-
     class OracleOic:
         """OracleOic domain namespace."""
 
