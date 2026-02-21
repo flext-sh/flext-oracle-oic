@@ -1,6 +1,6 @@
 [build-system]
 build-backend = "poetry.core.masonry.api"
-requires = [ "poetry-core>=2.0", "poetry-core>=2" ]
+requires = [ "poetry-core>=2" ]
 
 [project]
 name = "flext-oracle-oic"
@@ -15,18 +15,18 @@ keywords = [
   "typed",
 ]
 license = "MIT"
-maintainers = [ {email = "team@flext.sh", name = "FLEXT Team"} ]
-authors = [ {email = "team@flext.sh", name = "FLEXT Team"} ]
+maintainers = [ { email = "team@flext.sh", name = "FLEXT Team" } ]
+authors = [ { email = "team@flext.sh", name = "FLEXT Team" } ]
 requires-python = ">=3.13,<3.14"
 classifiers = [
   "Development Status :: 4 - Beta",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.13",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Typing :: Typed",
-  "Development Status :: 5 - Production/Stable",
 ]
 dependencies = [
   "httpx>=0.28.1",
@@ -63,7 +63,7 @@ group.dev.dependencies.pyupgrade = ">=3.19.0"
 group.dev.dependencies.radon = ">=6.0.1"
 group.dev.dependencies.ruff = ">=0.12.3"
 group.dev.dependencies.vulture = ">=2.13"
-group.dev.dependencies.meltano-edk = {git = "https://github.com/meltano/edk.git"}
+group.dev.dependencies.meltano-edk = { git = "https://github.com/meltano/edk.git" }
 group.dev.dependencies.pytest-cov = "^7.0.0"
 group.dev.dependencies.pytest = "^9.0.2"
 group.dev.dependencies.opentelemetry-api = ">=1.39.1"
@@ -92,7 +92,7 @@ group.typings.dependencies.types-redis = ">=4.6.0"
 group.typings.dependencies.types-requests = ">=2.32.4"
 group.typings.dependencies.types-setuptools = ">=80.9.0"
 group.typings.dependencies.types-toml = ">=0.10.8.20240310"
-packages = [ {from = "src", include = "flext_oracle_oic"} ]
+packages = [ { from = "src", include = "flext_oracle_oic" } ]
 
 [tool.ruff]
 extend = "../ruff-shared.toml"
@@ -173,9 +173,9 @@ ini_options.testpaths = [
 ]
 
 [tool.coverage]
+run.source = [ "src/flext_oracle_oic" ]
 report.fail_under = 100
 report.precision = 2
-run.source = [ "src/flext_oracle_oic" ]
 
 [tool.pyrefly]
 project-excludes = [ "**/*_pb2*.py", "**/*_pb2_grpc*.py" ]
