@@ -20,8 +20,9 @@ from datetime import UTC, datetime
 from urllib.parse import urljoin
 
 from flext_core import FlextUtilities, r, t
-from flext_oracle_oic.constants import c
 from pydantic import SecretStr
+
+from flext_oracle_oic.constants import c
 
 
 class FlextOracleOicUtilities(FlextUtilities):

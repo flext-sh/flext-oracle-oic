@@ -14,6 +14,7 @@ from __future__ import annotations
 import warnings
 
 from flext_core import FlextContainer, FlextLogger, FlextResult
+
 from flext_oracle_oic.service import FlextOracleOicService
 from flext_oracle_oic.settings import FlextOracleOicSettings
 

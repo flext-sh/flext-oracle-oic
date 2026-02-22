@@ -13,10 +13,11 @@ from __future__ import annotations
 from typing import Literal, Self
 
 from flext_core import FlextResult, FlextSettings
-from flext_oracle_oic.constants import FlextOracleOicConstants
-from flext_oracle_oic.utilities import FlextOracleOicUtilities
 from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
+
+from flext_oracle_oic.constants import FlextOracleOicConstants
+from flext_oracle_oic.utilities import FlextOracleOicUtilities
 
 # Type definitions outside class to avoid Pydantic field errors
 EnvironmentLiteral = Literal["development", "staging", "production"]
