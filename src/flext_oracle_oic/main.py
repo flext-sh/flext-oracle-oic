@@ -176,7 +176,7 @@ class FlextOracleOicCli(FlextService[None]):
 
     def _list_integrations_with_service(
         self,
-        service: object,
+        service: FlextOracleOicService,
     ) -> FlextResult[bool]:
         """List integrations using the provided service.
 
@@ -187,8 +187,6 @@ class FlextOracleOicCli(FlextService[None]):
             FlextResult[bool]: Success or failure result
 
         """
-        if not isinstance(service, FlextOracleOicService):
-            return FlextResult[bool].fail("Invalid service type")
         integrations_result = service.list_integrations()
         if integrations_result.is_failure:
             return FlextResult[bool].fail(

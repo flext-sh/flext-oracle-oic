@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Literal, Self
 
 from flext_core import FlextResult, FlextSettings
@@ -194,7 +195,10 @@ class FlextOracleOicSettings(FlextSettings):
     def create_for_environment(
         cls,
         environment: str,
-        overrides: dict[str, str | int | float | bool | bytes | bytearray | None]
+        overrides: Mapping[
+            str,
+            str | int | float | bool | None,
+        ]
         | None = None,
     ) -> FlextOracleOicSettings:
         """Create configuration for specific environment using enhanced singleton pattern."""

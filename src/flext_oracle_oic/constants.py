@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import re
+from collections.abc import Mapping
 from enum import StrEnum
 from typing import Final, Literal
 
@@ -445,7 +446,7 @@ class FlextOracleOicConstants(FlextConstants):
 
         # Monitoring
         HEALTH_CHECK_TIMEOUT: Final[int] = 10
-        PERFORMANCE_THRESHOLDS: Final[dict[str, float]] = {
+        PERFORMANCE_THRESHOLDS: Final[Mapping[str, float]] = {
             "response_time_ms": 5000.0,
             "success_rate": 0.95,
             "error_rate": 0.05,

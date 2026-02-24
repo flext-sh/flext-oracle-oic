@@ -16,10 +16,11 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 from __future__ import annotations
 
 import re
+from collections.abc import Mapping
 from datetime import UTC, datetime
 from urllib.parse import urljoin
 
-from flext_core import FlextUtilities, r, t
+from flext_core import FlextRuntime, FlextUtilities, r, t
 from flext_oracle_oic.constants import c
 from pydantic import SecretStr
 
@@ -60,7 +61,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated name or validation error
 
             """
-            if not isinstance(name, str):
+            if not u.Guards._is_str(name):
                 return r[str].fail("Integration name must be a string")
 
             name = name.strip()
@@ -92,7 +93,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated status or error
 
             """
-            if not isinstance(status, str):
+            if not u.Guards._is_str(status):
                 return r[str].fail("Integration status must be a string")
 
             status = status.upper().strip()
@@ -117,7 +118,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated version or error
 
             """
-            if not isinstance(version, str):
+            if not u.Guards._is_str(version):
                 return r[str].fail("Integration version must be a string")
 
             version = version.strip()
@@ -130,8 +131,8 @@ class FlextOracleOicUtilities(FlextUtilities):
 
         @staticmethod
         def validate_integration_data(
-            integration_data: dict[str, t.GeneralValueType],
-        ) -> r[dict[str, t.GeneralValueType]]:
+            integration_data: Mapping[str, t.GeneralValueType],
+        ) -> r[Mapping[str, t.GeneralValueType]]:
             """Validate complete Oracle OIC integration data.
 
             Args:
@@ -141,8 +142,8 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated data or validation errors
 
             """
-            if not isinstance(integration_data, dict):
-                return r[dict[str, t.GeneralValueType]].fail(
+            if not u.is_dict_like(integration_data):
+                return r[Mapping[str, t.GeneralValueType]].fail(
                     "Integration data must be a dictionary",
                 )
 
@@ -154,7 +155,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                 errors.append("Integration name is required")
             else:
                 raw_name = integration_data["name"]
-                if not isinstance(raw_name, str):
+                if not u.Guards._is_str(raw_name):
                     errors.append("Name validation: Integration name must be a string")
                 else:
                     name_result = (
@@ -169,7 +170,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             if "version" in integration_data:
                 raw_version = integration_data["version"]
-                if not isinstance(raw_version, str):
+                if not u.Guards._is_str(raw_version):
                     errors.append(
                         "Version validation: Integration version must be a string",
                     )
@@ -186,7 +187,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             if "status" in integration_data:
                 raw_status = integration_data["status"]
-                if not isinstance(raw_status, str):
+                if not u.Guards._is_str(raw_status):
                     errors.append(
                         "Status validation: Integration status must be a string",
                     )
@@ -202,11 +203,11 @@ class FlextOracleOicUtilities(FlextUtilities):
                         validated_data["status"] = status_result.value
 
             if errors:
-                return r[dict[str, t.GeneralValueType]].fail(
+                return r[Mapping[str, t.GeneralValueType]].fail(
                     f"Integration validation failed: {'; '.join(errors)}",
                 )
 
-            return r[dict[str, t.GeneralValueType]].ok(validated_data)
+            return r[Mapping[str, t.GeneralValueType]].ok(validated_data)
 
     class ConnectionValidation:
         """Oracle OIC connection validation utilities."""
@@ -222,7 +223,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated URL or error
 
             """
-            if not isinstance(base_url, str):
+            if not u.Guards._is_str(base_url):
                 return r[str].fail("Base URL must be a string")
             base_url = base_url.strip()
             if not base_url:
@@ -242,7 +243,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated type or error
 
             """
-            if not isinstance(connection_type, str):
+            if not u.Guards._is_str(connection_type):
                 return r[str].fail("Connection type must be a string")
 
             connection_type = connection_type.upper().strip()
@@ -267,7 +268,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated status or error
 
             """
-            if not isinstance(status, str):
+            if not u.Guards._is_str(status):
                 return r[str].fail("Connection status must be a string")
 
             status = status.upper().strip()
@@ -295,7 +296,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated client ID or error
 
             """
-            if not isinstance(client_id, str):
+            if not u.Guards._is_str(client_id):
                 return r[str].fail("OAuth client ID must be a string")
 
             client_id = client_id.strip()
@@ -323,7 +324,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated secret or error
 
             """
-            if not isinstance(client_secret, SecretStr):
+            if not u.Guards.is_type(client_secret, SecretStr):
                 return r[SecretStr].fail(
                     "OAuth client secret must be SecretStr",
                 )
@@ -373,7 +374,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Build endpoint path
             path_parts = ["ic", "api", "integration", api_version, "integrations"]
             if integration_id:
-                if not isinstance(integration_id, str) or not integration_id.strip():
+                if not u.Guards._is_str(integration_id) or not integration_id.strip():
                     return r[str].fail(
                         "Integration ID must be non-empty string",
                     )
@@ -413,7 +414,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Build endpoint path
             path_parts = ["ic", "api", "integration", api_version, "connections"]
             if connection_id:
-                if not isinstance(connection_id, str) or not connection_id.strip():
+                if not u.Guards._is_str(connection_id) or not connection_id.strip():
                     return r[str].fail(
                         "Connection ID must be non-empty string",
                     )
@@ -428,8 +429,8 @@ class FlextOracleOicUtilities(FlextUtilities):
         def build_request_headers(
             auth_token: str | None = None,
             content_type: str = "application/json",
-            additional_headers: dict[str, str] | None = None,
-        ) -> r[dict[str, str]]:
+            additional_headers: Mapping[str, str] | None = None,
+        ) -> r[Mapping[str, str]]:
             """Build Oracle OIC API request headers.
 
             Args:
@@ -448,27 +449,27 @@ class FlextOracleOicUtilities(FlextUtilities):
             }
 
             if auth_token:
-                if not isinstance(auth_token, str) or not auth_token.strip():
-                    return r[dict[str, str]].fail(
+                if not u.Guards._is_str(auth_token) or not auth_token.strip():
+                    return r[Mapping[str, str]].fail(
                         "Auth token must be non-empty string",
                     )
                 headers["Authorization"] = f"Bearer {auth_token.strip()}"
 
             if additional_headers:
-                if not isinstance(additional_headers, dict):
-                    return r[dict[str, str]].fail(
+                if not u.is_dict_like(additional_headers):
+                    return r[Mapping[str, str]].fail(
                         "Additional headers must be a dictionary",
                     )
-                headers.update(additional_headers)
+                headers.update({str(k): str(v) for k, v in additional_headers.items()})
 
-            return r[dict[str, str]].ok(headers)
+            return r[Mapping[str, str]].ok(headers)
 
     class PatternAnalysis:
         """Oracle OIC integration pattern analysis utilities."""
 
         @staticmethod
         def analyze_integration_pattern(
-            integration_data: dict[str, t.GeneralValueType],
+            integration_data: Mapping[str, t.GeneralValueType],
         ) -> r[str]:
             """Analyze Oracle OIC integration to determine pattern type.
 
@@ -479,7 +480,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing detected pattern or analysis error
 
             """
-            if not isinstance(integration_data, dict):
+            if not u.is_dict_like(integration_data):
                 return r[str].fail("Integration data must be a dictionary")
 
             # Analyze based on common OIC integration characteristics
@@ -488,15 +489,19 @@ class FlextOracleOicUtilities(FlextUtilities):
             mappings_raw = integration_data.get("mappings", [])
 
             endpoints: list[dict[str, t.GeneralValueType]] = (
-                [endpoint for endpoint in endpoints_raw if isinstance(endpoint, dict)]
-                if isinstance(endpoints_raw, list)
+                [
+                    dict(endpoint)
+                    for endpoint in endpoints_raw
+                    if u.is_dict_like(endpoint)
+                ]
+                if u.is_list_like(endpoints_raw)
                 else []
             )
             connections: list[t.GeneralValueType] = (
-                list(connections_raw) if isinstance(connections_raw, list) else []
+                list(connections_raw) if u.is_list_like(connections_raw) else []
             )
             mappings: list[t.GeneralValueType] = (
-                list(mappings_raw) if isinstance(mappings_raw, list) else []
+                list(mappings_raw) if u.is_list_like(mappings_raw) else []
             )
 
             # Message Router: Multiple target endpoints from single source
@@ -524,8 +529,8 @@ class FlextOracleOicUtilities(FlextUtilities):
         @staticmethod
         def validate_pattern_configuration(
             pattern_type: str,
-            configuration: dict[str, t.GeneralValueType] | object,
-        ) -> r[dict[str, t.GeneralValueType]]:
+            configuration: Mapping[str, t.GeneralValueType] | object,
+        ) -> r[Mapping[str, t.GeneralValueType]]:
             """Validate Oracle OIC integration pattern configuration.
 
             Args:
@@ -540,27 +545,27 @@ class FlextOracleOicUtilities(FlextUtilities):
                 supported = ", ".join(
                     sorted(c.OracleOicValidation.SUPPORTED_PATTERNS),
                 )
-                return r[dict[str, t.GeneralValueType]].fail(
+                return r[Mapping[str, t.GeneralValueType]].fail(
                     f"Unsupported pattern type. Supported: {supported}",
                 )
 
-            if not isinstance(configuration, dict):
-                return r[dict[str, t.GeneralValueType]].fail(
+            if not u.is_dict_like(configuration):
+                return r[Mapping[str, t.GeneralValueType]].fail(
                     "Configuration must be a dictionary",
                 )
 
-            validated_config = configuration.copy()
+            validated_config = dict(configuration)
 
             # Pattern-specific validation
             if pattern_type == "message_router":
                 if "routing_rules" not in configuration:
-                    return r[dict[str, t.GeneralValueType]].fail(
+                    return r[Mapping[str, t.GeneralValueType]].fail(
                         "Message router pattern requires routing_rules",
                     )
 
             elif pattern_type == "scatter_gather":
                 if "target_services" not in configuration:
-                    return r[dict[str, t.GeneralValueType]].fail(
+                    return r[Mapping[str, t.GeneralValueType]].fail(
                         "Scatter-gather pattern requires target_services",
                     )
                 if "aggregation_strategy" not in configuration:
@@ -570,19 +575,19 @@ class FlextOracleOicUtilities(FlextUtilities):
                 pattern_type == "publish_subscribe"
                 and "event_types" not in configuration
             ):
-                return r[dict[str, t.GeneralValueType]].fail(
+                return r[Mapping[str, t.GeneralValueType]].fail(
                     "Publish-subscribe pattern requires event_types",
                 )
 
-            return r[dict[str, t.GeneralValueType]].ok(validated_config)
+            return r[Mapping[str, t.GeneralValueType]].ok(validated_config)
 
     class MonitoringUtilities:
         """Oracle OIC monitoring and health check utilities."""
 
         @staticmethod
         def validate_health_status(
-            health_data: dict[str, t.GeneralValueType],
-        ) -> r[dict[str, t.GeneralValueType]]:
+            health_data: Mapping[str, t.GeneralValueType],
+        ) -> r[Mapping[str, t.GeneralValueType]]:
             """Validate Oracle OIC health check data.
 
             Args:
@@ -592,8 +597,8 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated health data or error
 
             """
-            if not isinstance(health_data, dict):
-                return r[dict[str, t.GeneralValueType]].fail(
+            if not u.is_dict_like(health_data):
+                return r[Mapping[str, t.GeneralValueType]].fail(
                     "Health data must be a dictionary",
                 )
 
@@ -601,31 +606,31 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             # Validate required health fields
             if "status" not in health_data:
-                return r[dict[str, t.GeneralValueType]].fail(
+                return r[Mapping[str, t.GeneralValueType]].fail(
                     "Health data must include status",
                 )
 
             status = health_data["status"]
             if status not in {"healthy", "unhealthy", "error", "unknown"}:
-                return r[dict[str, t.GeneralValueType]].fail(
+                return r[Mapping[str, t.GeneralValueType]].fail(
                     "Invalid health status. Valid: healthy, unhealthy, error, unknown",
                 )
 
             # Validate components if present
             if "components" in health_data:
                 components = health_data["components"]
-                if not isinstance(components, dict):
-                    return r[dict[str, t.GeneralValueType]].fail(
+                if not u.is_dict_like(components):
+                    return r[Mapping[str, t.GeneralValueType]].fail(
                         "Components must be a dictionary",
                     )
 
                 for component_name, component_data in components.items():
-                    if not isinstance(component_data, dict):
-                        return r[dict[str, t.GeneralValueType]].fail(
+                    if not u.is_dict_like(component_data):
+                        return r[Mapping[str, t.GeneralValueType]].fail(
                             f"Component {component_name} data must be a dictionary",
                         )
                     if "status" not in component_data:
-                        return r[dict[str, t.GeneralValueType]].fail(
+                        return r[Mapping[str, t.GeneralValueType]].fail(
                             f"Component {component_name} must have status",
                         )
 
@@ -633,12 +638,12 @@ class FlextOracleOicUtilities(FlextUtilities):
             if "timestamp" not in validated_data:
                 validated_data["timestamp"] = datetime.now(UTC).isoformat()
 
-            return r[dict[str, t.GeneralValueType]].ok(validated_data)
+            return r[Mapping[str, t.GeneralValueType]].ok(validated_data)
 
         @staticmethod
         def analyze_performance_metrics(
-            metrics: dict[str, t.GeneralValueType],
-        ) -> r[dict[str, t.GeneralValueType]]:
+            metrics: Mapping[str, t.GeneralValueType],
+        ) -> r[Mapping[str, t.GeneralValueType]]:
             """Analyze Oracle OIC performance metrics.
 
             Args:
@@ -648,8 +653,8 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing analysis results or error
 
             """
-            if not isinstance(metrics, dict):
-                return r[dict[str, t.GeneralValueType]].fail(
+            if not u.is_dict_like(metrics):
+                return r[Mapping[str, t.GeneralValueType]].fail(
                     "Metrics must be a dictionary",
                 )
 
@@ -661,7 +666,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Analyze response time
             if "average_response_time" in metrics:
                 response_time = metrics["average_response_time"]
-                if isinstance(response_time, (int, float)):
+                if u.Guards.is_type(response_time, (int, float)):
                     threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
                         "response_time_ms"
                     ]
@@ -676,7 +681,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Analyze success rate
             if "success_rate" in metrics:
                 success_rate = metrics["success_rate"]
-                if isinstance(success_rate, (int, float)):
+                if u.Guards.is_type(success_rate, (int, float)):
                     threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
                         "success_rate"
                     ]
@@ -692,7 +697,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Analyze error rate
             if "error_rate" in metrics:
                 error_rate = metrics["error_rate"]
-                if isinstance(error_rate, (int, float)):
+                if u.Guards.is_type(error_rate, (int, float)):
                     threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
                         "error_rate"
                     ]
@@ -709,7 +714,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                 "critical_issues": critical_issues,
                 "recommendations": recommendations,
             }
-            return r[dict[str, t.GeneralValueType]].ok(analysis)
+            return r[Mapping[str, t.GeneralValueType]].ok(analysis)
 
 
 u = FlextOracleOicUtilities

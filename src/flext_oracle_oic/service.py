@@ -12,18 +12,21 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import asyncio
+from collections.abc import Mapping
 from typing import Self, override
 
 from flext_api import FlextApiClient
 from flext_api.models import FlextApiModels
 from flext_api.settings import FlextApiSettings
 from flext_core import (
+    u,
     FlextContainer,
     FlextContext,
     FlextDispatcher,
     FlextLogger,
     FlextRegistry,
     FlextResult,
+    FlextRuntime,
     FlextService,
     t,
 )
@@ -98,7 +101,7 @@ class FlextOracleOicService(
     @staticmethod
     def _as_text(value: t.GeneralValueType, default: str = "") -> str:
         """Normalize optional OIC values into strings for model construction."""
-        if isinstance(value, str):
+        if u.Guards._is_str(value):
             return value
         if value is None:
             return default
@@ -107,14 +110,14 @@ class FlextOracleOicService(
     @staticmethod
     def _to_general_value(value: object) -> t.GeneralValueType:
         """Normalize arbitrary runtime values into GeneralValueType."""
-        if isinstance(value, (str, int, float, bool)) or value is None:
+        if u.Guards.is_type(value, (str, int, float, bool)) or value is None:
             return value
-        if isinstance(value, dict):
+        if u.is_dict_like(value):
             return {
                 str(k): FlextOracleOicService._to_general_value(v)
                 for k, v in value.items()
             }
-        if isinstance(value, (list, tuple)):
+        if u.Guards._is_sequence_not_str(value):
             return [FlextOracleOicService._to_general_value(v) for v in value]
         return str(value)
 
@@ -335,7 +338,7 @@ class FlextOracleOicService(
 
     def create_integration(
         self,
-        integration_data: dict[str, t.GeneralValueType],
+        integration_data: Mapping[str, t.GeneralValueType],
     ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
@@ -391,7 +394,7 @@ class FlextOracleOicService(
     def update_integration(
         self,
         integration_id: str,
-        integration_data: dict[str, t.GeneralValueType],
+        integration_data: Mapping[str, t.GeneralValueType],
     ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
@@ -568,7 +571,7 @@ class FlextOracleOicService(
             status_value = result_data.get("status", "")
             is_connected = (
                 status_value.lower() == "healthy"
-                if isinstance(status_value, str)
+                if u.Guards._is_str(status_value)
                 else False
             )
 
@@ -583,9 +586,9 @@ class FlextOracleOicService(
     def execute_app_driven_orchestration(
         self,
         integration_id: str,
-        payload: dict[str, t.GeneralValueType],
+        payload: Mapping[str, t.GeneralValueType],
         **_kwargs: object,
-    ) -> FlextResult[dict[str, t.GeneralValueType]]:
+    ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -601,22 +604,22 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return FlextResult[dict[str, t.GeneralValueType]].fail(error_msg)
+                return FlextResult[Mapping[str, t.GeneralValueType]].fail(error_msg)
 
             client = client_result.value
             # Execute app-driven orchestration using make_request
             endpoint = f"/integrations/{integration_id}/connections"
-            payload_dict = dict(payload) if isinstance(payload, dict) else {}
+            payload_dict = dict(payload) if u.is_dict_like(payload) else {}
             orchestration_result = client.make_request(
                 "POST",
                 endpoint,
                 json=payload_dict,
             )
             if orchestration_result.is_failure:
-                return FlextResult[dict[str, t.GeneralValueType]].fail(
+                return FlextResult[Mapping[str, t.GeneralValueType]].fail(
                     orchestration_result.error or "Orchestration request failed",
                 )
-            return FlextResult[dict[str, t.GeneralValueType]].ok(
+            return FlextResult[Mapping[str, t.GeneralValueType]].ok(
                 orchestration_result.value,
             )
 
@@ -625,16 +628,16 @@ class FlextOracleOicService(
                 "App-driven orchestration failed for %s",
                 integration_id,
             )
-            return FlextResult[dict[str, t.GeneralValueType]].fail(
+            return FlextResult[Mapping[str, t.GeneralValueType]].fail(
                 f"Orchestration execution failed: {e!s}",
             )
 
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
-        schedule_config: dict[str, t.GeneralValueType],
+        schedule_config: Mapping[str, t.GeneralValueType],
         **kwargs: object,
-    ) -> FlextResult[dict[str, t.GeneralValueType]]:
+    ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -650,7 +653,7 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return FlextResult[dict[str, t.GeneralValueType]].fail(error_msg)
+                return FlextResult[Mapping[str, t.GeneralValueType]].fail(error_msg)
 
             client = client_result.value
             result = client.execute_scheduled_orchestration(
@@ -659,23 +662,23 @@ class FlextOracleOicService(
                 **kwargs,
             )
 
-            return FlextResult[dict[str, t.GeneralValueType]].ok(result)
+            return FlextResult[Mapping[str, t.GeneralValueType]].ok(result)
 
         except Exception as e:
             self.logger.exception(
                 "Scheduled orchestration failed for %s",
                 integration_id,
             )
-            return FlextResult[dict[str, t.GeneralValueType]].fail(
+            return FlextResult[Mapping[str, t.GeneralValueType]].fail(
                 f"Scheduled orchestration failed: {e!s}",
             )
 
     def execute_file_transfer(
         self,
         integration_id: str,
-        file_config: dict[str, t.GeneralValueType],
+        file_config: Mapping[str, t.GeneralValueType],
         **kwargs: object,
-    ) -> FlextResult[dict[str, t.GeneralValueType]]:
+    ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Execute file transfer pattern.
 
         Args:
@@ -691,16 +694,16 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return FlextResult[dict[str, t.GeneralValueType]].fail(error_msg)
+                return FlextResult[Mapping[str, t.GeneralValueType]].fail(error_msg)
 
             client = client_result.value
             result = client.execute_file_transfer(integration_id, file_config, **kwargs)
 
-            return FlextResult[dict[str, t.GeneralValueType]].ok(result)
+            return FlextResult[Mapping[str, t.GeneralValueType]].ok(result)
 
         except Exception as e:
             self.logger.exception(f"File transfer failed for {integration_id}")
-            return FlextResult[dict[str, t.GeneralValueType]].fail(
+            return FlextResult[Mapping[str, t.GeneralValueType]].fail(
                 f"File transfer failed: {e!s}"
             )
 
@@ -752,7 +755,7 @@ class FlextOracleOicService(
 
     def deploy_integration(
         self,
-        integration_data: dict[str, t.GeneralValueType],
+        integration_data: Mapping[str, t.GeneralValueType],
     ) -> FlextResult[str]:
         """Deploy integration to Oracle OIC.
 
@@ -791,9 +794,9 @@ class FlextOracleOicService(
 
     def apply_message_router_pattern(
         self,
-        message_data: dict[str, t.GeneralValueType],
-        routing_rules: list[dict[str, t.GeneralValueType]],
-    ) -> FlextResult[dict[str, t.GeneralValueType]]:
+        message_data: Mapping[str, t.GeneralValueType],
+        routing_rules: list[Mapping[str, t.GeneralValueType]],
+    ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Apply message router pattern to OIC integration using FlextOracleOicUtilities.
 
         Args:
@@ -821,7 +824,7 @@ class FlextOracleOicService(
             )
 
             if validation_result.is_failure:
-                return FlextResult[dict[str, t.GeneralValueType]].fail(
+                return FlextResult[Mapping[str, t.GeneralValueType]].fail(
                     f"Pattern validation failed: {validation_result.error}",
                 )
 
@@ -836,18 +839,18 @@ class FlextOracleOicService(
                 "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
             }
 
-            return FlextResult[dict[str, t.GeneralValueType]].ok(routing_result)
+            return FlextResult[Mapping[str, t.GeneralValueType]].ok(routing_result)
 
         except Exception as e:
             error_msg = f"Message router pattern failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[dict[str, t.GeneralValueType]].fail(error_msg)
+            return FlextResult[Mapping[str, t.GeneralValueType]].fail(error_msg)
 
     def apply_scatter_gather_pattern(
         self,
-        request_data: dict[str, t.GeneralValueType],
+        request_data: Mapping[str, t.GeneralValueType],
         target_endpoints: list[str],
-    ) -> FlextResult[dict[str, t.GeneralValueType]]:
+    ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
         Args:
@@ -875,7 +878,7 @@ class FlextOracleOicService(
             )
 
             if validation_result.is_failure:
-                return FlextResult[dict[str, t.GeneralValueType]].fail(
+                return FlextResult[Mapping[str, t.GeneralValueType]].fail(
                     f"Pattern validation failed: {validation_result.error}",
                 )
 
@@ -890,12 +893,12 @@ class FlextOracleOicService(
                 "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
             }
 
-            return FlextResult[dict[str, t.GeneralValueType]].ok(scatter_result)
+            return FlextResult[Mapping[str, t.GeneralValueType]].ok(scatter_result)
 
         except Exception as e:
             error_msg = f"Scatter-gather pattern failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[dict[str, t.GeneralValueType]].fail(error_msg)
+            return FlextResult[Mapping[str, t.GeneralValueType]].fail(error_msg)
 
     # Monitoring Methods (from MonitoringService)
 
@@ -943,7 +946,7 @@ class FlextOracleOicService(
                                 str(k): self._to_general_value(v)
                                 for k, v in response.body.items()
                             }
-                            if isinstance(response.body, dict)
+                            if u.is_dict_like(response.body)
                             else {"raw": self._to_general_value(response.body)}
                         )
                         health_data = {
@@ -997,7 +1000,7 @@ class FlextOracleOicService(
             # Validate health status using utilities
             health_data_dict: dict[str, t.GeneralValueType] = (
                 health_data
-                if isinstance(health_data, dict)
+                if u.is_dict_like(health_data)
                 else {"status": str(health_data)}
             )
             validation_result = (
@@ -1078,7 +1081,7 @@ class FlextOracleOicService(
                                 str(k): self._to_general_value(v)
                                 for k, v in response.body.items()
                             }
-                            if isinstance(response.body, dict)
+                            if u.is_dict_like(response.body)
                             else {}
                         )
                     else:
@@ -1099,7 +1102,7 @@ class FlextOracleOicService(
                     }
 
             metrics_dict: dict[str, t.GeneralValueType] = {}
-            if isinstance(metrics_data, dict):
+            if u.is_dict_like(metrics_data):
                 for key, value in metrics_data.items():
                     metrics_dict[str(key)] = self._to_general_value(value)
             analysis_result = (
