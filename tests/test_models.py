@@ -19,7 +19,7 @@ class TestOICAuthConfig:
 
     def test_valid_auth_config(self) -> None:
         """Test valid auth config creation."""
-        config = FlextOracleOicModels.OICAuthConfig(
+        config = FlextOracleOicModels.OracleOic.OICAuthConfig(
             oauth_client_id="test_client_id",
             oauth_client_secret=SecretStr("test_client_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
@@ -38,7 +38,7 @@ class TestOICAuthConfig:
 
     def test_auth_config_with_none_audience(self) -> None:
         """Test auth config with None audience."""
-        config = FlextOracleOicModels.OICAuthConfig(
+        config = FlextOracleOicModels.OracleOic.OICAuthConfig(
             oauth_client_id="test_client_id",
             oauth_client_secret=SecretStr("test_client_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
@@ -60,7 +60,7 @@ class TestOICAuthConfig:
             "oauth_scope": "",
         }
         with pytest.raises(ValidationError):
-            FlextOracleOicModels.OICAuthConfig.model_validate(invalid_data)
+            FlextOracleOicModels.OracleOic.OICAuthConfig.model_validate(invalid_data)
 
 
 class TestOICConnectionConfig:
@@ -68,7 +68,7 @@ class TestOICConnectionConfig:
 
     def test_valid_connection_config(self) -> None:
         """Test valid connection config creation."""
-        config = FlextOracleOicModels.OICConnectionConfig(
+        config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
             base_url="https://test.integration.ocp.oraclecloud.com",
             api_version="v1",
             request_timeout=30,
@@ -84,7 +84,7 @@ class TestOICConnectionConfig:
 
     def test_connection_config_defaults(self) -> None:
         """Test connection config with defaults."""
-        config = FlextOracleOicModels.OICConnectionConfig(
+        config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
             base_url="https://test.integration.ocp.oraclecloud.com",
             api_version="v1",
             request_timeout=30,
@@ -99,7 +99,7 @@ class TestOICConnectionConfig:
     def test_connection_config_validation_error(self) -> None:
         """Test connection config validation error."""
         with pytest.raises(ValidationError):
-            FlextOracleOicModels.OICConnectionConfig(
+            FlextOracleOicModels.OracleOic.OICConnectionConfig(
                 base_url="https://test.integration.ocp.oraclecloud.com",
                 api_version="v1",
                 request_timeout=0,  # Should be >= 1
@@ -112,7 +112,7 @@ class TestOICIntegrationInfo:
 
     def test_valid_integration_info(self) -> None:
         """Test valid integration info creation."""
-        info = FlextOracleOicModels.OICIntegrationInfo(
+        info = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
             integration_id="test_integration_id",
             name="Test Integration",
             status="ACTIVE",
@@ -132,7 +132,7 @@ class TestOICIntegrationInfo:
 
     def test_integration_info_defaults(self) -> None:
         """Test integration info with defaults."""
-        info = FlextOracleOicModels.OICIntegrationInfo(
+        info = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
             integration_id="test_integration_id",
             name="Test Integration",
             status="ACTIVE",
@@ -152,7 +152,7 @@ class TestOICConnectionInfo:
 
     def test_valid_connection_info(self) -> None:
         """Test valid connection info creation."""
-        info = FlextOracleOicModels.OICConnectionInfo(
+        info = FlextOracleOicModels.OracleOic.OICConnectionInfo(
             connection_id="test_connection_id",
             name="Test Connection",
             adapter_type="REST",
@@ -170,7 +170,7 @@ class TestOICConnectionInfo:
 
     def test_connection_info_defaults(self) -> None:
         """Test connection info with defaults."""
-        info = FlextOracleOicModels.OICConnectionInfo(
+        info = FlextOracleOicModels.OracleOic.OICConnectionInfo(
             connection_id="test_connection_id",
             name="Test Connection",
             adapter_type="REST",

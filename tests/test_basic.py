@@ -9,6 +9,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from pydantic import SecretStr
+
 from flext_oracle_oic import (
     FlextOracleOicModels,
     FlextOracleOicSettings,
@@ -40,14 +42,14 @@ class TestBasicFunctionality:
     def test_models(self) -> None:
         """Test model classes."""
         # Test that we can access model classes
-        auth_config = FlextOracleOicModels.OICAuthConfig(
+        auth_config = FlextOracleOicModels.OracleOic.OICAuthConfig(
             oauth_client_id="test_client_id",
-            oauth_client_secret="test_secret",
+            oauth_client_secret=SecretStr("test_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
         )
         assert auth_config.oauth_client_id == "test_client_id"
 
-        connection_config = FlextOracleOicModels.OICConnectionConfig(
+        connection_config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
             base_url="https://test.integration.ocp.oraclecloud.com",
             api_version="v1",
             request_timeout=30,
