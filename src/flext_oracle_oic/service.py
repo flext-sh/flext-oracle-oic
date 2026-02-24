@@ -19,16 +19,15 @@ from flext_api import FlextApiClient
 from flext_api.models import FlextApiModels
 from flext_api.settings import FlextApiSettings
 from flext_core import (
-    u,
     FlextContainer,
     FlextContext,
     FlextDispatcher,
     FlextLogger,
     FlextRegistry,
     FlextResult,
-    FlextRuntime,
     FlextService,
     t,
+    u,
 )
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import (
@@ -101,8 +100,11 @@ class FlextOracleOicService(
     @staticmethod
     def _as_text(value: t.GeneralValueType, default: str = "") -> str:
         """Normalize optional OIC values into strings for model construction."""
-        if u.Guards._is_str(value):
-            return value
+        match value:
+            case str():
+                return value
+            case _:
+                pass
         if value is None:
             return default
         return str(value)
@@ -117,8 +119,11 @@ class FlextOracleOicService(
                 str(k): FlextOracleOicService._to_general_value(v)
                 for k, v in value.items()
             }
-        if u.Guards._is_sequence_not_str(value):
-            return [FlextOracleOicService._to_general_value(v) for v in value]
+        match value:
+            case list() | tuple():
+                return [FlextOracleOicService._to_general_value(v) for v in value]
+            case _:
+                pass
         return str(value)
 
     @override
@@ -569,11 +574,11 @@ class FlextOracleOicService(
                 return FlextResult[bool].fail(error_msg)
             result_data = test_result.value
             status_value = result_data.get("status", "")
-            is_connected = (
-                status_value.lower() == "healthy"
-                if u.Guards._is_str(status_value)
-                else False
-            )
+            match status_value:
+                case str():
+                    is_connected = status_value.lower() == "healthy"
+                case _:
+                    is_connected = False
 
             return FlextResult[bool].ok(is_connected)
 

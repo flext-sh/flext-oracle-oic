@@ -177,7 +177,7 @@ make format                # Auto-format code with Ruff
 # Development shortcuts
 make t                     # Alias for test
 make l                     # Alias for lint
-make tc                    # Alias for type-check
+make c                    # Alias for type-check
 make v                     # Alias for validate
 ```
 

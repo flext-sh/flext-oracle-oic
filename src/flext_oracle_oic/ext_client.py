@@ -18,9 +18,10 @@ from typing import Self
 
 from flext_api import FlextApi
 from flext_api.settings import FlextApiSettings
-from flext_core import FlextLogger, FlextResult, FlextRuntime, t
+from flext_core import FlextLogger, FlextResult, t
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.models import FlextOracleOicModels
+from flext_oracle_oic.utilities import u
 
 logger = FlextLogger(__name__)
 
@@ -167,16 +168,21 @@ class FlextOracleOicClient:
 
             if u.is_dict_like(body):
                 token_data = dict(body)
-            elif u.Guards._is_str(body):
-                token_data = json_module.loads(body)
             else:
-                return FlextResult[str].fail("Empty or invalid OAuth response body")
+                match body:
+                    case str():
+                        token_data = json_module.loads(body)
+                    case _:
+                        return FlextResult[str].fail(
+                            "Empty or invalid OAuth response body"
+                        )
 
             access_token = token_data.get("access_token")
-            if not access_token or not u.Guards._is_str(access_token):
-                return FlextResult[str].fail("No valid access token in response")
-
-            return FlextResult[str].ok(access_token)
+            match access_token:
+                case str() as token if token:
+                    return FlextResult[str].ok(token)
+                case _:
+                    return FlextResult[str].fail("No valid access token in response")
         except Exception as e:
             error_msg = f"Failed to parse OAuth response: {e}"
             self.logger.exception(error_msg)
@@ -317,8 +323,9 @@ class FlextOracleOicClient:
             return value
         if u.is_dict_like(value):
             return {str(key): self._to_api_payload(item) for key, item in value.items()}
-        if u.Guards._is_sequence_not_str(value):
-            return [self._to_api_payload(item) for item in value]
+        match value:
+            case list() | tuple():
+                return [self._to_api_payload(item) for item in value]
         return str(value)
 
     def _parse_api_response(
@@ -329,37 +336,44 @@ class FlextOracleOicClient:
             # Parse response body properly - it could be str, dict, or None
             headers = getattr(response, "headers", None)
             body = getattr(response, "body", None)
-            if u.Guards._is_mapping(headers):
-                content_type = str(headers.get("content-type", ""))
+            match headers:
+                case Mapping():
+                    content_type = str(headers.get("content-type", ""))
 
-                if content_type.startswith("application/json"):
-                    if u.is_dict_like(body):
-                        return FlextResult[Mapping[str, t.GeneralValueType]].ok(
-                            dict(body)
-                        )
-                    if u.Guards._is_str(body):
-                        parsed_data = json_module.loads(body)
-                        return FlextResult[Mapping[str, t.GeneralValueType]].ok(
-                            parsed_data
-                        )
+                    if content_type.startswith("application/json"):
+                        if u.is_dict_like(body):
+                            return FlextResult[Mapping[str, t.GeneralValueType]].ok(
+                                dict(body)
+                            )
+                        match body:
+                            case str():
+                                parsed_data = json_module.loads(body)
+                                return FlextResult[Mapping[str, t.GeneralValueType]].ok(
+                                    parsed_data
+                                )
+                            case _:
+                                return FlextResult[
+                                    Mapping[str, t.GeneralValueType]
+                                ].fail("Empty JSON response")
+
+                    # Non-JSON response
+                    match body:
+                        case str():
+                            return FlextResult[Mapping[str, t.GeneralValueType]].ok({
+                                "raw_content": body
+                            })
+                        case _ if u.is_dict_like(body):
+                            return FlextResult[Mapping[str, t.GeneralValueType]].ok(
+                                dict(body)
+                            )
+                        case _:
+                            return FlextResult[Mapping[str, t.GeneralValueType]].ok({
+                                "raw_content": str(body)
+                            })
+                case _:
                     return FlextResult[Mapping[str, t.GeneralValueType]].fail(
-                        "Empty JSON response"
+                        "Invalid response format"
                     )
-
-                # Non-JSON response
-                if u.Guards._is_str(body):
-                    return FlextResult[Mapping[str, t.GeneralValueType]].ok({
-                        "raw_content": body
-                    })
-                if u.is_dict_like(body):
-                    return FlextResult[Mapping[str, t.GeneralValueType]].ok(dict(body))
-                return FlextResult[Mapping[str, t.GeneralValueType]].ok({
-                    "raw_content": str(body)
-                })
-
-            return FlextResult[Mapping[str, t.GeneralValueType]].fail(
-                "Invalid response format"
-            )
         except Exception as e:
             error_msg = f"Failed to parse API response: {e}"
             self.logger.exception(error_msg)

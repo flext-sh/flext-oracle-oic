@@ -20,7 +20,7 @@ from collections.abc import Mapping
 from datetime import UTC, datetime
 from urllib.parse import urljoin
 
-from flext_core import FlextRuntime, FlextUtilities, r, t
+from flext_core import FlextUtilities, r, t
 from flext_oracle_oic.constants import c
 from pydantic import SecretStr
 
@@ -61,8 +61,11 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated name or validation error
 
             """
-            if not u.Guards._is_str(name):
-                return r[str].fail("Integration name must be a string")
+            match name:
+                case str():
+                    pass
+                case _:
+                    return r[str].fail("Integration name must be a string")
 
             name = name.strip()
             if not name:
@@ -93,8 +96,11 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated status or error
 
             """
-            if not u.Guards._is_str(status):
-                return r[str].fail("Integration status must be a string")
+            match status:
+                case str():
+                    pass
+                case _:
+                    return r[str].fail("Integration status must be a string")
 
             status = status.upper().strip()
             if status not in c.OracleOicValidation.VALID_INTEGRATION_STATUSES:
@@ -118,8 +124,11 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated version or error
 
             """
-            if not u.Guards._is_str(version):
-                return r[str].fail("Integration version must be a string")
+            match version:
+                case str():
+                    pass
+                case _:
+                    return r[str].fail("Integration version must be a string")
 
             version = version.strip()
             if not c.OracleOicValidation.VERSION_PATTERN.match(version):
@@ -155,52 +164,53 @@ class FlextOracleOicUtilities(FlextUtilities):
                 errors.append("Integration name is required")
             else:
                 raw_name = integration_data["name"]
-                if not u.Guards._is_str(raw_name):
-                    errors.append("Name validation: Integration name must be a string")
-                else:
-                    name_result = (
-                        FlextOracleOicUtilities.OracleOic.validate_integration_name(
-                            raw_name,
+                match raw_name:
+                    case str():
+                        name_result = (
+                            FlextOracleOicUtilities.OracleOic.validate_integration_name(
+                                raw_name,
+                            )
                         )
-                    )
-                    if name_result.is_failure:
-                        errors.append(f"Name validation: {name_result.error}")
-                    else:
-                        validated_data["name"] = name_result.value
+                        if name_result.is_failure:
+                            errors.append(f"Name validation: {name_result.error}")
+                        else:
+                            validated_data["name"] = name_result.value
+                    case _:
+                        errors.append(
+                            "Name validation: Integration name must be a string"
+                        )
 
             if "version" in integration_data:
                 raw_version = integration_data["version"]
-                if not u.Guards._is_str(raw_version):
-                    errors.append(
-                        "Version validation: Integration version must be a string",
-                    )
-                else:
-                    version_result = (
-                        FlextOracleOicUtilities.OracleOic.validate_integration_version(
+                match raw_version:
+                    case str():
+                        version_result = FlextOracleOicUtilities.OracleOic.validate_integration_version(
                             raw_version,
                         )
-                    )
-                    if version_result.is_failure:
-                        errors.append(f"Version validation: {version_result.error}")
-                    else:
-                        validated_data["version"] = version_result.value
+                        if version_result.is_failure:
+                            errors.append(f"Version validation: {version_result.error}")
+                        else:
+                            validated_data["version"] = version_result.value
+                    case _:
+                        errors.append(
+                            "Version validation: Integration version must be a string",
+                        )
 
             if "status" in integration_data:
                 raw_status = integration_data["status"]
-                if not u.Guards._is_str(raw_status):
-                    errors.append(
-                        "Status validation: Integration status must be a string",
-                    )
-                else:
-                    status_result = (
-                        FlextOracleOicUtilities.OracleOic.validate_integration_status(
+                match raw_status:
+                    case str():
+                        status_result = FlextOracleOicUtilities.OracleOic.validate_integration_status(
                             raw_status,
                         )
-                    )
-                    if status_result.is_failure:
-                        errors.append(f"Status validation: {status_result.error}")
-                    else:
-                        validated_data["status"] = status_result.value
+                        if status_result.is_failure:
+                            errors.append(f"Status validation: {status_result.error}")
+                        else:
+                            validated_data["status"] = status_result.value
+                    case _:
+                        errors.append(
+                            "Status validation: Integration status must be a string",
+                        )
 
             if errors:
                 return r[Mapping[str, t.GeneralValueType]].fail(
@@ -223,8 +233,11 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated URL or error
 
             """
-            if not u.Guards._is_str(base_url):
-                return r[str].fail("Base URL must be a string")
+            match base_url:
+                case str():
+                    pass
+                case _:
+                    return r[str].fail("Base URL must be a string")
             base_url = base_url.strip()
             if not base_url:
                 return r[str].fail("Base URL cannot be empty")
@@ -243,8 +256,11 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated type or error
 
             """
-            if not u.Guards._is_str(connection_type):
-                return r[str].fail("Connection type must be a string")
+            match connection_type:
+                case str():
+                    pass
+                case _:
+                    return r[str].fail("Connection type must be a string")
 
             connection_type = connection_type.upper().strip()
             if connection_type not in c.OracleOicValidation.VALID_CONNECTION_TYPES:
@@ -268,8 +284,11 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated status or error
 
             """
-            if not u.Guards._is_str(status):
-                return r[str].fail("Connection status must be a string")
+            match status:
+                case str():
+                    pass
+                case _:
+                    return r[str].fail("Connection status must be a string")
 
             status = status.upper().strip()
             if status not in c.OracleOicValidation.VALID_CONNECTION_STATUSES:
@@ -296,8 +315,11 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated client ID or error
 
             """
-            if not u.Guards._is_str(client_id):
-                return r[str].fail("OAuth client ID must be a string")
+            match client_id:
+                case str():
+                    pass
+                case _:
+                    return r[str].fail("OAuth client ID must be a string")
 
             client_id = client_id.strip()
             if len(client_id) < c.OracleOicValidation.MIN_CLIENT_ID_LENGTH:
@@ -374,11 +396,13 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Build endpoint path
             path_parts = ["ic", "api", "integration", api_version, "integrations"]
             if integration_id:
-                if not u.Guards._is_str(integration_id) or not integration_id.strip():
-                    return r[str].fail(
-                        "Integration ID must be non-empty string",
-                    )
-                path_parts.append(integration_id.strip())
+                match integration_id:
+                    case str() as raw_integration_id if raw_integration_id.strip():
+                        path_parts.append(raw_integration_id.strip())
+                    case _:
+                        return r[str].fail(
+                            "Integration ID must be non-empty string",
+                        )
 
             endpoint_path = "/" + "/".join(path_parts)
             full_url = urljoin(validated_base_url + "/", endpoint_path.lstrip("/"))
@@ -414,11 +438,13 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Build endpoint path
             path_parts = ["ic", "api", "integration", api_version, "connections"]
             if connection_id:
-                if not u.Guards._is_str(connection_id) or not connection_id.strip():
-                    return r[str].fail(
-                        "Connection ID must be non-empty string",
-                    )
-                path_parts.append(connection_id.strip())
+                match connection_id:
+                    case str() as raw_connection_id if raw_connection_id.strip():
+                        path_parts.append(raw_connection_id.strip())
+                    case _:
+                        return r[str].fail(
+                            "Connection ID must be non-empty string",
+                        )
 
             endpoint_path = "/" + "/".join(path_parts)
             full_url = urljoin(validated_base_url + "/", endpoint_path.lstrip("/"))
@@ -449,11 +475,13 @@ class FlextOracleOicUtilities(FlextUtilities):
             }
 
             if auth_token:
-                if not u.Guards._is_str(auth_token) or not auth_token.strip():
-                    return r[Mapping[str, str]].fail(
-                        "Auth token must be non-empty string",
-                    )
-                headers["Authorization"] = f"Bearer {auth_token.strip()}"
+                match auth_token:
+                    case str() as raw_auth_token if raw_auth_token.strip():
+                        headers["Authorization"] = f"Bearer {raw_auth_token.strip()}"
+                    case _:
+                        return r[Mapping[str, str]].fail(
+                            "Auth token must be non-empty string",
+                        )
 
             if additional_headers:
                 if not u.is_dict_like(additional_headers):
