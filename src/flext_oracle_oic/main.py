@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from typing import NoReturn
 
@@ -139,7 +140,7 @@ class FlextOracleOicCli(FlextService[None]):
                     f"Connection failed: {connection_result.error}",
                 )
 
-        except Exception as e:
+        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             if self.logger:
                 self.logger.exception("Connection test failed")
             return FlextResult[bool].fail(f"Connection test failed: {e!s}")
@@ -169,7 +170,7 @@ class FlextOracleOicCli(FlextService[None]):
             # List integrations
             return self._list_integrations_with_service(service)
 
-        except Exception as e:
+        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             if self.logger:
                 self.logger.exception("List integrations failed")
             return FlextResult[bool].fail(f"List integrations failed: {e!s}")
@@ -241,7 +242,7 @@ class FlextOracleOicCli(FlextService[None]):
                 "FLEXT CLI Pattern: Enterprise Oracle Integration Cloud",
             )
             return FlextResult[bool].ok(value=True)
-        except Exception as e:
+        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             if self.logger:
                 self.logger.exception("Version display failed")
             return FlextResult[bool].fail(f"Version display failed: {e!s}")
@@ -352,7 +353,7 @@ def main() -> NoReturn:
     except KeyboardInterrupt:
         _cli_instance.logger.info("Oracle OIC Extension CLI interrupted by user")
         sys.exit(130)
-    except Exception:
+    except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError):
         _cli_instance.logger.exception("Oracle OIC Extension CLI error")
         sys.exit(1)
 

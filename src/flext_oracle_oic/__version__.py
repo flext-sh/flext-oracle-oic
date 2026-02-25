@@ -9,6 +9,8 @@ SPDX-License-Identifier: Proprietary
 
 from __future__ import annotations
 
+import json
+
 try:
     from importlib.metadata import metadata
 
@@ -23,7 +25,7 @@ try:
     __author_email__ = _metadata["Author-Email"]
     __license__ = _metadata["License"]
     __url__ = _metadata.get("Home-Page", "")
-except Exception:
+except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError):
     # Fallback for development when package is not installed
     __version__ = "0.9.9"
     __version_info__ = (0, 9, 9)

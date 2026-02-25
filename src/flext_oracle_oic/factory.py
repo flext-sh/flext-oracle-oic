@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+import json
 import warnings
 
 from flext_core import FlextContainer, FlextLogger, FlextResult
@@ -79,7 +80,7 @@ class FlextOracleOicFactory:
             service = FlextOracleOicService()
             self.logger.info(success_message)
             return FlextResult[FlextOracleOicService].ok(service)
-        except Exception as e:
+        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             error_msg = f"Failed to create OIC Extension service: {e}"
             self.logger.exception(error_msg)
             return FlextResult[FlextOracleOicService].fail(error_msg)
@@ -113,7 +114,7 @@ class FlextOracleOicFactory:
                 enable_monitoring=True,
             )
             return FlextResult[FlextOracleOicSettings].ok(settings)
-        except Exception as e:
+        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             error_msg = f"Failed to create development config: {e}"
             self.logger.exception(error_msg)
             return FlextResult[FlextOracleOicSettings].fail(error_msg)
