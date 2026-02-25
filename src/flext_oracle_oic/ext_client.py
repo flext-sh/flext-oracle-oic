@@ -120,7 +120,12 @@ class FlextOracleOicClient:
                 headers,
                 data,
             ))
-        except (ConnectionError, TimeoutError, ValueError, json_module.JSONDecodeError) as e:
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
             error_msg = f"Failed to prepare OAuth request: {e}"
             self.logger.exception(error_msg)
             return FlextResult[tuple[Mapping[str, str], Mapping[str, str]]].fail(
@@ -153,7 +158,12 @@ class FlextOracleOicClient:
                     f"OAuth HTTP error: {response.status_code}",
                 )
             return FlextResult[object].ok(response)
-        except (ConnectionError, TimeoutError, ValueError, json_module.JSONDecodeError) as e:
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
             error_msg = f"OAuth token request failed: {e}"
             self.logger.exception(error_msg)
             return FlextResult[object].fail(error_msg)
@@ -183,7 +193,12 @@ class FlextOracleOicClient:
                     return FlextResult[str].ok(token)
                 case _:
                     return FlextResult[str].fail("No valid access token in response")
-        except (ConnectionError, TimeoutError, ValueError, json_module.JSONDecodeError) as e:
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
             error_msg = f"Failed to parse OAuth response: {e}"
             self.logger.exception(error_msg)
             return FlextResult[str].fail(error_msg)
@@ -218,7 +233,12 @@ class FlextOracleOicClient:
             client = FlextApi(api_config)
             self._client = client
             return FlextResult[FlextApi].ok(client)
-        except (ConnectionError, TimeoutError, ValueError, json_module.JSONDecodeError) as e:
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
             error_msg = f"Failed to create authenticated client: {e}"
             self.logger.exception(error_msg)
             return FlextResult[FlextApi].fail(error_msg)
@@ -309,7 +329,12 @@ class FlextOracleOicClient:
                     f"Request failed: {response_result.error}",
                 )
             return FlextResult[object].ok(response_result.value)
-        except (ConnectionError, TimeoutError, ValueError, json_module.JSONDecodeError) as e:
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
             error_msg = f"OIC API request failed: {e}"
             self.logger.exception(error_msg)
             return FlextResult[object].fail(error_msg)
@@ -374,7 +399,12 @@ class FlextOracleOicClient:
                     return FlextResult[Mapping[str, t.GeneralValueType]].fail(
                         "Invalid response format"
                     )
-        except (ConnectionError, TimeoutError, ValueError, json_module.JSONDecodeError) as e:
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
             error_msg = f"Failed to parse API response: {e}"
             self.logger.exception(error_msg)
             return FlextResult[Mapping[str, t.GeneralValueType]].fail(error_msg)
@@ -440,7 +470,12 @@ class FlextOracleOicClient:
 
             return FlextResult[list[Mapping[str, t.GeneralValueType]]].ok(all_records)
 
-        except (ConnectionError, TimeoutError, ValueError, json_module.JSONDecodeError) as e:
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
             error_msg = f"OIC pagination failed: {e}"
             self.logger.exception(error_msg)
             return FlextResult[list[Mapping[str, t.GeneralValueType]]].fail(error_msg)
