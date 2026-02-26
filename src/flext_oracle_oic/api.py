@@ -13,7 +13,6 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import Self, cast
-from typing import Self
 
 from flext_core import (
     FlextContainer,
@@ -62,7 +61,9 @@ class FlextOracleOicApi(FlextService[None]):
         super().__init__()
 
         # Configuration with fallback to global instance
-        self._config: FlextOracleOicSettings = cast(FlextOracleOicSettings, config or FlextOracleOicSettings())
+        self._config: FlextOracleOicSettings = cast(
+            "FlextOracleOicSettings", config or FlextOracleOicSettings()
+        )
 
         # Complete FLEXT ecosystem integration
         self._container = FlextContainer.get_global()
