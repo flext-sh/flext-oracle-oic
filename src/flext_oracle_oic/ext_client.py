@@ -135,7 +135,7 @@ class FlextOracleOicClient:
     def _execute_token_request(
         self,
         request_data: tuple[Mapping[str, str], Mapping[str, str]],
-    ) -> FlextResult[object]:
+    ) -> FlextResult[t.GeneralValueType]:
         """Execute OAuth token request."""
         headers, data = request_data
         try:
@@ -146,7 +146,7 @@ class FlextOracleOicClient:
             }
             response_result = api_client.post("", data=oauth_data, headers=headers)
             if response_result.is_failure:
-                return FlextResult[object].fail(
+                return FlextResult[t.GeneralValueType].fail(
                     f"OAuth request failed: {response_result.error}",
                 )
             response = response_result.value
@@ -154,10 +154,10 @@ class FlextOracleOicClient:
                 response.status_code
                 >= FlextOracleOicConstants.API.HTTP_ERROR_STATUS_THRESHOLD
             ):
-                return FlextResult[object].fail(
+                return FlextResult[t.GeneralValueType].fail(
                     f"OAuth HTTP error: {response.status_code}",
                 )
-            return FlextResult[object].ok(response)
+            return FlextResult[t.GeneralValueType].ok(response)
         except (
             ConnectionError,
             TimeoutError,
@@ -166,7 +166,7 @@ class FlextOracleOicClient:
         ) as e:
             error_msg = f"OAuth token request failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[object].fail(error_msg)
+            return FlextResult[t.GeneralValueType].fail(error_msg)
 
     def _parse_token_response(self, response: object) -> FlextResult[str]:
         """Parse access token from OAuth response."""
@@ -288,11 +288,11 @@ class FlextOracleOicClient:
         _params: Mapping[str, str] | None,
         _data: Mapping[str, str] | None,
         json: Mapping[str, t.GeneralValueType] | None,
-    ) -> FlextResult[object]:
+    ) -> FlextResult[t.GeneralValueType]:
         """Execute the actual API request."""
         try:
             if client is None:
-                return FlextResult[object].fail("Client not available")
+                return FlextResult[t.GeneralValueType].fail("Client not available")
             request_data: dict[str, t.GeneralValueType] | None = (
                 {key: self._to_api_payload(value) for key, value in json.items()}
                 if json is not None
@@ -309,14 +309,14 @@ class FlextOracleOicClient:
             elif method.upper() == "DELETE":
                 response_result = client.delete(full_url, headers=None)
             else:
-                return FlextResult[object].fail(
+                return FlextResult[t.GeneralValueType].fail(
                     f"Unsupported HTTP method: {method}",
                 )
             if response_result.is_failure:
-                return FlextResult[object].fail(
+                return FlextResult[t.GeneralValueType].fail(
                     f"Request failed: {response_result.error}",
                 )
-            return FlextResult[object].ok(response_result.value)
+            return FlextResult[t.GeneralValueType].ok(response_result.value)
         except (
             ConnectionError,
             TimeoutError,
@@ -325,7 +325,7 @@ class FlextOracleOicClient:
         ) as e:
             error_msg = f"OIC API request failed: {e}"
             self.logger.exception(error_msg)
-            return FlextResult[object].fail(error_msg)
+            return FlextResult[t.GeneralValueType].fail(error_msg)
 
     def _to_api_payload(
         self,
