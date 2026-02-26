@@ -29,9 +29,9 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "flext-core  @ file:../flext-core",
+  "flext-core @ ../flext-core",
   "httpx>=0.28.1",
-  "meltano[edk] @ git+https://github.com/meltano/meltano.git@main",
+  "meltano[edk] @ git+https://github.com/flext-sh/meltano.git@flext/relax-deps",
   "pydantic>=2.12.3",
   "pydantic-core>=2.41.4",
   "pydantic-settings>=2.11",

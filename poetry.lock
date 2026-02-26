@@ -1294,7 +1294,7 @@ name = "flext-core"
 version = "0.12.0.dev0"
 description = "Enterprise Foundation Framework - Modern Python 3.13 + Clean Architecture"
 optional = false
-python-versions = ">=3.13,<3.14"
+python-versions = ">=3.13"
 groups = ["main"]
 files = []
 develop = false
@@ -2012,10 +2012,10 @@ develop = false
 [package.dependencies]
 alembic = ">=1.14.0,<2"
 anyio = ">=4.4.0,<5"
-click = ">=8.2,<8.2.2 || >8.2.2,<8.4"
+click = ">=8.2,<8.2.2 || >8.2.2"
 click-default-group = ">=1.2.4,<2"
 dateparser = ">=1.2.1"
-fasteners = ">=0.19,<0.21"
+fasteners = ">=0.19"
 jinja2 = ">=3.1.4,<4"
 jsonschema = ">=4.23,<5"
 packaging = ">=24.2,<27.0"
@@ -2025,17 +2025,17 @@ psutil = ">=7.0.0,<8"
 python-dotenv = ">=1.0.1,<2"
 pyyaml = ">=6.0.2,<7"
 requests = ">=2.32.3,<3"
-rich = ">=14.0,<14.4"
+rich = ">=14.0"
 "ruamel.yaml" = ">=0.18.6,<0.20"
 smart-open = ">=7.0.5,<8"
 snowplow-tracker = ">=1.0.4,<2"
-sqlalchemy = ">=2.0.35,<2.1"
+sqlalchemy = ">=2.0.35"
 structlog = ">=25.5.0,<26"
 typing-extensions = ">=4.12.2,<5"
 tzlocal = ">=5.3,<6.0"
 urllib3 = ">=1.26.20"
 uv = ">=0.8.14"
-virtualenv = ">=20.26.6,<21"
+virtualenv = ">=20.26.6"
 
 [package.extras]
 azure = ["azure-common (>=1.1.28,<2)", "azure-core (>=1.32.0,<2)", "azure-identity (>=1.19.0,<2)", "azure-storage-blob (>=12.24.0,<13)"]
@@ -2048,9 +2048,9 @@ s3 = ["boto3 (>=1.35,<2)"]
 
 [package.source]
 type = "git"
-url = "https://github.com/meltano/meltano.git"
-reference = "main"
-resolved_reference = "f09c228b005b1a7db9aa19dfce1a68341688779d"
+url = "https://github.com/flext-sh/meltano.git"
+reference = "flext/relax-deps"
+resolved_reference = "ec318bc4e524fbafd970a23129753cb7d89d0f5d"
 
 [[package]]
 name = "mergedeep"
@@ -3558,6 +3558,26 @@ files = [
 six = ">=1.5"
 
 [[package]]
+name = "python-discovery"
+version = "1.1.0"
+description = "Python interpreter discovery"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "python_discovery-1.1.0-py3-none-any.whl", hash = "sha256:a162893b8809727f54594a99ad2179d2ede4bf953e12d4c7abc3cc9cdbd1437b"},
+    {file = "python_discovery-1.1.0.tar.gz", hash = "sha256:447941ba1aed8cc2ab7ee3cb91be5fc137c5bdbb05b7e6ea62fbdcb66e50b268"},
+]
+
+[package.dependencies]
+filelock = ">=3.15.4"
+platformdirs = ">=4.3.6,<5"
+
+[package.extras]
+docs = ["furo (>=2025.12.19)", "sphinx (>=9.1)", "sphinx-autodoc-typehints (>=3.6.3)", "sphinxcontrib-mermaid (>=2)"]
+testing = ["covdefaults (>=2.3)", "coverage (>=7.5.4)", "pytest (>=8.3.5)", "pytest-mock (>=3.14)", "setuptools (>=75.1)"]
+
+[[package]]
 name = "python-dotenv"
 version = "1.2.1"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -5048,20 +5068,21 @@ files = [
 
 [[package]]
 name = "virtualenv"
-version = "20.39.1"
+version = "21.0.0"
 description = "Virtual Python Environment builder"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "virtualenv-20.39.1-py3-none-any.whl", hash = "sha256:a00332e0b089ba64edefbf94ef34e6db33f45fe5184df0652cf0b754dcd36190"},
-    {file = "virtualenv-20.39.1.tar.gz", hash = "sha256:c551ea1072d7717a273dd9a4a0adad8f45571af134b0f63a12430e85f6ac1c08"},
+    {file = "virtualenv-21.0.0-py3-none-any.whl", hash = "sha256:d44e70637402c7f4b10f48491c02a6397a3a187152a70cba0b6bc7642d69fb05"},
+    {file = "virtualenv-21.0.0.tar.gz", hash = "sha256:e8efe4271b4a5efe7a4dce9d60a05fd11859406c0d6aa8464f4cf451bc132889"},
 ]
 
 [package.dependencies]
 distlib = ">=0.3.7,<1"
 filelock = {version = ">=3.24.2,<4", markers = "python_version >= \"3.10\""}
 platformdirs = ">=3.9.1,<5"
+python-discovery = ">=1"
 
 [[package]]
 name = "vulture"
@@ -5229,4 +5250,4 @@ dev = ["autoflake", "bandit", "black", "codespell", "deptry", "django-stubs", "f
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<3.14"
-content-hash = "20efa4de02117277f6fb24456ff158bdefaac02d95eb23471a51a0189edff57f"
+content-hash = "78a48d2165571066b0b12e11e96f98497db74e938cbb74ce0a24f188ea041252"
