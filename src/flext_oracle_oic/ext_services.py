@@ -35,7 +35,7 @@ logger = FlextLogger(__name__)
 
 
 class FlextOracleOicExtServices(
-    FlextService[list[FlextOracleOicModels.OICIntegrationInfo]],
+    FlextService[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]],
 ):
     """Single unified Oracle OIC Extension services class.
 
@@ -59,7 +59,7 @@ class FlextOracleOicExtServices(
             ...
 
     class OracleOicExtensionService(
-        FlextService[list[FlextOracleOicModels.OICIntegrationInfo]],
+        FlextService[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]],
     ):
         """Main Oracle OIC Extension service.
 
@@ -101,7 +101,7 @@ class FlextOracleOicExtServices(
         @override
         def execute(
             self: Self,
-        ) -> r[list[FlextOracleOicModels.OICIntegrationInfo]]:
+        ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
             """Execute the main domain service operation.
 
             Returns:
@@ -200,17 +200,17 @@ class FlextOracleOicExtServices(
 
         def _create_auth_config(
             self,
-        ) -> r[FlextOracleOicModels.OICAuthConfig]:
+        ) -> r[FlextOracleOicModels.OracleOic.OICAuthConfig]:
             """Create authentication configuration."""
             try:
-                auth_config = FlextOracleOicModels.OICAuthConfig(
+                auth_config = FlextOracleOicModels.OracleOic.OICAuthConfig(
                     oauth_client_id=self.settings.oauth_client_id,
                     oauth_client_secret=self.settings.oauth_client_secret,
                     oauth_token_url=str(self.settings.oauth_token_url),
                     oauth_client_aud=self.settings.oauth_client_aud,
                     oauth_scope=self.settings.oauth_scope,
                 )
-                return r[FlextOracleOicModels.OICAuthConfig].ok(auth_config)
+                return r[FlextOracleOicModels.OracleOic.OICAuthConfig].ok(auth_config)
             except (
                 ConnectionError,
                 TimeoutError,
@@ -219,21 +219,21 @@ class FlextOracleOicExtServices(
             ) as e:
                 error_msg = f"Failed to create auth config: {e}"
                 self.logger.exception(error_msg)
-                return r[FlextOracleOicModels.OICAuthConfig].fail(error_msg)
+                return r[FlextOracleOicModels.OracleOic.OICAuthConfig].fail(error_msg)
 
         def _create_connection_config(
             self,
-        ) -> r[FlextOracleOicModels.OICConnectionConfig]:
+        ) -> r[FlextOracleOicModels.OracleOic.OICConnectionConfig]:
             """Create connection configuration."""
             try:
-                connection_config = FlextOracleOicModels.OICConnectionConfig(
+                connection_config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
                     base_url=str(self.settings.base_url),
                     api_version=self.settings.api_version,
                     request_timeout=self.settings.request_timeout,
                     max_retries=self.settings.max_retries,
                     verify_ssl=self.settings.verify_ssl,
                 )
-                return r[FlextOracleOicModels.OICConnectionConfig].ok(
+                return r[FlextOracleOicModels.OracleOic.OICConnectionConfig].ok(
                     connection_config,
                 )
             except (
@@ -244,14 +244,14 @@ class FlextOracleOicExtServices(
             ) as e:
                 error_msg = f"Failed to create connection config: {e}"
                 self.logger.exception(error_msg)
-                return r[FlextOracleOicModels.OICConnectionConfig].fail(
+                return r[FlextOracleOicModels.OracleOic.OICConnectionConfig].fail(
                     error_msg,
                 )
 
         def _create_client_instance(
             self,
-            auth_config: FlextOracleOicModels.OICAuthConfig,
-            connection_config: FlextOracleOicModels.OICConnectionConfig,
+            auth_config: FlextOracleOicModels.OracleOic.OICAuthConfig,
+            connection_config: FlextOracleOicModels.OracleOic.OICConnectionConfig,
         ) -> r[FlextOracleOicClient]:
             """Create client instance."""
             try:
@@ -271,7 +271,7 @@ class FlextOracleOicExtServices(
         def list_integrations(
             self,
             status_filter: list[str] | None = None,
-        ) -> r[list[FlextOracleOicModels.OICIntegrationInfo]]:
+        ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
             """List Oracle OIC integrations.
 
             Args:
@@ -322,19 +322,23 @@ class FlextOracleOicExtServices(
         def _parse_integration_models(
             self,
             integrations_data: list[Mapping[str, t.GeneralValueType]],
-        ) -> r[list[FlextOracleOicModels.OICIntegrationInfo]]:
+        ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
             """Parse integration data into domain models."""
-            integration_infos: list[FlextOracleOicModels.OICIntegrationInfo] = []
+            integration_infos: list[
+                FlextOracleOicModels.OracleOic.OICIntegrationInfo
+            ] = []
             for integration in integrations_data:
                 try:
-                    integration_info = FlextOracleOicModels.OICIntegrationInfo(
-                        integration_id=str(integration.get("id", "")),
-                        name=str(integration.get("name", "")),
-                        status=str(integration.get("status", "")),
-                        integration_version=str(integration.get("version", "")),
-                        description=str(integration.get("description", "")),
-                        created_by=str(integration.get("createdBy", "")),
-                        last_updated=str(integration.get("lastUpdated", "")),
+                    integration_info = (
+                        FlextOracleOicModels.OracleOic.OICIntegrationInfo(
+                            integration_id=str(integration.get("id", "")),
+                            name=str(integration.get("name", "")),
+                            status=str(integration.get("status", "")),
+                            integration_version=str(integration.get("version", "")),
+                            description=str(integration.get("description", "")),
+                            created_by=str(integration.get("createdBy", "")),
+                            last_updated=str(integration.get("lastUpdated", "")),
+                        )
                     )
                     integration_infos.append(integration_info)
                 except (
@@ -347,14 +351,14 @@ class FlextOracleOicExtServices(
                     continue
 
             self.logger.info(f"Retrieved {len(integration_infos)} integrations")
-            return r[list[FlextOracleOicModels.OICIntegrationInfo]].ok(
+            return r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].ok(
                 integration_infos,
             )
 
         def list_connections(
             self,
             type_filter: list[str] | None = None,
-        ) -> r[list[FlextOracleOicModels.OICConnectionInfo]]:
+        ) -> r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
             """List Oracle OIC connections.
 
             Args:
@@ -393,12 +397,14 @@ class FlextOracleOicExtServices(
         def _parse_connection_models(
             self,
             connections_data: list[Mapping[str, t.GeneralValueType]],
-        ) -> r[list[FlextOracleOicModels.OICConnectionInfo]]:
+        ) -> r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
             """Parse connection data into domain models."""
-            connection_infos: list[FlextOracleOicModels.OICConnectionInfo] = []
+            connection_infos: list[
+                FlextOracleOicModels.OracleOic.OICConnectionInfo
+            ] = []
             for connection in connections_data:
                 try:
-                    connection_info = FlextOracleOicModels.OICConnectionInfo(
+                    connection_info = FlextOracleOicModels.OracleOic.OICConnectionInfo(
                         connection_id=str(connection.get("id", "")),
                         name=str(connection.get("name", "")),
                         adapter_type=str(connection.get("adapterType", "")),
@@ -417,7 +423,7 @@ class FlextOracleOicExtServices(
                     continue
 
             self.logger.info(f"Retrieved {len(connection_infos)} connections")
-            return r[list[FlextOracleOicModels.OICConnectionInfo]].ok(
+            return r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]].ok(
                 connection_infos,
             )
 
@@ -686,7 +692,7 @@ class FlextOracleOicExtServices(
             try:
                 if not self._client:
                     # Create auth config from settings (using flat structure)
-                    auth_config = FlextOracleOicModels.OICAuthConfig(
+                    auth_config = FlextOracleOicModels.OracleOic.OICAuthConfig(
                         oauth_client_id=self.settings.oauth_client_id,
                         oauth_client_secret=self.settings.oauth_client_secret,
                         oauth_token_url=str(self.settings.oauth_token_url),
@@ -695,12 +701,14 @@ class FlextOracleOicExtServices(
                     )
 
                     # Create connection config from settings (using flat structure)
-                    connection_config = FlextOracleOicModels.OICConnectionConfig(
-                        base_url=str(self.settings.base_url),
-                        api_version=self.settings.api_version,
-                        request_timeout=self.settings.request_timeout,
-                        max_retries=self.settings.max_retries,
-                        verify_ssl=self.settings.verify_ssl,
+                    connection_config = (
+                        FlextOracleOicModels.OracleOic.OICConnectionConfig(
+                            base_url=str(self.settings.base_url),
+                            api_version=self.settings.api_version,
+                            request_timeout=self.settings.request_timeout,
+                            max_retries=self.settings.max_retries,
+                            verify_ssl=self.settings.verify_ssl,
+                        )
                     )
 
                     # Create client
@@ -724,7 +732,7 @@ class FlextOracleOicExtServices(
         def activate_integration(
             self,
             integration_id: str,
-        ) -> r[FlextOracleOicModels.IntegrationStatus]:
+        ) -> r[FlextOracleOicModels.OracleOic.IntegrationStatus]:
             """Activate an Oracle OIC integration.
 
             Args:
@@ -737,13 +745,13 @@ class FlextOracleOicExtServices(
             try:
                 client_result = self._get_client()
                 if not client_result.is_success:
-                    return r[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
                         client_result.error or "Client creation failed",
                     )
 
                 client = client_result.value
                 if client is None:
-                    return r[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
                         "No client available",
                     )
 
@@ -757,12 +765,12 @@ class FlextOracleOicExtServices(
                 )
 
                 if not activate_result.is_success:
-                    return r[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
                         activate_result.error or "Activation failed",
                     )
 
                 # Create status object
-                status = FlextOracleOicModels.IntegrationStatus(
+                status = FlextOracleOicModels.OracleOic.IntegrationStatus(
                     integration_id=integration_id,
                     integration_version=FlextOracleOicConstants.Integration.DEFAULT_VERSION,
                     status=FlextOracleOicConstants.Integration.Status.ACTIVATED,
@@ -774,7 +782,7 @@ class FlextOracleOicExtServices(
                     "Integration %s activated successfully",
                     integration_id,
                 )
-                return r[FlextOracleOicModels.IntegrationStatus].ok(status)
+                return r[FlextOracleOicModels.OracleOic.IntegrationStatus].ok(status)
 
             except (
                 ConnectionError,
@@ -784,14 +792,14 @@ class FlextOracleOicExtServices(
             ) as e:
                 error_msg = f"Failed to activate integration {integration_id}: {e}"
                 self.logger.exception(error_msg)
-                return r[FlextOracleOicModels.IntegrationStatus].fail(
+                return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
                     error_msg,
                 )
 
         def deactivate_integration(
             self,
             integration_id: str,
-        ) -> r[FlextOracleOicModels.IntegrationStatus]:
+        ) -> r[FlextOracleOicModels.OracleOic.IntegrationStatus]:
             """Deactivate an Oracle OIC integration.
 
             Args:
@@ -804,13 +812,13 @@ class FlextOracleOicExtServices(
             try:
                 client_result = self._get_client()
                 if not client_result.is_success:
-                    return r[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
                         client_result.error or "Client creation failed",
                     )
 
                 client = client_result.value
                 if client is None:
-                    return r[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
                         "No client available",
                     )
 
@@ -824,12 +832,12 @@ class FlextOracleOicExtServices(
                 )
 
                 if not deactivate_result.is_success:
-                    return r[FlextOracleOicModels.IntegrationStatus].fail(
+                    return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
                         deactivate_result.error or "Deactivation failed",
                     )
 
                 # Create status object
-                status = FlextOracleOicModels.IntegrationStatus(
+                status = FlextOracleOicModels.OracleOic.IntegrationStatus(
                     integration_id=integration_id,
                     integration_version=FlextOracleOicConstants.Integration.DEFAULT_VERSION,
                     status=FlextOracleOicConstants.Integration.Status.DEACTIVATED,
@@ -841,7 +849,7 @@ class FlextOracleOicExtServices(
                     "Integration %s deactivated successfully",
                     integration_id,
                 )
-                return r[FlextOracleOicModels.IntegrationStatus].ok(status)
+                return r[FlextOracleOicModels.OracleOic.IntegrationStatus].ok(status)
 
             except (
                 ConnectionError,
@@ -851,7 +859,7 @@ class FlextOracleOicExtServices(
             ) as e:
                 error_msg = f"Failed to deactivate integration {integration_id}: {e}"
                 self.logger.exception(error_msg)
-                return r[FlextOracleOicModels.IntegrationStatus].fail(
+                return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
                     error_msg,
                 )
 

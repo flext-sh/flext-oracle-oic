@@ -42,8 +42,6 @@ from flext_oracle_oic.settings import (
     FlextOracleOicSettings,
     FlextOracleOicSettings as s,
 )
-    FlextOracleOicSettings,
-)
 from flext_oracle_oic.typings import FlextOracleOicTypes, FlextOracleOicTypes as t
 from flext_oracle_oic.utilities import (
     FlextOracleOicUtilities,
