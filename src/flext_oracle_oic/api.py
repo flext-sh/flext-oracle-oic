@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Self, cast
+from typing import Self
 
 from flext_core import (
     FlextContainer,
@@ -61,9 +61,7 @@ class FlextOracleOicApi(FlextService[None]):
         super().__init__()
 
         # Configuration with fallback to global instance
-        self._config: FlextOracleOicSettings = cast(
-            "FlextOracleOicSettings", config or FlextOracleOicSettings()
-        )
+        self._oic_config: FlextOracleOicSettings = config or FlextOracleOicSettings()
 
         # Complete FLEXT ecosystem integration
         self._container = FlextContainer.get_global()
@@ -78,8 +76,8 @@ class FlextOracleOicApi(FlextService[None]):
         self._service = FlextOracleOicService()
 
         # Initialize context with OIC-specific information
-        self._context.set("oracle_oic_base_url", self._config.base_url)
-        self._context.set("oracle_oic_api_version", self._config.api_version)
+        self._context.set("oracle_oic_base_url", self._oic_config.base_url)
+        self._context.set("oracle_oic_api_version", self._oic_config.api_version)
 
     def _create_service(self) -> FlextOracleOicService:
         """Create unified Oracle OIC service instance."""
@@ -316,9 +314,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return {
-            "base_url": self._config.base_url,
-            "api_version": self._config.api_version,
-            "request_timeout": self._config.request_timeout,
+            "base_url": self._oic_config.base_url,
+            "api_version": self._oic_config.api_version,
+            "request_timeout": self._oic_config.request_timeout,
         }
 
     def get_auth_context(self) -> Mapping[str, t.GeneralValueType]:
@@ -329,9 +327,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return {
-            "oauth_client_id": self._config.oauth_client_id,
-            "oauth_token_url": self._config.oauth_token_url,
-            "oauth_scope": self._config.oauth_scope,
+            "oauth_client_id": self._oic_config.oauth_client_id,
+            "oauth_token_url": self._oic_config.oauth_token_url,
+            "oauth_scope": self._oic_config.oauth_scope,
         }
 
     def get_features_context(self) -> Mapping[str, t.GeneralValueType]:
@@ -342,9 +340,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return {
-            "enable_monitoring": self._config.enable_monitoring,
-            "use_ssl": self._config.use_ssl,
-            "verify_ssl": self._config.verify_ssl,
+            "enable_monitoring": self._oic_config.enable_monitoring,
+            "use_ssl": self._oic_config.use_ssl,
+            "verify_ssl": self._oic_config.verify_ssl,
         }
 
     # Service Access

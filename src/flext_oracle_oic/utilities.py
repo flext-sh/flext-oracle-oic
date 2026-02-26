@@ -157,7 +157,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                 )
 
             errors: list[str] = []
-            validated_data = integration_data.copy()
+            validated_data: dict[str, t.GeneralValueType] = dict(integration_data)
 
             # Validate required fields
             if "name" not in integration_data:
@@ -577,7 +577,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                     f"Unsupported pattern type. Supported: {supported}",
                 )
 
-            if not u.is_dict_like(configuration):
+            if not isinstance(configuration, Mapping):
                 return r[Mapping[str, t.GeneralValueType]].fail(
                     "Configuration must be a dictionary",
                 )
@@ -630,7 +630,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                     "Health data must be a dictionary",
                 )
 
-            validated_data = health_data.copy()
+            validated_data: dict[str, t.GeneralValueType] = dict(health_data)
 
             # Validate required health fields
             if "status" not in health_data:
@@ -694,7 +694,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Analyze response time
             if "average_response_time" in metrics:
                 response_time = metrics["average_response_time"]
-                if u.Guards.is_type(response_time, (int, float)):
+                if isinstance(response_time, (int, float)):
                     threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
                         "response_time_ms"
                     ]
@@ -709,7 +709,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Analyze success rate
             if "success_rate" in metrics:
                 success_rate = metrics["success_rate"]
-                if u.Guards.is_type(success_rate, (int, float)):
+                if isinstance(success_rate, (int, float)):
                     threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
                         "success_rate"
                     ]
@@ -725,7 +725,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Analyze error rate
             if "error_rate" in metrics:
                 error_rate = metrics["error_rate"]
-                if u.Guards.is_type(error_rate, (int, float)):
+                if isinstance(error_rate, (int, float)):
                     threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
                         "error_rate"
                     ]

@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import base64
 import json as json_module
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from typing import Self
 
 from flext_api import FlextApi
@@ -141,7 +141,7 @@ class FlextOracleOicClient:
         try:
             api_config = FlextApiSettings(base_url=self.auth_config.oauth_token_url)
             api_client = FlextApi(api_config)
-            oauth_data = {
+            oauth_data: dict[str, t.GeneralValueType] = {
                 key: self._to_api_payload(value) for key, value in data.items()
             }
             response_result = api_client.post("", data=oauth_data, headers=headers)
@@ -293,19 +293,7 @@ class FlextOracleOicClient:
         try:
             if client is None:
                 return FlextResult[object].fail("Client not available")
-            request_data: (
-                dict[
-                    str,
-                    Mapping[str, object]
-                    | Sequence[object]
-                    | bool
-                    | float
-                    | int
-                    | str
-                    | None,
-                ]
-                | None
-            ) = (
+            request_data: dict[str, t.GeneralValueType] | None = (
                 {key: self._to_api_payload(value) for key, value in json.items()}
                 if json is not None
                 else None
@@ -341,12 +329,12 @@ class FlextOracleOicClient:
 
     def _to_api_payload(
         self,
-        value: object,
-    ) -> Mapping[str, object] | Sequence[object] | bool | float | int | str | None:
+        value: t.GeneralValueType,
+    ) -> t.GeneralValueType:
         """Normalize GeneralValueType into flext-api request body value type."""
-        if u.Guards.is_type(value, (str, int, float, bool)) or value is None:
+        if isinstance(value, (str, int, float, bool)) or value is None:
             return value
-        if u.is_dict_like(value):
+        if isinstance(value, Mapping):
             return {str(key): self._to_api_payload(item) for key, item in value.items()}
         match value:
             case list() | tuple():
@@ -419,7 +407,7 @@ class FlextOracleOicClient:
         try:
             all_records: list[Mapping[str, t.GeneralValueType]] = []
             offset = 0
-            base_params: dict[str, str] = params or {}
+            base_params: dict[str, str] = dict(params) if params else {}
 
             while True:
                 # Prepare pagination parameters

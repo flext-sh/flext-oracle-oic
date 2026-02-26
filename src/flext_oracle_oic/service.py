@@ -113,9 +113,9 @@ class FlextOracleOicService(
     @staticmethod
     def _to_general_value(value: object) -> t.GeneralValueType:
         """Normalize arbitrary runtime values into GeneralValueType."""
-        if u.Guards.is_type(value, (str, int, float, bool)) or value is None:
+        if isinstance(value, (str, int, float, bool)) or value is None:
             return value
-        if u.is_dict_like(value):
+        if isinstance(value, Mapping):
             return {
                 str(k): FlextOracleOicService._to_general_value(v)
                 for k, v in value.items()
@@ -1012,11 +1012,7 @@ class FlextOracleOicService(
                     }
 
             # Validate health status using utilities
-            health_data_dict: dict[str, t.GeneralValueType] = (
-                health_data
-                if u.is_dict_like(health_data)
-                else {"status": str(health_data)}
-            )
+            health_data_dict: dict[str, t.GeneralValueType] = dict(health_data)
             validation_result = (
                 FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
                     health_data_dict,
