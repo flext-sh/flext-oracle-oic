@@ -7,8 +7,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
-
 from flext_oracle_oic import FlextOracleOicSettings
 
 # Current API uses a single settings class; alias for tests written for legacy nested config
@@ -25,7 +23,7 @@ class TestFlextOracleOicConnectionSettings:
         config = FlextOracleOicConnectionSettings()
 
         assert "integration.ocp.oraclecloud.com" in config.base_url
-        assert config.api_version in ("v1", "v2")
+        assert config.api_version in {"v1", "v2"}
         assert 1 <= config.request_timeout <= 300
         assert 0 <= config.max_retries <= 10
         assert isinstance(config.use_ssl, bool)
@@ -74,7 +72,11 @@ class TestFlextOracleOicAuthSettings:
         )
 
         assert config.oauth_client_id == "custom_client_id"
-        secret_val = config.oauth_client_secret.get_secret_value() if hasattr(config.oauth_client_secret, "get_secret_value") else config.oauth_client_secret
+        secret_val = (
+            config.oauth_client_secret.get_secret_value()
+            if hasattr(config.oauth_client_secret, "get_secret_value")
+            else config.oauth_client_secret
+        )
         assert secret_val == "custom_client_secret"
         assert (
             config.oauth_token_url
@@ -92,7 +94,7 @@ class TestOracleOicExtensionSettings:
         settings = OracleOicExtensionSettings()
 
         if hasattr(settings, "environment"):
-            assert settings.environment in ("development", "testing", "production")
+            assert settings.environment in {"development", "testing", "production"}
         if hasattr(settings, "log_level"):
             assert settings.log_level is not None
         if hasattr(settings, "debug"):
@@ -126,5 +128,9 @@ class TestOracleOicExtensionSettings:
         assert settings.base_url == "https://custom.integration.ocp.oraclecloud.com"
         assert settings.request_timeout == 60
         assert settings.oauth_client_id == "custom_client_id"
-        secret_val = settings.oauth_client_secret.get_secret_value() if hasattr(settings.oauth_client_secret, "get_secret_value") else settings.oauth_client_secret
+        secret_val = (
+            settings.oauth_client_secret.get_secret_value()
+            if hasattr(settings.oauth_client_secret, "get_secret_value")
+            else settings.oauth_client_secret
+        )
         assert secret_val == "custom_client_secret"
