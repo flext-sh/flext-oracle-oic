@@ -74,7 +74,7 @@ class TestFlextOracleOicAuthSettings:
         )
 
         assert config.oauth_client_id == "custom_client_id"
-        secret_val = getattr(config.oauth_client_secret, "get_secret_value", lambda: config.oauth_client_secret)()
+        secret_val = config.oauth_client_secret.get_secret_value() if hasattr(config.oauth_client_secret, "get_secret_value") else config.oauth_client_secret
         assert secret_val == "custom_client_secret"
         assert (
             config.oauth_token_url
@@ -126,5 +126,5 @@ class TestOracleOicExtensionSettings:
         assert settings.base_url == "https://custom.integration.ocp.oraclecloud.com"
         assert settings.request_timeout == 60
         assert settings.oauth_client_id == "custom_client_id"
-        secret_val = getattr(settings.oauth_client_secret, "get_secret_value", lambda: settings.oauth_client_secret)()
+        secret_val = settings.oauth_client_secret.get_secret_value() if hasattr(settings.oauth_client_secret, "get_secret_value") else settings.oauth_client_secret
         assert secret_val == "custom_client_secret"

@@ -314,9 +314,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return {
-            "base_url": getattr(self._config, "base_url", ""),
-            "api_version": getattr(self._config, "api_version", ""),
-            "request_timeout": getattr(self._config, "request_timeout", 30),
+            "base_url": self._config.base_url,
+            "api_version": self._config.api_version,
+            "request_timeout": self._config.request_timeout,
         }
 
     def get_auth_context(self) -> Mapping[str, t.GeneralValueType]:
@@ -327,9 +327,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return {
-            "oauth_client_id": getattr(self._config, "oauth_client_id", ""),
-            "oauth_token_url": getattr(self._config, "oauth_token_url", ""),
-            "oauth_scope": getattr(self._config, "oauth_scope", ""),
+            "oauth_client_id": self._config.oauth_client_id,
+            "oauth_token_url": self._config.oauth_token_url,
+            "oauth_scope": self._config.oauth_scope,
         }
 
     def get_features_context(self) -> Mapping[str, t.GeneralValueType]:
@@ -340,9 +340,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return {
-            "enable_monitoring": getattr(self._config, "enable_monitoring", False),
-            "use_ssl": getattr(self._config, "use_ssl", True),
-            "verify_ssl": getattr(self._config, "verify_ssl", True),
+            "enable_monitoring": self._config.enable_monitoring,
+            "use_ssl": self._config.use_ssl,
+            "verify_ssl": self._config.verify_ssl,
         }
 
     # Service Access

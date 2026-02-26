@@ -88,7 +88,7 @@ class FlextOracleOicService(
                     base_url=str(self.settings.base_url),
                     timeout=self.settings.request_timeout,
                     headers={
-                        "Authorization": f"Bearer {(getattr(self._authenticator, 'refresh_token', lambda: '')() if self._authenticator else '')}",
+                        "Authorization": f"Bearer {(self._authenticator.refresh_token() if hasattr(self._authenticator, 'refresh_token') and callable(getattr(self._authenticator, 'refresh_token')) else '') if self._authenticator else ''}",
                         "Content-Type": "application/json",
                     },
                 )
@@ -726,7 +726,11 @@ class FlextOracleOicService(
             if not self._authenticator:
                 return FlextResult[str].fail("Authenticator not initialized")
 
-            refresh_fn = getattr(self._authenticator, "refresh_token", None)
+            refresh_fn = (
+                self._authenticator.refresh_token
+                if hasattr(self._authenticator, "refresh_token")
+                else None
+            )
             if not callable(refresh_fn):
                 return FlextResult[str].fail("Authenticator has no refresh_token")
             token = refresh_fn()
@@ -749,7 +753,11 @@ class FlextOracleOicService(
         try:
             if not self._authenticator:
                 return FlextResult[bool].fail("Authenticator not initialized")
-            validate_fn = getattr(self._authenticator, "validate_token", None)
+            validate_fn = (
+                self._authenticator.validate_token
+                if hasattr(self._authenticator, "validate_token")
+                else None
+            )
             if not callable(validate_fn):
                 return FlextResult[bool].fail("Authenticator has no validate_token")
             is_valid = validate_fn(token)

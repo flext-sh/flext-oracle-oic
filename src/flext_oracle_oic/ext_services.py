@@ -176,7 +176,7 @@ class FlextOracleOicExtServices(
 
         def _get_or_create_client(self) -> r[FlextOracleOicClient]:
             """Get existing client or create new one."""
-            client = getattr(self, "_client", None)
+            client = self._client if hasattr(self, "_client") else None
             if client:
                 return r[FlextOracleOicClient].ok(client)
 
@@ -521,7 +521,7 @@ class FlextOracleOicExtServices(
             exc_tb: object,
         ) -> None:
             """Context manager exit."""
-            client = getattr(self, "_client", None)
+            client = self._client if hasattr(self, "_client") else None
             if client:
                 client.__exit__(exc_type, exc_val, exc_tb)
                 object.__setattr__(self, "_client", None)

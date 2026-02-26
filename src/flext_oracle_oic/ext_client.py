@@ -172,7 +172,7 @@ class FlextOracleOicClient:
         """Parse access token from OAuth response."""
         try:
             # Handle response.body properly - it could be str, dict, or None
-            body = getattr(response, "body", None)
+            body = response.body if hasattr(response, "body") else None
             if body is None:
                 return FlextResult[str].fail("Invalid response format")
 
@@ -359,8 +359,8 @@ class FlextOracleOicClient:
         """Parse API response based on content type."""
         try:
             # Parse response body properly - it could be str, dict, or None
-            headers = getattr(response, "headers", None)
-            body = getattr(response, "body", None)
+            headers = response.headers if hasattr(response, "headers") else None
+            body = response.body if hasattr(response, "body") else None
             match headers:
                 case Mapping():
                     content_type = str(headers.get("content-type", ""))
@@ -592,7 +592,7 @@ class FlextOracleOicClient:
     ) -> None:
         """Context manager exit."""
         if self._client is not None:
-            close_fn = getattr(self._client, "close", None)
+            close_fn = self._client.close if hasattr(self._client, "close") else None
             if callable(close_fn):
                 close_fn()
             self._client = None
