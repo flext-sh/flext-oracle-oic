@@ -916,7 +916,7 @@ class FlextOracleOicService(
 
     # Monitoring Methods (from MonitoringService)
 
-    def get_health_status(self) -> FlextResult[dict]:
+    def get_health_status(self) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Get Oracle OIC health status using FlextOracleOicUtilities.
 
         Returns:
@@ -1059,7 +1059,7 @@ class FlextOracleOicService(
                 else FlextResult[dict].ok(error_health)
             )
 
-    def get_performance_metrics(self) -> FlextResult[dict]:
+    def get_performance_metrics(self) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Get Oracle OIC performance metrics with analysis using FlextOracleOicUtilities.
 
         Returns:

@@ -26,12 +26,6 @@ class TestsFlextOracleOicModels(FlextTestsModels, FlextOracleOicModels):
     - m.* (production models via alternative alias)
     """
 
-    class Tests:
-        """Project-specific test fixtures namespace."""
-
-        class OracleOic:
-            """Oracle OIC-specific test fixtures."""
-
 
 # Short aliases per FLEXT convention
 tm = TestsFlextOracleOicModels

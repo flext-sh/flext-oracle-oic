@@ -22,15 +22,6 @@ class TestsFlextOracleOicProtocols(FlextTestsProtocols, FlextOracleOicProtocols)
     - p.OracleOic.* (from FlextOracleOicProtocols)
     """
 
-    class Tests:
-        """Project-specific test protocols.
-
-        Extends FlextTestsProtocols.Tests with OracleOic-specific protocols.
-        """
-
-        class OracleOic:
-            """OracleOic-specific test protocols."""
-
 
 # Runtime aliases
 p = TestsFlextOracleOicProtocols
