@@ -494,7 +494,9 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class AuthenticationProtocol(FlextProtocols.Service[Mapping[str, FlextTypes.GeneralValueType]], Protocol):
+        class AuthenticationProtocol(
+            FlextProtocols.Service[Mapping[str, FlextTypes.GeneralValueType]], Protocol
+        ):
             """Protocol for Oracle OIC authentication operations."""
 
             def authenticate(

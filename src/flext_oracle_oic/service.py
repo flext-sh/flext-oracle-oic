@@ -620,7 +620,9 @@ class FlextOracleOicService(
             client = client_result.value
             # Execute app-driven orchestration using make_request
             endpoint = f"/integrations/{integration_id}/connections"
-            payload_dict: dict[str, t.GeneralValueType] = dict(payload) if u.is_dict_like(payload) else {}
+            payload_dict: dict[str, t.GeneralValueType] = (
+                dict(payload) if u.is_dict_like(payload) else {}
+            )
             orchestration_result = client.make_request(
                 "POST",
                 endpoint,
