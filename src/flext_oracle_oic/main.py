@@ -19,11 +19,11 @@ from typing import NoReturn
 from flext_core import (
     FlextContainer,
     FlextContext,
-    FlextDispatcher,
     FlextRegistry,
     FlextResult,
     FlextService,
 )
+from flext_core.protocols import p
 from flext_oracle_oic import __version__
 from flext_oracle_oic.factory import create_development_oic_service
 from flext_oracle_oic.models import FlextOracleOicModels
@@ -51,7 +51,7 @@ class FlextOracleOicCli(FlextService[None]):
         # Complete FLEXT ecosystem integration for CLI
         self._container = FlextContainer.get_global()
         self._context = FlextContext()
-        self._dispatcher = FlextDispatcher()
+        self._dispatcher = self._container.get("command_bus").unwrap()
         self._registry = FlextRegistry(dispatcher=self._dispatcher)
 
     def execute(self) -> FlextResult[None]:

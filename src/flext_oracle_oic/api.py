@@ -17,11 +17,11 @@ from typing import Self
 from flext_core import (
     FlextContainer,
     FlextContext,
-    FlextDispatcher,
     FlextRegistry,
     FlextResult,
     FlextService,
 )
+from flext_core.protocols import p
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
 from flext_oracle_oic.settings import FlextOracleOicSettings
@@ -66,7 +66,7 @@ class FlextOracleOicApi(FlextService[None]):
         # Complete FLEXT ecosystem integration
         self._container = FlextContainer.get_global()
         self._context = FlextContext()
-        self._dispatcher = FlextDispatcher()
+        self._dispatcher = self._container.get("command_bus").unwrap()
         self._registry = FlextRegistry(dispatcher=self._dispatcher)
 
         # Initialize Oracle OIC service

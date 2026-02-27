@@ -22,7 +22,6 @@ from flext_api.settings import FlextApiSettings
 from flext_core import (
     FlextContainer,
     FlextContext,
-    FlextDispatcher,
     FlextLogger,
     FlextRegistry,
     FlextResult,
@@ -30,6 +29,7 @@ from flext_core import (
     t,
     u,
 )
+from flext_core.protocols import p
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import (
     FlextOracleOicClient,
@@ -69,7 +69,7 @@ class FlextOracleOicService(
         self._container = FlextContainer.get_global()
         context_obj = FlextContext()
         self._context = context_obj
-        self._dispatcher = FlextDispatcher()
+        self._dispatcher = self._container.get("command_bus").unwrap()
         self._registry = FlextRegistry(dispatcher=self._dispatcher)
 
         # Service registered in container for dependency injection
@@ -1065,7 +1065,7 @@ class FlextOracleOicService(
         try:
             metrics_data: dict[str, t.GeneralValueType]
             if not self._monitoring_client:
-                # Mock perform[dict[str, t.GeneralValueType]]etrics response
+                # Mock performance metrics response
                 metrics_data = {
                     "active_integrations": 0,
                     "total_executions": 0,
