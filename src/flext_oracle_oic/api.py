@@ -69,9 +69,6 @@ class FlextOracleOicApi(FlextService[None]):
         self._dispatcher = FlextDispatcher()
         self._registry = FlextRegistry(dispatcher=self._dispatcher)
 
-        # Initialize logger
-        # Logger is inherited from FlextService
-
         # Initialize Oracle OIC service
         self._service = FlextOracleOicService()
 
@@ -82,8 +79,6 @@ class FlextOracleOicApi(FlextService[None]):
     def _create_service(self) -> FlextOracleOicService:
         """Create unified Oracle OIC service instance."""
         return FlextOracleOicService()
-
-    # Integration Management
 
     def list_integrations(
         self,
