@@ -21,7 +21,6 @@ from flext_core import (
     FlextResult,
     FlextService,
 )
-from flext_core.protocols import p
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
 from flext_oracle_oic.settings import FlextOracleOicSettings

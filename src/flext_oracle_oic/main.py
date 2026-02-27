@@ -23,7 +23,6 @@ from flext_core import (
     FlextResult,
     FlextService,
 )
-from flext_core.protocols import p
 from flext_oracle_oic import __version__
 from flext_oracle_oic.factory import create_development_oic_service
 from flext_oracle_oic.models import FlextOracleOicModels
