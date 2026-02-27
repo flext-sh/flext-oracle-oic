@@ -68,8 +68,8 @@ class FlextOracleOicService(
         self._container = FlextContainer.get_global()
         context_obj = FlextContext()
         self._context = context_obj
-        self._dispatcher = self._container.get("command_bus").unwrap()
-        self._registry = FlextRegistry(dispatcher=self._dispatcher)
+        self._dispatcher = None  # CommandBus not required for service
+        self._registry = FlextRegistry(dispatcher=None)
 
         # Service registered in container for dependency injection
 
@@ -83,11 +83,17 @@ class FlextOracleOicService(
 
             # Create HTTP monitoring client if monitoring is enabled
             if self.settings.enable_monitoring:
+                # Get auth token from authenticator if available
+                auth_token = ""
+                if self._authenticator:
+                    refresh_fn = getattr(self._authenticator, "refresh_token", None)
+                    if callable(refresh_fn):
+                        auth_token = refresh_fn()
                 api_config = FlextApiSettings(
                     base_url=str(self.settings.base_url),
                     timeout=self.settings.request_timeout,
                     headers={
-                        "Authorization": f"Bearer {(self._authenticator.refresh_token() if hasattr(self._authenticator, 'refresh_token') and callable(getattr(self._authenticator, 'refresh_token')) else '') if self._authenticator else ''}",
+                        "Authorization": f"Bearer {auth_token}",
                         "Content-Type": "application/json",
                     },
                 )
@@ -614,7 +620,7 @@ class FlextOracleOicService(
             client = client_result.value
             # Execute app-driven orchestration using make_request
             endpoint = f"/integrations/{integration_id}/connections"
-            payload_dict = dict(payload) if u.is_dict_like(payload) else {}
+            payload_dict: dict[str, t.GeneralValueType] = dict(payload) if u.is_dict_like(payload) else {}
             orchestration_result = client.make_request(
                 "POST",
                 endpoint,
@@ -725,11 +731,7 @@ class FlextOracleOicService(
             if not self._authenticator:
                 return FlextResult[str].fail("Authenticator not initialized")
 
-            refresh_fn = (
-                self._authenticator.refresh_token
-                if hasattr(self._authenticator, "refresh_token")
-                else None
-            )
+            refresh_fn = getattr(self._authenticator, "refresh_token", None)
             if not callable(refresh_fn):
                 return FlextResult[str].fail("Authenticator has no refresh_token")
             token = refresh_fn()
@@ -752,11 +754,7 @@ class FlextOracleOicService(
         try:
             if not self._authenticator:
                 return FlextResult[bool].fail("Authenticator not initialized")
-            validate_fn = (
-                self._authenticator.validate_token
-                if hasattr(self._authenticator, "validate_token")
-                else None
-            )
+            validate_fn = getattr(self._authenticator, "validate_token", None)
             if not callable(validate_fn):
                 return FlextResult[bool].fail("Authenticator has no validate_token")
             is_valid = validate_fn(token)
@@ -959,7 +957,7 @@ class FlextOracleOicService(
                                 str(k): self._to_general_value(v)
                                 for k, v in response.body.items()
                             }
-                            if u.is_dict_like(response.body)
+                            if isinstance(response.body, dict)
                             else {"raw": self._to_general_value(response.body)}
                         )
                         health_data = {
@@ -1022,7 +1020,7 @@ class FlextOracleOicService(
             self.logger.warning(
                 f"Health status validation failed: {validation_result.error}",
             )
-            return FlextResult[dict].ok(health_data_dict)
+            return FlextResult[Mapping[str, t.GeneralValueType]].ok(health_data_dict)
 
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             self.logger.exception("Health check failed")
@@ -1051,7 +1049,7 @@ class FlextOracleOicService(
             return (
                 validation_result
                 if validation_result.is_success
-                else FlextResult[dict].ok(error_health)
+                else FlextResult[Mapping[str, t.GeneralValueType]].ok(error_health)
             )
 
     def get_performance_metrics(self) -> FlextResult[Mapping[str, t.GeneralValueType]]:
@@ -1090,7 +1088,7 @@ class FlextOracleOicService(
                                 str(k): self._to_general_value(v)
                                 for k, v in response.body.items()
                             }
-                            if u.is_dict_like(response.body)
+                            if isinstance(response.body, dict)
                             else {}
                         )
                     else:
@@ -1121,12 +1119,12 @@ class FlextOracleOicService(
             )
 
             if analysis_result.is_success:
-                return FlextResult[dict].ok({
+                return FlextResult[Mapping[str, t.GeneralValueType]].ok({
                     **metrics_dict,
                     "analysis": analysis_result.value,
                 })
             self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
-            return FlextResult[dict].ok(metrics_dict)
+            return FlextResult[Mapping[str, t.GeneralValueType]].ok(metrics_dict)
 
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             self.logger.exception("Performance metrics failed")
@@ -1145,14 +1143,15 @@ class FlextOracleOicService(
                 )
             )
             if analysis_result.is_success:
-                return FlextResult[dict].ok({
+                return FlextResult[Mapping[str, t.GeneralValueType]].ok({
                     **error_metrics,
                     "analysis": analysis_result.value,
                 })
-            return FlextResult[dict].ok(error_metrics)
+            return FlextResult[Mapping[str, t.GeneralValueType]].ok(error_metrics)
 
     # Business Rules Validation
 
+    @override
     def validate_business_rules(self) -> FlextResult[bool]:
         """Validate Oracle OIC service business rules.
 

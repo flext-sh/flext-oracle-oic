@@ -14,7 +14,7 @@ from __future__ import annotations
 import base64
 import json as json_module
 from collections.abc import Mapping
-from typing import Self
+from typing import Self, cast
 
 from flext_api import FlextApi
 from flext_api.settings import FlextApiSettings
@@ -172,7 +172,7 @@ class FlextOracleOicClient:
         """Parse access token from OAuth response."""
         try:
             # Handle response.body properly - it could be str, dict, or None
-            body = response.body if hasattr(response, "body") else None
+            body = getattr(response, "body", None)
             if body is None:
                 return FlextResult[str].fail("Invalid response format")
 
@@ -347,8 +347,8 @@ class FlextOracleOicClient:
         """Parse API response based on content type."""
         try:
             # Parse response body properly - it could be str, dict, or None
-            headers = response.headers if hasattr(response, "headers") else None
-            body = response.body if hasattr(response, "body") else None
+            headers = getattr(response, "headers", None)
+            body = getattr(response, "body", None)
             match headers:
                 case Mapping():
                     content_type = str(headers.get("content-type", ""))
@@ -356,7 +356,7 @@ class FlextOracleOicClient:
                     if content_type.startswith("application/json"):
                         if u.is_dict_like(body):
                             return FlextResult[Mapping[str, t.GeneralValueType]].ok(
-                                dict(body)
+                                cast("Mapping[str, t.GeneralValueType]", body)
                             )
                         match body:
                             case str():
@@ -377,7 +377,7 @@ class FlextOracleOicClient:
                             })
                         case _ if u.is_dict_like(body):
                             return FlextResult[Mapping[str, t.GeneralValueType]].ok(
-                                dict(body)
+                                cast("Mapping[str, t.GeneralValueType]", body)
                             )
                         case _:
                             return FlextResult[Mapping[str, t.GeneralValueType]].ok({
@@ -437,13 +437,13 @@ class FlextOracleOicClient:
                     )
 
                 items_raw = response_data.get("items", [])
-                if not u.is_list_like(items_raw):
+                if not isinstance(items_raw, list):
                     return FlextResult[list[Mapping[str, t.GeneralValueType]]].fail(
                         "Invalid items format",
                     )
                 # Build typed list from validated items
                 items: list[dict[str, t.GeneralValueType]] = [
-                    dict(item) for item in items_raw if u.is_dict_like(item)
+                    dict(item) for item in items_raw if isinstance(item, dict)
                 ]
 
                 # Add items to collection
@@ -580,7 +580,7 @@ class FlextOracleOicClient:
     ) -> None:
         """Context manager exit."""
         if self._client is not None:
-            close_fn = self._client.close if hasattr(self._client, "close") else None
+            close_fn = getattr(self._client, "close", None)
             if callable(close_fn):
                 close_fn()
             self._client = None

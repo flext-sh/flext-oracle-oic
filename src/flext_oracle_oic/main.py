@@ -14,7 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from typing import NoReturn
+from typing import NoReturn, override
 
 from flext_core import (
     FlextContainer,
@@ -50,9 +50,10 @@ class FlextOracleOicCli(FlextService[None]):
         # Complete FLEXT ecosystem integration for CLI
         self._container = FlextContainer.get_global()
         self._context = FlextContext()
-        self._dispatcher = self._container.get("command_bus").unwrap()
-        self._registry = FlextRegistry(dispatcher=self._dispatcher)
+        self._dispatcher = None  # CommandBus not required for CLI
+        self._registry = FlextRegistry(dispatcher=None)
 
+    @override
     def execute(self) -> FlextResult[None]:
         """Execute main CLI operation - run with default arguments."""
         exit_code = self.run_cli()

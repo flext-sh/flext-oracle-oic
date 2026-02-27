@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Self
+from typing import Self, override
 
 from flext_core import (
     FlextContainer,
@@ -65,8 +65,8 @@ class FlextOracleOicApi(FlextService[None]):
         # Complete FLEXT ecosystem integration
         self._container = FlextContainer.get_global()
         self._context = FlextContext()
-        self._dispatcher = self._container.get("command_bus").unwrap()
-        self._registry = FlextRegistry(dispatcher=self._dispatcher)
+        self._dispatcher = None  # CommandBus not required for API facade
+        self._registry = FlextRegistry(dispatcher=None)
 
         # Initialize Oracle OIC service
         self._service = FlextOracleOicService()
@@ -74,6 +74,15 @@ class FlextOracleOicApi(FlextService[None]):
         # Initialize context with OIC-specific information
         self._context.set("oracle_oic_base_url", self._oic_config.base_url)
         self._context.set("oracle_oic_api_version", self._oic_config.api_version)
+
+    @override
+    @override
+    def execute(self) -> FlextResult[None]:
+        """Execute Oracle OIC API operations - delegates to service."""
+        result = self._get_service().execute()
+        return result.map(lambda _: None)  # Convert list result to None
+        """Execute Oracle OIC API operations - delegates to service."""
+        return self._get_service().execute()
 
     def _create_service(self) -> FlextOracleOicService:
         """Create unified Oracle OIC service instance."""

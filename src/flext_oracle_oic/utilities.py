@@ -346,7 +346,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated secret or error
 
             """
-            if not u.Guards.is_type(client_secret, SecretStr):
+            if not isinstance(client_secret, SecretStr):
                 return r[SecretStr].fail(
                     "OAuth client secret must be SecretStr",
                 )
@@ -520,16 +520,16 @@ class FlextOracleOicUtilities(FlextUtilities):
                 [
                     dict(endpoint)
                     for endpoint in endpoints_raw
-                    if u.is_dict_like(endpoint)
+                    if isinstance(endpoint, dict)
                 ]
-                if u.is_list_like(endpoints_raw)
+                if isinstance(endpoints_raw, list)
                 else []
             )
             connections: list[t.GeneralValueType] = (
-                list(connections_raw) if u.is_list_like(connections_raw) else []
+                list(connections_raw) if isinstance(connections_raw, list) else []
             )
             mappings: list[t.GeneralValueType] = (
-                list(mappings_raw) if u.is_list_like(mappings_raw) else []
+                list(mappings_raw) if isinstance(mappings_raw, list) else []
             )
 
             # Message Router: Multiple target endpoints from single source
@@ -647,13 +647,13 @@ class FlextOracleOicUtilities(FlextUtilities):
             # Validate components if present
             if "components" in health_data:
                 components = health_data["components"]
-                if not u.is_dict_like(components):
+                if not isinstance(components, dict):
                     return r[Mapping[str, t.GeneralValueType]].fail(
                         "Components must be a dictionary",
                     )
 
                 for component_name, component_data in components.items():
-                    if not u.is_dict_like(component_data):
+                    if not isinstance(component_data, dict):
                         return r[Mapping[str, t.GeneralValueType]].fail(
                             f"Component {component_name} data must be a dictionary",
                         )

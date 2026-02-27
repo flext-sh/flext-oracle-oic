@@ -354,7 +354,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class LifecycleProtocol(FlextProtocols.Service, Protocol):
+        class LifecycleProtocol(FlextProtocols.Service[bool], Protocol):
             """Protocol for Oracle OIC lifecycle management operations."""
 
             def initialize_environment(
@@ -414,7 +414,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class HTTPClientProtocol(FlextProtocols.Service, Protocol):
+        class HTTPClientProtocol(FlextProtocols.Service[object], Protocol):
             """Protocol for HTTP client operations used by Oracle OIC services."""
 
             def get(
@@ -494,7 +494,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class AuthenticationProtocol(FlextProtocols.Service, Protocol):
+        class AuthenticationProtocol(FlextProtocols.Service[Mapping[str, FlextTypes.GeneralValueType]], Protocol):
             """Protocol for Oracle OIC authentication operations."""
 
             def authenticate(

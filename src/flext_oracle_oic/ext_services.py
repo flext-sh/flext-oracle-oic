@@ -42,6 +42,14 @@ class FlextOracleOicExtServices(
     Contains all service functionality as nested classes following FLEXT principles.
     """
 
+    @override
+    def execute(
+        self: Self,
+    ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+        """Execute main service operation - delegates to nested service."""
+        service = self.OracleOicExtensionService()
+        return service.execute()
+
     class HTTPClientProtocol(Protocol):
         """Protocol for HTTP client used by MonitoringService."""
 
@@ -77,6 +85,7 @@ class FlextOracleOicExtServices(
 
         # Service-specific fields
         settings: FlextOracleOicSettings
+        _client: FlextOracleOicClient | None = None
 
         @override
         def __init__(self, **data: object) -> None:
@@ -111,6 +120,7 @@ class FlextOracleOicExtServices(
             # Railway-oriented execution - delegate to list_integrations
             return self.list_integrations()
 
+        @override
         def validate_business_rules(self: Self) -> r[bool]:
             """Validate Oracle OIC service business rules using FlextOracleOicUtilities.
 
@@ -256,7 +266,7 @@ class FlextOracleOicExtServices(
             """Create client instance."""
             try:
                 client = FlextOracleOicClient(connection_config, auth_config)
-                self._client = client
+                object.__setattr__(self, "_client", client)
                 return r[FlextOracleOicClient].ok(client)
             except (
                 ConnectionError,
