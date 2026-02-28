@@ -27,7 +27,7 @@ if TYPE_CHECKING:
     )
     from flext_oracle_oic.ext_client import FlextOracleOicClient
     from flext_oracle_oic.factory import FlextOracleOicFactory
-    from flext_oracle_oic.models import m
+    from flext_oracle_oic.models import FlextOracleOicModels, m
     from flext_oracle_oic.protocols import (
         FlextOracleOicProtocols,
         FlextOracleOicProtocols as p,
@@ -37,7 +37,7 @@ if TYPE_CHECKING:
         FlextOracleOicSettings,
         FlextOracleOicSettings as s,
     )
-    from flext_oracle_oic.typings import t, FlextOracleOicTypes
+    from flext_oracle_oic.typings import FlextOracleOicTypes, t
     from flext_oracle_oic.utilities import (
         FlextOracleOicUtilities,
         FlextOracleOicUtilities as u,
