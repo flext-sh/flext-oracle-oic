@@ -144,6 +144,7 @@ class FlextOracleOicConstants(FlextConstants):
 
         # Integration Versions
         DEFAULT_VERSION: Final[str] = "01.00.0000"
+        DEFAULT_VERSION_FALLBACK: Final[str] = "1.0"
         MIN_VERSION_LENGTH: Final[int] = 1
         MAX_VERSION_LENGTH: Final[int] = 50
 

@@ -421,7 +421,7 @@ class FlextOracleOicClient:
 
                 # Make request
                 response_result = self.make_request(
-                    "GET",
+                    FlextOracleOicConstants.API.Method.GET,
                     endpoint,
                     params=request_params,
                 )
@@ -522,7 +522,7 @@ class FlextOracleOicClient:
         integration_data: Mapping[str, t.GeneralValueType],
     ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Create integration in OIC."""
-        return self.make_request("POST", "/integrations", json=integration_data)
+        return self.make_request(FlextOracleOicConstants.API.Method.POST, "/integrations", json=integration_data)
 
     def update_integration(
         self,
@@ -534,7 +534,7 @@ class FlextOracleOicClient:
         json_data: dict[str, t.GeneralValueType] = {
             str(k): str(v) for k, v in integration_data.items()
         }
-        return self.make_request("PUT", endpoint, json=json_data)
+        return self.make_request(FlextOracleOicConstants.API.Method.PUT, endpoint, json=json_data)
 
     def create_connection(
         self,
@@ -544,7 +544,7 @@ class FlextOracleOicClient:
         json_data: dict[str, t.GeneralValueType] = {
             str(k): str(v) for k, v in connection_data.items()
         }
-        return self.make_request("POST", "/connections", json=json_data)
+        return self.make_request(FlextOracleOicConstants.API.Method.POST, "/connections", json=json_data)
 
     def execute_scheduled_orchestration(
         self,
@@ -554,7 +554,7 @@ class FlextOracleOicClient:
     ) -> Mapping[str, t.GeneralValueType]:
         """Execute scheduled orchestration for an integration."""
         endpoint = f"/integrations/{integration_id}/schedules"
-        result = self.make_request("POST", endpoint, json=schedule_config)
+        result = self.make_request(FlextOracleOicConstants.API.Method.POST, endpoint, json=schedule_config)
         return result.value if result.is_success else {}
 
     def execute_file_transfer(
@@ -565,7 +565,7 @@ class FlextOracleOicClient:
     ) -> Mapping[str, t.GeneralValueType]:
         """Execute file transfer pattern for an integration."""
         endpoint = f"/integrations/{integration_id}/files"
-        result = self.make_request("POST", endpoint, json=file_config)
+        result = self.make_request(FlextOracleOicConstants.API.Method.POST, endpoint, json=file_config)
         return result.value if result.is_success else {}
 
     def __enter__(self) -> Self:
