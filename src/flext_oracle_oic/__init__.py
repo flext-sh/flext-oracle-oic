@@ -53,18 +53,37 @@ if TYPE_CHECKING:
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextOracleOicApi": ("flext_oracle_oic.api", "FlextOracleOicApi"),
     "FlextOracleOicClient": ("flext_oracle_oic.ext_client", "FlextOracleOicClient"),
-    "FlextOracleOicConstants": ("flext_oracle_oic.constants", "FlextOracleOicConstants"),
-    "FlextOracleOicDeprecationWarning": ("flext_oracle_oic.factory", "FlextOracleOicDeprecationWarning"),
+    "FlextOracleOicConstants": (
+        "flext_oracle_oic.constants",
+        "FlextOracleOicConstants",
+    ),
+    "FlextOracleOicDeprecationWarning": (
+        "flext_oracle_oic.factory",
+        "FlextOracleOicDeprecationWarning",
+    ),
     "FlextOracleOicFactory": ("flext_oracle_oic.factory", "FlextOracleOicFactory"),
-    "FlextOracleOicProtocols": ("flext_oracle_oic.protocols", "FlextOracleOicProtocols"),
+    "FlextOracleOicModels": ("flext_oracle_oic.models", "FlextOracleOicModels"),
+    "FlextOracleOicProtocols": (
+        "flext_oracle_oic.protocols",
+        "FlextOracleOicProtocols",
+    ),
     "FlextOracleOicService": ("flext_oracle_oic.service", "FlextOracleOicService"),
     "FlextOracleOicSettings": ("flext_oracle_oic.settings", "FlextOracleOicSettings"),
-    "FlextOracleOicUtilities": ("flext_oracle_oic.utilities", "FlextOracleOicUtilities"),
+    "FlextOracleOicUtilities": (
+        "flext_oracle_oic.utilities",
+        "FlextOracleOicUtilities",
+    ),
     "__version__": ("flext_oracle_oic.__version__", "__version__"),
     "__version_info__": ("flext_oracle_oic.__version__", "__version_info__"),
     "c": ("flext_oracle_oic.constants", "FlextOracleOicConstants"),
-    "create_development_oic_service": ("flext_oracle_oic.factory", "create_development_oic_service"),
-    "create_oic_extension_service": ("flext_oracle_oic.factory", "create_oic_extension_service"),
+    "create_development_oic_service": (
+        "flext_oracle_oic.factory",
+        "create_development_oic_service",
+    ),
+    "create_oic_extension_service": (
+        "flext_oracle_oic.factory",
+        "create_oic_extension_service",
+    ),
     "d": ("flext_core", "FlextDecorators"),
     "e": ("flext_core", "FlextExceptions"),
     "h": ("flext_core", "FlextHandlers"),
