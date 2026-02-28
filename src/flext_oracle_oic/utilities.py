@@ -346,10 +346,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             FlextResult containing validated secret or error
 
             """
-            if not isinstance(client_secret, SecretStr):
-                return r[SecretStr].fail(
-                    "OAuth client secret must be SecretStr",
-                )
+            # client_secret is already SecretStr from type annotation
 
             secret_value = client_secret.get_secret_value()
             if not secret_value or not secret_value.strip():
@@ -557,7 +554,7 @@ class FlextOracleOicUtilities(FlextUtilities):
         @staticmethod
         def validate_pattern_configuration(
             pattern_type: str,
-            configuration: Mapping[str, t.GeneralValueType] | object,
+            configuration: Mapping[str, t.GeneralValueType],
         ) -> r[Mapping[str, t.GeneralValueType]]:
             """Validate Oracle OIC integration pattern configuration.
 
@@ -577,10 +574,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                     f"Unsupported pattern type. Supported: {supported}",
                 )
 
-            if not isinstance(configuration, Mapping):
-                return r[Mapping[str, t.GeneralValueType]].fail(
-                    "Configuration must be a dictionary",
-                )
+            # configuration is guaranteed to be Mapping from type annotation
 
             validated_config = dict(configuration)
 
