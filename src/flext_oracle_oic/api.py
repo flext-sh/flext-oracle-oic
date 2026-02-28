@@ -369,7 +369,7 @@ class FlextOracleOicApi(FlextService[None]):
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
-        exc_tb: t.GeneralValueType,
+        exc_tb: object,
     ) -> None:
         """Async context manager exit."""
         # Log service stop

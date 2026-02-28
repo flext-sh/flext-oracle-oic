@@ -168,7 +168,7 @@ class FlextOracleOicClient:
             self.logger.exception(error_msg)
             return FlextResult[t.GeneralValueType].fail(error_msg)
 
-    def _parse_token_response(self, response: object) -> FlextResult[str]:
+    def _parse_token_response(self, response: t.GeneralValueType) -> FlextResult[str]:
         """Parse access token from OAuth response."""
         try:
             # Handle response.body properly - it could be str, dict, or None
@@ -342,7 +342,7 @@ class FlextOracleOicClient:
         return str(value)
 
     def _parse_api_response(
-        self, response: object
+        self, response: t.GeneralValueType
     ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Parse API response based on content type."""
         try:
@@ -550,7 +550,7 @@ class FlextOracleOicClient:
         self,
         integration_id: str,
         schedule_config: Mapping[str, t.GeneralValueType],
-        **_kwargs: object,
+        **_kwargs: t.GeneralValueType,
     ) -> Mapping[str, t.GeneralValueType]:
         """Execute scheduled orchestration for an integration."""
         endpoint = f"/integrations/{integration_id}/schedules"
@@ -561,7 +561,7 @@ class FlextOracleOicClient:
         self,
         integration_id: str,
         file_config: Mapping[str, t.GeneralValueType],
-        **_kwargs: object,
+        **_kwargs: t.GeneralValueType,
     ) -> Mapping[str, t.GeneralValueType]:
         """Execute file transfer pattern for an integration."""
         endpoint = f"/integrations/{integration_id}/files"

@@ -150,7 +150,7 @@ class FlextOracleOicTypes(FlextTypes):
         ]
         type TransformationResult = dict[
             str,
-            bool | object | dict[str, FlextTypes.JsonValue],
+            bool | t.GeneralValueType | dict[str, FlextTypes.JsonValue],
         ]
         type TransformationMetrics = dict[
             str,

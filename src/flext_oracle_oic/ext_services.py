@@ -182,7 +182,7 @@ class FlextOracleOicExtServices(
 
             """
             # Railway-oriented client creation
-            return r[object].ok(None).flat_map(lambda _: self._get_or_create_client())
+            return r[FlextOracleOicClient].ok(None).flat_map(lambda _: self._get_or_create_client())
 
         def _get_or_create_client(self) -> r[FlextOracleOicClient]:
             """Get existing client or create new one."""
@@ -192,7 +192,7 @@ class FlextOracleOicExtServices(
 
             # Create new client using railway pattern
             return (
-                r[object]
+                r[FlextOracleOicClient]
                 .ok(None)
                 .flat_map(lambda _: self._create_auth_config())
                 .flat_map(
