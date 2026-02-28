@@ -65,7 +65,7 @@ class FlextOracleOicApi(FlextService[None]):
         # Complete FLEXT ecosystem integration
         self._container = FlextContainer.get_global()
         self._context = FlextContext()
-        self._dispatcher = None  # CommandBus not required for API facade
+        self._dispatcher: object | None = None  # CommandBus not required for API facade
         self._registry = FlextRegistry(dispatcher=None)
 
         # Initialize Oracle OIC service
@@ -76,13 +76,10 @@ class FlextOracleOicApi(FlextService[None]):
         self._context.set("oracle_oic_api_version", self._oic_config.api_version)
 
     @override
-    @override
     def execute(self) -> FlextResult[None]:
         """Execute Oracle OIC API operations - delegates to service."""
         result = self._get_service().execute()
         return result.map(lambda _: None)  # Convert list result to None
-        """Execute Oracle OIC API operations - delegates to service."""
-        return self._get_service().execute()
 
     def _create_service(self) -> FlextOracleOicService:
         """Create unified Oracle OIC service instance."""

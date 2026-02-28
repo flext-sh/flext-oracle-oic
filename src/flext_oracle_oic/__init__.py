@@ -37,7 +37,7 @@ if TYPE_CHECKING:
         FlextOracleOicSettings,
         FlextOracleOicSettings as s,
     )
-    from flext_oracle_oic.typings import t
+    from flext_oracle_oic.typings import t, FlextOracleOicTypes
     from flext_oracle_oic.utilities import (
         FlextOracleOicUtilities,
         FlextOracleOicUtilities as u,
@@ -53,6 +53,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     ),
     "FlextOracleOicFactory": ("flext_oracle_oic.factory", "FlextOracleOicFactory"),
     "FlextOracleOicModels": ("flext_oracle_oic.models", "FlextOracleOicModels"),
+    "FlextOracleOicTypes": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
     "FlextOracleOicProtocols": (
         "flext_oracle_oic.protocols",
         "FlextOracleOicProtocols",

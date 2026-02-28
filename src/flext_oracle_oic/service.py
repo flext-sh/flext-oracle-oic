@@ -68,7 +68,7 @@ class FlextOracleOicService(
         self._container = FlextContainer.get_global()
         context_obj = FlextContext()
         self._context = context_obj
-        self._dispatcher = None  # CommandBus not required for service
+        self._dispatcher: object | None = None  # CommandBus not required for service
         self._registry = FlextRegistry(dispatcher=None)
 
         # Service registered in container for dependency injection

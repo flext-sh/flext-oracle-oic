@@ -50,7 +50,7 @@ class FlextOracleOicCli(FlextService[None]):
         # Complete FLEXT ecosystem integration for CLI
         self._container = FlextContainer.get_global()
         self._context = FlextContext()
-        self._dispatcher = None  # CommandBus not required for CLI
+        self._dispatcher: object | None = None  # CommandBus not required for CLI
         self._registry = FlextRegistry(dispatcher=None)
         self._factory = FlextOracleOicFactory()
 
