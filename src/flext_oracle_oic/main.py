@@ -74,34 +74,6 @@ class FlextOracleOicCli(FlextService[None]):
             sys.stdout.write(text + "\n")
             sys.stdout.flush()
 
-    class BackwardCompatibilityHelper:
-        """Backward compatibility functions - nested within main class."""
-
-        def __init__(self, cli_instance: FlextOracleOicCli) -> None:
-            """Initialize backward compatibility helper with CLI instance."""
-            self._cli_instance = cli_instance
-
-        def test_connection(self) -> None:
-            """Test connection to Oracle OIC instance (backward compatibility)."""
-            result = self._cli_instance.test_connection()
-            if result.is_failure:
-                self._cli_instance.CliOutputHelper.print(f"{result.error}")
-                sys.exit(1)
-
-        def list_integrations(self) -> None:
-            """List Oracle OIC integrations (backward compatibility)."""
-            result = self._cli_instance.list_integrations()
-            if result.is_failure:
-                self._cli_instance.CliOutputHelper.print(f"{result.error}")
-                sys.exit(1)
-
-        def show_version(self) -> None:
-            """Show Oracle OIC Extension version (backward compatibility)."""
-            result = self._cli_instance.show_version()
-            if result.is_failure:
-                self._cli_instance.CliOutputHelper.print(f"{result.error}")
-                sys.exit(1)
-
     # CLI Command Methods
 
     def test_connection(self) -> FlextResult[bool]:
@@ -336,50 +308,13 @@ class FlextOracleOicCli(FlextService[None]):
         return 1
 
 
-# Global CLI instance for backward compatibility
-_cli_instance = FlextOracleOicCli()
-_backward_compat = _cli_instance.BackwardCompatibilityHelper(_cli_instance)
-
 
 def main() -> NoReturn:
-    """Run main CLI entry point - FLEXT CLI Pattern.
-
-    FLEXT CLI Pattern: Main entry point for Oracle OIC Extension CLI
-    with enterprise commands and structured logging.
-    """
-    try:
-        exit_code = _cli_instance.run_cli()
-        sys.exit(exit_code)
-    except KeyboardInterrupt:
-        _cli_instance.logger.info("Oracle OIC Extension CLI interrupted by user")
-        sys.exit(130)
-    except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError):
-        _cli_instance.logger.exception("Oracle OIC Extension CLI error")
-        sys.exit(1)
-
-
-# Backward compatibility functions (using nested helper)
-def test_connection() -> None:
-    """Test connection to Oracle OIC instance (backward compatibility)."""
-    _backward_compat.test_connection()
-
-
-def list_integrations() -> None:
-    """List Oracle OIC integrations (backward compatibility)."""
-    _backward_compat.list_integrations()
-
-
-def show_version() -> None:
-    """Show Oracle OIC Extension version (backward compatibility)."""
-    _backward_compat.show_version()
 
 
 __all__: list[str] = [
     "FlextOracleOicCli",
-    "list_integrations",
     "main",
-    "show_version",
-    "test_connection",
 ]
 
 if __name__ == "__main__":

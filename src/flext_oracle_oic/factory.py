@@ -138,34 +138,7 @@ class FlextOracleOicFactory:
         )
 
 
-# Backward compatibility functions using the factory
-_factory_instance = FlextOracleOicFactory()
-
-
-def create_oic_extension_service() -> FlextResult[FlextOracleOicService]:
-    """Create Oracle OIC Extension service with configuration (backward compatibility)."""
-    return _factory_instance.create_oic_extension_service()
-
-
-def create_development_oic_service() -> FlextResult[FlextOracleOicService]:
-    """Create OIC Extension service for development (backward compatibility)."""
-    return _factory_instance.create_development_oic_service()
-
-
-def setup_oic_extension() -> FlextResult[FlextOracleOicService]:
-    """Setup Oracle OIC Extension with configuration (backward compatibility)."""
-    return _factory_instance.setup_oic_extension()
-
-
-# Backward compatibility warning class with real inheritance
-class FlextOracleOicDeprecationWarning(FlextOracleOicFactory.FlextDeprecationWarning):
-    """FlextOracleOicDeprecationWarning - real inheritance from FlextDeprecationWarning."""
-
 
 __all__: list[str] = [
-    "FlextOracleOicDeprecationWarning",
     "FlextOracleOicFactory",
-    "create_development_oic_service",
-    "create_oic_extension_service",
-    "setup_oic_extension",
 ]

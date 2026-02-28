@@ -26,13 +26,7 @@ if TYPE_CHECKING:
         FlextOracleOicConstants as c,
     )
     from flext_oracle_oic.ext_client import FlextOracleOicClient
-    from flext_oracle_oic.factory import (
-        FlextOracleOicDeprecationWarning,
-        FlextOracleOicFactory,
-        create_development_oic_service,
-        create_oic_extension_service,
-        setup_oic_extension,
-    )
+    from flext_oracle_oic.factory import FlextOracleOicFactory
     from flext_oracle_oic.models import m
     from flext_oracle_oic.protocols import (
         FlextOracleOicProtocols,
@@ -57,10 +51,6 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "flext_oracle_oic.constants",
         "FlextOracleOicConstants",
     ),
-    "FlextOracleOicDeprecationWarning": (
-        "flext_oracle_oic.factory",
-        "FlextOracleOicDeprecationWarning",
-    ),
     "FlextOracleOicFactory": ("flext_oracle_oic.factory", "FlextOracleOicFactory"),
     "FlextOracleOicModels": ("flext_oracle_oic.models", "FlextOracleOicModels"),
     "FlextOracleOicProtocols": (
@@ -76,14 +66,6 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "__version__": ("flext_oracle_oic.__version__", "__version__"),
     "__version_info__": ("flext_oracle_oic.__version__", "__version_info__"),
     "c": ("flext_oracle_oic.constants", "FlextOracleOicConstants"),
-    "create_development_oic_service": (
-        "flext_oracle_oic.factory",
-        "create_development_oic_service",
-    ),
-    "create_oic_extension_service": (
-        "flext_oracle_oic.factory",
-        "create_oic_extension_service",
-    ),
     "d": ("flext_core", "FlextDecorators"),
     "e": ("flext_core", "FlextExceptions"),
     "h": ("flext_core", "FlextHandlers"),
@@ -91,7 +73,6 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "p": ("flext_oracle_oic.protocols", "FlextOracleOicProtocols"),
     "r": ("flext_core", "r"),
     "s": ("flext_oracle_oic.settings", "FlextOracleOicSettings"),
-    "setup_oic_extension": ("flext_oracle_oic.factory", "setup_oic_extension"),
     "t": ("flext_oracle_oic.typings", "t"),
     "u": ("flext_oracle_oic.utilities", "FlextOracleOicUtilities"),
     "x": ("flext_core", "x"),
@@ -101,7 +82,6 @@ __all__ = [
     "FlextOracleOicApi",
     "FlextOracleOicClient",
     "FlextOracleOicConstants",
-    "FlextOracleOicDeprecationWarning",
     "FlextOracleOicFactory",
     "FlextOracleOicModels",
     "FlextOracleOicProtocols",
@@ -112,8 +92,6 @@ __all__ = [
     "__version__",
     "__version_info__",
     "c",
-    "create_development_oic_service",
-    "create_oic_extension_service",
     "d",
     "e",
     "h",
@@ -121,7 +99,6 @@ __all__ = [
     "p",
     "r",
     "s",
-    "setup_oic_extension",
     "t",
     "u",
     "x",

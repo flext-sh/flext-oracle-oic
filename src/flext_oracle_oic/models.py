@@ -5,7 +5,7 @@ This module provides data models for Oracle OIC External operations.
 
 from __future__ import annotations
 
-from typing import Final
+from typing import ClassVar
 
 from flext_core import FlextModels, FlextTypes
 from flext_oracle_oic.constants import FlextOracleOicConstants
@@ -30,7 +30,7 @@ class FlextOracleOicModels(FlextModels):
             Oracle OIC with validation and security.
             """
 
-            model_config: Final = ConfigDict(extra="forbid")
+            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             oauth_client_id: str = Field(description="IDCS OAuth2 client ID")
             oauth_client_secret: SecretStr = Field(
@@ -50,7 +50,7 @@ class FlextOracleOicModels(FlextModels):
             Oracle OIC with enterprise validation.
             """
 
-            model_config: Final = ConfigDict(extra="forbid")
+            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             base_url: str = Field(description="Oracle OIC instance base URL")
             api_version: str = Field(
@@ -79,7 +79,7 @@ class FlextOracleOicModels(FlextModels):
             for an Oracle OIC integration.
             """
 
-            model_config: Final = ConfigDict(extra="forbid")
+            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             integration_id: str = Field(description="Integration unique identifier")
             name: str = Field(description="Integration name")
@@ -96,7 +96,7 @@ class FlextOracleOicModels(FlextModels):
             for an Oracle OIC connection.
             """
 
-            model_config: Final = ConfigDict(extra="forbid")
+            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             connection_id: str = Field(description="Connection unique identifier")
             name: str = Field(description="Connection name")
@@ -112,7 +112,7 @@ class FlextOracleOicModels(FlextModels):
             for an Oracle OIC integration.
             """
 
-            model_config: Final = ConfigDict(extra="forbid")
+            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             integration_id: str = Field(description="Integration unique identifier")
             integration_version: str = Field(description="Integration version")
@@ -130,7 +130,7 @@ class FlextOracleOicModels(FlextModels):
             Oracle OIC API com tipagem forte.
             """
 
-            model_config: Final = ConfigDict(extra="forbid")
+            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             method: str = Field(description="HTTP method")
             url: str = Field(description="Request URL")
