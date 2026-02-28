@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from flext_core import cleanup_submodule_namespace, lazy_getattr
 
@@ -46,22 +46,13 @@ if TYPE_CHECKING:
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextOracleOicApi": ("flext_oracle_oic.api", "FlextOracleOicApi"),
     "FlextOracleOicClient": ("flext_oracle_oic.ext_client", "FlextOracleOicClient"),
-    "FlextOracleOicConstants": (
-        "flext_oracle_oic.constants",
-        "FlextOracleOicConstants",
-    ),
+    "FlextOracleOicConstants": ("flext_oracle_oic.constants", "FlextOracleOicConstants"),
     "FlextOracleOicModels": ("flext_oracle_oic.models", "FlextOracleOicModels"),
-    "FlextOracleOicTypes": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
-    "FlextOracleOicProtocols": (
-        "flext_oracle_oic.protocols",
-        "FlextOracleOicProtocols",
-    ),
+    "FlextOracleOicProtocols": ("flext_oracle_oic.protocols", "FlextOracleOicProtocols"),
     "FlextOracleOicService": ("flext_oracle_oic.service", "FlextOracleOicService"),
     "FlextOracleOicSettings": ("flext_oracle_oic.settings", "FlextOracleOicSettings"),
-    "FlextOracleOicUtilities": (
-        "flext_oracle_oic.utilities",
-        "FlextOracleOicUtilities",
-    ),
+    "FlextOracleOicTypes": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
+    "FlextOracleOicUtilities": ("flext_oracle_oic.utilities", "FlextOracleOicUtilities"),
     "__version__": ("flext_oracle_oic.__version__", "__version__"),
     "__version_info__": ("flext_oracle_oic.__version__", "__version_info__"),
     "c": ("flext_oracle_oic.constants", "FlextOracleOicConstants"),
@@ -103,7 +94,7 @@ __all__ = [
 ]
 
 
-def __getattr__(name: str) -> t.GeneralValueType:
+def __getattr__(name: str) -> Any:  # noqa: ANN401
     """Lazy-load module attributes on first access (PEP 562)."""
     return lazy_getattr(name, _LAZY_IMPORTS, globals(), __name__)
 
