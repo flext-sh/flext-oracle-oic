@@ -1,4 +1,4 @@
-"""Oracle OIC Extension protocols for FLEXT ecosystem.
+"""Oracle OIC protocols for FLEXT ecosystem.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
