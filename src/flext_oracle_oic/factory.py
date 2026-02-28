@@ -138,7 +138,6 @@ class FlextOracleOicFactory:
         )
 
 
-
 __all__: list[str] = [
     "FlextOracleOicFactory",
 ]

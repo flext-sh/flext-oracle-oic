@@ -199,7 +199,7 @@ class FlextOracleOicApi(FlextService[None]):
         self,
         integration_id: str,
         payload: Mapping[str, t.GeneralValueType],
-        **kwargs: object,
+        **kwargs: t.GeneralValueType,
     ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Execute app-driven orchestration pattern.
 
@@ -222,7 +222,7 @@ class FlextOracleOicApi(FlextService[None]):
         self,
         integration_id: str,
         schedule_config: Mapping[str, t.GeneralValueType],
-        **kwargs: object,
+        **kwargs: t.GeneralValueType,
     ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Execute scheduled orchestration pattern.
 
@@ -245,7 +245,7 @@ class FlextOracleOicApi(FlextService[None]):
         self,
         integration_id: str,
         file_config: Mapping[str, t.GeneralValueType],
-        **kwargs: object,
+        **kwargs: t.GeneralValueType,
     ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Execute file transfer pattern.
 
@@ -369,7 +369,7 @@ class FlextOracleOicApi(FlextService[None]):
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
-        exc_tb: object,
+        exc_tb: t.GeneralValueType,
     ) -> None:
         """Async context manager exit."""
         # Log service stop

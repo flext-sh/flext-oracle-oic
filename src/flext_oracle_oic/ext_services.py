@@ -88,7 +88,7 @@ class FlextOracleOicExtServices(
         _client: FlextOracleOicClient | None = None
 
         @override
-        def __init__(self, **data: object) -> None:
+        def __init__(self, **data: t.GeneralValueType) -> None:
             """Initialize OIC extension service.
 
             Uses singleton config pattern - no config parameter needed.

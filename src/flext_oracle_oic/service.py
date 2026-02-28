@@ -62,7 +62,7 @@ class FlextOracleOicService(
         # Logger is inherited from parent class
         self._client: FlextOracleOicClient | None = None
         self._monitoring_client: FlextApiClient | None = None
-        self._authenticator: object | None = None
+        self._authenticator: t.GeneralValueType | None = None
 
         # Complete FLEXT ecosystem integration
         self._container = FlextContainer.get_global()
@@ -116,7 +116,7 @@ class FlextOracleOicService(
         return str(value)
 
     @staticmethod
-    def _to_general_value(value: object) -> t.GeneralValueType:
+    def _to_general_value(value: t.GeneralValueType) -> t.GeneralValueType:
         """Normalize arbitrary runtime values into GeneralValueType."""
         if isinstance(value, (str, int, float, bool)) or value is None:
             return value
@@ -135,7 +135,7 @@ class FlextOracleOicService(
     @override
     def execute(
         self: Self,
-        **kwargs: object,
+        **kwargs: t.GeneralValueType,
     ) -> FlextResult[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """Execute main service operation - list all integrations.
 
@@ -649,7 +649,7 @@ class FlextOracleOicService(
         self,
         integration_id: str,
         schedule_config: Mapping[str, t.GeneralValueType],
-        **kwargs: object,
+        **kwargs: t.GeneralValueType,
     ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Execute scheduled orchestration pattern.
 
@@ -690,7 +690,7 @@ class FlextOracleOicService(
         self,
         integration_id: str,
         file_config: Mapping[str, t.GeneralValueType],
-        **kwargs: object,
+        **kwargs: t.GeneralValueType,
     ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Execute file transfer pattern.
 

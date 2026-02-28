@@ -24,7 +24,7 @@ from flext_core import (
     FlextService,
 )
 from flext_oracle_oic import __version__
-from flext_oracle_oic.factory import create_development_oic_service
+from flext_oracle_oic.factory import FlextOracleOicFactory
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
 
@@ -52,6 +52,7 @@ class FlextOracleOicCli(FlextService[None]):
         self._context = FlextContext()
         self._dispatcher = None  # CommandBus not required for CLI
         self._registry = FlextRegistry(dispatcher=None)
+        self._factory = FlextOracleOicFactory()
 
     @override
     def execute(self) -> FlextResult[None]:
@@ -88,7 +89,7 @@ class FlextOracleOicCli(FlextService[None]):
                 self.logger.info("Testing Oracle OIC connection...")
 
             # Create development service for testing
-            service_result = create_development_oic_service()
+            service_result = self._factory.create_development_oic_service()
             if service_result.is_failure:
                 return FlextResult[bool].fail(
                     f"Failed to create service: {service_result.error}",
@@ -129,7 +130,7 @@ class FlextOracleOicCli(FlextService[None]):
                 self.logger.info("Listing Oracle OIC integrations...")
 
             # Create development service
-            service_result = create_development_oic_service()
+            service_result = self._factory.create_development_oic_service()
             if service_result.is_failure:
                 return FlextResult[bool].fail(
                     f"Failed to create service: {service_result.error}",
@@ -308,8 +309,22 @@ class FlextOracleOicCli(FlextService[None]):
         return 1
 
 
-
 def main() -> NoReturn:
+    """Run main CLI entry point - FLEXT CLI Pattern.
+
+    FLEXT CLI Pattern: Main entry point for Oracle OIC Extension CLI
+    with enterprise commands and structured logging.
+    """
+    cli_instance = FlextOracleOicCli()
+    try:
+        exit_code = cli_instance.run_cli()
+        sys.exit(exit_code)
+    except KeyboardInterrupt:
+        cli_instance.logger.info("Oracle OIC Extension CLI interrupted by user")
+        sys.exit(130)
+    except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError):
+        cli_instance.logger.exception("Oracle OIC Extension CLI error")
+        sys.exit(1)
 
 
 __all__: list[str] = [

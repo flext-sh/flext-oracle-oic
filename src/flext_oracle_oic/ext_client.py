@@ -14,7 +14,7 @@ from __future__ import annotations
 import base64
 import json as json_module
 from collections.abc import Mapping
-from typing import Self, cast
+from typing import Self
 
 from flext_api import FlextApi
 from flext_api.settings import FlextApiSettings
@@ -354,9 +354,9 @@ class FlextOracleOicClient:
                     content_type = str(headers.get("content-type", ""))
 
                     if content_type.startswith("application/json"):
-                        if u.is_dict_like(body):
+                        if isinstance(body, Mapping):
                             return FlextResult[Mapping[str, t.GeneralValueType]].ok(
-                                cast("Mapping[str, t.GeneralValueType]", body)
+                                body
                             )
                         match body:
                             case str():
@@ -375,9 +375,9 @@ class FlextOracleOicClient:
                             return FlextResult[Mapping[str, t.GeneralValueType]].ok({
                                 "raw_content": body
                             })
-                        case _ if u.is_dict_like(body):
+                        case _ if isinstance(body, Mapping):
                             return FlextResult[Mapping[str, t.GeneralValueType]].ok(
-                                cast("Mapping[str, t.GeneralValueType]", body)
+                                body
                             )
                         case _:
                             return FlextResult[Mapping[str, t.GeneralValueType]].ok({

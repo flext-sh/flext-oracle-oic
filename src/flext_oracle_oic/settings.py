@@ -162,7 +162,7 @@ class FlextOracleOicSettings(FlextSettings):
         """Validate Oracle OIC Extension specific business rules."""
         # Railway-oriented business rule validation - operations are safe
         return (
-            FlextResult[object]
+            FlextResult[bool]
             .ok(None)
             .flat_map(lambda _: self._validate_oauth_credentials())
             .flat_map(lambda _: self._validate_connection_settings())
