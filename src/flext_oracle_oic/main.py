@@ -6,7 +6,6 @@ with railway-oriented error handling.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
-
 """
 
 from __future__ import annotations
@@ -17,18 +16,13 @@ import sys
 from typing import NoReturn, override
 
 from flext_core import (
-    FlextContainer,
-    FlextContext,
-    FlextRegistry,
     FlextResult,
     FlextService,
 )
 from flext_oracle_oic import __version__
-from flext_oracle_oic.factory import FlextOracleOicFactory
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
-
-# CLI output helper moved into FlextOracleOicCli class
+from flext_oracle_oic.settings import FlextOracleOicSettings
 
 
 class FlextOracleOicCli(FlextService[None]):
@@ -45,14 +39,6 @@ class FlextOracleOicCli(FlextService[None]):
     def __init__(self) -> None:
         """Initialize unified Oracle OIC CLI service."""
         super().__init__()
-        # Logger is inherited from parent class
-
-        # Complete FLEXT ecosystem integration for CLI
-        self._container = FlextContainer.get_global()
-        self._context = FlextContext()
-        self._dispatcher: object | None = None  # CommandBus not required for CLI
-        self._registry = FlextRegistry(dispatcher=None)
-        self._factory = FlextOracleOicFactory()
 
     @override
     def execute(self) -> FlextResult[None]:
@@ -63,17 +49,6 @@ class FlextOracleOicCli(FlextService[None]):
         return FlextResult[None].fail(
             f"CLI execution failed with exit code {exit_code}",
         )
-
-    # Nested Helper Classes
-
-    class CliOutputHelper:
-        """CLI output helper - nested within main class per unified pattern."""
-
-        @staticmethod
-        def print(text: str) -> None:
-            """Print to CLI stdout."""
-            sys.stdout.write(text + "\n")
-            sys.stdout.flush()
 
     # CLI Command Methods
 
@@ -89,15 +64,8 @@ class FlextOracleOicCli(FlextService[None]):
                 self.logger.info("Testing Oracle OIC connection...")
 
             # Create development service for testing
-            service_result = self._factory.create_development_oic_service()
-            if service_result.is_failure:
-                return FlextResult[bool].fail(
-                    f"Failed to create service: {service_result.error}",
-                )
-
-            service = service_result.value
-            if service is None:
-                return FlextResult[bool].fail("Service is None")
+            FlextOracleOicSettings.create_for_development()
+            service = FlextOracleOicService()
 
             # Test connection
             with service:
@@ -105,8 +73,8 @@ class FlextOracleOicCli(FlextService[None]):
                 if connection_result.is_success:
                     if self.logger:
                         self.logger.info("Oracle OIC connection successful!")
-                    self.CliOutputHelper.print(
-                        "Connection to Oracle OIC established successfully",
+                    sys.stdout.write(
+                        "Connection to Oracle OIC established successfully\n"
                     )
                     return FlextResult[bool].ok(value=True)
                 return FlextResult[bool].fail(
@@ -130,16 +98,9 @@ class FlextOracleOicCli(FlextService[None]):
                 self.logger.info("Listing Oracle OIC integrations...")
 
             # Create development service
-            service_result = self._factory.create_development_oic_service()
-            if service_result.is_failure:
-                return FlextResult[bool].fail(
-                    f"Failed to create service: {service_result.error}",
-                )
+            FlextOracleOicSettings.create_for_development()
+            service = FlextOracleOicService()
 
-            raw_service = service_result.value
-            if raw_service is None:
-                return FlextResult[bool].fail("Service is None")
-            service: FlextOracleOicService = raw_service
             # List integrations
             return self._list_integrations_with_service(service)
 
@@ -185,22 +146,20 @@ class FlextOracleOicCli(FlextService[None]):
 
         """
         if not integrations:
-            self.CliOutputHelper.print("📋 No integrations found")
+            sys.stdout.write("📋 No integrations found\n")
             return
 
-        self.CliOutputHelper.print("📋 Oracle OIC Integrations:")
+        sys.stdout.write("📋 Oracle OIC Integrations:\n")
         for integration in integrations:
-            self.CliOutputHelper.print(
-                f"  • {integration.name} (ID: {integration.integration_id})",
+            sys.stdout.write(
+                f"  • {integration.name} (ID: {integration.integration_id})\n"
             )
-            self.CliOutputHelper.print(
-                f"    Status: {integration.status}, Version: {integration.integration_version}",
+            sys.stdout.write(
+                f"    Status: {integration.status}, Version: {integration.integration_version}\n"
             )
             if integration.description:
-                self.CliOutputHelper.print(
-                    f"    Description: {integration.description}",
-                )
-            self.CliOutputHelper.print("")
+                sys.stdout.write(f"    Description: {integration.description}\n")
+            sys.stdout.write("\n")
 
     def show_version(self) -> FlextResult[bool]:
         """Show Oracle OIC Extension version.
@@ -210,10 +169,8 @@ class FlextOracleOicCli(FlextService[None]):
 
         """
         try:
-            self.CliOutputHelper.print(f"Oracle OIC Extension v{__version__}")
-            self.CliOutputHelper.print(
-                "FLEXT CLI Pattern: Enterprise Oracle Integration Cloud",
-            )
+            sys.stdout.write(f"Oracle OIC Extension v{__version__}\n")
+            sys.stdout.write("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud\n")
             return FlextResult[bool].ok(value=True)
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             if self.logger:

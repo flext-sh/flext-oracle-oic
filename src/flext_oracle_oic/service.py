@@ -20,10 +20,7 @@ from flext_api import FlextApiClient
 from flext_api.models import FlextApiModels
 from flext_api.settings import FlextApiSettings
 from flext_core import (
-    FlextContainer,
-    FlextContext,
     FlextLogger,
-    FlextRegistry,
     FlextResult,
     FlextService,
     t,
@@ -65,11 +62,6 @@ class FlextOracleOicService(
         self._authenticator: t.GeneralValueType | None = None
 
         # Complete FLEXT ecosystem integration
-        self._container = FlextContainer.get_global()
-        context_obj = FlextContext()
-        self._context = context_obj
-        self._dispatcher: object | None = None  # CommandBus not required for service
-        self._registry = FlextRegistry(dispatcher=None)
 
         # Service registered in container for dependency injection
 
@@ -598,7 +590,7 @@ class FlextOracleOicService(
         self,
         integration_id: str,
         payload: Mapping[str, t.GeneralValueType],
-        **_kwargs: object,
+        **_kwargs: t.GeneralValueType,
     ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Execute app-driven orchestration pattern.
 
@@ -1251,7 +1243,7 @@ class FlextOracleOicService(
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
-        exc_tb: object,
+        exc_tb: t.GeneralValueType,
     ) -> None:
         """Context manager exit."""
         # Cleanup resources if needed

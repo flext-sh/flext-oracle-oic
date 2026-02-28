@@ -10,8 +10,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping
-from typing import Literal, Self, override
+from typing import Literal, Self
 
 from flext_core import FlextResult, FlextSettings
 from flext_oracle_oic.constants import FlextOracleOicConstants
@@ -192,26 +191,6 @@ class FlextOracleOicSettings(FlextSettings):
         return FlextResult[bool].ok(value=True)
 
     @classmethod
-    def create_for_environment(
-        cls,
-        environment: str,
-        overrides: Mapping[
-            str,
-            str | int | float | bool | None,
-        ]
-        | None = None,
-    ) -> FlextOracleOicSettings:
-        """Create configuration for specific environment using enhanced singleton pattern."""
-        # Environment parameter reserved for future use - validate it's not empty
-        if not environment.strip():
-            msg = "Environment name cannot be empty"
-            raise ValueError(msg)
-        base = cls()
-        if overrides:
-            return base.model_copy(update=overrides)
-        return base
-
-    @classmethod
     def create_default(cls) -> FlextOracleOicSettings:
         """Create default configuration instance using enhanced singleton pattern."""
         return cls()
@@ -249,12 +228,6 @@ class FlextOracleOicSettings(FlextSettings):
             verify_ssl=False,
             enable_monitoring=False,
         )
-
-    @classmethod
-    @override
-    def get_global_instance(cls) -> FlextOracleOicSettings:
-        """Get the global singleton instance using enhanced FlextSettings pattern."""
-        return cls()
 
     # Note: FlextOracleOicSettings follows direct instantiation pattern
     # No global instance methods needed - use FlextOracleOicSettings() directly

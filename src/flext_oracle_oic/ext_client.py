@@ -576,7 +576,7 @@ class FlextOracleOicClient:
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
-        exc_tb: object,
+        exc_tb: t.GeneralValueType,
     ) -> None:
         """Context manager exit."""
         if self._client is not None:

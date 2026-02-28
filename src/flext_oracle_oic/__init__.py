@@ -26,7 +26,6 @@ if TYPE_CHECKING:
         FlextOracleOicConstants as c,
     )
     from flext_oracle_oic.ext_client import FlextOracleOicClient
-    from flext_oracle_oic.factory import FlextOracleOicFactory
     from flext_oracle_oic.models import FlextOracleOicModels, m
     from flext_oracle_oic.protocols import (
         FlextOracleOicProtocols,
@@ -51,7 +50,6 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "flext_oracle_oic.constants",
         "FlextOracleOicConstants",
     ),
-    "FlextOracleOicFactory": ("flext_oracle_oic.factory", "FlextOracleOicFactory"),
     "FlextOracleOicModels": ("flext_oracle_oic.models", "FlextOracleOicModels"),
     "FlextOracleOicTypes": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
     "FlextOracleOicProtocols": (
@@ -83,7 +81,6 @@ __all__ = [
     "FlextOracleOicApi",
     "FlextOracleOicClient",
     "FlextOracleOicConstants",
-    "FlextOracleOicFactory",
     "FlextOracleOicModels",
     "FlextOracleOicProtocols",
     "FlextOracleOicService",
@@ -106,7 +103,7 @@ __all__ = [
 ]
 
 
-def __getattr__(name: str) -> object:
+def __getattr__(name: str) -> t.GeneralValueType:
     """Lazy-load module attributes on first access (PEP 562)."""
     return lazy_getattr(name, _LAZY_IMPORTS, globals(), __name__)
 

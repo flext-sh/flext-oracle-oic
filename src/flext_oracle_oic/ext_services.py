@@ -534,7 +534,7 @@ class FlextOracleOicExtServices(
             self,
             exc_type: type[BaseException] | None,
             exc_val: BaseException | None,
-            exc_tb: object,
+            exc_tb: t.GeneralValueType,
         ) -> None:
             """Context manager exit."""
             client = self._client if hasattr(self, "_client") else None
