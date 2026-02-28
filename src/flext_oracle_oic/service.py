@@ -16,9 +16,7 @@ import json
 from collections.abc import Mapping
 from typing import Self, override
 
-from flext_api import FlextApiClient
-from flext_api.models import FlextApiModels
-from flext_api.settings import FlextApiSettings
+from flext_api import FlextApiClient, FlextApiModels, FlextApiSettings
 from flext_core import (
     FlextLogger,
     FlextResult,
@@ -178,8 +176,14 @@ class FlextOracleOicService(
                     integration_id=self._as_text(item.get("id"), ""),
                     name=self._as_text(item.get("name"), ""),
                     description=self._as_text(item.get("description"), ""),
-                    integration_version=self._as_text(item.get("version"), FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK),
-                    status=self._as_text(item.get("status"), FlextOracleOicConstants.Connection.Status.UNKNOWN),
+                    integration_version=self._as_text(
+                        item.get("version"),
+                        FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK,
+                    ),
+                    status=self._as_text(
+                        item.get("status"),
+                        FlextOracleOicConstants.Connection.Status.UNKNOWN,
+                    ),
                     created_by=self._as_text(item.get("createdBy"), ""),
                     last_updated=self._as_text(item.get("lastUpdated"), ""),
                 )
@@ -245,7 +249,10 @@ class FlextOracleOicService(
                     connection_id=self._as_text(item.get("id"), ""),
                     name=self._as_text(item.get("name"), ""),
                     adapter_type=self._as_text(item.get("adapterType"), ""),
-                    status=self._as_text(item.get("status"), FlextOracleOicConstants.Connection.Status.UNKNOWN),
+                    status=self._as_text(
+                        item.get("status"),
+                        FlextOracleOicConstants.Connection.Status.UNKNOWN,
+                    ),
                     connection_type=self._as_text(item.get("connectionType"), ""),
                     description=self._as_text(item.get("description"), ""),
                 )
@@ -322,9 +329,13 @@ class FlextOracleOicService(
                 name=self._as_text(integration_data.get("name"), ""),
                 description=self._as_text(integration_data.get("description"), ""),
                 integration_version=self._as_text(
-                    integration_data.get("version"), FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK
+                    integration_data.get("version"),
+                    FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK,
                 ),
-                status=self._as_text(integration_data.get("status"), FlextOracleOicConstants.Connection.Status.UNKNOWN),
+                status=self._as_text(
+                    integration_data.get("status"),
+                    FlextOracleOicConstants.Connection.Status.UNKNOWN,
+                ),
                 created_by=self._as_text(integration_data.get("createdBy"), ""),
                 last_updated=self._as_text(integration_data.get("lastUpdated"), ""),
             )
@@ -378,8 +389,14 @@ class FlextOracleOicService(
                 integration_id=self._as_text(created_data.get("id"), ""),
                 name=self._as_text(created_data.get("name"), ""),
                 description=self._as_text(created_data.get("description"), ""),
-                integration_version=self._as_text(created_data.get("version"), FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK),
-                status=self._as_text(created_data.get("status"), FlextOracleOicConstants.Integration.Status.DRAFT),
+                integration_version=self._as_text(
+                    created_data.get("version"),
+                    FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK,
+                ),
+                status=self._as_text(
+                    created_data.get("status"),
+                    FlextOracleOicConstants.Integration.Status.DRAFT,
+                ),
                 created_by=self._as_text(created_data.get("createdBy"), ""),
                 last_updated=self._as_text(created_data.get("lastUpdated"), ""),
             )
@@ -435,8 +452,14 @@ class FlextOracleOicService(
                 integration_id=self._as_text(updated_data.get("id"), integration_id),
                 name=self._as_text(updated_data.get("name"), ""),
                 description=self._as_text(updated_data.get("description"), ""),
-                integration_version=self._as_text(updated_data.get("version"), FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK),
-                status=self._as_text(updated_data.get("status"), FlextOracleOicConstants.Connection.Status.UNKNOWN),
+                integration_version=self._as_text(
+                    updated_data.get("version"),
+                    FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK,
+                ),
+                status=self._as_text(
+                    updated_data.get("status"),
+                    FlextOracleOicConstants.Connection.Status.UNKNOWN,
+                ),
                 created_by=self._as_text(updated_data.get("createdBy"), ""),
                 last_updated=self._as_text(updated_data.get("lastUpdated"), ""),
             )
@@ -566,7 +589,9 @@ class FlextOracleOicService(
 
             client = client_result.value
             # Test connection using make_request to health endpoint
-            test_result = client.make_request(FlextOracleOicConstants.API.Method.GET, "/ic/api/integration/v1/health")
+            test_result = client.make_request(
+                FlextOracleOicConstants.API.Method.GET, "/ic/api/integration/v1/health"
+            )
             if test_result.is_failure:
                 error_msg = test_result.error or "Connection test failed"
                 return FlextResult[bool].fail(error_msg)
@@ -937,7 +962,9 @@ class FlextOracleOicService(
                 # Use flext-api client for monitoring
                 base = str(self.settings.base_url).rstrip("/")
                 health_url = f"{base}{FlextOracleOicConstants.API.ENDPOINT_HEALTH}"
-                req = FlextApiModels.HttpRequest(method=FlextOracleOicConstants.API.Method.GET, url=health_url)
+                req = FlextApiModels.HttpRequest(
+                    method=FlextOracleOicConstants.API.Method.GET, url=health_url
+                )
                 response_result = self._monitoring_client.request(req)
 
                 if response_result.is_success:
@@ -1068,7 +1095,9 @@ class FlextOracleOicService(
                 # Use flext-api client for performance metrics
                 base = str(self.settings.base_url).rstrip("/")
                 metrics_url = f"{base}/ic/api/integration/v1/metrics"
-                req = FlextApiModels.HttpRequest(method=FlextOracleOicConstants.API.Method.GET, url=metrics_url)
+                req = FlextApiModels.HttpRequest(
+                    method=FlextOracleOicConstants.API.Method.GET, url=metrics_url
+                )
                 response_result = self._monitoring_client.request(req)
 
                 if response_result.is_success:
@@ -1243,7 +1272,7 @@ class FlextOracleOicService(
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
-        exc_tb: t.GeneralValueType,
+        exc_tb: object,
     ) -> None:
         """Context manager exit."""
         # Cleanup resources if needed

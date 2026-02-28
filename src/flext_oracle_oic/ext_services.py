@@ -182,7 +182,11 @@ class FlextOracleOicExtServices(
 
             """
             # Railway-oriented client creation
-            return r[FlextOracleOicClient].ok(None).flat_map(lambda _: self._get_or_create_client())
+            return (
+                r[FlextOracleOicClient]
+                .ok(None)
+                .flat_map(lambda _: self._get_or_create_client())
+            )
 
         def _get_or_create_client(self) -> r[FlextOracleOicClient]:
             """Get existing client or create new one."""
@@ -534,7 +538,7 @@ class FlextOracleOicExtServices(
             self,
             exc_type: type[BaseException] | None,
             exc_val: BaseException | None,
-            exc_tb: t.GeneralValueType,
+            exc_tb: object,
         ) -> None:
             """Context manager exit."""
             client = self._client if hasattr(self, "_client") else None
