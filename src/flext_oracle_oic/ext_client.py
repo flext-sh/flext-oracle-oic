@@ -128,7 +128,7 @@ class FlextOracleOicClient:
             error_msg = f"Failed to prepare OAuth request: {e}"
             self.logger.exception(error_msg)
             return FlextResult[tuple[Mapping[str, str], Mapping[str, str]]].fail(
-                error_msg
+                error_msg,
             )
 
     def _execute_token_request(
@@ -183,7 +183,7 @@ class FlextOracleOicClient:
                         token_data = json_module.loads(body)
                     case _:
                         return FlextResult[str].fail(
-                            "Empty or invalid OAuth response body"
+                            "Empty or invalid OAuth response body",
                         )
 
             access_token = token_data.get("access_token")
@@ -341,7 +341,8 @@ class FlextOracleOicClient:
         return str(value)
 
     def _parse_api_response(
-        self, response: t.GeneralValueType
+        self,
+        response: t.GeneralValueType,
     ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
         """Parse API response based on content type."""
         try:
@@ -355,13 +356,13 @@ class FlextOracleOicClient:
                     if content_type.startswith("application/json"):
                         if isinstance(body, Mapping):
                             return FlextResult[Mapping[str, t.GeneralValueType]].ok(
-                                body
+                                body,
                             )
                         match body:
                             case str():
                                 parsed_data = json_module.loads(body)
                                 return FlextResult[Mapping[str, t.GeneralValueType]].ok(
-                                    parsed_data
+                                    parsed_data,
                                 )
                             case _:
                                 return FlextResult[
@@ -372,19 +373,19 @@ class FlextOracleOicClient:
                     match body:
                         case str():
                             return FlextResult[Mapping[str, t.GeneralValueType]].ok({
-                                "raw_content": body
+                                "raw_content": body,
                             })
                         case _ if isinstance(body, Mapping):
                             return FlextResult[Mapping[str, t.GeneralValueType]].ok(
-                                body
+                                body,
                             )
                         case _:
                             return FlextResult[Mapping[str, t.GeneralValueType]].ok({
-                                "raw_content": str(body)
+                                "raw_content": str(body),
                             })
                 case _:
                     return FlextResult[Mapping[str, t.GeneralValueType]].fail(
-                        "Invalid response format"
+                        "Invalid response format",
                     )
         except (
             ConnectionError,
@@ -538,7 +539,9 @@ class FlextOracleOicClient:
             str(k): str(v) for k, v in integration_data.items()
         }
         return self.make_request(
-            FlextOracleOicConstants.API.Method.PUT, endpoint, json=json_data
+            FlextOracleOicConstants.API.Method.PUT,
+            endpoint,
+            json=json_data,
         )
 
     def create_connection(
@@ -550,7 +553,9 @@ class FlextOracleOicClient:
             str(k): str(v) for k, v in connection_data.items()
         }
         return self.make_request(
-            FlextOracleOicConstants.API.Method.POST, "/connections", json=json_data
+            FlextOracleOicConstants.API.Method.POST,
+            "/connections",
+            json=json_data,
         )
 
     def execute_scheduled_orchestration(
@@ -562,7 +567,9 @@ class FlextOracleOicClient:
         """Execute scheduled orchestration for an integration."""
         endpoint = f"/integrations/{integration_id}/schedules"
         result = self.make_request(
-            FlextOracleOicConstants.API.Method.POST, endpoint, json=schedule_config
+            FlextOracleOicConstants.API.Method.POST,
+            endpoint,
+            json=schedule_config,
         )
         return result.value if result.is_success else {}
 
@@ -575,7 +582,9 @@ class FlextOracleOicClient:
         """Execute file transfer pattern for an integration."""
         endpoint = f"/integrations/{integration_id}/files"
         result = self.make_request(
-            FlextOracleOicConstants.API.Method.POST, endpoint, json=file_config
+            FlextOracleOicConstants.API.Method.POST,
+            endpoint,
+            json=file_config,
         )
         return result.value if result.is_success else {}
 

@@ -361,7 +361,7 @@ class FlextOracleOicExtServices(
                     ValueError,
                     json.JSONDecodeError,
                 ) as e:
-                    self.logger.warning(f"Failed to parse integration: {e}")
+                    self.logger.warning("Failed to parse integration: %s", e)
                     continue
 
             self.logger.info(f"Retrieved {len(integration_infos)} integrations")
@@ -433,7 +433,7 @@ class FlextOracleOicExtServices(
                     ValueError,
                     json.JSONDecodeError,
                 ) as e:
-                    self.logger.warning(f"Failed to parse connection: {e}")
+                    self.logger.warning("Failed to parse connection: %s", e)
                     continue
 
             self.logger.info(f"Retrieved {len(connection_infos)} connections")

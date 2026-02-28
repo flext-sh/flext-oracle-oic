@@ -200,7 +200,8 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
             def delete_connection(
-                self, connection_id: str
+                self,
+                connection_id: str,
             ) -> FlextProtocols.Result[bool]:
                 """Delete Oracle OIC connection.
 
@@ -494,7 +495,8 @@ class FlextOracleOicProtocols(FlextProtocols):
 
         @runtime_checkable
         class AuthenticationProtocol(
-            FlextProtocols.Service[Mapping[str, FlextTypes.GeneralValueType]], Protocol
+            FlextProtocols.Service[Mapping[str, FlextTypes.GeneralValueType]],
+            Protocol,
         ):
             """Protocol for Oracle OIC authentication operations."""
 

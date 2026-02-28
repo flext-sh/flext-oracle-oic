@@ -34,7 +34,7 @@ class FlextOracleOicModels(FlextModels):
 
             oauth_client_id: str = Field(description="IDCS OAuth2 client ID")
             oauth_client_secret: SecretStr = Field(
-                description="IDCS OAuth2 client secret"
+                description="IDCS OAuth2 client secret",
             )
             oauth_token_url: str = Field(description="IDCS OAuth2 token endpoint")
             oauth_client_aud: str | None = Field(
@@ -139,14 +139,16 @@ class FlextOracleOicModels(FlextModels):
                 description="Query parameters",
             )
             data: dict[str, FlextTypes.GeneralValueType] | None = Field(
-                default=None, description="Form data"
+                default=None,
+                description="Form data",
             )
             json_data: dict[str, FlextTypes.GeneralValueType] | None = Field(
                 default=None,
                 description="JSON data",
             )
             headers: dict[str, str] | None = Field(
-                default=None, description="HTTP headers"
+                default=None,
+                description="HTTP headers",
             )
 
 

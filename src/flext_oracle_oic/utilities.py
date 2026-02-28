@@ -177,7 +177,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                             validated_data["name"] = name_result.value
                     case _:
                         errors.append(
-                            "Name validation: Integration name must be a string"
+                            "Name validation: Integration name must be a string",
                         )
 
             if "version" in integration_data:

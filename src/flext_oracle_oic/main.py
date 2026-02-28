@@ -74,7 +74,7 @@ class FlextOracleOicCli(FlextService[None]):
                     if self.logger:
                         self.logger.info("Oracle OIC connection successful!")
                     sys.stdout.write(
-                        "Connection to Oracle OIC established successfully\n"
+                        "Connection to Oracle OIC established successfully\n",
                     )
                     return FlextResult[bool].ok(value=True)
                 return FlextResult[bool].fail(
@@ -152,10 +152,10 @@ class FlextOracleOicCli(FlextService[None]):
         sys.stdout.write("📋 Oracle OIC Integrations:\n")
         for integration in integrations:
             sys.stdout.write(
-                f"  • {integration.name} (ID: {integration.integration_id})\n"
+                f"  • {integration.name} (ID: {integration.integration_id})\n",
             )
             sys.stdout.write(
-                f"    Status: {integration.status}, Version: {integration.integration_version}\n"
+                f"    Status: {integration.status}, Version: {integration.integration_version}\n",
             )
             if integration.description:
                 sys.stdout.write(f"    Description: {integration.description}\n")
