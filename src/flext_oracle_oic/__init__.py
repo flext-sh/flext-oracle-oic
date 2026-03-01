@@ -46,13 +46,22 @@ if TYPE_CHECKING:
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextOracleOicApi": ("flext_oracle_oic.api", "FlextOracleOicApi"),
     "FlextOracleOicClient": ("flext_oracle_oic.ext_client", "FlextOracleOicClient"),
-    "FlextOracleOicConstants": ("flext_oracle_oic.constants", "FlextOracleOicConstants"),
+    "FlextOracleOicConstants": (
+        "flext_oracle_oic.constants",
+        "FlextOracleOicConstants",
+    ),
     "FlextOracleOicModels": ("flext_oracle_oic.models", "FlextOracleOicModels"),
-    "FlextOracleOicProtocols": ("flext_oracle_oic.protocols", "FlextOracleOicProtocols"),
+    "FlextOracleOicProtocols": (
+        "flext_oracle_oic.protocols",
+        "FlextOracleOicProtocols",
+    ),
     "FlextOracleOicService": ("flext_oracle_oic.service", "FlextOracleOicService"),
     "FlextOracleOicSettings": ("flext_oracle_oic.settings", "FlextOracleOicSettings"),
     "FlextOracleOicTypes": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
-    "FlextOracleOicUtilities": ("flext_oracle_oic.utilities", "FlextOracleOicUtilities"),
+    "FlextOracleOicUtilities": (
+        "flext_oracle_oic.utilities",
+        "FlextOracleOicUtilities",
+    ),
     "__version__": ("flext_oracle_oic.__version__", "__version__"),
     "__version_info__": ("flext_oracle_oic.__version__", "__version_info__"),
     "c": ("flext_oracle_oic.constants", "FlextOracleOicConstants"),
