@@ -366,9 +366,9 @@ class FlextOracleOicClient:
                                     parsed_data,
                                 )
                             case _:
-                                return FlextResult[
-                                    t.ConfigurationMapping
-                                ].fail("Empty JSON response")
+                                return FlextResult[t.ConfigurationMapping].fail(
+                                    "Empty JSON response"
+                                )
 
                     # Non-JSON response
                     match body:
