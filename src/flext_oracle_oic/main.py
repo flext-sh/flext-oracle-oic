@@ -19,6 +19,7 @@ from flext_core import (
     FlextResult,
     FlextService,
 )
+
 from flext_oracle_oic import __version__
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
