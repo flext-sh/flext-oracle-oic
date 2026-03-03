@@ -16,7 +16,7 @@ class TestFlextTypes:
     def test_flext_types_inheritance(self) -> None:
         """Test t (FlextTypes) exposes type utilities."""
         assert t is not None
-        assert hasattr(t, "GeneralValueType")
+        assert hasattr(t, "ContainerValue")
 
     def test_exported_types_available(self) -> None:
         """Test all exported types are available."""
@@ -28,5 +28,5 @@ class TestFlextTypes:
         # Should be able to add domain-specific types
         assert issubclass(t, object)
         # Can access core types
-        core_dict = dict[str, t.GeneralValueType]
+        core_dict = dict[str, t.ContainerValue]
         assert core_dict is not None

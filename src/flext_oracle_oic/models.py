@@ -139,11 +139,11 @@ class FlextOracleOicModels(FlextModels):
                 default=None,
                 description="Query parameters",
             )
-            data: dict[str, FlextTypes.GeneralValueType] | None = Field(
+            data: dict[str, FlextTypes.ContainerValue] | None = Field(
                 default=None,
                 description="Form data",
             )
-            json_data: dict[str, FlextTypes.GeneralValueType] | None = Field(
+            json_data: dict[str, FlextTypes.ContainerValue] | None = Field(
                 default=None,
                 description="JSON data",
             )

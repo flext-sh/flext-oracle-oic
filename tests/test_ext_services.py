@@ -250,7 +250,7 @@ from __future__ import annotations
 #         mock_client.create_integration.return_value = mock_result
 #         mock_client_class.return_value = mock_client
 #
-#         integration_data: dict[str, t.GeneralValueType] = {
+#         integration_data: dict[str, t.ContainerValue] = {
 #             "integration_id": "test_integration_id"
 #         }
 #         result = service.deploy_integration(integration_data)
@@ -287,8 +287,8 @@ from __future__ import annotations
 #         pattern_service: FlextOracleOicConstants.OICIntegrationPatternService,
 #     ) -> None:
 #         """Test message router pattern application."""
-#         source_config: dict[str, t.GeneralValueType] = {"endpoint": "source_endpoint"}
-#         target_configs: list[dict[str, t.GeneralValueType]] = [
+#         source_config: dict[str, t.ContainerValue] = {"endpoint": "source_endpoint"}
+#         target_configs: list[dict[str, t.ContainerValue]] = [
 #             {"endpoint": "target1"},
 #             {"endpoint": "target2"},
 #         ]
@@ -309,8 +309,8 @@ from __future__ import annotations
 #         pattern_service: FlextOracleOicConstants.OICIntegrationPatternService,
 #     ) -> None:
 #         """Test message router pattern with empty targets."""
-#         source_config: dict[str, t.GeneralValueType] = {"endpoint": "source_endpoint"}
-#         target_configs: list[dict[str, t.GeneralValueType]] = []
+#         source_config: dict[str, t.ContainerValue] = {"endpoint": "source_endpoint"}
+#         target_configs: list[dict[str, t.ContainerValue]] = []
 #
 #         result = pattern_service.apply_message_router_pattern(
 #             source_config,
@@ -325,7 +325,7 @@ from __future__ import annotations
 #         pattern_service: FlextOracleOicConstants.OICIntegrationPatternService,
 #     ) -> None:
 #         """Test scatter-gather pattern application."""
-#         request_data: dict[str, t.GeneralValueType] = {"id": "test_request_123", "data": "test"}
+#         request_data: dict[str, t.ContainerValue] = {"id": "test_request_123", "data": "test"}
 #         target_endpoints = ["ep1", "ep2"]
 #
 #         result = pattern_service.apply_scatter_gather_pattern(
@@ -344,7 +344,7 @@ from __future__ import annotations
 #         pattern_service: FlextOracleOicConstants.OICIntegrationPatternService,
 #     ) -> None:
 #         """Test scatter-gather pattern with invalid scatter config."""
-#         request_data: dict[str, t.GeneralValueType] = {}
+#         request_data: dict[str, t.ContainerValue] = {}
 #         target_endpoints: list[str] = []
 #
 #         result = pattern_service.apply_scatter_gather_pattern(

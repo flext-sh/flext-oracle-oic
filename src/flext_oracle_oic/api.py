@@ -100,7 +100,7 @@ class FlextOracleOicApi(FlextService[None]):
 
     def create_integration(
         self,
-        integration_data: Mapping[str, t.GeneralValueType],
+        integration_data: Mapping[str, t.ContainerValue],
     ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
@@ -116,7 +116,7 @@ class FlextOracleOicApi(FlextService[None]):
     def update_integration(
         self,
         integration_id: str,
-        integration_data: Mapping[str, t.GeneralValueType],
+        integration_data: Mapping[str, t.ContainerValue],
     ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
@@ -182,9 +182,9 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_app_driven_orchestration(
         self,
         integration_id: str,
-        payload: Mapping[str, t.GeneralValueType],
-        **kwargs: t.GeneralValueType,
-    ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
+        payload: Mapping[str, t.ContainerValue],
+        **kwargs: t.ContainerValue,
+    ) -> FlextResult[Mapping[str, t.ContainerValue]]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -205,9 +205,9 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
-        schedule_config: Mapping[str, t.GeneralValueType],
-        **kwargs: t.GeneralValueType,
-    ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
+        schedule_config: Mapping[str, t.ContainerValue],
+        **kwargs: t.ContainerValue,
+    ) -> FlextResult[Mapping[str, t.ContainerValue]]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -228,9 +228,9 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_file_transfer(
         self,
         integration_id: str,
-        file_config: Mapping[str, t.GeneralValueType],
-        **kwargs: t.GeneralValueType,
-    ) -> FlextResult[Mapping[str, t.GeneralValueType]]:
+        file_config: Mapping[str, t.ContainerValue],
+        **kwargs: t.ContainerValue,
+    ) -> FlextResult[Mapping[str, t.ContainerValue]]:
         """Execute file transfer pattern.
 
         Args:
@@ -250,7 +250,7 @@ class FlextOracleOicApi(FlextService[None]):
 
     # Monitoring and Health
 
-    def get_health_status(self) -> FlextResult[Mapping[str, t.GeneralValueType]]:
+    def get_health_status(self) -> FlextResult[Mapping[str, t.ContainerValue]]:
         """Get Oracle OIC health status.
 
         Returns:
@@ -259,7 +259,7 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._service.get_health_status()
 
-    def get_performance_metrics(self) -> FlextResult[Mapping[str, t.GeneralValueType]]:
+    def get_performance_metrics(self) -> FlextResult[Mapping[str, t.ContainerValue]]:
         """Get Oracle OIC performance metrics.
 
         Returns:
@@ -293,7 +293,7 @@ class FlextOracleOicApi(FlextService[None]):
 
     # Context and Configuration
 
-    def get_connection_context(self) -> Mapping[str, t.GeneralValueType]:
+    def get_connection_context(self) -> Mapping[str, t.ContainerValue]:
         """Get current connection configuration context.
 
         Returns:
@@ -306,7 +306,7 @@ class FlextOracleOicApi(FlextService[None]):
             "request_timeout": self._oic_config.request_timeout,
         }
 
-    def get_auth_context(self) -> Mapping[str, t.GeneralValueType]:
+    def get_auth_context(self) -> Mapping[str, t.ContainerValue]:
         """Get current authentication configuration context.
 
         Returns:
@@ -319,7 +319,7 @@ class FlextOracleOicApi(FlextService[None]):
             "oauth_scope": self._oic_config.oauth_scope,
         }
 
-    def get_features_context(self) -> Mapping[str, t.GeneralValueType]:
+    def get_features_context(self) -> Mapping[str, t.ContainerValue]:
         """Get current features configuration context.
 
         Returns:
@@ -347,7 +347,7 @@ class FlextOracleOicApi(FlextService[None]):
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
-        exc_tb: t.GeneralValueType,
+        exc_tb: t.ContainerValue,
     ) -> None:
         """Async context manager exit."""
         # Log service stop
