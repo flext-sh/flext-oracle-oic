@@ -59,6 +59,141 @@ class FlextOracleOicClient:
         self._client: FlextApi | None = None
         self._access_token: str | None = None
 
+    def __enter__(self) -> Self:
+        """Context manager entry."""
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: object,
+    ) -> None:
+        """Context manager exit."""
+        if self._client is not None:
+            close_fn = getattr(self._client, "close", None)
+            if callable(close_fn):
+                close_fn()
+            self._client = None
+
+    def create_connection(
+        self,
+        connection_data: Mapping[str, t.ContainerValue],
+    ) -> FlextResult[Mapping[str, t.ContainerValue]]:
+        """Create connection in OIC."""
+        json_data: dict[str, t.ContainerValue] = {
+            str(k): str(v) for k, v in connection_data.items()
+        }
+        return self.make_request(
+            FlextOracleOicConstants.API.Method.POST,
+            "/connections",
+            json=json_data,
+        )
+
+    def create_integration(
+        self,
+        integration_data: Mapping[str, t.ContainerValue],
+    ) -> FlextResult[Mapping[str, t.ContainerValue]]:
+        """Create integration in OIC."""
+        return self.make_request(
+            FlextOracleOicConstants.API.Method.POST,
+            "/integrations",
+            json=integration_data,
+        )
+
+    def encode_client_credentials(self) -> str:
+        """Encode client credentials for HTTP Basic authentication."""
+        client_id = self.auth_config.oauth_client_id
+        client_secret = self.auth_config.oauth_client_secret.get_secret_value()
+
+        credentials = f"{client_id}:{client_secret}"
+        return base64.b64encode(credentials.encode()).decode()
+
+    def execute_file_transfer(
+        self,
+        integration_id: str,
+        file_config: Mapping[str, t.ContainerValue],
+        **_kwargs: t.ContainerValue,
+    ) -> Mapping[str, t.ContainerValue]:
+        """Execute file transfer pattern for an integration."""
+        endpoint = f"/integrations/{integration_id}/files"
+        result = self.make_request(
+            FlextOracleOicConstants.API.Method.POST,
+            endpoint,
+            json=file_config,
+        )
+        return result.value if result.is_success else {}
+
+    def execute_scheduled_orchestration(
+        self,
+        integration_id: str,
+        schedule_config: Mapping[str, t.ContainerValue],
+        **_kwargs: t.ContainerValue,
+    ) -> Mapping[str, t.ContainerValue]:
+        """Execute scheduled orchestration for an integration."""
+        endpoint = f"/integrations/{integration_id}/schedules"
+        result = self.make_request(
+            FlextOracleOicConstants.API.Method.POST,
+            endpoint,
+            json=schedule_config,
+        )
+        return result.value if result.is_success else {}
+
+    def get_access_token(self) -> FlextResult[str]:
+        """Get access token using OAuth2 client credentials flow."""
+        # Railway-oriented OAuth2 token retrieval
+        return (
+            FlextResult[bool]
+            .ok(True)
+            .flat_map(lambda _: self._validate_token_url())
+            .flat_map(lambda _: self._prepare_oauth_request())
+            .flat_map(self._execute_token_request)
+            .flat_map(self._parse_token_response)
+            .map(self._store_and_return_token)
+        )
+
+    def get_connections(
+        self,
+        type_filter: list[str] | None = None,
+        page_size: int = 100,
+    ) -> FlextResult[list[Mapping[str, t.ContainerValue]]]:
+        """Get adapter connections from OIC."""
+        params: dict[str, str] = {}
+
+        if type_filter:
+            params["q"] = f"adapterType in ({','.join(type_filter)})"
+
+        return self.paginate_request(
+            "/connections",
+            page_size=page_size,
+            params=params,
+        )
+
+    # Integration Methods
+    def get_integrations(
+        self,
+        status_filter: list[str] | None = None,
+        page_size: int = 100,
+    ) -> FlextResult[list[Mapping[str, t.ContainerValue]]]:
+        """Get integration flows from OIC."""
+        params: dict[str, str] = {}
+
+        if status_filter:
+            params["q"] = f"status in ({','.join(status_filter)})"
+
+        return self.paginate_request(
+            "/integrations",
+            page_size=page_size,
+            params=params,
+        )
+
+    def get_lookups(
+        self,
+        page_size: int = 100,
+    ) -> FlextResult[list[Mapping[str, t.ContainerValue]]]:
+        """Get lookup tables from OIC."""
+        return self.paginate_request("/lookups", page_size=page_size)
+
     # Authentication Methods
     def get_oauth_request_body(self) -> Mapping[str, str]:
         """Generate OAuth2 request body for client credentials flow."""
@@ -78,170 +213,12 @@ class FlextOracleOicClient:
             "scope": scope,
         }
 
-    def encode_client_credentials(self) -> str:
-        """Encode client credentials for HTTP Basic authentication."""
-        client_id = self.auth_config.oauth_client_id
-        client_secret = self.auth_config.oauth_client_secret.get_secret_value()
-
-        credentials = f"{client_id}:{client_secret}"
-        return base64.b64encode(credentials.encode()).decode()
-
-    def get_access_token(self) -> FlextResult[str]:
-        """Get access token using OAuth2 client credentials flow."""
-        # Railway-oriented OAuth2 token retrieval
-        return (
-            FlextResult[bool]
-            .ok(True)
-            .flat_map(lambda _: self._validate_token_url())
-            .flat_map(lambda _: self._prepare_oauth_request())
-            .flat_map(self._execute_token_request)
-            .flat_map(self._parse_token_response)
-            .map(self._store_and_return_token)
-        )
-
-    def _validate_token_url(self) -> FlextResult[bool]:
-        """Validate that OAuth token URL is configured."""
-        if not self.auth_config.oauth_token_url:
-            return FlextResult[bool].fail("OAuth token URL not configured")
-        return FlextResult[bool].ok(value=True)
-
-    def _prepare_oauth_request(
+    def get_packages(
         self,
-    ) -> FlextResult[tuple[Mapping[str, str], Mapping[str, str]]]:
-        """Prepare OAuth request headers and data."""
-        try:
-            encoded_credentials = self.encode_client_credentials()
-            headers = {
-                "Authorization": f"Basic {encoded_credentials}",
-                "Content-Type": "application/x-www-form-urlencoded",
-            }
-            data = self.get_oauth_request_body()
-            return FlextResult[tuple[Mapping[str, str], Mapping[str, str]]].ok((
-                headers,
-                data,
-            ))
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-            json_module.JSONDecodeError,
-        ) as e:
-            error_msg = f"Failed to prepare OAuth request: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult[tuple[Mapping[str, str], Mapping[str, str]]].fail(
-                error_msg,
-            )
-
-    def _execute_token_request(
-        self,
-        request_data: tuple[Mapping[str, str], Mapping[str, str]],
-    ) -> FlextResult[t.ContainerValue]:
-        """Execute OAuth token request."""
-        headers, data = request_data
-        try:
-            api_config = FlextApiSettings(base_url=self.auth_config.oauth_token_url)
-            api_client = FlextApi(api_config)
-            oauth_data: dict[str, t.ContainerValue] = {
-                key: self._to_api_payload(value) for key, value in data.items()
-            }
-            response_result = api_client.post("", data=oauth_data, headers=headers)
-            if response_result.is_failure:
-                return FlextResult[t.ContainerValue].fail(
-                    f"OAuth request failed: {response_result.error}",
-                )
-            response = response_result.value
-            if (
-                response.status_code
-                >= FlextOracleOicConstants.API.HTTP_ERROR_STATUS_THRESHOLD
-            ):
-                return FlextResult[t.ContainerValue].fail(
-                    f"OAuth HTTP error: {response.status_code}",
-                )
-            return FlextResult[t.ContainerValue].ok(response)
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-            json_module.JSONDecodeError,
-        ) as e:
-            error_msg = f"OAuth token request failed: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult[t.ContainerValue].fail(error_msg)
-
-    def _parse_token_response(self, response: t.ContainerValue) -> FlextResult[str]:
-        """Parse access token from OAuth response."""
-        try:
-            # Handle response.body properly - it could be str, dict, or None
-            body = getattr(response, "body", None)
-            if body is None:
-                return FlextResult[str].fail("Invalid response format")
-
-            if u.is_dict_like(body):
-                token_data = dict(body)
-            else:
-                match body:
-                    case str():
-                        token_data = json_module.loads(body)
-                    case _:
-                        return FlextResult[str].fail(
-                            "Empty or invalid OAuth response body",
-                        )
-
-            access_token = token_data.get("access_token")
-            match access_token:
-                case str() as token if token:
-                    return FlextResult[str].ok(token)
-                case _:
-                    return FlextResult[str].fail("No valid access token in response")
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-            json_module.JSONDecodeError,
-        ) as e:
-            error_msg = f"Failed to parse OAuth response: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult[str].fail(error_msg)
-
-    def _store_and_return_token(self, token: str) -> str:
-        """Store token and return it."""
-        self._access_token = token
-        self.logger.info("OIC OAuth2 authentication successful")
-        return token
-
-    # Client Methods
-    def _create_authenticated_client(self) -> FlextResult[FlextApi]:
-        """Create new authenticated client."""
-        return self.get_access_token().flat_map(self._build_client_with_token)
-
-    def _build_client_with_token(self, token: str) -> FlextResult[FlextApi]:
-        """Build client with access token."""
-        try:
-            # Inline base URL construction: f"{base_url.rstrip('/')}/ic/api/{api_version}"
-            base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
-
-            api_config = FlextApiSettings(
-                base_url=base_url,
-                timeout=self.connection_config.request_timeout,
-                headers={
-                    "Authorization": f"Bearer {token}",
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                },
-            )
-
-            client = FlextApi(api_config)
-            self._client = client
-            return FlextResult[FlextApi].ok(client)
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-            json_module.JSONDecodeError,
-        ) as e:
-            error_msg = f"Failed to create authenticated client: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult[FlextApi].fail(error_msg)
+        page_size: int = 100,
+    ) -> FlextResult[list[Mapping[str, t.ContainerValue]]]:
+        """Get integration packages from OIC."""
+        return self.paginate_request("/packages", page_size=page_size)
 
     def make_request(
         self,
@@ -279,124 +256,6 @@ class FlextOracleOicClient:
             )
             .flat_map(self._parse_api_response)
         )
-
-    def _execute_api_request(
-        self,
-        client: FlextApi,
-        method: str,
-        endpoint: str,
-        _params: Mapping[str, str] | None,
-        _data: Mapping[str, str] | None,
-        json: Mapping[str, t.ContainerValue] | None,
-    ) -> FlextResult[t.ContainerValue]:
-        """Execute the actual API request."""
-        try:
-            if client is None:
-                return FlextResult[t.ContainerValue].fail("Client not available")
-            request_data: dict[str, t.ContainerValue] | None = (
-                {key: self._to_api_payload(value) for key, value in json.items()}
-                if json is not None
-                else None
-            )
-            base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
-            full_url = f"{base_url}/{endpoint.lstrip('/')}"
-            if method.upper() == "GET":
-                response_result = client.get(full_url, headers=None)
-            elif method.upper() == "POST":
-                response_result = client.post(full_url, data=request_data, headers=None)
-            elif method.upper() == "PUT":
-                response_result = client.put(full_url, data=request_data, headers=None)
-            elif method.upper() == "DELETE":
-                response_result = client.delete(full_url, headers=None)
-            else:
-                return FlextResult[t.ContainerValue].fail(
-                    f"Unsupported HTTP method: {method}",
-                )
-            if response_result.is_failure:
-                return FlextResult[t.ContainerValue].fail(
-                    f"Request failed: {response_result.error}",
-                )
-            return FlextResult[t.ContainerValue].ok(response_result.value)
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-            json_module.JSONDecodeError,
-        ) as e:
-            error_msg = f"OIC API request failed: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult[t.ContainerValue].fail(error_msg)
-
-    def _to_api_payload(
-        self,
-        value: t.ContainerValue,
-    ) -> t.ContainerValue:
-        """Normalize ContainerValue into flext-api request body value type."""
-        if isinstance(value, (str, int, float, bool)) or value is None:
-            return value
-        if isinstance(value, Mapping):
-            return {str(key): self._to_api_payload(item) for key, item in value.items()}
-        match value:
-            case list() | tuple():
-                return [self._to_api_payload(item) for item in value]
-        return str(value)
-
-    def _parse_api_response(
-        self,
-        response: t.ContainerValue,
-    ) -> FlextResult[Mapping[str, t.ContainerValue]]:
-        """Parse API response based on content type."""
-        try:
-            # Parse response body properly - it could be str, dict, or None
-            headers = getattr(response, "headers", None)
-            body = getattr(response, "body", None)
-            match headers:
-                case Mapping():
-                    content_type = str(headers.get("content-type", ""))
-
-                    if content_type.startswith("application/json"):
-                        if isinstance(body, Mapping):
-                            return FlextResult[t.ConfigurationMapping].ok(
-                                body,
-                            )
-                        match body:
-                            case str():
-                                parsed_data = json_module.loads(body)
-                                return FlextResult[t.ConfigurationMapping].ok(
-                                    parsed_data,
-                                )
-                            case _:
-                                return FlextResult[t.ConfigurationMapping].fail(
-                                    "Empty JSON response"
-                                )
-
-                    # Non-JSON response
-                    match body:
-                        case str():
-                            return FlextResult[t.ConfigurationMapping].ok({
-                                "raw_content": body,
-                            })
-                        case _ if isinstance(body, Mapping):
-                            return FlextResult[t.ConfigurationMapping].ok(
-                                body,
-                            )
-                        case _:
-                            return FlextResult[t.ConfigurationMapping].ok({
-                                "raw_content": str(body),
-                            })
-                case _:
-                    return FlextResult[t.ConfigurationMapping].fail(
-                        "Invalid response format",
-                    )
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-            json_module.JSONDecodeError,
-        ) as e:
-            error_msg = f"Failed to parse API response: {e}"
-            self.logger.exception(error_msg)
-            return FlextResult[t.ConfigurationMapping].fail(error_msg)
 
     def paginate_request(
         self,
@@ -469,66 +328,6 @@ class FlextOracleOicClient:
             self.logger.exception(error_msg)
             return FlextResult[list[t.ConfigurationMapping]].fail(error_msg)
 
-    # Integration Methods
-    def get_integrations(
-        self,
-        status_filter: list[str] | None = None,
-        page_size: int = 100,
-    ) -> FlextResult[list[Mapping[str, t.ContainerValue]]]:
-        """Get integration flows from OIC."""
-        params: dict[str, str] = {}
-
-        if status_filter:
-            params["q"] = f"status in ({','.join(status_filter)})"
-
-        return self.paginate_request(
-            "/integrations",
-            page_size=page_size,
-            params=params,
-        )
-
-    def get_connections(
-        self,
-        type_filter: list[str] | None = None,
-        page_size: int = 100,
-    ) -> FlextResult[list[Mapping[str, t.ContainerValue]]]:
-        """Get adapter connections from OIC."""
-        params: dict[str, str] = {}
-
-        if type_filter:
-            params["q"] = f"adapterType in ({','.join(type_filter)})"
-
-        return self.paginate_request(
-            "/connections",
-            page_size=page_size,
-            params=params,
-        )
-
-    def get_packages(
-        self,
-        page_size: int = 100,
-    ) -> FlextResult[list[Mapping[str, t.ContainerValue]]]:
-        """Get integration packages from OIC."""
-        return self.paginate_request("/packages", page_size=page_size)
-
-    def get_lookups(
-        self,
-        page_size: int = 100,
-    ) -> FlextResult[list[Mapping[str, t.ContainerValue]]]:
-        """Get lookup tables from OIC."""
-        return self.paginate_request("/lookups", page_size=page_size)
-
-    def create_integration(
-        self,
-        integration_data: Mapping[str, t.ContainerValue],
-    ) -> FlextResult[Mapping[str, t.ContainerValue]]:
-        """Create integration in OIC."""
-        return self.make_request(
-            FlextOracleOicConstants.API.Method.POST,
-            "/integrations",
-            json=integration_data,
-        )
-
     def update_integration(
         self,
         integration_id: str,
@@ -545,66 +344,267 @@ class FlextOracleOicClient:
             json=json_data,
         )
 
-    def create_connection(
+    def _build_client_with_token(self, token: str) -> FlextResult[FlextApi]:
+        """Build client with access token."""
+        try:
+            # Inline base URL construction: f"{base_url.rstrip('/')}/ic/api/{api_version}"
+            base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
+
+            api_config = FlextApiSettings(
+                base_url=base_url,
+                timeout=self.connection_config.request_timeout,
+                headers={
+                    "Authorization": f"Bearer {token}",
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                },
+            )
+
+            client = FlextApi(api_config)
+            self._client = client
+            return FlextResult[FlextApi].ok(client)
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
+            error_msg = f"Failed to create authenticated client: {e}"
+            self.logger.exception(error_msg)
+            return FlextResult[FlextApi].fail(error_msg)
+
+    # Client Methods
+    def _create_authenticated_client(self) -> FlextResult[FlextApi]:
+        """Create new authenticated client."""
+        return self.get_access_token().flat_map(self._build_client_with_token)
+
+    def _execute_api_request(
         self,
-        connection_data: Mapping[str, t.ContainerValue],
+        client: FlextApi,
+        method: str,
+        endpoint: str,
+        _params: Mapping[str, str] | None,
+        _data: Mapping[str, str] | None,
+        json: Mapping[str, t.ContainerValue] | None,
+    ) -> FlextResult[t.ContainerValue]:
+        """Execute the actual API request."""
+        try:
+            if client is None:
+                return FlextResult[t.ContainerValue].fail("Client not available")
+            request_data: dict[str, t.ContainerValue] | None = (
+                {key: self._to_api_payload(value) for key, value in json.items()}
+                if json is not None
+                else None
+            )
+            base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
+            full_url = f"{base_url}/{endpoint.lstrip('/')}"
+            if method.upper() == "GET":
+                response_result = client.get(full_url, headers=None)
+            elif method.upper() == "POST":
+                response_result = client.post(full_url, data=request_data, headers=None)
+            elif method.upper() == "PUT":
+                response_result = client.put(full_url, data=request_data, headers=None)
+            elif method.upper() == "DELETE":
+                response_result = client.delete(full_url, headers=None)
+            else:
+                return FlextResult[t.ContainerValue].fail(
+                    f"Unsupported HTTP method: {method}",
+                )
+            if response_result.is_failure:
+                return FlextResult[t.ContainerValue].fail(
+                    f"Request failed: {response_result.error}",
+                )
+            return FlextResult[t.ContainerValue].ok(response_result.value)
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
+            error_msg = f"OIC API request failed: {e}"
+            self.logger.exception(error_msg)
+            return FlextResult[t.ContainerValue].fail(error_msg)
+
+    def _execute_token_request(
+        self,
+        request_data: tuple[Mapping[str, str], Mapping[str, str]],
+    ) -> FlextResult[t.ContainerValue]:
+        """Execute OAuth token request."""
+        headers, data = request_data
+        try:
+            api_config = FlextApiSettings(base_url=self.auth_config.oauth_token_url)
+            api_client = FlextApi(api_config)
+            oauth_data: dict[str, t.ContainerValue] = {
+                key: self._to_api_payload(value) for key, value in data.items()
+            }
+            response_result = api_client.post("", data=oauth_data, headers=headers)
+            if response_result.is_failure:
+                return FlextResult[t.ContainerValue].fail(
+                    f"OAuth request failed: {response_result.error}",
+                )
+            response = response_result.value
+            if (
+                response.status_code
+                >= FlextOracleOicConstants.API.HTTP_ERROR_STATUS_THRESHOLD
+            ):
+                return FlextResult[t.ContainerValue].fail(
+                    f"OAuth HTTP error: {response.status_code}",
+                )
+            return FlextResult[t.ContainerValue].ok(response)
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
+            error_msg = f"OAuth token request failed: {e}"
+            self.logger.exception(error_msg)
+            return FlextResult[t.ContainerValue].fail(error_msg)
+
+    def _parse_api_response(
+        self,
+        response: t.ContainerValue,
     ) -> FlextResult[Mapping[str, t.ContainerValue]]:
-        """Create connection in OIC."""
-        json_data: dict[str, t.ContainerValue] = {
-            str(k): str(v) for k, v in connection_data.items()
-        }
-        return self.make_request(
-            FlextOracleOicConstants.API.Method.POST,
-            "/connections",
-            json=json_data,
-        )
+        """Parse API response based on content type."""
+        try:
+            # Parse response body properly - it could be str, dict, or None
+            headers = getattr(response, "headers", None)
+            body = getattr(response, "body", None)
+            match headers:
+                case Mapping():
+                    content_type = str(headers.get("content-type", ""))
 
-    def execute_scheduled_orchestration(
+                    if content_type.startswith("application/json"):
+                        if isinstance(body, Mapping):
+                            return FlextResult[t.ConfigurationMapping].ok(
+                                body,
+                            )
+                        match body:
+                            case str():
+                                parsed_data = json_module.loads(body)
+                                return FlextResult[t.ConfigurationMapping].ok(
+                                    parsed_data,
+                                )
+                            case _:
+                                return FlextResult[t.ConfigurationMapping].fail(
+                                    "Empty JSON response"
+                                )
+
+                    # Non-JSON response
+                    match body:
+                        case str():
+                            return FlextResult[t.ConfigurationMapping].ok({
+                                "raw_content": body,
+                            })
+                        case _ if isinstance(body, Mapping):
+                            return FlextResult[t.ConfigurationMapping].ok(
+                                body,
+                            )
+                        case _:
+                            return FlextResult[t.ConfigurationMapping].ok({
+                                "raw_content": str(body),
+                            })
+                case _:
+                    return FlextResult[t.ConfigurationMapping].fail(
+                        "Invalid response format",
+                    )
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
+            error_msg = f"Failed to parse API response: {e}"
+            self.logger.exception(error_msg)
+            return FlextResult[t.ConfigurationMapping].fail(error_msg)
+
+    def _parse_token_response(self, response: t.ContainerValue) -> FlextResult[str]:
+        """Parse access token from OAuth response."""
+        try:
+            # Handle response.body properly - it could be str, dict, or None
+            body = getattr(response, "body", None)
+            if body is None:
+                return FlextResult[str].fail("Invalid response format")
+
+            if u.is_dict_like(body):
+                token_data = dict(body)
+            else:
+                match body:
+                    case str():
+                        token_data = json_module.loads(body)
+                    case _:
+                        return FlextResult[str].fail(
+                            "Empty or invalid OAuth response body",
+                        )
+
+            access_token = token_data.get("access_token")
+            match access_token:
+                case str() as token if token:
+                    return FlextResult[str].ok(token)
+                case _:
+                    return FlextResult[str].fail("No valid access token in response")
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
+            error_msg = f"Failed to parse OAuth response: {e}"
+            self.logger.exception(error_msg)
+            return FlextResult[str].fail(error_msg)
+
+    def _prepare_oauth_request(
         self,
-        integration_id: str,
-        schedule_config: Mapping[str, t.ContainerValue],
-        **_kwargs: t.ContainerValue,
-    ) -> Mapping[str, t.ContainerValue]:
-        """Execute scheduled orchestration for an integration."""
-        endpoint = f"/integrations/{integration_id}/schedules"
-        result = self.make_request(
-            FlextOracleOicConstants.API.Method.POST,
-            endpoint,
-            json=schedule_config,
-        )
-        return result.value if result.is_success else {}
+    ) -> FlextResult[tuple[Mapping[str, str], Mapping[str, str]]]:
+        """Prepare OAuth request headers and data."""
+        try:
+            encoded_credentials = self.encode_client_credentials()
+            headers = {
+                "Authorization": f"Basic {encoded_credentials}",
+                "Content-Type": "application/x-www-form-urlencoded",
+            }
+            data = self.get_oauth_request_body()
+            return FlextResult[tuple[Mapping[str, str], Mapping[str, str]]].ok((
+                headers,
+                data,
+            ))
+        except (
+            ConnectionError,
+            TimeoutError,
+            ValueError,
+            json_module.JSONDecodeError,
+        ) as e:
+            error_msg = f"Failed to prepare OAuth request: {e}"
+            self.logger.exception(error_msg)
+            return FlextResult[tuple[Mapping[str, str], Mapping[str, str]]].fail(
+                error_msg,
+            )
 
-    def execute_file_transfer(
+    def _store_and_return_token(self, token: str) -> str:
+        """Store token and return it."""
+        self._access_token = token
+        self.logger.info("OIC OAuth2 authentication successful")
+        return token
+
+    def _to_api_payload(
         self,
-        integration_id: str,
-        file_config: Mapping[str, t.ContainerValue],
-        **_kwargs: t.ContainerValue,
-    ) -> Mapping[str, t.ContainerValue]:
-        """Execute file transfer pattern for an integration."""
-        endpoint = f"/integrations/{integration_id}/files"
-        result = self.make_request(
-            FlextOracleOicConstants.API.Method.POST,
-            endpoint,
-            json=file_config,
-        )
-        return result.value if result.is_success else {}
+        value: t.ContainerValue,
+    ) -> t.ContainerValue:
+        """Normalize ContainerValue into flext-api request body value type."""
+        if isinstance(value, (str, int, float, bool)) or value is None:
+            return value
+        if isinstance(value, Mapping):
+            return {str(key): self._to_api_payload(item) for key, item in value.items()}
+        match value:
+            case list() | tuple():
+                return [self._to_api_payload(item) for item in value]
+        return str(value)
 
-    def __enter__(self) -> Self:
-        """Context manager entry."""
-        return self
-
-    def __exit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_val: BaseException | None,
-        exc_tb: object,
-    ) -> None:
-        """Context manager exit."""
-        if self._client is not None:
-            close_fn = getattr(self._client, "close", None)
-            if callable(close_fn):
-                close_fn()
-            self._client = None
+    def _validate_token_url(self) -> FlextResult[bool]:
+        """Validate that OAuth token URL is configured."""
+        if not self.auth_config.oauth_token_url:
+            return FlextResult[bool].fail("OAuth token URL not configured")
+        return FlextResult[bool].ok(value=True)
 
 
 # Exports following unified pattern

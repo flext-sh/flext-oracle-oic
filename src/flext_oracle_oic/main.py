@@ -41,6 +41,46 @@ class FlextOracleOicCli(FlextService[None]):
         """Initialize unified Oracle OIC CLI service."""
         super().__init__()
 
+    @staticmethod
+    def create_parser() -> argparse.ArgumentParser:
+        """Create the argument parser for CLI."""
+        parser = argparse.ArgumentParser(
+            prog="flext-oracle-oic-ext",
+            description="FLEXT Oracle OIC Extension CLI - Enterprise Oracle Integration Cloud operations",
+        )
+
+        parser.add_argument(
+            "--version",
+            action="store_true",
+            help="Show version information",
+        )
+
+        subparsers = parser.add_subparsers(
+            dest="command",
+            help="Available commands",
+            metavar="COMMAND",
+        )
+
+        # test-connection command
+        subparsers.add_parser(
+            "test-connection",
+            help="Test connection to Oracle OIC instance",
+        )
+
+        # list-integrations command
+        subparsers.add_parser(
+            "list-integrations",
+            help="List Oracle OIC integrations",
+        )
+
+        # version command
+        subparsers.add_parser(
+            "version",
+            help="Show Oracle OIC Extension version",
+        )
+
+        return parser
+
     @override
     def execute(self) -> FlextResult[None]:
         """Execute main CLI operation - run with default arguments."""
@@ -50,6 +90,93 @@ class FlextOracleOicCli(FlextService[None]):
         return FlextResult[None].fail(
             f"CLI execution failed with exit code {exit_code}",
         )
+
+    def list_integrations(self) -> FlextResult[bool]:
+        """List Oracle OIC integrations.
+
+        Returns:
+        FlextResult indicating success or failure.
+
+        """
+        try:
+            if self.logger:
+                self.logger.info("Listing Oracle OIC integrations...")
+
+            # Create development service
+            FlextOracleOicSettings.create_for_development()
+            service = FlextOracleOicService()
+
+            # List integrations
+            return self._list_integrations_with_service(service)
+
+        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+            if self.logger:
+                self.logger.exception("List integrations failed")
+            return FlextResult[bool].fail(f"List integrations failed: {e!s}")
+
+    def run_cli(self, args: list[str] | None = None) -> int:
+        """Run the CLI with the given arguments.
+
+        Args:
+        args: Command line arguments (defaults to sys.argv[1:]).
+
+        Returns:
+        Exit code (0 for success, non-zero for failure).
+
+        """
+        parser = self.create_parser()
+        parsed_args = parser.parse_args(args)
+
+        # Handle --version flag
+        if parsed_args.version or parsed_args.command == "version":
+            result = self.show_version()
+            return 0 if result.is_success else 1
+
+        # Handle commands
+        if parsed_args.command:
+            result = self.run_command(parsed_args.command)
+            return 0 if result.is_success else 1
+
+        # No command provided
+        parser.print_help()
+        return 1
+
+    def run_command(self, command: str) -> FlextResult[bool]:
+        """Run the specified CLI command.
+
+        Args:
+        command: The command to run ('test-connection', 'list-integrations', 'version').
+
+        Returns:
+        FlextResult indicating success or failure.
+
+        """
+        commands = {
+            "test-connection": self.test_connection,
+            "list-integrations": self.list_integrations,
+            "version": self.show_version,
+        }
+
+        if command not in commands:
+            return FlextResult[bool].fail(f"Unknown command: {command}")
+
+        return commands[command]()
+
+    def show_version(self) -> FlextResult[bool]:
+        """Show Oracle OIC Extension version.
+
+        Returns:
+        FlextResult indicating success or failure.
+
+        """
+        try:
+            sys.stdout.write(f"Oracle OIC Extension v{__version__}\n")
+            sys.stdout.write("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud\n")
+            return FlextResult[bool].ok(value=True)
+        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+            if self.logger:
+                self.logger.exception("Version display failed")
+            return FlextResult[bool].fail(f"Version display failed: {e!s}")
 
     # CLI Command Methods
 
@@ -86,29 +213,6 @@ class FlextOracleOicCli(FlextService[None]):
             if self.logger:
                 self.logger.exception("Connection test failed")
             return FlextResult[bool].fail(f"Connection test failed: {e!s}")
-
-    def list_integrations(self) -> FlextResult[bool]:
-        """List Oracle OIC integrations.
-
-        Returns:
-        FlextResult indicating success or failure.
-
-        """
-        try:
-            if self.logger:
-                self.logger.info("Listing Oracle OIC integrations...")
-
-            # Create development service
-            FlextOracleOicSettings.create_for_development()
-            service = FlextOracleOicService()
-
-            # List integrations
-            return self._list_integrations_with_service(service)
-
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
-            if self.logger:
-                self.logger.exception("List integrations failed")
-            return FlextResult[bool].fail(f"List integrations failed: {e!s}")
 
     def _list_integrations_with_service(
         self,
@@ -161,110 +265,6 @@ class FlextOracleOicCli(FlextService[None]):
             if integration.description:
                 sys.stdout.write(f"    Description: {integration.description}\n")
             sys.stdout.write("\n")
-
-    def show_version(self) -> FlextResult[bool]:
-        """Show Oracle OIC Extension version.
-
-        Returns:
-        FlextResult indicating success or failure.
-
-        """
-        try:
-            sys.stdout.write(f"Oracle OIC Extension v{__version__}\n")
-            sys.stdout.write("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud\n")
-            return FlextResult[bool].ok(value=True)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
-            if self.logger:
-                self.logger.exception("Version display failed")
-            return FlextResult[bool].fail(f"Version display failed: {e!s}")
-
-    def run_command(self, command: str) -> FlextResult[bool]:
-        """Run the specified CLI command.
-
-        Args:
-        command: The command to run ('test-connection', 'list-integrations', 'version').
-
-        Returns:
-        FlextResult indicating success or failure.
-
-        """
-        commands = {
-            "test-connection": self.test_connection,
-            "list-integrations": self.list_integrations,
-            "version": self.show_version,
-        }
-
-        if command not in commands:
-            return FlextResult[bool].fail(f"Unknown command: {command}")
-
-        return commands[command]()
-
-    @staticmethod
-    def create_parser() -> argparse.ArgumentParser:
-        """Create the argument parser for CLI."""
-        parser = argparse.ArgumentParser(
-            prog="flext-oracle-oic-ext",
-            description="FLEXT Oracle OIC Extension CLI - Enterprise Oracle Integration Cloud operations",
-        )
-
-        parser.add_argument(
-            "--version",
-            action="store_true",
-            help="Show version information",
-        )
-
-        subparsers = parser.add_subparsers(
-            dest="command",
-            help="Available commands",
-            metavar="COMMAND",
-        )
-
-        # test-connection command
-        subparsers.add_parser(
-            "test-connection",
-            help="Test connection to Oracle OIC instance",
-        )
-
-        # list-integrations command
-        subparsers.add_parser(
-            "list-integrations",
-            help="List Oracle OIC integrations",
-        )
-
-        # version command
-        subparsers.add_parser(
-            "version",
-            help="Show Oracle OIC Extension version",
-        )
-
-        return parser
-
-    def run_cli(self, args: list[str] | None = None) -> int:
-        """Run the CLI with the given arguments.
-
-        Args:
-        args: Command line arguments (defaults to sys.argv[1:]).
-
-        Returns:
-        Exit code (0 for success, non-zero for failure).
-
-        """
-        parser = self.create_parser()
-        parsed_args = parser.parse_args(args)
-
-        # Handle --version flag
-        if parsed_args.version or parsed_args.command == "version":
-            result = self.show_version()
-            return 0 if result.is_success else 1
-
-        # Handle commands
-        if parsed_args.command:
-            result = self.run_command(parsed_args.command)
-            return 0 if result.is_success else 1
-
-        # No command provided
-        parser.print_help()
-        return 1
 
 
 def main() -> NoReturn:

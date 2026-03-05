@@ -140,58 +140,6 @@ class FlextOracleOicSettings(FlextSettings):
         description="Project version",
     )
 
-    @model_validator(mode="after")
-    def validate_oracle_oic_configuration_consistency(self) -> Self:
-        """Validate Oracle OIC configuration consistency."""
-        # Validate OAuth configuration
-        if self.oauth_client_id:
-            # Validate client ID format
-            client_id_result = FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_client_id(
-                self.oauth_client_id,
-            )
-            if client_id_result.is_failure:
-                error_msg = f"OAuth client ID validation: {client_id_result.error}"
-                raise ValueError(error_msg)
-
-        if self.oauth_client_id and not self.oauth_client_secret:
-            error_msg = "OAuth client secret is required when client ID is provided"
-            raise ValueError(error_msg)
-
-        return self
-
-    def validate_business_rules(self) -> FlextResult[bool]:
-        """Validate Oracle OIC Extension specific business rules."""
-        # Railway-oriented business rule validation - operations are safe
-        return (
-            FlextResult[bool]
-            .ok(None)
-            .flat_map(lambda _: self._validate_oauth_credentials())
-            .flat_map(lambda _: self._validate_connection_settings())
-            .flat_map(lambda _: self._validate_retry_settings())
-        )
-
-    def _validate_oauth_credentials(self) -> FlextResult[bool]:
-        """Validate OAuth credentials are present."""
-        if not self.oauth_client_id or not self.oauth_client_secret.get_secret_value():
-            return FlextResult[bool].fail("OAuth credentials are required")
-        return FlextResult[bool].ok(value=True)
-
-    def _validate_connection_settings(self) -> FlextResult[bool]:
-        """Validate connection settings are within acceptable ranges."""
-        if self.request_timeout < FlextOracleOicConstants.OracleOic.MIN_REQUEST_TIMEOUT:
-            return FlextResult[bool].fail(
-                f"Request timeout too low (minimum {FlextOracleOicConstants.OracleOic.MIN_REQUEST_TIMEOUT} seconds)",
-            )
-        return FlextResult[bool].ok(value=True)
-
-    def _validate_retry_settings(self) -> FlextResult[bool]:
-        """Validate retry settings are within acceptable ranges."""
-        if self.max_retries > FlextOracleOicConstants.OracleOic.MAX_MAX_RETRIES:
-            return FlextResult[bool].fail(
-                f"Max retries too high (maximum {FlextOracleOicConstants.OracleOic.MAX_MAX_RETRIES})",
-            )
-        return FlextResult[bool].ok(value=True)
-
     @classmethod
     def create_default(cls) -> FlextOracleOicSettings:
         """Create default configuration instance using enhanced singleton pattern."""
@@ -230,6 +178,58 @@ class FlextOracleOicSettings(FlextSettings):
             verify_ssl=False,
             enable_monitoring=False,
         )
+
+    def validate_business_rules(self) -> FlextResult[bool]:
+        """Validate Oracle OIC Extension specific business rules."""
+        # Railway-oriented business rule validation - operations are safe
+        return (
+            FlextResult[bool]
+            .ok(None)
+            .flat_map(lambda _: self._validate_oauth_credentials())
+            .flat_map(lambda _: self._validate_connection_settings())
+            .flat_map(lambda _: self._validate_retry_settings())
+        )
+
+    @model_validator(mode="after")
+    def validate_oracle_oic_configuration_consistency(self) -> Self:
+        """Validate Oracle OIC configuration consistency."""
+        # Validate OAuth configuration
+        if self.oauth_client_id:
+            # Validate client ID format
+            client_id_result = FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_client_id(
+                self.oauth_client_id,
+            )
+            if client_id_result.is_failure:
+                error_msg = f"OAuth client ID validation: {client_id_result.error}"
+                raise ValueError(error_msg)
+
+        if self.oauth_client_id and not self.oauth_client_secret:
+            error_msg = "OAuth client secret is required when client ID is provided"
+            raise ValueError(error_msg)
+
+        return self
+
+    def _validate_connection_settings(self) -> FlextResult[bool]:
+        """Validate connection settings are within acceptable ranges."""
+        if self.request_timeout < FlextOracleOicConstants.OracleOic.MIN_REQUEST_TIMEOUT:
+            return FlextResult[bool].fail(
+                f"Request timeout too low (minimum {FlextOracleOicConstants.OracleOic.MIN_REQUEST_TIMEOUT} seconds)",
+            )
+        return FlextResult[bool].ok(value=True)
+
+    def _validate_oauth_credentials(self) -> FlextResult[bool]:
+        """Validate OAuth credentials are present."""
+        if not self.oauth_client_id or not self.oauth_client_secret.get_secret_value():
+            return FlextResult[bool].fail("OAuth credentials are required")
+        return FlextResult[bool].ok(value=True)
+
+    def _validate_retry_settings(self) -> FlextResult[bool]:
+        """Validate retry settings are within acceptable ranges."""
+        if self.max_retries > FlextOracleOicConstants.OracleOic.MAX_MAX_RETRIES:
+            return FlextResult[bool].fail(
+                f"Max retries too high (maximum {FlextOracleOicConstants.OracleOic.MAX_MAX_RETRIES})",
+            )
+        return FlextResult[bool].ok(value=True)
 
     # Note: FlextOracleOicSettings follows direct instantiation pattern
     # No global instance methods needed - use FlextOracleOicSettings() directly

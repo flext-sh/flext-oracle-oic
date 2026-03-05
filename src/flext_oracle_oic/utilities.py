@@ -52,6 +52,87 @@ class FlextOracleOicUtilities(FlextUtilities):
         """Oracle OIC integration validation utilities."""
 
         @staticmethod
+        def validate_integration_data(
+            integration_data: Mapping[str, t.ContainerValue],
+        ) -> r[Mapping[str, t.ContainerValue]]:
+            """Validate complete Oracle OIC integration data.
+
+            Args:
+            integration_data: Integration configuration data
+
+            Returns:
+            FlextResult containing validated data or validation errors
+
+            """
+            if not u.is_dict_like(integration_data):
+                return r[t.ConfigurationMapping].fail(
+                    "Integration data must be a dictionary",
+                )
+
+            errors: list[str] = []
+            validated_data: dict[str, t.ContainerValue] = dict(integration_data)
+
+            # Validate required fields
+            if "name" not in integration_data:
+                errors.append("Integration name is required")
+            else:
+                raw_name = integration_data["name"]
+                match raw_name:
+                    case str():
+                        name_result = (
+                            FlextOracleOicUtilities.OracleOic.validate_integration_name(
+                                raw_name,
+                            )
+                        )
+                        if name_result.is_failure:
+                            errors.append(f"Name validation: {name_result.error}")
+                        else:
+                            validated_data["name"] = name_result.value
+                    case _:
+                        errors.append(
+                            "Name validation: Integration name must be a string",
+                        )
+
+            if "version" in integration_data:
+                raw_version = integration_data["version"]
+                match raw_version:
+                    case str():
+                        version_result = FlextOracleOicUtilities.OracleOic.validate_integration_version(
+                            raw_version,
+                        )
+                        if version_result.is_failure:
+                            errors.append(f"Version validation: {version_result.error}")
+                        else:
+                            validated_data["version"] = version_result.value
+                    case _:
+                        errors.append(
+                            "Version validation: Integration version must be a string",
+                        )
+
+            if "status" in integration_data:
+                raw_status = integration_data["status"]
+                match raw_status:
+                    case str():
+                        status_result = FlextOracleOicUtilities.OracleOic.validate_integration_status(
+                            raw_status,
+                        )
+                        if status_result.is_failure:
+                            errors.append(f"Status validation: {status_result.error}")
+                        else:
+                            validated_data["status"] = status_result.value
+                    case _:
+                        errors.append(
+                            "Status validation: Integration status must be a string",
+                        )
+
+            if errors:
+                return r[t.ConfigurationMapping].fail(
+                    f"Integration validation failed: {'; '.join(errors)}",
+                )
+
+            return r[t.ConfigurationMapping].ok(validated_data)
+
+        @staticmethod
         def validate_integration_name(name: str) -> r[str]:
             """Validate Oracle OIC integration name.
 
@@ -139,87 +220,6 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             return r[str].ok(version)
 
-        @staticmethod
-        def validate_integration_data(
-            integration_data: Mapping[str, t.ContainerValue],
-        ) -> r[Mapping[str, t.ContainerValue]]:
-            """Validate complete Oracle OIC integration data.
-
-            Args:
-            integration_data: Integration configuration data
-
-            Returns:
-            FlextResult containing validated data or validation errors
-
-            """
-            if not u.is_dict_like(integration_data):
-                return r[t.ConfigurationMapping].fail(
-                    "Integration data must be a dictionary",
-                )
-
-            errors: list[str] = []
-            validated_data: dict[str, t.ContainerValue] = dict(integration_data)
-
-            # Validate required fields
-            if "name" not in integration_data:
-                errors.append("Integration name is required")
-            else:
-                raw_name = integration_data["name"]
-                match raw_name:
-                    case str():
-                        name_result = (
-                            FlextOracleOicUtilities.OracleOic.validate_integration_name(
-                                raw_name,
-                            )
-                        )
-                        if name_result.is_failure:
-                            errors.append(f"Name validation: {name_result.error}")
-                        else:
-                            validated_data["name"] = name_result.value
-                    case _:
-                        errors.append(
-                            "Name validation: Integration name must be a string",
-                        )
-
-            if "version" in integration_data:
-                raw_version = integration_data["version"]
-                match raw_version:
-                    case str():
-                        version_result = FlextOracleOicUtilities.OracleOic.validate_integration_version(
-                            raw_version,
-                        )
-                        if version_result.is_failure:
-                            errors.append(f"Version validation: {version_result.error}")
-                        else:
-                            validated_data["version"] = version_result.value
-                    case _:
-                        errors.append(
-                            "Version validation: Integration version must be a string",
-                        )
-
-            if "status" in integration_data:
-                raw_status = integration_data["status"]
-                match raw_status:
-                    case str():
-                        status_result = FlextOracleOicUtilities.OracleOic.validate_integration_status(
-                            raw_status,
-                        )
-                        if status_result.is_failure:
-                            errors.append(f"Status validation: {status_result.error}")
-                        else:
-                            validated_data["status"] = status_result.value
-                    case _:
-                        errors.append(
-                            "Status validation: Integration status must be a string",
-                        )
-
-            if errors:
-                return r[t.ConfigurationMapping].fail(
-                    f"Integration validation failed: {'; '.join(errors)}",
-                )
-
-            return r[t.ConfigurationMapping].ok(validated_data)
-
     class ConnectionValidation:
         """Oracle OIC connection validation utilities."""
 
@@ -245,34 +245,6 @@ class FlextOracleOicUtilities(FlextUtilities):
             if not base_url.startswith(("http://", "https://")):
                 return r[str].fail("Base URL must start with http:// or https://")
             return r[str].ok(base_url)
-
-        @staticmethod
-        def validate_connection_type(connection_type: str) -> r[str]:
-            """Validate Oracle OIC connection type.
-
-            Args:
-            connection_type: Connection type to validate
-
-            Returns:
-            FlextResult containing validated type or error
-
-            """
-            match connection_type:
-                case str():
-                    pass
-                case _:
-                    return r[str].fail("Connection type must be a string")
-
-            connection_type = connection_type.upper().strip()
-            if connection_type not in c.OracleOicValidation.VALID_CONNECTION_TYPES:
-                valid_types = ", ".join(
-                    sorted(c.OracleOicValidation.VALID_CONNECTION_TYPES),
-                )
-                return r[str].fail(
-                    f"Invalid connection type. Valid: {valid_types}",
-                )
-
-            return r[str].ok(connection_type)
 
         @staticmethod
         def validate_connection_status(status: str) -> r[str]:
@@ -301,6 +273,34 @@ class FlextOracleOicUtilities(FlextUtilities):
                 )
 
             return r[str].ok(status)
+
+        @staticmethod
+        def validate_connection_type(connection_type: str) -> r[str]:
+            """Validate Oracle OIC connection type.
+
+            Args:
+            connection_type: Connection type to validate
+
+            Returns:
+            FlextResult containing validated type or error
+
+            """
+            match connection_type:
+                case str():
+                    pass
+                case _:
+                    return r[str].fail("Connection type must be a string")
+
+            connection_type = connection_type.upper().strip()
+            if connection_type not in c.OracleOicValidation.VALID_CONNECTION_TYPES:
+                valid_types = ", ".join(
+                    sorted(c.OracleOicValidation.VALID_CONNECTION_TYPES),
+                )
+                return r[str].fail(
+                    f"Invalid connection type. Valid: {valid_types}",
+                )
+
+            return r[str].ok(connection_type)
 
     class AuthenticationValidation:
         """Oracle OIC authentication validation utilities."""
@@ -366,48 +366,6 @@ class FlextOracleOicUtilities(FlextUtilities):
         """Oracle OIC API request construction utilities."""
 
         @staticmethod
-        def build_integration_endpoint(
-            base_url: str,
-            api_version: str = "v1",
-            integration_id: str | None = None,
-        ) -> r[str]:
-            """Build Oracle OIC integration API endpoint.
-
-            Args:
-            base_url: OIC instance base URL
-            api_version: API version (default: v1)
-            integration_id: Optional specific integration ID
-
-            Returns:
-            FlextResult containing constructed endpoint URL or error
-
-            """
-            # Validate base URL
-            url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
-                base_url,
-            )
-            if url_result.is_failure:
-                return r[str].fail(f"Base URL validation: {url_result.error}")
-
-            validated_base_url = url_result.value
-
-            # Build endpoint path
-            path_parts = ["ic", "api", "integration", api_version, "integrations"]
-            if integration_id:
-                match integration_id:
-                    case str() as raw_integration_id if raw_integration_id.strip():
-                        path_parts.append(raw_integration_id.strip())
-                    case _:
-                        return r[str].fail(
-                            "Integration ID must be non-empty string",
-                        )
-
-            endpoint_path = "/" + "/".join(path_parts)
-            full_url = urljoin(validated_base_url + "/", endpoint_path.lstrip("/"))
-
-            return r[str].ok(full_url)
-
-        @staticmethod
         def build_connection_endpoint(
             base_url: str,
             api_version: str = "v1",
@@ -442,6 +400,48 @@ class FlextOracleOicUtilities(FlextUtilities):
                     case _:
                         return r[str].fail(
                             "Connection ID must be non-empty string",
+                        )
+
+            endpoint_path = "/" + "/".join(path_parts)
+            full_url = urljoin(validated_base_url + "/", endpoint_path.lstrip("/"))
+
+            return r[str].ok(full_url)
+
+        @staticmethod
+        def build_integration_endpoint(
+            base_url: str,
+            api_version: str = "v1",
+            integration_id: str | None = None,
+        ) -> r[str]:
+            """Build Oracle OIC integration API endpoint.
+
+            Args:
+            base_url: OIC instance base URL
+            api_version: API version (default: v1)
+            integration_id: Optional specific integration ID
+
+            Returns:
+            FlextResult containing constructed endpoint URL or error
+
+            """
+            # Validate base URL
+            url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
+                base_url,
+            )
+            if url_result.is_failure:
+                return r[str].fail(f"Base URL validation: {url_result.error}")
+
+            validated_base_url = url_result.value
+
+            # Build endpoint path
+            path_parts = ["ic", "api", "integration", api_version, "integrations"]
+            if integration_id:
+                match integration_id:
+                    case str() as raw_integration_id if raw_integration_id.strip():
+                        path_parts.append(raw_integration_id.strip())
+                    case _:
+                        return r[str].fail(
+                            "Integration ID must be non-empty string",
                         )
 
             endpoint_path = "/" + "/".join(path_parts)
@@ -608,62 +608,6 @@ class FlextOracleOicUtilities(FlextUtilities):
         """Oracle OIC monitoring and health check utilities."""
 
         @staticmethod
-        def validate_health_status(
-            health_data: Mapping[str, t.ContainerValue],
-        ) -> r[Mapping[str, t.ContainerValue]]:
-            """Validate Oracle OIC health check data.
-
-            Args:
-            health_data: Health check response data
-
-            Returns:
-            FlextResult containing validated health data or error
-
-            """
-            if not u.is_dict_like(health_data):
-                return r[t.ConfigurationMapping].fail(
-                    "Health data must be a dictionary",
-                )
-
-            validated_data: dict[str, t.ContainerValue] = dict(health_data)
-
-            # Validate required health fields
-            if "status" not in health_data:
-                return r[t.ConfigurationMapping].fail(
-                    "Health data must include status",
-                )
-
-            status = health_data["status"]
-            if status not in {"healthy", "unhealthy", "error", "unknown"}:
-                return r[t.ConfigurationMapping].fail(
-                    "Invalid health status. Valid: healthy, unhealthy, error, unknown",
-                )
-
-            # Validate components if present
-            if "components" in health_data:
-                components = health_data["components"]
-                if not isinstance(components, dict):
-                    return r[t.ConfigurationMapping].fail(
-                        "Components must be a dictionary",
-                    )
-
-                for component_name, component_data in components.items():
-                    if not isinstance(component_data, dict):
-                        return r[t.ConfigurationMapping].fail(
-                            f"Component {component_name} data must be a dictionary",
-                        )
-                    if "status" not in component_data:
-                        return r[t.ConfigurationMapping].fail(
-                            f"Component {component_name} must have status",
-                        )
-
-            # Add timestamp if not present
-            if "timestamp" not in validated_data:
-                validated_data["timestamp"] = datetime.now(UTC).isoformat()
-
-            return r[t.ConfigurationMapping].ok(validated_data)
-
-        @staticmethod
         def analyze_performance_metrics(
             metrics: Mapping[str, t.ContainerValue],
         ) -> r[Mapping[str, t.ContainerValue]]:
@@ -738,6 +682,62 @@ class FlextOracleOicUtilities(FlextUtilities):
                 "recommendations": recommendations,
             }
             return r[t.ConfigurationMapping].ok(analysis)
+
+        @staticmethod
+        def validate_health_status(
+            health_data: Mapping[str, t.ContainerValue],
+        ) -> r[Mapping[str, t.ContainerValue]]:
+            """Validate Oracle OIC health check data.
+
+            Args:
+            health_data: Health check response data
+
+            Returns:
+            FlextResult containing validated health data or error
+
+            """
+            if not u.is_dict_like(health_data):
+                return r[t.ConfigurationMapping].fail(
+                    "Health data must be a dictionary",
+                )
+
+            validated_data: dict[str, t.ContainerValue] = dict(health_data)
+
+            # Validate required health fields
+            if "status" not in health_data:
+                return r[t.ConfigurationMapping].fail(
+                    "Health data must include status",
+                )
+
+            status = health_data["status"]
+            if status not in {"healthy", "unhealthy", "error", "unknown"}:
+                return r[t.ConfigurationMapping].fail(
+                    "Invalid health status. Valid: healthy, unhealthy, error, unknown",
+                )
+
+            # Validate components if present
+            if "components" in health_data:
+                components = health_data["components"]
+                if not isinstance(components, dict):
+                    return r[t.ConfigurationMapping].fail(
+                        "Components must be a dictionary",
+                    )
+
+                for component_name, component_data in components.items():
+                    if not isinstance(component_data, dict):
+                        return r[t.ConfigurationMapping].fail(
+                            f"Component {component_name} data must be a dictionary",
+                        )
+                    if "status" not in component_data:
+                        return r[t.ConfigurationMapping].fail(
+                            f"Component {component_name} must have status",
+                        )
+
+            # Add timestamp if not present
+            if "timestamp" not in validated_data:
+                validated_data["timestamp"] = datetime.now(UTC).isoformat()
+
+            return r[t.ConfigurationMapping].ok(validated_data)
 
 
 u = FlextOracleOicUtilities
