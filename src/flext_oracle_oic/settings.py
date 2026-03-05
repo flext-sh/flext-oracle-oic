@@ -25,6 +25,7 @@ LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 OICApiVersionLiteral = Literal["v1", "v2"]
 
 
+@FlextSettings.auto_register("oracle_oic")
 class FlextOracleOicSettings(FlextSettings):
     """Single Pydantic 2 Settings class for flext-oracle-oic extending FlextSettings.
 
