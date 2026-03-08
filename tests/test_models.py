@@ -25,7 +25,6 @@ class TestOICAuthConfig:
             oauth_client_aud="test_audience",
             oauth_scope="test_scope",
         )
-
         assert config.oauth_client_id == "test_client_id"
         assert config.oauth_client_secret.get_secret_value() == "test_client_secret"
         assert (
@@ -44,16 +43,14 @@ class TestOICAuthConfig:
             oauth_client_aud=None,
             oauth_scope="",
         )
-
         assert config.oauth_client_aud is None
         assert config.oauth_scope is not None
 
     def test_auth_config_validation_error(self) -> None:
         """Test auth config validation error."""
-        # Test validation with invalid data using dict[str, t.ContainerValue] construction
         invalid_data = {
             "oauth_client_id": "test_client_id",
-            "oauth_client_secret": 123,  # Invalid type - will fail at runtime validation
+            "oauth_client_secret": 123,
             "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
             "oauth_client_aud": None,
             "oauth_scope": "",
@@ -74,7 +71,6 @@ class TestOICConnectionConfig:
             max_retries=3,
             verify_ssl=True,
         )
-
         assert config.base_url == "https://test.integration.ocp.oraclecloud.com"
         assert config.api_version == "v1"
         assert config.request_timeout == 30
@@ -89,7 +85,6 @@ class TestOICConnectionConfig:
             request_timeout=30,
             max_retries=3,
         )
-
         assert config.api_version == "v1"
         assert config.request_timeout == 30
         assert config.max_retries == 3
@@ -101,7 +96,7 @@ class TestOICConnectionConfig:
             FlextOracleOicModels.OracleOic.OICConnectionConfig(
                 base_url="https://test.integration.ocp.oraclecloud.com",
                 api_version="v1",
-                request_timeout=0,  # Should be >= 1
+                request_timeout=0,
                 max_retries=3,
             )
 
@@ -120,7 +115,6 @@ class TestOICIntegrationInfo:
             created_by="test_user",
             last_updated="2025-01-08T10:00:00Z",
         )
-
         assert info.integration_id == "test_integration_id"
         assert info.name == "Test Integration"
         assert info.status == "ACTIVE"
@@ -140,7 +134,6 @@ class TestOICIntegrationInfo:
             created_by="",
             last_updated="",
         )
-
         assert info.description is not None
         assert info.created_by is not None
         assert info.last_updated is not None
@@ -159,7 +152,6 @@ class TestOICConnectionInfo:
             connection_type="HTTP",
             description="Test connection description",
         )
-
         assert info.connection_id == "test_connection_id"
         assert info.name == "Test Connection"
         assert info.adapter_type == "REST"
@@ -177,5 +169,4 @@ class TestOICConnectionInfo:
             connection_type="HTTP",
             description="",
         )
-
         assert info.description is not None

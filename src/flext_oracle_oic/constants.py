@@ -53,11 +53,8 @@ class FlextOracleOicConstants(FlextConstants):
     class OracleOic:
         """Oracle Integration Cloud specific constants."""
 
-        # API Configuration
         DEFAULT_API_VERSION: Final[str] = "v1"
         SUPPORTED_API_VERSIONS: Final[list[str]] = ["v1", "v2"]
-
-        # Connection Configuration
         DEFAULT_BASE_URL: Final[str] = (
             "https://localhost.integration.ocp.oraclecloud.com"
         )
@@ -65,18 +62,12 @@ class FlextOracleOicConstants(FlextConstants):
         DEFAULT_MAX_RETRIES: Final[int] = 3
         DEFAULT_VERIFY_SSL: Final[bool] = True
         DEFAULT_USE_SSL: Final[bool] = True
-
-        # Pagination
         DEFAULT_PAGE_SIZE: Final[int] = 100
         MAX_PAGE_SIZE: Final[int] = 1000
         MIN_PAGE_SIZE: Final[int] = 1
-
-        # Request Configuration
         DEFAULT_REQUEST_TIMEOUT: Final[int] = 30
         MIN_REQUEST_TIMEOUT: Final[int] = 1
         MAX_REQUEST_TIMEOUT: Final[int] = 300
-
-        # Retry Configuration
         MIN_MAX_RETRIES: Final[int] = 0
         MAX_MAX_RETRIES: Final[int] = 10
         DEFAULT_BACKOFF_MULTIPLIER: Final[float] = 2.0
@@ -85,7 +76,6 @@ class FlextOracleOicConstants(FlextConstants):
     class Auth:
         """Oracle OIC Authentication constants."""
 
-        # OAuth2 Configuration
         DEFAULT_OAUTH_CLIENT_ID: Final[str] = "default_client_id"
         DEFAULT_OAUTH_CLIENT_SECRET: Final[str] = "default_client_secret_value"
         DEFAULT_OAUTH_TOKEN_URL: Final[str] = (
@@ -93,11 +83,9 @@ class FlextOracleOicConstants(FlextConstants):
         )
         DEFAULT_OAUTH_CLIENT_AUD: Final[str | None] = None
         DEFAULT_OAUTH_SCOPE: Final[str] = ""
-
-        # Token Configuration
-        DEFAULT_TOKEN_EXPIRY_SECONDS: Final[int] = 3600  # 1 hour
-        MIN_TOKEN_EXPIRY_SECONDS: Final[int] = 300  # 5 minutes
-        MAX_TOKEN_EXPIRY_SECONDS: Final[int] = 86400  # 24 hours
+        DEFAULT_TOKEN_EXPIRY_SECONDS: Final[int] = 3600
+        MIN_TOKEN_EXPIRY_SECONDS: Final[int] = 300
+        MAX_TOKEN_EXPIRY_SECONDS: Final[int] = 86400
 
         class AuthType(StrEnum):
             """Authentication types.
@@ -110,7 +98,6 @@ class FlextOracleOicConstants(FlextConstants):
             BASIC = "basic"
             BEARER = "bearer"
 
-        # PEP 695 Literal type referencing StrEnum members
         type AuthTypeLiteral = Literal["oauth2", "basic", "bearer"]
 
     class Integration:
@@ -131,7 +118,6 @@ class FlextOracleOicConstants(FlextConstants):
             STOPPED = "STOPPED"
             ERROR = "ERROR"
 
-        # PEP 695 Literal type referencing StrEnum members
         type StatusLiteral = Literal[
             "ACTIVATED",
             "DEACTIVATED",
@@ -141,19 +127,13 @@ class FlextOracleOicConstants(FlextConstants):
             "STOPPED",
             "ERROR",
         ]
-
-        # Integration Versions
         DEFAULT_VERSION: Final[str] = "01.00.0000"
         DEFAULT_VERSION_FALLBACK: Final[str] = "1.0"
         MIN_VERSION_LENGTH: Final[int] = 1
         MAX_VERSION_LENGTH: Final[int] = 50
-
-        # Integration Lifecycle
         DEFAULT_ACTIVATED_BY: Final[str] = "system"
         DEFAULT_CREATED_BY: Final[str] = "unknown"
         DEFAULT_LAST_UPDATED: Final[str] = ""
-
-        # Integration Patterns
         PATTERN_MESSAGE_ROUTER: Final[str] = "message_router"
         PATTERN_SCATTER_GATHER: Final[str] = "scatter_gather"
         PATTERN_PUBLISH_SUBSCRIBE: Final[str] = "publish_subscribe"
@@ -189,9 +169,7 @@ class FlextOracleOicConstants(FlextConstants):
             FTP = "FTP"
             SFTP = "SFTP"
 
-        # PEP 695 Literal types referencing StrEnum members
         type StatusLiteral = Literal["ACTIVE", "INACTIVE", "ERROR", "unknown"]
-
         type TypeLiteral = Literal["REST", "SOAP", "DATABASE", "FILE", "FTP", "SFTP"]
 
     class Monitoring:
@@ -220,16 +198,11 @@ class FlextOracleOicConstants(FlextConstants):
             UNHEALTHY = "unhealthy"
             UNKNOWN = "unknown"
 
-        # PEP 695 Literal types referencing StrEnum members
         type HealthStatusLiteral = Literal["healthy", "unhealthy", "error", "unknown"]
         type ComponentStatusLiteral = Literal["healthy", "unhealthy", "unknown"]
-
-        # Component Types
         COMPONENT_DATABASE: Final[str] = "database"
         COMPONENT_MESSAGING: Final[str] = "messaging"
         COMPONENT_INTEGRATION_ENGINE: Final[str] = "integration_engine"
-
-        # Performance Metrics
         DEFAULT_SUCCESS_RATE: Final[float] = 0.0
         DEFAULT_AVERAGE_RESPONSE_TIME: Final[float] = 0.0
         DEFAULT_ACTIVE_INTEGRATIONS: Final[int] = 0
@@ -238,11 +211,8 @@ class FlextOracleOicConstants(FlextConstants):
     class API:
         """Oracle OIC API constants."""
 
-        # HTTP Status Codes
         HTTP_STATUS_OK: Final[int] = 200
         HTTP_ERROR_STATUS_THRESHOLD: Final[int] = 400
-
-        # API Endpoints
         ENDPOINT_HEALTH: Final[str] = "/ic/api/integration/v1/health"
         ENDPOINT_METRICS: Final[str] = "/ic/api/integration/v1/metrics"
         ENDPOINT_INTEGRATIONS: Final[str] = "/ic/api/integration/v1/integrations"
@@ -261,16 +231,11 @@ class FlextOracleOicConstants(FlextConstants):
             DELETE = "DELETE"
             PATCH = "PATCH"
 
-        # PEP 695 Literal type referencing StrEnum members
         type MethodLiteral = Literal["GET", "POST", "PUT", "DELETE", "PATCH"]
-
-        # API Headers
         HEADER_CONTENT_TYPE: Final[str] = "Content-Type"
         HEADER_AUTHORIZATION: Final[str] = "Authorization"
         HEADER_ACCEPT: Final[str] = "Accept"
         HEADER_USER_AGENT: Final[str] = "User-Agent"
-
-        # Content Types
         CONTENT_TYPE_JSON: Final[str] = "application/json"
         CONTENT_TYPE_XML: Final[str] = "application/xml"
         CONTENT_TYPE_FORM: Final[str] = "application/x-www-form-urlencoded"
@@ -289,32 +254,22 @@ class FlextOracleOicConstants(FlextConstants):
             FAILED = "failed"
             PENDING = "pending"
 
-        # PEP 695 Literal type referencing StrEnum members
         type PatternStatusLiteral = Literal["processed", "failed", "pending"]
-
-        # Pattern Identifiers
         PATTERN_ID_UNKNOWN: Final[str] = "unknown"
         PATTERN_MESSAGE_ID_UNKNOWN: Final[str] = "unknown"
         PATTERN_REQUEST_ID_UNKNOWN: Final[str] = "unknown"
-
-        # Pattern Configuration
         DEFAULT_APPLIED_RULES: Final[int] = 0
         DEFAULT_TARGET_COUNT: Final[int] = 0
-
-        # Pattern identifiers (aliases for Integration.PATTERN_*)
         PATTERN_MESSAGE_ROUTER: Final[str] = "message_router"
         PATTERN_SCATTER_GATHER: Final[str] = "scatter_gather"
 
     class OICErrors:
         """Oracle OIC Extension specific error constants."""
 
-        # Connection Errors
         ERROR_CONNECTION_FAILED: Final[str] = "CONNECTION_FAILED"
         ERROR_AUTHENTICATION_FAILED: Final[str] = "AUTHENTICATION_FAILED"
         ERROR_CLIENT_CREATION_FAILED: Final[str] = "CLIENT_CREATION_FAILED"
         ERROR_NO_CLIENT_AVAILABLE: Final[str] = "NO_CLIENT_AVAILABLE"
-
-        # Integration Errors
         ERROR_INTEGRATION_NOT_FOUND: Final[str] = "INTEGRATION_NOT_FOUND"
         ERROR_INTEGRATION_ACTIVATION_FAILED: Final[str] = (
             "INTEGRATION_ACTIVATION_FAILED"
@@ -325,13 +280,9 @@ class FlextOracleOicConstants(FlextConstants):
         ERROR_INTEGRATION_DEPLOYMENT_FAILED: Final[str] = (
             "INTEGRATION_DEPLOYMENT_FAILED"
         )
-
-        # API Errors
         ERROR_API_REQUEST_FAILED: Final[str] = "API_REQUEST_FAILED"
         ERROR_API_RESPONSE_INVALID: Final[str] = "API_RESPONSE_INVALID"
         ERROR_API_TIMEOUT: Final[str] = "API_TIMEOUT"
-
-        # Configuration Errors
         ERROR_CONFIG_VALIDATION_FAILED: Final[str] = "CONFIG_VALIDATION_FAILED"
         ERROR_SETTINGS_REQUIRED: Final[str] = "SETTINGS_REQUIRED"
         ERROR_BASE_URL_REQUIRED: Final[str] = "BASE_URL_REQUIRED"
@@ -342,7 +293,6 @@ class FlextOracleOicConstants(FlextConstants):
     class OICMessages:
         """Oracle OIC Extension specific message constants."""
 
-        # Success Messages
         MESSAGE_CONNECTION_SUCCESSFUL: Final[str] = "OIC connection test successful"
         MESSAGE_INTEGRATION_ACTIVATED: Final[str] = (
             "Integration {integration_id} activated successfully"
@@ -353,8 +303,6 @@ class FlextOracleOicConstants(FlextConstants):
         MESSAGE_INTEGRATION_DEPLOYED: Final[str] = (
             "Integration deployed successfully: {integration_id}"
         )
-
-        # Error Messages
         MESSAGE_CONNECTION_FAILED: Final[str] = "OIC connection test failed: {error}"
         MESSAGE_INTEGRATION_ACTIVATION_FAILED: Final[str] = (
             "Failed to activate integration {integration_id}: {error}"
@@ -365,14 +313,10 @@ class FlextOracleOicConstants(FlextConstants):
         MESSAGE_INTEGRATION_DEPLOYMENT_FAILED: Final[str] = (
             "Failed to deploy integration: {error}"
         )
-
-        # Info Messages
         MESSAGE_INTEGRATIONS_RETRIEVED: Final[str] = "Retrieved {count} integrations"
         MESSAGE_CONNECTIONS_RETRIEVED: Final[str] = "Retrieved {count} connections"
         MESSAGE_APPLYING_MESSAGE_ROUTER: Final[str] = "Applying message router pattern"
         MESSAGE_APPLYING_SCATTER_GATHER: Final[str] = "Applying scatter-gather pattern"
-
-        # Warning Messages
         MESSAGE_INTEGRATION_PARSE_FAILED: Final[str] = (
             "Failed to parse integration: {error}"
         )
@@ -383,7 +327,6 @@ class FlextOracleOicConstants(FlextConstants):
     class OracleOicValidation:
         """Oracle OIC validation constants (named to avoid overriding FlextConstants.Validation)."""
 
-        # Integration validation
         MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
         MAX_INTEGRATION_NAME_LENGTH: Final[int] = 100
         VALID_INTEGRATION_STATUSES: Final[frozenset[str]] = frozenset({
@@ -395,9 +338,9 @@ class FlextOracleOicConstants(FlextConstants):
             "STOPPED",
             "ERROR",
         })
-        VERSION_PATTERN: Final[re.Pattern[str]] = re.compile(r"^\d{2}\.\d{2}\.\d{4}$")
-
-        # Connection validation
+        VERSION_PATTERN: Final[re.Pattern[str]] = re.compile(
+            "^\\d{2}\\.\\d{2}\\.\\d{4}$"
+        )
         VALID_CONNECTION_TYPES: Final[frozenset[str]] = frozenset({
             "REST",
             "SOAP",
@@ -412,8 +355,6 @@ class FlextOracleOicConstants(FlextConstants):
             "ERROR",
             "UNKNOWN",
         })
-
-        # Authentication validation
         MIN_CLIENT_ID_LENGTH: Final[int] = 1
         MIN_TOKEN_URL_LENGTH: Final[int] = 10
         MIN_CLIENT_SECRET_LENGTH: Final[int] = 8
@@ -422,8 +363,6 @@ class FlextOracleOicConstants(FlextConstants):
             "basic",
             "bearer",
         })
-
-        # API request configuration
         DEFAULT_TIMEOUT: Final[int] = 30
         MAX_TIMEOUT: Final[int] = 300
         VALID_HTTP_METHODS: Final[frozenset[str]] = frozenset({
@@ -435,8 +374,6 @@ class FlextOracleOicConstants(FlextConstants):
             "HEAD",
             "OPTIONS",
         })
-
-        # Pattern analysis
         SUPPORTED_PATTERNS: Final[frozenset[str]] = frozenset({
             "message_router",
             "scatter_gather",
@@ -444,8 +381,6 @@ class FlextOracleOicConstants(FlextConstants):
             "request_reply",
         })
         MIN_ENDPOINTS_FOR_ROUTER: Final[int] = 2
-
-        # Monitoring
         HEALTH_CHECK_TIMEOUT: Final[int] = 10
         PERFORMANCE_THRESHOLDS: Final[Mapping[str, float]] = {
             "response_time_ms": 5000.0,
@@ -454,10 +389,5 @@ class FlextOracleOicConstants(FlextConstants):
         }
 
 
-# Exports following EXTENSION pattern
 c = FlextOracleOicConstants
-
-__all__: list[str] = [
-    "FlextOracleOicConstants",
-    "c",
-]
+__all__: list[str] = ["FlextOracleOicConstants", "c"]

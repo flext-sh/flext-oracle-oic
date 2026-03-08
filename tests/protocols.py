@@ -24,8 +24,6 @@ class TestsFlextOracleOicProtocols(FlextTestsProtocols, FlextOracleOicProtocols)
     """
 
 
-# Runtime aliases
 p = TestsFlextOracleOicProtocols
 p = TestsFlextOracleOicProtocols
-
 __all__ = ["TestsFlextOracleOicProtocols", "p"]

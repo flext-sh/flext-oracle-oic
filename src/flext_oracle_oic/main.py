@@ -15,10 +15,7 @@ import json
 import sys
 from typing import NoReturn, override
 
-from flext_core import (
-    FlextResult,
-    FlextService,
-)
+from flext_core import FlextResult, FlextService
 
 from flext_oracle_oic import __version__
 from flext_oracle_oic.models import FlextOracleOicModels
@@ -48,37 +45,17 @@ class FlextOracleOicCli(FlextService[None]):
             prog="flext-oracle-oic-ext",
             description="FLEXT Oracle OIC Extension CLI - Enterprise Oracle Integration Cloud operations",
         )
-
         parser.add_argument(
-            "--version",
-            action="store_true",
-            help="Show version information",
+            "--version", action="store_true", help="Show version information"
         )
-
         subparsers = parser.add_subparsers(
-            dest="command",
-            help="Available commands",
-            metavar="COMMAND",
+            dest="command", help="Available commands", metavar="COMMAND"
         )
-
-        # test-connection command
         subparsers.add_parser(
-            "test-connection",
-            help="Test connection to Oracle OIC instance",
+            "test-connection", help="Test connection to Oracle OIC instance"
         )
-
-        # list-integrations command
-        subparsers.add_parser(
-            "list-integrations",
-            help="List Oracle OIC integrations",
-        )
-
-        # version command
-        subparsers.add_parser(
-            "version",
-            help="Show Oracle OIC Extension version",
-        )
-
+        subparsers.add_parser("list-integrations", help="List Oracle OIC integrations")
+        subparsers.add_parser("version", help="Show Oracle OIC Extension version")
         return parser
 
     @override
@@ -88,7 +65,7 @@ class FlextOracleOicCli(FlextService[None]):
         if exit_code == 0:
             return FlextResult[None].ok(None)
         return FlextResult[None].fail(
-            f"CLI execution failed with exit code {exit_code}",
+            f"CLI execution failed with exit code {exit_code}"
         )
 
     def list_integrations(self) -> FlextResult[bool]:
@@ -101,14 +78,9 @@ class FlextOracleOicCli(FlextService[None]):
         try:
             if self.logger:
                 self.logger.info("Listing Oracle OIC integrations...")
-
-            # Create development service
             FlextOracleOicSettings.create_for_development()
             service = FlextOracleOicService()
-
-            # List integrations
             return self._list_integrations_with_service(service)
-
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             if self.logger:
                 self.logger.exception("List integrations failed")
@@ -126,18 +98,12 @@ class FlextOracleOicCli(FlextService[None]):
         """
         parser = self.create_parser()
         parsed_args = parser.parse_args(args)
-
-        # Handle --version flag
         if parsed_args.version or parsed_args.command == "version":
             result = self.show_version()
             return 0 if result.is_success else 1
-
-        # Handle commands
         if parsed_args.command:
             result = self.run_command(parsed_args.command)
             return 0 if result.is_success else 1
-
-        # No command provided
         parser.print_help()
         return 1
 
@@ -156,10 +122,8 @@ class FlextOracleOicCli(FlextService[None]):
             "list-integrations": self.list_integrations,
             "version": self.show_version,
         }
-
         if command not in commands:
             return FlextResult[bool].fail(f"Unknown command: {command}")
-
         return commands[command]()
 
     def show_version(self) -> FlextResult[bool]:
@@ -178,8 +142,6 @@ class FlextOracleOicCli(FlextService[None]):
                 self.logger.exception("Version display failed")
             return FlextResult[bool].fail(f"Version display failed: {e!s}")
 
-    # CLI Command Methods
-
     def test_connection(self) -> FlextResult[bool]:
         """Test connection to Oracle OIC instance.
 
@@ -190,33 +152,27 @@ class FlextOracleOicCli(FlextService[None]):
         try:
             if self.logger:
                 self.logger.info("Testing Oracle OIC connection...")
-
-            # Create development service for testing
             FlextOracleOicSettings.create_for_development()
             service = FlextOracleOicService()
-
-            # Test connection
             with service:
                 connection_result = service.test_connection()
                 if connection_result.is_success:
                     if self.logger:
                         self.logger.info("Oracle OIC connection successful!")
                     sys.stdout.write(
-                        "Connection to Oracle OIC established successfully\n",
+                        "Connection to Oracle OIC established successfully\n"
                     )
                     return FlextResult[bool].ok(value=True)
                 return FlextResult[bool].fail(
-                    f"Connection failed: {connection_result.error}",
+                    f"Connection failed: {connection_result.error}"
                 )
-
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             if self.logger:
                 self.logger.exception("Connection test failed")
             return FlextResult[bool].fail(f"Connection test failed: {e!s}")
 
     def _list_integrations_with_service(
-        self,
-        service: FlextOracleOicService,
+        self, service: FlextOracleOicService
     ) -> FlextResult[bool]:
         """List integrations using the provided service.
 
@@ -230,19 +186,16 @@ class FlextOracleOicCli(FlextService[None]):
         integrations_result = service.list_integrations()
         if integrations_result.is_failure:
             return FlextResult[bool].fail(
-                f"Failed to list integrations: {integrations_result.error}",
+                f"Failed to list integrations: {integrations_result.error}"
             )
-
         integrations = integrations_result.value or []
         if self.logger:
             self.logger.info(f"Found {len(integrations)} integrations")
-
         self._print_integrations(integrations)
         return FlextResult[bool].ok(value=True)
 
     def _print_integrations(
-        self,
-        integrations: list[FlextOracleOicModels.OracleOic.OICIntegrationInfo],
+        self, integrations: list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
     ) -> None:
         """Print integrations to CLI output.
 
@@ -253,14 +206,13 @@ class FlextOracleOicCli(FlextService[None]):
         if not integrations:
             sys.stdout.write("📋 No integrations found\n")
             return
-
         sys.stdout.write("📋 Oracle OIC Integrations:\n")
         for integration in integrations:
             sys.stdout.write(
-                f"  • {integration.name} (ID: {integration.integration_id})\n",
+                f"  • {integration.name} (ID: {integration.integration_id})\n"
             )
             sys.stdout.write(
-                f"    Status: {integration.status}, Version: {integration.integration_version}\n",
+                f"    Status: {integration.status}, Version: {integration.integration_version}\n"
             )
             if integration.description:
                 sys.stdout.write(f"    Description: {integration.description}\n")
@@ -285,10 +237,6 @@ def main() -> NoReturn:
         sys.exit(1)
 
 
-__all__: list[str] = [
-    "FlextOracleOicCli",
-    "main",
-]
-
+__all__: list[str] = ["FlextOracleOicCli", "main"]
 if __name__ == "__main__":
     main()

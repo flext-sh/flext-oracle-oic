@@ -20,13 +20,10 @@ class TestFlextTypes:
 
     def test_exported_types_available(self) -> None:
         """Test all exported types are available."""
-        # t should be available
         assert t is not None
 
     def test_flext_types_can_be_extended(self) -> None:
         """Test t can be extended for domain-specific types."""
-        # Should be able to add domain-specific types
         assert issubclass(t, object)
-        # Can access core types
         core_dict = t.ConfigurationMapping
         assert core_dict is not None

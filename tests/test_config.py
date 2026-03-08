@@ -16,7 +16,6 @@ class TestFlextOracleOicSettings:
     def test_default_settings(self) -> None:
         """Test default settings."""
         config = FlextOracleOicSettings()
-
         assert "integration.ocp.oraclecloud.com" in config.base_url
         assert config.api_version in {"v1", "v2"}
         assert 1 <= config.request_timeout <= 300
@@ -34,7 +33,6 @@ class TestFlextOracleOicSettings:
             use_ssl=False,
             verify_ssl=False,
         )
-
         assert config.base_url == "https://custom.integration.ocp.oraclecloud.com"
         assert config.api_version == "v2"
         assert config.request_timeout == 60
@@ -45,7 +43,6 @@ class TestFlextOracleOicSettings:
     def test_default_auth_settings(self) -> None:
         """Test default auth settings (values may come from env)."""
         config = FlextOracleOicSettings()
-
         assert isinstance(config.oauth_client_id, str)
         assert config.oauth_client_secret is not None
         assert isinstance(config.oauth_token_url, str)
@@ -61,7 +58,6 @@ class TestFlextOracleOicSettings:
             oauth_client_aud="custom_audience",
             oauth_scope="custom_scope",
         )
-
         assert config.oauth_client_id == "custom_client_id"
         secret_val = (
             config.oauth_client_secret.get_secret_value()
@@ -79,14 +75,12 @@ class TestFlextOracleOicSettings:
     def test_default_extension_settings(self) -> None:
         """Test default extension settings."""
         settings = FlextOracleOicSettings()
-
         if hasattr(settings, "environment"):
             assert settings.environment in {"development", "testing", "production"}
         if hasattr(settings, "log_level"):
             assert settings.log_level is not None
         if hasattr(settings, "debug"):
             assert isinstance(settings.debug, bool)
-
         assert isinstance(settings.enable_monitoring, bool)
         assert isinstance(settings.enable_enterprise_patterns, bool)
         assert isinstance(settings.enable_orchestration, bool)
@@ -98,7 +92,6 @@ class TestFlextOracleOicSettings:
             enable_enterprise_patterns=False,
             enable_orchestration=False,
         )
-
         assert settings.enable_monitoring is False
         assert settings.enable_enterprise_patterns is False
         assert settings.enable_orchestration is False
@@ -111,7 +104,6 @@ class TestFlextOracleOicSettings:
             oauth_client_id="custom_client_id",
             oauth_client_secret="custom_client_secret",
         )
-
         assert settings.base_url == "https://custom.integration.ocp.oraclecloud.com"
         assert settings.request_timeout == 60
         assert settings.oauth_client_id == "custom_client_id"

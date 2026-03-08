@@ -26,7 +26,6 @@ try:
     __license__ = _metadata["License"]
     __url__ = _metadata.get("Home-Page", "")
 except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError):
-    # Fallback for development when package is not installed
     __version__ = "0.9.9"
     __version_info__ = (0, 9, 9)
     __title__ = "flext-oracle-oic"
@@ -35,7 +34,6 @@ except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError):
     __author_email__ = ""
     __license__ = "MIT"
     __url__ = ""
-
 __all__ = [
     "__author__",
     "__author_email__",

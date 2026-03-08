@@ -13,10 +13,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Self, override
 
-from flext_core import (
-    FlextResult,
-    FlextService,
-)
+from flext_core import FlextResult, FlextService
 
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
@@ -44,10 +41,7 @@ class FlextOracleOicApi(FlextService[None]):
     - Monitoring and observability
     """
 
-    def __init__(
-        self,
-        config: FlextOracleOicSettings | None = None,
-    ) -> None:
+    def __init__(self, config: FlextOracleOicSettings | None = None) -> None:
         """Initialize FlextOracleOic facade with complete ecosystem integration.
 
         Args:
@@ -55,25 +49,15 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         super().__init__()
-
-        # Configuration with fallback to global instance
         self._oic_config: FlextOracleOicSettings = config or FlextOracleOicSettings()
-
-        # Initialize Oracle OIC service
         self._service = FlextOracleOicService()
-
-        # Initialize context with OIC-specific information
         self._context.set("oracle_oic_base_url", self._oic_config.base_url)
         self._context.set("oracle_oic_api_version", self._oic_config.api_version)
 
-    # Lifecycle Management
-
     def __aenter__(self) -> Self:
         """Async context manager entry."""
-        # Log service start
         self.logger.info(
-            "Oracle OIC service started",
-            extra=self.get_connection_context(),
+            "Oracle OIC service started", extra=self.get_connection_context()
         )
         return self
 
@@ -84,10 +68,8 @@ class FlextOracleOicApi(FlextService[None]):
         exc_tb: t.ContainerValue,
     ) -> None:
         """Async context manager exit."""
-        # Log service stop
         self.logger.info(
-            "Oracle OIC service stopped",
-            extra=self.get_connection_context(),
+            "Oracle OIC service stopped", extra=self.get_connection_context()
         )
 
     def activate_integration(self, integration_id: str) -> FlextResult[bool]:
@@ -103,8 +85,7 @@ class FlextOracleOicApi(FlextService[None]):
         return self._service.activate_integration(integration_id)
 
     def create_integration(
-        self,
-        integration_data: Mapping[str, t.ContainerValue],
+        self, integration_data: Mapping[str, t.ContainerValue]
     ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
@@ -145,9 +126,7 @@ class FlextOracleOicApi(FlextService[None]):
     def execute(self) -> FlextResult[None]:
         """Execute Oracle OIC API operations - delegates to service."""
         result = self._service.execute()
-        return result.map(lambda _: None)  # Convert list result to None
-
-    # Integration Pattern Execution
+        return result.map(lambda _: None)
 
     def execute_app_driven_orchestration(
         self,
@@ -167,9 +146,7 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return self._service.execute_app_driven_orchestration(
-            integration_id,
-            payload,
-            **kwargs,
+            integration_id, payload, **kwargs
         )
 
     def execute_file_transfer(
@@ -190,9 +167,7 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return self._service.execute_file_transfer(
-            integration_id,
-            file_config,
-            **kwargs,
+            integration_id, file_config, **kwargs
         )
 
     def execute_scheduled_orchestration(
@@ -213,9 +188,7 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return self._service.execute_scheduled_orchestration(
-            integration_id,
-            schedule_config,
-            **kwargs,
+            integration_id, schedule_config, **kwargs
         )
 
     def get_auth_context(self) -> Mapping[str, t.ContainerValue]:
@@ -230,8 +203,6 @@ class FlextOracleOicApi(FlextService[None]):
             "oauth_token_url": self._oic_config.oauth_token_url,
             "oauth_scope": self._oic_config.oauth_scope,
         }
-
-    # Context and Configuration
 
     def get_connection_context(self) -> Mapping[str, t.ContainerValue]:
         """Get current connection configuration context.
@@ -259,8 +230,6 @@ class FlextOracleOicApi(FlextService[None]):
             "verify_ssl": self._oic_config.verify_ssl,
         }
 
-    # Monitoring and Health
-
     def get_health_status(self) -> FlextResult[Mapping[str, t.ContainerValue]]:
         """Get Oracle OIC health status.
 
@@ -271,8 +240,7 @@ class FlextOracleOicApi(FlextService[None]):
         return self._service.get_health_status()
 
     def get_integration(
-        self,
-        integration_id: str,
+        self, integration_id: str
     ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
@@ -305,8 +273,6 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._service.list_integrations()
 
-    # Authentication Management
-
     def refresh_auth_token(self) -> FlextResult[str]:
         """Refresh OAuth2 authentication token.
 
@@ -315,8 +281,6 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return self._service.refresh_auth_token()
-
-    # Connection and Testing
 
     def test_connection(self) -> FlextResult[bool]:
         """Test connection to Oracle OIC instance.
@@ -328,9 +292,7 @@ class FlextOracleOicApi(FlextService[None]):
         return self._service.test_connection()
 
     def update_integration(
-        self,
-        integration_id: str,
-        integration_data: Mapping[str, t.ContainerValue],
+        self, integration_id: str, integration_data: Mapping[str, t.ContainerValue]
     ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
@@ -357,6 +319,4 @@ class FlextOracleOicApi(FlextService[None]):
         return self._service.validate_auth_token(token)
 
 
-__all__ = [
-    "FlextOracleOicApi",
-]
+__all__ = ["FlextOracleOicApi"]

@@ -12,16 +12,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-# Type definitions outside class to avoid Pydantic field errors
 EnvironmentLiteral = Literal["development", "staging", "production"]
 LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 OICApiVersionLiteral = Literal["v1", "v2"]
-
-
-# Note: FlextOracleOicSettings follows direct instantiation pattern
-# No global instance methods needed - use FlextOracleOicSettings() directly
-
-
-__all__ = [
-    "FlextOracleOicSettings",
-]
+__all__ = ["FlextOracleOicSettings"]
