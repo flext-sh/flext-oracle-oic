@@ -135,7 +135,9 @@ class FlextOracleOicCli(FlextService[None]):
         """
         try:
             _ = sys.stdout.write(f"Oracle OIC Extension v{__version__}\n")
-            _ = sys.stdout.write("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud\n")
+            _ = sys.stdout.write(
+                "FLEXT CLI Pattern: Enterprise Oracle Integration Cloud\n"
+            )
             return FlextResult[bool].ok(value=True)
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             if self.logger:
