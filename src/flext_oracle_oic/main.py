@@ -45,7 +45,7 @@ class FlextOracleOicCli(FlextService[None]):
             prog="flext-oracle-oic-ext",
             description="FLEXT Oracle OIC Extension CLI - Enterprise Oracle Integration Cloud operations",
         )
-        parser.add_argument(
+        _ = parser.add_argument(
             "--version", action="store_true", help="Show version information"
         )
         subparsers = parser.add_subparsers(
@@ -134,8 +134,8 @@ class FlextOracleOicCli(FlextService[None]):
 
         """
         try:
-            sys.stdout.write(f"Oracle OIC Extension v{__version__}\n")
-            sys.stdout.write("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud\n")
+            _ = sys.stdout.write(f"Oracle OIC Extension v{__version__}\n")
+            _ = sys.stdout.write("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud\n")
             return FlextResult[bool].ok(value=True)
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             if self.logger:
@@ -159,7 +159,7 @@ class FlextOracleOicCli(FlextService[None]):
                 if connection_result.is_success:
                     if self.logger:
                         self.logger.info("Oracle OIC connection successful!")
-                    sys.stdout.write(
+                    _ = sys.stdout.write(
                         "Connection to Oracle OIC established successfully\n"
                     )
                     return FlextResult[bool].ok(value=True)
@@ -204,19 +204,19 @@ class FlextOracleOicCli(FlextService[None]):
 
         """
         if not integrations:
-            sys.stdout.write("📋 No integrations found\n")
+            _ = sys.stdout.write("📋 No integrations found\n")
             return
-        sys.stdout.write("📋 Oracle OIC Integrations:\n")
+        _ = sys.stdout.write("📋 Oracle OIC Integrations:\n")
         for integration in integrations:
-            sys.stdout.write(
+            _ = sys.stdout.write(
                 f"  • {integration.name} (ID: {integration.integration_id})\n"
             )
-            sys.stdout.write(
+            _ = sys.stdout.write(
                 f"    Status: {integration.status}, Version: {integration.integration_version}\n"
             )
             if integration.description:
-                sys.stdout.write(f"    Description: {integration.description}\n")
-            sys.stdout.write("\n")
+                _ = sys.stdout.write(f"    Description: {integration.description}\n")
+            _ = sys.stdout.write("\n")
 
 
 def main() -> NoReturn:
