@@ -215,9 +215,10 @@ from flext_core import FlextService
 from flext_core import t
 from flext_core import u
 
+
 def validate_connection(config: dict) -> FlextResult[ConnectionInfo]:
     """Example of current FlextResult usage."""
-    if not config.get('base_url'):
+    if not config.get("base_url"):
         return FlextResult[ConnectionInfo].fail("Base URL required")
     return FlextResult[ConnectionInfo].ok(ConnectionInfo(**config))
 ```
@@ -246,6 +247,7 @@ from flext_core import FlextService
 from flext_core import t
 from flext_core import u
 
+
 class ServiceClass:
     def __init__(self):
         self.logger = FlextLogger(__name__)
@@ -259,6 +261,7 @@ class ServiceClass:
 # ❌ Current implementation
 class OracleOicExtensionService:
     pass
+
 
 # ✅ Required FLEXT pattern
 class OracleOicIntegrationService(FlextService):
