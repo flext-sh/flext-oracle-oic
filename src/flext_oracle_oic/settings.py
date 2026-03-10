@@ -15,4 +15,4 @@ from typing import Literal
 EnvironmentLiteral = Literal["development", "staging", "production"]
 LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 OICApiVersionLiteral = Literal["v1", "v2"]
-__all__ = ["FlextOracleOicSettings"]
+__all__ = ["FlextOracleOicSettings"]  # noqa: F822
