@@ -786,7 +786,7 @@ class FlextOracleOicService(
                     list[FlextOracleOicModels.OracleOic.OICConnectionInfo]
                 ].fail(error_msg)
             connections_data = connections_result.value
-            connections = []
+            connections: list[FlextOracleOicModels.OracleOic.OICConnectionInfo] = []
             for item in connections_data:
                 connection = FlextOracleOicModels.OracleOic.OICConnectionInfo(
                     connection_id=self._as_text(item.get("id"), ""),
@@ -833,7 +833,7 @@ class FlextOracleOicService(
                     list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
                 ].fail(error_msg)
             integrations_data = integrations_result.value
-            integrations = []
+            integrations: list[FlextOracleOicModels.OracleOic.OICIntegrationInfo] = []
             for item in integrations_data:
                 integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
                     integration_id=self._as_text(item.get("id"), ""),

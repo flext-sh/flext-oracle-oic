@@ -108,7 +108,7 @@ class FlextOracleOicClient:
         result = self.make_request(
             FlextOracleOicConstants.API.Method.POST, endpoint, json=file_config
         )
-        return result.value if result.is_success else {}
+        return result.value_or({})
 
     def execute_scheduled_orchestration(
         self,
@@ -121,7 +121,7 @@ class FlextOracleOicClient:
         result = self.make_request(
             FlextOracleOicConstants.API.Method.POST, endpoint, json=schedule_config
         )
-        return result.value if result.is_success else {}
+        return result.value_or({})
 
     def get_access_token(self) -> FlextResult[str]:
         """Get access token using OAuth2 client credentials flow."""
