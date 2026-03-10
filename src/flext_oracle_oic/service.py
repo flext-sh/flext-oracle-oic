@@ -46,7 +46,7 @@ class FlextOracleOicService(
         Uses singleton config pattern - no config parameter needed.
         """
         super().__init__()
-        self.settings = FlextOracleOicSettings.get_global_instance()
+        self.settings = FlextOracleOicSettings.get_global()
         self._client: FlextOracleOicClient | None = None
         self._monitoring_client: FlextApiClient | None = None
         self._authenticator: t.ContainerValue | None = None

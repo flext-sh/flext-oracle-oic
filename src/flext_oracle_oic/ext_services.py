@@ -85,7 +85,7 @@ class FlextOracleOicExtServices(
             """
             _ = data
             super().__init__()
-            settings = FlextOracleOicSettings.get_global_instance()
+            settings = FlextOracleOicSettings.get_global()
             object.__setattr__(self, "settings", settings)
             object.__setattr__(self, "_client", None)
             FlextContainer.get_global()
@@ -608,7 +608,7 @@ class FlextOracleOicExtServices(
 
             Uses singleton config pattern - no config parameter needed.
             """
-            self.settings = FlextOracleOicSettings.get_global_instance()
+            self.settings = FlextOracleOicSettings.get_global()
             self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
             self._client: FlextOracleOicClient | None = None
 
