@@ -286,7 +286,10 @@ class FlextOracleOicExtServices(
             """Create connection configuration."""
             try:
                 settings = self._oic_settings
-                assert settings is not None
+                if settings is None:
+                    return r[FlextOracleOicModels.OracleOic.OICConnectionConfig].fail(
+                        "OIC settings not configured"
+                    )
                 connection_config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
                     base_url=str(settings.base_url),
                     api_version=settings.api_version,
@@ -430,7 +433,7 @@ class FlextOracleOicExtServices(
                     ValueError,
                     json.JSONDecodeError,
                 ) as e:
-                    self.logger.warning("Failed to parse connection: %s", str(e))
+                    self.logger.warning("Failed to parse connection: %s", e)
                     continue
             self.logger.info(f"Retrieved {len(connection_infos)} connections")
             return r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]].ok(
@@ -464,7 +467,7 @@ class FlextOracleOicExtServices(
                     ValueError,
                     json.JSONDecodeError,
                 ) as e:
-                    self.logger.warning("Failed to parse integration: %s", str(e))
+                    self.logger.warning("Failed to parse integration: %s", e)
                     continue
             self.logger.info(f"Retrieved {len(integration_infos)} integrations")
             return r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].ok(
