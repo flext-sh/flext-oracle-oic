@@ -28,6 +28,7 @@ class FlextOracleOicSettings(FlextSettings):
     base_url: str = Field(default="https://localhost")
     api_version: OICApiVersionLiteral = Field(default="v1")
     request_timeout: int = Field(default=30, ge=1, le=300)
+    max_retries: int = Field(default=3, ge=0, le=10)
     verify_ssl: bool = Field(default=True)
     use_ssl: bool = Field(default=True)
     enable_monitoring: bool = Field(default=True)
