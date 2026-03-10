@@ -148,7 +148,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                 return r[str].fail("Integration name too short")
             if len(name) > c.OracleOicValidation.MAX_INTEGRATION_NAME_LENGTH:
                 return r[str].fail("Integration name too long")
-            if not re.match("^[a-zA-Z0-9_\\-\\s]+$", name):
+            if not re.match(r"^[a-zA-Z0-9_\\-\\s]+$", name):
                 return r[str].fail("Integration name contains invalid characters")
             return r[str].ok(name)
 
@@ -297,7 +297,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             client_id = client_id.strip()
             if len(client_id) < c.OracleOicValidation.MIN_CLIENT_ID_LENGTH:
                 return r[str].fail("OAuth client ID cannot be empty")
-            if not re.match("^[a-zA-Z0-9_\\-\\.]+$", client_id):
+            if not re.match(r"^[a-zA-Z0-9_\\-\\.]+$", client_id):
                 return r[str].fail("OAuth client ID contains invalid characters")
             return r[str].ok(client_id)
 

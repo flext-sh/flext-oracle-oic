@@ -339,7 +339,7 @@ class FlextOracleOicConstants(FlextConstants):
             "ERROR",
         })
         VERSION_PATTERN: Final[re.Pattern[str]] = re.compile(
-            "^\\d{2}\\.\\d{2}\\.\\d{4}$"
+            r"^\\d{2}\\.\\d{2}\\.\\d{4}$"
         )
         VALID_CONNECTION_TYPES: Final[frozenset[str]] = frozenset({
             "REST",
