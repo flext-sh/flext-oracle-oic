@@ -237,7 +237,7 @@ class FlextOracleOicClient:
                         response_result.error or "Request failed"
                     )
                 response_data = response_result.value
-                if response_data is None or not u.is_dict_like(response_data):
+                if not u.is_dict_like(response_data):
                     return FlextResult[list[t.ConfigurationMapping]].fail(
                         "Invalid response data format"
                     )
@@ -318,8 +318,6 @@ class FlextOracleOicClient:
     ) -> FlextResult[t.ContainerValue]:
         """Execute the actual API request."""
         try:
-            if client is None:
-                return FlextResult[t.ContainerValue].fail("Client not available")
             request_data: dict[str, t.ContainerValue] | None = (
                 {key: self._to_api_payload(value) for key, value in json.items()}
                 if json is not None
@@ -394,11 +392,14 @@ class FlextOracleOicClient:
     ) -> FlextResult[Mapping[str, t.ContainerValue]]:
         """Parse API response based on content type."""
         try:
-            headers = getattr(response, "headers", None)
-            body = getattr(response, "body", None)
+            headers: dict[str, t.ContainerValue] | None = getattr(
+                response, "headers", None
+            )
+            body: t.ContainerValue | None = getattr(response, "body", None)
             match headers:
                 case Mapping():
-                    content_type = str(headers.get("content-type", ""))
+                    content_type_val = headers.get("content-type", "")
+                    content_type = str(content_type_val) if content_type_val else ""
                     if content_type.startswith("application/json"):
                         if isinstance(body, Mapping):
                             return FlextResult[t.ConfigurationMapping].ok(body)
@@ -511,7 +512,8 @@ class FlextOracleOicClient:
         match value:
             case list() | tuple():
                 return [self._to_api_payload(item) for item in value]
-        return str(value)
+            case _:
+                return str(value)
 
     def _validate_token_url(self) -> FlextResult[bool]:
         """Validate that OAuth token URL is configured."""

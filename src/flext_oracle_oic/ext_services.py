@@ -74,7 +74,7 @@ class FlextOracleOicExtServices(
             extra="forbid",
             arbitrary_types_allowed=True,
         )
-        settings: FlextOracleOicSettings
+        _oic_settings: FlextOracleOicSettings | None = None
         _client: FlextOracleOicClient | None = None
 
         @override
@@ -86,6 +86,7 @@ class FlextOracleOicExtServices(
             _ = data
             super().__init__()
             settings = FlextOracleOicSettings.get_global()
+            object.__setattr__(self, "_oic_settings", settings)
             object.__setattr__(self, "settings", settings)
             object.__setattr__(self, "_client", None)
             FlextContainer.get_global()
@@ -199,22 +200,22 @@ class FlextOracleOicExtServices(
             r[bool]: The validation result (True if valid).
 
             """
-            if not self.settings:
+            if self._oic_settings is None:
                 return r[bool].fail("Settings are required")
-            if not self.settings.base_url:
+            if not self._oic_settings.base_url:
                 return r[bool].fail("Base URL is required")
-            if not self.settings.oauth_client_id:
+            if not self._oic_settings.oauth_client_id:
                 return r[bool].fail("OAuth client ID is required")
             client_id_result = FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_client_id(
-                self.settings.oauth_client_id
+                self._oic_settings.oauth_client_id
             )
             if client_id_result.is_failure:
                 return r[bool].fail(
                     f"OAuth client ID validation: {client_id_result.error}"
                 )
-            if not self.settings.oauth_client_secret:
+            if not self._oic_settings.oauth_client_secret:
                 return r[bool].fail("OAuth client secret is required")
-            if not self.settings.oauth_token_url:
+            if not self._oic_settings.oauth_token_url:
                 return r[bool].fail("OAuth token URL is required")
             return r[bool].ok(value=True)
 
@@ -236,13 +237,17 @@ class FlextOracleOicExtServices(
             self,
         ) -> r[FlextOracleOicModels.OracleOic.OICAuthConfig]:
             """Create authentication configuration."""
+            if self._oic_settings is None:
+                return r[FlextOracleOicModels.OracleOic.OICAuthConfig].fail(
+                    "Settings are required"
+                )
             try:
                 auth_config = FlextOracleOicModels.OracleOic.OICAuthConfig(
-                    oauth_client_id=self.settings.oauth_client_id,
-                    oauth_client_secret=self.settings.oauth_client_secret,
-                    oauth_token_url=str(self.settings.oauth_token_url),
-                    oauth_client_aud=self.settings.oauth_client_aud,
-                    oauth_scope=self.settings.oauth_scope,
+                    oauth_client_id=self._oic_settings.oauth_client_id,
+                    oauth_client_secret=self._oic_settings.oauth_client_secret,
+                    oauth_token_url=str(self._oic_settings.oauth_token_url),
+                    oauth_client_aud=self._oic_settings.oauth_client_aud,
+                    oauth_scope=self._oic_settings.oauth_scope,
                 )
                 return r[FlextOracleOicModels.OracleOic.OICAuthConfig].ok(auth_config)
             except (
@@ -280,12 +285,14 @@ class FlextOracleOicExtServices(
         ) -> r[FlextOracleOicModels.OracleOic.OICConnectionConfig]:
             """Create connection configuration."""
             try:
+                settings = self._oic_settings
+                assert settings is not None
                 connection_config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
-                    base_url=str(self.settings.base_url),
-                    api_version=self.settings.api_version,
-                    request_timeout=self.settings.request_timeout,
-                    max_retries=self.settings.max_retries,
-                    verify_ssl=self.settings.verify_ssl,
+                    base_url=str(settings.base_url),
+                    api_version=settings.api_version,
+                    request_timeout=settings.request_timeout,
+                    max_retries=settings.max_retries,
+                    verify_ssl=settings.verify_ssl,
                 )
                 return r[FlextOracleOicModels.OracleOic.OICConnectionConfig].ok(
                     connection_config
@@ -423,7 +430,7 @@ class FlextOracleOicExtServices(
                     ValueError,
                     json.JSONDecodeError,
                 ) as e:
-                    self.logger.warning("Failed to parse connection: %s", e)
+                    self.logger.warning("Failed to parse connection: %s", str(e))
                     continue
             self.logger.info(f"Retrieved {len(connection_infos)} connections")
             return r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]].ok(
@@ -457,7 +464,7 @@ class FlextOracleOicExtServices(
                     ValueError,
                     json.JSONDecodeError,
                 ) as e:
-                    self.logger.warning("Failed to parse integration: %s", e)
+                    self.logger.warning("Failed to parse integration: %s", str(e))
                     continue
             self.logger.info(f"Retrieved {len(integration_infos)} integrations")
             return r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].ok(
@@ -608,7 +615,7 @@ class FlextOracleOicExtServices(
 
             Uses singleton config pattern - no config parameter needed.
             """
-            self.settings = FlextOracleOicSettings.get_global()
+            self.settings: FlextOracleOicSettings = FlextOracleOicSettings.get_global()
             self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
             self._client: FlextOracleOicClient | None = None
 
@@ -631,10 +638,6 @@ class FlextOracleOicExtServices(
                         client_result.error or "Client creation failed"
                     )
                 client = client_result.value
-                if client is None:
-                    return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
-                        "No client available"
-                    )
                 activation_data: dict[str, t.ContainerValue] = {
                     "status": FlextOracleOicConstants.Integration.Status.ACTIVATED
                 }
@@ -687,10 +690,6 @@ class FlextOracleOicExtServices(
                         client_result.error or "Client creation failed"
                     )
                 client = client_result.value
-                if client is None:
-                    return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
-                        "No client available"
-                    )
                 deactivation_data: dict[str, t.ContainerValue] = {
                     "status": FlextOracleOicConstants.Integration.Status.DEACTIVATED
                 }

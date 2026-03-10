@@ -13,7 +13,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from typing import NoReturn, override
+from typing import override
 
 from flext_core import FlextResult, FlextService
 
@@ -221,7 +221,7 @@ class FlextOracleOicCli(FlextService[None]):
             _ = sys.stdout.write("\n")
 
 
-def main() -> NoReturn:
+def main() -> int:
     """Run main CLI entry point - FLEXT CLI Pattern.
 
     FLEXT CLI Pattern: Main entry point for Oracle OIC Extension CLI
@@ -229,16 +229,13 @@ def main() -> NoReturn:
     """
     cli_instance = FlextOracleOicCli()
     try:
-        exit_code = cli_instance.run_cli()
-        sys.exit(exit_code)
+        return cli_instance.run_cli()
     except KeyboardInterrupt:
         cli_instance.logger.info("Oracle OIC Extension CLI interrupted by user")
-        sys.exit(130)
+        return 130
     except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError):
         cli_instance.logger.exception("Oracle OIC Extension CLI error")
-        sys.exit(1)
+        return 1
 
 
 __all__: list[str] = ["FlextOracleOicCli", "main"]
-if __name__ == "__main__":
-    main()

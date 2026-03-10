@@ -51,8 +51,9 @@ class FlextOracleOicApi(FlextService[None]):
         super().__init__()
         self._oic_config: FlextOracleOicSettings = config or FlextOracleOicSettings()
         self._service = FlextOracleOicService()
-        self._context.set("oracle_oic_base_url", self._oic_config.base_url)
-        self._context.set("oracle_oic_api_version", self._oic_config.api_version)
+        if self._context is not None:
+            self._context.set("oracle_oic_base_url", self._oic_config.base_url)
+            self._context.set("oracle_oic_api_version", self._oic_config.api_version)
 
     def __aenter__(self) -> Self:
         """Async context manager entry."""

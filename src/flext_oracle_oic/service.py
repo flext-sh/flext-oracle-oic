@@ -46,7 +46,7 @@ class FlextOracleOicService(
         Uses singleton config pattern - no config parameter needed.
         """
         super().__init__()
-        self.settings = FlextOracleOicSettings.get_global()
+        self._oic_settings: FlextOracleOicSettings = FlextOracleOicSettings.get_global()
         self._client: FlextOracleOicClient | None = None
         self._monitoring_client: FlextApiClient | None = None
         self._authenticator: t.ContainerValue | None = None
@@ -493,7 +493,7 @@ class FlextOracleOicService(
                     "timestamp": asyncio.get_event_loop().time(),
                 }
             else:
-                base = str(self.settings.base_url).rstrip("/")
+                base = str(self._oic_settings.base_url).rstrip("/")
                 health_url = f"{base}{FlextOracleOicConstants.API.ENDPOINT_HEALTH}"
                 req = FlextApiModels.HttpRequest(
                     method=FlextOracleOicConstants.API.Method.GET, url=health_url
@@ -683,7 +683,7 @@ class FlextOracleOicService(
                     "timestamp": asyncio.get_event_loop().time(),
                 }
             else:
-                base = str(self.settings.base_url).rstrip("/")
+                base = str(self._oic_settings.base_url).rstrip("/")
                 metrics_url = f"{base}/ic/api/integration/v1/metrics"
                 req = FlextApiModels.HttpRequest(
                     method=FlextOracleOicConstants.API.Method.GET, url=metrics_url
@@ -992,24 +992,24 @@ class FlextOracleOicService(
         FlextResult indicating validation success or failure.
 
         """
-        if not self.settings:
+        if not self._oic_settings:
             return FlextResult[bool].fail("Settings are required")
-        if not self.settings.base_url:
+        if not self._oic_settings.base_url:
             return FlextResult[bool].fail("Base URL is required")
-        if not self.settings.oauth_client_id:
+        if not self._oic_settings.oauth_client_id:
             return FlextResult[bool].fail("OAuth client ID is required")
         client_id_result = (
             FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_client_id(
-                self.settings.oauth_client_id
+                self._oic_settings.oauth_client_id
             )
         )
         if client_id_result.is_failure:
             return FlextResult[bool].fail(
                 f"OAuth client ID validation: {client_id_result.error}"
             )
-        if not self.settings.oauth_client_secret:
+        if not self._oic_settings.oauth_client_secret:
             return FlextResult[bool].fail("OAuth client secret is required")
-        if not self.settings.oauth_token_url:
+        if not self._oic_settings.oauth_token_url:
             return FlextResult[bool].fail("OAuth token URL is required")
         return FlextResult[bool].ok(value=True)
 
@@ -1028,18 +1028,18 @@ class FlextOracleOicService(
                         validation_result.error
                     )
                 connection_config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
-                    base_url=str(self.settings.base_url),
-                    api_version=self.settings.api_version,
-                    request_timeout=self.settings.request_timeout,
-                    max_retries=self.settings.max_retries,
-                    verify_ssl=self.settings.verify_ssl,
+                    base_url=str(self._oic_settings.base_url),
+                    api_version=self._oic_settings.api_version,
+                    request_timeout=self._oic_settings.request_timeout,
+                    max_retries=self._oic_settings.max_retries,
+                    verify_ssl=self._oic_settings.verify_ssl,
                 )
                 auth_config = FlextOracleOicModels.OracleOic.OICAuthConfig(
-                    oauth_client_id=self.settings.oauth_client_id,
-                    oauth_client_secret=self.settings.oauth_client_secret,
-                    oauth_token_url=str(self.settings.oauth_token_url),
-                    oauth_client_aud=self.settings.oauth_client_aud,
-                    oauth_scope=self.settings.oauth_scope,
+                    oauth_client_id=self._oic_settings.oauth_client_id,
+                    oauth_client_secret=self._oic_settings.oauth_client_secret,
+                    oauth_token_url=str(self._oic_settings.oauth_token_url),
+                    oauth_client_aud=self._oic_settings.oauth_client_aud,
+                    oauth_scope=self._oic_settings.oauth_scope,
                 )
                 self._client = FlextOracleOicClient(
                     connection_config=connection_config, auth_config=auth_config
@@ -1054,15 +1054,15 @@ class FlextOracleOicService(
     def _initialize_components(self) -> None:
         """Initialize service components."""
         try:
-            if self.settings.enable_monitoring:
+            if self._oic_settings.enable_monitoring:
                 auth_token = ""
                 if self._authenticator:
                     refresh_fn = getattr(self._authenticator, "refresh_token", None)
                     if callable(refresh_fn):
                         auth_token = refresh_fn()
                 api_config = FlextApiSettings(
-                    base_url=str(self.settings.base_url),
-                    timeout=self.settings.request_timeout,
+                    base_url=str(self._oic_settings.base_url),
+                    timeout=self._oic_settings.request_timeout,
                     headers={
                         "Authorization": f"Bearer {auth_token}",
                         "Content-Type": "application/json",
