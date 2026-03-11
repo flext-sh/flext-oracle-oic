@@ -38,7 +38,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 params: Operation parameters
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: Operation result or error
+                r[Mapping[str, FlextTypes.ContainerValue]]: Operation result or error
 
                 """
                 ...
@@ -52,7 +52,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 request_data: Request data to validate
 
                 Returns:
-                FlextResult[bool]: Validation success status
+                r[bool]: Validation success status
 
                 """
                 ...
@@ -76,7 +76,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 integration_id: Integration identifier
 
                 Returns:
-                FlextResult[bool]: Activation success status
+                r[bool]: Activation success status
 
                 """
                 ...
@@ -93,7 +93,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 deployment_config: Deployment configuration
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: Deployment result or error
+                r[Mapping[str, FlextTypes.ContainerValue]]: Deployment result or error
 
                 """
                 ...
@@ -107,7 +107,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 integration_id: Integration identifier
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: Integration status or error
+                r[Mapping[str, FlextTypes.ContainerValue]]: Integration status or error
 
                 """
                 ...
@@ -121,7 +121,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 filters: Optional filters for integration listing
 
                 Returns:
-                FlextResult[list[Mapping[str, FlextTypes.ContainerValue]]]: Integration list or error
+                r[list[Mapping[str, FlextTypes.ContainerValue]]]: Integration list or error
 
                 """
                 ...
@@ -139,7 +139,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 connection_config: Connection configuration
 
                 Returns:
-                FlextResult[str]: Created connection ID or error
+                r[str]: Created connection ID or error
 
                 """
                 ...
@@ -153,7 +153,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 connection_id: Connection identifier
 
                 Returns:
-                FlextResult[bool]: Deletion success status
+                r[bool]: Deletion success status
 
                 """
                 ...
@@ -167,7 +167,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 connection_type: Optional connection type filter
 
                 Returns:
-                FlextResult[list[Mapping[str, FlextTypes.ContainerValue]]]: Connection list or error
+                r[list[Mapping[str, FlextTypes.ContainerValue]]]: Connection list or error
 
                 """
                 ...
@@ -181,7 +181,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 connection_id: Connection identifier
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: Connection test result or error
+                r[Mapping[str, FlextTypes.ContainerValue]]: Connection test result or error
 
                 """
                 ...
@@ -198,7 +198,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 connection_config: Updated connection configuration
 
                 Returns:
-                FlextResult[bool]: Update success status
+                r[bool]: Update success status
 
                 """
                 ...
@@ -219,7 +219,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 aggregation_rules: Aggregation rules
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: Pattern application result or error
+                r[Mapping[str, FlextTypes.ContainerValue]]: Pattern application result or error
 
                 """
                 ...
@@ -236,7 +236,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 routing_rules: Message routing rules
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: Pattern application result or error
+                r[Mapping[str, FlextTypes.ContainerValue]]: Pattern application result or error
 
                 """
                 ...
@@ -253,7 +253,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 scatter_config: Scatter-gather configuration
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: Pattern application result or error
+                r[Mapping[str, FlextTypes.ContainerValue]]: Pattern application result or error
 
                 """
                 ...
@@ -270,7 +270,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 integration_config: Integration configuration
 
                 Returns:
-                FlextResult[bool]: Compatibility validation status
+                r[bool]: Compatibility validation status
 
                 """
                 ...
@@ -288,7 +288,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 connection_id: Connection identifier
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: Connection health status or error
+                r[Mapping[str, FlextTypes.ContainerValue]]: Connection health status or error
 
                 """
                 ...
@@ -303,7 +303,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 time_range: Time range for metrics
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: Integration metrics or error
+                r[Mapping[str, FlextTypes.ContainerValue]]: Integration metrics or error
 
                 """
                 ...
@@ -314,7 +314,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 """Get Oracle OIC system status.
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: System status or error.
+                r[Mapping[str, FlextTypes.ContainerValue]]: System status or error.
 
                 """
                 ...
@@ -328,7 +328,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 monitoring_config: Monitoring configuration
 
                 Returns:
-                FlextResult[bool]: Monitoring start status
+                r[bool]: Monitoring start status
 
                 """
                 ...
@@ -350,7 +350,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 backup_config: Backup configuration
 
                 Returns:
-                FlextResult[str]: Backup location or error
+                r[str]: Backup location or error
 
                 """
                 ...
@@ -364,7 +364,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 environment_config: Environment configuration
 
                 Returns:
-                FlextResult[bool]: Initialization success status
+                r[bool]: Initialization success status
 
                 """
                 ...
@@ -378,7 +378,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 migration_config: Migration configuration
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: Migration result or error
+                r[Mapping[str, FlextTypes.ContainerValue]]: Migration result or error
 
                 """
                 ...
@@ -407,7 +407,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 headers: Optional HTTP headers
 
                 Returns:
-                FlextResult[bool]: Delete success status
+                r[bool]: Delete success status
 
                 """
                 ...
@@ -422,7 +422,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 headers: Optional HTTP headers
 
                 Returns:
-                FlextResult[object]: HTTP response or error
+                r[object]: HTTP response or error
 
                 """
                 ...
@@ -442,7 +442,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 headers: Optional HTTP headers
 
                 Returns:
-                FlextResult[object]: HTTP response or error
+                r[object]: HTTP response or error
 
                 """
                 ...
@@ -462,7 +462,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 headers: Optional HTTP headers
 
                 Returns:
-                FlextResult[object]: HTTP response or error
+                r[object]: HTTP response or error
 
                 """
                 ...
@@ -482,7 +482,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 credentials: Authentication credentials
 
                 Returns:
-                FlextResult[Mapping[str, FlextTypes.ContainerValue]]: Authentication result or error
+                r[Mapping[str, FlextTypes.ContainerValue]]: Authentication result or error
 
                 """
                 ...

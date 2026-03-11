@@ -46,7 +46,7 @@ This document provides an accurate analysis of the current architecture implemen
 
 The library follows these core principles from the FLEXT ecosystem:
 
-1. **Railway-Oriented Programming**: FlextResult[T] for type-safe error handling
+1. **Railway-Oriented Programming**: r[T] for type-safe error handling
 1. **Dependency Injection**: FlextContainer for service management
 1. **Domain-Driven Design**: Rich domain models for Oracle OIC concepts
 1. **Clean Architecture**: Separation of concerns across layers
@@ -70,7 +70,7 @@ The library follows these core principles from the FLEXT ecosystem:
 
 **FLEXT Integration (Partial)**
 
-- FlextResult usage for some error handling patterns
+- r usage for some error handling patterns
 - FlextLogger integration for structured logging
 - Basic import structure for FLEXT ecosystem components
 
@@ -191,7 +191,7 @@ from flext_api import FlextApiClient
 
 ### Currently Implemented ✅
 
-**FlextResult Railway Pattern (Partial)**
+**r Railway Pattern (Partial)**
 
 ```python
 from flext_core import FlextBus
@@ -209,18 +209,18 @@ from flext_core import FlextModels
 from flext_core import FlextProcessors
 from flext_core import p
 from flext_core import FlextRegistry
-from flext_core import FlextResult
+from flext_core import r
 from flext_core import FlextRuntime
 from flext_core import FlextService
 from flext_core import t
 from flext_core import u
 
 
-def validate_connection(config: dict) -> FlextResult[ConnectionInfo]:
-    """Example of current FlextResult usage."""
+def validate_connection(config: dict) -> r[ConnectionInfo]:
+    """Example of current r usage."""
     if not config.get("base_url"):
-        return FlextResult[ConnectionInfo].fail("Base URL required")
-    return FlextResult[ConnectionInfo].ok(ConnectionInfo(**config))
+        return r[ConnectionInfo].fail("Base URL required")
+    return r[ConnectionInfo].ok(ConnectionInfo(**config))
 ```
 
 **FlextLogger Integration**
@@ -241,7 +241,7 @@ from flext_core import FlextModels
 from flext_core import FlextProcessors
 from flext_core import p
 from flext_core import FlextRegistry
-from flext_core import FlextResult
+from flext_core import r
 from flext_core import FlextRuntime
 from flext_core import FlextService
 from flext_core import t

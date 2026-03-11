@@ -13,7 +13,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Self, override
 
-from flext_core import FlextResult, FlextService
+from flext_core import FlextService, r
 
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
@@ -75,58 +75,58 @@ class FlextOracleOicApi(FlextService[None]):
             "Oracle OIC service stopped", extra=self.get_connection_context()
         )
 
-    def activate_integration(self, integration_id: str) -> FlextResult[bool]:
+    def activate_integration(self, integration_id: str) -> r[bool]:
         """Activate Oracle OIC integration.
 
         Args:
         integration_id: The integration identifier.
 
         Returns:
-        FlextResult indicating success or failure.
+        r indicating success or failure.
 
         """
         return self._service.activate_integration(integration_id)
 
     def create_integration(
         self, integration_data: Mapping[str, t.ContainerValue]
-    ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
         Args:
         integration_data: Integration configuration data.
 
         Returns:
-        FlextResult containing created integration information.
+        r containing created integration information.
 
         """
         return self._service.create_integration(integration_data)
 
-    def deactivate_integration(self, integration_id: str) -> FlextResult[bool]:
+    def deactivate_integration(self, integration_id: str) -> r[bool]:
         """Deactivate Oracle OIC integration.
 
         Args:
         integration_id: The integration identifier.
 
         Returns:
-        FlextResult indicating success or failure.
+        r indicating success or failure.
 
         """
         return self._service.deactivate_integration(integration_id)
 
-    def delete_integration(self, integration_id: str) -> FlextResult[bool]:
+    def delete_integration(self, integration_id: str) -> r[bool]:
         """Delete Oracle OIC integration.
 
         Args:
         integration_id: The integration identifier.
 
         Returns:
-        FlextResult indicating success or failure.
+        r indicating success or failure.
 
         """
         return self._service.delete_integration(integration_id)
 
     @override
-    def execute(self) -> FlextResult[None]:
+    def execute(self) -> r[None]:
         """Execute Oracle OIC API operations - delegates to service."""
         result = self._service.execute()
         return result.map(lambda _: None)
@@ -136,7 +136,7 @@ class FlextOracleOicApi(FlextService[None]):
         integration_id: str,
         payload: Mapping[str, t.ContainerValue],
         **kwargs: t.ContainerValue,
-    ) -> FlextResult[Mapping[str, t.ContainerValue]]:
+    ) -> r[Mapping[str, t.ContainerValue]]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -145,7 +145,7 @@ class FlextOracleOicApi(FlextService[None]):
         **kwargs: Additional execution parameters.
 
         Returns:
-        FlextResult containing execution result.
+        r containing execution result.
 
         """
         return self._service.execute_app_driven_orchestration(
@@ -157,7 +157,7 @@ class FlextOracleOicApi(FlextService[None]):
         integration_id: str,
         file_config: Mapping[str, t.ContainerValue],
         **kwargs: t.ContainerValue,
-    ) -> FlextResult[Mapping[str, t.ContainerValue]]:
+    ) -> r[Mapping[str, t.ContainerValue]]:
         """Execute file transfer pattern.
 
         Args:
@@ -166,7 +166,7 @@ class FlextOracleOicApi(FlextService[None]):
         **kwargs: Additional execution parameters.
 
         Returns:
-        FlextResult containing execution result.
+        r containing execution result.
 
         """
         return self._service.execute_file_transfer(
@@ -178,7 +178,7 @@ class FlextOracleOicApi(FlextService[None]):
         integration_id: str,
         schedule_config: Mapping[str, t.ContainerValue],
         **kwargs: t.ContainerValue,
-    ) -> FlextResult[Mapping[str, t.ContainerValue]]:
+    ) -> r[Mapping[str, t.ContainerValue]]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -187,7 +187,7 @@ class FlextOracleOicApi(FlextService[None]):
         **kwargs: Additional execution parameters.
 
         Returns:
-        FlextResult containing execution result.
+        r containing execution result.
 
         """
         return self._service.execute_scheduled_orchestration(
@@ -233,70 +233,70 @@ class FlextOracleOicApi(FlextService[None]):
             "verify_ssl": self._oic_config.verify_ssl,
         }
 
-    def get_health_status(self) -> FlextResult[Mapping[str, t.ContainerValue]]:
+    def get_health_status(self) -> r[Mapping[str, t.ContainerValue]]:
         """Get Oracle OIC health status.
 
         Returns:
-        FlextResult containing health status information.
+        r containing health status information.
 
         """
         return self._service.get_health_status()
 
     def get_integration(
         self, integration_id: str
-    ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
         Args:
         integration_id: The integration identifier.
 
         Returns:
-        FlextResult containing integration information.
+        r containing integration information.
 
         """
         return self._service.get_integration(integration_id)
 
-    def get_performance_metrics(self) -> FlextResult[Mapping[str, t.ContainerValue]]:
+    def get_performance_metrics(self) -> r[Mapping[str, t.ContainerValue]]:
         """Get Oracle OIC performance metrics.
 
         Returns:
-        FlextResult containing performance metrics.
+        r containing performance metrics.
 
         """
         return self._service.get_performance_metrics()
 
     def list_integrations(
         self,
-    ) -> FlextResult[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
-        FlextResult containing list of integration information.
+        r containing list of integration information.
 
         """
         return self._service.list_integrations()
 
-    def refresh_auth_token(self) -> FlextResult[str]:
+    def refresh_auth_token(self) -> r[str]:
         """Refresh OAuth2 authentication token.
 
         Returns:
-        FlextResult containing new access token.
+        r containing new access token.
 
         """
         return self._service.refresh_auth_token()
 
-    def test_connection(self) -> FlextResult[bool]:
+    def test_connection(self) -> r[bool]:
         """Test connection to Oracle OIC instance.
 
         Returns:
-        FlextResult containing connection test result.
+        r containing connection test result.
 
         """
         return self._service.test_connection()
 
     def update_integration(
         self, integration_id: str, integration_data: Mapping[str, t.ContainerValue]
-    ) -> FlextResult[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
         Args:
@@ -304,19 +304,19 @@ class FlextOracleOicApi(FlextService[None]):
         integration_data: Updated integration configuration.
 
         Returns:
-        FlextResult containing updated integration information.
+        r containing updated integration information.
 
         """
         return self._service.update_integration(integration_id, integration_data)
 
-    def validate_auth_token(self, token: str) -> FlextResult[bool]:
+    def validate_auth_token(self, token: str) -> r[bool]:
         """Validate OAuth2 authentication token.
 
         Args:
         token: Token to validate.
 
         Returns:
-        FlextResult containing validation result.
+        r containing validation result.
 
         """
         return self._service.validate_auth_token(token)

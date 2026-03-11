@@ -33,6 +33,8 @@ class FlextOracleOicSettings(FlextSettings):
     verify_ssl: bool = Field(default=True)
     use_ssl: bool = Field(default=True)
     enable_monitoring: bool = Field(default=True)
+    enable_enterprise_patterns: bool = Field(default=True)
+    enable_orchestration: bool = Field(default=True)
     oauth_client_id: str = Field(default="")
     oauth_client_secret: SecretStr = Field(default=SecretStr(""))
     oauth_token_url: str = Field(default="https://localhost/oauth/token")

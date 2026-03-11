@@ -116,7 +116,7 @@ class FlextOracleOicExtServices(
             integration_data: Integration configuration
 
             Returns:
-            FlextResult containing integration ID or error
+            r containing integration ID or error
 
             """
             return (
@@ -138,7 +138,7 @@ class FlextOracleOicExtServices(
             """Execute the main domain service operation.
 
             Returns:
-            FlextResult containing list of OIC integrations or error
+            r containing list of OIC integrations or error
 
             """
             return self.list_integrations()
@@ -152,7 +152,7 @@ class FlextOracleOicExtServices(
             type_filter: Filter by connection type
 
             Returns:
-            FlextResult containing connection info list or error
+            r containing connection info list or error
 
             """
             return (
@@ -171,7 +171,7 @@ class FlextOracleOicExtServices(
             status_filter: Filter by integration status
 
             Returns:
-            FlextResult containing integration info list or error
+            r containing integration info list or error
 
             """
             return (
@@ -187,7 +187,7 @@ class FlextOracleOicExtServices(
             """Test connection to Oracle OIC.
 
             Returns:
-            FlextResult containing connection status or error
+            r containing connection status or error
 
             """
             return self._get_oic_client().flat_map(self._perform_connection_test)
@@ -371,7 +371,7 @@ class FlextOracleOicExtServices(
             """Get authenticated OIC client.
 
             Returns:
-            FlextResult containing client or error
+            r containing client or error
 
             """
             return (
@@ -523,7 +523,7 @@ class FlextOracleOicExtServices(
             routing_rules: Routing rules configuration
 
             Returns:
-            FlextResult containing routing result or error
+            r containing routing result or error
 
             """
             try:
@@ -571,7 +571,7 @@ class FlextOracleOicExtServices(
             target_endpoints: Target endpoints for scatter
 
             Returns:
-            FlextResult containing scatter-gather result or error
+            r containing scatter-gather result or error
 
             """
             try:
@@ -633,7 +633,7 @@ class FlextOracleOicExtServices(
             integration_id: Integration identifier
 
             Returns:
-            FlextResult containing integration status or error
+            r containing integration status or error
 
             """
             try:
@@ -685,7 +685,7 @@ class FlextOracleOicExtServices(
             integration_id: Integration identifier
 
             Returns:
-            FlextResult containing integration status or error
+            r containing integration status or error
 
             """
             try:

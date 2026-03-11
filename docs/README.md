@@ -42,7 +42,7 @@
 
 - **Oracle OIC Authentication**: OAuth2 client credentials flow with IDCS Gen3 simplifications
 - **Integration Pattern Execution**: App-driven orchestration, scheduled orchestration, file transfer patterns
-- **FLEXT Integration**: FlextService architecture with FlextResult railway patterns
+- **FLEXT Integration**: FlextService architecture with r railway patterns
 - **Enterprise Security**: Secure credential management with encryption and token lifecycle
 - **Oracle Cloud Connectivity**: Enterprise Oracle cloud operations following FLEXT architectural standards
 

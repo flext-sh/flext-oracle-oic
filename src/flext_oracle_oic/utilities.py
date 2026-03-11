@@ -8,7 +8,7 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 - Single unified class extending u
 - Nested classes for domain-specific functionality
 - Python 3.13+ features and Pydantic 2.11+
-- Railway-oriented programming with FlextResult
+- Railway-oriented programming with r
 - Type-safe operations with proper validation
 - SOLID principles with clean separation of concerns
 """
@@ -42,7 +42,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
     DESIGN PRINCIPLES:
     - Single responsibility per nested class
-    - Immutable operations with FlextResult
+    - Immutable operations with r
     - Type-safe validation with Pydantic 2.11+
     - Railway-oriented error handling
     - No side effects in utility functions
@@ -61,7 +61,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             integration_data: Integration configuration data
 
             Returns:
-            FlextResult containing validated data or validation errors
+            r containing validated data or validation errors
 
             """
             if not u.is_dict_like(integration_data):
@@ -133,7 +133,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             name: Integration name to validate
 
             Returns:
-            FlextResult containing validated name or validation error
+            r containing validated name or validation error
 
             """
             match name:
@@ -160,7 +160,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             status: Integration status to validate
 
             Returns:
-            FlextResult containing validated status or error
+            r containing validated status or error
 
             """
             match status:
@@ -186,7 +186,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             version: Version string to validate (format: XX.XX.XXXX)
 
             Returns:
-            FlextResult containing validated version or error
+            r containing validated version or error
 
             """
             match version:
@@ -210,7 +210,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             base_url: Base URL to validate
 
             Returns:
-            FlextResult containing validated URL or error
+            r containing validated URL or error
 
             """
             match base_url:
@@ -233,7 +233,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             status: Connection status to validate
 
             Returns:
-            FlextResult containing validated status or error
+            r containing validated status or error
 
             """
             match status:
@@ -259,7 +259,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             connection_type: Connection type to validate
 
             Returns:
-            FlextResult containing validated type or error
+            r containing validated type or error
 
             """
             match connection_type:
@@ -286,7 +286,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             client_id: OAuth2 client ID to validate
 
             Returns:
-            FlextResult containing validated client ID or error
+            r containing validated client ID or error
 
             """
             match client_id:
@@ -309,7 +309,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             client_secret: OAuth2 client secret to validate
 
             Returns:
-            FlextResult containing validated secret or error
+            r containing validated secret or error
 
             """
             secret_value = client_secret.get_secret_value()
@@ -336,7 +336,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             connection_id: Optional specific connection ID
 
             Returns:
-            FlextResult containing constructed endpoint URL or error
+            r containing constructed endpoint URL or error
 
             """
             url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
@@ -368,7 +368,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             integration_id: Optional specific integration ID
 
             Returns:
-            FlextResult containing constructed endpoint URL or error
+            r containing constructed endpoint URL or error
 
             """
             url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
@@ -402,7 +402,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             additional_headers: Optional additional headers
 
             Returns:
-            FlextResult containing constructed headers or error
+            r containing constructed headers or error
 
             """
             headers: dict[str, str] = {
@@ -439,7 +439,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             integration_data: Integration configuration data
 
             Returns:
-            FlextResult containing detected pattern or analysis error
+            r containing detected pattern or analysis error
 
             """
             if not u.is_dict_like(integration_data):
@@ -488,7 +488,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             configuration: Pattern-specific configuration
 
             Returns:
-            FlextResult containing validated configuration or error
+            r containing validated configuration or error
 
             """
             if pattern_type not in c.OracleOicValidation.SUPPORTED_PATTERNS:
@@ -531,7 +531,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             metrics: Performance metrics data
 
             Returns:
-            FlextResult containing analysis results or error
+            r containing analysis results or error
 
             """
             if not u.is_dict_like(metrics):
@@ -598,7 +598,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             health_data: Health check response data
 
             Returns:
-            FlextResult containing validated health data or error
+            r containing validated health data or error
 
             """
             if not u.is_dict_like(health_data):
