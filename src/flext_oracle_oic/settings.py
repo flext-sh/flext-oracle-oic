@@ -13,7 +13,8 @@ from __future__ import annotations
 from typing import Literal
 
 from flext_core import FlextSettings
-from pydantic import ConfigDict, Field, SecretStr
+from pydantic import Field, SecretStr
+from pydantic_settings import SettingsConfigDict
 
 EnvironmentLiteral = Literal["development", "staging", "production"]
 LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
@@ -23,7 +24,7 @@ OICApiVersionLiteral = Literal["v1", "v2"]
 class FlextOracleOicSettings(FlextSettings):
     """Runtime configuration for Oracle OIC integration."""
 
-    model_config = ConfigDict(extra="ignore")
+    model_config = SettingsConfigDict(extra="ignore")
 
     base_url: str = Field(default="https://localhost")
     api_version: OICApiVersionLiteral = Field(default="v1")

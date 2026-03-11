@@ -49,7 +49,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         super().__init__()
-        self._oic_config: FlextOracleOicSettings = config or FlextOracleOicSettings()
+        self._oic_config: FlextOracleOicSettings = (
+            config if config is not None else FlextOracleOicSettings()
+        )
         self._service = FlextOracleOicService()
         if self._context is not None:
             self._context.set("oracle_oic_base_url", self._oic_config.base_url)

@@ -433,7 +433,8 @@ class FlextOracleOicExtServices(
                     ValueError,
                     json.JSONDecodeError,
                 ) as e:
-                    self.logger.warning("Failed to parse connection: %s", e)
+                    err_msg: str = str(e)
+                    self.logger.warning("Failed to parse connection: %s", err_msg)
                     continue
             self.logger.info(f"Retrieved {len(connection_infos)} connections")
             return r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]].ok(
@@ -467,7 +468,8 @@ class FlextOracleOicExtServices(
                     ValueError,
                     json.JSONDecodeError,
                 ) as e:
-                    self.logger.warning("Failed to parse integration: %s", e)
+                    err_msg: str = str(e)
+                    self.logger.warning("Failed to parse integration: %s", err_msg)
                     continue
             self.logger.info(f"Retrieved {len(integration_infos)} integrations")
             return r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].ok(
@@ -574,7 +576,7 @@ class FlextOracleOicExtServices(
             """
             try:
                 self.logger.info("Applying scatter-gather pattern")
-                pattern_config = {
+                pattern_config: Mapping[str, t.ContainerValue] = {
                     "target_services": target_endpoints,
                     "request_data": request_data,
                 }

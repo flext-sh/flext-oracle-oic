@@ -137,7 +137,7 @@ class FlextOracleOicService(
         """
         try:
             self.logger.info("Applying message router pattern")
-            pattern_config = {
+            pattern_config: Mapping[str, t.ContainerValue] = {
                 "routing_rules": routing_rules,
                 "message_data": message_data,
             }
@@ -179,7 +179,7 @@ class FlextOracleOicService(
         """
         try:
             self.logger.info("Applying scatter-gather pattern")
-            pattern_config = {
+            pattern_config: Mapping[str, t.ContainerValue] = {
                 "target_services": target_endpoints,
                 "request_data": request_data,
             }
