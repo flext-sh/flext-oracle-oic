@@ -15,7 +15,7 @@ import json
 from collections.abc import Mapping
 from typing import Protocol, Self, override
 
-from flext_core import FlextContainer, FlextLogger, FlextService, r
+from flext_core import FlextContainer, FlextLogger, FlextService, r, t
 from pydantic import ConfigDict
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
@@ -78,7 +78,7 @@ class FlextOracleOicExtServices(
         _client: FlextOracleOicClient | None = None
 
         @override
-        def __init__(self, **data: object) -> None:
+        def __init__(self, **data: t.Scalar) -> None:
             """Initialize OIC extension service.
 
             Uses singleton config pattern - no config parameter needed.

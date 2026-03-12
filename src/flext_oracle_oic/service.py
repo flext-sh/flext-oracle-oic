@@ -17,7 +17,7 @@ from collections.abc import Mapping
 from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiModels, FlextApiSettings
-from flext_core import FlextLogger, FlextService, r, u
+from flext_core import FlextLogger, FlextService, r, t, u
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import FlextOracleOicClient
@@ -342,7 +342,7 @@ class FlextOracleOicService(
 
     @override
     def execute(
-        self: Self, **kwargs: object
+        self: Self, **kwargs: t.Scalar
     ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """Execute main service operation - list all integrations.
 
@@ -356,7 +356,7 @@ class FlextOracleOicService(
         self,
         integration_id: str,
         payload: Mapping[str, object],
-        **_kwargs: object,
+        **_kwargs: t.Scalar,
     ) -> r[Mapping[str, object]]:
         """Execute app-driven orchestration pattern.
 
@@ -397,7 +397,7 @@ class FlextOracleOicService(
         self,
         integration_id: str,
         file_config: Mapping[str, object],
-        **kwargs: object,
+        **kwargs: t.Scalar,
     ) -> r[Mapping[str, object]]:
         """Execute file transfer pattern.
 
@@ -426,7 +426,7 @@ class FlextOracleOicService(
         self,
         integration_id: str,
         schedule_config: Mapping[str, object],
-        **kwargs: object,
+        **kwargs: t.Scalar,
     ) -> r[Mapping[str, object]]:
         """Execute scheduled orchestration pattern.
 

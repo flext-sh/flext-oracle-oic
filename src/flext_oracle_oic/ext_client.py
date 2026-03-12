@@ -17,7 +17,7 @@ from collections.abc import Mapping
 from typing import Self
 
 from flext_api import FlextApi, FlextApiSettings
-from flext_core import FlextLogger, r
+from flext_core import FlextLogger, r, t
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.models import FlextOracleOicModels
@@ -101,7 +101,7 @@ class FlextOracleOicClient:
         self,
         integration_id: str,
         file_config: Mapping[str, object],
-        **_kwargs: object,
+        **_kwargs: t.Scalar,
     ) -> Mapping[str, object]:
         """Execute file transfer pattern for an integration."""
         endpoint = f"/integrations/{integration_id}/files"
@@ -114,7 +114,7 @@ class FlextOracleOicClient:
         self,
         integration_id: str,
         schedule_config: Mapping[str, object],
-        **_kwargs: object,
+        **_kwargs: t.Scalar,
     ) -> Mapping[str, object]:
         """Execute scheduled orchestration for an integration."""
         endpoint = f"/integrations/{integration_id}/schedules"

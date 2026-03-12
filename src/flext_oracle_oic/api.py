@@ -13,7 +13,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Self, override
 
-from flext_core import FlextService, r
+from flext_core import FlextService, r, t
 
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
@@ -134,7 +134,7 @@ class FlextOracleOicApi(FlextService[None]):
         self,
         integration_id: str,
         payload: Mapping[str, object],
-        **kwargs: object,
+        **kwargs: t.Scalar,
     ) -> r[Mapping[str, object]]:
         """Execute app-driven orchestration pattern.
 
@@ -155,7 +155,7 @@ class FlextOracleOicApi(FlextService[None]):
         self,
         integration_id: str,
         file_config: Mapping[str, object],
-        **kwargs: object,
+        **kwargs: t.Scalar,
     ) -> r[Mapping[str, object]]:
         """Execute file transfer pattern.
 
@@ -176,7 +176,7 @@ class FlextOracleOicApi(FlextService[None]):
         self,
         integration_id: str,
         schedule_config: Mapping[str, object],
-        **kwargs: object,
+        **kwargs: t.Scalar,
     ) -> r[Mapping[str, object]]:
         """Execute scheduled orchestration pattern.
 
