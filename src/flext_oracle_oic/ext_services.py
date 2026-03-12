@@ -15,7 +15,7 @@ import json
 from collections.abc import Mapping
 from typing import Protocol, Self, override
 
-from flext_core import FlextContainer, FlextLogger, FlextService, r, t
+from flext_core import FlextContainer, FlextLogger, FlextService, r
 from pydantic import ConfigDict
 
 from flext_oracle_oic.constants import FlextOracleOicConstants

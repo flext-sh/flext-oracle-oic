@@ -17,7 +17,7 @@ from collections.abc import Mapping
 from typing import Self
 
 from flext_api import FlextApi, FlextApiSettings
-from flext_core import FlextLogger, r, t
+from flext_core import FlextLogger, r
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.models import FlextOracleOicModels
@@ -234,9 +234,7 @@ class FlextOracleOicClient:
                     )
                 response_data = response_result.value
                 if not u.is_dict_like(response_data):
-                    return r[list[object]].fail(
-                        "Invalid response data format"
-                    )
+                    return r[list[object]].fail("Invalid response data format")
                 items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):
                     return r[list[object]].fail("Invalid items format")
@@ -390,18 +388,14 @@ class FlextOracleOicClient:
                                 parsed_data = json_module.loads(body)
                                 return r[object].ok(parsed_data)
                             case _:
-                                return r[object].fail(
-                                    "Empty JSON response"
-                                )
+                                return r[object].fail("Empty JSON response")
                     match body:
                         case str():
                             return r[object].ok({"raw_content": body})
                         case _ if isinstance(body, Mapping):
                             return r[object].ok(body)
                         case _:
-                            return r[object].ok({
-                                "raw_content": str(body)
-                            })
+                            return r[object].ok({"raw_content": str(body)})
                 case _:
                     return r[object].fail("Invalid response format")
         except (

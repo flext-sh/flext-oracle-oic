@@ -17,7 +17,7 @@ from collections.abc import Mapping
 from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiModels, FlextApiSettings
-from flext_core import FlextLogger, FlextService, r, t, u
+from flext_core import FlextLogger, FlextService, r, u
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import FlextOracleOicClient
@@ -391,9 +391,7 @@ class FlextOracleOicService(
             self.logger.exception(
                 "App-driven orchestration failed for %s", integration_id
             )
-            return r[object].fail(
-                f"Orchestration execution failed: {e!s}"
-            )
+            return r[object].fail(f"Orchestration execution failed: {e!s}")
 
     def execute_file_transfer(
         self,
@@ -455,9 +453,7 @@ class FlextOracleOicService(
             self.logger.exception(
                 "Scheduled orchestration failed for %s", integration_id
             )
-            return r[object].fail(
-                f"Scheduled orchestration failed: {e!s}"
-            )
+            return r[object].fail(f"Scheduled orchestration failed: {e!s}")
 
     def get_health_status(self) -> r[Mapping[str, object]]:
         """Get Oracle OIC health status using FlextOracleOicUtilities.

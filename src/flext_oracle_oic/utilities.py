@@ -20,7 +20,7 @@ from collections.abc import Mapping
 from datetime import UTC, datetime
 from urllib.parse import urljoin
 
-from flext_core import FlextUtilities, r, t
+from flext_core import FlextUtilities, r
 from pydantic import SecretStr
 
 from flext_oracle_oic.constants import c
@@ -65,9 +65,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             """
             if not u.is_dict_like(integration_data):
-                return r[object].fail(
-                    "Integration data must be a dictionary"
-                )
+                return r[object].fail("Integration data must be a dictionary")
             errors: list[str] = []
             validated_data: dict[str, object] = dict(integration_data)
             if "name" not in integration_data:
@@ -513,9 +511,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                 pattern_type == "publish_subscribe"
                 and "event_types" not in configuration
             ):
-                return r[object].fail(
-                    "Publish-subscribe pattern requires event_types"
-                )
+                return r[object].fail("Publish-subscribe pattern requires event_types")
             return r[object].ok(validated_config)
 
     class MonitoringUtilities:
@@ -602,9 +598,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             """
             if not u.is_dict_like(health_data):
-                return r[object].fail(
-                    "Health data must be a dictionary"
-                )
+                return r[object].fail("Health data must be a dictionary")
             validated_data: dict[str, object] = dict(health_data)
             if "status" not in health_data:
                 return r[object].fail("Health data must include status")
@@ -616,9 +610,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             if "components" in health_data:
                 components = health_data["components"]
                 if not isinstance(components, dict):
-                    return r[object].fail(
-                        "Components must be a dictionary"
-                    )
+                    return r[object].fail("Components must be a dictionary")
                 for component_name, component_data in components.items():
                     if not isinstance(component_data, dict):
                         return r[object].fail(
