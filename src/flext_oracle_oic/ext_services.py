@@ -55,7 +55,7 @@ class FlextOracleOicExtServices(
 
         status_code: int
 
-        def json(self: Self) -> Mapping[str, t.ContainerValue]:
+        def json(self: Self) -> Mapping[str, object]:
             """Parse response as JSON."""
             ...
 
@@ -78,7 +78,7 @@ class FlextOracleOicExtServices(
         _client: FlextOracleOicClient | None = None
 
         @override
-        def __init__(self, **data: t.ContainerValue) -> None:
+        def __init__(self, **data: object) -> None:
             """Initialize OIC extension service.
 
             Uses singleton config pattern - no config parameter needed.
@@ -107,9 +107,7 @@ class FlextOracleOicExtServices(
                 client.__exit__(exc_type, exc_val, exc_tb)
                 object.__setattr__(self, "_client", None)
 
-        def deploy_integration(
-            self, integration_data: Mapping[str, t.ContainerValue]
-        ) -> r[str]:
+        def deploy_integration(self, integration_data: Mapping[str, object]) -> r[str]:
             """Deploy integration to Oracle OIC.
 
             Args:
@@ -313,10 +311,10 @@ class FlextOracleOicExtServices(
                 )
 
         def _create_integration(
-            self, client: FlextOracleOicClient, data: Mapping[str, t.ContainerValue]
-        ) -> r[Mapping[str, t.ContainerValue]]:
+            self, client: FlextOracleOicClient, data: Mapping[str, object]
+        ) -> r[Mapping[str, object]]:
             """Create integration via OIC client."""
-            integration_data_str: dict[str, t.ContainerValue] = {
+            integration_data_str: dict[str, object] = {
                 k: str(v) for k, v in data.items()
             }
             create_result = client.create_integration(integration_data_str)
@@ -330,7 +328,7 @@ class FlextOracleOicExtServices(
             return r[t.ConfigurationMapping].ok(created_integration)
 
         def _extract_integration_id(
-            self, integration_data: Mapping[str, t.ContainerValue]
+            self, integration_data: Mapping[str, object]
         ) -> r[str]:
             """Extract integration ID from creation result."""
             integration_id = integration_data.get("id", "")
@@ -341,7 +339,7 @@ class FlextOracleOicExtServices(
 
         def _fetch_connections(
             self, client: FlextOracleOicClient, type_filter: list[str] | None
-        ) -> r[list[Mapping[str, t.ContainerValue]]]:
+        ) -> r[list[Mapping[str, object]]]:
             """Fetch connections from OIC API."""
             connections_result = client.get_connections(
                 type_filter=type_filter,
@@ -355,7 +353,7 @@ class FlextOracleOicExtServices(
 
         def _fetch_integrations(
             self, client: FlextOracleOicClient, status_filter: list[str] | None
-        ) -> r[list[Mapping[str, t.ContainerValue]]]:
+        ) -> r[list[Mapping[str, object]]]:
             """Fetch integrations from OIC API."""
             integrations_result = client.get_integrations(
                 status_filter=status_filter,
@@ -410,7 +408,7 @@ class FlextOracleOicExtServices(
             )
 
         def _parse_connection_models(
-            self, connections_data: list[Mapping[str, t.ContainerValue]]
+            self, connections_data: list[Mapping[str, object]]
         ) -> r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
             """Parse connection data into domain models."""
             connection_infos: list[
@@ -442,7 +440,7 @@ class FlextOracleOicExtServices(
             )
 
         def _parse_integration_models(
-            self, integrations_data: list[Mapping[str, t.ContainerValue]]
+            self, integrations_data: list[Mapping[str, object]]
         ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
             """Parse integration data into domain models."""
             integration_infos: list[
@@ -513,9 +511,9 @@ class FlextOracleOicExtServices(
 
         def apply_message_router_pattern(
             self,
-            message_data: Mapping[str, t.ContainerValue],
-            routing_rules: list[Mapping[str, t.ContainerValue]],
-        ) -> r[Mapping[str, t.ContainerValue]]:
+            message_data: Mapping[str, object],
+            routing_rules: list[Mapping[str, object]],
+        ) -> r[Mapping[str, object]]:
             """Apply message router pattern to OIC integration using FlextOracleOicUtilities.
 
             Args:
@@ -528,7 +526,7 @@ class FlextOracleOicExtServices(
             """
             try:
                 self.logger.info("Applying message router pattern")
-                pattern_config: dict[str, t.ContainerValue] = {
+                pattern_config: dict[str, object] = {
                     "routing_rules": routing_rules,
                     "message_data": message_data,
                 }
@@ -561,9 +559,9 @@ class FlextOracleOicExtServices(
 
         def apply_scatter_gather_pattern(
             self,
-            request_data: Mapping[str, t.ContainerValue],
+            request_data: Mapping[str, object],
             target_endpoints: list[str],
-        ) -> r[Mapping[str, t.ContainerValue]]:
+        ) -> r[Mapping[str, object]]:
             """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
             Args:
@@ -576,7 +574,7 @@ class FlextOracleOicExtServices(
             """
             try:
                 self.logger.info("Applying scatter-gather pattern")
-                pattern_config: Mapping[str, t.ContainerValue] = {
+                pattern_config: Mapping[str, object] = {
                     "target_services": target_endpoints,
                     "request_data": request_data,
                 }
@@ -643,7 +641,7 @@ class FlextOracleOicExtServices(
                         client_result.error or "Client creation failed"
                     )
                 client = client_result.value
-                activation_data: dict[str, t.ContainerValue] = {
+                activation_data: dict[str, object] = {
                     "status": FlextOracleOicConstants.Integration.Status.ACTIVATED
                 }
                 activate_result = client.update_integration(
@@ -695,7 +693,7 @@ class FlextOracleOicExtServices(
                         client_result.error or "Client creation failed"
                     )
                 client = client_result.value
-                deactivation_data: dict[str, t.ContainerValue] = {
+                deactivation_data: dict[str, object] = {
                     "status": FlextOracleOicConstants.Integration.Status.DEACTIVATED
                 }
                 deactivate_result = client.update_integration(
@@ -780,7 +778,7 @@ class FlextOracleOicExtServices(
             self.client = client
             self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
 
-        def get_health_status(self: Self) -> Mapping[str, t.ContainerValue]:
+        def get_health_status(self: Self) -> Mapping[str, object]:
             """Get Oracle OIC health status using FlextOracleOicUtilities.
 
             Returns:
@@ -791,7 +789,7 @@ class FlextOracleOicExtServices(
                 response = self.client.get(FlextOracleOicConstants.API.ENDPOINT_HEALTH)
                 if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
                     health_data = response.json()
-                    raw_health: dict[str, t.ContainerValue] = {
+                    raw_health: dict[str, object] = {
                         "status": FlextOracleOicConstants.Monitoring.HealthStatus.HEALTHY,
                         "components": {
                             FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
@@ -840,7 +838,7 @@ class FlextOracleOicExtServices(
                 json.JSONDecodeError,
             ) as e:
                 self.logger.exception("Health check failed")
-                error_health: dict[str, t.ContainerValue] = {
+                error_health: dict[str, object] = {
                     "status": FlextOracleOicConstants.Monitoring.HealthStatus.ERROR,
                     "components": {
                         FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
@@ -866,7 +864,7 @@ class FlextOracleOicExtServices(
                     else error_health
                 )
 
-        def get_performance_metrics(self: Self) -> Mapping[str, t.ContainerValue]:
+        def get_performance_metrics(self: Self) -> Mapping[str, object]:
             """Get Oracle OIC performance metrics with analysis using FlextOracleOicUtilities.
 
             Returns:
@@ -877,7 +875,7 @@ class FlextOracleOicExtServices(
                 response = self.client.get("/ic/api/integration/v1/metrics")
                 if response.status_code == FlextOracleOicConstants.API.HTTP_STATUS_OK:
                     metrics_data = response.json()
-                    raw_metrics: dict[str, t.ContainerValue] = {
+                    raw_metrics: dict[str, object] = {
                         "active_integrations": metrics_data.get(
                             "active_integrations", 0
                         ),
@@ -900,7 +898,7 @@ class FlextOracleOicExtServices(
                     raw_metrics
                 )
                 if analysis_result.is_success:
-                    analyzed_metrics: dict[str, t.ContainerValue] = {
+                    analyzed_metrics: dict[str, object] = {
                         **raw_metrics,
                         "analysis": analysis_result.value,
                     }
@@ -916,7 +914,7 @@ class FlextOracleOicExtServices(
                 json.JSONDecodeError,
             ) as e:
                 self.logger.exception("Performance metrics failed")
-                error_metrics: dict[str, t.ContainerValue] = {
+                error_metrics: dict[str, object] = {
                     "active_integrations": 0,
                     "total_executions": 0,
                     "success_rate": 0.0,
@@ -927,7 +925,7 @@ class FlextOracleOicExtServices(
                     error_metrics
                 )
                 if analysis_result.is_success:
-                    analyzed_error_metrics: dict[str, t.ContainerValue] = {
+                    analyzed_error_metrics: dict[str, object] = {
                         **error_metrics,
                         "analysis": analysis_result.value,
                     }

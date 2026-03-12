@@ -119,7 +119,7 @@ class FlextOracleOicTypes(FlextTypes):
             str, str | bool | dict[str, FlextTypes.ContainerValue]
         ]
         type TransformationResult = dict[
-            str, bool | t.ContainerValue | dict[str, FlextTypes.JsonValue]
+            str, bool | object | dict[str, FlextTypes.JsonValue]
         ]
         type TransformationMetrics = dict[
             str, int | float | dict[str, FlextTypes.JsonValue]
@@ -167,7 +167,7 @@ class FlextOracleOicTypes(FlextTypes):
         """Core Oracle OIC extension types.
 
         Essential domain-specific types for Oracle OIC integration operations.
-        Replaces generic dict[str, t.ContainerValue] with semantic Oracle OIC types.
+        Replaces generic dict[str, object] with semantic Oracle OIC types.
         """
 
         type ConfigDict = dict[str, FlextTypes.ContainerValue]
