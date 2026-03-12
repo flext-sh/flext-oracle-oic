@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Literal
 
 from flext_core import FlextTypes
@@ -30,7 +31,9 @@ class FlextOracleOicTypes(FlextTypes):
     class OracleOic:
         """Oracle OIC integration complex types."""
 
-        type IntegrationConfiguration = dict[str, str | int | bool | Mapping[str, object]]
+        type IntegrationConfiguration = dict[
+            str, str | int | bool | Mapping[str, object]
+        ]
         type IntegrationFlow = list[dict[str, str | Mapping[str, object]]]
         type IntegrationMapping = dict[str, str | list[str] | Mapping[str, object]]
         type IntegrationMetadata = dict[str, str | int | Mapping[str, object]]
@@ -40,7 +43,9 @@ class FlextOracleOicTypes(FlextTypes):
     class Connection:
         """Oracle OIC connection complex types."""
 
-        type ConnectionConfiguration = dict[str, str | int | bool | Mapping[str, object]]
+        type ConnectionConfiguration = dict[
+            str, str | int | bool | Mapping[str, object]
+        ]
         type ConnectionPool = dict[str, int | bool | Mapping[str, object]]
         type ConnectionSecurity = dict[str, str | bool | Mapping[str, object]]
         type ConnectionMonitoring = dict[str, int | float | Mapping[str, object]]
@@ -63,7 +68,9 @@ class FlextOracleOicTypes(FlextTypes):
         type MessageConfiguration = dict[str, str | int | Mapping[str, object]]
         type MessageFormat = dict[str, str | bool | Mapping[str, object]]
         type MessageTransformation = list[dict[str, str | Mapping[str, object]]]
-        type MessageValidation = dict[str, bool | str | list[str] | Mapping[str, object]]
+        type MessageValidation = dict[
+            str, bool | str | list[str] | Mapping[str, object]
+        ]
         type MessageRouting = dict[str, str | list[str] | Mapping[str, object]]
         type MessageTracking = dict[str, str | int | Mapping[str, object]]
 
@@ -80,7 +87,9 @@ class FlextOracleOicTypes(FlextTypes):
     class Monitoring:
         """Oracle OIC monitoring complex types."""
 
-        type MonitoringConfiguration = dict[str, bool | str | int | Mapping[str, object]]
+        type MonitoringConfiguration = dict[
+            str, bool | str | int | Mapping[str, object]
+        ]
         type MonitoringMetrics = dict[str, int | float | Mapping[str, object]]
         type MonitoringAlerts = list[dict[str, str | int | bool | Mapping[str, object]]]
         type MonitoringDashboard = dict[str, str | list[Mapping[str, object]]]
