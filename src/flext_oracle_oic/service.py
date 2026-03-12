@@ -78,7 +78,7 @@ class FlextOracleOicService(
 
     @staticmethod
     def _to_general_value(value: object) -> object:
-        """Normalize arbitrary runtime values into ContainerValue."""
+        """Normalize arbitrary runtime values into object."""
         if isinstance(value, (str, int, float, bool)) or value is None:
             return value
         if isinstance(value, Mapping):
@@ -147,7 +147,7 @@ class FlextOracleOicService(
                 )
             )
             if validation_result.is_failure:
-                return r[t.ConfigurationMapping].fail(
+                return r[object].fail(
                     f"Pattern validation failed: {validation_result.error}"
                 )
             routing_result = {
@@ -158,11 +158,11 @@ class FlextOracleOicService(
                 "applied_rules": len(routing_rules),
                 "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
             }
-            return r[t.ConfigurationMapping].ok(routing_result)
+            return r[object].ok(routing_result)
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             error_msg = f"Message router pattern failed: {e}"
             self.logger.exception(error_msg)
-            return r[t.ConfigurationMapping].fail(error_msg)
+            return r[object].fail(error_msg)
 
     def apply_scatter_gather_pattern(
         self, request_data: Mapping[str, object], target_endpoints: list[str]
@@ -189,7 +189,7 @@ class FlextOracleOicService(
                 )
             )
             if validation_result.is_failure:
-                return r[t.ConfigurationMapping].fail(
+                return r[object].fail(
                     f"Pattern validation failed: {validation_result.error}"
                 )
             scatter_result = {
@@ -200,11 +200,11 @@ class FlextOracleOicService(
                 "target_count": len(target_endpoints),
                 "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
             }
-            return r[t.ConfigurationMapping].ok(scatter_result)
+            return r[object].ok(scatter_result)
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             error_msg = f"Scatter-gather pattern failed: {e}"
             self.logger.exception(error_msg)
-            return r[t.ConfigurationMapping].fail(error_msg)
+            return r[object].fail(error_msg)
 
     def create_integration(
         self, integration_data: Mapping[str, object]
@@ -373,7 +373,7 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[t.ConfigurationMapping].fail(error_msg)
+                return r[object].fail(error_msg)
             client = client_result.value
             endpoint = f"/integrations/{integration_id}/connections"
             payload_dict: dict[str, object] = (
@@ -383,15 +383,15 @@ class FlextOracleOicService(
                 "POST", endpoint, json=payload_dict
             )
             if orchestration_result.is_failure:
-                return r[t.ConfigurationMapping].fail(
+                return r[object].fail(
                     orchestration_result.error or "Orchestration request failed"
                 )
-            return r[t.ConfigurationMapping].ok(orchestration_result.value)
+            return r[object].ok(orchestration_result.value)
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             self.logger.exception(
                 "App-driven orchestration failed for %s", integration_id
             )
-            return r[t.ConfigurationMapping].fail(
+            return r[object].fail(
                 f"Orchestration execution failed: {e!s}"
             )
 
@@ -416,13 +416,13 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[t.ConfigurationMapping].fail(error_msg)
+                return r[object].fail(error_msg)
             client = client_result.value
             result = client.execute_file_transfer(integration_id, file_config, **kwargs)
-            return r[t.ConfigurationMapping].ok(result)
+            return r[object].ok(result)
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             self.logger.exception("File transfer failed for %s", integration_id)
-            return r[t.ConfigurationMapping].fail(f"File transfer failed: {e!s}")
+            return r[object].fail(f"File transfer failed: {e!s}")
 
     def execute_scheduled_orchestration(
         self,
@@ -445,17 +445,17 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[t.ConfigurationMapping].fail(error_msg)
+                return r[object].fail(error_msg)
             client = client_result.value
             result = client.execute_scheduled_orchestration(
                 integration_id, schedule_config, **kwargs
             )
-            return r[t.ConfigurationMapping].ok(result)
+            return r[object].ok(result)
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             self.logger.exception(
                 "Scheduled orchestration failed for %s", integration_id
             )
-            return r[t.ConfigurationMapping].fail(
+            return r[object].fail(
                 f"Scheduled orchestration failed: {e!s}"
             )
 
@@ -563,7 +563,7 @@ class FlextOracleOicService(
             self.logger.warning(
                 f"Health status validation failed: {validation_result.error}"
             )
-            return r[t.ConfigurationMapping].ok(health_data_dict)
+            return r[object].ok(health_data_dict)
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             self.logger.exception("Health check failed")
             error_health: dict[str, object] = {
@@ -589,7 +589,7 @@ class FlextOracleOicService(
             return (
                 validation_result
                 if validation_result.is_success
-                else r[t.ConfigurationMapping].ok(error_health)
+                else r[object].ok(error_health)
             )
 
     def get_integration(
@@ -719,12 +719,12 @@ class FlextOracleOicService(
                 )
             )
             if analysis_result.is_success:
-                return r[t.ConfigurationMapping].ok({
+                return r[object].ok({
                     **metrics_dict,
                     "analysis": analysis_result.value,
                 })
             self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
-            return r[t.ConfigurationMapping].ok(metrics_dict)
+            return r[object].ok(metrics_dict)
         except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
             self.logger.exception("Performance metrics failed")
             error_metrics: dict[str, object] = {
@@ -740,11 +740,11 @@ class FlextOracleOicService(
                 )
             )
             if analysis_result.is_success:
-                return r[t.ConfigurationMapping].ok({
+                return r[object].ok({
                     **error_metrics,
                     "analysis": analysis_result.value,
                 })
-            return r[t.ConfigurationMapping].ok(error_metrics)
+            return r[object].ok(error_metrics)
 
     def list_connections(
         self, type_filter: list[str] | None = None

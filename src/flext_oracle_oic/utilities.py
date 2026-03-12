@@ -65,7 +65,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             """
             if not u.is_dict_like(integration_data):
-                return r[t.ConfigurationMapping].fail(
+                return r[object].fail(
                     "Integration data must be a dictionary"
                 )
             errors: list[str] = []
@@ -120,10 +120,10 @@ class FlextOracleOicUtilities(FlextUtilities):
                             "Status validation: Integration status must be a string"
                         )
             if errors:
-                return r[t.ConfigurationMapping].fail(
+                return r[object].fail(
                     f"Integration validation failed: {'; '.join(errors)}"
                 )
-            return r[t.ConfigurationMapping].ok(validated_data)
+            return r[object].ok(validated_data)
 
         @staticmethod
         def validate_integration_name(name: str) -> r[str]:
@@ -493,18 +493,18 @@ class FlextOracleOicUtilities(FlextUtilities):
             """
             if pattern_type not in c.OracleOicValidation.SUPPORTED_PATTERNS:
                 supported = ", ".join(sorted(c.OracleOicValidation.SUPPORTED_PATTERNS))
-                return r[t.ConfigurationMapping].fail(
+                return r[object].fail(
                     f"Unsupported pattern type. Supported: {supported}"
                 )
             validated_config = dict(configuration)
             if pattern_type == "message_router":
                 if "routing_rules" not in configuration:
-                    return r[t.ConfigurationMapping].fail(
+                    return r[object].fail(
                         "Message router pattern requires routing_rules"
                     )
             elif pattern_type == "scatter_gather":
                 if "target_services" not in configuration:
-                    return r[t.ConfigurationMapping].fail(
+                    return r[object].fail(
                         "Scatter-gather pattern requires target_services"
                     )
                 if "aggregation_strategy" not in configuration:
@@ -513,10 +513,10 @@ class FlextOracleOicUtilities(FlextUtilities):
                 pattern_type == "publish_subscribe"
                 and "event_types" not in configuration
             ):
-                return r[t.ConfigurationMapping].fail(
+                return r[object].fail(
                     "Publish-subscribe pattern requires event_types"
                 )
-            return r[t.ConfigurationMapping].ok(validated_config)
+            return r[object].ok(validated_config)
 
     class MonitoringUtilities:
         """Oracle OIC monitoring and health check utilities."""
@@ -535,7 +535,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             """
             if not u.is_dict_like(metrics):
-                return r[t.ConfigurationMapping].fail("Metrics must be a dictionary")
+                return r[object].fail("Metrics must be a dictionary")
             overall_health = "healthy"
             warnings: list[str] = []
             critical_issues: list[str] = []
@@ -586,7 +586,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                 "critical_issues": critical_issues,
                 "recommendations": recommendations,
             }
-            return r[t.ConfigurationMapping].ok(analysis)
+            return r[object].ok(analysis)
 
         @staticmethod
         def validate_health_status(
@@ -602,35 +602,35 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             """
             if not u.is_dict_like(health_data):
-                return r[t.ConfigurationMapping].fail(
+                return r[object].fail(
                     "Health data must be a dictionary"
                 )
             validated_data: dict[str, object] = dict(health_data)
             if "status" not in health_data:
-                return r[t.ConfigurationMapping].fail("Health data must include status")
+                return r[object].fail("Health data must include status")
             status = health_data["status"]
             if status not in {"healthy", "unhealthy", "error", "unknown"}:
-                return r[t.ConfigurationMapping].fail(
+                return r[object].fail(
                     "Invalid health status. Valid: healthy, unhealthy, error, unknown"
                 )
             if "components" in health_data:
                 components = health_data["components"]
                 if not isinstance(components, dict):
-                    return r[t.ConfigurationMapping].fail(
+                    return r[object].fail(
                         "Components must be a dictionary"
                     )
                 for component_name, component_data in components.items():
                     if not isinstance(component_data, dict):
-                        return r[t.ConfigurationMapping].fail(
+                        return r[object].fail(
                             f"Component {component_name} data must be a dictionary"
                         )
                     if "status" not in component_data:
-                        return r[t.ConfigurationMapping].fail(
+                        return r[object].fail(
                             f"Component {component_name} must have status"
                         )
             if "timestamp" not in validated_data:
                 validated_data["timestamp"] = datetime.now(UTC).isoformat()
-            return r[t.ConfigurationMapping].ok(validated_data)
+            return r[object].ok(validated_data)
 
 
 u = FlextOracleOicUtilities

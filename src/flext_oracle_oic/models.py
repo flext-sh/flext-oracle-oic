@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from flext_core import FlextModels, FlextTypes
+from flext_core import FlextModels
 from pydantic import ConfigDict, Field, SecretStr
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
@@ -139,11 +139,11 @@ class FlextOracleOicModels(FlextModels):
                 default=None,
                 description="Query parameters",
             )
-            data: dict[str, FlextTypes.ContainerValue] | None = Field(
+            data: dict[str, object] | None = Field(
                 default=None,
                 description="Form data",
             )
-            json_data: dict[str, FlextTypes.ContainerValue] | None = Field(
+            json_data: dict[str, object] | None = Field(
                 default=None,
                 description="JSON data",
             )
