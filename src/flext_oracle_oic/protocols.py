@@ -23,7 +23,7 @@ class FlextOracleOicProtocols(FlextProtocols):
         """OracleOic domain namespace."""
 
         @runtime_checkable
-        class ExtensionProtocol(Protocol):
+        class Extension(Protocol):
             """Protocol for Oracle OIC extension operations."""
 
             def execute(
@@ -64,7 +64,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class IntegrationProtocol(Protocol):
+        class Integration(Protocol):
             """Protocol for Oracle OIC integration management operations."""
 
             def activate_integration(
@@ -127,7 +127,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class ConnectionProtocol(Protocol):
+        class Connection(Protocol):
             """Protocol for Oracle OIC connection management operations."""
 
             def create_connection(
@@ -204,7 +204,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class PatternProtocol(Protocol):
+        class Pattern(Protocol):
             """Protocol for Oracle OIC integration pattern operations."""
 
             def apply_aggregator_pattern(
@@ -276,7 +276,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class MonitoringProtocol(Protocol):
+        class Monitoring(Protocol):
             """Protocol for Oracle OIC monitoring operations."""
 
             def get_connection_health(
@@ -338,7 +338,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class LifecycleProtocol(FlextProtocols.Service[bool], Protocol):
+        class Lifecycle(FlextProtocols.Service[bool], Protocol):
             """Protocol for Oracle OIC lifecycle management operations."""
 
             def backup_configuration(
@@ -394,7 +394,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class HTTPClientProtocol(FlextProtocols.Service[object], Protocol):
+        class HTTPClient(FlextProtocols.Service[object], Protocol):
             """Protocol for HTTP client operations used by Oracle OIC services."""
 
             def delete(
@@ -468,9 +468,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class AuthenticationProtocol(
-            FlextProtocols.Service[Mapping[str, object]], Protocol
-        ):
+        class Authentication(FlextProtocols.Service[Mapping[str, object]], Protocol):
             """Protocol for Oracle OIC authentication operations."""
 
             def authenticate(

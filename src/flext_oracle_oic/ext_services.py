@@ -42,14 +42,14 @@ class FlextOracleOicExtServices(
         service = self.OracleOicExtensionService()
         return service.execute()
 
-    class HTTPClientProtocol(Protocol):
+    class HTTPClient(Protocol):
         """Protocol for HTTP client used by MonitoringService."""
 
-        def get(self, url: str) -> FlextOracleOicExtServices.HTTPResponseProtocol:
+        def get(self, url: str) -> FlextOracleOicExtServices.HTTPResponse:
             """Execute HTTP GET request."""
             ...
 
-    class HTTPResponseProtocol(Protocol):
+    class HTTPResponse(Protocol):
         """Protocol for HTTP response."""
 
         status_code: int
@@ -755,9 +755,7 @@ class FlextOracleOicExtServices(
         """
 
         @override
-        def __init__(
-            self, client: FlextOracleOicExtServices.HTTPClientProtocol
-        ) -> None:
+        def __init__(self, client: FlextOracleOicExtServices.HTTPClient) -> None:
             """Initialize monitoring service.
 
             Args:
