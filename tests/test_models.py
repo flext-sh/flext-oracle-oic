@@ -56,7 +56,7 @@ class TestOICAuthConfig:
             "oauth_scope": "",
         }
         with pytest.raises(ValidationError):
-            FlextOracleOicModels.OracleOic.OICAuthConfig.model_validate(invalid_data)
+            FlextOracleOicModels.OracleOic.OICAuthConfig(invalid_data)
 
 
 class TestOICConnectionConfig:
