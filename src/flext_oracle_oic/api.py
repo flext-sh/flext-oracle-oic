@@ -59,7 +59,8 @@ class FlextOracleOicApi(FlextService[None]):
     def __aenter__(self) -> Self:
         """Async context manager entry."""
         self.logger.info(
-            "Oracle OIC service started", extra=self.get_connection_context()
+            "Oracle OIC service started",
+            extra_info=str(self.get_connection_context()),
         )
         return self
 
@@ -71,7 +72,8 @@ class FlextOracleOicApi(FlextService[None]):
     ) -> None:
         """Async context manager exit."""
         self.logger.info(
-            "Oracle OIC service stopped", extra=self.get_connection_context()
+            "Oracle OIC service stopped",
+            extra_info=str(self.get_connection_context()),
         )
 
     def activate_integration(self, integration_id: str) -> r[bool]:

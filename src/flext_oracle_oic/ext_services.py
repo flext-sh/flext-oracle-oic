@@ -315,13 +315,13 @@ class FlextOracleOicExtServices(
             }
             create_result = client.create_integration(integration_data_str)
             if create_result.is_failure:
-                return r[object].fail(
+                return r[Mapping[str, object]].fail(
                     create_result.error or "Create integration failed"
                 )
             created_integration = create_result.value
             if not created_integration:
-                return r[object].fail("No integration data returned")
-            return r[object].ok(created_integration)
+                return r[Mapping[str, object]].fail("No integration data returned")
+            return r[Mapping[str, object]].ok(created_integration)
 
         def _extract_integration_id(
             self, integration_data: Mapping[str, object]
@@ -330,7 +330,9 @@ class FlextOracleOicExtServices(
             integration_id = integration_data.get("id", "")
             if not integration_id:
                 return r[str].fail("No integration ID returned")
-            self.logger.info("Integration deployed successfully: %s", integration_id)
+            self.logger.info(
+                f"Integration deployed successfully: {str(integration_id)}"
+            )
             return r[str].ok(str(integration_id))
 
         def _fetch_connections(
@@ -342,10 +344,10 @@ class FlextOracleOicExtServices(
                 page_size=FlextOracleOicConstants.OracleOic.DEFAULT_PAGE_SIZE,
             )
             if connections_result.is_failure:
-                return r[list[object]].fail(
+                return r[list[Mapping[str, object]]].fail(
                     connections_result.error or "Connections fetch failed"
                 )
-            return r[list[object]].ok(connections_result.value or [])
+            return r[list[Mapping[str, object]]].ok(connections_result.value or [])
 
         def _fetch_integrations(
             self, client: FlextOracleOicClient, status_filter: list[str] | None
@@ -356,10 +358,10 @@ class FlextOracleOicExtServices(
                 page_size=FlextOracleOicConstants.OracleOic.DEFAULT_PAGE_SIZE,
             )
             if integrations_result.is_failure:
-                return r[list[object]].fail(
+                return r[list[Mapping[str, object]]].fail(
                     integrations_result.error or "Failed to fetch integrations"
                 )
-            return r[list[object]].ok(integrations_result.value or [])
+            return r[list[Mapping[str, object]]].ok(integrations_result.value or [])
 
         def _get_client(self: Self) -> r[FlextOracleOicClient]:
             """Get authenticated OIC client.
@@ -528,7 +530,7 @@ class FlextOracleOicExtServices(
                     "message_router", pattern_config
                 )
                 if validation_result.is_failure:
-                    return r[object].fail(
+                    return r[Mapping[str, object]].fail(
                         f"Pattern validation failed: {validation_result.error}"
                     )
                 routing_result = {
@@ -540,7 +542,7 @@ class FlextOracleOicExtServices(
                     "applied_rules": len(routing_rules),
                     "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
                 }
-                return r[object].ok(routing_result)
+                return r[Mapping[str, object]].ok(routing_result)
             except (
                 ConnectionError,
                 TimeoutError,
@@ -548,7 +550,7 @@ class FlextOracleOicExtServices(
             ) as e:
                 error_msg = f"Message router pattern failed: {e}"
                 self.logger.exception(error_msg)
-                return r[object].fail(error_msg)
+                return r[Mapping[str, object]].fail(error_msg)
 
         def apply_scatter_gather_pattern(
             self,
@@ -575,7 +577,7 @@ class FlextOracleOicExtServices(
                     "scatter_gather", pattern_config
                 )
                 if validation_result.is_failure:
-                    return r[object].fail(
+                    return r[Mapping[str, object]].fail(
                         f"Pattern validation failed: {validation_result.error}"
                     )
                 scatter_result = {
@@ -587,7 +589,7 @@ class FlextOracleOicExtServices(
                     "target_count": len(target_endpoints),
                     "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
                 }
-                return r[object].ok(scatter_result)
+                return r[Mapping[str, object]].ok(scatter_result)
             except (
                 ConnectionError,
                 TimeoutError,
@@ -595,7 +597,7 @@ class FlextOracleOicExtServices(
             ) as e:
                 error_msg = f"Scatter-gather pattern failed: {e}"
                 self.logger.exception(error_msg)
-                return r[object].fail(error_msg)
+                return r[Mapping[str, object]].fail(error_msg)
 
     class LifecycleManager:
         """Oracle OIC Integration Lifecycle Manager.
