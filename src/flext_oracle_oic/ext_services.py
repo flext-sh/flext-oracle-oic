@@ -331,7 +331,7 @@ class FlextOracleOicExtServices(
             if not integration_id:
                 return r[str].fail("No integration ID returned")
             self.logger.info(
-                f"Integration deployed successfully: {str(integration_id)}"
+                f"Integration deployed successfully: {integration_id!s}"
             )
             return r[str].ok(str(integration_id))
 
