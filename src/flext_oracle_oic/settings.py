@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Annotated, Literal
 
 from flext_core import FlextSettings
 from pydantic import Field, SecretStr
@@ -26,20 +26,20 @@ class FlextOracleOicSettings(FlextSettings):
 
     model_config = SettingsConfigDict(extra="ignore")
 
-    base_url: str = Field(default="https://localhost")
-    api_version: OICApiVersionLiteral = Field(default="v1")
-    request_timeout: int = Field(default=30, ge=1, le=300)
-    max_retries: int = Field(default=3, ge=0, le=10)
-    verify_ssl: bool = Field(default=True)
-    use_ssl: bool = Field(default=True)
-    enable_monitoring: bool = Field(default=True)
-    enable_enterprise_patterns: bool = Field(default=True)
-    enable_orchestration: bool = Field(default=True)
-    oauth_client_id: str = Field(default="")
-    oauth_client_secret: SecretStr = Field(default=SecretStr(""))
-    oauth_token_url: str = Field(default="https://localhost/oauth/token")
-    oauth_client_aud: str = Field(default="")
-    oauth_scope: str = Field(default="")
+    base_url: Annotated[str, Field(default="https://localhost")]
+    api_version: Annotated[OICApiVersionLiteral, Field(default="v1")]
+    request_timeout: Annotated[int, Field(default=30, ge=1, le=300)]
+    max_retries: Annotated[int, Field(default=3, ge=0, le=10)]
+    verify_ssl: Annotated[bool, Field(default=True)]
+    use_ssl: Annotated[bool, Field(default=True)]
+    enable_monitoring: Annotated[bool, Field(default=True)]
+    enable_enterprise_patterns: Annotated[bool, Field(default=True)]
+    enable_orchestration: Annotated[bool, Field(default=True)]
+    oauth_client_id: Annotated[str, Field(default="")]
+    oauth_client_secret: Annotated[SecretStr, Field(default=SecretStr(""))]
+    oauth_token_url: Annotated[str, Field(default="https://localhost/oauth/token")]
+    oauth_client_aud: Annotated[str, Field(default="")]
+    oauth_scope: Annotated[str, Field(default="")]
 
     @classmethod
     def create_for_development(cls) -> FlextOracleOicSettings:
