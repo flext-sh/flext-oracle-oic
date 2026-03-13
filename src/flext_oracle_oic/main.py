@@ -11,7 +11,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from typing import override
 
@@ -79,7 +78,7 @@ class FlextOracleOicCli(FlextService[None]):
             FlextOracleOicSettings.create_for_development()
             service = FlextOracleOicService()
             return self._list_integrations_with_service(service)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             if self.logger:
                 self.logger.exception("List integrations failed")
             return r[bool].fail(f"List integrations failed: {e!s}")
@@ -137,7 +136,7 @@ class FlextOracleOicCli(FlextService[None]):
                 "FLEXT CLI Pattern: Enterprise Oracle Integration Cloud\n"
             )
             return r[bool].ok(value=True)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             if self.logger:
                 self.logger.exception("Version display failed")
             return r[bool].fail(f"Version display failed: {e!s}")
@@ -164,7 +163,7 @@ class FlextOracleOicCli(FlextService[None]):
                     )
                     return r[bool].ok(value=True)
                 return r[bool].fail(f"Connection failed: {connection_result.error}")
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             if self.logger:
                 self.logger.exception("Connection test failed")
             return r[bool].fail(f"Connection test failed: {e!s}")
@@ -229,7 +228,7 @@ def main() -> int:
     except KeyboardInterrupt:
         cli_instance.logger.info("Oracle OIC Extension CLI interrupted by user")
         return 130
-    except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError):
+    except (ConnectionError, TimeoutError, ValueError):
         cli_instance.logger.exception("Oracle OIC Extension CLI error")
         return 1
 

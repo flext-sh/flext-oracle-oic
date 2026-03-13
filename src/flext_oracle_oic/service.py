@@ -12,7 +12,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import asyncio
-import json
 from collections.abc import Mapping
 from typing import Self, override
 
@@ -116,7 +115,7 @@ class FlextOracleOicService(
                 error_msg = activate_result.error or "Failed to activate integration"
                 return r[bool].fail(error_msg)
             return r[bool].ok(value=True)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to activate integration %s", integration_id)
             return r[bool].fail(f"Integration activation failed: {e!s}")
 
@@ -159,7 +158,7 @@ class FlextOracleOicService(
                 "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
             }
             return r[object].ok(routing_result)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             error_msg = f"Message router pattern failed: {e}"
             self.logger.exception(error_msg)
             return r[object].fail(error_msg)
@@ -201,7 +200,7 @@ class FlextOracleOicService(
                 "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
             }
             return r[object].ok(scatter_result)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             error_msg = f"Scatter-gather pattern failed: {e}"
             self.logger.exception(error_msg)
             return r[object].fail(error_msg)
@@ -249,7 +248,7 @@ class FlextOracleOicService(
                 last_updated=self._as_text(created_data.get("lastUpdated"), ""),
             )
             return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].ok(integration)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to create integration")
             return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                 f"Integration creation failed: {e!s}"
@@ -280,7 +279,7 @@ class FlextOracleOicService(
                 )
                 return r[bool].fail(error_msg)
             return r[bool].ok(value=True)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to deactivate integration %s", integration_id)
             return r[bool].fail(f"Integration deactivation failed: {e!s}")
 
@@ -307,7 +306,7 @@ class FlextOracleOicService(
                 error_msg = delete_result.error or "Failed to delete integration"
                 return r[bool].fail(error_msg)
             return r[bool].ok(value=True)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to delete integration %s", integration_id)
             return r[bool].fail(f"Integration deletion failed: {e!s}")
 
@@ -336,7 +335,7 @@ class FlextOracleOicService(
                 return r[str].fail("No integration ID returned")
             self.logger.info("Integration deployed successfully: %s", integration_id)
             return r[str].ok(str(integration_id))
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to deploy integration")
             return r[str].fail(f"Integration deployment failed: {e!s}")
 
@@ -387,7 +386,7 @@ class FlextOracleOicService(
                     orchestration_result.error or "Orchestration request failed"
                 )
             return r[object].ok(orchestration_result.value)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception(
                 "App-driven orchestration failed for %s", integration_id
             )
@@ -418,7 +417,7 @@ class FlextOracleOicService(
             client = client_result.value
             result = client.execute_file_transfer(integration_id, file_config, **kwargs)
             return r[object].ok(result)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("File transfer failed for %s", integration_id)
             return r[object].fail(f"File transfer failed: {e!s}")
 
@@ -449,7 +448,7 @@ class FlextOracleOicService(
                 integration_id, schedule_config, **kwargs
             )
             return r[object].ok(result)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception(
                 "Scheduled orchestration failed for %s", integration_id
             )
@@ -560,7 +559,7 @@ class FlextOracleOicService(
                 f"Health status validation failed: {validation_result.error}"
             )
             return r[object].ok(health_data_dict)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Health check failed")
             error_health: dict[str, object] = {
                 "status": FlextOracleOicConstants.Monitoring.HealthStatus.ERROR,
@@ -645,7 +644,7 @@ class FlextOracleOicService(
                 last_updated=self._as_text(integration_data.get("lastUpdated"), ""),
             )
             return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].ok(integration)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to get integration %s", integration_id)
             return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                 f"Integration retrieval failed: {e!s}"
@@ -721,7 +720,7 @@ class FlextOracleOicService(
                 })
             self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
             return r[object].ok(metrics_dict)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Performance metrics failed")
             error_metrics: dict[str, object] = {
                 "active_integrations": 0,
@@ -789,7 +788,7 @@ class FlextOracleOicService(
             return r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]].ok(
                 connections
             )
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to list connections")
             return r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]].fail(
                 f"Connection listing failed: {e!s}"
@@ -840,7 +839,7 @@ class FlextOracleOicService(
             return r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].ok(
                 integrations
             )
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             FlextLogger(__name__).exception("Failed to list integrations")
             return r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].fail(
                 f"Integration listing failed: {e!s}"
@@ -861,7 +860,7 @@ class FlextOracleOicService(
                 return r[str].fail("Authenticator has no refresh_token")
             token = refresh_fn()
             return r[str].ok(str(token))
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Token refresh failed")
             return r[str].fail(f"Token refresh failed: {e!s}")
 
@@ -892,7 +891,7 @@ class FlextOracleOicService(
                 case _:
                     is_connected = False
             return r[bool].ok(is_connected)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Connection test failed")
             return r[bool].fail(f"Connection test failed: {e!s}")
 
@@ -940,7 +939,7 @@ class FlextOracleOicService(
                 last_updated=self._as_text(updated_data.get("lastUpdated"), ""),
             )
             return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].ok(integration)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to update integration %s", integration_id)
             return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                 f"Integration update failed: {e!s}"
@@ -964,7 +963,7 @@ class FlextOracleOicService(
                 return r[bool].fail("Authenticator has no validate_token")
             is_valid = validate_fn(token)
             return r[bool].ok(bool(is_valid))
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Token validation failed")
             return r[bool].fail(f"Token validation failed: {e!s}")
 
@@ -1025,7 +1024,7 @@ class FlextOracleOicService(
                     connection_config=connection_config, auth_config=auth_config
                 )
             return r[FlextOracleOicClient].ok(self._client)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to create OIC client")
             return r[FlextOracleOicClient].fail(f"Client creation failed: {e!s}")
 
@@ -1047,7 +1046,7 @@ class FlextOracleOicService(
                     },
                 )
                 self._monitoring_client = FlextApiClient(api_config)
-        except (ConnectionError, TimeoutError, ValueError, json.JSONDecodeError):
+        except (ConnectionError, TimeoutError, ValueError):
             FlextLogger(__name__).exception("Failed to initialize service components")
             raise
 

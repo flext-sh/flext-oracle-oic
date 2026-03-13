@@ -11,7 +11,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import json
 from collections.abc import Mapping
 from typing import Protocol, Self, override
 
@@ -252,7 +251,6 @@ class FlextOracleOicExtServices(
                 ConnectionError,
                 TimeoutError,
                 ValueError,
-                json.JSONDecodeError,
             ) as e:
                 error_msg = f"Failed to create auth config: {e}"
                 self.logger.exception(error_msg)
@@ -272,7 +270,6 @@ class FlextOracleOicExtServices(
                 ConnectionError,
                 TimeoutError,
                 ValueError,
-                json.JSONDecodeError,
             ) as e:
                 error_msg = f"Failed to create OIC client instance: {e}"
                 self.logger.exception(error_msg)
@@ -302,7 +299,6 @@ class FlextOracleOicExtServices(
                 ConnectionError,
                 TimeoutError,
                 ValueError,
-                json.JSONDecodeError,
             ) as e:
                 error_msg = f"Failed to create connection config: {e}"
                 self.logger.exception(error_msg)
@@ -429,7 +425,6 @@ class FlextOracleOicExtServices(
                     ConnectionError,
                     TimeoutError,
                     ValueError,
-                    json.JSONDecodeError,
                 ) as e:
                     err_msg: str = str(e)
                     self.logger.warning("Failed to parse connection: %s", err_msg)
@@ -464,7 +459,6 @@ class FlextOracleOicExtServices(
                     ConnectionError,
                     TimeoutError,
                     ValueError,
-                    json.JSONDecodeError,
                 ) as e:
                     err_msg: str = str(e)
                     self.logger.warning("Failed to parse integration: %s", err_msg)
@@ -551,7 +545,6 @@ class FlextOracleOicExtServices(
                 ConnectionError,
                 TimeoutError,
                 ValueError,
-                json.JSONDecodeError,
             ) as e:
                 error_msg = f"Message router pattern failed: {e}"
                 self.logger.exception(error_msg)
@@ -599,7 +592,6 @@ class FlextOracleOicExtServices(
                 ConnectionError,
                 TimeoutError,
                 ValueError,
-                json.JSONDecodeError,
             ) as e:
                 error_msg = f"Scatter-gather pattern failed: {e}"
                 self.logger.exception(error_msg)
@@ -666,7 +658,6 @@ class FlextOracleOicExtServices(
                 ConnectionError,
                 TimeoutError,
                 ValueError,
-                json.JSONDecodeError,
             ) as e:
                 error_msg = f"Failed to activate integration {integration_id}: {e}"
                 self.logger.exception(error_msg)
@@ -718,7 +709,6 @@ class FlextOracleOicExtServices(
                 ConnectionError,
                 TimeoutError,
                 ValueError,
-                json.JSONDecodeError,
             ) as e:
                 error_msg = f"Failed to deactivate integration {integration_id}: {e}"
                 self.logger.exception(error_msg)
@@ -752,7 +742,6 @@ class FlextOracleOicExtServices(
                 ConnectionError,
                 TimeoutError,
                 ValueError,
-                json.JSONDecodeError,
             ) as e:
                 error_msg = f"Failed to create OIC client: {e}"
                 self.logger.exception(error_msg)
@@ -835,7 +824,6 @@ class FlextOracleOicExtServices(
                 ConnectionError,
                 TimeoutError,
                 ValueError,
-                json.JSONDecodeError,
             ) as e:
                 self.logger.exception("Health check failed")
                 error_health: dict[str, object] = {
@@ -911,7 +899,6 @@ class FlextOracleOicExtServices(
                 ConnectionError,
                 TimeoutError,
                 ValueError,
-                json.JSONDecodeError,
             ) as e:
                 self.logger.exception("Performance metrics failed")
                 error_metrics: dict[str, object] = {

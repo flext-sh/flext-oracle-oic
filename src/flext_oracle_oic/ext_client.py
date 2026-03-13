@@ -12,12 +12,12 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import base64
-import json as json_module
 from collections.abc import Mapping
 from typing import Self
 
 from flext_api import FlextApi, FlextApiSettings
 from flext_core import FlextLogger, r, t
+from pydantic import TypeAdapter
 
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.models import FlextOracleOicModels
@@ -251,7 +251,6 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-            json_module.JSONDecodeError,
         ) as e:
             error_msg = f"OIC pagination failed: {e}"
             self.logger.exception(error_msg)
@@ -289,7 +288,6 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-            json_module.JSONDecodeError,
         ) as e:
             error_msg = f"Failed to create authenticated client: {e}"
             self.logger.exception(error_msg)
@@ -334,7 +332,6 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-            json_module.JSONDecodeError,
         ) as e:
             error_msg = f"OIC API request failed: {e}"
             self.logger.exception(error_msg)
@@ -365,7 +362,6 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-            json_module.JSONDecodeError,
         ) as e:
             error_msg = f"OAuth token request failed: {e}"
             self.logger.exception(error_msg)
@@ -385,7 +381,10 @@ class FlextOracleOicClient:
                             return r[object].ok(body)
                         match body:
                             case str():
-                                parsed_data = json_module.loads(body)
+                                json_parser: TypeAdapter[dict[str, object]] = (
+                                    TypeAdapter(dict[str, object])
+                                )
+                                parsed_data = json_parser.validate_json(body)
                                 return r[object].ok(parsed_data)
                             case _:
                                 return r[object].fail("Empty JSON response")
@@ -402,7 +401,6 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-            json_module.JSONDecodeError,
         ) as e:
             error_msg = f"Failed to parse API response: {e}"
             self.logger.exception(error_msg)
@@ -419,7 +417,10 @@ class FlextOracleOicClient:
             else:
                 match body:
                     case str():
-                        token_data = json_module.loads(body)
+                        token_parser: TypeAdapter[dict[str, object]] = TypeAdapter(
+                            dict[str, object]
+                        )
+                        token_data = token_parser.validate_json(body)
                     case _:
                         return r[str].fail("Empty or invalid OAuth response body")
             access_token = token_data.get("access_token")
@@ -432,7 +433,6 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-            json_module.JSONDecodeError,
         ) as e:
             error_msg = f"Failed to parse OAuth response: {e}"
             self.logger.exception(error_msg)
@@ -457,7 +457,6 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-            json_module.JSONDecodeError,
         ) as e:
             error_msg = f"Failed to prepare OAuth request: {e}"
             self.logger.exception(error_msg)
