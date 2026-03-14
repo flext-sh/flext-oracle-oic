@@ -68,7 +68,7 @@ class FlextOracleOicApi(FlextService[None]):
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
-        exc_tb: object,
+        exc_tb: t.NormalizedValue,
     ) -> None:
         """Async context manager exit."""
         self.logger.info(
@@ -89,7 +89,7 @@ class FlextOracleOicApi(FlextService[None]):
         return self._service.activate_integration(integration_id)
 
     def create_integration(
-        self, integration_data: Mapping[str, object]
+        self, integration_data: Mapping[str, t.NormalizedValue]
     ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
@@ -135,9 +135,9 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_app_driven_orchestration(
         self,
         integration_id: str,
-        payload: Mapping[str, object],
+        payload: Mapping[str, t.NormalizedValue],
         **kwargs: t.Scalar,
-    ) -> r[Mapping[str, object]]:
+    ) -> r[Mapping[str, t.NormalizedValue]]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -156,9 +156,9 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_file_transfer(
         self,
         integration_id: str,
-        file_config: Mapping[str, object],
+        file_config: Mapping[str, t.NormalizedValue],
         **kwargs: t.Scalar,
-    ) -> r[Mapping[str, object]]:
+    ) -> r[Mapping[str, t.NormalizedValue]]:
         """Execute file transfer pattern.
 
         Args:
@@ -177,9 +177,9 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
-        schedule_config: Mapping[str, object],
+        schedule_config: Mapping[str, t.NormalizedValue],
         **kwargs: t.Scalar,
-    ) -> r[Mapping[str, object]]:
+    ) -> r[Mapping[str, t.NormalizedValue]]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -195,7 +195,7 @@ class FlextOracleOicApi(FlextService[None]):
             integration_id, schedule_config, **kwargs
         )
 
-    def get_auth_context(self) -> Mapping[str, object]:
+    def get_auth_context(self) -> Mapping[str, t.NormalizedValue]:
         """Get current authentication configuration context.
 
         Returns:
@@ -208,7 +208,7 @@ class FlextOracleOicApi(FlextService[None]):
             "oauth_scope": self._oic_config.oauth_scope,
         }
 
-    def get_connection_context(self) -> Mapping[str, object]:
+    def get_connection_context(self) -> Mapping[str, t.NormalizedValue]:
         """Get current connection configuration context.
 
         Returns:
@@ -221,7 +221,7 @@ class FlextOracleOicApi(FlextService[None]):
             "request_timeout": self._oic_config.request_timeout,
         }
 
-    def get_features_context(self) -> Mapping[str, object]:
+    def get_features_context(self) -> Mapping[str, t.NormalizedValue]:
         """Get current features configuration context.
 
         Returns:
@@ -234,7 +234,7 @@ class FlextOracleOicApi(FlextService[None]):
             "verify_ssl": self._oic_config.verify_ssl,
         }
 
-    def get_health_status(self) -> r[Mapping[str, object]]:
+    def get_health_status(self) -> r[Mapping[str, t.NormalizedValue]]:
         """Get Oracle OIC health status.
 
         Returns:
@@ -257,7 +257,7 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._service.get_integration(integration_id)
 
-    def get_performance_metrics(self) -> r[Mapping[str, object]]:
+    def get_performance_metrics(self) -> r[Mapping[str, t.NormalizedValue]]:
         """Get Oracle OIC performance metrics.
 
         Returns:
@@ -296,7 +296,7 @@ class FlextOracleOicApi(FlextService[None]):
         return self._service.test_connection()
 
     def update_integration(
-        self, integration_id: str, integration_data: Mapping[str, object]
+        self, integration_id: str, integration_data: Mapping[str, t.NormalizedValue]
     ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
