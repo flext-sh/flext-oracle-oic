@@ -48,7 +48,7 @@ class TestOICAuthConfig:
 
     def test_auth_config_validation_error(self) -> None:
         """Test auth config validation error."""
-        invalid_data = {
+        invalid_data: dict[str, str | int | None] = {
             "oauth_client_id": "test_client_id",
             "oauth_client_secret": 123,
             "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
@@ -56,7 +56,7 @@ class TestOICAuthConfig:
             "oauth_scope": "",
         }
         with pytest.raises(ValidationError):
-            FlextOracleOicModels.OracleOic.OICAuthConfig(invalid_data)
+            FlextOracleOicModels.OracleOic.OICAuthConfig.model_validate(invalid_data)
 
 
 class TestOICConnectionConfig:
