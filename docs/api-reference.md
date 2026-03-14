@@ -43,7 +43,6 @@ from flext_oracle_oic import (
     OracleOicExtensionSettings,
     FlextOracleOicConnectionSettings,
     FlextOracleOicAuthSettings,
-
     # Basic service classes (implementation varies)
     # Additional components available but may have limited functionality
 )
@@ -56,7 +55,10 @@ from flext_oracle_oic import (
 Main configuration container for Oracle OIC extension settings.
 
 ```python
-from flext_oracle_oic import OracleOicExtensionSettings, FlextOracleOicConnectionSettings
+from flext_oracle_oic import (
+    OracleOicExtensionSettings,
+    FlextOracleOicConnectionSettings,
+)
 
 # Basic configuration creation
 settings = OracleOicExtensionSettings(
@@ -83,7 +85,7 @@ from flext_oracle_oic import FlextOracleOicConnectionSettings
 config = FlextOracleOicConnectionSettings(
     base_url="https://your-instance.integration.ocp.oraclecloud.com",
     api_version="v1",
-    request_timeout=30
+    request_timeout=30,
 )
 ```
 
@@ -105,7 +107,7 @@ from flext_oracle_oic import FlextOracleOicAuthSettings
 auth_config = FlextOracleOicAuthSettings(
     oauth_client_id="your_client_id",
     oauth_client_secret="your_client_secret",
-    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
+    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
 )
 ```
 
@@ -125,10 +127,10 @@ auth_config = FlextOracleOicAuthSettings(
 ```python
 # These components may be available for import but implementation varies
 from flext_oracle_oic.ext_services import (
-    OracleOicExtensionService,    # Main service class
-    OICIntegrationPatternService, # Integration patterns (basic)
-    LifecycleManager,            # Lifecycle management (basic)
-    MonitoringService            # Monitoring (basic)
+    OracleOicExtensionService,  # Main service class
+    OICIntegrationPatternService,  # Integration patterns (basic)
+    LifecycleManager,  # Lifecycle management (basic)
+    MonitoringService,  # Monitoring (basic)
 )
 ```
 
@@ -143,7 +145,7 @@ from flext_oracle_oic.ext_client import OracleOicExtensionClient
 # Authentication components (basic implementation)
 from flext_oracle_oic.ext_services import (
     BaseOICAuthenticator,
-    FlextOracleOicAuthenticator
+    FlextOracleOicAuthenticator,
 )
 ```
 
@@ -156,7 +158,7 @@ Basic Pydantic data models are available:
 ```python
 from flext_oracle_oic.ext_models import (
     OICIntegrationInfo,  # Integration metadata
-    OICConnectionInfo,   # Connection information
+    OICConnectionInfo,  # Connection information
     # Additional models based on actual implementation
 )
 ```
@@ -167,12 +169,12 @@ Oracle OIC-specific exception classes:
 
 ```python
 from flext_oracle_oic.ext_exceptions import (
-    OracleOicExtensionError,    # Base exception
-    OICAPIError,                # API operation errors
-    OICAuthenticationError,     # Authentication failures
-    OICConfigurationError,      # Configuration issues
-    OICConnectionError,         # Connection problems
-    OICTokenError,              # Token management errors
+    OracleOicExtensionError,  # Base exception
+    OICAPIError,  # API operation errors
+    OICAuthenticationError,  # Authentication failures
+    OICConfigurationError,  # Configuration issues
+    OICConnectionError,  # Connection problems
+    OICTokenError,  # Token management errors
     # Additional exceptions based on actual implementation
 )
 ```
@@ -249,7 +251,7 @@ from flext_oracle_oic.factory import (
 from flext_oracle_oic import (
     OracleOicExtensionSettings,
     FlextOracleOicConnectionSettings,
-    FlextOracleOicAuthSettings
+    FlextOracleOicAuthSettings,
 )
 
 # Create basic configuration
@@ -276,7 +278,7 @@ settings = OracleOicExtensionSettings(
 from flext_oracle_oic import (
     OracleOicExtensionSettings,
     FlextOracleOicConnectionSettings,
-    FlextOracleOicAuthSettings
+    FlextOracleOicAuthSettings,
 )
 
 # Configuration validation and type safety works correctly
@@ -314,8 +316,8 @@ This API reference reflects the actual implementation status as of September 17,
 **Across Projects**:
 
 - [flext-core Foundation](https://github.com/organization/flext/tree/main/flext-core/docs/api-reference/foundation.md) - Core APIs and patterns
-- [flext-core Railway-Oriented Programming](https://github.com/organization/flext/tree/main/flext-core/docs/guides/railway-oriented-programming.md) - FlextResult patterns
-- [flext-db-oracle Integration](https://github.com/organization/flext/tree/main/flext-db-oracle/CLAUDE.md) - Oracle database integration
+- [flext-core Railway-Oriented Programming](https://github.com/organization/flext/tree/main/flext-core/docs/guides/railway-oriented-programming.md) - r patterns
+- [flext-db-oracle Integration](https://github.com/organization/flext/tree/main/flext-db-oracle/AGENTS.md) - Oracle database integration
 
 **External Resources**:
 

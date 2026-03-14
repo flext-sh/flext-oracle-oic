@@ -10,7 +10,7 @@ from __future__ import annotations
 from unittest.mock import MagicMock, patch
 
 import flext_oracle_oic.main as main_module
-from flext_oracle_oic import __version__, create_development_oic_service
+from flext_oracle_oic import __version__
 from flext_oracle_oic.main import FlextOracleOicCli, main
 
 
@@ -44,7 +44,3 @@ class TestMainModule:
         """Test __version__ is available from package."""
         assert __version__ is not None
         assert isinstance(__version__, str)
-
-    def test_factory_callable(self) -> None:
-        """Test create_development_oic_service is callable."""
-        assert callable(create_development_oic_service)

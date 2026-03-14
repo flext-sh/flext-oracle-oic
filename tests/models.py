@@ -9,8 +9,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from flext_tests import FlextTestsModels
+
 from flext_oracle_oic.models import FlextOracleOicModels
-from flext_tests.models import FlextTestsModels
 
 
 class TestsFlextOracleOicModels(FlextTestsModels, FlextOracleOicModels):
@@ -25,12 +26,6 @@ class TestsFlextOracleOicModels(FlextTestsModels, FlextOracleOicModels):
     - tm.* (Oracle OIC domain models)
     - m.* (production models via alternative alias)
     """
-
-    class Tests:
-        """Project-specific test fixtures namespace."""
-
-        class OracleOic:
-            """Oracle OIC-specific test fixtures."""
 
 
 # Short aliases per FLEXT convention

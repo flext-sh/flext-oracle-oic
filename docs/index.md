@@ -91,7 +91,7 @@ This documentation covers the Oracle Integration Cloud extension for the FLEXT e
 
 ### Direct Dependencies
 
-- **[flext-core](https://github.com/organization/flext/tree/main/flext-core/README.md)** → Foundation patterns (FlextResult, FlextLogger, FlextContainer)
+- **[flext-core](https://github.com/organization/flext/tree/main/flext-core/README.md)** → Foundation patterns (r, FlextLogger, FlextContainer)
 - **[flext-api](https://github.com/organization/flext/tree/main/flext-api/README.md)** → HTTP client abstractions (needs implementation)
 - **[flext-cli](https://github.com/organization/flext/tree/main/flext-cli/README.md)** → CLI interface patterns (needs implementation)
 
@@ -112,7 +112,7 @@ This documentation covers the Oracle Integration Cloud extension for the FLEXT e
 ### Contributing
 
 1. **Review Current Status**: Understand implementation limitations from documentation
-1. **Follow FLEXT Patterns**: Use FlextResult, FlextService, FlextContainer
+1. **Follow FLEXT Patterns**: Use r, FlextService, FlextContainer
 1. **Fix Compliance Issues**: Replace direct imports with FLEXT abstractions
 1. **Add Real Tests**: Implement integration tests with Oracle OIC APIs
 

@@ -50,7 +50,7 @@
 ### Knowledge Requirements
 
 - Basic understanding of Oracle Integration Cloud concepts
-- Familiarity with FLEXT ecosystem patterns (FlextResult, FlextService)
+- Familiarity with FLEXT ecosystem patterns (r, FlextService)
 - Python experience with Pydantic and type annotations
 
 ## Installation
@@ -82,7 +82,7 @@ from flext_core import FlextModels
 from flext_core import FlextProcessors
 from flext_core import p
 from flext_core import FlextRegistry
-from flext_core import FlextResult
+from flext_core import r
 from flext_core import FlextRuntime
 from flext_core import FlextService
 from flext_core import t
@@ -115,7 +115,7 @@ The library provides Pydantic-based configuration following FLEXT patterns:
 from flext_oracle_oic import (
     OracleOicExtensionSettings,
     FlextOracleOicConnectionSettings,
-    FlextOracleOicAuthSettings
+    FlextOracleOicAuthSettings,
 )
 
 # Create configuration following FLEXT patterns
@@ -123,13 +123,13 @@ settings = OracleOicExtensionSettings(
     connection=FlextOracleOicConnectionSettings(
         base_url="https://your-oic-instance.integration.ocp.oraclecloud.com",
         api_version="v1",
-        request_timeout=30
+        request_timeout=30,
     ),
     auth=FlextOracleOicAuthSettings(
         oauth_client_id="your_client_id",
         oauth_client_secret="your_client_secret",
-        oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
-    )
+        oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
+    ),
 )
 
 print(f"Configuration created: {settings.connection.base_url}")
@@ -142,14 +142,16 @@ print(f"Configuration created: {settings.connection.base_url}")
 ```python
 # Import available components
 from flext_oracle_oic.ext_config import OracleOicExtensionSettings
-from flext_oracle_oic.ext_models import FlextOracleOicConnectionSettings, FlextOracleOicAuthSettings
+from flext_oracle_oic.ext_models import (
+    FlextOracleOicConnectionSettings,
+    FlextOracleOicAuthSettings,
+)
 
 # Basic configuration validation
 try:
     config = OracleOicExtensionSettings(
         connection=FlextOracleOicConnectionSettings(
-            base_url="https://test.integration.ocp.oraclecloud.com",
-            api_version="v1"
+            base_url="https://test.integration.ocp.oraclecloud.com", api_version="v1"
         )
     )
     print("✅ Configuration valid")
@@ -177,7 +179,7 @@ make format                # Auto-format code with Ruff
 # Development shortcuts
 make t                     # Alias for test
 make l                     # Alias for lint
-make tc                    # Alias for type-check
+make c                    # Alias for type-check
 make v                     # Alias for validate
 ```
 
@@ -253,7 +255,7 @@ from flext_core import FlextModels
 from flext_core import FlextProcessors
 from flext_core import p
 from flext_core import FlextRegistry
-from flext_core import FlextResult
+from flext_core import r
 from flext_core import FlextRuntime
 from flext_core import FlextService
 from flext_core import t
@@ -334,7 +336,7 @@ This guide reflects the actual current implementation status as of September 17,
 
 - [flext-core Foundation](https://github.com/organization/flext/tree/main/flext-core/docs/architecture/overview.md) - Clean architecture and CQRS patterns
 - [flext-core Service Patterns](https://github.com/organization/flext/tree/main/flext-core/docs/guides/service-patterns.md) - Service patterns and dependency injection
-- [flext-db-oracle Integration](https://github.com/organization/flext/tree/main/flext-db-oracle/CLAUDE.md) - Oracle database integration
+- [flext-db-oracle Integration](https://github.com/organization/flext/tree/main/flext-db-oracle/AGENTS.md) - Oracle database integration
 
 **External Resources**:
 

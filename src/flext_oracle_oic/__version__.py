@@ -23,17 +23,15 @@ try:
     __author_email__ = _metadata["Author-Email"]
     __license__ = _metadata["License"]
     __url__ = _metadata.get("Home-Page", "")
-except Exception:
-    # Fallback for development when package is not installed
+except (ConnectionError, TimeoutError, ValueError):
     __version__ = "0.9.9"
     __version_info__ = (0, 9, 9)
     __title__ = "flext-oracle-oic"
     __description__ = "Oracle OIC Extension for FLEXT ecosystem"
     __author__ = "FLEXT Team"
-    __author_email__ = None
+    __author_email__ = ""
     __license__ = "MIT"
-    __url__ = None
-
+    __url__ = ""
 __all__ = [
     "__author__",
     "__author_email__",

@@ -49,7 +49,7 @@ from flext_oracle_oic import FlextOracleOicConnectionSettings
 connection_config = FlextOracleOicConnectionSettings(
     base_url="https://your-instance.integration.ocp.oraclecloud.com",
     api_version="v1",
-    request_timeout=30
+    request_timeout=30,
 )
 ```
 
@@ -70,7 +70,7 @@ from flext_oracle_oic import FlextOracleOicAuthSettings
 auth_config = FlextOracleOicAuthSettings(
     oauth_client_id="your_client_id",
     oauth_client_secret="your_client_secret",
-    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
+    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
 )
 ```
 
@@ -89,10 +89,7 @@ Combine configuration components using `OracleOicExtensionSettings`:
 from flext_oracle_oic import OracleOicExtensionSettings
 
 # Complete configuration
-settings = OracleOicExtensionSettings(
-    connection=connection_config,
-    auth=auth_config
-)
+settings = OracleOicExtensionSettings(connection=connection_config, auth=auth_config)
 ```
 
 **Primary Configuration Object:**
@@ -126,26 +123,23 @@ import os
 from flext_oracle_oic import (
     OracleOicExtensionSettings,
     FlextOracleOicConnectionSettings,
-    FlextOracleOicAuthSettings
+    FlextOracleOicAuthSettings,
 )
 
 # Manual environment variable loading (current approach)
 connection_config = FlextOracleOicConnectionSettings(
     base_url=os.getenv("ORACLE_OIC_BASE_URL"),
     api_version=os.getenv("ORACLE_OIC_API_VERSION", "v1"),
-    request_timeout=int(os.getenv("ORACLE_OIC_REQUEST_TIMEOUT", "30"))
+    request_timeout=int(os.getenv("ORACLE_OIC_REQUEST_TIMEOUT", "30")),
 )
 
 auth_config = FlextOracleOicAuthSettings(
     oauth_client_id=os.getenv("ORACLE_OIC_OAUTH_CLIENT_ID"),
     oauth_client_secret=os.getenv("ORACLE_OIC_OAUTH_CLIENT_SECRET"),
-    oauth_token_url=os.getenv("ORACLE_OIC_OAUTH_TOKEN_URL")
+    oauth_token_url=os.getenv("ORACLE_OIC_OAUTH_TOKEN_URL"),
 )
 
-settings = OracleOicExtensionSettings(
-    connection=connection_config,
-    auth=auth_config
-)
+settings = OracleOicExtensionSettings(connection=connection_config, auth=auth_config)
 ```
 
 ## Configuration Validation
@@ -153,7 +147,10 @@ settings = OracleOicExtensionSettings(
 Pydantic automatically validates configuration objects:
 
 ```python
-from flext_oracle_oic import OracleOicExtensionSettings, FlextOracleOicConnectionSettings
+from flext_oracle_oic import (
+    OracleOicExtensionSettings,
+    FlextOracleOicConnectionSettings,
+)
 
 try:
     # Invalid configuration - missing required base_url
@@ -212,7 +209,7 @@ from flext_oracle_oic import FlextOracleOicAuthSettings
 auth_config = FlextOracleOicAuthSettings(
     oauth_client_id="public_client_id",
     oauth_client_secret="secret_value",  # Handled as SecretStr internally
-    oauth_token_url="https://idcs.example.com/oauth2/v1/token"
+    oauth_token_url="https://idcs.example.com/oauth2/v1/token",
 )
 
 # Secret is protected from accidental exposure
@@ -235,24 +232,26 @@ import os
 from flext_oracle_oic import (
     OracleOicExtensionSettings,
     FlextOracleOicConnectionSettings,
-    FlextOracleOicAuthSettings
+    FlextOracleOicAuthSettings,
 )
+
 
 # Development configuration with environment variables
 def create_dev_config():
     connection = FlextOracleOicConnectionSettings(
         base_url=os.getenv("DEV_ORACLE_OIC_BASE_URL", "https://dev-instance.com"),
         api_version="v1",
-        request_timeout=60  # Longer timeout for development
+        request_timeout=60,  # Longer timeout for development
     )
 
     auth = FlextOracleOicAuthSettings(
         oauth_client_id=os.getenv("DEV_OIC_CLIENT_ID"),
         oauth_client_secret=os.getenv("DEV_OIC_CLIENT_SECRET"),
-        oauth_token_url=os.getenv("DEV_OIC_TOKEN_URL")
+        oauth_token_url=os.getenv("DEV_OIC_TOKEN_URL"),
     )
 
     return OracleOicExtensionSettings(connection=connection, auth=auth)
+
 
 # Create development configuration
 dev_settings = create_dev_config()
@@ -286,15 +285,14 @@ config = FlextOracleOicConnectionSettings(
 try:
     config = FlextOracleOicConnectionSettings(
         base_url="https://example.com",
-        request_timeout="invalid"  # Should be integer
+        request_timeout="invalid",  # Should be integer
     )
 except ValueError as e:
     print(f"Type error: {e}")
 
 # ✅ Correct type
 config = FlextOracleOicConnectionSettings(
-    base_url="https://example.com",
-    request_timeout=30
+    base_url="https://example.com", request_timeout=30
 )
 ```
 

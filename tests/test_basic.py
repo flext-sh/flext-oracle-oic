@@ -9,10 +9,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_oracle_oic import (
-    FlextOracleOicModels,
-    FlextOracleOicSettings,
-)
+from pydantic import SecretStr
+
+from flext_oracle_oic import FlextOracleOicModels, FlextOracleOicSettings
 
 
 class TestBasicFunctionality:
@@ -20,7 +19,6 @@ class TestBasicFunctionality:
 
     def test_flext_oracle_oic_basic(self) -> None:
         """Test basic FlextOracleOic functionality."""
-        # Test that we can import and create config
         config = FlextOracleOicSettings()
         assert config.base_url is not None
 
@@ -32,22 +30,18 @@ class TestBasicFunctionality:
             oauth_client_secret="test_client_secret",
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
         )
-
-        # Test that config was created correctly
         assert config.base_url == "https://test.integration.ocp.oraclecloud.com"
         assert config.oauth_client_id == "test_client_id"
 
     def test_models(self) -> None:
         """Test model classes."""
-        # Test that we can access model classes
-        auth_config = FlextOracleOicModels.OICAuthConfig(
+        auth_config = FlextOracleOicModels.OracleOic.OICAuthConfig(
             oauth_client_id="test_client_id",
-            oauth_client_secret="test_secret",
+            oauth_client_secret=SecretStr("test_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
         )
         assert auth_config.oauth_client_id == "test_client_id"
-
-        connection_config = FlextOracleOicModels.OICConnectionConfig(
+        connection_config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
             base_url="https://test.integration.ocp.oraclecloud.com",
             api_version="v1",
             request_timeout=30,
