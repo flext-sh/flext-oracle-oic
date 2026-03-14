@@ -330,9 +330,7 @@ class FlextOracleOicExtServices(
             integration_id = integration_data.get("id", "")
             if not integration_id:
                 return r[str].fail("No integration ID returned")
-            self.logger.info(
-                f"Integration deployed successfully: {integration_id!s}"
-            )
+            self.logger.info(f"Integration deployed successfully: {integration_id!s}")
             return r[str].ok(str(integration_id))
 
         def _fetch_connections(
