@@ -1,0 +1,23 @@
+tests/test_models.py
+  f44ccb4be7de79e9 51,59
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.12",
+  "base_commit_sha": "4564daa9dd57ce44b58f264387e5e0216efde143",
+  "prompts": {
+    "f44ccb4be7de79e9": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_3128366fbffe7X7sFMYo9Xddq5",
+        "model": "anthropic/claude-opus-4-6"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>",
+      "messages": [],
+      "total_additions": 2,
+      "total_deletions": 2,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    }
+  }
+}
