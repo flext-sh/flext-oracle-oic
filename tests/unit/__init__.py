@@ -14,7 +14,6 @@ if TYPE_CHECKING:
 
     from tests.unit.test_version import test_version_info_tuple, test_version_string
 
-# Lazy import mapping: export_name -> (module_path, attr_name)
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "test_version_info_tuple": ("tests.unit.test_version", "test_version_info_tuple"),
     "test_version_string": ("tests.unit.test_version", "test_version_string"),

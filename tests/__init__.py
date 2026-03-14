@@ -45,7 +45,6 @@ if TYPE_CHECKING:
         TestsFlextOracleOicUtilities as u,
     )
 
-# Lazy import mapping: export_name -> (module_path, attr_name)
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "TestBasicFunctionality": ("tests.test_basic", "TestBasicFunctionality"),
     "TestCLI": ("tests.test_cli", "TestCLI"),
