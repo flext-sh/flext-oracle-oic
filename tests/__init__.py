@@ -1,3 +1,6 @@
+# AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
+# Regenerate with: make codegen
+#
 """Init module.
 
 This module is part of the FLEXT ecosystem. Docstrings follow PEP 257 and Google style.
@@ -6,3 +9,108 @@ Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 
 """
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
+
+if TYPE_CHECKING:
+    from tests.constants import (
+        TestsFlextOracleOicConstants,
+        TestsFlextOracleOicConstants as c,
+    )
+    from tests.models import TestsFlextOracleOicModels, m, tm
+    from tests.protocols import TestsFlextOracleOicProtocols, p
+    from tests.test_basic import TestBasicFunctionality
+    from tests.test_cli import TestCLI
+    from tests.test_config import TestFlextOracleOicSettings
+    from tests.test_extension import TestOracleOicExtension
+    from tests.test_import import test_basic_import, test_config_import
+    from tests.test_main import TestMainFunction, TestMainModule
+    from tests.test_models import (
+        TestOICAuthConfig,
+        TestOICConnectionConfig,
+        TestOICConnectionInfo,
+        TestOICIntegrationInfo,
+    )
+    from tests.test_typings import TestFlextTypes, TestFlextTypes as t
+    from tests.typings import TestsFlextOracleOicTypes
+    from tests.unit.test_version import test_version_info_tuple, test_version_string
+    from tests.utilities import (
+        TestsFlextOracleOicUtilities,
+        TestsFlextOracleOicUtilities as u,
+    )
+
+# Lazy import mapping: export_name -> (module_path, attr_name)
+_LAZY_IMPORTS: dict[str, tuple[str, str]] = {
+    "TestBasicFunctionality": ("tests.test_basic", "TestBasicFunctionality"),
+    "TestCLI": ("tests.test_cli", "TestCLI"),
+    "TestFlextOracleOicSettings": ("tests.test_config", "TestFlextOracleOicSettings"),
+    "TestFlextTypes": ("tests.test_typings", "TestFlextTypes"),
+    "TestMainFunction": ("tests.test_main", "TestMainFunction"),
+    "TestMainModule": ("tests.test_main", "TestMainModule"),
+    "TestOICAuthConfig": ("tests.test_models", "TestOICAuthConfig"),
+    "TestOICConnectionConfig": ("tests.test_models", "TestOICConnectionConfig"),
+    "TestOICConnectionInfo": ("tests.test_models", "TestOICConnectionInfo"),
+    "TestOICIntegrationInfo": ("tests.test_models", "TestOICIntegrationInfo"),
+    "TestOracleOicExtension": ("tests.test_extension", "TestOracleOicExtension"),
+    "TestsFlextOracleOicConstants": ("tests.constants", "TestsFlextOracleOicConstants"),
+    "TestsFlextOracleOicModels": ("tests.models", "TestsFlextOracleOicModels"),
+    "TestsFlextOracleOicProtocols": ("tests.protocols", "TestsFlextOracleOicProtocols"),
+    "TestsFlextOracleOicTypes": ("tests.typings", "TestsFlextOracleOicTypes"),
+    "TestsFlextOracleOicUtilities": ("tests.utilities", "TestsFlextOracleOicUtilities"),
+    "c": ("tests.constants", "TestsFlextOracleOicConstants"),
+    "m": ("tests.models", "m"),
+    "p": ("tests.protocols", "p"),
+    "t": ("tests.test_typings", "TestFlextTypes"),
+    "test_basic_import": ("tests.test_import", "test_basic_import"),
+    "test_config_import": ("tests.test_import", "test_config_import"),
+    "test_version_info_tuple": ("tests.unit.test_version", "test_version_info_tuple"),
+    "test_version_string": ("tests.unit.test_version", "test_version_string"),
+    "tm": ("tests.models", "tm"),
+    "u": ("tests.utilities", "TestsFlextOracleOicUtilities"),
+}
+
+__all__ = [
+    "TestBasicFunctionality",
+    "TestCLI",
+    "TestFlextOracleOicSettings",
+    "TestFlextTypes",
+    "TestMainFunction",
+    "TestMainModule",
+    "TestOICAuthConfig",
+    "TestOICConnectionConfig",
+    "TestOICConnectionInfo",
+    "TestOICIntegrationInfo",
+    "TestOracleOicExtension",
+    "TestsFlextOracleOicConstants",
+    "TestsFlextOracleOicModels",
+    "TestsFlextOracleOicProtocols",
+    "TestsFlextOracleOicTypes",
+    "TestsFlextOracleOicUtilities",
+    "c",
+    "m",
+    "p",
+    "t",
+    "test_basic_import",
+    "test_config_import",
+    "test_version_info_tuple",
+    "test_version_string",
+    "tm",
+    "u",
+]
+
+
+def __getattr__(name: str) -> t.ModuleExport:
+    """Lazy-load module attributes on first access (PEP 562)."""
+    return lazy_getattr(name, _LAZY_IMPORTS, globals(), __name__)
+
+
+def __dir__() -> list[str]:
+    """Return list of available attributes for dir() and autocomplete."""
+    return sorted(__all__)
+
+
+cleanup_submodule_namespace(__name__, _LAZY_IMPORTS)
