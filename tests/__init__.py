@@ -1,14 +1,7 @@
 # AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
 # Regenerate with: make codegen
 #
-"""Init module.
-
-This module is part of the FLEXT ecosystem. Docstrings follow PEP 257 and Google style.
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
-"""
+"""Tests package."""
 
 from __future__ import annotations
 
@@ -19,6 +12,7 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
 
+    from tests import unit
     from tests.constants import (
         TestsFlextOracleOicConstants,
         TestsFlextOracleOicConstants as c,
@@ -72,6 +66,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "test_version_string": ("tests.unit.test_version", "test_version_string"),
     "tm": ("tests.models", "tm"),
     "u": ("tests.utilities", "TestsFlextOracleOicUtilities"),
+    "unit": ("tests.unit", ""),
 }
 
 __all__ = [
@@ -101,6 +96,7 @@ __all__ = [
     "test_version_string",
     "tm",
     "u",
+    "unit",
 ]
 
 
