@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Mapping
-from enum import StrEnum
+from enum import StrEnum, unique
 from typing import Final, Literal
 
 from flext_core import FlextConstants
@@ -87,6 +87,7 @@ class FlextOracleOicConstants(FlextConstants):
         MIN_TOKEN_EXPIRY_SECONDS: Final[int] = 300
         MAX_TOKEN_EXPIRY_SECONDS: Final[int] = 86400
 
+        @unique
         class AuthType(StrEnum):
             """Authentication types.
 
@@ -103,6 +104,7 @@ class FlextOracleOicConstants(FlextConstants):
     class Integration:
         """Oracle OIC Integration constants."""
 
+        @unique
         class Status(StrEnum):
             """Integration status values.
 
@@ -142,6 +144,7 @@ class FlextOracleOicConstants(FlextConstants):
     class Connection:
         """Oracle OIC Connection constants."""
 
+        @unique
         class Status(StrEnum):
             """Connection status values.
 
@@ -154,6 +157,7 @@ class FlextOracleOicConstants(FlextConstants):
             ERROR = "ERROR"
             UNKNOWN = "unknown"
 
+        @unique
         class Type(StrEnum):
             """Connection type values.
 
@@ -175,6 +179,7 @@ class FlextOracleOicConstants(FlextConstants):
     class Monitoring:
         """Oracle OIC Monitoring constants."""
 
+        @unique
         class HealthStatus(StrEnum):
             """Health status values.
 
@@ -187,6 +192,7 @@ class FlextOracleOicConstants(FlextConstants):
             ERROR = "error"
             UNKNOWN = "unknown"
 
+        @unique
         class ComponentStatus(StrEnum):
             """Component status values.
 
@@ -218,6 +224,7 @@ class FlextOracleOicConstants(FlextConstants):
         ENDPOINT_INTEGRATIONS: Final[str] = "/ic/api/integration/v1/integrations"
         ENDPOINT_CONNECTIONS: Final[str] = "/ic/api/integration/v1/connections"
 
+        @unique
         class Method(StrEnum):
             """HTTP method values.
 
@@ -243,6 +250,7 @@ class FlextOracleOicConstants(FlextConstants):
     class OICPatterns:
         """Oracle OIC Integration Pattern constants."""
 
+        @unique
         class PatternStatus(StrEnum):
             """Pattern status values.
 
@@ -387,6 +395,28 @@ class FlextOracleOicConstants(FlextConstants):
             "success_rate": 0.95,
             "error_rate": 0.05,
         }
+
+    @unique
+    class ProjectType(StrEnum):
+        LIBRARY = "library"
+        APPLICATION = "application"
+        SERVICE = "service"
+        OIC_INTEGRATION = "oic-integration"
+        INTEGRATION_FLOW = "integration-flow"
+        OIC_ADAPTER = "oic-adapter"
+        MESSAGE_PROCESSOR = "message-processor"
+        TRANSFORMATION_SERVICE = "transformation-service"
+        OIC_CONNECTOR = "oic-connector"
+        WORKFLOW_ENGINE = "workflow-engine"
+        INTEGRATION_PLATFORM = "integration-platform"
+        OIC_MONITOR = "oic-monitor"
+        INTEGRATION_GATEWAY = "integration-gateway"
+        OIC_SECURITY = "oic-security"
+        ADAPTER_FRAMEWORK = "adapter-framework"
+        INTEGRATION_API = "integration-api"
+        OIC_EXTENSION = "oic-extension"
+        WORKFLOW_DESIGNER = "workflow-designer"
+        INTEGRATION_HUB = "integration-hub"
 
 
 c = FlextOracleOicConstants

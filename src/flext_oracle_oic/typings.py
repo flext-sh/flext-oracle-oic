@@ -15,9 +15,10 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Literal
 
 from flext_core import FlextTypes
+
+from flext_oracle_oic import c
 
 
 class FlextOracleOicTypes(FlextTypes):
@@ -216,27 +217,7 @@ class FlextOracleOicTypes(FlextTypes):
         and workflow-specific types.
         """
 
-        type ProjectType = Literal[
-            "library",
-            "application",
-            "service",
-            "oic-integration",
-            "integration-flow",
-            "oic-adapter",
-            "message-processor",
-            "transformation-service",
-            "oic-connector",
-            "workflow-engine",
-            "integration-platform",
-            "oic-monitor",
-            "integration-gateway",
-            "oic-security",
-            "adapter-framework",
-            "integration-api",
-            "oic-extension",
-            "workflow-designer",
-            "integration-hub",
-        ]
+        type ProjectType = c.ProjectType
         type OicProjectConfig = dict[str, FlextTypes.NormalizedValue]
         type IntegrationConfig = dict[str, str | int | bool | list[str]]
         type WorkflowConfig = dict[
