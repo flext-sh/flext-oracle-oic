@@ -394,7 +394,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
-        class HTTPClient(FlextProtocols.Service, Protocol):
+        class HTTPClient(FlextProtocols.Service[t.NormalizedValue], Protocol):
             """Protocol for HTTP client operations used by Oracle OIC services."""
 
             def delete(
@@ -414,7 +414,7 @@ class FlextOracleOicProtocols(FlextProtocols):
 
             def get(
                 self, url: str, *, headers: Mapping[str, str] | None = None
-            ) -> FlextProtocols.Result:
+            ) -> FlextProtocols.Result[t.NormalizedValue]:
                 """Execute HTTP GET request.
 
                 Args:
@@ -433,7 +433,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 data: Mapping[str, t.NormalizedValue] | None = None,
                 *,
                 headers: Mapping[str, str] | None = None,
-            ) -> FlextProtocols.Result:
+            ) -> FlextProtocols.Result[t.NormalizedValue]:
                 """Execute HTTP POST request.
 
                 Args:
@@ -453,7 +453,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 data: Mapping[str, t.NormalizedValue] | None = None,
                 *,
                 headers: Mapping[str, str] | None = None,
-            ) -> FlextProtocols.Result:
+            ) -> FlextProtocols.Result[t.NormalizedValue]:
                 """Execute HTTP PUT request.
 
                 Args:
