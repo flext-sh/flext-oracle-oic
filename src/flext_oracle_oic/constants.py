@@ -398,6 +398,8 @@ class FlextOracleOicConstants(FlextConstants):
 
     @unique
     class ProjectType(StrEnum):
+        """Project-type identifiers for Oracle OIC packages."""
+
         LIBRARY = "library"
         APPLICATION = "application"
         SERVICE = "service"
