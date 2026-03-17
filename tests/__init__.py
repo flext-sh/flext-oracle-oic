@@ -12,29 +12,29 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
 
-    from tests import unit
-    from tests.constants import (
+    from . import unit as unit
+    from .constants import (
         TestsFlextOracleOicConstants,
         TestsFlextOracleOicConstants as c,
     )
-    from tests.models import TestsFlextOracleOicModels, m, tm
-    from tests.protocols import TestsFlextOracleOicProtocols, p
-    from tests.test_basic import TestBasicFunctionality
-    from tests.test_cli import TestCLI
-    from tests.test_config import TestFlextOracleOicSettings
-    from tests.test_extension import TestOracleOicExtension
-    from tests.test_import import test_basic_import, test_config_import
-    from tests.test_main import TestMainFunction, TestMainModule
-    from tests.test_models import (
+    from .models import TestsFlextOracleOicModels, m, tm
+    from .protocols import TestsFlextOracleOicProtocols, p
+    from .test_basic import TestBasicFunctionality
+    from .test_cli import TestCLI
+    from .test_config import TestFlextOracleOicSettings
+    from .test_extension import TestOracleOicExtension
+    from .test_import import test_basic_import, test_config_import
+    from .test_main import TestMainFunction, TestMainModule
+    from .test_models import (
         TestOICAuthConfig,
         TestOICConnectionConfig,
         TestOICConnectionInfo,
         TestOICIntegrationInfo,
     )
-    from tests.test_typings import TestFlextTypes, TestFlextTypes as t
-    from tests.typings import TestsFlextOracleOicTypes
-    from tests.unit.test_version import test_version_info_tuple, test_version_string
-    from tests.utilities import (
+    from .test_typings import TestFlextTypes, TestFlextTypes as t
+    from .typings import TestsFlextOracleOicTypes
+    from .unit.test_version import test_version_info_tuple, test_version_string
+    from .utilities import (
         TestsFlextOracleOicUtilities,
         TestsFlextOracleOicUtilities as u,
     )
