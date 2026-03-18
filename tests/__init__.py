@@ -13,10 +13,7 @@ if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
 
     from . import unit as unit
-    from .constants import (
-        TestsFlextOracleOicConstants,
-        TestsFlextOracleOicConstants as c,
-    )
+    from .constants import TestsFlextOracleOicConstants, c
     from .models import TestsFlextOracleOicModels, m, tm
     from .protocols import TestsFlextOracleOicProtocols, p
     from .test_basic import TestBasicFunctionality
@@ -31,13 +28,10 @@ if TYPE_CHECKING:
         TestOICConnectionInfo,
         TestOICIntegrationInfo,
     )
-    from .test_typings import TestFlextTypes, TestFlextTypes as t
-    from .typings import TestsFlextOracleOicTypes
+    from .test_typings import TestFlextTypes
+    from .typings import TestsFlextOracleOicTypes, t
     from .unit.test_version import test_version_info_tuple, test_version_string
-    from .utilities import (
-        TestsFlextOracleOicUtilities,
-        TestsFlextOracleOicUtilities as u,
-    )
+    from .utilities import TestsFlextOracleOicUtilities, u
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "TestBasicFunctionality": ("tests.test_basic", "TestBasicFunctionality"),
@@ -56,16 +50,16 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "TestsFlextOracleOicProtocols": ("tests.protocols", "TestsFlextOracleOicProtocols"),
     "TestsFlextOracleOicTypes": ("tests.typings", "TestsFlextOracleOicTypes"),
     "TestsFlextOracleOicUtilities": ("tests.utilities", "TestsFlextOracleOicUtilities"),
-    "c": ("tests.constants", "TestsFlextOracleOicConstants"),
+    "c": ("tests.constants", "c"),
     "m": ("tests.models", "m"),
     "p": ("tests.protocols", "p"),
-    "t": ("tests.test_typings", "TestFlextTypes"),
+    "t": ("tests.typings", "t"),
     "test_basic_import": ("tests.test_import", "test_basic_import"),
     "test_config_import": ("tests.test_import", "test_config_import"),
     "test_version_info_tuple": ("tests.unit.test_version", "test_version_info_tuple"),
     "test_version_string": ("tests.unit.test_version", "test_version_string"),
     "tm": ("tests.models", "tm"),
-    "u": ("tests.utilities", "TestsFlextOracleOicUtilities"),
+    "u": ("tests.utilities", "u"),
     "unit": ("tests.unit", ""),
 }
 
