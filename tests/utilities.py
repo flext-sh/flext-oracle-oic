@@ -13,3 +13,7 @@ from flext_tests import FlextTestsUtilities
 
 class TestsFlextOracleOicUtilities(FlextTestsUtilities):
     """Test utilities for flextoracleoic."""
+
+
+u = TestsFlextOracleOicUtilities
+__all__ = ["TestsFlextOracleOicUtilities", "u"]

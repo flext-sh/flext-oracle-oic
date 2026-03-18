@@ -24,6 +24,6 @@ class TestsFlextOracleOicProtocols(FlextTestsProtocols, FlextOracleOicProtocols)
     """
 
 
-p = TestsFlextOracleOicProtocols
-p = TestsFlextOracleOicProtocols
 __all__ = ["TestsFlextOracleOicProtocols", "p"]
+
+p = TestsFlextOracleOicProtocols
