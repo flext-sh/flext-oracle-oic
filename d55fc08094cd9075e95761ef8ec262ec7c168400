@@ -1,0 +1,23 @@
+src/flext_oracle_oic/ext_services.py
+  0fb2d9539512fe80 629-634,639-644,646-652,660-662,664,669,674,682-684
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.12",
+  "base_commit_sha": "d55fc08094cd9075e95761ef8ec262ec7c168400",
+  "prompts": {
+    "0fb2d9539512fe80": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_2feca499dffeo7Yde2XRqw4tW3",
+        "model": "anthropic/claude-opus-4-6"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>",
+      "messages": [],
+      "total_additions": 30,
+      "total_deletions": 68,
+      "accepted_lines": 28,
+      "overriden_lines": 0
+    }
+  }
+}
