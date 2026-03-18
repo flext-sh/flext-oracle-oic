@@ -27,9 +27,7 @@ from flext_oracle_oic.utilities import FlextOracleOicUtilities
 logger = FlextLogger(__name__)
 
 
-class FlextOracleOicExtServices(
-    FlextService[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]
-):
+class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
     """Single unified Oracle OIC Extension services class.
 
     Contains all service functionality as nested classes following FLEXT principles.
@@ -38,7 +36,7 @@ class FlextOracleOicExtServices(
     @override
     def execute(
         self: Self,
-    ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> r[list[t.ValueOrModel]]:
         """Execute main service operation - delegates to nested service."""
         service = self.OracleOicExtensionService()
         return service.execute()
@@ -59,9 +57,7 @@ class FlextOracleOicExtServices(
             """Parse response as JSON."""
             ...
 
-    class OracleOicExtensionService(
-        FlextService[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]
-    ):
+    class OracleOicExtensionService(FlextService[list[t.ValueOrModel]]):
         """Main Oracle OIC Extension service.
 
         FLEXT Compliant: Domain service for Oracle OIC operations
@@ -134,14 +130,21 @@ class FlextOracleOicExtServices(
         @override
         def execute(
             self: Self,
-        ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+        ) -> r[list[t.ValueOrModel]]:
             """Execute the main domain service operation.
 
             Returns:
             r containing list of OIC integrations or error
 
             """
-            return self.list_integrations()
+            return self.list_integrations().map(self._to_service_result)
+
+        @staticmethod
+        def _to_service_result(
+            integrations: list[FlextOracleOicModels.OracleOic.OICIntegrationInfo],
+        ) -> list[t.ValueOrModel]:
+            service_result: list[t.ValueOrModel] = list(integrations)
+            return service_result
 
         def list_connections(
             self, type_filter: list[str] | None = None
@@ -529,10 +532,12 @@ class FlextOracleOicExtServices(
             """
             try:
                 self.logger.info("Applying message router pattern")
-                pattern_config: dict[str, t.NormalizedValue] = {
-                    "routing_rules": routing_rules,
-                    "message_data": message_data,
-                }
+                pattern_config = (
+                    FlextOracleOicModels.OracleOic.MessageRouterPatternConfig(
+                        routing_rules=routing_rules,
+                        message_data=message_data,
+                    )
+                )
                 validation_result = FlextOracleOicUtilities.PatternAnalysis.validate_pattern_configuration(
                     "message_router", pattern_config
                 )
@@ -576,10 +581,12 @@ class FlextOracleOicExtServices(
             """
             try:
                 self.logger.info("Applying scatter-gather pattern")
-                pattern_config: Mapping[str, t.NormalizedValue] = {
-                    "target_services": target_endpoints,
-                    "request_data": request_data,
-                }
+                pattern_config = (
+                    FlextOracleOicModels.OracleOic.ScatterGatherPatternConfig(
+                        target_services=target_endpoints,
+                        request_data=request_data,
+                    )
+                )
                 validation_result = FlextOracleOicUtilities.PatternAnalysis.validate_pattern_configuration(
                     "scatter_gather", pattern_config
                 )

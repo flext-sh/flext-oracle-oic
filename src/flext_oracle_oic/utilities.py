@@ -21,9 +21,10 @@ from datetime import UTC, datetime
 from urllib.parse import urljoin
 
 from flext_core import FlextUtilities, r, t
-from pydantic import SecretStr
+from pydantic import BaseModel, SecretStr
 
 from flext_oracle_oic.constants import c
+from flext_oracle_oic.models import FlextOracleOicModels
 
 
 class FlextOracleOicUtilities(FlextUtilities):
@@ -481,8 +482,8 @@ class FlextOracleOicUtilities(FlextUtilities):
 
         @staticmethod
         def validate_pattern_configuration(
-            pattern_type: str, configuration: Mapping[str, t.NormalizedValue]
-        ) -> r[Mapping[str, t.NormalizedValue]]:
+            pattern_type: str, configuration: BaseModel
+        ) -> r[BaseModel]:
             """Validate Oracle OIC integration pattern configuration.
 
             Args:
@@ -495,30 +496,32 @@ class FlextOracleOicUtilities(FlextUtilities):
             """
             if pattern_type not in c.OracleOicValidation.SUPPORTED_PATTERNS:
                 supported = ", ".join(sorted(c.OracleOicValidation.SUPPORTED_PATTERNS))
-                return r[Mapping[str, t.NormalizedValue]].fail(
+                return r[BaseModel].fail(
                     f"Unsupported pattern type. Supported: {supported}"
                 )
-            validated_config = dict(configuration)
             if pattern_type == "message_router":
-                if "routing_rules" not in configuration:
-                    return r[Mapping[str, t.NormalizedValue]].fail(
-                        "Message router pattern requires routing_rules"
+                if not isinstance(
+                    configuration,
+                    FlextOracleOicModels.OracleOic.MessageRouterPatternConfig,
+                ):
+                    return r[BaseModel].fail(
+                        "Message router pattern requires MessageRouterPatternConfig"
                     )
             elif pattern_type == "scatter_gather":
-                if "target_services" not in configuration:
-                    return r[Mapping[str, t.NormalizedValue]].fail(
-                        "Scatter-gather pattern requires target_services"
+                if not isinstance(
+                    configuration,
+                    FlextOracleOicModels.OracleOic.ScatterGatherPatternConfig,
+                ):
+                    return r[BaseModel].fail(
+                        "Scatter-gather pattern requires ScatterGatherPatternConfig"
                     )
-                if "aggregation_strategy" not in configuration:
-                    validated_config["aggregation_strategy"] = "collect_all"
-            if (
-                pattern_type == "publish_subscribe"
-                and "event_types" not in configuration
-            ):
-                return r[Mapping[str, t.NormalizedValue]].fail(
-                    "Publish-subscribe pattern requires event_types"
-                )
-            return r[Mapping[str, t.NormalizedValue]].ok(validated_config)
+            elif pattern_type == "publish_subscribe":
+                configuration_data = configuration.model_dump(mode="python")
+                if "event_types" not in configuration_data:
+                    return r[BaseModel].fail(
+                        "Publish-subscribe pattern requires event_types"
+                    )
+            return r[BaseModel].ok(configuration)
 
     class MonitoringUtilities:
         """Oracle OIC monitoring and health check utilities."""
@@ -541,9 +544,9 @@ class FlextOracleOicUtilities(FlextUtilities):
                     "Metrics must be a dictionary"
                 )
             overall_health = "healthy"
-            warnings: list[str] = []
-            critical_issues: list[str] = []
-            recommendations: list[str] = []
+            warnings: list[t.NormalizedValue] = []
+            critical_issues: list[t.NormalizedValue] = []
+            recommendations: list[t.NormalizedValue] = []
             if "average_response_time" in metrics:
                 response_time = metrics["average_response_time"]
                 if isinstance(response_time, (int, float)):
@@ -586,9 +589,9 @@ class FlextOracleOicUtilities(FlextUtilities):
                         )
             analysis: dict[str, t.NormalizedValue] = {
                 "overall_health": overall_health,
-                "warnings": warnings,
-                "critical_issues": critical_issues,
-                "recommendations": recommendations,
+                "warnings": tuple(warnings),
+                "critical_issues": tuple(critical_issues),
+                "recommendations": tuple(recommendations),
             }
             return r[Mapping[str, t.NormalizedValue]].ok(analysis)
 
