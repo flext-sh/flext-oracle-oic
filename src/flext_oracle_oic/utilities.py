@@ -328,6 +328,32 @@ class FlextOracleOicUtilities(FlextUtilities):
         """Oracle OIC API request construction utilities."""
 
         @staticmethod
+        def _build_resource_endpoint(
+            base_url: str,
+            *,
+            api_version: str,
+            resource_name: str,
+            resource_label: str,
+            resource_id: str | None = None,
+        ) -> r[str]:
+            url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
+                base_url
+            )
+            if url_result.is_failure:
+                return r[str].fail(f"Base URL validation: {url_result.error}")
+            validated_base_url = url_result.value
+            path_parts = ["ic", "api", "integration", api_version, resource_name]
+            if resource_id:
+                match resource_id:
+                    case str() as raw_resource_id if raw_resource_id.strip():
+                        path_parts.append(raw_resource_id.strip())
+                    case _:
+                        return r[str].fail(f"{resource_label} must be non-empty string")
+            endpoint_path = "/" + "/".join(path_parts)
+            full_url = urljoin(validated_base_url + "/", endpoint_path.lstrip("/"))
+            return r[str].ok(full_url)
+
+        @staticmethod
         def build_connection_endpoint(
             base_url: str, api_version: str = "v1", connection_id: str | None = None
         ) -> r[str]:
@@ -342,22 +368,13 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing constructed endpoint URL or error
 
             """
-            url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
-                base_url
+            return FlextOracleOicUtilities.APIRequestBuilder._build_resource_endpoint(
+                base_url=base_url,
+                api_version=api_version,
+                resource_name="connections",
+                resource_label="Connection ID",
+                resource_id=connection_id,
             )
-            if url_result.is_failure:
-                return r[str].fail(f"Base URL validation: {url_result.error}")
-            validated_base_url = url_result.value
-            path_parts = ["ic", "api", "integration", api_version, "connections"]
-            if connection_id:
-                match connection_id:
-                    case str() as raw_connection_id if raw_connection_id.strip():
-                        path_parts.append(raw_connection_id.strip())
-                    case _:
-                        return r[str].fail("Connection ID must be non-empty string")
-            endpoint_path = "/" + "/".join(path_parts)
-            full_url = urljoin(validated_base_url + "/", endpoint_path.lstrip("/"))
-            return r[str].ok(full_url)
 
         @staticmethod
         def build_integration_endpoint(
@@ -374,22 +391,13 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing constructed endpoint URL or error
 
             """
-            url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
-                base_url
+            return FlextOracleOicUtilities.APIRequestBuilder._build_resource_endpoint(
+                base_url=base_url,
+                api_version=api_version,
+                resource_name="integrations",
+                resource_label="Integration ID",
+                resource_id=integration_id,
             )
-            if url_result.is_failure:
-                return r[str].fail(f"Base URL validation: {url_result.error}")
-            validated_base_url = url_result.value
-            path_parts = ["ic", "api", "integration", api_version, "integrations"]
-            if integration_id:
-                match integration_id:
-                    case str() as raw_integration_id if raw_integration_id.strip():
-                        path_parts.append(raw_integration_id.strip())
-                    case _:
-                        return r[str].fail("Integration ID must be non-empty string")
-            endpoint_path = "/" + "/".join(path_parts)
-            full_url = urljoin(validated_base_url + "/", endpoint_path.lstrip("/"))
-            return r[str].ok(full_url)
 
         @staticmethod
         def build_request_headers(
