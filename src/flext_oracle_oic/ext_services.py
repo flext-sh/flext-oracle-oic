@@ -436,7 +436,7 @@ class FlextOracleOicExtServices(
                     ValueError,
                 ) as e:
                     err_msg: str = str(e)
-                    self.logger.warning("Failed to parse connection: %s", err_msg)
+                    self.logger.warning(f"Failed to parse connection: {err_msg}")
                     continue
             self.logger.info(f"Retrieved {len(connection_infos)} connections")
             return r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]].ok(
@@ -470,7 +470,7 @@ class FlextOracleOicExtServices(
                     ValueError,
                 ) as e:
                     err_msg: str = str(e)
-                    self.logger.warning("Failed to parse integration: %s", err_msg)
+                    self.logger.warning(f"Failed to parse integration: {err_msg}")
                     continue
             self.logger.info(f"Retrieved {len(integration_infos)} integrations")
             return r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].ok(
@@ -626,66 +626,30 @@ class FlextOracleOicExtServices(
         def activate_integration(
             self, integration_id: str
         ) -> r[FlextOracleOicModels.OracleOic.IntegrationStatus]:
-            """Activate an Oracle OIC integration.
-
-            Args:
-            integration_id: Integration identifier
-
-            Returns:
-            r containing integration status or error
-
-            """
-            try:
-                client_result = self._get_client()
-                if not client_result.is_success:
-                    return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
-                        client_result.error or "Client creation failed"
-                    )
-                client = client_result.value
-                activation_data: dict[str, t.NormalizedValue] = {
-                    "status": FlextOracleOicConstants.Integration.Status.ACTIVATED
-                }
-                activate_result = client.update_integration(
-                    integration_id, activation_data
-                )
-                if not activate_result.is_success:
-                    return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
-                        activate_result.error or "Activation failed"
-                    )
-                status = FlextOracleOicModels.OracleOic.IntegrationStatus(
-                    integration_id=integration_id,
-                    integration_version=FlextOracleOicConstants.Integration.DEFAULT_VERSION,
-                    status=FlextOracleOicConstants.Integration.Status.ACTIVATED,
-                    last_updated=FlextOracleOicConstants.Integration.DEFAULT_LAST_UPDATED,
-                    activated_by=FlextOracleOicConstants.Integration.DEFAULT_ACTIVATED_BY,
-                )
-                self.logger.info(
-                    "Integration %s activated successfully", integration_id
-                )
-                return r[FlextOracleOicModels.OracleOic.IntegrationStatus].ok(status)
-            except (
-                ConnectionError,
-                TimeoutError,
-                ValueError,
-            ) as e:
-                error_msg = f"Failed to activate integration {integration_id}: {e}"
-                self.logger.exception(error_msg)
-                return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
-                    error_msg
-                )
+            """Activate an Oracle OIC integration."""
+            return self._toggle_integration(
+                integration_id,
+                FlextOracleOicConstants.Integration.Status.ACTIVATED,
+                "activated",
+            )
 
         def deactivate_integration(
             self, integration_id: str
         ) -> r[FlextOracleOicModels.OracleOic.IntegrationStatus]:
-            """Deactivate an Oracle OIC integration.
+            """Deactivate an Oracle OIC integration."""
+            return self._toggle_integration(
+                integration_id,
+                FlextOracleOicConstants.Integration.Status.DEACTIVATED,
+                "deactivated",
+            )
 
-            Args:
-            integration_id: Integration identifier
-
-            Returns:
-            r containing integration status or error
-
-            """
+        def _toggle_integration(
+            self,
+            integration_id: str,
+            target_status: str,
+            action_label: str,
+        ) -> r[FlextOracleOicModels.OracleOic.IntegrationStatus]:
+            """Set integration to *target_status* and return its new status."""
             try:
                 client_result = self._get_client()
                 if not client_result.is_success:
@@ -693,25 +657,21 @@ class FlextOracleOicExtServices(
                         client_result.error or "Client creation failed"
                     )
                 client = client_result.value
-                deactivation_data: dict[str, t.NormalizedValue] = {
-                    "status": FlextOracleOicConstants.Integration.Status.DEACTIVATED
-                }
-                deactivate_result = client.update_integration(
-                    integration_id, deactivation_data
-                )
-                if not deactivate_result.is_success:
+                update_data: dict[str, t.NormalizedValue] = {"status": target_status}
+                update_result = client.update_integration(integration_id, update_data)
+                if not update_result.is_success:
                     return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
-                        deactivate_result.error or "Deactivation failed"
+                        update_result.error or f"{action_label.capitalize()} failed"
                     )
                 status = FlextOracleOicModels.OracleOic.IntegrationStatus(
                     integration_id=integration_id,
                     integration_version=FlextOracleOicConstants.Integration.DEFAULT_VERSION,
-                    status=FlextOracleOicConstants.Integration.Status.DEACTIVATED,
+                    status=target_status,
                     last_updated=FlextOracleOicConstants.Integration.DEFAULT_LAST_UPDATED,
                     activated_by=FlextOracleOicConstants.Integration.DEFAULT_ACTIVATED_BY,
                 )
                 self.logger.info(
-                    "Integration %s deactivated successfully", integration_id
+                    f"Integration {integration_id} {action_label} successfully"
                 )
                 return r[FlextOracleOicModels.OracleOic.IntegrationStatus].ok(status)
             except (
@@ -719,7 +679,9 @@ class FlextOracleOicExtServices(
                 TimeoutError,
                 ValueError,
             ) as e:
-                error_msg = f"Failed to deactivate integration {integration_id}: {e}"
+                error_msg = (
+                    f"Failed to {action_label} integration {integration_id}: {e}"
+                )
                 self.logger.exception(error_msg)
                 return r[FlextOracleOicModels.OracleOic.IntegrationStatus].fail(
                     error_msg

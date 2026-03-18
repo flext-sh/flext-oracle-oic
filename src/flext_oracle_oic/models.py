@@ -165,6 +165,37 @@ class FlextOracleOicModels(FlextModels):
                 ),
             ]
 
+        class MessageRouterPatternConfig(FlextModels.Value):
+            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
+
+            message_data: Annotated[
+                t.ConfigMap,
+                Field(description="Message payload used for routing"),
+            ]
+            routing_rules: Annotated[
+                list[t.ConfigMap],
+                Field(description="Ordered routing rules"),
+            ]
+
+        class ScatterGatherPatternConfig(FlextModels.Value):
+            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
+
+            request_data: Annotated[
+                t.ConfigMap,
+                Field(description="Request payload to scatter"),
+            ]
+            target_services: Annotated[
+                list[str],
+                Field(description="Target service endpoints"),
+            ]
+            aggregation_strategy: Annotated[
+                str,
+                Field(
+                    default="collect_all",
+                    description="Aggregation behavior for gathered responses",
+                ),
+            ]
+
         class RequestParams(FlextModels.Value):
             """Parameters for OIC API request.
 
