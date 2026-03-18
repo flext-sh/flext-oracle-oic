@@ -89,7 +89,8 @@ class FlextOracleOicApi(FlextService[None]):
         return self._service.activate_integration(integration_id)
 
     def create_integration(
-        self, integration_data: Mapping[str, t.NormalizedValue]
+        self,
+        integration_data: Mapping[str, t.NormalizedValue],
     ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
@@ -150,7 +151,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return self._service.execute_app_driven_orchestration(
-            integration_id, payload, **kwargs
+            integration_id,
+            payload,
+            **kwargs,
         )
 
     def execute_file_transfer(
@@ -171,7 +174,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return self._service.execute_file_transfer(
-            integration_id, file_config, **kwargs
+            integration_id,
+            file_config,
+            **kwargs,
         )
 
     def execute_scheduled_orchestration(
@@ -192,7 +197,9 @@ class FlextOracleOicApi(FlextService[None]):
 
         """
         return self._service.execute_scheduled_orchestration(
-            integration_id, schedule_config, **kwargs
+            integration_id,
+            schedule_config,
+            **kwargs,
         )
 
     def get_auth_context(self) -> Mapping[str, t.NormalizedValue]:
@@ -244,7 +251,8 @@ class FlextOracleOicApi(FlextService[None]):
         return self._service.get_health_status()
 
     def get_integration(
-        self, integration_id: str
+        self,
+        integration_id: str,
     ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
@@ -296,7 +304,9 @@ class FlextOracleOicApi(FlextService[None]):
         return self._service.test_connection()
 
     def update_integration(
-        self, integration_id: str, integration_data: Mapping[str, t.NormalizedValue]
+        self,
+        integration_id: str,
+        integration_data: Mapping[str, t.NormalizedValue],
     ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 

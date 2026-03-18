@@ -357,3 +357,6 @@ staging/
 .reports/
 .venv/
 __pycache__/
+
+# --- workspace-sync: required ignores (auto-managed) ---
+base.mk

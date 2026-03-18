@@ -33,41 +33,51 @@ class FlextOracleOicTypes(FlextTypes):
         """Oracle OIC integration complex types."""
 
         type IntegrationConfiguration = dict[
-            str, str | int | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | int | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type IntegrationFlow = list[
             dict[str, str | Mapping[str, FlextTypes.NormalizedValue]]
         ]
         type IntegrationMapping = dict[
-            str, str | list[str] | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | list[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type IntegrationMetadata = dict[
-            str, str | int | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | int | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type IntegrationMonitoring = dict[
-            str, bool | int | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            bool | int | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type IntegrationSecurity = dict[
-            str, str | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
 
     class Connection:
         """Oracle OIC connection complex types."""
 
         type ConnectionConfiguration = dict[
-            str, str | int | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | int | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type ConnectionPool = dict[
-            str, int | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            int | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type ConnectionSecurity = dict[
-            str, str | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type ConnectionMonitoring = dict[
-            str, int | float | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            int | float | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type ConnectionLifecycle = dict[
-            str, str | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type ConnectionValidation = dict[str, bool | str | list[str]]
 
@@ -75,56 +85,67 @@ class FlextOracleOicTypes(FlextTypes):
         """Oracle OIC adapter complex types."""
 
         type AdapterConfiguration = dict[
-            str, str | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type AdapterCapabilities = list[
             dict[str, str | bool | Mapping[str, FlextTypes.NormalizedValue]]
         ]
         type AdapterMetadata = dict[
-            str, str | list[str] | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | list[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type AdapterBinding = dict[str, str | Mapping[str, FlextTypes.NormalizedValue]]
         type AdapterTransformation = list[
             dict[str, str | Mapping[str, FlextTypes.NormalizedValue]]
         ]
         type AdapterValidation = dict[
-            str, bool | list[str] | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            bool | list[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
 
     class MessageProcessing:
         """Oracle OIC message processing complex types."""
 
         type MessageConfiguration = dict[
-            str, str | int | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | int | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type MessageFormat = dict[
-            str, str | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type MessageTransformation = list[
             dict[str, str | Mapping[str, FlextTypes.NormalizedValue]]
         ]
         type MessageValidation = dict[
-            str, bool | str | list[str] | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            bool | str | list[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type MessageRouting = dict[
-            str, str | list[str] | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | list[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type MessageTracking = dict[
-            str, str | int | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | int | Mapping[str, FlextTypes.NormalizedValue],
         ]
 
     class Transformation:
         """Oracle OIC transformation complex types."""
 
         type TransformationRule = dict[
-            str, str | list[str] | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | list[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type TransformationMapping = dict[
-            str, str | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type TransformationValidation = dict[str, bool | str | list[str]]
         type TransformationEngine = dict[
-            str, str | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type TransformationResult = dict[
             str,
@@ -133,26 +154,31 @@ class FlextOracleOicTypes(FlextTypes):
             | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type TransformationMetrics = dict[
-            str, int | float | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            int | float | Mapping[str, FlextTypes.NormalizedValue],
         ]
 
     class Monitoring:
         """Oracle OIC monitoring complex types."""
 
         type MonitoringConfiguration = dict[
-            str, bool | str | int | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            bool | str | int | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type MonitoringMetrics = dict[
-            str, int | float | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            int | float | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type MonitoringAlerts = list[
             dict[str, str | int | bool | Mapping[str, FlextTypes.NormalizedValue]]
         ]
         type MonitoringDashboard = dict[
-            str, str | list[Mapping[str, FlextTypes.NormalizedValue]]
+            str,
+            str | list[Mapping[str, FlextTypes.NormalizedValue]],
         ]
         type MonitoringReports = dict[
-            str, str | list[Mapping[str, FlextTypes.NormalizedValue]]
+            str,
+            str | list[Mapping[str, FlextTypes.NormalizedValue]],
         ]
         type MonitoringThresholds = dict[str, int | float | bool]
 
@@ -160,20 +186,24 @@ class FlextOracleOicTypes(FlextTypes):
         """Oracle OIC security complex types."""
 
         type SecurityConfiguration = dict[
-            str, str | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type SecurityPolicy = dict[
-            str, str | bool | list[str] | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | bool | list[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type SecurityCredentials = dict[
-            str, str | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type SecurityValidation = dict[str, bool | str | list[str]]
         type SecurityAudit = list[
             dict[str, str | int | Mapping[str, FlextTypes.NormalizedValue]]
         ]
         type SecurityCompliance = dict[
-            str, bool | str | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            bool | str | Mapping[str, FlextTypes.NormalizedValue],
         ]
 
     class OicCore:
@@ -185,19 +215,23 @@ class FlextOracleOicTypes(FlextTypes):
 
         type ConfigDict = dict[str, FlextTypes.NormalizedValue]
         type ConnectionDict = dict[
-            str, str | int | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | int | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type AuthDict = dict[str, str | Mapping[str, FlextTypes.NormalizedValue]]
         type ContextDict = dict[str, FlextTypes.NormalizedValue]
         type IntegrationDict = dict[
-            str, FlextTypes.NormalizedValue | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            FlextTypes.NormalizedValue | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type WorkflowDict = dict[
-            str, bool | str | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            bool | str | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type AdapterDict = dict[str, FlextTypes.NormalizedValue]
         type MessageDict = dict[
-            str, str | bool | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type DataDict = dict[str, FlextTypes.NormalizedValue]
         type ResponseDict = dict[str, FlextTypes.NormalizedValue]
@@ -221,7 +255,8 @@ class FlextOracleOicTypes(FlextTypes):
         type OicProjectConfig = dict[str, FlextTypes.NormalizedValue]
         type IntegrationConfig = dict[str, str | int | bool | list[str]]
         type WorkflowConfig = dict[
-            str, bool | str | Mapping[str, FlextTypes.NormalizedValue]
+            str,
+            bool | str | Mapping[str, FlextTypes.NormalizedValue],
         ]
         type AdapterConfig = dict[str, FlextTypes.NormalizedValue]
 

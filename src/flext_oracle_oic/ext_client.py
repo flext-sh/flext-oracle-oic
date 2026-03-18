@@ -71,18 +71,22 @@ class FlextOracleOicClient:
             self._client = None
 
     def create_connection(
-        self, connection_data: Mapping[str, t.NormalizedValue]
+        self,
+        connection_data: Mapping[str, t.NormalizedValue],
     ) -> r[Mapping[str, t.NormalizedValue]]:
         """Create connection in OIC."""
         json_data: dict[str, t.NormalizedValue] = {
             str(k): str(v) for k, v in connection_data.items()
         }
         return self.make_request(
-            FlextOracleOicConstants.API.Method.POST, "/connections", json=json_data
+            FlextOracleOicConstants.API.Method.POST,
+            "/connections",
+            json=json_data,
         )
 
     def create_integration(
-        self, integration_data: Mapping[str, t.NormalizedValue]
+        self,
+        integration_data: Mapping[str, t.NormalizedValue],
     ) -> r[Mapping[str, t.NormalizedValue]]:
         """Create integration in OIC."""
         return self.make_request(
@@ -107,7 +111,9 @@ class FlextOracleOicClient:
         """Execute file transfer pattern for an integration."""
         endpoint = f"/integrations/{integration_id}/files"
         result = self.make_request(
-            FlextOracleOicConstants.API.Method.POST, endpoint, json=file_config
+            FlextOracleOicConstants.API.Method.POST,
+            endpoint,
+            json=file_config,
         )
         return result.unwrap_or({})
 
@@ -120,7 +126,9 @@ class FlextOracleOicClient:
         """Execute scheduled orchestration for an integration."""
         endpoint = f"/integrations/{integration_id}/schedules"
         result = self.make_request(
-            FlextOracleOicConstants.API.Method.POST, endpoint, json=schedule_config
+            FlextOracleOicConstants.API.Method.POST,
+            endpoint,
+            json=schedule_config,
         )
         return result.unwrap_or({})
 
@@ -137,7 +145,9 @@ class FlextOracleOicClient:
         )
 
     def get_connections(
-        self, type_filter: list[str] | None = None, page_size: int = 100
+        self,
+        type_filter: list[str] | None = None,
+        page_size: int = 100,
     ) -> r[list[Mapping[str, t.NormalizedValue]]]:
         """Get adapter connections from OIC."""
         params: dict[str, str] = {}
@@ -146,18 +156,23 @@ class FlextOracleOicClient:
         return self.paginate_request("/connections", page_size=page_size, params=params)
 
     def get_integrations(
-        self, status_filter: list[str] | None = None, page_size: int = 100
+        self,
+        status_filter: list[str] | None = None,
+        page_size: int = 100,
     ) -> r[list[Mapping[str, t.NormalizedValue]]]:
         """Get integration flows from OIC."""
         params: dict[str, str] = {}
         if status_filter:
             params["q"] = f"status in ({','.join(status_filter)})"
         return self.paginate_request(
-            "/integrations", page_size=page_size, params=params
+            "/integrations",
+            page_size=page_size,
+            params=params,
         )
 
     def get_lookups(
-        self, page_size: int = 100
+        self,
+        page_size: int = 100,
     ) -> r[list[Mapping[str, t.NormalizedValue]]]:
         """Get lookup tables from OIC."""
         return self.paginate_request("/lookups", page_size=page_size)
@@ -174,7 +189,8 @@ class FlextOracleOicClient:
         return {"grant_type": "client_credentials", "scope": scope}
 
     def get_packages(
-        self, page_size: int = 100
+        self,
+        page_size: int = 100,
     ) -> r[list[Mapping[str, t.NormalizedValue]]]:
         """Get integration packages from OIC."""
         return self.paginate_request("/packages", page_size=page_size)
@@ -204,12 +220,13 @@ class FlextOracleOicClient:
                     r[FlextApi].ok(self._client)
                     if self._client is not None
                     else self._create_authenticated_client()
-                ).map(lambda client: (client, req_data))
+                ).map(lambda client: (client, req_data)),
             )
             .flat_map(
                 lambda client_req: self._execute_api_request(
-                    client_req[0], *client_req[1]
-                )
+                    client_req[0],
+                    *client_req[1],
+                ),
             )
             .flat_map(self._parse_api_response)
         )
@@ -235,17 +252,17 @@ class FlextOracleOicClient:
                 )
                 if response_result.is_failure:
                     return r[list[Mapping[str, t.NormalizedValue]]].fail(
-                        response_result.error or "Request failed"
+                        response_result.error or "Request failed",
                     )
                 response_data = response_result.value
                 if not u.is_dict_like(response_data):
                     return r[list[Mapping[str, t.NormalizedValue]]].fail(
-                        "Invalid response data format"
+                        "Invalid response data format",
                     )
                 items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):
                     return r[list[Mapping[str, t.NormalizedValue]]].fail(
-                        "Invalid items format"
+                        "Invalid items format",
                     )
                 items: list[dict[str, t.NormalizedValue]] = [
                     dict(item) for item in items_raw if isinstance(item, dict)
@@ -266,7 +283,9 @@ class FlextOracleOicClient:
             return r[list[Mapping[str, t.NormalizedValue]]].fail(error_msg)
 
     def update_integration(
-        self, integration_id: str, integration_data: Mapping[str, t.NormalizedValue]
+        self,
+        integration_id: str,
+        integration_data: Mapping[str, t.NormalizedValue],
     ) -> r[Mapping[str, t.NormalizedValue]]:
         """Update integration in OIC."""
         endpoint = f"/integrations/{integration_id}"
@@ -274,7 +293,9 @@ class FlextOracleOicClient:
             str(k): str(v) for k, v in integration_data.items()
         }
         return self.make_request(
-            FlextOracleOicConstants.API.Method.PUT, endpoint, json=json_data
+            FlextOracleOicConstants.API.Method.PUT,
+            endpoint,
+            json=json_data,
         )
 
     def _build_client_with_token(self, token: str) -> r[FlextApi]:
@@ -336,7 +357,7 @@ class FlextOracleOicClient:
                 return r[t.NormalizedValue].fail(f"Unsupported HTTP method: {method}")
             if response_result.is_failure:
                 return r[t.NormalizedValue].fail(
-                    f"Request failed: {response_result.error}"
+                    f"Request failed: {response_result.error}",
                 )
             return r[t.NormalizedValue].ok(response_result.value)
         except (
@@ -349,7 +370,8 @@ class FlextOracleOicClient:
             return r[t.NormalizedValue].fail(error_msg)
 
     def _execute_token_request(
-        self, request_data: tuple[Mapping[str, str], Mapping[str, str]]
+        self,
+        request_data: tuple[Mapping[str, str], Mapping[str, str]],
     ) -> r[t.NormalizedValue]:
         """Execute OAuth token request."""
         headers, data = request_data
@@ -362,7 +384,7 @@ class FlextOracleOicClient:
             response_result = api_client.post("", data=oauth_data, headers=headers)
             if response_result.is_failure:
                 return r[t.NormalizedValue].fail(
-                    f"OAuth request failed: {response_result.error}"
+                    f"OAuth request failed: {response_result.error}",
                 )
             response = response_result.value
             if (
@@ -370,7 +392,7 @@ class FlextOracleOicClient:
                 >= FlextOracleOicConstants.API.HTTP_ERROR_STATUS_THRESHOLD
             ):
                 return r[t.NormalizedValue].fail(
-                    f"OAuth HTTP error: {response.status_code}"
+                    f"OAuth HTTP error: {response.status_code}",
                 )
             return r[t.NormalizedValue].ok(response)
         except (
@@ -383,12 +405,15 @@ class FlextOracleOicClient:
             return r[t.NormalizedValue].fail(error_msg)
 
     def _parse_api_response(
-        self, response: t.NormalizedValue
+        self,
+        response: t.NormalizedValue,
     ) -> r[Mapping[str, t.NormalizedValue]]:
         """Parse API response based on content type."""
         try:
             headers: dict[str, t.NormalizedValue] | None = getattr(
-                response, "headers", None
+                response,
+                "headers",
+                None,
             )
             body: t.NormalizedValue | None = getattr(response, "body", None)
             match headers:
@@ -405,26 +430,26 @@ class FlextOracleOicClient:
                                 ] = TypeAdapter(dict[str, t.NormalizedValue])
                                 parsed_data = json_parser.validate_json(body)
                                 return r[Mapping[str, t.NormalizedValue]].ok(
-                                    parsed_data
+                                    parsed_data,
                                 )
                             case _:
                                 return r[Mapping[str, t.NormalizedValue]].fail(
-                                    "Empty JSON response"
+                                    "Empty JSON response",
                                 )
                     match body:
                         case str():
                             return r[Mapping[str, t.NormalizedValue]].ok({
-                                "raw_content": body
+                                "raw_content": body,
                             })
                         case _ if isinstance(body, Mapping):
                             return r[Mapping[str, t.NormalizedValue]].ok(body)
                         case _:
                             return r[Mapping[str, t.NormalizedValue]].ok({
-                                "raw_content": str(body)
+                                "raw_content": str(body),
                             })
                 case _:
                     return r[Mapping[str, t.NormalizedValue]].fail(
-                        "Invalid response format"
+                        "Invalid response format",
                     )
         except (
             ConnectionError,

@@ -19,11 +19,6 @@ from enum import StrEnum, unique
 from typing import Final, Literal
 
 from flext_core import FlextConstants
-from flext_core.constants import (
-    PROJECT_KIND_APPLICATION,
-    PROJECT_KIND_LIBRARY,
-    PROJECT_KIND_SERVICE,
-)
 
 
 class FlextOracleOicConstants(FlextConstants):
@@ -352,7 +347,7 @@ class FlextOracleOicConstants(FlextConstants):
             "ERROR",
         })
         VERSION_PATTERN: Final[re.Pattern[str]] = re.compile(
-            r"^\\d{2}\\.\\d{2}\\.\\d{4}$"
+            r"^\\d{2}\\.\\d{2}\\.\\d{4}$",
         )
         VALID_CONNECTION_TYPES: Final[frozenset[str]] = frozenset({
             "REST",
@@ -405,9 +400,6 @@ class FlextOracleOicConstants(FlextConstants):
     class ProjectType(StrEnum):
         """Project-type identifiers for Oracle OIC packages."""
 
-        LIBRARY = PROJECT_KIND_LIBRARY
-        APPLICATION = PROJECT_KIND_APPLICATION
-        SERVICE = PROJECT_KIND_SERVICE
         OIC_INTEGRATION = "oic-integration"
         INTEGRATION_FLOW = "integration-flow"
         OIC_ADAPTER = "oic-adapter"

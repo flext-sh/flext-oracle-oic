@@ -40,7 +40,8 @@ class FlextOracleOicModels(FlextModels):
                 Field(description="IDCS OAuth2 client secret"),
             ]
             oauth_token_url: Annotated[
-                str, Field(description="IDCS OAuth2 token endpoint")
+                str,
+                Field(description="IDCS OAuth2 token endpoint"),
             ]
             oauth_client_aud: Annotated[
                 str | None,
@@ -102,21 +103,26 @@ class FlextOracleOicModels(FlextModels):
             model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             integration_id: Annotated[
-                str, Field(description="Integration unique identifier")
+                str,
+                Field(description="Integration unique identifier"),
             ]
             name: Annotated[str, Field(description="Integration name")]
             status: Annotated[str, Field(description="Integration status")]
             integration_version: Annotated[
-                str, Field(description="Integration version")
+                str,
+                Field(description="Integration version"),
             ]
             description: Annotated[
-                str, Field(default="", description="Integration description")
+                str,
+                Field(default="", description="Integration description"),
             ]
             created_by: Annotated[
-                str, Field(default="", description="Creator username")
+                str,
+                Field(default="", description="Creator username"),
             ]
             last_updated: Annotated[
-                str, Field(default="", description="Last update timestamp")
+                str,
+                Field(default="", description="Last update timestamp"),
             ]
 
         class OICConnectionInfo(FlextModels.Entity):
@@ -129,14 +135,16 @@ class FlextOracleOicModels(FlextModels):
             model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             connection_id: Annotated[
-                str, Field(description="Connection unique identifier")
+                str,
+                Field(description="Connection unique identifier"),
             ]
             name: Annotated[str, Field(description="Connection name")]
             adapter_type: Annotated[str, Field(description="Adapter type")]
             status: Annotated[str, Field(description="Connection status")]
             connection_type: Annotated[str, Field(description="Connection type")]
             description: Annotated[
-                str, Field(default="", description="Connection description")
+                str,
+                Field(default="", description="Connection description"),
             ]
 
         class IntegrationStatus(FlextModels.Entity):
@@ -149,14 +157,17 @@ class FlextOracleOicModels(FlextModels):
             model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             integration_id: Annotated[
-                str, Field(description="Integration unique identifier")
+                str,
+                Field(description="Integration unique identifier"),
             ]
             integration_version: Annotated[
-                str, Field(description="Integration version")
+                str,
+                Field(description="Integration version"),
             ]
             status: Annotated[str, Field(description="Integration status")]
             last_updated: Annotated[
-                str, Field(default="", description="Last update timestamp")
+                str,
+                Field(default="", description="Last update timestamp"),
             ]
             activated_by: Annotated[
                 str,
