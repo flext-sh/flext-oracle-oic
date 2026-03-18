@@ -1,6 +1,6 @@
 """Test models for flext-oracle-oic tests.
 
-Provides TestsFlextOracleOicModels, extending FlextTestsModels with
+Provides TestsFlextOracleOicModels, extending m with
 flext-oracle-oic-specific models using COMPOSITION INHERITANCE.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -14,15 +14,15 @@ from flext_tests import m
 from flext_oracle_oic.models import FlextOracleOicModels
 
 
-class TestsFlextOracleOicModels(FlextTestsModels, FlextOracleOicModels):
+class TestsFlextOracleOicModels(m, FlextOracleOicModels):
     """Models for flext-oracle-oic tests using COMPOSITION INHERITANCE.
 
     MANDATORY: Inherits from BOTH:
-    1. FlextTestsModels - for test infrastructure (.Tests.*)
+    1. m - for test infrastructure (.Tests.*)
     2. FlextOracleOicModels - for domain models
 
     Access patterns:
-    - tm.Tests.* (generic test models from FlextTestsModels)
+    - tm.Tests.* (generic test models from m)
     - tm.* (Oracle OIC domain models)
     - m.* (production models via alternative alias)
     """
