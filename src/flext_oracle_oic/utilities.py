@@ -328,7 +328,7 @@ class FlextOracleOicUtilities(FlextUtilities):
         """Oracle OIC API request construction utilities."""
 
         @staticmethod
-        def _build_resource_endpoint(
+        def build_resource_endpoint(
             base_url: str,
             *,
             api_version: str,
@@ -336,6 +336,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             resource_label: str,
             resource_id: str | None = None,
         ) -> r[str]:
+            """Build Oracle OIC endpoint URL for a versioned resource path."""
             url_result = FlextOracleOicUtilities.ConnectionValidation.validate_base_url(
                 base_url,
             )
@@ -370,7 +371,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing constructed endpoint URL or error
 
             """
-            return FlextOracleOicUtilities.APIRequestBuilder._build_resource_endpoint(
+            return FlextOracleOicUtilities.APIRequestBuilder.build_resource_endpoint(
                 base_url=base_url,
                 api_version=api_version,
                 resource_name="connections",
@@ -395,7 +396,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing constructed endpoint URL or error
 
             """
-            return FlextOracleOicUtilities.APIRequestBuilder._build_resource_endpoint(
+            return FlextOracleOicUtilities.APIRequestBuilder.build_resource_endpoint(
                 base_url=base_url,
                 api_version=api_version,
                 resource_name="integrations",
