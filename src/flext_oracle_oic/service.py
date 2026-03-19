@@ -17,8 +17,9 @@ from types import TracebackType
 from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiModels, FlextApiSettings
-from flext_core import FlextLogger, FlextService, r, t, u
+from flext_core import FlextLogger, FlextService, r
 
+from flext_oracle_oic import t, u
 from flext_oracle_oic.constants import FlextOracleOicConstants
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.models import FlextOracleOicModels

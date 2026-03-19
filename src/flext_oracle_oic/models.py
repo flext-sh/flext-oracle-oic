@@ -8,9 +8,10 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import Annotated, ClassVar
 
-from flext_core import FlextModels, t
+from flext_core import FlextModels
 from pydantic import ConfigDict, Field, SecretStr
 
+from flext_oracle_oic import t
 from flext_oracle_oic.constants import FlextOracleOicConstants
 
 
