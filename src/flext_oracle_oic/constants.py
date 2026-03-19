@@ -57,11 +57,8 @@ class FlextOracleOicConstants(FlextConstants):
             "https://localhost.integration.ocp.oraclecloud.com"
         )
         DEFAULT_TIMEOUT: Final[int] = FlextConstants.Network.DEFAULT_TIMEOUT
-        DEFAULT_MAX_RETRIES: Final[int] = FlextConstants.DEFAULT_MAX_RETRY_ATTEMPTS
         DEFAULT_PAGE_SIZE: Final[int] = 100
-        MAX_PAGE_SIZE: Final[int] = FlextConstants.DEFAULT_BATCH_SIZE
         MIN_PAGE_SIZE: Final[int] = 1
-        DEFAULT_REQUEST_TIMEOUT: Final[int] = FlextConstants.Network.DEFAULT_TIMEOUT
         DEFAULT_MAX_DELAY_SECONDS: Final[float] = 60.0
 
     class Auth:

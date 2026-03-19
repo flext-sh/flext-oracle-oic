@@ -72,7 +72,7 @@ class FlextOracleOicModels(FlextModels):
             request_timeout: Annotated[
                 int,
                 Field(
-                    default=c.OracleOic.DEFAULT_REQUEST_TIMEOUT,
+                    default=c.Network.DEFAULT_TIMEOUT,
                     ge=c.OracleOic.MIN_REQUEST_TIMEOUT,
                     description="Request timeout in seconds",
                 ),
@@ -80,7 +80,7 @@ class FlextOracleOicModels(FlextModels):
             max_retries: Annotated[
                 int,
                 Field(
-                    default=c.OracleOic.DEFAULT_MAX_RETRIES,
+                    default=c.DEFAULT_MAX_RETRY_ATTEMPTS,
                     ge=c.OracleOic.MIN_MAX_RETRIES,
                     description="Maximum retry attempts",
                 ),
