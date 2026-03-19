@@ -58,14 +58,14 @@ class FlextOracleOicConstants(FlextConstants):
         DEFAULT_BASE_URL: Final[str] = (
             "https://localhost.integration.ocp.oraclecloud.com"
         )
-        DEFAULT_TIMEOUT: Final[int] = 30
-        DEFAULT_MAX_RETRIES: Final[int] = 3
+        DEFAULT_TIMEOUT: Final[int] = FlextConstants.Network.DEFAULT_TIMEOUT
+        DEFAULT_MAX_RETRIES: Final[int] = FlextConstants.DEFAULT_MAX_RETRY_ATTEMPTS
         DEFAULT_VERIFY_SSL: Final[bool] = True
         DEFAULT_USE_SSL: Final[bool] = True
         DEFAULT_PAGE_SIZE: Final[int] = 100
         MAX_PAGE_SIZE: Final[int] = 1000
         MIN_PAGE_SIZE: Final[int] = 1
-        DEFAULT_REQUEST_TIMEOUT: Final[int] = 30
+        DEFAULT_REQUEST_TIMEOUT: Final[int] = FlextConstants.Network.DEFAULT_TIMEOUT
         MIN_REQUEST_TIMEOUT: Final[int] = 1
         MAX_REQUEST_TIMEOUT: Final[int] = 300
         MIN_MAX_RETRIES: Final[int] = 0
@@ -371,7 +371,7 @@ class FlextOracleOicConstants(FlextConstants):
             "basic",
             "bearer",
         })
-        DEFAULT_TIMEOUT: Final[int] = 30
+        DEFAULT_TIMEOUT: Final[int] = FlextConstants.Network.DEFAULT_TIMEOUT
         MAX_TIMEOUT: Final[int] = 300
         VALID_HTTP_METHODS: Final[frozenset[str]] = frozenset({
             "GET",
