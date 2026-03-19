@@ -11,8 +11,7 @@ from typing import Annotated, ClassVar
 from flext_core import FlextModels
 from pydantic import ConfigDict, Field, SecretStr
 
-from flext_oracle_oic import t
-from flext_oracle_oic.constants import FlextOracleOicConstants
+from flext_oracle_oic import c, t
 
 
 class FlextOracleOicModels(FlextModels):
@@ -66,30 +65,30 @@ class FlextOracleOicModels(FlextModels):
             api_version: Annotated[
                 str,
                 Field(
-                    default=FlextOracleOicConstants.OracleOic.DEFAULT_API_VERSION,
+                    default=c.OracleOic.DEFAULT_API_VERSION,
                     description="OIC API version",
                 ),
             ]
             request_timeout: Annotated[
                 int,
                 Field(
-                    default=FlextOracleOicConstants.OracleOic.DEFAULT_REQUEST_TIMEOUT,
-                    ge=FlextOracleOicConstants.OracleOic.MIN_REQUEST_TIMEOUT,
+                    default=c.OracleOic.DEFAULT_REQUEST_TIMEOUT,
+                    ge=c.OracleOic.MIN_REQUEST_TIMEOUT,
                     description="Request timeout in seconds",
                 ),
             ]
             max_retries: Annotated[
                 int,
                 Field(
-                    default=FlextOracleOicConstants.OracleOic.DEFAULT_MAX_RETRIES,
-                    ge=FlextOracleOicConstants.OracleOic.MIN_MAX_RETRIES,
+                    default=c.OracleOic.DEFAULT_MAX_RETRIES,
+                    ge=c.OracleOic.MIN_MAX_RETRIES,
                     description="Maximum retry attempts",
                 ),
             ]
             verify_ssl: Annotated[
                 bool,
                 Field(
-                    default=FlextOracleOicConstants.OracleOic.DEFAULT_VERIFY_SSL,
+                    default=c.OracleOic.DEFAULT_VERIFY_SSL,
                     description="Verify SSL certificates",
                 ),
             ]

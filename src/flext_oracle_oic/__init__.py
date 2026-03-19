@@ -15,11 +15,7 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
-    from flext_core.decorators import d
-    from flext_core.exceptions import e
-    from flext_core.handlers import h
-    from flext_core.mixins import x
-    from flext_core.result import r
+    from flext_core import d, e, h, r, x
     from flext_core.typings import FlextTypes
 
     from flext_oracle_oic.__version__ import __all__
@@ -64,18 +60,18 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     ),
     "__all__": ("flext_oracle_oic.__version__", "__all__"),
     "c": ("flext_oracle_oic.constants", "c"),
-    "d": ("flext_core.decorators", "d"),
-    "e": ("flext_core.exceptions", "e"),
-    "h": ("flext_core.handlers", "h"),
+    "d": ("flext_core", "d"),
+    "e": ("flext_core", "e"),
+    "h": ("flext_core", "h"),
     "logger": ("flext_oracle_oic.ext_services", "logger"),
     "m": ("flext_oracle_oic.models", "m"),
     "main": ("flext_oracle_oic.main", "main"),
     "p": ("flext_oracle_oic.protocols", "p"),
-    "r": ("flext_core.result", "r"),
+    "r": ("flext_core", "r"),
     "s": ("flext_oracle_oic.service", "FlextOracleOicService"),
     "t": ("flext_oracle_oic.typings", "t"),
     "u": ("flext_oracle_oic.utilities", "u"),
-    "x": ("flext_core.mixins", "x"),
+    "x": ("flext_core", "x"),
 }
 
 __all__ = [

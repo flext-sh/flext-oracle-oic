@@ -19,8 +19,7 @@ from typing import Self, override
 from flext_api import FlextApiClient, FlextApiModels, FlextApiSettings
 from flext_core import FlextLogger, FlextService, r
 
-from flext_oracle_oic import t, u
-from flext_oracle_oic.constants import FlextOracleOicConstants
+from flext_oracle_oic import c, t, u
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.settings import FlextOracleOicSettings
@@ -158,13 +157,13 @@ class FlextOracleOicService(
                     f"Pattern validation failed: {validation_result.error}",
                 )
             routing_result = {
-                "pattern": FlextOracleOicConstants.OICPatterns.PATTERN_MESSAGE_ROUTER,
+                "pattern": c.OICPatterns.PATTERN_MESSAGE_ROUTER,
                 "message_id": message_data.get(
                     "id",
-                    FlextOracleOicConstants.OICPatterns.PATTERN_MESSAGE_ID_UNKNOWN,
+                    c.OICPatterns.PATTERN_MESSAGE_ID_UNKNOWN,
                 ),
                 "applied_rules": len(routing_rules),
-                "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
+                "status": c.OICPatterns.PatternStatus.PROCESSED,
             }
             return r[Mapping[str, t.NormalizedValue]].ok(routing_result)
         except (ConnectionError, TimeoutError, ValueError) as e:
@@ -204,13 +203,13 @@ class FlextOracleOicService(
                     f"Pattern validation failed: {validation_result.error}",
                 )
             scatter_result = {
-                "pattern": FlextOracleOicConstants.OICPatterns.PATTERN_SCATTER_GATHER,
+                "pattern": c.OICPatterns.PATTERN_SCATTER_GATHER,
                 "request_id": request_data.get(
                     "id",
-                    FlextOracleOicConstants.OICPatterns.PATTERN_REQUEST_ID_UNKNOWN,
+                    c.OICPatterns.PATTERN_REQUEST_ID_UNKNOWN,
                 ),
                 "target_count": len(target_endpoints),
-                "status": FlextOracleOicConstants.OICPatterns.PatternStatus.PROCESSED,
+                "status": c.OICPatterns.PatternStatus.PROCESSED,
             }
             return r[Mapping[str, t.NormalizedValue]].ok(scatter_result)
         except (ConnectionError, TimeoutError, ValueError) as e:
@@ -252,11 +251,11 @@ class FlextOracleOicService(
                 description=self._as_text(created_data.get("description"), ""),
                 integration_version=self._as_text(
                     created_data.get("version"),
-                    FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK,
+                    c.Integration.DEFAULT_VERSION_FALLBACK,
                 ),
                 status=self._as_text(
                     created_data.get("status"),
-                    FlextOracleOicConstants.Integration.Status.DRAFT,
+                    c.Integration.Status.DRAFT,
                 ),
                 created_by=self._as_text(created_data.get("createdBy"), ""),
                 last_updated=self._as_text(created_data.get("lastUpdated"), ""),
@@ -544,25 +543,25 @@ class FlextOracleOicService(
             health_data: dict[str, t.NormalizedValue]
             if not self._monitoring_client:
                 health_data = {
-                    "status": FlextOracleOicConstants.Monitoring.HealthStatus.HEALTHY,
+                    "status": c.Monitoring.HealthStatus.HEALTHY,
                     "components": {
-                        FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                            "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
+                        c.Monitoring.COMPONENT_DATABASE: {
+                            "status": c.Monitoring.ComponentStatus.HEALTHY,
                         },
-                        FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                            "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
+                        c.Monitoring.COMPONENT_MESSAGING: {
+                            "status": c.Monitoring.ComponentStatus.HEALTHY,
                         },
-                        FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                            "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
+                        c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                            "status": c.Monitoring.ComponentStatus.HEALTHY,
                         },
                     },
                     "timestamp": asyncio.get_event_loop().time(),
                 }
             else:
                 base = str(self._oic_settings.base_url).rstrip("/")
-                health_url = f"{base}{FlextOracleOicConstants.API.ENDPOINT_HEALTH}"
+                health_url = f"{base}{c.API.ENDPOINT_HEALTH}"
                 req = FlextApiModels.HttpRequest(
-                    method=FlextOracleOicConstants.API.Method.GET,
+                    method=c.API.Method.GET,
                     url=health_url,
                     headers={},
                     body={},
@@ -572,10 +571,7 @@ class FlextOracleOicService(
                 response_result = self._monitoring_client.request(req)
                 if response_result.is_success:
                     response = response_result.value
-                    if (
-                        response.status_code
-                        == FlextOracleOicConstants.API.HTTP_STATUS_OK
-                    ):
+                    if response.status_code == c.API.HTTP_STATUS_OK:
                         base_health: dict[str, t.NormalizedValue] = (
                             {
                                 str(k): self._to_general_value(v)
@@ -586,47 +582,47 @@ class FlextOracleOicService(
                         )
                         health_data = {
                             **base_health,
-                            "status": FlextOracleOicConstants.Monitoring.HealthStatus.HEALTHY,
+                            "status": c.Monitoring.HealthStatus.HEALTHY,
                             "components": {
-                                FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
+                                c.Monitoring.COMPONENT_DATABASE: {
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY,
                                 },
-                                FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
+                                c.Monitoring.COMPONENT_MESSAGING: {
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY,
                                 },
-                                FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.HEALTHY,
+                                c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY,
                                 },
                             },
                         }
                     else:
                         health_data = {
-                            "status": FlextOracleOicConstants.Monitoring.HealthStatus.UNHEALTHY,
+                            "status": c.Monitoring.HealthStatus.UNHEALTHY,
                             "components": {
-                                FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
+                                c.Monitoring.COMPONENT_DATABASE: {
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN,
                                 },
-                                FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
+                                c.Monitoring.COMPONENT_MESSAGING: {
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN,
                                 },
-                                FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                    "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
+                                c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN,
                                 },
                             },
                             "error": f"HTTP {response.status_code}",
                         }
                 else:
                     health_data = {
-                        "status": FlextOracleOicConstants.Monitoring.HealthStatus.ERROR,
+                        "status": c.Monitoring.HealthStatus.ERROR,
                         "components": {
-                            FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
+                            c.Monitoring.COMPONENT_DATABASE: {
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN,
                             },
-                            FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
+                            c.Monitoring.COMPONENT_MESSAGING: {
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN,
                             },
-                            FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
+                            c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN,
                             },
                         },
                         "error": f"Request failed: {response_result.error}",
@@ -646,16 +642,16 @@ class FlextOracleOicService(
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Health check failed")
             error_health: dict[str, t.NormalizedValue] = {
-                "status": FlextOracleOicConstants.Monitoring.HealthStatus.ERROR,
+                "status": c.Monitoring.HealthStatus.ERROR,
                 "components": {
-                    FlextOracleOicConstants.Monitoring.COMPONENT_DATABASE: {
-                        "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
+                    c.Monitoring.COMPONENT_DATABASE: {
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN,
                     },
-                    FlextOracleOicConstants.Monitoring.COMPONENT_MESSAGING: {
-                        "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
+                    c.Monitoring.COMPONENT_MESSAGING: {
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN,
                     },
-                    FlextOracleOicConstants.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                        "status": FlextOracleOicConstants.Monitoring.ComponentStatus.UNKNOWN,
+                    c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN,
                     },
                 },
                 "error": str(e),
@@ -720,11 +716,11 @@ class FlextOracleOicService(
                 description=self._as_text(integration_data.get("description"), ""),
                 integration_version=self._as_text(
                     integration_data.get("version"),
-                    FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK,
+                    c.Integration.DEFAULT_VERSION_FALLBACK,
                 ),
                 status=self._as_text(
                     integration_data.get("status"),
-                    FlextOracleOicConstants.Connection.Status.UNKNOWN,
+                    c.Connection.Status.UNKNOWN,
                 ),
                 created_by=self._as_text(integration_data.get("createdBy"), ""),
                 last_updated=self._as_text(integration_data.get("lastUpdated"), ""),
@@ -757,7 +753,7 @@ class FlextOracleOicService(
                 base = str(self._oic_settings.base_url).rstrip("/")
                 metrics_url = f"{base}/ic/api/integration/v1/metrics"
                 req = FlextApiModels.HttpRequest(
-                    method=FlextOracleOicConstants.API.Method.GET,
+                    method=c.API.Method.GET,
                     url=metrics_url,
                     headers={},
                     body={},
@@ -767,10 +763,7 @@ class FlextOracleOicService(
                 response_result = self._monitoring_client.request(req)
                 if response_result.is_success:
                     response = response_result.value
-                    if (
-                        response.status_code
-                        == FlextOracleOicConstants.API.HTTP_STATUS_OK
-                    ):
+                    if response.status_code == c.API.HTTP_STATUS_OK:
                         metrics_data = (
                             {
                                 str(k): self._to_general_value(v)
@@ -855,7 +848,7 @@ class FlextOracleOicService(
             client = client_result.value
             connections_result = client.get_connections(
                 type_filter=type_filter,
-                page_size=FlextOracleOicConstants.OracleOic.DEFAULT_PAGE_SIZE,
+                page_size=c.OracleOic.DEFAULT_PAGE_SIZE,
             )
             if connections_result.is_failure:
                 error_msg = connections_result.error or "Failed to get connections"
@@ -871,7 +864,7 @@ class FlextOracleOicService(
                     adapter_type=self._as_text(item.get("adapterType"), ""),
                     status=self._as_text(
                         item.get("status"),
-                        FlextOracleOicConstants.Connection.Status.UNKNOWN,
+                        c.Connection.Status.UNKNOWN,
                     ),
                     connection_type=self._as_text(item.get("connectionType"), ""),
                     description=self._as_text(item.get("description"), ""),
@@ -918,11 +911,11 @@ class FlextOracleOicService(
                     description=self._as_text(item.get("description"), ""),
                     integration_version=self._as_text(
                         item.get("version"),
-                        FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK,
+                        c.Integration.DEFAULT_VERSION_FALLBACK,
                     ),
                     status=self._as_text(
                         item.get("status"),
-                        FlextOracleOicConstants.Connection.Status.UNKNOWN,
+                        c.Connection.Status.UNKNOWN,
                     ),
                     created_by=self._as_text(item.get("createdBy"), ""),
                     last_updated=self._as_text(item.get("lastUpdated"), ""),
@@ -970,7 +963,7 @@ class FlextOracleOicService(
                 return r[bool].fail(error_msg)
             client = client_result.value
             test_result = client.make_request(
-                FlextOracleOicConstants.API.Method.GET,
+                c.API.Method.GET,
                 "/ic/api/integration/v1/health",
             )
             if test_result.is_failure:
@@ -1024,11 +1017,11 @@ class FlextOracleOicService(
                 description=self._as_text(updated_data.get("description"), ""),
                 integration_version=self._as_text(
                     updated_data.get("version"),
-                    FlextOracleOicConstants.Integration.DEFAULT_VERSION_FALLBACK,
+                    c.Integration.DEFAULT_VERSION_FALLBACK,
                 ),
                 status=self._as_text(
                     updated_data.get("status"),
-                    FlextOracleOicConstants.Connection.Status.UNKNOWN,
+                    c.Connection.Status.UNKNOWN,
                 ),
                 created_by=self._as_text(updated_data.get("createdBy"), ""),
                 last_updated=self._as_text(updated_data.get("lastUpdated"), ""),
