@@ -72,7 +72,7 @@ class FlextOracleOicModels(FlextModels):
             request_timeout: Annotated[
                 int,
                 Field(
-                    default=c.Network.DEFAULT_TIMEOUT,
+                    default=c.DEFAULT_TIMEOUT_SECONDS,
                     ge=c.OracleOic.MIN_REQUEST_TIMEOUT,
                     description="Request timeout in seconds",
                 ),

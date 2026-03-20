@@ -56,7 +56,7 @@ class FlextOracleOicConstants(FlextConstants):
         DEFAULT_BASE_URL: Final[str] = (
             "https://localhost.integration.ocp.oraclecloud.com"
         )
-        DEFAULT_TIMEOUT: Final[int] = FlextConstants.Network.DEFAULT_TIMEOUT
+        DEFAULT_TIMEOUT: Final[int] = FlextConstants.DEFAULT_TIMEOUT_SECONDS
         DEFAULT_PAGE_SIZE: Final[int] = 100
         MIN_PAGE_SIZE: Final[int] = 1
         DEFAULT_MAX_DELAY_SECONDS: Final[float] = 60.0
@@ -257,7 +257,7 @@ class FlextOracleOicConstants(FlextConstants):
         })
         MIN_CLIENT_ID_LENGTH: Final[int] = 1
         MIN_CLIENT_SECRET_LENGTH: Final[int] = 8
-        DEFAULT_TIMEOUT: Final[int] = FlextConstants.Network.DEFAULT_TIMEOUT
+        DEFAULT_TIMEOUT: Final[int] = FlextConstants.DEFAULT_TIMEOUT_SECONDS
         SUPPORTED_PATTERNS: Final[frozenset[str]] = frozenset({
             "message_router",
             "scatter_gather",
