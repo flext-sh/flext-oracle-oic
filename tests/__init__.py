@@ -34,8 +34,8 @@ if TYPE_CHECKING:
         TestOICConnectionInfo,
         TestOICIntegrationInfo,
     )
-    from .test_typings import TestFlextTypes, TestFlextTypes as t
-    from .typings import TestsFlextOracleOicTypes
+    from .test_typings import TestFlextTypes
+    from .typings import TestsFlextOracleOicTypes, TestsFlextOracleOicTypes as t
     from .unit.test_version import test_version_info_tuple, test_version_string
     from .utilities import (
         TestsFlextOracleOicUtilities,
@@ -62,7 +62,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "c": ("tests.constants", "TestsFlextOracleOicConstants"),
     "m": ("tests.models", "TestsFlextOracleOicModels"),
     "p": ("tests.protocols", "TestsFlextOracleOicProtocols"),
-    "t": ("tests.test_typings", "TestFlextTypes"),
+    "t": ("tests.typings", "TestsFlextOracleOicTypes"),
     "test_basic_import": ("tests.test_import", "test_basic_import"),
     "test_config_import": ("tests.test_import", "test_config_import"),
     "test_version_info_tuple": ("tests.unit.test_version", "test_version_info_tuple"),
