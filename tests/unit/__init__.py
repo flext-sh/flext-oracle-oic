@@ -12,8 +12,6 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
 
-
-if TYPE_CHECKING:
     from .test_version import test_version_info_tuple, test_version_string
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {

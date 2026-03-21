@@ -15,11 +15,8 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
-    from flext_core.typings import FlextTypes
-
-
-if TYPE_CHECKING:
     from flext_core import d, e, h, r, x
+    from flext_core.typings import FlextTypes
 
     from flext_oracle_oic.__version__ import __all__
     from flext_oracle_oic.api import FlextOracleOicApi
