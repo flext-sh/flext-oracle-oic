@@ -38,7 +38,7 @@ class FlextOracleOicConstants(FlextConstants):
 
     # Access inherited FlextConstants
     http_ok = FlextOracleOicConstants.Platform.HTTP_STATUS_OK
-    default_timeout = FlextOracleOicConstants.Defaults.TIMEOUT
+    default_timeout = FlextOracleOicConstants.TIMEOUT
     ```
 
     IMPLEMENTATION NOTES:
@@ -225,7 +225,7 @@ class FlextOracleOicConstants(FlextConstants):
         """Oracle OIC Extension specific message constants."""
 
     class OracleOicValidation:
-        """Oracle OIC validation constants (named to avoid overriding FlextConstants.Validation)."""
+        """Oracle OIC validation constants (named to avoid overriding FlextConstants)."""
 
         MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
         MAX_INTEGRATION_NAME_LENGTH: Final[int] = 100
