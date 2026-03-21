@@ -21,11 +21,11 @@ from datetime import UTC, datetime
 from urllib.parse import urljoin
 
 from flext_core import FlextUtilities, r
-from flext_core.constants import c
-from flext_core.typings import t
 from pydantic import BaseModel, SecretStr
 
+from flext_oracle_oic.constants import c
 from flext_oracle_oic.models import FlextOracleOicModels
+from flext_oracle_oic.typings import t
 
 
 class FlextOracleOicUtilities(FlextUtilities):
@@ -66,7 +66,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing validated data or validation errors
 
             """
-            if not u.is_dict_like(integration_data):
+            if not isinstance(integration_data, Mapping):
                 return r[Mapping[str, t.NormalizedValue]].fail(
                     "Integration data must be a dictionary",
                 )
@@ -436,7 +436,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                             "Auth token must be non-empty string",
                         )
             if additional_headers:
-                if not u.is_dict_like(additional_headers):
+                if not isinstance(additional_headers, Mapping):
                     return r[Mapping[str, str]].fail(
                         "Additional headers must be a dictionary",
                     )
@@ -459,7 +459,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing detected pattern or analysis error
 
             """
-            if not u.is_dict_like(integration_data):
+            if not isinstance(integration_data, Mapping):
                 return r[str].fail("Integration data must be a dictionary")
             endpoints_raw = integration_data.get("endpoints", [])
             connections_raw = integration_data.get("connections", [])
@@ -554,7 +554,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing analysis results or error
 
             """
-            if not u.is_dict_like(metrics):
+            if not isinstance(metrics, Mapping):
                 return r[Mapping[str, t.NormalizedValue]].fail(
                     "Metrics must be a dictionary",
                 )
@@ -623,7 +623,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing validated health data or error
 
             """
-            if not u.is_dict_like(health_data):
+            if not isinstance(health_data, Mapping):
                 return r[Mapping[str, t.NormalizedValue]].fail(
                     "Health data must be a dictionary",
                 )

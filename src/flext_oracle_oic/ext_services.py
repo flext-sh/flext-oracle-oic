@@ -16,13 +16,13 @@ from types import TracebackType
 from typing import Protocol, Self, override
 
 from flext_core import FlextContainer, FlextLogger, FlextService, r
-from flext_core.constants import c
-from flext_core.typings import t
 from pydantic import ConfigDict
 
+from flext_oracle_oic.constants import c
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.settings import FlextOracleOicSettings
+from flext_oracle_oic.typings import t
 from flext_oracle_oic.utilities import FlextOracleOicUtilities
 
 logger = FlextLogger(__name__)
@@ -888,7 +888,7 @@ class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
                 if analysis_result.is_success:
                     analyzed_metrics: dict[str, t.NormalizedValue] = {
                         **raw_metrics,
-                        "analysis": analysis_result.value,
+                        "analysis": dict(analysis_result.value),
                     }
                     return analyzed_metrics
                 self.logger.warning(
@@ -914,7 +914,7 @@ class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
                 if analysis_result.is_success:
                     analyzed_error_metrics: dict[str, t.NormalizedValue] = {
                         **error_metrics,
-                        "analysis": analysis_result.value,
+                        "analysis": dict(analysis_result.value),
                     }
                     return analyzed_error_metrics
                 return error_metrics

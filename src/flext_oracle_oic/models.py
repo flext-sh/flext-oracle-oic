@@ -9,9 +9,10 @@ from collections.abc import Mapping, Sequence
 from typing import Annotated, ClassVar
 
 from flext_core import FlextModels
-from flext_core.constants import c
-from flext_core.typings import t
 from pydantic import ConfigDict, Field, SecretStr
+
+from flext_oracle_oic.constants import c
+from flext_oracle_oic.typings import t
 
 
 class FlextOracleOicModels(FlextModels):

@@ -56,10 +56,14 @@ class FlextOracleOicConstants(FlextConstants):
         DEFAULT_BASE_URL: Final[str] = (
             "https://localhost.integration.ocp.oraclecloud.com"
         )
+        DEFAULT_API_VERSION: Final[str] = "v1"
         DEFAULT_TIMEOUT: Final[int] = FlextConstants.DEFAULT_TIMEOUT_SECONDS
         DEFAULT_PAGE_SIZE: Final[int] = 100
         MIN_PAGE_SIZE: Final[int] = 1
         DEFAULT_MAX_DELAY_SECONDS: Final[float] = 60.0
+        MIN_REQUEST_TIMEOUT: Final[int] = 1
+        MIN_MAX_RETRIES: Final[int] = 0
+        DEFAULT_VERIFY_SSL: Final[bool] = True
 
     class Auth:
         """Oracle OIC Authentication constants."""
@@ -109,6 +113,11 @@ class FlextOracleOicConstants(FlextConstants):
             "ERROR",
         ]
         DEFAULT_VERSION: Final[str] = "01.00.0000"
+        DEFAULT_VERSION_FALLBACK: Final[str] = "01.00.0000"
+        DEFAULT_LAST_UPDATED: Final[str] = ""
+        DEFAULT_ACTIVATED_BY: Final[str] = ""
+        PATTERN_MESSAGE_ROUTER: Final[str] = "message_router"
+        PATTERN_SCATTER_GATHER: Final[str] = "scatter_gather"
 
     class Connection:
         """Oracle OIC Connection constants."""
@@ -173,6 +182,10 @@ class FlextOracleOicConstants(FlextConstants):
             UNHEALTHY = "unhealthy"
             UNKNOWN = "unknown"
 
+        COMPONENT_DATABASE: Final[str] = "database"
+        COMPONENT_MESSAGING: Final[str] = "messaging"
+        COMPONENT_INTEGRATION_ENGINE: Final[str] = "integration_engine"
+
         type HealthStatusLiteral = Literal["healthy", "unhealthy", "error", "unknown"]
         type ComponentStatusLiteral = Literal["healthy", "unhealthy", "unknown"]
 
@@ -200,6 +213,8 @@ class FlextOracleOicConstants(FlextConstants):
         HEADER_AUTHORIZATION: Final[str] = "Authorization"
         HEADER_ACCEPT: Final[str] = "Accept"
         CONTENT_TYPE_JSON: Final[str] = "application/json"
+        ENDPOINT_HEALTH: Final[str] = "/ic/api/integration/v1/health"
+        HTTP_STATUS_OK: Final[int] = 200
 
     class OICPatterns:
         """Oracle OIC Integration Pattern constants."""
@@ -215,6 +230,11 @@ class FlextOracleOicConstants(FlextConstants):
             PROCESSED = "processed"
             FAILED = "failed"
             PENDING = "pending"
+
+        PATTERN_MESSAGE_ROUTER: Final[str] = "message_router"
+        PATTERN_SCATTER_GATHER: Final[str] = "scatter_gather"
+        PATTERN_MESSAGE_ID_UNKNOWN: Final[str] = "unknown"
+        PATTERN_REQUEST_ID_UNKNOWN: Final[str] = "unknown"
 
         type PatternStatusLiteral = Literal["processed", "failed", "pending"]
 

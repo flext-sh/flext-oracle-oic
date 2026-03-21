@@ -18,13 +18,12 @@ from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiModels, FlextApiSettings
 from flext_core import FlextLogger, FlextService, r
-from flext_core.constants import c
-from flext_core.typings import t
-from flext_core.utilities import u
 
+from flext_oracle_oic.constants import c
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.settings import FlextOracleOicSettings
+from flext_oracle_oic.typings import t
 from flext_oracle_oic.utilities import FlextOracleOicUtilities
 
 
@@ -791,7 +790,7 @@ class FlextOracleOicService(
                         "error": f"Request failed: {response_result.error}",
                     }
             metrics_dict: dict[str, t.NormalizedValue] = {}
-            if u.is_dict_like(metrics_data):
+            if isinstance(metrics_data, Mapping):
                 for key, value in metrics_data.items():
                     metrics_dict[str(key)] = self._to_general_value(value)
             analysis_result = (
@@ -802,7 +801,7 @@ class FlextOracleOicService(
             if analysis_result.is_success:
                 return r[Mapping[str, t.NormalizedValue]].ok({
                     **metrics_dict,
-                    "analysis": analysis_result.value,
+                    "analysis": dict(analysis_result.value),
                 })
             self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
             return r[Mapping[str, t.NormalizedValue]].ok(metrics_dict)
@@ -823,7 +822,7 @@ class FlextOracleOicService(
             if analysis_result.is_success:
                 return r[Mapping[str, t.NormalizedValue]].ok({
                     **error_metrics,
-                    "analysis": analysis_result.value,
+                    "analysis": dict(analysis_result.value),
                 })
             return r[Mapping[str, t.NormalizedValue]].ok(error_metrics)
 

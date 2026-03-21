@@ -44,7 +44,10 @@ class FlextOracleOicSettings(FlextSettings):
     @classmethod
     def create_for_development(cls) -> FlextOracleOicSettings:
         """Build deterministic development settings."""
-        return cls(base_url="https://localhost", api_version="v1")
+        return cls.model_validate({
+            "base_url": "https://localhost",
+            "api_version": "v1",
+        })
 
 
 __all__ = ["FlextOracleOicSettings"]

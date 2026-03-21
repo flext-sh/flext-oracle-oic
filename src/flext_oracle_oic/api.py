@@ -14,11 +14,11 @@ from collections.abc import Mapping
 from typing import Self, override
 
 from flext_core import FlextService, r
-from flext_core.typings import t
 
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
 from flext_oracle_oic.settings import FlextOracleOicSettings
+from flext_oracle_oic.typings import t
 
 
 class FlextOracleOicApi(FlextService[None]):
@@ -50,7 +50,7 @@ class FlextOracleOicApi(FlextService[None]):
         """
         super().__init__()
         self._oic_config: FlextOracleOicSettings = (
-            config if config is not None else FlextOracleOicSettings()
+            config if config is not None else FlextOracleOicSettings.model_validate({})
         )
         self._service = FlextOracleOicService()
         if self._context is not None:
