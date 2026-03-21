@@ -18,8 +18,10 @@ from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiModels, FlextApiSettings
 from flext_core import FlextLogger, FlextService, r
+from flext_core.constants import c
+from flext_core.typings import t
+from flext_core.utilities import u
 
-from flext_oracle_oic import c, t, u
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.settings import FlextOracleOicSettings

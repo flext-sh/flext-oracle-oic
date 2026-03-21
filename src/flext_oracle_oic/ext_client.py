@@ -18,9 +18,11 @@ from typing import Self
 
 from flext_api import FlextApi, FlextApiSettings
 from flext_core import FlextLogger, r
+from flext_core.constants import c
+from flext_core.typings import t
+from flext_core.utilities import u
 from pydantic import TypeAdapter
 
-from flext_oracle_oic import c, t, u
 from flext_oracle_oic.models import FlextOracleOicModels
 
 logger = FlextLogger(__name__)

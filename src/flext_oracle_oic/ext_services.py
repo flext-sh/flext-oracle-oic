@@ -16,9 +16,10 @@ from types import TracebackType
 from typing import Protocol, Self, override
 
 from flext_core import FlextContainer, FlextLogger, FlextService, r
+from flext_core.constants import c
+from flext_core.typings import t
 from pydantic import ConfigDict
 
-from flext_oracle_oic import c, t
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.settings import FlextOracleOicSettings
