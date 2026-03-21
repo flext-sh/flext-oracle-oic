@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from types import TracebackType
-from typing import Self, override
+from typing import Protocol, Self, override
 
 from flext_core import FlextContainer, FlextLogger, FlextService, r
 from pydantic import ConfigDict
@@ -21,7 +21,6 @@ from pydantic import ConfigDict
 from flext_oracle_oic.constants import c
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.models import FlextOracleOicModels
-from flext_oracle_oic.protocols import FlextOracleOicProtocols as p
 from flext_oracle_oic.settings import FlextOracleOicSettings
 from flext_oracle_oic.typings import t
 from flext_oracle_oic.utilities import FlextOracleOicUtilities
@@ -43,8 +42,21 @@ class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
         service = self.OracleOicExtensionService()
         return service.execute()
 
-    HTTPClient = p.OracleOic.HTTPClient
-    HTTPResponse = p.OracleOic.HTTPResponse
+    class HTTPClient(Protocol):
+        """Protocol for HTTP client used by MonitoringService."""
+
+        def get(self, url: str) -> FlextOracleOicExtServices.HTTPResponse:
+            """Execute HTTP GET request."""
+            ...
+
+    class HTTPResponse(Protocol):
+        """Protocol for HTTP response."""
+
+        status_code: int
+
+        def json(self: Self) -> Mapping[str, t.NormalizedValue]:
+            """Parse response as JSON."""
+            ...
 
     class OracleOicExtensionService(FlextService[list[t.ValueOrModel]]):
         """Main Oracle OIC Extension service.
