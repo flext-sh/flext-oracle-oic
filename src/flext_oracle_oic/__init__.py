@@ -68,6 +68,8 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "FlextOracleOicUtilities",
     ),
     "__all__": ("flext_oracle_oic.__version__", "__all__"),
+    "__version__": ("flext_oracle_oic.__version__", "__version__"),
+    "__version_info__": ("flext_oracle_oic.__version__", "__version_info__"),
     "c": ("flext_oracle_oic.constants", "FlextOracleOicConstants"),
     "d": ("flext_core", "d"),
     "e": ("flext_core", "e"),

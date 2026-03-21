@@ -15,7 +15,7 @@ class TestFlextOracleOicSettings:
 
     def test_default_settings(self) -> None:
         """Test default settings."""
-        config = FlextOracleOicSettings()
+        config = FlextOracleOicSettings.model_validate({})
         assert "integration.ocp.oraclecloud.com" in config.base_url
         assert config.api_version in {"v1", "v2"}
         assert 1 <= config.request_timeout <= 300
@@ -25,14 +25,14 @@ class TestFlextOracleOicSettings:
 
     def test_custom_settings(self) -> None:
         """Test custom settings."""
-        config = FlextOracleOicSettings(
-            base_url="https://custom.integration.ocp.oraclecloud.com",
-            api_version="v2",
-            request_timeout=60,
-            max_retries=5,
-            use_ssl=False,
-            verify_ssl=False,
-        )
+        config = FlextOracleOicSettings.model_validate({
+            "base_url": "https://custom.integration.ocp.oraclecloud.com",
+            "api_version": "v2",
+            "request_timeout": 60,
+            "max_retries": 5,
+            "use_ssl": False,
+            "verify_ssl": False,
+        })
         assert config.base_url == "https://custom.integration.ocp.oraclecloud.com"
         assert config.api_version == "v2"
         assert config.request_timeout == 60
@@ -42,7 +42,7 @@ class TestFlextOracleOicSettings:
 
     def test_default_auth_settings(self) -> None:
         """Test default auth settings (values may come from env)."""
-        config = FlextOracleOicSettings()
+        config = FlextOracleOicSettings.model_validate({})
         assert isinstance(config.oauth_client_id, str)
         assert config.oauth_client_secret is not None
         assert isinstance(config.oauth_token_url, str)
@@ -51,13 +51,13 @@ class TestFlextOracleOicSettings:
 
     def test_custom_auth_settings(self) -> None:
         """Test custom auth settings."""
-        config = FlextOracleOicSettings(
-            oauth_client_id="custom_client_id",
-            oauth_client_secret="custom_client_secret",
-            oauth_token_url="https://custom.identity.oraclecloud.com/oauth2/v1/token",
-            oauth_client_aud="custom_audience",
-            oauth_scope="custom_scope",
-        )
+        config = FlextOracleOicSettings.model_validate({
+            "oauth_client_id": "custom_client_id",
+            "oauth_client_secret": "custom_client_secret",
+            "oauth_token_url": "https://custom.identity.oraclecloud.com/oauth2/v1/token",
+            "oauth_client_aud": "custom_audience",
+            "oauth_scope": "custom_scope",
+        })
         assert config.oauth_client_id == "custom_client_id"
         secret_val = (
             config.oauth_client_secret.get_secret_value()
@@ -74,7 +74,7 @@ class TestFlextOracleOicSettings:
 
     def test_default_extension_settings(self) -> None:
         """Test default extension settings."""
-        settings = FlextOracleOicSettings()
+        settings = FlextOracleOicSettings.model_validate({})
         if hasattr(settings, "environment"):
             assert settings.environment in {"development", "testing", "production"}
         if hasattr(settings, "log_level"):
@@ -87,23 +87,23 @@ class TestFlextOracleOicSettings:
 
     def test_custom_extension_settings(self) -> None:
         """Test custom extension settings (extension-specific flags)."""
-        settings = FlextOracleOicSettings(
-            enable_monitoring=False,
-            enable_enterprise_patterns=False,
-            enable_orchestration=False,
-        )
+        settings = FlextOracleOicSettings.model_validate({
+            "enable_monitoring": False,
+            "enable_enterprise_patterns": False,
+            "enable_orchestration": False,
+        })
         assert settings.enable_monitoring is False
         assert settings.enable_enterprise_patterns is False
         assert settings.enable_orchestration is False
 
     def test_settings_with_custom_configs(self) -> None:
         """Test settings with custom flat config (no nested connection/auth in current API)."""
-        settings = FlextOracleOicSettings(
-            base_url="https://custom.integration.ocp.oraclecloud.com",
-            request_timeout=60,
-            oauth_client_id="custom_client_id",
-            oauth_client_secret="custom_client_secret",
-        )
+        settings = FlextOracleOicSettings.model_validate({
+            "base_url": "https://custom.integration.ocp.oraclecloud.com",
+            "request_timeout": 60,
+            "oauth_client_id": "custom_client_id",
+            "oauth_client_secret": "custom_client_secret",
+        })
         assert settings.base_url == "https://custom.integration.ocp.oraclecloud.com"
         assert settings.request_timeout == 60
         assert settings.oauth_client_id == "custom_client_id"

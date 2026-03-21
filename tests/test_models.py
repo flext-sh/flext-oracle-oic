@@ -79,12 +79,12 @@ class TestOICConnectionConfig:
 
     def test_connection_config_defaults(self) -> None:
         """Test connection config with defaults."""
-        config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
-            base_url="https://test.integration.ocp.oraclecloud.com",
-            api_version="v1",
-            request_timeout=30,
-            max_retries=3,
-        )
+        config = FlextOracleOicModels.OracleOic.OICConnectionConfig.model_validate({
+            "base_url": "https://test.integration.ocp.oraclecloud.com",
+            "api_version": "v1",
+            "request_timeout": 30,
+            "max_retries": 3,
+        })
         assert config.api_version == "v1"
         assert config.request_timeout == 30
         assert config.max_retries == 3
@@ -93,12 +93,12 @@ class TestOICConnectionConfig:
     def test_connection_config_validation_error(self) -> None:
         """Test connection config validation error."""
         with pytest.raises(ValidationError):
-            FlextOracleOicModels.OracleOic.OICConnectionConfig(
-                base_url="https://test.integration.ocp.oraclecloud.com",
-                api_version="v1",
-                request_timeout=0,
-                max_retries=3,
-            )
+            FlextOracleOicModels.OracleOic.OICConnectionConfig.model_validate({
+                "base_url": "https://test.integration.ocp.oraclecloud.com",
+                "api_version": "v1",
+                "request_timeout": 0,
+                "max_retries": 3,
+            })
 
 
 class TestOICIntegrationInfo:

@@ -16,7 +16,7 @@ class TestFlextTypes:
     def test_flext_types_inheritance(self) -> None:
         """Test t (FlextTypes) exposes type utilities."""
         assert t is not None
-        assert hasattr(t, "object")
+        assert hasattr(t, "NormalizedValue")
 
     def test_exported_types_available(self) -> None:
         """Test all exported types are available."""
