@@ -496,6 +496,24 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
+        class HTTPResponse(Protocol):
+            """Protocol for HTTP response."""
+
+            status_code: int
+
+            def json(self) -> Mapping[str, t.NormalizedValue]:
+                """Parse response as JSON."""
+                ...
+
+        @runtime_checkable
+        class HTTPClient(Protocol):
+            """Protocol for HTTP client."""
+
+            def get(self, url: str) -> OracleOic.HTTPResponse:
+                """Execute HTTP GET request."""
+                ...
+
+        @runtime_checkable
         class Authentication(
             FlextProtocols.Service[Mapping[str, t.NormalizedValue]],
             Protocol,
