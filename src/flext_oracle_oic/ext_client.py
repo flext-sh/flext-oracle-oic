@@ -526,7 +526,7 @@ class FlextOracleOicClient:
         return token
 
     def _to_api_payload(self, value: t.NormalizedValue) -> t.NormalizedValue:
-        """Normalize object into flext-api request body value type."""
+        """Normalize t.NormalizedValue into flext-api request body value type."""
         if isinstance(value, (str, int, float, bool)) or value is None:
             return value
         if isinstance(value, Mapping):

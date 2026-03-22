@@ -24,6 +24,6 @@ class TestFlextTypes:
 
     def test_flext_types_can_be_extended(self) -> None:
         """Test t can be extended for domain-specific types."""
-        assert issubclass(t, object)
-        core_dict = object
+        assert issubclass(t, t.NormalizedValue)
+        core_dict = t.NormalizedValue
         assert core_dict is not None

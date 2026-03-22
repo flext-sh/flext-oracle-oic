@@ -81,7 +81,7 @@ class FlextOracleOicService(
     def _to_general_value(
         value: t.NormalizedValue | t.ContainerValue | bytes | None,
     ) -> t.NormalizedValue:
-        """Normalize arbitrary runtime values into object."""
+        """Normalize arbitrary runtime values into t.NormalizedValue."""
         if isinstance(value, bytes):
             return value.decode(errors="replace")
         if isinstance(value, (str, int, float, bool)) or value is None:

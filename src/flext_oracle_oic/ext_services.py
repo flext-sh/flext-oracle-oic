@@ -50,7 +50,7 @@ class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
         with complete enterprise functionality following FLEXT patterns.
         """
 
-        model_config = ConfigDict(
+        model_config: ClassVar[ConfigDict] = ConfigDict(
             frozen=True,
             validate_assignment=True,
             extra="forbid",
@@ -510,7 +510,7 @@ class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
             oic_service: Main OIC extension service
 
             Returns:
-            object: Description of return value.
+            t.NormalizedValue: Description of return value.
 
             """
             self.oic_service = oic_service

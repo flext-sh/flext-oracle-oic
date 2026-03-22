@@ -94,8 +94,8 @@ settings = OracleOicExtensionSettings(connection=connection_config, auth=auth_co
 
 **Primary Configuration Object:**
 
-- `connection` (required): Connection configuration object
-- `auth` (optional): Authentication configuration object
+- `connection` (required): Connection configuration t.NormalizedValue
+- `auth` (optional): Authentication configuration t.NormalizedValue
 - Additional settings based on actual implementation
 
 ## Environment Variables
