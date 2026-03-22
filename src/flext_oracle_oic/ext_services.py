@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from types import TracebackType
-from typing import Self, override
+from typing import ClassVar, Self, override
 
 from flext_core import FlextContainer, FlextLogger, FlextService, r
 from pydantic import ConfigDict
