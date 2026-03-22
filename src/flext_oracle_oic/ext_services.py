@@ -762,9 +762,7 @@ class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
                 if response.is_success:
                     health_value = response.value
                     health_data = (
-                        health_value
-                        if isinstance(health_value, Mapping)
-                        else {}
+                        health_value if isinstance(health_value, Mapping) else {}
                     )
                     raw_health: dict[str, t.NormalizedValue] = {
                         "status": c.Monitoring.HealthStatus.HEALTHY,
@@ -852,9 +850,7 @@ class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
                 if response.is_success:
                     metrics_value = response.value
                     metrics_data = (
-                        metrics_value
-                        if isinstance(metrics_value, Mapping)
-                        else {}
+                        metrics_value if isinstance(metrics_value, Mapping) else {}
                     )
                     raw_metrics: dict[str, t.NormalizedValue] = {
                         "active_integrations": metrics_data.get(

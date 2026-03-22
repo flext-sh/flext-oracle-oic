@@ -14,7 +14,7 @@ from __future__ import annotations
 import base64
 from collections.abc import Mapping
 from types import TracebackType
-from typing import Self, cast
+from typing import Self
 
 from flext_api import FlextApi, FlextApiSettings
 from flext_core import FlextLogger, r
@@ -211,7 +211,7 @@ class FlextOracleOicClient:
                     str,
                     Mapping[str, str] | None,
                     Mapping[str, str] | None,
-                    object | None,
+                    Mapping[str, t.NormalizedValue] | None,
                 ]
             ]
             .ok((method, endpoint, params, data, json))
@@ -343,7 +343,7 @@ class FlextOracleOicClient:
                 if json is not None
                 else None
             )
-            api_data = cast("dict[str, t.ContainerValue] | None", request_body)
+            api_data: dict[str, t.ContainerValue] | None = request_body
             base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
             full_url = f"{base_url}/{endpoint.lstrip('/')}"
             if method.upper() == "GET":
@@ -360,9 +360,8 @@ class FlextOracleOicClient:
                 return r[t.NormalizedValue].fail(
                     f"Request failed: {response_result.error}",
                 )
-            return r[t.NormalizedValue].ok(
-                cast("t.NormalizedValue", response_result.value)
-            )
+            response_value: t.NormalizedValue = response_result.value
+            return r[t.NormalizedValue].ok(response_value)
         except (
             ConnectionError,
             TimeoutError,
@@ -383,10 +382,9 @@ class FlextOracleOicClient:
                 "base_url": self.auth_config.oauth_token_url
             })
             api_client = FlextApi(api_config)
-            oauth_data = cast(
-                "dict[str, t.ContainerValue]",
-                {key: self._to_api_payload(value) for key, value in data.items()},
-            )
+            oauth_data: dict[str, t.ContainerValue] = {
+                key: self._to_api_payload(value) for key, value in data.items()
+            }
             response_result = api_client.post("", data=oauth_data, headers=headers)
             if response_result.is_failure:
                 return r[t.NormalizedValue].fail(
@@ -397,7 +395,8 @@ class FlextOracleOicClient:
                 return r[t.NormalizedValue].fail(
                     f"OAuth HTTP error: {response.status_code}",
                 )
-            return r[t.NormalizedValue].ok(cast("t.NormalizedValue", response))
+            normalized_response: t.NormalizedValue = response
+            return r[t.NormalizedValue].ok(normalized_response)
         except (
             ConnectionError,
             TimeoutError,
@@ -471,7 +470,7 @@ class FlextOracleOicClient:
                 return r[str].fail("Invalid response format")
             token_data: dict[str, t.NormalizedValue]
             if isinstance(body, dict):
-                token_data = cast("dict[str, t.NormalizedValue]", body)
+                token_data = body
             else:
                 match body:
                     case str():
