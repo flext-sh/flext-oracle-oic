@@ -496,6 +496,16 @@ class FlextOracleOicProtocols(FlextProtocols):
                 ...
 
         @runtime_checkable
+        class HTTPResponse(Protocol):
+            """Protocol for HTTP response used by MonitoringService."""
+
+            status_code: int
+
+            def json(self) -> Mapping[str, t.NormalizedValue]:
+                """Parse response as JSON."""
+                ...
+
+        @runtime_checkable
         class Authentication(
             FlextProtocols.Service[Mapping[str, t.NormalizedValue]],
             Protocol,
