@@ -11,17 +11,12 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
+    from flext_tests import d, e, h, r, s, x
 
     from . import unit as unit
-    from .constants import (
-        TestsFlextOracleOicConstants,
-        TestsFlextOracleOicConstants as c,
-    )
-    from .models import TestsFlextOracleOicModels, TestsFlextOracleOicModels as m, tm
-    from .protocols import (
-        TestsFlextOracleOicProtocols,
-        TestsFlextOracleOicProtocols as p,
-    )
+    from .constants import FlextOracleOicTestConstants, FlextOracleOicTestConstants as c
+    from .models import FlextOracleOicTestModels, FlextOracleOicTestModels as m
+    from .protocols import FlextOracleOicTestProtocols, FlextOracleOicTestProtocols as p
     from .test_basic import TestBasicFunctionality
     from .test_cli import TestCLI
     from .test_config import TestFlextOracleOicSettings
@@ -35,14 +30,16 @@ if TYPE_CHECKING:
         TestOICIntegrationInfo,
     )
     from .test_typings import TestFlextTypes
-    from .typings import TestsFlextOracleOicTypes, TestsFlextOracleOicTypes as t
+    from .typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
     from .unit.test_version import test_version_info_tuple, test_version_string
-    from .utilities import (
-        TestsFlextOracleOicUtilities,
-        TestsFlextOracleOicUtilities as u,
-    )
+    from .utilities import FlextOracleOicTestUtilities, FlextOracleOicTestUtilities as u
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
+    "FlextOracleOicTestConstants": ("tests.constants", "FlextOracleOicTestConstants"),
+    "FlextOracleOicTestModels": ("tests.models", "FlextOracleOicTestModels"),
+    "FlextOracleOicTestProtocols": ("tests.protocols", "FlextOracleOicTestProtocols"),
+    "FlextOracleOicTestTypes": ("tests.typings", "FlextOracleOicTestTypes"),
+    "FlextOracleOicTestUtilities": ("tests.utilities", "FlextOracleOicTestUtilities"),
     "TestBasicFunctionality": ("tests.test_basic", "TestBasicFunctionality"),
     "TestCLI": ("tests.test_cli", "TestCLI"),
     "TestFlextOracleOicSettings": ("tests.test_config", "TestFlextOracleOicSettings"),
@@ -54,25 +51,30 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "TestOICConnectionInfo": ("tests.test_models", "TestOICConnectionInfo"),
     "TestOICIntegrationInfo": ("tests.test_models", "TestOICIntegrationInfo"),
     "TestOracleOicExtension": ("tests.test_extension", "TestOracleOicExtension"),
-    "TestsFlextOracleOicConstants": ("tests.constants", "TestsFlextOracleOicConstants"),
-    "TestsFlextOracleOicModels": ("tests.models", "TestsFlextOracleOicModels"),
-    "TestsFlextOracleOicProtocols": ("tests.protocols", "TestsFlextOracleOicProtocols"),
-    "TestsFlextOracleOicTypes": ("tests.typings", "TestsFlextOracleOicTypes"),
-    "TestsFlextOracleOicUtilities": ("tests.utilities", "TestsFlextOracleOicUtilities"),
-    "c": ("tests.constants", "TestsFlextOracleOicConstants"),
-    "m": ("tests.models", "TestsFlextOracleOicModels"),
-    "p": ("tests.protocols", "TestsFlextOracleOicProtocols"),
-    "t": ("tests.typings", "TestsFlextOracleOicTypes"),
+    "c": ("tests.constants", "FlextOracleOicTestConstants"),
+    "d": ("flext_tests", "d"),
+    "e": ("flext_tests", "e"),
+    "h": ("flext_tests", "h"),
+    "m": ("tests.models", "FlextOracleOicTestModels"),
+    "p": ("tests.protocols", "FlextOracleOicTestProtocols"),
+    "r": ("flext_tests", "r"),
+    "s": ("flext_tests", "s"),
+    "t": ("tests.typings", "FlextOracleOicTestTypes"),
     "test_basic_import": ("tests.test_import", "test_basic_import"),
     "test_config_import": ("tests.test_import", "test_config_import"),
     "test_version_info_tuple": ("tests.unit.test_version", "test_version_info_tuple"),
     "test_version_string": ("tests.unit.test_version", "test_version_string"),
-    "tm": ("tests.models", "tm"),
-    "u": ("tests.utilities", "TestsFlextOracleOicUtilities"),
+    "u": ("tests.utilities", "FlextOracleOicTestUtilities"),
     "unit": ("tests.unit", ""),
+    "x": ("flext_tests", "x"),
 }
 
 __all__ = [
+    "FlextOracleOicTestConstants",
+    "FlextOracleOicTestModels",
+    "FlextOracleOicTestProtocols",
+    "FlextOracleOicTestTypes",
+    "FlextOracleOicTestUtilities",
     "TestBasicFunctionality",
     "TestCLI",
     "TestFlextOracleOicSettings",
@@ -84,22 +86,22 @@ __all__ = [
     "TestOICConnectionInfo",
     "TestOICIntegrationInfo",
     "TestOracleOicExtension",
-    "TestsFlextOracleOicConstants",
-    "TestsFlextOracleOicModels",
-    "TestsFlextOracleOicProtocols",
-    "TestsFlextOracleOicTypes",
-    "TestsFlextOracleOicUtilities",
     "c",
+    "d",
+    "e",
+    "h",
     "m",
     "p",
+    "r",
+    "s",
     "t",
     "test_basic_import",
     "test_config_import",
     "test_version_info_tuple",
     "test_version_string",
-    "tm",
     "u",
     "unit",
+    "x",
 ]
 
 

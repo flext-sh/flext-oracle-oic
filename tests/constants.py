@@ -1,6 +1,7 @@
-"""Module skeleton for TestsFlextOracleOicConstants.
+"""Test constants for flext-oracle-oic tests.
 
-Test constants for flextoracleoic.
+Provides FlextOracleOicTestConstants, extending FlextTestsConstants with
+flext-oracle-oic-specific constants.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -8,12 +9,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import c
+from flext_tests import FlextTestsConstants
 
 
-class TestsFlextOracleOicConstants(c):
-    """Test constants for flextoracleoic."""
+class FlextOracleOicTestConstants(FlextTestsConstants):
+    """Test constants for flext-oracle-oic."""
 
 
-c = TestsFlextOracleOicConstants
-__all__ = ["TestsFlextOracleOicConstants", "c"]
+c = FlextOracleOicTestConstants
+__all__ = ["FlextOracleOicTestConstants", "c"]

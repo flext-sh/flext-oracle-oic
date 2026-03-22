@@ -1,7 +1,7 @@
-"""Test models for flext-oracle-oic tests.
+"""Test models for flext-oracle-oic.
 
-Provides TestsFlextOracleOicModels, extending m with
-flext-oracle-oic-specific models using COMPOSITION INHERITANCE.
+Provides FlextOracleOicTestModels, combining FlextTestsModels with
+FlextOracleOicModels for test-specific model definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -9,31 +9,18 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import m
+from flext_tests import FlextTestsModels
 
 from flext_oracle_oic.models import FlextOracleOicModels
 
 
-class TestsFlextOracleOicModels(m, FlextOracleOicModels):
-    """Models for flext-oracle-oic tests using COMPOSITION INHERITANCE.
-
-    MANDATORY: Inherits from BOTH:
-    1. m - for test infrastructure (.Tests.*)
-    2. FlextOracleOicModels - for domain models
-
-    Access patterns:
-    - tm.Tests.* (generic test models from m)
-    - tm.* (Oracle OIC domain models)
-    - m.* (production models via alternative alias)
-    """
+class FlextOracleOicTestModels(FlextTestsModels, FlextOracleOicModels):
+    """Test models combining FlextTestsModels with flext-oracle-oic models."""
 
 
-# Short aliases per FLEXT convention
-tm = TestsFlextOracleOicModels
-m = TestsFlextOracleOicModels
+m = FlextOracleOicTestModels
 
 __all__ = [
-    "TestsFlextOracleOicModels",
+    "FlextOracleOicTestModels",
     "m",
-    "tm",
 ]
