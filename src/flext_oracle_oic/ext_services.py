@@ -759,8 +759,13 @@ class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
             """
             try:
                 response = self.client.get(c.API.ENDPOINT_HEALTH)
-                if response.status_code == c.API.HTTP_STATUS_OK:
-                    health_data = response.json()
+                if response.is_success:
+                    health_value = response.value
+                    health_data = (
+                        health_value
+                        if isinstance(health_value, Mapping)
+                        else {}
+                    )
                     raw_health: dict[str, t.NormalizedValue] = {
                         "status": c.Monitoring.HealthStatus.HEALTHY,
                         "components": {
@@ -790,7 +795,7 @@ class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
                                 "status": c.Monitoring.ComponentStatus.UNKNOWN,
                             },
                         },
-                        "error": f"HTTP {response.status_code}",
+                        "error": response.error or "Health check request failed",
                     }
                 validation_result = (
                     FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
@@ -844,8 +849,13 @@ class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
             """
             try:
                 response = self.client.get("/ic/api/integration/v1/metrics")
-                if response.status_code == c.API.HTTP_STATUS_OK:
-                    metrics_data = response.json()
+                if response.is_success:
+                    metrics_value = response.value
+                    metrics_data = (
+                        metrics_value
+                        if isinstance(metrics_value, Mapping)
+                        else {}
+                    )
                     raw_metrics: dict[str, t.NormalizedValue] = {
                         "active_integrations": metrics_data.get(
                             "active_integrations",
@@ -865,7 +875,7 @@ class FlextOracleOicExtServices(FlextService[list[t.ValueOrModel]]):
                         "total_executions": 0,
                         "success_rate": 0.0,
                         "average_response_time": 0.0,
-                        "error": f"HTTP {response.status_code}",
+                        "error": response.error or "Metrics request failed",
                     }
                 analysis_result = FlextOracleOicUtilities.MonitoringUtilities.analyze_performance_metrics(
                     raw_metrics,
