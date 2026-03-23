@@ -1,7 +1,6 @@
 # API Reference
 
 <!-- TOC START -->
-
 - [Public API Overview](#public-api-overview)
 - [Configuration API](#configuration-api)
   - [OracleOicExtensionSettings](#oracleoicextensionsettings)
@@ -24,7 +23,6 @@
   - [Current Version (v0.9.9)](#current-version-v099)
   - [Future Versions](#future-versions)
 - [Related Documentation](#related-documentation)
-
 <!-- TOC END -->
 
 **flext-oracle-oic v0.9.9** - Available APIs and Components

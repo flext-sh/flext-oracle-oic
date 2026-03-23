@@ -1,7 +1,6 @@
 # Getting Started
 
 <!-- TOC START -->
-
 - [Prerequisites](#prerequisites)
   - [Required Software](#required-software)
   - [Optional for Testing](#optional-for-testing)
@@ -27,7 +26,6 @@
   - [Resources](#resources)
   - [Support Channels](#support-channels)
 - [Related Documentation](#related-documentation)
-
 <!-- TOC END -->
 
 **flext-oracle-oic v0.9.9** - Oracle Integration Cloud client library for the FLEXT ecosystem

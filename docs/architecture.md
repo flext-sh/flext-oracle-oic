@@ -1,7 +1,6 @@
 # Architecture
 
 <!-- TOC START -->
-
 - [Overview](#overview)
   - [Architecture Principles](#architecture-principles)
 - [Current Implementation Analysis](#current-implementation-analysis)
@@ -31,7 +30,6 @@
   - [Service Dependencies](#service-dependencies)
   - [Cross-References](#cross-references)
 - [Related Documentation](#related-documentation)
-
 <!-- TOC END -->
 
 **flext-oracle-oic v0.9.9** - Oracle Integration Cloud Architecture Analysis

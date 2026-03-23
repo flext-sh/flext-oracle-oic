@@ -1,7 +1,6 @@
 # Documentation Index
 
 <!-- TOC START -->
-
 - [Overview](#overview)
 - [Documentation Structure](#documentation-structure)
   - [Getting Started](#getting-started)
@@ -20,7 +19,6 @@
 - [Development Guidelines](#development-guidelines)
   - [Quality Standards](#quality-standards)
   - [Contributing](#contributing)
-
 <!-- TOC END -->
 
 **flext-oracle-oic v0.9.9** - Oracle Integration Cloud client library for the FLEXT ecosystem
