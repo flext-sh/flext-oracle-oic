@@ -12,7 +12,7 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core import FlextTypes
 
-    from .test_version import test_version_info_tuple, test_version_string
+    from tests.unit.test_version import test_version_info_tuple, test_version_string
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "test_version_info_tuple": ("tests.unit.test_version", "test_version_info_tuple"),

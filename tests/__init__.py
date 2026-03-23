@@ -13,26 +13,35 @@ if TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_tests import d, e, h, r, s, x
 
-    from . import unit as unit
-    from .constants import FlextOracleOicTestConstants, FlextOracleOicTestConstants as c
-    from .models import FlextOracleOicTestModels, FlextOracleOicTestModels as m
-    from .protocols import FlextOracleOicTestProtocols, FlextOracleOicTestProtocols as p
-    from .test_basic import TestBasicFunctionality
-    from .test_cli import TestCLI
-    from .test_config import TestFlextOracleOicSettings
-    from .test_extension import TestOracleOicExtension
-    from .test_import import test_basic_import, test_config_import
-    from .test_main import TestMainFunction, TestMainModule
-    from .test_models import (
+    from tests import unit
+    from tests.constants import (
+        FlextOracleOicTestConstants,
+        FlextOracleOicTestConstants as c,
+    )
+    from tests.models import FlextOracleOicTestModels, FlextOracleOicTestModels as m
+    from tests.protocols import (
+        FlextOracleOicTestProtocols,
+        FlextOracleOicTestProtocols as p,
+    )
+    from tests.test_basic import TestBasicFunctionality
+    from tests.test_cli import TestCLI
+    from tests.test_config import TestFlextOracleOicSettings
+    from tests.test_extension import TestOracleOicExtension
+    from tests.test_import import test_basic_import, test_config_import
+    from tests.test_main import TestMainFunction, TestMainModule
+    from tests.test_models import (
         TestOICAuthConfig,
         TestOICConnectionConfig,
         TestOICConnectionInfo,
         TestOICIntegrationInfo,
     )
-    from .test_typings import TestFlextTypes
-    from .typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
-    from .unit.test_version import test_version_info_tuple, test_version_string
-    from .utilities import FlextOracleOicTestUtilities, FlextOracleOicTestUtilities as u
+    from tests.test_typings import TestFlextTypes
+    from tests.typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
+    from tests.unit.test_version import test_version_info_tuple, test_version_string
+    from tests.utilities import (
+        FlextOracleOicTestUtilities,
+        FlextOracleOicTestUtilities as u,
+    )
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextOracleOicTestConstants": ("tests.constants", "FlextOracleOicTestConstants"),
