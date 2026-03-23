@@ -16,8 +16,8 @@ from flext_core import FlextSettings
 from pydantic import Field, SecretStr
 from pydantic_settings import SettingsConfigDict
 
-EnvironmentLiteral = Literal["development", "staging", "production"]
-LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+from flext_oracle_oic.typings import t
+
 OICApiVersionLiteral = Literal["v1", "v2"]
 
 
@@ -28,8 +28,8 @@ class FlextOracleOicSettings(FlextSettings):
 
     base_url: Annotated[str, Field(default="https://localhost")]
     api_version: Annotated[OICApiVersionLiteral, Field(default="v1")]
-    request_timeout: Annotated[int, Field(default=30, ge=1, le=300)]
-    max_retries: Annotated[int, Field(default=3, ge=0, le=10)]
+    request_timeout: Annotated[t.PositiveInt, Field(default=30)]
+    max_retries: Annotated[t.RetryCount, Field(default=3)]
     verify_ssl: Annotated[bool, Field(default=True)]
     use_ssl: Annotated[bool, Field(default=True)]
     enable_monitoring: Annotated[bool, Field(default=True)]

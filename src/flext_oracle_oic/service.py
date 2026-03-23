@@ -912,9 +912,7 @@ class FlextOracleOicService(
                     error_msg,
                 )
             integrations_data = integrations_result.value
-            integrations: list[
-                FlextOracleOicModels.OracleOic.OICIntegrationInfo
-            ] = []
+            integrations: list[FlextOracleOicModels.OracleOic.OICIntegrationInfo] = []
             for item in integrations_data:
                 integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
                     integration_id=self._as_text(item.get("id"), ""),

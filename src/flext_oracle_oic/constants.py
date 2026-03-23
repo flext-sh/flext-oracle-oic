@@ -16,7 +16,7 @@ from __future__ import annotations
 import re
 from collections.abc import Mapping, Sequence
 from enum import StrEnum, unique
-from typing import Final, Literal
+from typing import Final
 
 from flext_core import FlextConstants
 
@@ -82,8 +82,6 @@ class FlextOracleOicConstants(FlextConstants):
             BASIC = "basic"
             BEARER = "bearer"
 
-        type AuthTypeLiteral = Literal["oauth2", "basic", "bearer"]
-
     class Integration:
         """Oracle OIC Integration constants."""
 
@@ -103,15 +101,6 @@ class FlextOracleOicConstants(FlextConstants):
             STOPPED = "STOPPED"
             ERROR = "ERROR"
 
-        type StatusLiteral = Literal[
-            "ACTIVATED",
-            "DEACTIVATED",
-            "DRAFT",
-            "PUBLISHED",
-            "RUNNING",
-            "STOPPED",
-            "ERROR",
-        ]
         DEFAULT_VERSION: Final[str] = "01.00.0000"
         DEFAULT_VERSION_FALLBACK: Final[str] = "01.00.0000"
         DEFAULT_LAST_UPDATED: Final[str] = ""
@@ -151,9 +140,6 @@ class FlextOracleOicConstants(FlextConstants):
             FTP = "FTP"
             SFTP = "SFTP"
 
-        type StatusLiteral = Literal["ACTIVE", "INACTIVE", "ERROR", "unknown"]
-        type TypeLiteral = Literal["REST", "SOAP", "DATABASE", "FILE", "FTP", "SFTP"]
-
     class Monitoring:
         """Oracle OIC Monitoring constants."""
 
@@ -186,9 +172,6 @@ class FlextOracleOicConstants(FlextConstants):
         COMPONENT_MESSAGING: Final[str] = "messaging"
         COMPONENT_INTEGRATION_ENGINE: Final[str] = "integration_engine"
 
-        type HealthStatusLiteral = Literal["healthy", "unhealthy", "error", "unknown"]
-        type ComponentStatusLiteral = Literal["healthy", "unhealthy", "unknown"]
-
     class API:
         """Oracle OIC API constants."""
 
@@ -208,7 +191,6 @@ class FlextOracleOicConstants(FlextConstants):
             DELETE = "DELETE"
             PATCH = "PATCH"
 
-        type MethodLiteral = Literal["GET", "POST", "PUT", "DELETE", "PATCH"]
         HEADER_CONTENT_TYPE: Final[str] = "Content-Type"
         HEADER_AUTHORIZATION: Final[str] = "Authorization"
         HEADER_ACCEPT: Final[str] = "Accept"
@@ -235,8 +217,6 @@ class FlextOracleOicConstants(FlextConstants):
         PATTERN_SCATTER_GATHER: Final[str] = "scatter_gather"
         PATTERN_MESSAGE_ID_UNKNOWN: Final[str] = "unknown"
         PATTERN_REQUEST_ID_UNKNOWN: Final[str] = "unknown"
-
-        type PatternStatusLiteral = Literal["processed", "failed", "pending"]
 
     class OICErrors:
         """Oracle OIC Extension specific error constants."""
