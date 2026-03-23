@@ -68,8 +68,8 @@ class FlextOracleOicUtilities(FlextUtilities):
                 return r[Mapping[str, t.NormalizedValue]].fail(
                     "Integration data must be a dictionary",
                 )
-            errors: Sequence[str] = []
-            validated_data: Mapping[str, t.NormalizedValue] = {
+            errors: list[str] = []
+            validated_data: dict[str, t.NormalizedValue] = {
                 str(key): value for key, value in integration_data.items()
             }
             if "name" not in integration_data:
@@ -420,7 +420,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing constructed headers or error
 
             """
-            headers: Mapping[str, str] = {
+            headers: dict[str, str] = {
                 "Accept": "application/json",
                 "Content-Type": content_type,
                 "User-Agent": "FlextOracleOicension/1.0.0",
@@ -576,9 +576,9 @@ class FlextOracleOicUtilities(FlextUtilities):
                     "Metrics must be a dictionary",
                 )
             overall_health = "healthy"
-            warnings: Sequence[t.NormalizedValue] = []
-            critical_issues: Sequence[t.NormalizedValue] = []
-            recommendations: Sequence[t.NormalizedValue] = []
+            warnings: list[t.NormalizedValue] = []
+            critical_issues: list[t.NormalizedValue] = []
+            recommendations: list[t.NormalizedValue] = []
             if "average_response_time" in metrics:
                 response_time = metrics["average_response_time"]
                 if isinstance(response_time, (int, float)):
@@ -644,7 +644,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                 return r[Mapping[str, t.NormalizedValue]].fail(
                     "Health data must be a dictionary",
                 )
-            validated_data: Mapping[str, t.NormalizedValue] = {
+            validated_data: dict[str, t.NormalizedValue] = {
                 str(key): value for key, value in health_data.items()
             }
             if "status" not in health_data:

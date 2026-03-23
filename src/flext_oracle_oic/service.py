@@ -789,7 +789,7 @@ class FlextOracleOicService(
                         "average_response_time": 0.0,
                         "error": f"Request failed: {response_result.error}",
                     }
-            metrics_dict: Mapping[str, t.NormalizedValue] = {}
+            metrics_dict: dict[str, t.NormalizedValue] = {}
             if isinstance(metrics_data, Mapping):
                 for key, value in metrics_data.items():
                     metrics_dict[str(key)] = self._to_general_value(value)
@@ -861,7 +861,7 @@ class FlextOracleOicService(
                     error_msg,
                 )
             connections_data = connections_result.value
-            connections: Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo] = []
+            connections: list[FlextOracleOicModels.OracleOic.OICConnectionInfo] = []
             for item in connections_data:
                 connection = FlextOracleOicModels.OracleOic.OICConnectionInfo(
                     connection_id=self._as_text(item.get("id"), ""),
@@ -912,7 +912,7 @@ class FlextOracleOicService(
                     error_msg,
                 )
             integrations_data = integrations_result.value
-            integrations: Sequence[
+            integrations: list[
                 FlextOracleOicModels.OracleOic.OICIntegrationInfo
             ] = []
             for item in integrations_data:

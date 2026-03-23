@@ -150,7 +150,7 @@ class FlextOracleOicClient:
         page_size: int = 100,
     ) -> r[Sequence[Mapping[str, t.NormalizedValue]]]:
         """Get adapter connections from OIC."""
-        params: Mapping[str, str] = {}
+        params: dict[str, str] = {}
         if type_filter:
             params["q"] = f"adapterType in ({','.join(type_filter)})"
         return self.paginate_request("/connections", page_size=page_size, params=params)
@@ -161,7 +161,7 @@ class FlextOracleOicClient:
         page_size: int = 100,
     ) -> r[Sequence[Mapping[str, t.NormalizedValue]]]:
         """Get integration flows from OIC."""
-        params: Mapping[str, str] = {}
+        params: dict[str, str] = {}
         if status_filter:
             params["q"] = f"status in ({','.join(status_filter)})"
         return self.paginate_request(
@@ -239,9 +239,9 @@ class FlextOracleOicClient:
     ) -> r[Sequence[Mapping[str, t.NormalizedValue]]]:
         """Paginate through OIC API responses."""
         try:
-            all_records: Sequence[Mapping[str, t.NormalizedValue]] = []
+            all_records: list[Mapping[str, t.NormalizedValue]] = []
             offset = 0
-            base_params: Mapping[str, str] = dict(params) if params else {}
+            base_params: dict[str, str] = dict(params) if params else {}
             while True:
                 request_params = base_params.copy()
                 request_params.update({"offset": str(offset), "limit": str(page_size)})

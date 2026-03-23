@@ -418,7 +418,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
             connections_data: Sequence[Mapping[str, t.NormalizedValue]],
         ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
             """Parse connection data into domain models."""
-            connection_infos: Sequence[
+            connection_infos: list[
                 FlextOracleOicModels.OracleOic.OICConnectionInfo
             ] = []
             for connection in connections_data:
@@ -450,7 +450,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
             integrations_data: Sequence[Mapping[str, t.NormalizedValue]],
         ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
             """Parse integration data into domain models."""
-            integration_infos: Sequence[
+            integration_infos: list[
                 FlextOracleOicModels.OracleOic.OICIntegrationInfo
             ] = []
             for integration in integrations_data:
