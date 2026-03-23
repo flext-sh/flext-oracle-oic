@@ -123,6 +123,13 @@ project-excludes = [
 python-version = "3.13"
 search-path = [
   ".",
+  "../flext-core/examples",
+  "../flext-core/src",
+  "../flext-core/tests",
+  "../git+https://github.com/flext-sh/meltano.git@flext/relax-deps/src",
+  "docs",
+  "src",
+  "tests",
 ]
 
 [tool.pyrefly.errors]
@@ -152,7 +159,16 @@ files = [
   "src",
 ]
 mypy_path = [
+  ".",
+  "../flext-core/examples",
+  "../flext-core/src",
+  "../flext-core/tests",
+  "../git+https://github.com/flext-sh/meltano.git@flext/relax-deps/src",
+  "../typings",
+  "../typings/generated",
+  "docs",
   "src",
+  "tests",
 ]
 plugins = [
   "pydantic.mypy",
@@ -163,6 +179,7 @@ python_version = "3.13"
 explicit_package_bases = true
 ignore_missing_imports = true
 namespace_packages = true
+
 [tool.pydantic-mypy]
 init_forbid_extra = true
 init_typed = true
@@ -192,7 +209,9 @@ preview = true
 respect-gitignore = true
 show-fixes = true
 src = [
+  "docs",
   "src",
+  "tests",
 ]
 target-version = "py313"
 
@@ -535,10 +554,20 @@ line-ending = "lf"
 quote-style = "double"
 [tool.pyright]
 extraPaths = [
+  ".",
+  "../flext-core/examples",
+  "../flext-core/src",
+  "../flext-core/tests",
+  "../git+https://github.com/flext-sh/meltano.git@flext/relax-deps/src",
+  "../typings",
+  "../typings/generated",
+  "docs",
   "src",
+  "tests",
 ]
 pythonPlatform = "Linux"
 pythonVersion = "3.13"
+reportCallIssue = "none"
 reportConstantRedefinition = "error"
 reportIncompatibleMethodOverride = "error"
 reportIncompatibleVariableOverride = "error"
@@ -555,6 +584,10 @@ reportUnusedFunction = "error"
 reportUnusedImport = "error"
 reportUnusedVariable = "error"
 typeCheckingMode = "strict"
+
+[[tool.pyright.executionEnvironments]]
+reportPrivateUsage = "none"
+root = "docs"
 
 [[tool.pyright.executionEnvironments]]
 reportPrivateUsage = "error"
