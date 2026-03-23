@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from collections.abc import Sequence
 from typing import override
 
 from flext_core import FlextService, r
@@ -88,7 +89,7 @@ class FlextOracleOicCli(FlextService[None]):
                 self.logger.exception("List integrations failed")
             return r[bool].fail(f"List integrations failed: {e!s}")
 
-    def run_cli(self, args: list[str] | None = None) -> int:
+    def run_cli(self, args: Sequence[str] | None = None) -> int:
         """Run the CLI with the given arguments.
 
         Args:
@@ -199,7 +200,7 @@ class FlextOracleOicCli(FlextService[None]):
 
     def _print_integrations(
         self,
-        integrations: list[FlextOracleOicModels.OracleOic.OICIntegrationInfo],
+        integrations: Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo],
     ) -> None:
         """Print integrations to CLI output.
 
@@ -240,4 +241,4 @@ def main() -> int:
         return 1
 
 
-__all__: list[str] = ["FlextOracleOicCli", "main"]
+__all__: Sequence[str] = ["FlextOracleOicCli", "main"]

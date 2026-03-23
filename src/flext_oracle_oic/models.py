@@ -202,7 +202,7 @@ class FlextOracleOicModels(FlextModels):
                 Field(description="Request payload to scatter"),
             ]
             target_services: Annotated[
-                list[str],
+                Sequence[str],
                 Field(description="Target service endpoints"),
             ]
             aggregation_strategy: Annotated[
@@ -222,28 +222,28 @@ class FlextOracleOicModels(FlextModels):
             method: Annotated[str, Field(description="HTTP method")]
             url: Annotated[str, Field(description="Request URL")]
             params: Annotated[
-                dict[str, str | int | float] | None,
+                Mapping[str, str | int | float] | None,
                 Field(
                     default=None,
                     description="Query parameters",
                 ),
             ]
             data: Annotated[
-                dict[str, t.NormalizedValue] | None,
+                Mapping[str, t.NormalizedValue] | None,
                 Field(
                     default=None,
                     description="Form data",
                 ),
             ]
             json_data: Annotated[
-                dict[str, t.NormalizedValue] | None,
+                Mapping[str, t.NormalizedValue] | None,
                 Field(
                     default=None,
                     description="JSON data",
                 ),
             ]
             headers: Annotated[
-                dict[str, str] | None,
+                Mapping[str, str] | None,
                 Field(
                     default=None,
                     description="HTTP headers",

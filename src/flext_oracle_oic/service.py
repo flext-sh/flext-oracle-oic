@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import asyncio
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Mapping, Sequence
 from types import TracebackType
 from typing import Self, override
 
@@ -28,7 +28,7 @@ from flext_oracle_oic.utilities import FlextOracleOicUtilities
 
 
 class FlextOracleOicService(
-    FlextService[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]],
+    FlextService[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]],
 ):
     """Unified Oracle OIC Extension Service - Single Class Pattern.
 
@@ -129,7 +129,7 @@ class FlextOracleOicService(
     def apply_message_router_pattern(
         self,
         message_data: Mapping[str, t.NormalizedValue],
-        routing_rules: list[Mapping[str, t.NormalizedValue]],
+        routing_rules: Sequence[Mapping[str, t.NormalizedValue]],
     ) -> r[Mapping[str, t.NormalizedValue]]:
         """Apply message router pattern to OIC integration using FlextOracleOicUtilities.
 
@@ -175,7 +175,7 @@ class FlextOracleOicService(
     def apply_scatter_gather_pattern(
         self,
         request_data: Mapping[str, t.NormalizedValue],
-        target_endpoints: list[str],
+        target_endpoints: Sequence[str],
     ) -> r[Mapping[str, t.NormalizedValue]]:
         """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
@@ -362,7 +362,7 @@ class FlextOracleOicService(
     def execute(
         self: Self,
         **kwargs: t.Scalar,
-    ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """Execute main service operation - list all integrations.
 
         Returns:
@@ -395,7 +395,7 @@ class FlextOracleOicService(
                 return r[Mapping[str, t.NormalizedValue]].fail(error_msg)
             client = client_result.value
             endpoint = f"/integrations/{integration_id}/connections"
-            payload_dict: dict[str, t.NormalizedValue] = {
+            payload_dict: Mapping[str, t.NormalizedValue] = {
                 str(key): self._to_general_value(value)
                 for key, value in payload.items()
             }
@@ -519,7 +519,7 @@ class FlextOracleOicService(
                 error_msg = client_result.error or "Client initialization failed"
                 return r[Mapping[str, t.NormalizedValue]].fail(error_msg)
             client = client_result.value
-            operation_kwargs: dict[str, t.Scalar] = {
+            operation_kwargs: Mapping[str, t.Scalar] = {
                 str(key): value for key, value in kwargs.items()
             }
             result = operation(
@@ -541,7 +541,7 @@ class FlextOracleOicService(
 
         """
         try:
-            health_data: dict[str, t.NormalizedValue]
+            health_data: Mapping[str, t.NormalizedValue]
             if not self._monitoring_client:
                 health_data = {
                     "status": c.Monitoring.HealthStatus.HEALTHY,
@@ -573,7 +573,7 @@ class FlextOracleOicService(
                 if response_result.is_success:
                     response = response_result.value
                     if response.status_code == c.API.HTTP_STATUS_OK:
-                        base_health: dict[str, t.NormalizedValue] = (
+                        base_health: Mapping[str, t.NormalizedValue] = (
                             {
                                 str(k): self._to_general_value(v)
                                 for k, v in response.body.items()
@@ -628,7 +628,7 @@ class FlextOracleOicService(
                         },
                         "error": f"Request failed: {response_result.error}",
                     }
-            health_data_dict: dict[str, t.NormalizedValue] = dict(health_data)
+            health_data_dict: Mapping[str, t.NormalizedValue] = dict(health_data)
             validation_result = (
                 FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
                     health_data_dict,
@@ -642,7 +642,7 @@ class FlextOracleOicService(
             return r[Mapping[str, t.NormalizedValue]].ok(health_data_dict)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Health check failed")
-            error_health: dict[str, t.NormalizedValue] = {
+            error_health: Mapping[str, t.NormalizedValue] = {
                 "status": c.Monitoring.HealthStatus.ERROR,
                 "components": {
                     c.Monitoring.COMPONENT_DATABASE: {
@@ -741,7 +741,7 @@ class FlextOracleOicService(
 
         """
         try:
-            metrics_data: dict[str, t.NormalizedValue]
+            metrics_data: Mapping[str, t.NormalizedValue]
             if not self._monitoring_client:
                 metrics_data = {
                     "active_integrations": 0,
@@ -789,7 +789,7 @@ class FlextOracleOicService(
                         "average_response_time": 0.0,
                         "error": f"Request failed: {response_result.error}",
                     }
-            metrics_dict: dict[str, t.NormalizedValue] = {}
+            metrics_dict: Mapping[str, t.NormalizedValue] = {}
             if isinstance(metrics_data, Mapping):
                 for key, value in metrics_data.items():
                     metrics_dict[str(key)] = self._to_general_value(value)
@@ -807,7 +807,7 @@ class FlextOracleOicService(
             return r[Mapping[str, t.NormalizedValue]].ok(metrics_dict)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Performance metrics failed")
-            error_metrics: dict[str, t.NormalizedValue] = {
+            error_metrics: Mapping[str, t.NormalizedValue] = {
                 "active_integrations": 0,
                 "total_executions": 0,
                 "success_rate": 0.0,
@@ -828,8 +828,8 @@ class FlextOracleOicService(
 
     def list_connections(
         self,
-        type_filter: list[str] | None = None,
-    ) -> r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
+        type_filter: Sequence[str] | None = None,
+    ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
         """List Oracle OIC connections.
 
         Args:
@@ -843,7 +843,9 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]].fail(
+                return r[
+                    Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]
+                ].fail(
                     error_msg,
                 )
             client = client_result.value
@@ -853,11 +855,13 @@ class FlextOracleOicService(
             )
             if connections_result.is_failure:
                 error_msg = connections_result.error or "Failed to get connections"
-                return r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]].fail(
+                return r[
+                    Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]
+                ].fail(
                     error_msg,
                 )
             connections_data = connections_result.value
-            connections: list[FlextOracleOicModels.OracleOic.OICConnectionInfo] = []
+            connections: Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo] = []
             for item in connections_data:
                 connection = FlextOracleOicModels.OracleOic.OICConnectionInfo(
                     connection_id=self._as_text(item.get("id"), ""),
@@ -871,18 +875,18 @@ class FlextOracleOicService(
                     description=self._as_text(item.get("description"), ""),
                 )
                 connections.append(connection)
-            return r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]].ok(
+            return r[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]].ok(
                 connections,
             )
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to list connections")
-            return r[list[FlextOracleOicModels.OracleOic.OICConnectionInfo]].fail(
+            return r[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]].fail(
                 f"Connection listing failed: {e!s}",
             )
 
     def list_integrations(
         self,
-    ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -893,18 +897,24 @@ class FlextOracleOicService(
             client_result = self._get_client()
             if client_result.is_failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].fail(
+                return r[
+                    Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
+                ].fail(
                     error_msg,
                 )
             client = client_result.value
             integrations_result = client.get_integrations()
             if integrations_result.is_failure:
                 error_msg = integrations_result.error or "Failed to get integrations"
-                return r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].fail(
+                return r[
+                    Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
+                ].fail(
                     error_msg,
                 )
             integrations_data = integrations_result.value
-            integrations: list[FlextOracleOicModels.OracleOic.OICIntegrationInfo] = []
+            integrations: Sequence[
+                FlextOracleOicModels.OracleOic.OICIntegrationInfo
+            ] = []
             for item in integrations_data:
                 integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
                     integration_id=self._as_text(item.get("id"), ""),
@@ -922,12 +932,12 @@ class FlextOracleOicService(
                     last_updated=self._as_text(item.get("lastUpdated"), ""),
                 )
                 integrations.append(integration)
-            return r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].ok(
+            return r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].ok(
                 integrations,
             )
         except (ConnectionError, TimeoutError, ValueError) as e:
             FlextLogger(__name__).exception("Failed to list integrations")
-            return r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].fail(
+            return r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].fail(
                 f"Integration listing failed: {e!s}",
             )
 

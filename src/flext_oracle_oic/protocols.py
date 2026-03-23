@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from typing import Protocol, runtime_checkable
 
 from flext_core import FlextProtocols
@@ -122,14 +122,14 @@ class FlextOracleOicProtocols(FlextProtocols):
                 self,
                 *,
                 filters: Mapping[str, t.NormalizedValue] | None = None,
-            ) -> FlextProtocols.Result[list[Mapping[str, t.NormalizedValue]]]:
+            ) -> FlextProtocols.Result[Sequence[Mapping[str, t.NormalizedValue]]]:
                 """List Oracle OIC integrations.
 
                 Args:
                 filters: Optional filters for integration listing
 
                 Returns:
-                r[list[Mapping[str, t.NormalizedValue]]]: Integration list or error
+                r[Sequence[Mapping[str, t.NormalizedValue]]]: Integration list or error
 
                 """
                 ...
@@ -172,14 +172,14 @@ class FlextOracleOicProtocols(FlextProtocols):
                 self,
                 *,
                 connection_type: str | None = None,
-            ) -> FlextProtocols.Result[list[Mapping[str, t.NormalizedValue]]]:
+            ) -> FlextProtocols.Result[Sequence[Mapping[str, t.NormalizedValue]]]:
                 """List Oracle OIC connections.
 
                 Args:
                 connection_type: Optional connection type filter
 
                 Returns:
-                r[list[Mapping[str, t.NormalizedValue]]]: Connection list or error
+                r[Sequence[Mapping[str, t.NormalizedValue]]]: Connection list or error
 
                 """
                 ...
@@ -240,7 +240,7 @@ class FlextOracleOicProtocols(FlextProtocols):
             def apply_message_router_pattern(
                 self,
                 integration_config: Mapping[str, t.NormalizedValue],
-                routing_rules: list[Mapping[str, t.NormalizedValue]],
+                routing_rules: Sequence[Mapping[str, t.NormalizedValue]],
             ) -> FlextProtocols.Result[Mapping[str, t.NormalizedValue]]:
                 """Apply message router pattern to Oracle OIC integration.
 

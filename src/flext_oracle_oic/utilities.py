@@ -16,7 +16,7 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 from __future__ import annotations
 
 import re
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from datetime import UTC, datetime
 from urllib.parse import urljoin
 
@@ -68,8 +68,8 @@ class FlextOracleOicUtilities(FlextUtilities):
                 return r[Mapping[str, t.NormalizedValue]].fail(
                     "Integration data must be a dictionary",
                 )
-            errors: list[str] = []
-            validated_data: dict[str, t.NormalizedValue] = {
+            errors: Sequence[str] = []
+            validated_data: Mapping[str, t.NormalizedValue] = {
                 str(key): value for key, value in integration_data.items()
             }
             if "name" not in integration_data:
@@ -420,7 +420,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing constructed headers or error
 
             """
-            headers: dict[str, str] = {
+            headers: Mapping[str, str] = {
                 "Accept": "application/json",
                 "Content-Type": content_type,
                 "User-Agent": "FlextOracleOicension/1.0.0",
@@ -462,7 +462,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             endpoints_raw = integration_data.get("endpoints", [])
             connections_raw = integration_data.get("connections", [])
             mappings_raw = integration_data.get("mappings", [])
-            endpoints: list[dict[str, t.NormalizedValue]] = (
+            endpoints: Sequence[Mapping[str, t.NormalizedValue]] = (
                 [
                     dict(endpoint)
                     for endpoint in endpoints_raw
@@ -471,10 +471,10 @@ class FlextOracleOicUtilities(FlextUtilities):
                 if isinstance(endpoints_raw, list)
                 else []
             )
-            connections: list[t.NormalizedValue] = (
+            connections: Sequence[t.NormalizedValue] = (
                 list(connections_raw) if isinstance(connections_raw, list) else []
             )
-            mappings: list[t.NormalizedValue] = (
+            mappings: Sequence[t.NormalizedValue] = (
                 list(mappings_raw) if isinstance(mappings_raw, list) else []
             )
             if len(endpoints) > c.OracleOicValidation.MIN_ENDPOINTS_FOR_ROUTER and any(
@@ -576,9 +576,9 @@ class FlextOracleOicUtilities(FlextUtilities):
                     "Metrics must be a dictionary",
                 )
             overall_health = "healthy"
-            warnings: list[t.NormalizedValue] = []
-            critical_issues: list[t.NormalizedValue] = []
-            recommendations: list[t.NormalizedValue] = []
+            warnings: Sequence[t.NormalizedValue] = []
+            critical_issues: Sequence[t.NormalizedValue] = []
+            recommendations: Sequence[t.NormalizedValue] = []
             if "average_response_time" in metrics:
                 response_time = metrics["average_response_time"]
                 if isinstance(response_time, (int, float)):
@@ -619,7 +619,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                         recommendations.append(
                             "Review error logs and implement error handling improvements",
                         )
-            analysis: dict[str, t.NormalizedValue] = {
+            analysis: Mapping[str, t.NormalizedValue] = {
                 "overall_health": overall_health,
                 "warnings": tuple(warnings),
                 "critical_issues": tuple(critical_issues),
@@ -644,7 +644,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                 return r[Mapping[str, t.NormalizedValue]].fail(
                     "Health data must be a dictionary",
                 )
-            validated_data: dict[str, t.NormalizedValue] = {
+            validated_data: Mapping[str, t.NormalizedValue] = {
                 str(key): value for key, value in health_data.items()
             }
             if "status" not in health_data:

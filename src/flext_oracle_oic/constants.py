@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import re
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from enum import StrEnum, unique
 from typing import Final, Literal
 
@@ -314,4 +314,4 @@ class FlextOracleOicConstants(FlextConstants):
 
 
 c = FlextOracleOicConstants
-__all__: list[str] = ["FlextOracleOicConstants", "c"]
+__all__: Sequence[str] = ["FlextOracleOicConstants", "c"]

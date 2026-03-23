@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from typing import Self, override
 
 from flext_core import FlextService, r
@@ -277,7 +277,7 @@ class FlextOracleOicApi(FlextService[None]):
 
     def list_integrations(
         self,
-    ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:

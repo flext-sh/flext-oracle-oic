@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 
 from flext_core import FlextTypes
 
@@ -32,26 +32,26 @@ class FlextOracleOicTypes(FlextTypes):
     class OracleOic:
         """Oracle OIC integration complex types."""
 
-        type IntegrationConfiguration = dict[
+        type IntegrationConfiguration = Mapping[
             str,
             str | int | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type IntegrationFlow = list[
-            dict[str, str | Mapping[str, FlextTypes.NormalizedValue]]
+        type IntegrationFlow = Sequence[
+            Mapping[str, str | Mapping[str, FlextTypes.NormalizedValue]]
         ]
-        type IntegrationMapping = dict[
+        type IntegrationMapping = Mapping[
             str,
-            str | list[str] | Mapping[str, FlextTypes.NormalizedValue],
+            str | Sequence[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type IntegrationMetadata = dict[
+        type IntegrationMetadata = Mapping[
             str,
             str | int | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type IntegrationMonitoring = dict[
+        type IntegrationMonitoring = Mapping[
             str,
             bool | int | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type IntegrationSecurity = dict[
+        type IntegrationSecurity = Mapping[
             str,
             str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
@@ -59,74 +59,76 @@ class FlextOracleOicTypes(FlextTypes):
     class Connection:
         """Oracle OIC connection complex types."""
 
-        type ConnectionConfiguration = dict[
+        type ConnectionConfiguration = Mapping[
             str,
             str | int | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type ConnectionPool = dict[
+        type ConnectionPool = Mapping[
             str,
             int | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type ConnectionSecurity = dict[
+        type ConnectionSecurity = Mapping[
             str,
             str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type ConnectionMonitoring = dict[
+        type ConnectionMonitoring = Mapping[
             str,
             int | float | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type ConnectionLifecycle = dict[
+        type ConnectionLifecycle = Mapping[
             str,
             str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type ConnectionValidation = dict[str, bool | str | list[str]]
+        type ConnectionValidation = Mapping[str, bool | str | Sequence[str]]
 
     class Adapter:
         """Oracle OIC adapter complex types."""
 
-        type AdapterConfiguration = dict[
+        type AdapterConfiguration = Mapping[
             str,
             str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type AdapterCapabilities = list[
-            dict[str, str | bool | Mapping[str, FlextTypes.NormalizedValue]]
+        type AdapterCapabilities = Sequence[
+            Mapping[str, str | bool | Mapping[str, FlextTypes.NormalizedValue]]
         ]
-        type AdapterMetadata = dict[
+        type AdapterMetadata = Mapping[
             str,
-            str | list[str] | Mapping[str, FlextTypes.NormalizedValue],
+            str | Sequence[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type AdapterBinding = dict[str, str | Mapping[str, FlextTypes.NormalizedValue]]
-        type AdapterTransformation = list[
-            dict[str, str | Mapping[str, FlextTypes.NormalizedValue]]
+        type AdapterBinding = Mapping[
+            str, str | Mapping[str, FlextTypes.NormalizedValue]
         ]
-        type AdapterValidation = dict[
+        type AdapterTransformation = Sequence[
+            Mapping[str, str | Mapping[str, FlextTypes.NormalizedValue]]
+        ]
+        type AdapterValidation = Mapping[
             str,
-            bool | list[str] | Mapping[str, FlextTypes.NormalizedValue],
+            bool | Sequence[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
 
     class MessageProcessing:
         """Oracle OIC message processing complex types."""
 
-        type MessageConfiguration = dict[
+        type MessageConfiguration = Mapping[
             str,
             str | int | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type MessageFormat = dict[
+        type MessageFormat = Mapping[
             str,
             str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type MessageTransformation = list[
-            dict[str, str | Mapping[str, FlextTypes.NormalizedValue]]
+        type MessageTransformation = Sequence[
+            Mapping[str, str | Mapping[str, FlextTypes.NormalizedValue]]
         ]
-        type MessageValidation = dict[
+        type MessageValidation = Mapping[
             str,
-            bool | str | list[str] | Mapping[str, FlextTypes.NormalizedValue],
+            bool | str | Sequence[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type MessageRouting = dict[
+        type MessageRouting = Mapping[
             str,
-            str | list[str] | Mapping[str, FlextTypes.NormalizedValue],
+            str | Sequence[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type MessageTracking = dict[
+        type MessageTracking = Mapping[
             str,
             str | int | Mapping[str, FlextTypes.NormalizedValue],
         ]
@@ -134,26 +136,26 @@ class FlextOracleOicTypes(FlextTypes):
     class Transformation:
         """Oracle OIC transformation complex types."""
 
-        type TransformationRule = dict[
+        type TransformationRule = Mapping[
             str,
-            str | list[str] | Mapping[str, FlextTypes.NormalizedValue],
+            str | Sequence[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type TransformationMapping = dict[
+        type TransformationMapping = Mapping[
             str,
             str | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type TransformationValidation = dict[str, bool | str | list[str]]
-        type TransformationEngine = dict[
+        type TransformationValidation = Mapping[str, bool | str | Sequence[str]]
+        type TransformationEngine = Mapping[
             str,
             str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type TransformationResult = dict[
+        type TransformationResult = Mapping[
             str,
             bool
             | FlextTypes.NormalizedValue
             | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type TransformationMetrics = dict[
+        type TransformationMetrics = Mapping[
             str,
             int | float | Mapping[str, FlextTypes.NormalizedValue],
         ]
@@ -161,47 +163,47 @@ class FlextOracleOicTypes(FlextTypes):
     class Monitoring:
         """Oracle OIC monitoring complex types."""
 
-        type MonitoringConfiguration = dict[
+        type MonitoringConfiguration = Mapping[
             str,
             bool | str | int | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type MonitoringMetrics = dict[
+        type MonitoringMetrics = Mapping[
             str,
             int | float | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type MonitoringAlerts = list[
-            dict[str, str | int | bool | Mapping[str, FlextTypes.NormalizedValue]]
+        type MonitoringAlerts = Sequence[
+            Mapping[str, str | int | bool | Mapping[str, FlextTypes.NormalizedValue]]
         ]
-        type MonitoringDashboard = dict[
+        type MonitoringDashboard = Mapping[
             str,
-            str | list[Mapping[str, FlextTypes.NormalizedValue]],
+            str | Sequence[Mapping[str, FlextTypes.NormalizedValue]],
         ]
-        type MonitoringReports = dict[
+        type MonitoringReports = Mapping[
             str,
-            str | list[Mapping[str, FlextTypes.NormalizedValue]],
+            str | Sequence[Mapping[str, FlextTypes.NormalizedValue]],
         ]
-        type MonitoringThresholds = dict[str, int | float | bool]
+        type MonitoringThresholds = Mapping[str, int | float | bool]
 
     class Security:
         """Oracle OIC security complex types."""
 
-        type SecurityConfiguration = dict[
+        type SecurityConfiguration = Mapping[
             str,
             str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type SecurityPolicy = dict[
+        type SecurityPolicy = Mapping[
             str,
-            str | bool | list[str] | Mapping[str, FlextTypes.NormalizedValue],
+            str | bool | Sequence[str] | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type SecurityCredentials = dict[
+        type SecurityCredentials = Mapping[
             str,
             str | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type SecurityValidation = dict[str, bool | str | list[str]]
-        type SecurityAudit = list[
-            dict[str, str | int | Mapping[str, FlextTypes.NormalizedValue]]
+        type SecurityValidation = Mapping[str, bool | str | Sequence[str]]
+        type SecurityAudit = Sequence[
+            Mapping[str, str | int | Mapping[str, FlextTypes.NormalizedValue]]
         ]
-        type SecurityCompliance = dict[
+        type SecurityCompliance = Mapping[
             str,
             bool | str | Mapping[str, FlextTypes.NormalizedValue],
         ]
@@ -210,38 +212,38 @@ class FlextOracleOicTypes(FlextTypes):
         """Core Oracle OIC extension types.
 
         Essential domain-specific types for Oracle OIC integration operations.
-        Replaces generic dict[str, FlextTypes.NormalizedValue] with semantic Oracle OIC types.
+        Replaces generic Mapping[str, FlextTypes.NormalizedValue] with semantic Oracle OIC types.
         """
 
-        type ConfigDict = dict[str, FlextTypes.NormalizedValue]
-        type ConnectionDict = dict[
+        type ConfigDict = Mapping[str, FlextTypes.NormalizedValue]
+        type ConnectionDict = Mapping[
             str,
             str | int | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type AuthDict = dict[str, str | Mapping[str, FlextTypes.NormalizedValue]]
-        type ContextDict = dict[str, FlextTypes.NormalizedValue]
-        type IntegrationDict = dict[
+        type AuthDict = Mapping[str, str | Mapping[str, FlextTypes.NormalizedValue]]
+        type ContextDict = Mapping[str, FlextTypes.NormalizedValue]
+        type IntegrationDict = Mapping[
             str,
             FlextTypes.NormalizedValue | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type WorkflowDict = dict[
+        type WorkflowDict = Mapping[
             str,
             bool | str | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type AdapterDict = dict[str, FlextTypes.NormalizedValue]
-        type MessageDict = dict[
+        type AdapterDict = Mapping[str, FlextTypes.NormalizedValue]
+        type MessageDict = Mapping[
             str,
             str | bool | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type DataDict = dict[str, FlextTypes.NormalizedValue]
-        type ResponseDict = dict[str, FlextTypes.NormalizedValue]
-        type RequestDict = dict[str, FlextTypes.NormalizedValue]
-        type ResultDict = dict[str, FlextTypes.NormalizedValue]
-        type MetricsDict = dict[str, FlextTypes.NormalizedValue]
-        type HealthDict = dict[str, FlextTypes.NormalizedValue]
-        type DataList = list[dict[str, FlextTypes.NormalizedValue]]
-        type ConfigList = list[dict[str, FlextTypes.NormalizedValue]]
-        type StringList = list[str]
+        type DataDict = Mapping[str, FlextTypes.NormalizedValue]
+        type ResponseDict = Mapping[str, FlextTypes.NormalizedValue]
+        type RequestDict = Mapping[str, FlextTypes.NormalizedValue]
+        type ResultDict = Mapping[str, FlextTypes.NormalizedValue]
+        type MetricsDict = Mapping[str, FlextTypes.NormalizedValue]
+        type HealthDict = Mapping[str, FlextTypes.NormalizedValue]
+        type DataList = Sequence[Mapping[str, FlextTypes.NormalizedValue]]
+        type ConfigList = Sequence[Mapping[str, FlextTypes.NormalizedValue]]
+        type StringList = Sequence[str]
 
     class Project:
         """Oracle OIC extension-specific project types.
@@ -252,13 +254,13 @@ class FlextOracleOicTypes(FlextTypes):
         """
 
         type ProjectType = c.ProjectType
-        type OicProjectConfig = dict[str, FlextTypes.NormalizedValue]
-        type IntegrationConfig = dict[str, str | int | bool | list[str]]
-        type WorkflowConfig = dict[
+        type OicProjectConfig = Mapping[str, FlextTypes.NormalizedValue]
+        type IntegrationConfig = Mapping[str, str | int | bool | Sequence[str]]
+        type WorkflowConfig = Mapping[
             str,
             bool | str | Mapping[str, FlextTypes.NormalizedValue],
         ]
-        type AdapterConfig = dict[str, FlextTypes.NormalizedValue]
+        type AdapterConfig = Mapping[str, FlextTypes.NormalizedValue]
 
 
 t = FlextOracleOicTypes
