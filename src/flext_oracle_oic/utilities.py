@@ -21,11 +21,9 @@ from datetime import UTC, datetime
 from urllib.parse import urljoin
 
 from flext_core import FlextUtilities, r
-from pydantic import BaseModel, SecretStr
+from pydantic import SecretStr
 
-from flext_oracle_oic.constants import c
-from flext_oracle_oic.models import FlextOracleOicModels
-from flext_oracle_oic.typings import t
+from flext_oracle_oic import c, m, t
 
 
 class FlextOracleOicUtilities(FlextUtilities):
@@ -497,8 +495,12 @@ class FlextOracleOicUtilities(FlextUtilities):
         @staticmethod
         def validate_pattern_configuration(
             pattern_type: str,
-            configuration: BaseModel,
-        ) -> r[BaseModel]:
+            configuration: m.OracleOic.MessageRouterPatternConfig
+            | m.OracleOic.ScatterGatherPatternConfig,
+        ) -> r[
+            m.OracleOic.MessageRouterPatternConfig
+            | m.OracleOic.ScatterGatherPatternConfig
+        ]:
             """Validate Oracle OIC integration pattern configuration.
 
             Args:
@@ -511,32 +513,47 @@ class FlextOracleOicUtilities(FlextUtilities):
             """
             if pattern_type not in c.OracleOicValidation.SUPPORTED_PATTERNS:
                 supported = ", ".join(sorted(c.OracleOicValidation.SUPPORTED_PATTERNS))
-                return r[BaseModel].fail(
+                return r[
+                    m.OracleOic.MessageRouterPatternConfig
+                    | m.OracleOic.ScatterGatherPatternConfig
+                ].fail(
                     f"Unsupported pattern type. Supported: {supported}",
                 )
             if pattern_type == "message_router":
                 if not isinstance(
                     configuration,
-                    FlextOracleOicModels.OracleOic.MessageRouterPatternConfig,
+                    m.OracleOic.MessageRouterPatternConfig,
                 ):
-                    return r[BaseModel].fail(
+                    return r[
+                        m.OracleOic.MessageRouterPatternConfig
+                        | m.OracleOic.ScatterGatherPatternConfig
+                    ].fail(
                         "Message router pattern requires MessageRouterPatternConfig",
                     )
             elif pattern_type == "scatter_gather":
                 if not isinstance(
                     configuration,
-                    FlextOracleOicModels.OracleOic.ScatterGatherPatternConfig,
+                    m.OracleOic.ScatterGatherPatternConfig,
                 ):
-                    return r[BaseModel].fail(
+                    return r[
+                        m.OracleOic.MessageRouterPatternConfig
+                        | m.OracleOic.ScatterGatherPatternConfig
+                    ].fail(
                         "Scatter-gather pattern requires ScatterGatherPatternConfig",
                     )
             elif pattern_type == "publish_subscribe":
                 configuration_data = configuration.model_dump(mode="python")
                 if "event_types" not in configuration_data:
-                    return r[BaseModel].fail(
+                    return r[
+                        m.OracleOic.MessageRouterPatternConfig
+                        | m.OracleOic.ScatterGatherPatternConfig
+                    ].fail(
                         "Publish-subscribe pattern requires event_types",
                     )
-            return r[BaseModel].ok(configuration)
+            return r[
+                m.OracleOic.MessageRouterPatternConfig
+                | m.OracleOic.ScatterGatherPatternConfig
+            ].ok(configuration)
 
     class MonitoringUtilities:
         """Oracle OIC monitoring and health check utilities."""

@@ -15,7 +15,7 @@ import sys
 from typing import override
 
 from flext_core import FlextService, r
-from flext_infra.__version__ import __version__
+from flext_infra import __version__
 
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
