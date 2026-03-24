@@ -338,12 +338,11 @@ class FlextOracleOicClient:
     ) -> r[t.NormalizedValue]:
         """Execute the actual API request."""
         try:
-            request_body: t.ContainerMapping | None = (
-                {key: self._to_api_payload(value) for key, value in json.items()}
-                if json is not None
-                else None
-            )
-            api_data: Mapping[str, t.ContainerValue] | None = request_body
+            api_data: Mapping[str, t.ContainerValue] | None = None
+            if json is not None:
+                api_data = {
+                    key: str(self._to_api_payload(value)) for key, value in json.items()
+                }
             base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
             full_url = f"{base_url}/{endpoint.lstrip('/')}"
             if method.upper() == "GET":
@@ -360,8 +359,9 @@ class FlextOracleOicClient:
                 return r[t.NormalizedValue].fail(
                     f"Request failed: {response_result.error}",
                 )
-            response_value: t.NormalizedValue = response_result.value
-            return r[t.NormalizedValue].ok(response_value)
+            response = response_result.value
+            body: t.NormalizedValue = getattr(response, "body", str(response))
+            return r[t.NormalizedValue].ok(body)
         except (
             ConnectionError,
             TimeoutError,
@@ -382,7 +382,7 @@ class FlextOracleOicClient:
                 "base_url": self.auth_config.oauth_token_url,
             })
             api_client = FlextApi(api_config)
-            oauth_data: Mapping[str, t.ContainerValue] = {
+            oauth_data: t.ContainerMapping = {
                 key: self._to_api_payload(value) for key, value in data.items()
             }
             response_result = api_client.post("", data=oauth_data, headers=headers)
@@ -395,8 +395,8 @@ class FlextOracleOicClient:
                 return r[t.NormalizedValue].fail(
                     f"OAuth HTTP error: {response.status_code}",
                 )
-            normalized_response: t.NormalizedValue = response
-            return r[t.NormalizedValue].ok(normalized_response)
+            body: t.NormalizedValue = getattr(response, "body", str(response))
+            return r[t.NormalizedValue].ok(body)
         except (
             ConnectionError,
             TimeoutError,
@@ -468,24 +468,20 @@ class FlextOracleOicClient:
             body = getattr(response, "body", None)
             if body is None:
                 return r[str].fail("Invalid response format")
-            token_data: t.ContainerMapping
+            token_data: dict[str, t.NormalizedValue]
             if isinstance(body, dict):
-                token_data = body
+                token_data = {str(k): v for k, v in body.items()}
+            elif isinstance(body, str):
+                token_parser: TypeAdapter[dict[str, t.NormalizedValue]] = TypeAdapter(
+                    dict[str, t.NormalizedValue],
+                )
+                token_data = token_parser.validate_json(body)
             else:
-                match body:
-                    case str():
-                        token_parser: TypeAdapter[t.ContainerMapping] = TypeAdapter(
-                            t.ContainerMapping,
-                        )
-                        token_data = token_parser.validate_json(body)
-                    case _:
-                        return r[str].fail("Empty or invalid OAuth response body")
-            access_token = token_data.get("access_token")
-            match access_token:
-                case str() as token if token:
-                    return r[str].ok(token)
-                case _:
-                    return r[str].fail("No valid access token in response")
+                return r[str].fail("Empty or invalid OAuth response body")
+            access_token: t.NormalizedValue | None = token_data.get("access_token")
+            if isinstance(access_token, str) and access_token:
+                return r[str].ok(access_token)
+            return r[str].fail("No valid access token in response")
         except (
             ConnectionError,
             TimeoutError,

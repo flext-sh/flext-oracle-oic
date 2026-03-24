@@ -762,8 +762,9 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
                 response = self.client.get(c.API.ENDPOINT_HEALTH)
                 if response.is_success:
                     health_value = response.value
-                    health_data = (
-                        health_value if isinstance(health_value, Mapping) else {}
+                    empty_map: t.ContainerMapping = {}
+                    health_data: t.ContainerMapping = (
+                        health_value if isinstance(health_value, Mapping) else empty_map
                     )
                     raw_health: t.ContainerMapping = {
                         "status": c.Monitoring.HealthStatus.HEALTHY,
@@ -778,7 +779,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
                                 "status": c.Monitoring.ComponentStatus.HEALTHY,
                             },
                         },
-                        "timestamp": health_data.get("timestamp", ""),
+                        "timestamp": str(health_data.get("timestamp", "")),
                     }
                 else:
                     raw_health = {
@@ -850,21 +851,31 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
                 response = self.client.get("/ic/api/integration/v1/metrics")
                 if response.is_success:
                     metrics_value = response.value
-                    metrics_data = (
-                        metrics_value if isinstance(metrics_value, Mapping) else {}
+                    empty_metrics: t.ContainerMapping = {}
+                    metrics_data: t.ContainerMapping = (
+                        metrics_value
+                        if isinstance(metrics_value, Mapping)
+                        else empty_metrics
                     )
+                    active_int: t.NormalizedValue = (
+                        metrics_data.get("active_integrations") or 0
+                    )
+                    total_exec: t.NormalizedValue = (
+                        metrics_data.get("total_executions") or 0
+                    )
+                    success_rt: t.NormalizedValue = (
+                        metrics_data.get("success_rate") or 0.0
+                    )
+                    avg_resp: t.NormalizedValue = (
+                        metrics_data.get("avg_response_time") or 0.0
+                    )
+                    ts_val: t.NormalizedValue = metrics_data.get("timestamp") or ""
                     raw_metrics: t.ContainerMapping = {
-                        "active_integrations": metrics_data.get(
-                            "active_integrations",
-                            0,
-                        ),
-                        "total_executions": metrics_data.get("total_executions", 0),
-                        "success_rate": metrics_data.get("success_rate", 0.0),
-                        "average_response_time": metrics_data.get(
-                            "avg_response_time",
-                            0.0,
-                        ),
-                        "timestamp": metrics_data.get("timestamp", ""),
+                        "active_integrations": active_int,
+                        "total_executions": total_exec,
+                        "success_rate": success_rt,
+                        "average_response_time": avg_resp,
+                        "timestamp": ts_val,
                     }
                 else:
                     raw_metrics = {
