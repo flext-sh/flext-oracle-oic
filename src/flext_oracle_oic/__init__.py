@@ -43,44 +43,44 @@ if TYPE_CHECKING:
         FlextOracleOicUtilities as u,
     )
 
-_LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "FlextOracleOicApi": ("flext_oracle_oic.api", "FlextOracleOicApi"),
-    "FlextOracleOicCli": ("flext_oracle_oic.main", "FlextOracleOicCli"),
-    "FlextOracleOicClient": ("flext_oracle_oic.ext_client", "FlextOracleOicClient"),
-    "FlextOracleOicConstants": (
+_LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
+    "FlextOracleOicApi": ["flext_oracle_oic.api", "FlextOracleOicApi"],
+    "FlextOracleOicCli": ["flext_oracle_oic.main", "FlextOracleOicCli"],
+    "FlextOracleOicClient": ["flext_oracle_oic.ext_client", "FlextOracleOicClient"],
+    "FlextOracleOicConstants": [
         "flext_oracle_oic.constants",
         "FlextOracleOicConstants",
-    ),
-    "FlextOracleOicExtServices": (
+    ],
+    "FlextOracleOicExtServices": [
         "flext_oracle_oic.ext_services",
         "FlextOracleOicExtServices",
-    ),
-    "FlextOracleOicModels": ("flext_oracle_oic.models", "FlextOracleOicModels"),
-    "FlextOracleOicProtocols": (
+    ],
+    "FlextOracleOicModels": ["flext_oracle_oic.models", "FlextOracleOicModels"],
+    "FlextOracleOicProtocols": [
         "flext_oracle_oic.protocols",
         "FlextOracleOicProtocols",
-    ),
-    "FlextOracleOicService": ("flext_oracle_oic.service", "FlextOracleOicService"),
-    "FlextOracleOicSettings": ("flext_oracle_oic.settings", "FlextOracleOicSettings"),
-    "FlextOracleOicTypes": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
-    "FlextOracleOicUtilities": (
+    ],
+    "FlextOracleOicService": ["flext_oracle_oic.service", "FlextOracleOicService"],
+    "FlextOracleOicSettings": ["flext_oracle_oic.settings", "FlextOracleOicSettings"],
+    "FlextOracleOicTypes": ["flext_oracle_oic.typings", "FlextOracleOicTypes"],
+    "FlextOracleOicUtilities": [
         "flext_oracle_oic.utilities",
         "FlextOracleOicUtilities",
-    ),
-    "__all__": ("flext_oracle_oic.__version__", "__all__"),
-    "c": ("flext_oracle_oic.constants", "FlextOracleOicConstants"),
-    "d": ("flext_core", "d"),
-    "e": ("flext_core", "e"),
-    "h": ("flext_core", "h"),
-    "logger": ("flext_oracle_oic.ext_services", "logger"),
-    "m": ("flext_oracle_oic.models", "FlextOracleOicModels"),
-    "main": ("flext_oracle_oic.main", "main"),
-    "p": ("flext_oracle_oic.protocols", "FlextOracleOicProtocols"),
-    "r": ("flext_core", "r"),
-    "s": ("flext_oracle_oic.service", "FlextOracleOicService"),
-    "t": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
-    "u": ("flext_oracle_oic.utilities", "FlextOracleOicUtilities"),
-    "x": ("flext_core", "x"),
+    ],
+    "__all__": ["flext_oracle_oic.__version__", "__all__"],
+    "c": ["flext_oracle_oic.constants", "FlextOracleOicConstants"],
+    "d": ["flext_core", "d"],
+    "e": ["flext_core", "e"],
+    "h": ["flext_core", "h"],
+    "logger": ["flext_oracle_oic.ext_services", "logger"],
+    "m": ["flext_oracle_oic.models", "FlextOracleOicModels"],
+    "main": ["flext_oracle_oic.main", "main"],
+    "p": ["flext_oracle_oic.protocols", "FlextOracleOicProtocols"],
+    "r": ["flext_core", "r"],
+    "s": ["flext_oracle_oic.service", "FlextOracleOicService"],
+    "t": ["flext_oracle_oic.typings", "FlextOracleOicTypes"],
+    "u": ["flext_oracle_oic.utilities", "FlextOracleOicUtilities"],
+    "x": ["flext_core", "x"],
 }
 
 __all__ = [

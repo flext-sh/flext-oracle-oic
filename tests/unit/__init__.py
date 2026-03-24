@@ -15,9 +15,9 @@ if TYPE_CHECKING:
 
     from tests.unit.test_version import test_version_info_tuple, test_version_string
 
-_LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "test_version_info_tuple": ("tests.unit.test_version", "test_version_info_tuple"),
-    "test_version_string": ("tests.unit.test_version", "test_version_string"),
+_LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
+    "test_version_info_tuple": ["tests.unit.test_version", "test_version_info_tuple"],
+    "test_version_string": ["tests.unit.test_version", "test_version_string"],
 }
 
 __all__ = [
