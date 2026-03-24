@@ -16,7 +16,7 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 from __future__ import annotations
 
 import re
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping, MutableMapping, MutableSequence, Sequence
 from datetime import UTC, datetime
 from urllib.parse import urljoin
 
@@ -68,8 +68,8 @@ class FlextOracleOicUtilities(FlextUtilities):
                 return r[t.ContainerMapping].fail(
                     "Integration data must be a dictionary",
                 )
-            errors: list[str] = []
-            validated_data: dict[str, t.NormalizedValue] = {
+            errors: MutableSequence[str] = []
+            validated_data: MutableMapping[str, t.NormalizedValue] = {
                 str(key): value for key, value in integration_data.items()
             }
             if "name" not in integration_data:
@@ -420,7 +420,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing constructed headers or error
 
             """
-            headers: dict[str, str] = {
+            headers: MutableMapping[str, str] = {
                 "Accept": "application/json",
                 "Content-Type": content_type,
                 "User-Agent": "FlextOracleOicension/1.0.0",
@@ -576,9 +576,9 @@ class FlextOracleOicUtilities(FlextUtilities):
                     "Metrics must be a dictionary",
                 )
             overall_health = "healthy"
-            warnings: list[t.NormalizedValue] = []
-            critical_issues: list[t.NormalizedValue] = []
-            recommendations: list[t.NormalizedValue] = []
+            warnings: MutableSequence[t.NormalizedValue] = []
+            critical_issues: MutableSequence[t.NormalizedValue] = []
+            recommendations: MutableSequence[t.NormalizedValue] = []
             if "average_response_time" in metrics:
                 response_time = metrics["average_response_time"]
                 if isinstance(response_time, (int, float)):
@@ -644,7 +644,7 @@ class FlextOracleOicUtilities(FlextUtilities):
                 return r[t.ContainerMapping].fail(
                     "Health data must be a dictionary",
                 )
-            validated_data: dict[str, t.NormalizedValue] = {
+            validated_data: MutableMapping[str, t.NormalizedValue] = {
                 str(key): value for key, value in health_data.items()
             }
             if "status" not in health_data:
