@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import base64
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping, MutableMapping, Sequence
 from types import TracebackType
 from typing import Self
 
@@ -156,7 +156,7 @@ class FlextOracleOicClient:
         page_size: int = 100,
     ) -> r[Sequence[t.ContainerMapping]]:
         """Get adapter connections from OIC."""
-        params: dict[str, str] = {}
+        params: MutableMapping[str, str] = {}
         if type_filter:
             params["q"] = f"adapterType in ({','.join(type_filter)})"
         return self.paginate_request("/connections", page_size=page_size, params=params)
@@ -167,7 +167,7 @@ class FlextOracleOicClient:
         page_size: int = 100,
     ) -> r[Sequence[t.ContainerMapping]]:
         """Get integration flows from OIC."""
-        params: dict[str, str] = {}
+        params: MutableMapping[str, str] = {}
         if status_filter:
             params["q"] = f"status in ({','.join(status_filter)})"
         return self.paginate_request(
@@ -247,9 +247,9 @@ class FlextOracleOicClient:
         try:
             all_records: list[t.ContainerMapping] = []
             offset = 0
-            base_params: dict[str, str] = dict(params) if params else {}
+            base_params: Mapping[str, str] = dict(params) if params else {}
             while True:
-                request_params = base_params.copy()
+                request_params: MutableMapping[str, str] = dict(base_params)
                 request_params.update({"offset": str(offset), "limit": str(page_size)})
                 response_result = self.make_request(
                     c.API.Method.GET,
@@ -471,7 +471,7 @@ class FlextOracleOicClient:
             body_raw: t.NormalizedValue = getattr(response, "body", None)
             if body_raw is None:
                 return r[str].fail("Invalid response format")
-            token_data: dict[str, t.NormalizedValue]
+            token_data: Mapping[str, t.NormalizedValue]
             if isinstance(body_raw, Mapping):
                 token_data = {str(k): body_raw[k] for k in body_raw}
             elif isinstance(body_raw, str):
