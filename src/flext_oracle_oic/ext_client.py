@@ -465,17 +465,17 @@ class FlextOracleOicClient:
     def _parse_token_response(self, response: t.NormalizedValue) -> r[str]:
         """Parse access token from OAuth response."""
         try:
-            body = getattr(response, "body", None)
-            if body is None:
+            body_raw: t.NormalizedValue = getattr(response, "body", None)
+            if body_raw is None:
                 return r[str].fail("Invalid response format")
             token_data: dict[str, t.NormalizedValue]
-            if isinstance(body, Mapping):
-                token_data = {str(k): body[k] for k in body}
-            elif isinstance(body, str):
+            if isinstance(body_raw, Mapping):
+                token_data = {str(k): body_raw[k] for k in body_raw}
+            elif isinstance(body_raw, str):
                 token_parser: TypeAdapter[dict[str, t.NormalizedValue]] = TypeAdapter(
                     dict[str, t.NormalizedValue],
                 )
-                token_data = token_parser.validate_json(body)
+                token_data = token_parser.validate_json(body_raw)
             else:
                 return r[str].fail("Empty or invalid OAuth response body")
             access_token: t.NormalizedValue | None = token_data.get("access_token")
