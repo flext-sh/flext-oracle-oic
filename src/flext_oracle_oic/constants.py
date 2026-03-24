@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import re
-from collections.abc import Sequence, Mapping
+from collections.abc import Mapping, Sequence
 from enum import StrEnum, unique
 from typing import Final
 
@@ -30,6 +30,7 @@ class FlextOracleOicConstants(FlextConstants):
     Usage:
     ```python
     from flext_oracle_oic.constants import FlextOracleOicConstants
+    from flext_oracle_oic import t
 
     # Access Oracle OIC specific constants
     api_version = FlextOracleOicConstants.OracleOic.DEFAULT_API_VERSION
