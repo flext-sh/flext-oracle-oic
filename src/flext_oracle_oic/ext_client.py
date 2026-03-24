@@ -146,7 +146,7 @@ class FlextOracleOicClient:
 
     def get_connections(
         self,
-        type_filter: Sequence[str] | None = None,
+        type_filter: t.StrSequence | None = None,
         page_size: int = 100,
     ) -> r[Sequence[t.ContainerMapping]]:
         """Get adapter connections from OIC."""
@@ -157,7 +157,7 @@ class FlextOracleOicClient:
 
     def get_integrations(
         self,
-        status_filter: Sequence[str] | None = None,
+        status_filter: t.StrSequence | None = None,
         page_size: int = 100,
     ) -> r[Sequence[t.ContainerMapping]]:
         """Get integration flows from OIC."""
@@ -177,7 +177,7 @@ class FlextOracleOicClient:
         """Get lookup tables from OIC."""
         return self.paginate_request("/lookups", page_size=page_size)
 
-    def get_oauth_request_body(self) -> Mapping[str, str]:
+    def get_oauth_request_body(self) -> t.StrMapping:
         """Generate OAuth2 request body for client credentials flow."""
         audience = self.auth_config.oauth_client_aud
         if audience:
@@ -199,8 +199,8 @@ class FlextOracleOicClient:
         self,
         method: str,
         endpoint: str,
-        params: Mapping[str, str] | None = None,
-        data: Mapping[str, str] | None = None,
+        params: t.StrMapping | None = None,
+        data: t.StrMapping | None = None,
         json: t.ContainerMapping | None = None,
     ) -> r[t.ContainerMapping]:
         """Make authenticated request to OIC API."""
@@ -209,8 +209,8 @@ class FlextOracleOicClient:
                 tuple[
                     str,
                     str,
-                    Mapping[str, str] | None,
-                    Mapping[str, str] | None,
+                    t.StrMapping | None,
+                    t.StrMapping | None,
                     t.ContainerMapping | None,
                 ]
             ]
@@ -235,7 +235,7 @@ class FlextOracleOicClient:
         self,
         endpoint: str,
         page_size: int = 100,
-        params: Mapping[str, str] | None = None,
+        params: t.StrMapping | None = None,
     ) -> r[Sequence[t.ContainerMapping]]:
         """Paginate through OIC API responses."""
         try:
@@ -332,8 +332,8 @@ class FlextOracleOicClient:
         client: FlextApi,
         method: str,
         endpoint: str,
-        _params: Mapping[str, str] | None,
-        _data: Mapping[str, str] | None,
+        _params: t.StrMapping | None,
+        _data: t.StrMapping | None,
         json: t.ContainerMapping | None,
     ) -> r[t.NormalizedValue]:
         """Execute the actual API request."""
@@ -373,7 +373,7 @@ class FlextOracleOicClient:
 
     def _execute_token_request(
         self,
-        request_data: tuple[Mapping[str, str], Mapping[str, str]],
+        request_data: tuple[t.StrMapping, t.StrMapping],
     ) -> r[t.NormalizedValue]:
         """Execute OAuth token request."""
         headers, data = request_data
@@ -497,7 +497,7 @@ class FlextOracleOicClient:
 
     def _prepare_oauth_request(
         self,
-    ) -> r[tuple[Mapping[str, str], Mapping[str, str]]]:
+    ) -> r[tuple[t.StrMapping, t.StrMapping]]:
         """Prepare OAuth request headers and data."""
         try:
             encoded_credentials = self.encode_client_credentials()
@@ -506,7 +506,7 @@ class FlextOracleOicClient:
                 "Content-Type": "application/x-www-form-urlencoded",
             }
             data = self.get_oauth_request_body()
-            return r[tuple[Mapping[str, str], Mapping[str, str]]].ok((
+            return r[tuple[t.StrMapping, t.StrMapping]].ok((
                 headers,
                 data,
             ))
@@ -517,7 +517,7 @@ class FlextOracleOicClient:
         ) as e:
             error_msg = f"Failed to prepare OAuth request: {e}"
             self.logger.exception(error_msg)
-            return r[tuple[Mapping[str, str], Mapping[str, str]]].fail(error_msg)
+            return r[tuple[t.StrMapping, t.StrMapping]].fail(error_msg)
 
     def _store_and_return_token(self, token: str) -> str:
         """Store token and return it."""

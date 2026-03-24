@@ -175,7 +175,7 @@ class FlextOracleOicService(
     def apply_scatter_gather_pattern(
         self,
         request_data: t.ContainerMapping,
-        target_endpoints: Sequence[str],
+        target_endpoints: t.StrSequence,
     ) -> r[t.ContainerMapping]:
         """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
@@ -475,7 +475,7 @@ class FlextOracleOicService(
         client: FlextOracleOicClient,
         integration_id: str,
         operation_config: t.ContainerMapping,
-        operation_kwargs: Mapping[str, t.Scalar],
+        operation_kwargs: t.ConfigurationMapping,
     ) -> t.ContainerMapping:
         return client.execute_file_transfer(
             integration_id,
@@ -488,7 +488,7 @@ class FlextOracleOicService(
         client: FlextOracleOicClient,
         integration_id: str,
         operation_config: t.ContainerMapping,
-        operation_kwargs: Mapping[str, t.Scalar],
+        operation_kwargs: t.ConfigurationMapping,
     ) -> t.ContainerMapping:
         return client.execute_scheduled_orchestration(
             integration_id,
@@ -519,7 +519,7 @@ class FlextOracleOicService(
                 error_msg = client_result.error or "Client initialization failed"
                 return r[t.ContainerMapping].fail(error_msg)
             client = client_result.value
-            operation_kwargs: Mapping[str, t.Scalar] = {
+            operation_kwargs: t.ConfigurationMapping = {
                 str(key): value for key, value in kwargs.items()
             }
             result = operation(
@@ -828,7 +828,7 @@ class FlextOracleOicService(
 
     def list_connections(
         self,
-        type_filter: Sequence[str] | None = None,
+        type_filter: t.StrSequence | None = None,
     ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
         """List Oracle OIC connections.
 
