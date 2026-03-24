@@ -135,7 +135,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
 
         def list_connections(
             self,
-            type_filter: t.StrSequence | None = None,
+            type_filter: Sequence[str] | None = None,
         ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
             """List Oracle OIC connections.
 
@@ -155,7 +155,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
 
         def list_integrations(
             self,
-            status_filter: t.StrSequence | None = None,
+            status_filter: Sequence[str] | None = None,
         ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
             """List Oracle OIC integrations.
 
@@ -336,7 +336,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
         def _fetch_connections(
             self,
             client: FlextOracleOicClient,
-            type_filter: t.StrSequence | None,
+            type_filter: Sequence[str] | None,
         ) -> r[Sequence[t.ContainerMapping]]:
             """Fetch connections from OIC API."""
             connections_result = client.get_connections(
@@ -354,7 +354,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
         def _fetch_integrations(
             self,
             client: FlextOracleOicClient,
-            status_filter: t.StrSequence | None,
+            status_filter: Sequence[str] | None,
         ) -> r[Sequence[t.ContainerMapping]]:
             """Fetch integrations from OIC API."""
             integrations_result = client.get_integrations(
@@ -569,7 +569,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
         def apply_scatter_gather_pattern(
             self,
             request_data: t.ContainerMapping,
-            target_endpoints: t.StrSequence,
+            target_endpoints: Sequence[str],
         ) -> r[t.ContainerMapping]:
             """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
@@ -911,4 +911,4 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
                 return error_metrics
 
 
-__all__: t.StrSequence = ["FlextOracleOicExtServices"]
+__all__: Sequence[str] = ["FlextOracleOicExtServices"]

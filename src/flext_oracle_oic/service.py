@@ -175,7 +175,7 @@ class FlextOracleOicService(
     def apply_scatter_gather_pattern(
         self,
         request_data: t.ContainerMapping,
-        target_endpoints: t.StrSequence,
+        target_endpoints: Sequence[str],
     ) -> r[t.ContainerMapping]:
         """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
@@ -828,7 +828,7 @@ class FlextOracleOicService(
 
     def list_connections(
         self,
-        type_filter: t.StrSequence | None = None,
+        type_filter: Sequence[str] | None = None,
     ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
         """List Oracle OIC connections.
 

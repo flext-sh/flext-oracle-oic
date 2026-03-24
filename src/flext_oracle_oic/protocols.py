@@ -6,6 +6,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Protocol, runtime_checkable
 
 from flext_core import FlextProtocols
@@ -27,7 +28,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 self,
                 url: str,
                 *,
-                headers: t.StrMapping | None = None,
+                headers: Mapping[str, str] | None = None,
             ) -> FlextProtocols.Result[bool]:
                 """Execute HTTP DELETE request."""
                 ...
@@ -36,7 +37,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 self,
                 url: str,
                 *,
-                headers: t.StrMapping | None = None,
+                headers: Mapping[str, str] | None = None,
             ) -> FlextProtocols.Result[t.NormalizedValue]:
                 """Execute HTTP GET request."""
                 ...
@@ -46,7 +47,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 url: str,
                 data: t.ContainerMapping | None = None,
                 *,
-                headers: t.StrMapping | None = None,
+                headers: Mapping[str, str] | None = None,
             ) -> FlextProtocols.Result[t.NormalizedValue]:
                 """Execute HTTP POST request."""
                 ...
@@ -56,7 +57,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 url: str,
                 data: t.ContainerMapping | None = None,
                 *,
-                headers: t.StrMapping | None = None,
+                headers: Mapping[str, str] | None = None,
             ) -> FlextProtocols.Result[t.NormalizedValue]:
                 """Execute HTTP PUT request."""
                 ...

@@ -186,7 +186,7 @@ class FlextOracleOicModels(FlextModels):
                 Field(description="Request payload to scatter"),
             ]
             target_services: Annotated[
-                t.StrSequence,
+                Sequence[str],
                 Field(description="Target service endpoints"),
             ]
             aggregation_strategy: Annotated[
@@ -225,7 +225,7 @@ class FlextOracleOicModels(FlextModels):
                 ),
             ]
             headers: Annotated[
-                t.StrMapping | None,
+                Mapping[str, str] | None,
                 Field(
                     default=None,
                     description="HTTP headers",

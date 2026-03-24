@@ -407,8 +407,8 @@ class FlextOracleOicUtilities(FlextUtilities):
         def build_request_headers(
             auth_token: str | None = None,
             content_type: str = "application/json",
-            additional_headers: t.StrMapping | None = None,
-        ) -> r[t.StrMapping]:
+            additional_headers: Mapping[str, str] | None = None,
+        ) -> r[Mapping[str, str]]:
             """Build Oracle OIC API request headers.
 
             Args:
@@ -430,16 +430,16 @@ class FlextOracleOicUtilities(FlextUtilities):
                     case str() as raw_auth_token if raw_auth_token.strip():
                         headers["Authorization"] = f"Bearer {raw_auth_token.strip()}"
                     case _:
-                        return r[t.StrMapping].fail(
+                        return r[Mapping[str, str]].fail(
                             "Auth token must be non-empty string",
                         )
             if additional_headers:
                 if not isinstance(additional_headers, Mapping):
-                    return r[t.StrMapping].fail(
+                    return r[Mapping[str, str]].fail(
                         "Additional headers must be a dictionary",
                     )
                 headers.update({str(k): str(v) for k, v in additional_headers.items()})
-            return r[t.StrMapping].ok(headers)
+            return r[Mapping[str, str]].ok(headers)
 
     class PatternAnalysis:
         """Oracle OIC integration pattern analysis utilities."""
