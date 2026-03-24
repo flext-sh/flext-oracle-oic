@@ -765,7 +765,7 @@ class FlextOracleOicService(
                 if response_result.is_success:
                     response = response_result.value
                     if response.status_code == c.API.HTTP_STATUS_OK:
-                        metrics_data = (
+                        metrics_data: t.MutableContainerMapping = (
                             {
                                 str(k): self._to_general_value(v)
                                 for k, v in response.body.items()
