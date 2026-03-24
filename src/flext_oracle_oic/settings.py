@@ -18,15 +18,15 @@ from pydantic_settings import SettingsConfigDict
 
 from flext_oracle_oic.typings import t
 
-OICApiVersionLiteral = Literal["v1", "v2"]
-
 
 class FlextOracleOicSettings(FlextSettings):
     """Runtime configuration for Oracle OIC integration."""
 
+    type OICApiVersionLiteral = Literal["v1", "v2"]
+
     model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(extra="ignore")
 
-    base_url: Annotated[str, Field(default="https://localhost")]
+    base_url: Annotated[t.NonEmptyStr, Field(default="https://localhost")]
     api_version: Annotated[OICApiVersionLiteral, Field(default="v1")]
     request_timeout: Annotated[t.PositiveInt, Field(default=30)]
     max_retries: Annotated[t.RetryCount, Field(default=3)]
@@ -37,7 +37,9 @@ class FlextOracleOicSettings(FlextSettings):
     enable_orchestration: Annotated[bool, Field(default=True)]
     oauth_client_id: Annotated[str, Field(default="")]
     oauth_client_secret: Annotated[SecretStr, Field(default=SecretStr(""))]
-    oauth_token_url: Annotated[str, Field(default="https://localhost/oauth/token")]
+    oauth_token_url: Annotated[
+        t.NonEmptyStr, Field(default="https://localhost/oauth/token")
+    ]
     oauth_client_aud: Annotated[str, Field(default="")]
     oauth_scope: Annotated[str, Field(default="")]
 
