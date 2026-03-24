@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping, MutableSequence, Sequence
 from types import TracebackType
 from typing import ClassVar, Self, override
 
@@ -419,7 +419,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
             connections_data: Sequence[t.ContainerMapping],
         ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
             """Parse connection data into domain models."""
-            connection_infos: list[
+            connection_infos: MutableSequence[
                 FlextOracleOicModels.OracleOic.OICConnectionInfo
             ] = []
             for connection in connections_data:
@@ -451,7 +451,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
             integrations_data: Sequence[t.ContainerMapping],
         ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
             """Parse integration data into domain models."""
-            integration_infos: list[
+            integration_infos: MutableSequence[
                 FlextOracleOicModels.OracleOic.OICIntegrationInfo
             ] = []
             for integration in integrations_data:

@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import base64
-from collections.abc import Mapping, MutableMapping, Sequence
+from collections.abc import Mapping, MutableMapping, MutableSequence, Sequence
 from types import TracebackType
 from typing import Self
 
@@ -245,7 +245,7 @@ class FlextOracleOicClient:
     ) -> r[Sequence[t.ContainerMapping]]:
         """Paginate through OIC API responses."""
         try:
-            all_records: list[t.ContainerMapping] = []
+            all_records: MutableSequence[t.ContainerMapping] = []
             offset = 0
             base_params: Mapping[str, str] = dict(params) if params else {}
             while True:

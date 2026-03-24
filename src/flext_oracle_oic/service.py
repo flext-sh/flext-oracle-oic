@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import asyncio
-from collections.abc import Callable, Mapping, MutableMapping, Sequence
+from collections.abc import Callable, Mapping, MutableMapping, MutableSequence, Sequence
 from types import TracebackType
 from typing import Self, override
 
@@ -861,7 +861,9 @@ class FlextOracleOicService(
                     error_msg,
                 )
             connections_data = connections_result.value
-            connections: list[FlextOracleOicModels.OracleOic.OICConnectionInfo] = []
+            connections: MutableSequence[
+                FlextOracleOicModels.OracleOic.OICConnectionInfo
+            ] = []
             for item in connections_data:
                 connection = FlextOracleOicModels.OracleOic.OICConnectionInfo(
                     connection_id=self._as_text(item.get("id"), ""),
@@ -912,7 +914,9 @@ class FlextOracleOicService(
                     error_msg,
                 )
             integrations_data = integrations_result.value
-            integrations: list[FlextOracleOicModels.OracleOic.OICIntegrationInfo] = []
+            integrations: MutableSequence[
+                FlextOracleOicModels.OracleOic.OICIntegrationInfo
+            ] = []
             for item in integrations_data:
                 integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
                     integration_id=self._as_text(item.get("id"), ""),
