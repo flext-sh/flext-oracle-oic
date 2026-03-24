@@ -230,30 +230,17 @@ class FlextOracleOicConstants(FlextConstants):
         MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
         MAX_INTEGRATION_NAME_LENGTH: Final[int] = 100
         VALID_INTEGRATION_STATUSES: Final[frozenset[str]] = frozenset({
-            "ACTIVATED",
-            "DEACTIVATED",
-            "DRAFT",
-            "PUBLISHED",
-            "RUNNING",
-            "STOPPED",
-            "ERROR",
+            "ACTIVATED", "DEACTIVATED", "DRAFT", "PUBLISHED",
+            "RUNNING", "STOPPED", "ERROR",
         })
         VERSION_PATTERN: Final[re.Pattern[str]] = re.compile(
             r"^\\d{2}\\.\\d{2}\\.\\d{4}$",
         )
         VALID_CONNECTION_TYPES: Final[frozenset[str]] = frozenset({
-            "REST",
-            "SOAP",
-            "DATABASE",
-            "FILE",
-            "FTP",
-            "SFTP",
+            "REST", "SOAP", "DATABASE", "FILE", "FTP", "SFTP",
         })
         VALID_CONNECTION_STATUSES: Final[frozenset[str]] = frozenset({
-            "ACTIVE",
-            "INACTIVE",
-            "ERROR",
-            "UNKNOWN",
+            "ACTIVE", "INACTIVE", "ERROR", "unknown",
         })
         MIN_CLIENT_ID_LENGTH: Final[int] = 1
         MIN_CLIENT_SECRET_LENGTH: Final[int] = 8
