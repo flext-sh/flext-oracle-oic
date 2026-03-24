@@ -379,7 +379,7 @@ class FlextOracleOicClient:
         headers, data = request_data
         try:
             api_config = FlextApiSettings.model_validate({
-                "base_url": self.auth_config.oauth_token_url
+                "base_url": self.auth_config.oauth_token_url,
             })
             api_client = FlextApi(api_config)
             oauth_data: Mapping[str, t.ContainerValue] = {
@@ -475,7 +475,7 @@ class FlextOracleOicClient:
                 match body:
                     case str():
                         token_parser: TypeAdapter[t.ContainerMapping] = TypeAdapter(
-                            t.ContainerMapping
+                            t.ContainerMapping,
                         )
                         token_data = token_parser.validate_json(body)
                     case _:

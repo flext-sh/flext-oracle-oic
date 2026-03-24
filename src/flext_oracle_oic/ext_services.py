@@ -408,7 +408,8 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
                 )
                 .flat_map(
                     lambda configs: self._create_client_instance(
-                        configs[0], configs[1]
+                        configs[0],
+                        configs[1],
                     ),
                 )
             )

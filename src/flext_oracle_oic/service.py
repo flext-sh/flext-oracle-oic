@@ -765,14 +765,14 @@ class FlextOracleOicService(
                 if response_result.is_success:
                     response = response_result.value
                     if response.status_code == c.API.HTTP_STATUS_OK:
-                        metrics_data: t.MutableContainerMapping = (
-                            {
+                        if isinstance(response.body, dict):
+                            metrics_data = {
                                 str(k): self._to_general_value(v)
                                 for k, v in response.body.items()
                             }
-                            if isinstance(response.body, dict)
-                            else {}
-                        )
+                        else:
+                            fallback: t.ContainerMapping = {}
+                            metrics_data = fallback
                     else:
                         metrics_data = {
                             "active_integrations": 0,

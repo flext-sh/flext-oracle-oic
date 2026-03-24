@@ -38,7 +38,8 @@ class FlextOracleOicSettings(FlextSettings):
     oauth_client_id: Annotated[str, Field(default="")]
     oauth_client_secret: Annotated[SecretStr, Field(default=SecretStr(""))]
     oauth_token_url: Annotated[
-        t.NonEmptyStr, Field(default="https://localhost/oauth/token")
+        t.NonEmptyStr,
+        Field(default="https://localhost/oauth/token"),
     ]
     oauth_client_aud: Annotated[str, Field(default="")]
     oauth_scope: Annotated[str, Field(default="")]
