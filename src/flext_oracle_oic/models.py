@@ -71,20 +71,12 @@ class FlextOracleOicModels(FlextModels):
                 ),
             ]
             request_timeout: Annotated[
-                int,
-                Field(
-                    default=c.DEFAULT_TIMEOUT_SECONDS,
-                    ge=c.OracleOic.MIN_REQUEST_TIMEOUT,
-                    description="Request timeout in seconds",
-                ),
+                t.PositiveInt,
+                Field(default=c.DEFAULT_TIMEOUT_SECONDS, description="Request timeout in seconds"),
             ]
             max_retries: Annotated[
-                int,
-                Field(
-                    default=c.DEFAULT_MAX_RETRY_ATTEMPTS,
-                    ge=c.OracleOic.MIN_MAX_RETRIES,
-                    description="Maximum retry attempts",
-                ),
+                t.RetryCount,
+                Field(default=c.DEFAULT_MAX_RETRY_ATTEMPTS, description="Maximum retry attempts"),
             ]
             verify_ssl: Annotated[
                 bool,
