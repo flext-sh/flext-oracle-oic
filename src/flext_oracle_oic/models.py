@@ -184,11 +184,11 @@ class FlextOracleOicModels(FlextModels):
             model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             message_data: Annotated[
-                Mapping[str, t.NormalizedValue],
+                t.ContainerMapping,
                 Field(description="Message payload used for routing"),
             ]
             routing_rules: Annotated[
-                Sequence[Mapping[str, t.NormalizedValue]],
+                Sequence[t.ContainerMapping],
                 Field(description="Ordered routing rules"),
             ]
 
@@ -198,7 +198,7 @@ class FlextOracleOicModels(FlextModels):
             model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             request_data: Annotated[
-                Mapping[str, t.NormalizedValue],
+                t.ContainerMapping,
                 Field(description="Request payload to scatter"),
             ]
             target_services: Annotated[
@@ -229,14 +229,14 @@ class FlextOracleOicModels(FlextModels):
                 ),
             ]
             data: Annotated[
-                Mapping[str, t.NormalizedValue] | None,
+                t.ContainerMapping | None,
                 Field(
                     default=None,
                     description="Form data",
                 ),
             ]
             json_data: Annotated[
-                Mapping[str, t.NormalizedValue] | None,
+                t.ContainerMapping | None,
                 Field(
                     default=None,
                     description="JSON data",

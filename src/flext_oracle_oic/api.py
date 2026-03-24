@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Sequence
 from typing import Self, override
 
 from flext_core import FlextService, r
@@ -91,7 +91,7 @@ class FlextOracleOicApi(FlextService[None]):
 
     def create_integration(
         self,
-        integration_data: Mapping[str, t.NormalizedValue],
+        integration_data: t.ContainerMapping,
     ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
@@ -137,9 +137,9 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_app_driven_orchestration(
         self,
         integration_id: str,
-        payload: Mapping[str, t.NormalizedValue],
+        payload: t.ContainerMapping,
         **kwargs: t.Scalar,
-    ) -> r[Mapping[str, t.NormalizedValue]]:
+    ) -> r[t.ContainerMapping]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -160,9 +160,9 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_file_transfer(
         self,
         integration_id: str,
-        file_config: Mapping[str, t.NormalizedValue],
+        file_config: t.ContainerMapping,
         **kwargs: t.Scalar,
-    ) -> r[Mapping[str, t.NormalizedValue]]:
+    ) -> r[t.ContainerMapping]:
         """Execute file transfer pattern.
 
         Args:
@@ -183,9 +183,9 @@ class FlextOracleOicApi(FlextService[None]):
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
-        schedule_config: Mapping[str, t.NormalizedValue],
+        schedule_config: t.ContainerMapping,
         **kwargs: t.Scalar,
-    ) -> r[Mapping[str, t.NormalizedValue]]:
+    ) -> r[t.ContainerMapping]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -203,7 +203,7 @@ class FlextOracleOicApi(FlextService[None]):
             **kwargs,
         )
 
-    def get_auth_context(self) -> Mapping[str, t.NormalizedValue]:
+    def get_auth_context(self) -> t.ContainerMapping:
         """Get current authentication configuration context.
 
         Returns:
@@ -216,7 +216,7 @@ class FlextOracleOicApi(FlextService[None]):
             "oauth_scope": self._oic_config.oauth_scope,
         }
 
-    def get_connection_context(self) -> Mapping[str, t.NormalizedValue]:
+    def get_connection_context(self) -> t.ContainerMapping:
         """Get current connection configuration context.
 
         Returns:
@@ -229,7 +229,7 @@ class FlextOracleOicApi(FlextService[None]):
             "request_timeout": self._oic_config.request_timeout,
         }
 
-    def get_features_context(self) -> Mapping[str, t.NormalizedValue]:
+    def get_features_context(self) -> t.ContainerMapping:
         """Get current features configuration context.
 
         Returns:
@@ -242,7 +242,7 @@ class FlextOracleOicApi(FlextService[None]):
             "verify_ssl": self._oic_config.verify_ssl,
         }
 
-    def get_health_status(self) -> r[Mapping[str, t.NormalizedValue]]:
+    def get_health_status(self) -> r[t.ContainerMapping]:
         """Get Oracle OIC health status.
 
         Returns:
@@ -266,7 +266,7 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._service.get_integration(integration_id)
 
-    def get_performance_metrics(self) -> r[Mapping[str, t.NormalizedValue]]:
+    def get_performance_metrics(self) -> r[t.ContainerMapping]:
         """Get Oracle OIC performance metrics.
 
         Returns:
@@ -307,7 +307,7 @@ class FlextOracleOicApi(FlextService[None]):
     def update_integration(
         self,
         integration_id: str,
-        integration_data: Mapping[str, t.NormalizedValue],
+        integration_data: t.ContainerMapping,
     ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 

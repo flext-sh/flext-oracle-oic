@@ -53,8 +53,8 @@ class FlextOracleOicUtilities(FlextUtilities):
 
         @staticmethod
         def validate_integration_data(
-            integration_data: Mapping[str, t.NormalizedValue],
-        ) -> r[Mapping[str, t.NormalizedValue]]:
+            integration_data: t.ContainerMapping,
+        ) -> r[t.ContainerMapping]:
             """Validate complete Oracle OIC integration data.
 
             Args:
@@ -65,7 +65,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             """
             if not isinstance(integration_data, Mapping):
-                return r[Mapping[str, t.NormalizedValue]].fail(
+                return r[t.ContainerMapping].fail(
                     "Integration data must be a dictionary",
                 )
             errors: list[str] = []
@@ -122,10 +122,10 @@ class FlextOracleOicUtilities(FlextUtilities):
                             "Status validation: Integration status must be a string",
                         )
             if errors:
-                return r[Mapping[str, t.NormalizedValue]].fail(
+                return r[t.ContainerMapping].fail(
                     f"Integration validation failed: {'; '.join(errors)}",
                 )
-            return r[Mapping[str, t.NormalizedValue]].ok(validated_data)
+            return r[t.ContainerMapping].ok(validated_data)
 
         @staticmethod
         def validate_integration_name(name: str) -> r[str]:
@@ -446,7 +446,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
         @staticmethod
         def analyze_integration_pattern(
-            integration_data: Mapping[str, t.NormalizedValue],
+            integration_data: t.ContainerMapping,
         ) -> r[str]:
             """Analyze Oracle OIC integration to determine pattern type.
 
@@ -462,7 +462,7 @@ class FlextOracleOicUtilities(FlextUtilities):
             endpoints_raw = integration_data.get("endpoints", [])
             connections_raw = integration_data.get("connections", [])
             mappings_raw = integration_data.get("mappings", [])
-            endpoints: Sequence[Mapping[str, t.NormalizedValue]] = (
+            endpoints: Sequence[t.ContainerMapping] = (
                 [
                     dict(endpoint)
                     for endpoint in endpoints_raw
@@ -471,10 +471,10 @@ class FlextOracleOicUtilities(FlextUtilities):
                 if isinstance(endpoints_raw, list)
                 else []
             )
-            connections: Sequence[t.NormalizedValue] = (
+            connections: t.ContainerList = (
                 list(connections_raw) if isinstance(connections_raw, list) else []
             )
-            mappings: Sequence[t.NormalizedValue] = (
+            mappings: t.ContainerList = (
                 list(mappings_raw) if isinstance(mappings_raw, list) else []
             )
             if len(endpoints) > c.OracleOicValidation.MIN_ENDPOINTS_FOR_ROUTER and any(
@@ -560,8 +560,8 @@ class FlextOracleOicUtilities(FlextUtilities):
 
         @staticmethod
         def analyze_performance_metrics(
-            metrics: Mapping[str, t.NormalizedValue],
-        ) -> r[Mapping[str, t.NormalizedValue]]:
+            metrics: t.ContainerMapping,
+        ) -> r[t.ContainerMapping]:
             """Analyze Oracle OIC performance metrics.
 
             Args:
@@ -572,7 +572,7 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             """
             if not isinstance(metrics, Mapping):
-                return r[Mapping[str, t.NormalizedValue]].fail(
+                return r[t.ContainerMapping].fail(
                     "Metrics must be a dictionary",
                 )
             overall_health = "healthy"
@@ -619,18 +619,18 @@ class FlextOracleOicUtilities(FlextUtilities):
                         recommendations.append(
                             "Review error logs and implement error handling improvements",
                         )
-            analysis: Mapping[str, t.NormalizedValue] = {
+            analysis: t.ContainerMapping = {
                 "overall_health": overall_health,
                 "warnings": tuple(warnings),
                 "critical_issues": tuple(critical_issues),
                 "recommendations": tuple(recommendations),
             }
-            return r[Mapping[str, t.NormalizedValue]].ok(analysis)
+            return r[t.ContainerMapping].ok(analysis)
 
         @staticmethod
         def validate_health_status(
-            health_data: Mapping[str, t.NormalizedValue],
-        ) -> r[Mapping[str, t.NormalizedValue]]:
+            health_data: t.ContainerMapping,
+        ) -> r[t.ContainerMapping]:
             """Validate Oracle OIC health check data.
 
             Args:
@@ -641,39 +641,39 @@ class FlextOracleOicUtilities(FlextUtilities):
 
             """
             if not isinstance(health_data, Mapping):
-                return r[Mapping[str, t.NormalizedValue]].fail(
+                return r[t.ContainerMapping].fail(
                     "Health data must be a dictionary",
                 )
             validated_data: dict[str, t.NormalizedValue] = {
                 str(key): value for key, value in health_data.items()
             }
             if "status" not in health_data:
-                return r[Mapping[str, t.NormalizedValue]].fail(
+                return r[t.ContainerMapping].fail(
                     "Health data must include status",
                 )
             status = health_data["status"]
             if status not in {"healthy", "unhealthy", "error", "unknown"}:
-                return r[Mapping[str, t.NormalizedValue]].fail(
+                return r[t.ContainerMapping].fail(
                     "Invalid health status. Valid: healthy, unhealthy, error, unknown",
                 )
             if "components" in health_data:
                 components = health_data["components"]
                 if not isinstance(components, dict):
-                    return r[Mapping[str, t.NormalizedValue]].fail(
+                    return r[t.ContainerMapping].fail(
                         "Components must be a dictionary",
                     )
                 for component_name, component_data in components.items():
                     if not isinstance(component_data, dict):
-                        return r[Mapping[str, t.NormalizedValue]].fail(
+                        return r[t.ContainerMapping].fail(
                             f"Component {component_name} data must be a dictionary",
                         )
                     if "status" not in component_data:
-                        return r[Mapping[str, t.NormalizedValue]].fail(
+                        return r[t.ContainerMapping].fail(
                             f"Component {component_name} must have status",
                         )
             if "timestamp" not in validated_data:
                 validated_data["timestamp"] = datetime.now(UTC).isoformat()
-            return r[Mapping[str, t.NormalizedValue]].ok(validated_data)
+            return r[t.ContainerMapping].ok(validated_data)
 
 
 u = FlextOracleOicUtilities
