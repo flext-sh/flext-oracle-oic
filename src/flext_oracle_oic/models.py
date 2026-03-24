@@ -6,10 +6,10 @@ This module provides data models for Oracle OIC External operations.
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
-from typing import Annotated, ClassVar
+from typing import Annotated
 
 from flext_core import FlextModels
-from pydantic import ConfigDict, Field, SecretStr
+from pydantic import Field, SecretStr
 
 from flext_oracle_oic.constants import c
 from flext_oracle_oic.typings import t
@@ -32,8 +32,6 @@ class FlextOracleOicModels(FlextModels):
             EXTENSION Pattern: Value Object for authentication configuration
             Oracle OIC with validation and security.
             """
-
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             oauth_client_id: Annotated[str, Field(description="IDCS OAuth2 client ID")]
             oauth_client_secret: Annotated[
@@ -59,8 +57,6 @@ class FlextOracleOicModels(FlextModels):
             EXTENSION Pattern: Value Object for connection configuration
             Oracle OIC with enterprise validation.
             """
-
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             base_url: Annotated[str, Field(description="Oracle OIC instance base URL")]
             api_version: Annotated[
@@ -99,8 +95,6 @@ class FlextOracleOicModels(FlextModels):
             for an Oracle OIC integration.
             """
 
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
-
             integration_id: Annotated[
                 str,
                 Field(description="Integration unique identifier"),
@@ -131,8 +125,6 @@ class FlextOracleOicModels(FlextModels):
             for an Oracle OIC connection.
             """
 
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
-
             connection_id: Annotated[
                 str,
                 Field(description="Connection unique identifier"),
@@ -152,8 +144,6 @@ class FlextOracleOicModels(FlextModels):
             EXTENSION Pattern: Value Object representing status
             for an Oracle OIC integration.
             """
-
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             integration_id: Annotated[
                 str,
@@ -179,8 +169,6 @@ class FlextOracleOicModels(FlextModels):
         class MessageRouterPatternConfig(FlextModels.Value):
             """Message router pattern configuration model."""
 
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
-
             message_data: Annotated[
                 t.ContainerMapping,
                 Field(description="Message payload used for routing"),
@@ -192,8 +180,6 @@ class FlextOracleOicModels(FlextModels):
 
         class ScatterGatherPatternConfig(FlextModels.Value):
             """Scatter-gather pattern configuration model."""
-
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             request_data: Annotated[
                 t.ContainerMapping,
@@ -214,8 +200,6 @@ class FlextOracleOicModels(FlextModels):
             EXTENSION Pattern: Value Object for request parameters
             Oracle OIC API com tipagem forte.
             """
-
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
 
             method: Annotated[str, Field(description="HTTP method")]
             url: Annotated[str, Field(description="Request URL")]
