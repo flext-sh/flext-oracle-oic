@@ -505,7 +505,7 @@ class FlextOracleOicService(
                 FlextOracleOicClient,
                 str,
                 t.ContainerMapping,
-                Mapping[str, t.Scalar],
+                t.ScalarMapping,
             ],
             t.ContainerMapping,
         ],
