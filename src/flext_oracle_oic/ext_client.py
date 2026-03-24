@@ -25,6 +25,12 @@ from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.typings import t
 
 logger = FlextLogger(__name__)
+_CONTAINER_MAP_ADAPTER: TypeAdapter[t.ContainerMapping] = TypeAdapter(
+    t.ContainerMapping,
+)
+_TOKEN_ADAPTER: TypeAdapter[dict[str, t.NormalizedValue]] = TypeAdapter(
+    dict[str, t.NormalizedValue],
+)
 
 
 class FlextOracleOicClient:
@@ -427,10 +433,7 @@ class FlextOracleOicClient:
                             return r[t.ContainerMapping].ok(body)
                         match body:
                             case str():
-                                json_parser: TypeAdapter[t.ContainerMapping] = (
-                                    TypeAdapter(t.ContainerMapping)
-                                )
-                                parsed_data = json_parser.validate_json(body)
+                                parsed_data = _CONTAINER_MAP_ADAPTER.validate_json(body)
                                 return r[t.ContainerMapping].ok(
                                     parsed_data,
                                 )
@@ -472,10 +475,7 @@ class FlextOracleOicClient:
             if isinstance(body_raw, Mapping):
                 token_data = {str(k): body_raw[k] for k in body_raw}
             elif isinstance(body_raw, str):
-                token_parser: TypeAdapter[dict[str, t.NormalizedValue]] = TypeAdapter(
-                    dict[str, t.NormalizedValue],
-                )
-                token_data = token_parser.validate_json(body_raw)
+                token_data = _TOKEN_ADAPTER.validate_json(body_raw)
             else:
                 return r[str].fail("Empty or invalid OAuth response body")
             access_token: t.NormalizedValue | None = token_data.get("access_token")
