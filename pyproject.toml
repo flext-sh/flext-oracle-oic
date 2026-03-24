@@ -171,6 +171,11 @@ project-includes = [
 python-version = "3.13"
 search-path = [
   ".",
+  "../flext-core/examples",
+  "../flext-core/src",
+  "../flext-tests",
+  "../flext-tests/src",
+  "../git+https://github.com/flext-sh/meltano.git@flext/relax-deps/src",
   "src",
 ]
 use-ignore-files = false
