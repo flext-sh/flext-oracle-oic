@@ -10,7 +10,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Annotated, ClassVar, Literal
+from enum import StrEnum, unique
+from typing import Annotated, ClassVar
 
 from flext_core import FlextSettings
 from pydantic import Field, SecretStr
@@ -22,12 +23,17 @@ from flext_oracle_oic.typings import t
 class FlextOracleOicSettings(FlextSettings):
     """Runtime configuration for Oracle OIC integration."""
 
-    type OICApiVersionLiteral = Literal["v1", "v2"]
+    @unique
+    class OICApiVersion(StrEnum):
+        """OIC API version enumeration."""
+
+        V1 = "v1"
+        V2 = "v2"
 
     model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(extra="ignore")
 
     base_url: Annotated[t.NonEmptyStr, Field(default="https://localhost")]
-    api_version: Annotated[OICApiVersionLiteral, Field(default="v1")]
+    api_version: Annotated[OICApiVersion, Field(default=OICApiVersion.V1)]
     request_timeout: Annotated[t.PositiveInt, Field(default=30)]
     max_retries: Annotated[t.RetryCount, Field(default=3)]
     verify_ssl: Annotated[bool, Field(default=True)]
