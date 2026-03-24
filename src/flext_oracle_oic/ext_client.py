@@ -382,8 +382,11 @@ class FlextOracleOicClient:
                 "base_url": self.auth_config.oauth_token_url,
             })
             api_client = FlextApi(api_config)
-            oauth_data: t.ContainerMapping = {
-                key: self._to_api_payload(value) for key, value in data.items()
+            oauth_data: Mapping[str, t.ContainerValue] = {
+                key: payload
+                for key, value in data.items()
+                if (payload := self._to_api_payload(value)) is not None
+                and isinstance(payload, (str, int, float, bool, Sequence, Mapping))
             }
             response_result = api_client.post("", data=oauth_data, headers=headers)
             if response_result.is_failure:
@@ -469,8 +472,8 @@ class FlextOracleOicClient:
             if body is None:
                 return r[str].fail("Invalid response format")
             token_data: dict[str, t.NormalizedValue]
-            if isinstance(body, dict):
-                token_data = {str(k): v for k, v in body.items()}
+            if isinstance(body, Mapping):
+                token_data = {str(k): body[k] for k in body}
             elif isinstance(body, str):
                 token_parser: TypeAdapter[dict[str, t.NormalizedValue]] = TypeAdapter(
                     dict[str, t.NormalizedValue],
