@@ -388,7 +388,8 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
             if client:
                 return r[FlextOracleOicClient].ok(client)
             return (
-                self._create_auth_config()
+                self
+                ._create_auth_config()
                 .flat_map(
                     lambda auth_config: self._create_connection_config().map(
                         lambda conn_config: (auth_config, conn_config),
