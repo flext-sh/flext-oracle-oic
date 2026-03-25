@@ -16,7 +16,7 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 from __future__ import annotations
 
 import re
-from collections.abc import Mapping, MutableMapping, MutableSequence, Sequence
+from collections.abc import MutableMapping, MutableSequence, Sequence
 from datetime import UTC, datetime
 from urllib.parse import urljoin
 
@@ -64,10 +64,6 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing validated data or validation errors
 
             """
-            if not isinstance(integration_data, Mapping):
-                return r[t.ContainerMapping].fail(
-                    "Integration data must be a dictionary",
-                )
             errors: MutableSequence[str] = []
             validated_data: MutableMapping[str, t.NormalizedValue] = {
                 str(key): value for key, value in integration_data.items()
@@ -434,10 +430,6 @@ class FlextOracleOicUtilities(FlextUtilities):
                             "Auth token must be non-empty string",
                         )
             if additional_headers:
-                if not isinstance(additional_headers, Mapping):
-                    return r[t.StrMapping].fail(
-                        "Additional headers must be a dictionary",
-                    )
                 headers.update({str(k): str(v) for k, v in additional_headers.items()})
             return r[t.StrMapping].ok(headers)
 
@@ -457,8 +449,6 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing detected pattern or analysis error
 
             """
-            if not isinstance(integration_data, Mapping):
-                return r[str].fail("Integration data must be a dictionary")
             endpoints_raw = integration_data.get("endpoints", [])
             connections_raw = integration_data.get("connections", [])
             mappings_raw = integration_data.get("mappings", [])
@@ -571,10 +561,6 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing analysis results or error
 
             """
-            if not isinstance(metrics, Mapping):
-                return r[t.ContainerMapping].fail(
-                    "Metrics must be a dictionary",
-                )
             overall_health = "healthy"
             warnings: MutableSequence[t.NormalizedValue] = []
             critical_issues: MutableSequence[t.NormalizedValue] = []
@@ -640,10 +626,6 @@ class FlextOracleOicUtilities(FlextUtilities):
             r containing validated health data or error
 
             """
-            if not isinstance(health_data, Mapping):
-                return r[t.ContainerMapping].fail(
-                    "Health data must be a dictionary",
-                )
             validated_data: MutableMapping[str, t.NormalizedValue] = {
                 str(key): value for key, value in health_data.items()
             }

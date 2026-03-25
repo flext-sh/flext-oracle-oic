@@ -561,7 +561,7 @@ class FlextOracleOicService(
             else:
                 base = str(self._oic_settings.base_url).rstrip("/")
                 health_url = f"{base}{c.API.ENDPOINT_HEALTH}"
-                req = FlextApiModels.HttpRequest(
+                req = FlextApiModels.Api.HttpRequest(
                     method=c.API.Method.GET,
                     url=health_url,
                     headers={},
@@ -753,7 +753,7 @@ class FlextOracleOicService(
             else:
                 base = str(self._oic_settings.base_url).rstrip("/")
                 metrics_url = f"{base}/ic/api/integration/v1/metrics"
-                req = FlextApiModels.HttpRequest(
+                req = FlextApiModels.Api.HttpRequest(
                     method=c.API.Method.GET,
                     url=metrics_url,
                     headers={},
@@ -790,9 +790,8 @@ class FlextOracleOicService(
                         "error": f"Request failed: {response_result.error}",
                     }
             metrics_dict: MutableMapping[str, t.NormalizedValue] = {}
-            if isinstance(metrics_data, Mapping):
-                for key, value in metrics_data.items():
-                    metrics_dict[str(key)] = self._to_general_value(value)
+            for key, value in metrics_data.items():
+                metrics_dict[str(key)] = self._to_general_value(value)
             analysis_result = (
                 FlextOracleOicUtilities.MonitoringUtilities.analyze_performance_metrics(
                     metrics_dict,

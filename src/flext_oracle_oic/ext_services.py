@@ -103,7 +103,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
 
             """
             return (
-                r[t.NormalizedValue]
+                r[t.ContainerMapping]
                 .ok(integration_data)
                 .flat_map(
                     lambda data: self._get_oic_client().map(
@@ -376,21 +376,11 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
             r containing client or error
 
             """
-            return (
-                r[FlextOracleOicClient]
-                .ok(None)
-                .flat_map(lambda _: self._get_or_create_client())
-            )
+            return self._get_or_create_client()
 
         def _get_oic_client(self) -> r[FlextOracleOicClient]:
             """Get authenticated OIC client."""
-            client_result = self._get_client()
-            if client_result.is_failure:
-                return r[FlextOracleOicClient].fail(
-                    client_result.error or "Client creation failed",
-                )
-            client = client_result.value
-            return r[FlextOracleOicClient].ok(client)
+            return self._get_or_create_client()
 
         def _get_or_create_client(self) -> r[FlextOracleOicClient]:
             """Get existing client or create new one."""
@@ -398,9 +388,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
             if client:
                 return r[FlextOracleOicClient].ok(client)
             return (
-                r[FlextOracleOicClient]
-                .ok(None)
-                .flat_map(lambda _: self._create_auth_config())
+                self._create_auth_config()
                 .flat_map(
                     lambda auth_config: self._create_connection_config().map(
                         lambda conn_config: (auth_config, conn_config),

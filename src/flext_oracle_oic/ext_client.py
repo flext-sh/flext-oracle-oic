@@ -261,10 +261,6 @@ class FlextOracleOicClient:
                         response_result.error or "Request failed",
                     )
                 response_data = response_result.value
-                if not isinstance(response_data, Mapping):
-                    return r[Sequence[t.ContainerMapping]].fail(
-                        "Invalid response data format",
-                    )
                 items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):
                     return r[Sequence[t.ContainerMapping]].fail(
