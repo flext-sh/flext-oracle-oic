@@ -214,11 +214,19 @@ from flext_core import t
 from flext_core import u
 
 
+<<<<<<< Updated upstream
 def validate_connection(config: dict) -> r[ConnectionInfo]:
     """Example of current r usage."""
     if not config.get("base_url"):
         return r[ConnectionInfo].fail("Base URL required")
     return r[ConnectionInfo].ok(ConnectionInfo(**config))
+=======
+def validate_connection(config: dict) -> FlextResult[ConnectionInfo]:
+    """Example of current FlextResult usage."""
+    if not config.get("base_url"):
+        return FlextResult[ConnectionInfo].fail("Base URL required")
+    return FlextResult[ConnectionInfo].ok(ConnectionInfo(**config))
+>>>>>>> Stashed changes
 ```
 
 **FlextLogger Integration**
