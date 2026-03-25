@@ -11,8 +11,10 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsConstants
 
+from flext_oracle_oic import FlextOracleOicConstants
 
-class FlextOracleOicTestConstants(FlextTestsConstants):
+
+class FlextOracleOicTestConstants(FlextTestsConstants, FlextOracleOicConstants):
     """Test constants for flext-oracle-oic."""
 
 
