@@ -16,25 +16,23 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
-    from flext_core import FlextTypes, d, e, h, r, x
+    from flext_core import FlextTypes, d, e, h, r, s, x
 
+    from flext_oracle_oic import _utilities
     from flext_oracle_oic.__version__ import __all__
+    from flext_oracle_oic._utilities.cli import FlextOracleOicCli, main
+    from flext_oracle_oic._utilities.client import FlextOracleOicClient
+    from flext_oracle_oic._utilities.service import FlextOracleOicService
+    from flext_oracle_oic._utilities.services import FlextOracleOicExtServices, logger
     from flext_oracle_oic.api import FlextOracleOicApi
     from flext_oracle_oic.constants import (
         FlextOracleOicConstants,
         FlextOracleOicConstants as c,
     )
-    from flext_oracle_oic.ext_client import FlextOracleOicClient
-    from flext_oracle_oic.ext_services import FlextOracleOicExtServices, logger
-    from flext_oracle_oic.main import FlextOracleOicCli, main
     from flext_oracle_oic.models import FlextOracleOicModels, FlextOracleOicModels as m
     from flext_oracle_oic.protocols import (
         FlextOracleOicProtocols,
         FlextOracleOicProtocols as p,
-    )
-    from flext_oracle_oic.service import (
-        FlextOracleOicService,
-        FlextOracleOicService as s,
     )
     from flext_oracle_oic.settings import FlextOracleOicSettings
     from flext_oracle_oic.typings import FlextOracleOicTypes, FlextOracleOicTypes as t
@@ -45,14 +43,17 @@ if TYPE_CHECKING:
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "FlextOracleOicApi": ["flext_oracle_oic.api", "FlextOracleOicApi"],
-    "FlextOracleOicCli": ["flext_oracle_oic.main", "FlextOracleOicCli"],
-    "FlextOracleOicClient": ["flext_oracle_oic.ext_client", "FlextOracleOicClient"],
+    "FlextOracleOicCli": ["flext_oracle_oic._utilities.cli", "FlextOracleOicCli"],
+    "FlextOracleOicClient": [
+        "flext_oracle_oic._utilities.client",
+        "FlextOracleOicClient",
+    ],
     "FlextOracleOicConstants": [
         "flext_oracle_oic.constants",
         "FlextOracleOicConstants",
     ],
     "FlextOracleOicExtServices": [
-        "flext_oracle_oic.ext_services",
+        "flext_oracle_oic._utilities.services",
         "FlextOracleOicExtServices",
     ],
     "FlextOracleOicModels": ["flext_oracle_oic.models", "FlextOracleOicModels"],
@@ -60,7 +61,10 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "flext_oracle_oic.protocols",
         "FlextOracleOicProtocols",
     ],
-    "FlextOracleOicService": ["flext_oracle_oic.service", "FlextOracleOicService"],
+    "FlextOracleOicService": [
+        "flext_oracle_oic._utilities.service",
+        "FlextOracleOicService",
+    ],
     "FlextOracleOicSettings": ["flext_oracle_oic.settings", "FlextOracleOicSettings"],
     "FlextOracleOicTypes": ["flext_oracle_oic.typings", "FlextOracleOicTypes"],
     "FlextOracleOicUtilities": [
@@ -68,16 +72,17 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "FlextOracleOicUtilities",
     ],
     "__all__": ["flext_oracle_oic.__version__", "__all__"],
+    "_utilities": ["flext_oracle_oic._utilities", ""],
     "c": ["flext_oracle_oic.constants", "FlextOracleOicConstants"],
     "d": ["flext_core", "d"],
     "e": ["flext_core", "e"],
     "h": ["flext_core", "h"],
-    "logger": ["flext_oracle_oic.ext_services", "logger"],
+    "logger": ["flext_oracle_oic._utilities.services", "logger"],
     "m": ["flext_oracle_oic.models", "FlextOracleOicModels"],
-    "main": ["flext_oracle_oic.main", "main"],
+    "main": ["flext_oracle_oic._utilities.cli", "main"],
     "p": ["flext_oracle_oic.protocols", "FlextOracleOicProtocols"],
     "r": ["flext_core", "r"],
-    "s": ["flext_oracle_oic.service", "FlextOracleOicService"],
+    "s": ["flext_core", "s"],
     "t": ["flext_oracle_oic.typings", "FlextOracleOicTypes"],
     "u": ["flext_oracle_oic.utilities", "FlextOracleOicUtilities"],
     "x": ["flext_core", "x"],
@@ -96,6 +101,7 @@ __all__ = [
     "FlextOracleOicTypes",
     "FlextOracleOicUtilities",
     "__all__",
+    "_utilities",
     "c",
     "d",
     "e",
