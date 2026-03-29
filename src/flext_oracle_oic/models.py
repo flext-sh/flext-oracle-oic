@@ -76,7 +76,7 @@ class FlextOracleOicModels(FlextModels):
             max_retries: Annotated[
                 t.RetryCount,
                 Field(
-                    default=c.DEFAULT_MAX_RETRY_ATTEMPTS,
+                    default=c.MAX_RETRY_ATTEMPTS,
                     description="Maximum retry attempts",
                 ),
             ]
