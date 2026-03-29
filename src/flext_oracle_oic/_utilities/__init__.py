@@ -13,27 +13,27 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core import FlextTypes
 
-    from flext_oracle_oic._utilities.cli import FlextOracleOicCli, main
-    from flext_oracle_oic._utilities.client import FlextOracleOicClient
-    from flext_oracle_oic._utilities.service import FlextOracleOicService
-    from flext_oracle_oic._utilities.services import FlextOracleOicExtServices, logger
+    from flext_oracle_oic.ext_client import FlextOracleOicClient
+    from flext_oracle_oic.ext_services import FlextOracleOicExtServices, logger
+    from flext_oracle_oic.main import FlextOracleOicCli, main
+    from flext_oracle_oic.service import FlextOracleOicService
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
-    "FlextOracleOicCli": ["flext_oracle_oic._utilities.cli", "FlextOracleOicCli"],
+    "FlextOracleOicCli": ["flext_oracle_oic.main", "FlextOracleOicCli"],
     "FlextOracleOicClient": [
-        "flext_oracle_oic._utilities.client",
+        "flext_oracle_oic.ext_client",
         "FlextOracleOicClient",
     ],
     "FlextOracleOicExtServices": [
-        "flext_oracle_oic._utilities.services",
+        "flext_oracle_oic.ext_services",
         "FlextOracleOicExtServices",
     ],
     "FlextOracleOicService": [
-        "flext_oracle_oic._utilities.service",
+        "flext_oracle_oic.service",
         "FlextOracleOicService",
     ],
-    "logger": ["flext_oracle_oic._utilities.services", "logger"],
-    "main": ["flext_oracle_oic._utilities.cli", "main"],
+    "logger": ["flext_oracle_oic.ext_services", "logger"],
+    "main": ["flext_oracle_oic.main", "main"],
 }
 
 __all__ = [
