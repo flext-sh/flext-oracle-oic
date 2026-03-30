@@ -28,7 +28,6 @@ if TYPE_CHECKING:
         test_models,
         test_typings,
         typings,
-        unit,
         utilities,
     )
     from tests.constants import *
@@ -43,14 +42,10 @@ if TYPE_CHECKING:
     from tests.test_models import *
     from tests.test_typings import *
     from tests.typings import *
-    from tests.unit import test_version
-    from tests.unit.test_version import *
+    from tests.unit import *
     from tests.utilities import *
 
-from tests.unit import _LAZY_IMPORTS as _UNIT_LAZY
-
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
-    **_UNIT_LAZY,
     "FlextOracleOicTestConstants": "tests.constants",
     "FlextOracleOicTestModels": "tests.models",
     "FlextOracleOicTestProtocols": "tests.protocols",
@@ -91,6 +86,9 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
     "test_main": "tests.test_main",
     "test_models": "tests.test_models",
     "test_typings": "tests.test_typings",
+    "test_version": "tests.unit.test_version",
+    "test_version_info_tuple": "tests.unit.test_version",
+    "test_version_string": "tests.unit.test_version",
     "typings": "tests.typings",
     "u": ["tests.utilities", "FlextOracleOicTestUtilities"],
     "unit": "tests.unit",
