@@ -5,60 +5,74 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableMapping, Sequence
+from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING
 
-from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
+from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_core import FlextTypes
-    from flext_tests import d, e, h, r, s, x
-
     from tests import (
-        constants,
-        models,
-        protocols,
-        test_basic,
-        test_cli,
-        test_config,
-        test_ext_client,
-        test_ext_services,
-        test_extension,
-        test_import,
-        test_main,
-        test_models,
-        test_typings,
-        typings,
-        unit,
-        utilities,
+        constants as constants,
+        models as models,
+        protocols as protocols,
+        test_basic as test_basic,
+        test_cli as test_cli,
+        test_config as test_config,
+        test_ext_client as test_ext_client,
+        test_ext_services as test_ext_services,
+        test_extension as test_extension,
+        test_import as test_import,
+        test_main as test_main,
+        test_models as test_models,
+        test_typings as test_typings,
+        typings as typings,
+        unit as unit,
+        utilities as utilities,
     )
     from tests.constants import (
-        FlextOracleOicTestConstants,
+        FlextOracleOicTestConstants as FlextOracleOicTestConstants,
         FlextOracleOicTestConstants as c,
     )
-    from tests.models import FlextOracleOicTestModels, FlextOracleOicTestModels as m
+    from tests.models import (
+        FlextOracleOicTestModels as FlextOracleOicTestModels,
+        FlextOracleOicTestModels as m,
+    )
     from tests.protocols import (
-        FlextOracleOicTestProtocols,
+        FlextOracleOicTestProtocols as FlextOracleOicTestProtocols,
         FlextOracleOicTestProtocols as p,
     )
-    from tests.test_basic import TestBasicFunctionality
-    from tests.test_cli import TestCLI
-    from tests.test_config import TestFlextOracleOicSettings
-    from tests.test_extension import TestOracleOicExtension
-    from tests.test_import import test_basic_import, test_config_import
-    from tests.test_main import TestMainFunction, TestMainModule
-    from tests.test_models import (
-        TestOICAuthConfig,
-        TestOICConnectionConfig,
-        TestOICConnectionInfo,
-        TestOICIntegrationInfo,
+    from tests.test_basic import TestBasicFunctionality as TestBasicFunctionality
+    from tests.test_cli import TestCLI as TestCLI
+    from tests.test_config import (
+        TestFlextOracleOicSettings as TestFlextOracleOicSettings,
     )
-    from tests.test_typings import TestFlextTypes
-    from tests.typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
-    from tests.unit import test_version
-    from tests.unit.test_version import test_version_info_tuple, test_version_string
+    from tests.test_extension import TestOracleOicExtension as TestOracleOicExtension
+    from tests.test_import import (
+        test_basic_import as test_basic_import,
+        test_config_import as test_config_import,
+    )
+    from tests.test_main import (
+        TestMainFunction as TestMainFunction,
+        TestMainModule as TestMainModule,
+    )
+    from tests.test_models import (
+        TestOICAuthConfig as TestOICAuthConfig,
+        TestOICConnectionConfig as TestOICConnectionConfig,
+        TestOICConnectionInfo as TestOICConnectionInfo,
+        TestOICIntegrationInfo as TestOICIntegrationInfo,
+    )
+    from tests.test_typings import TestFlextTypes as TestFlextTypes
+    from tests.typings import (
+        FlextOracleOicTestTypes as FlextOracleOicTestTypes,
+        FlextOracleOicTestTypes as t,
+    )
+    from tests.unit import test_version as test_version
+    from tests.unit.test_version import (
+        test_version_info_tuple as test_version_info_tuple,
+        test_version_string as test_version_string,
+    )
     from tests.utilities import (
-        FlextOracleOicTestUtilities,
+        FlextOracleOicTestUtilities as FlextOracleOicTestUtilities,
         FlextOracleOicTestUtilities as u,
     )
 
@@ -113,7 +127,7 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "x": ["flext_tests", "x"],
 }
 
-__all__ = [
+_EXPORTS: Sequence[str] = [
     "FlextOracleOicTestConstants",
     "FlextOracleOicTestModels",
     "FlextOracleOicTestProtocols",
@@ -165,41 +179,4 @@ __all__ = [
 ]
 
 
-_LAZY_CACHE: MutableMapping[str, FlextTypes.ModuleExport] = {}
-
-
-def __getattr__(name: str) -> FlextTypes.ModuleExport:
-    """Lazy-load module attributes on first access (PEP 562).
-
-    A local cache ``_LAZY_CACHE`` persists resolved objects across repeated
-    accesses during process lifetime.
-
-    Args:
-        name: Attribute name requested by dir()/import.
-
-    Returns:
-        Lazy-loaded module export type.
-
-    Raises:
-        AttributeError: If attribute not registered.
-
-    """
-    if name in _LAZY_CACHE:
-        return _LAZY_CACHE[name]
-
-    value = lazy_getattr(name, _LAZY_IMPORTS, globals(), __name__)
-    _LAZY_CACHE[name] = value
-    return value
-
-
-def __dir__() -> Sequence[str]:
-    """Return list of available attributes for dir() and autocomplete.
-
-    Returns:
-        List of public names from module exports.
-
-    """
-    return sorted(__all__)
-
-
-cleanup_submodule_namespace(__name__, _LAZY_IMPORTS)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, _EXPORTS)

@@ -10,58 +10,70 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableMapping, Sequence
+from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING
 
-from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
+from flext_core.lazy import install_lazy_exports
 
 from flext_oracle_oic.__version__ import (
-    __author__,
-    __author_email__,
-    __description__,
-    __license__,
-    __title__,
-    __url__,
-    __version__,
-    __version_info__,
+    __author__ as __author__,
+    __author_email__ as __author_email__,
+    __description__ as __description__,
+    __license__ as __license__,
+    __title__ as __title__,
+    __url__ as __url__,
+    __version__ as __version__,
+    __version_info__ as __version_info__,
 )
 
 if TYPE_CHECKING:
-    from flext_core import FlextTypes, d, e, h, r, x
-
     from flext_oracle_oic import (
-        api,
-        constants,
-        ext_client,
-        ext_services,
-        models,
-        protocols,
-        service,
-        settings,
-        typings,
-        utilities,
+        api as api,
+        constants as constants,
+        ext_client as ext_client,
+        ext_services as ext_services,
+        models as models,
+        protocols as protocols,
+        service as service,
+        settings as settings,
+        typings as typings,
+        utilities as utilities,
     )
-    from flext_oracle_oic.api import FlextOracleOicApi
+    from flext_oracle_oic.api import FlextOracleOicApi as FlextOracleOicApi
     from flext_oracle_oic.constants import (
-        FlextOracleOicConstants,
+        FlextOracleOicConstants as FlextOracleOicConstants,
         FlextOracleOicConstants as c,
     )
-    from flext_oracle_oic.ext_client import FlextOracleOicClient
-    from flext_oracle_oic.ext_services import FlextOracleOicExtServices, logger
-    from flext_oracle_oic.main import FlextOracleOicCli, main
-    from flext_oracle_oic.models import FlextOracleOicModels, FlextOracleOicModels as m
+    from flext_oracle_oic.ext_client import FlextOracleOicClient as FlextOracleOicClient
+    from flext_oracle_oic.ext_services import (
+        FlextOracleOicExtServices as FlextOracleOicExtServices,
+        logger as logger,
+    )
+    from flext_oracle_oic.main import (
+        FlextOracleOicCli as FlextOracleOicCli,
+        main as main,
+    )
+    from flext_oracle_oic.models import (
+        FlextOracleOicModels as FlextOracleOicModels,
+        FlextOracleOicModels as m,
+    )
     from flext_oracle_oic.protocols import (
-        FlextOracleOicProtocols,
+        FlextOracleOicProtocols as FlextOracleOicProtocols,
         FlextOracleOicProtocols as p,
     )
     from flext_oracle_oic.service import (
-        FlextOracleOicService,
+        FlextOracleOicService as FlextOracleOicService,
         FlextOracleOicService as s,
     )
-    from flext_oracle_oic.settings import FlextOracleOicSettings
-    from flext_oracle_oic.typings import FlextOracleOicTypes, FlextOracleOicTypes as t
+    from flext_oracle_oic.settings import (
+        FlextOracleOicSettings as FlextOracleOicSettings,
+    )
+    from flext_oracle_oic.typings import (
+        FlextOracleOicTypes as FlextOracleOicTypes,
+        FlextOracleOicTypes as t,
+    )
     from flext_oracle_oic.utilities import (
-        FlextOracleOicUtilities,
+        FlextOracleOicUtilities as FlextOracleOicUtilities,
         FlextOracleOicUtilities as u,
     )
 
@@ -114,7 +126,7 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "x": ["flext_core", "x"],
 }
 
-__all__ = [
+_EXPORTS: Sequence[str] = [
     "FlextOracleOicApi",
     "FlextOracleOicCli",
     "FlextOracleOicClient",
@@ -160,41 +172,4 @@ __all__ = [
 ]
 
 
-_LAZY_CACHE: MutableMapping[str, FlextTypes.ModuleExport] = {}
-
-
-def __getattr__(name: str) -> FlextTypes.ModuleExport:
-    """Lazy-load module attributes on first access (PEP 562).
-
-    A local cache ``_LAZY_CACHE`` persists resolved objects across repeated
-    accesses during process lifetime.
-
-    Args:
-        name: Attribute name requested by dir()/import.
-
-    Returns:
-        Lazy-loaded module export type.
-
-    Raises:
-        AttributeError: If attribute not registered.
-
-    """
-    if name in _LAZY_CACHE:
-        return _LAZY_CACHE[name]
-
-    value = lazy_getattr(name, _LAZY_IMPORTS, globals(), __name__)
-    _LAZY_CACHE[name] = value
-    return value
-
-
-def __dir__() -> Sequence[str]:
-    """Return list of available attributes for dir() and autocomplete.
-
-    Returns:
-        List of public names from module exports.
-
-    """
-    return sorted(__all__)
-
-
-cleanup_submodule_namespace(__name__, _LAZY_IMPORTS)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, _EXPORTS)
