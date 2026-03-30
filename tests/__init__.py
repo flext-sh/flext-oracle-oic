@@ -14,7 +14,24 @@ if TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_tests import d, e, h, r, s, x
 
-    from tests import unit
+    from tests import (
+        constants,
+        models,
+        protocols,
+        test_basic,
+        test_cli,
+        test_config,
+        test_ext_client,
+        test_ext_services,
+        test_extension,
+        test_import,
+        test_main,
+        test_models,
+        test_typings,
+        typings,
+        unit,
+        utilities,
+    )
     from tests.constants import (
         FlextOracleOicTestConstants,
         FlextOracleOicTestConstants as c,
@@ -38,6 +55,7 @@ if TYPE_CHECKING:
     )
     from tests.test_typings import TestFlextTypes
     from tests.typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
+    from tests.unit import test_version
     from tests.unit.test_version import test_version_info_tuple, test_version_string
     from tests.utilities import (
         FlextOracleOicTestUtilities,
@@ -62,20 +80,36 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "TestOICIntegrationInfo": ["tests.test_models", "TestOICIntegrationInfo"],
     "TestOracleOicExtension": ["tests.test_extension", "TestOracleOicExtension"],
     "c": ["tests.constants", "FlextOracleOicTestConstants"],
+    "constants": ["tests.constants", ""],
     "d": ["flext_tests", "d"],
     "e": ["flext_tests", "e"],
     "h": ["flext_tests", "h"],
     "m": ["tests.models", "FlextOracleOicTestModels"],
+    "models": ["tests.models", ""],
     "p": ["tests.protocols", "FlextOracleOicTestProtocols"],
+    "protocols": ["tests.protocols", ""],
     "r": ["flext_tests", "r"],
     "s": ["flext_tests", "s"],
     "t": ["tests.typings", "FlextOracleOicTestTypes"],
+    "test_basic": ["tests.test_basic", ""],
     "test_basic_import": ["tests.test_import", "test_basic_import"],
+    "test_cli": ["tests.test_cli", ""],
+    "test_config": ["tests.test_config", ""],
     "test_config_import": ["tests.test_import", "test_config_import"],
+    "test_ext_client": ["tests.test_ext_client", ""],
+    "test_ext_services": ["tests.test_ext_services", ""],
+    "test_extension": ["tests.test_extension", ""],
+    "test_import": ["tests.test_import", ""],
+    "test_main": ["tests.test_main", ""],
+    "test_models": ["tests.test_models", ""],
+    "test_typings": ["tests.test_typings", ""],
+    "test_version": ["tests.unit.test_version", ""],
     "test_version_info_tuple": ["tests.unit.test_version", "test_version_info_tuple"],
     "test_version_string": ["tests.unit.test_version", "test_version_string"],
+    "typings": ["tests.typings", ""],
     "u": ["tests.utilities", "FlextOracleOicTestUtilities"],
     "unit": ["tests.unit", ""],
+    "utilities": ["tests.utilities", ""],
     "x": ["flext_tests", "x"],
 }
 
@@ -97,20 +131,36 @@ __all__ = [
     "TestOICIntegrationInfo",
     "TestOracleOicExtension",
     "c",
+    "constants",
     "d",
     "e",
     "h",
     "m",
+    "models",
     "p",
+    "protocols",
     "r",
     "s",
     "t",
+    "test_basic",
     "test_basic_import",
+    "test_cli",
+    "test_config",
     "test_config_import",
+    "test_ext_client",
+    "test_ext_services",
+    "test_extension",
+    "test_import",
+    "test_main",
+    "test_models",
+    "test_typings",
+    "test_version",
     "test_version_info_tuple",
     "test_version_string",
+    "typings",
     "u",
     "unit",
+    "utilities",
     "x",
 ]
 

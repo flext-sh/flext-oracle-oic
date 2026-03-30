@@ -13,14 +13,17 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core import FlextTypes
 
+    from tests.unit import test_version
     from tests.unit.test_version import test_version_info_tuple, test_version_string
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
+    "test_version": ["tests.unit.test_version", ""],
     "test_version_info_tuple": ["tests.unit.test_version", "test_version_info_tuple"],
     "test_version_string": ["tests.unit.test_version", "test_version_string"],
 }
 
 __all__ = [
+    "test_version",
     "test_version_info_tuple",
     "test_version_string",
 ]
