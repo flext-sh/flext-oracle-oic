@@ -473,7 +473,7 @@ class FlextOracleOicExtServices(FlextService[Sequence[t.ValueOrModel]]):
         def _perform_connection_test(self, client: FlextOracleOicClient) -> r[bool]:
             """Perform actual connection test by fetching minimal data."""
             integrations_result = client.get_integrations(
-                page_size=c.OracleOic.DEFAULT_RETRY_DELAY_SECONDS,
+                page_size=c.OracleOic.DEFAULT_PAGE_SIZE,
             )
             if integrations_result.is_success:
                 self.logger.info("OIC connection test successful")
