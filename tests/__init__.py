@@ -10,26 +10,9 @@ from typing import TYPE_CHECKING
 
 from flext_core.lazy import install_lazy_exports
 
-if TYPE_CHECKING:
-    from flext_tests import *
+from tests.unit import _LAZY_IMPORTS as _CHILD_LAZY_0
 
-    from tests import (
-        constants,
-        models,
-        protocols,
-        test_basic,
-        test_cli,
-        test_config,
-        test_ext_client,
-        test_ext_services,
-        test_extension,
-        test_import,
-        test_main,
-        test_models,
-        test_typings,
-        typings,
-        utilities,
-    )
+if TYPE_CHECKING:
     from tests.constants import *
     from tests.models import *
     from tests.protocols import *
@@ -46,6 +29,7 @@ if TYPE_CHECKING:
     from tests.utilities import *
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
+    **_CHILD_LAZY_0,
     "FlextOracleOicTestConstants": "tests.constants",
     "FlextOracleOicTestModels": "tests.models",
     "FlextOracleOicTestProtocols": "tests.protocols",
@@ -86,9 +70,6 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
     "test_main": "tests.test_main",
     "test_models": "tests.test_models",
     "test_typings": "tests.test_typings",
-    "test_version": "tests.unit.test_version",
-    "test_version_info_tuple": "tests.unit.test_version",
-    "test_version_string": "tests.unit.test_version",
     "typings": "tests.typings",
     "u": ["tests.utilities", "FlextOracleOicTestUtilities"],
     "unit": "tests.unit",
@@ -97,4 +78,4 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
 }
 
 
-install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, sorted(_LAZY_IMPORTS))
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)

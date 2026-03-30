@@ -15,32 +15,8 @@ from typing import TYPE_CHECKING
 
 from flext_core.lazy import install_lazy_exports
 
-from flext_oracle_oic.__version__ import (
-    __author__,
-    __author_email__,
-    __description__,
-    __license__,
-    __title__,
-    __url__,
-    __version__,
-    __version_info__,
-)
-
 if TYPE_CHECKING:
-    from flext_core import *
-
-    from flext_oracle_oic import (
-        api,
-        constants,
-        ext_client,
-        ext_services,
-        models,
-        protocols,
-        service,
-        settings,
-        typings,
-        utilities,
-    )
+    from flext_oracle_oic.__version__ import *
     from flext_oracle_oic.api import *
     from flext_oracle_oic.constants import *
     from flext_oracle_oic.ext_client import *
@@ -65,6 +41,14 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
     "FlextOracleOicSettings": "flext_oracle_oic.settings",
     "FlextOracleOicTypes": "flext_oracle_oic.typings",
     "FlextOracleOicUtilities": "flext_oracle_oic.utilities",
+    "__author__": "flext_oracle_oic.__version__",
+    "__author_email__": "flext_oracle_oic.__version__",
+    "__description__": "flext_oracle_oic.__version__",
+    "__license__": "flext_oracle_oic.__version__",
+    "__title__": "flext_oracle_oic.__version__",
+    "__url__": "flext_oracle_oic.__version__",
+    "__version__": "flext_oracle_oic.__version__",
+    "__version_info__": "flext_oracle_oic.__version__",
     "api": "flext_oracle_oic.api",
     "c": ["flext_oracle_oic.constants", "FlextOracleOicConstants"],
     "constants": "flext_oracle_oic.constants",
@@ -91,4 +75,4 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
 }
 
 
-install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, sorted(_LAZY_IMPORTS))
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
