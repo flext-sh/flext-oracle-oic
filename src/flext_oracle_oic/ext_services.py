@@ -18,13 +18,15 @@ from typing import ClassVar, Self, override
 from flext_core import FlextContainer, FlextLogger, FlextService, r
 from pydantic import ConfigDict
 
-from flext_oracle_oic.constants import c
-from flext_oracle_oic.ext_client import FlextOracleOicClient
-from flext_oracle_oic.models import FlextOracleOicModels
-from flext_oracle_oic.protocols import p
-from flext_oracle_oic.settings import FlextOracleOicSettings
-from flext_oracle_oic.typings import t
-from flext_oracle_oic.utilities import FlextOracleOicUtilities
+from flext_oracle_oic import (
+    FlextOracleOicClient,
+    FlextOracleOicModels,
+    FlextOracleOicSettings,
+    FlextOracleOicUtilities,
+    c,
+    p,
+    t,
+)
 
 logger = FlextLogger(__name__)
 

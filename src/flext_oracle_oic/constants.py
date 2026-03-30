@@ -29,7 +29,7 @@ class FlextOracleOicConstants(FlextConstants):
 
     Usage:
     ```python
-    from flext_oracle_oic.constants import FlextOracleOicConstants
+    from flext_oracle_oic import FlextOracleOicConstants
     from flext_oracle_oic import t
 
     # Access Oracle OIC specific constants

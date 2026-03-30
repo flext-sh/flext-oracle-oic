@@ -15,10 +15,12 @@ from typing import Self, override
 
 from flext_core import FlextService, r
 
-from flext_oracle_oic.models import FlextOracleOicModels
-from flext_oracle_oic.service import FlextOracleOicService
-from flext_oracle_oic.settings import FlextOracleOicSettings
-from flext_oracle_oic.typings import t
+from flext_oracle_oic import (
+    FlextOracleOicModels,
+    FlextOracleOicService,
+    FlextOracleOicSettings,
+    t,
+)
 
 
 class FlextOracleOicApi(FlextService[None]):

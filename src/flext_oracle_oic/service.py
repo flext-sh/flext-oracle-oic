@@ -19,12 +19,14 @@ from typing import Self, override
 from flext_api import FlextApiClient, FlextApiModels, FlextApiSettings
 from flext_core import FlextLogger, FlextService, r
 
-from flext_oracle_oic.constants import c
-from flext_oracle_oic.ext_client import FlextOracleOicClient
-from flext_oracle_oic.models import FlextOracleOicModels
-from flext_oracle_oic.settings import FlextOracleOicSettings
-from flext_oracle_oic.typings import t
-from flext_oracle_oic.utilities import FlextOracleOicUtilities
+from flext_oracle_oic import (
+    FlextOracleOicClient,
+    FlextOracleOicModels,
+    FlextOracleOicSettings,
+    FlextOracleOicUtilities,
+    c,
+    t,
+)
 
 
 class FlextOracleOicService(

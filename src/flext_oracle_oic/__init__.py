@@ -18,7 +18,16 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core import FlextTypes, d, e, h, r, x
 
-    from flext_oracle_oic.__version__ import __all__
+    from flext_oracle_oic.__version__ import (
+        __author__,
+        __author_email__,
+        __description__,
+        __license__,
+        __title__,
+        __url__,
+        __version__,
+        __version_info__,
+    )
     from flext_oracle_oic.api import FlextOracleOicApi
     from flext_oracle_oic.constants import (
         FlextOracleOicConstants,
@@ -67,7 +76,14 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "flext_oracle_oic.utilities",
         "FlextOracleOicUtilities",
     ],
-    "__all__": ["flext_oracle_oic.__version__", "__all__"],
+    "__author__": ["flext_oracle_oic.__version__", "__author__"],
+    "__author_email__": ["flext_oracle_oic.__version__", "__author_email__"],
+    "__description__": ["flext_oracle_oic.__version__", "__description__"],
+    "__license__": ["flext_oracle_oic.__version__", "__license__"],
+    "__title__": ["flext_oracle_oic.__version__", "__title__"],
+    "__url__": ["flext_oracle_oic.__version__", "__url__"],
+    "__version__": ["flext_oracle_oic.__version__", "__version__"],
+    "__version_info__": ["flext_oracle_oic.__version__", "__version_info__"],
     "c": ["flext_oracle_oic.constants", "FlextOracleOicConstants"],
     "d": ["flext_core", "d"],
     "e": ["flext_core", "e"],
@@ -95,7 +111,14 @@ __all__ = [
     "FlextOracleOicSettings",
     "FlextOracleOicTypes",
     "FlextOracleOicUtilities",
-    "__all__",
+    "__author__",
+    "__author_email__",
+    "__description__",
+    "__license__",
+    "__title__",
+    "__url__",
+    "__version__",
+    "__version_info__",
     "c",
     "d",
     "e",

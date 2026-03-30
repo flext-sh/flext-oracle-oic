@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from unittest.mock import Mock, patch
 
-from flext_oracle_oic.main import FlextOracleOicCli, main
+from flext_oracle_oic import FlextOracleOicCli, main
 
 
 class TestCLI:

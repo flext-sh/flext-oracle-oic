@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsProtocols
 
-from flext_oracle_oic.protocols import FlextOracleOicProtocols
+from flext_oracle_oic import FlextOracleOicProtocols
 
 
 class FlextOracleOicTestProtocols(FlextTestsProtocols, FlextOracleOicProtocols):

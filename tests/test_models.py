@@ -12,7 +12,7 @@ from collections.abc import Mapping
 import pytest
 from pydantic import SecretStr, ValidationError
 
-from flext_oracle_oic.models import FlextOracleOicModels
+from flext_oracle_oic import FlextOracleOicModels
 
 
 class TestOICAuthConfig:

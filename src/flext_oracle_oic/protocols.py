@@ -11,7 +11,7 @@ from typing import Protocol, runtime_checkable
 
 from flext_core import FlextProtocols
 
-from flext_oracle_oic.typings import t
+from flext_oracle_oic import t
 
 
 class FlextOracleOicProtocols(FlextProtocols):

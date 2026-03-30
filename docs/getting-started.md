@@ -139,8 +139,8 @@ print(f"Configuration created: {settings.connection.base_url}")
 
 ```python
 # Import available components
-from flext_oracle_oic.ext_config import OracleOicExtensionSettings
-from flext_oracle_oic.ext_models import (
+from flext_oracle_oic import OracleOicExtensionSettings
+from flext_oracle_oic import (
     FlextOracleOicConnectionSettings,
     FlextOracleOicAuthSettings,
 )

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from flext_oracle_oic.__version__ import __version__, __version_info__
+from flext_oracle_oic import __version__, __version_info__
 
 
 def test_version_string() -> None:

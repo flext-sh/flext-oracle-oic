@@ -11,8 +11,7 @@ from typing import Annotated
 from flext_core import FlextModels
 from pydantic import Field, SecretStr
 
-from flext_oracle_oic.constants import c
-from flext_oracle_oic.typings import t
+from flext_oracle_oic import c, t
 
 
 class FlextOracleOicModels(FlextModels):

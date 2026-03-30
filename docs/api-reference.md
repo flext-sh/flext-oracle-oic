@@ -124,7 +124,7 @@ auth_config = FlextOracleOicAuthSettings(
 
 ```python
 # These components may be available for import but implementation varies
-from flext_oracle_oic.ext_services import (
+from flext_oracle_oic import (
     OracleOicExtensionService,  # Main service class
     OICIntegrationPatternService,  # Integration patterns (basic)
     LifecycleManager,  # Lifecycle management (basic)
@@ -138,10 +138,10 @@ from flext_oracle_oic.ext_services import (
 
 ```python
 # HTTP client wrapper (needs FLEXT compliance fixes)
-from flext_oracle_oic.ext_client import OracleOicExtensionClient
+from flext_oracle_oic import OracleOicExtensionClient
 
 # Authentication components (basic implementation)
-from flext_oracle_oic.ext_services import (
+from flext_oracle_oic import (
     BaseOICAuthenticator,
     FlextOracleOicAuthenticator,
 )
@@ -154,7 +154,7 @@ from flext_oracle_oic.ext_services import (
 Basic Pydantic data models are available:
 
 ```python
-from flext_oracle_oic.ext_models import (
+from flext_oracle_oic import (
     OICIntegrationInfo,  # Integration metadata
     OICConnectionInfo,  # Connection information
     # Additional models based on actual implementation
@@ -166,7 +166,7 @@ from flext_oracle_oic.ext_models import (
 Oracle OIC-specific exception classes:
 
 ```python
-from flext_oracle_oic.ext_exceptions import (
+from flext_oracle_oic import (
     OracleOicExtensionError,  # Base exception
     OICAPIError,  # API operation errors
     OICAuthenticationError,  # Authentication failures
@@ -182,7 +182,7 @@ from flext_oracle_oic.ext_exceptions import (
 ## Factory and Utility Functions
 
 ```python
-from flext_oracle_oic.factory import (
+from flext_oracle_oic import (
     # Factory functions for service creation
     # Implementation details vary
 )

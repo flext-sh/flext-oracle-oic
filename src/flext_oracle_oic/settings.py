@@ -17,7 +17,7 @@ from flext_core import FlextSettings
 from pydantic import Field, SecretStr
 from pydantic_settings import SettingsConfigDict
 
-from flext_oracle_oic.typings import t
+from flext_oracle_oic import t
 
 
 class FlextOracleOicSettings(FlextSettings):
