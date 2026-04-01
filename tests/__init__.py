@@ -14,9 +14,33 @@ if _TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_tests import d, e, h, r, s, x
 
-    from tests.constants import *
-    from tests.models import *
-    from tests.protocols import *
+    from tests import (
+        constants,
+        models,
+        protocols,
+        test_basic,
+        test_cli,
+        test_config,
+        test_ext_client,
+        test_ext_services,
+        test_extension,
+        test_import,
+        test_main,
+        test_models,
+        test_typings,
+        typings,
+        unit,
+        utilities,
+    )
+    from tests.constants import (
+        FlextOracleOicTestConstants,
+        FlextOracleOicTestConstants as c,
+    )
+    from tests.models import FlextOracleOicTestModels, FlextOracleOicTestModels as m
+    from tests.protocols import (
+        FlextOracleOicTestProtocols,
+        FlextOracleOicTestProtocols as p,
+    )
     from tests.test_basic import TestBasicFunctionality
     from tests.test_cli import TestCLI
     from tests.test_config import TestFlextOracleOicSettings
@@ -30,9 +54,12 @@ if _TYPE_CHECKING:
         TestOICIntegrationInfo,
     )
     from tests.test_typings import TestFlextTypes
-    from tests.typings import *
-    from tests.unit import *
-    from tests.utilities import *
+    from tests.typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
+    from tests.unit import test_version, test_version_info_tuple, test_version_string
+    from tests.utilities import (
+        FlextOracleOicTestUtilities,
+        FlextOracleOicTestUtilities as u,
+    )
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
     ("tests.unit",),

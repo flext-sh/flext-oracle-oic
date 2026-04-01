@@ -29,18 +29,56 @@ from flext_oracle_oic.__version__ import (
 if _TYPE_CHECKING:
     from flext_core import FlextTypes, d, e, h, r, x
 
-    from flext_oracle_oic._utilities import *
-    from flext_oracle_oic.api import *
-    from flext_oracle_oic.constants import *
-    from flext_oracle_oic.ext_client import *
-    from flext_oracle_oic.ext_services import *
-    from flext_oracle_oic.main import *
-    from flext_oracle_oic.models import *
-    from flext_oracle_oic.protocols import *
-    from flext_oracle_oic.service import *
-    from flext_oracle_oic.settings import *
-    from flext_oracle_oic.typings import *
-    from flext_oracle_oic.utilities import *
+    from flext_oracle_oic import (
+        _utilities,
+        api,
+        constants,
+        ext_client,
+        ext_services,
+        models,
+        protocols,
+        service,
+        settings,
+        typings,
+        utilities,
+    )
+    from flext_oracle_oic._utilities import (
+        FlextOracleOicUtilitiesAPIRequestBuilder,
+        FlextOracleOicUtilitiesAuthenticationValidation,
+        FlextOracleOicUtilitiesConnectionValidation,
+        FlextOracleOicUtilitiesMonitoring,
+        FlextOracleOicUtilitiesOracleOic,
+        FlextOracleOicUtilitiesPatternAnalysis,
+        api_request_builder,
+        authentication_validation,
+        connection_validation,
+        monitoring,
+        oracle_oic,
+        pattern_analysis,
+    )
+    from flext_oracle_oic.api import FlextOracleOicApi
+    from flext_oracle_oic.constants import (
+        FlextOracleOicConstants,
+        FlextOracleOicConstants as c,
+    )
+    from flext_oracle_oic.ext_client import FlextOracleOicClient
+    from flext_oracle_oic.ext_services import FlextOracleOicExtServices, logger
+    from flext_oracle_oic.main import FlextOracleOicCli, main
+    from flext_oracle_oic.models import FlextOracleOicModels, FlextOracleOicModels as m
+    from flext_oracle_oic.protocols import (
+        FlextOracleOicProtocols,
+        FlextOracleOicProtocols as p,
+    )
+    from flext_oracle_oic.service import (
+        FlextOracleOicService,
+        FlextOracleOicService as s,
+    )
+    from flext_oracle_oic.settings import FlextOracleOicSettings
+    from flext_oracle_oic.typings import FlextOracleOicTypes, FlextOracleOicTypes as t
+    from flext_oracle_oic.utilities import (
+        FlextOracleOicUtilities,
+        FlextOracleOicUtilities as u,
+    )
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
     ("flext_oracle_oic._utilities",),

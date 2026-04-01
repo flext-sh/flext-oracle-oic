@@ -13,12 +13,28 @@ from flext_core.lazy import install_lazy_exports
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
 
-    from flext_oracle_oic._utilities.api_request_builder import *
-    from flext_oracle_oic._utilities.authentication_validation import *
-    from flext_oracle_oic._utilities.connection_validation import *
-    from flext_oracle_oic._utilities.monitoring import *
-    from flext_oracle_oic._utilities.oracle_oic import *
-    from flext_oracle_oic._utilities.pattern_analysis import *
+    from flext_oracle_oic._utilities import (
+        api_request_builder,
+        authentication_validation,
+        connection_validation,
+        monitoring,
+        oracle_oic,
+        pattern_analysis,
+    )
+    from flext_oracle_oic._utilities.api_request_builder import (
+        FlextOracleOicUtilitiesAPIRequestBuilder,
+    )
+    from flext_oracle_oic._utilities.authentication_validation import (
+        FlextOracleOicUtilitiesAuthenticationValidation,
+    )
+    from flext_oracle_oic._utilities.connection_validation import (
+        FlextOracleOicUtilitiesConnectionValidation,
+    )
+    from flext_oracle_oic._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
+    from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
+    from flext_oracle_oic._utilities.pattern_analysis import (
+        FlextOracleOicUtilitiesPatternAnalysis,
+    )
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
     "FlextOracleOicUtilitiesAPIRequestBuilder": "flext_oracle_oic._utilities.api_request_builder",
