@@ -17,14 +17,19 @@ if _TYPE_CHECKING:
     from tests.constants import *
     from tests.models import *
     from tests.protocols import *
-    from tests.test_basic import *
-    from tests.test_cli import *
-    from tests.test_config import *
-    from tests.test_extension import *
-    from tests.test_import import *
-    from tests.test_main import *
-    from tests.test_models import *
-    from tests.test_typings import *
+    from tests.test_basic import TestBasicFunctionality
+    from tests.test_cli import TestCLI
+    from tests.test_config import TestFlextOracleOicSettings
+    from tests.test_extension import TestOracleOicExtension
+    from tests.test_import import test_basic_import, test_config_import
+    from tests.test_main import TestMainFunction, TestMainModule
+    from tests.test_models import (
+        TestOICAuthConfig,
+        TestOICConnectionConfig,
+        TestOICConnectionInfo,
+        TestOICIntegrationInfo,
+    )
+    from tests.test_typings import TestFlextTypes
     from tests.typings import *
     from tests.unit import *
     from tests.utilities import *

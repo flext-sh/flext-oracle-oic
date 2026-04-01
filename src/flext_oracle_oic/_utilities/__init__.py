@@ -11,27 +11,28 @@ from typing import TYPE_CHECKING as _TYPE_CHECKING
 from flext_core.lazy import install_lazy_exports
 
 if _TYPE_CHECKING:
-    from flext_oracle_oic.ext_client import FlextOracleOicClient
-    from flext_oracle_oic.ext_services import FlextOracleOicExtServices, logger
-    from flext_oracle_oic.main import FlextOracleOicCli, main
-    from flext_oracle_oic.service import FlextOracleOicService
+    from flext_core import FlextTypes
 
-_LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
-    "FlextOracleOicCli": ["flext_oracle_oic.main", "FlextOracleOicCli"],
-    "FlextOracleOicClient": [
-        "flext_oracle_oic.ext_client",
-        "FlextOracleOicClient",
-    ],
-    "FlextOracleOicExtServices": [
-        "flext_oracle_oic.ext_services",
-        "FlextOracleOicExtServices",
-    ],
-    "FlextOracleOicService": [
-        "flext_oracle_oic.service",
-        "FlextOracleOicService",
-    ],
-    "logger": ["flext_oracle_oic.ext_services", "logger"],
-    "main": ["flext_oracle_oic.main", "main"],
+    from flext_oracle_oic._utilities.api_request_builder import *
+    from flext_oracle_oic._utilities.authentication_validation import *
+    from flext_oracle_oic._utilities.connection_validation import *
+    from flext_oracle_oic._utilities.monitoring import *
+    from flext_oracle_oic._utilities.oracle_oic import *
+    from flext_oracle_oic._utilities.pattern_analysis import *
+
+_LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
+    "FlextOracleOicUtilitiesAPIRequestBuilder": "flext_oracle_oic._utilities.api_request_builder",
+    "FlextOracleOicUtilitiesAuthenticationValidation": "flext_oracle_oic._utilities.authentication_validation",
+    "FlextOracleOicUtilitiesConnectionValidation": "flext_oracle_oic._utilities.connection_validation",
+    "FlextOracleOicUtilitiesMonitoring": "flext_oracle_oic._utilities.monitoring",
+    "FlextOracleOicUtilitiesOracleOic": "flext_oracle_oic._utilities.oracle_oic",
+    "FlextOracleOicUtilitiesPatternAnalysis": "flext_oracle_oic._utilities.pattern_analysis",
+    "api_request_builder": "flext_oracle_oic._utilities.api_request_builder",
+    "authentication_validation": "flext_oracle_oic._utilities.authentication_validation",
+    "connection_validation": "flext_oracle_oic._utilities.connection_validation",
+    "monitoring": "flext_oracle_oic._utilities.monitoring",
+    "oracle_oic": "flext_oracle_oic._utilities.oracle_oic",
+    "pattern_analysis": "flext_oracle_oic._utilities.pattern_analysis",
 }
 
 
