@@ -6,7 +6,6 @@ import re
 from collections.abc import MutableMapping, MutableSequence
 
 from flext_core import r
-
 from flext_oracle_oic import c, t
 
 

@@ -5,7 +5,6 @@ from __future__ import annotations
 from collections.abc import Sequence
 
 from flext_core import r
-
 from flext_oracle_oic import c, m, t
 
 

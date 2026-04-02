@@ -13,10 +13,10 @@ from __future__ import annotations
 from enum import StrEnum, unique
 from typing import Annotated, ClassVar
 
-from flext_core import FlextSettings
 from pydantic import Field, SecretStr
 from pydantic_settings import SettingsConfigDict
 
+from flext_core import FlextSettings
 from flext_oracle_oic import t
 
 

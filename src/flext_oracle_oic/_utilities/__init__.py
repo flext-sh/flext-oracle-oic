@@ -12,7 +12,6 @@ from flext_core.lazy import install_lazy_exports
 
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
-
     from flext_oracle_oic._utilities import (
         api_request_builder,
         authentication_validation,
@@ -36,7 +35,7 @@ if _TYPE_CHECKING:
         FlextOracleOicUtilitiesPatternAnalysis,
     )
 
-_LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
+_LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
     "FlextOracleOicUtilitiesAPIRequestBuilder": "flext_oracle_oic._utilities.api_request_builder",
     "FlextOracleOicUtilitiesAuthenticationValidation": "flext_oracle_oic._utilities.authentication_validation",
     "FlextOracleOicUtilitiesConnectionValidation": "flext_oracle_oic._utilities.connection_validation",

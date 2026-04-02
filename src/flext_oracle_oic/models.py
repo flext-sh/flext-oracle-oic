@@ -5,12 +5,12 @@ This module provides data models for Oracle OIC External operations.
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Sequence
 from typing import Annotated
 
-from flext_core import FlextModels
 from pydantic import Field, SecretStr
 
+from flext_core import FlextModels
 from flext_oracle_oic import c, t
 
 
@@ -203,7 +203,7 @@ class FlextOracleOicModels(FlextModels):
             method: Annotated[str, Field(description="HTTP method")]
             url: Annotated[str, Field(description="Request URL")]
             params: Annotated[
-                Mapping[str, str | int | float] | None,
+                t.ConfigValueMapping | None,
                 Field(
                     default=None,
                     description="Query parameters",

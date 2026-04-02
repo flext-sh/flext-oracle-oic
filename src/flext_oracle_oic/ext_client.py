@@ -17,9 +17,9 @@ from types import TracebackType
 from typing import Self
 
 from flext_api import FlextApi, FlextApiSettings
-from flext_core import FlextLogger, r
 from pydantic import TypeAdapter
 
+from flext_core import FlextLogger, r
 from flext_oracle_oic import FlextOracleOicModels, c, t
 
 logger = FlextLogger(__name__)

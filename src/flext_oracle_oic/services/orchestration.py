@@ -12,7 +12,6 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from flext_core import r
-
 from flext_oracle_oic import (
     FlextOracleOicClient,
     FlextOracleOicServiceBase,

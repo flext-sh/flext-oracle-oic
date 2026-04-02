@@ -6,10 +6,9 @@ from collections.abc import MutableMapping
 from urllib.parse import urljoin
 
 from flext_core import r
-
-from flext_oracle_oic import t
-from flext_oracle_oic._utilities.connection_validation import (
+from flext_oracle_oic import (
     FlextOracleOicUtilitiesConnectionValidation,
+    t,
 )
 
 

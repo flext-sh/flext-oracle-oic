@@ -16,19 +16,12 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 from __future__ import annotations
 
 from flext_core import FlextUtilities
-
-from flext_oracle_oic._utilities.api_request_builder import (
+from flext_oracle_oic import (
     FlextOracleOicUtilitiesAPIRequestBuilder,
-)
-from flext_oracle_oic._utilities.authentication_validation import (
     FlextOracleOicUtilitiesAuthenticationValidation,
-)
-from flext_oracle_oic._utilities.connection_validation import (
     FlextOracleOicUtilitiesConnectionValidation,
-)
-from flext_oracle_oic._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
-from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
-from flext_oracle_oic._utilities.pattern_analysis import (
+    FlextOracleOicUtilitiesMonitoring,
+    FlextOracleOicUtilitiesOracleOic,
     FlextOracleOicUtilitiesPatternAnalysis,
 )
 

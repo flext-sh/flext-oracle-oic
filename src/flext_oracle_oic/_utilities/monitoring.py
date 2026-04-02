@@ -6,7 +6,6 @@ from collections.abc import MutableMapping, MutableSequence
 from datetime import UTC, datetime
 
 from flext_core import r
-
 from flext_oracle_oic import c, t
 
 

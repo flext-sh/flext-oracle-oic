@@ -14,7 +14,6 @@ from collections.abc import Sequence
 from typing import Self, override
 
 from flext_core import FlextService, r
-
 from flext_oracle_oic import (
     FlextOracleOicModels,
     FlextOracleOicService,
