@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import MutableMapping
 from urllib.parse import urljoin
 
 from flext_core import r
@@ -109,7 +108,7 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
         r containing constructed headers or error
 
         """
-        headers: MutableMapping[str, str] = {
+        headers: t.MutableStrMapping = {
             "Accept": "application/json",
             "Content-Type": content_type,
             "User-Agent": "FlextOracleOicension/1.0.0",

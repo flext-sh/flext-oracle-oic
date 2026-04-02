@@ -14,11 +14,12 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import re
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from enum import StrEnum, unique
 from typing import Final
 
 from flext_core import FlextConstants
+from flext_oracle_oic import t
 
 
 class FlextOracleOicConstants(FlextConstants):
@@ -293,4 +294,4 @@ class FlextOracleOicConstants(FlextConstants):
 
 
 c = FlextOracleOicConstants
-__all__: Sequence[str] = ["FlextOracleOicConstants", "c"]
+__all__: t.StrSequence = ["FlextOracleOicConstants", "c"]

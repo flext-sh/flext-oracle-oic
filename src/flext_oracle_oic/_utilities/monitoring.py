@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import MutableMapping, MutableSequence
+from collections.abc import MutableSequence
 from datetime import UTC, datetime
 
 from flext_core import r
@@ -86,7 +86,7 @@ class FlextOracleOicUtilitiesMonitoring:
         r containing validated health data or error
 
         """
-        validated_data: MutableMapping[str, t.NormalizedValue] = {
+        validated_data: t.MutableContainerMapping = {
             str(key): value for key, value in health_data.items()
         }
         if "status" not in health_data:

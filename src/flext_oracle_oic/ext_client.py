@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import base64
-from collections.abc import Mapping, MutableMapping, MutableSequence, Sequence
+from collections.abc import Mapping, MutableSequence, Sequence
 from types import TracebackType
 from typing import Self
 
@@ -154,7 +154,7 @@ class FlextOracleOicClient:
         page_size: int = 100,
     ) -> r[Sequence[t.ContainerMapping]]:
         """Get adapter connections from OIC."""
-        params: MutableMapping[str, str] = {}
+        params: t.MutableStrMapping = {}
         if type_filter:
             params["q"] = f"adapterType in ({','.join(type_filter)})"
         return self.paginate_request("/connections", page_size=page_size, params=params)
@@ -165,7 +165,7 @@ class FlextOracleOicClient:
         page_size: int = 100,
     ) -> r[Sequence[t.ContainerMapping]]:
         """Get integration flows from OIC."""
-        params: MutableMapping[str, str] = {}
+        params: t.MutableStrMapping = {}
         if status_filter:
             params["q"] = f"status in ({','.join(status_filter)})"
         return self.paginate_request(
@@ -245,9 +245,9 @@ class FlextOracleOicClient:
         try:
             all_records: MutableSequence[t.ContainerMapping] = []
             offset = 0
-            base_params: Mapping[str, str] = dict(params) if params else {}
+            base_params: t.StrMapping = dict(params) if params else {}
             while True:
-                request_params: MutableMapping[str, str] = dict(base_params)
+                request_params: t.MutableStrMapping = dict(base_params)
                 request_params.update({"offset": str(offset), "limit": str(page_size)})
                 response_result = self.make_request(
                     c.API.Method.GET,
@@ -338,7 +338,7 @@ class FlextOracleOicClient:
     ) -> r[t.NormalizedValue]:
         """Execute the actual API request."""
         try:
-            api_data: Mapping[str, t.ContainerValue] | None = None
+            api_data: t.ContainerValueMapping | None = None
             if json is not None:
                 api_data = {
                     key: str(self._to_api_payload(value)) for key, value in json.items()
@@ -382,7 +382,7 @@ class FlextOracleOicClient:
                 "base_url": self.auth_config.oauth_token_url,
             })
             api_client = FlextApi(api_config)
-            oauth_data: Mapping[str, t.ContainerValue] = {
+            oauth_data: t.ContainerValueMapping = {
                 key: str(self._to_api_payload(value)) for key, value in data.items()
             }
             response_result = api_client.post("", data=oauth_data, headers=headers)
@@ -465,7 +465,7 @@ class FlextOracleOicClient:
             body_raw: t.NormalizedValue = getattr(response, "body", None)
             if body_raw is None:
                 return r[str].fail("Invalid response format")
-            token_data: Mapping[str, t.NormalizedValue]
+            token_data: t.ContainerMapping
             if isinstance(body_raw, Mapping):
                 token_data = {str(k): body_raw[k] for k in body_raw}
             elif isinstance(body_raw, str):

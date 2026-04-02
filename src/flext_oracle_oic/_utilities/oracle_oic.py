@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from collections.abc import MutableMapping, MutableSequence
+from collections.abc import MutableSequence
 
 from flext_core import r
 from flext_oracle_oic import c, t
@@ -26,7 +26,7 @@ class FlextOracleOicUtilitiesOracleOic:
 
         """
         errors: MutableSequence[str] = []
-        validated_data: MutableMapping[str, t.NormalizedValue] = {
+        validated_data: t.MutableContainerMapping = {
             str(key): value for key, value in integration_data.items()
         }
         if "name" not in integration_data:

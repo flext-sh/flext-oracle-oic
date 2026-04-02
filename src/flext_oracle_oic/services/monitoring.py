@@ -10,7 +10,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import asyncio
-from collections.abc import MutableMapping
 
 from flext_api import FlextApiModels
 
@@ -217,7 +216,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                         "average_response_time": 0.0,
                         "error": f"Request failed: {response_result.error}",
                     }
-            metrics_dict: MutableMapping[str, t.NormalizedValue] = {}
+            metrics_dict: t.MutableContainerMapping = {}
             for key, value in metrics_data.items():
                 metrics_dict[str(key)] = self._to_general_value(value)
             analysis_result = (
