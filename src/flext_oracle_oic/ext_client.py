@@ -17,18 +17,11 @@ from types import TracebackType
 from typing import Self
 
 from flext_api import FlextApi, FlextApiSettings
-from pydantic import TypeAdapter
 
 from flext_core import FlextLogger, r
 from flext_oracle_oic import FlextOracleOicModels, c, t
 
 logger = FlextLogger(__name__)
-_CONTAINER_MAP_ADAPTER: TypeAdapter[t.ContainerMapping] = TypeAdapter(
-    t.ContainerMapping,
-)
-_TOKEN_ADAPTER: TypeAdapter[t.ContainerMapping] = TypeAdapter(
-    t.ContainerMapping,
-)
 
 
 class FlextOracleOicClient:
@@ -427,7 +420,9 @@ class FlextOracleOicClient:
                             return r[t.ContainerMapping].ok(body)
                         match body:
                             case str():
-                                parsed_data = _CONTAINER_MAP_ADAPTER.validate_json(body)
+                                parsed_data = t.CONTAINER_MAPPING_ADAPTER.validate_json(
+                                    body
+                                )
                                 return r[t.ContainerMapping].ok(
                                     parsed_data,
                                 )
@@ -469,7 +464,7 @@ class FlextOracleOicClient:
             if isinstance(body_raw, Mapping):
                 token_data = {str(k): body_raw[k] for k in body_raw}
             elif isinstance(body_raw, str):
-                token_data = _TOKEN_ADAPTER.validate_json(body_raw)
+                token_data = t.CONTAINER_MAPPING_ADAPTER.validate_json(body_raw)
             else:
                 return r[str].fail("Empty or invalid OAuth response body")
             access_token: t.NormalizedValue | None = token_data.get("access_token")
