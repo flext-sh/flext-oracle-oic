@@ -1,0 +1,122 @@
+"""FLEXT Oracle OIC Integration Patterns - Message Router and Scatter-Gather.
+
+Mixin providing enterprise integration pattern operations for the
+FlextOracleOicService facade.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
+"""
+
+from __future__ import annotations
+
+from collections.abc import Sequence
+
+from flext_core import r
+
+from flext_oracle_oic import (
+    FlextOracleOicModels,
+    FlextOracleOicServiceBase,
+    FlextOracleOicUtilities,
+    c,
+    t,
+)
+
+
+class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
+    """Mixin providing enterprise integration patterns for FlextOracleOicService facade."""
+
+    def apply_message_router_pattern(
+        self,
+        message_data: t.ContainerMapping,
+        routing_rules: Sequence[t.ContainerMapping],
+    ) -> r[t.ContainerMapping]:
+        """Apply message router pattern to OIC integration using FlextOracleOicUtilities.
+
+        Args:
+        message_data: Message to route
+        routing_rules: Routing rules configuration
+
+        Returns:
+        r containing routing result or error
+
+        """
+        try:
+            self.logger.info("Applying message router pattern")
+            pattern_config = FlextOracleOicModels.OracleOic.MessageRouterPatternConfig(
+                routing_rules=routing_rules,
+                message_data=message_data,
+            )
+            validation_result = (
+                FlextOracleOicUtilities.PatternAnalysis.validate_pattern_configuration(
+                    "message_router",
+                    pattern_config,
+                )
+            )
+            if validation_result.is_failure:
+                return r[t.ContainerMapping].fail(
+                    f"Pattern validation failed: {validation_result.error}",
+                )
+            routing_result = {
+                "pattern": c.OICPatterns.PATTERN_MESSAGE_ROUTER,
+                "message_id": message_data.get(
+                    "id",
+                    c.OICPatterns.PATTERN_MESSAGE_ID_UNKNOWN,
+                ),
+                "applied_rules": len(routing_rules),
+                "status": c.OICPatterns.PatternStatus.PROCESSED,
+            }
+            return r[t.ContainerMapping].ok(routing_result)
+        except (ConnectionError, TimeoutError, ValueError) as e:
+            error_msg = f"Message router pattern failed: {e}"
+            self.logger.exception(error_msg)
+            return r[t.ContainerMapping].fail(error_msg)
+
+    def apply_scatter_gather_pattern(
+        self,
+        request_data: t.ContainerMapping,
+        target_endpoints: t.StrSequence,
+    ) -> r[t.ContainerMapping]:
+        """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
+
+        Args:
+        request_data: Request to scatter
+        target_endpoints: Target endpoints for scatter
+
+        Returns:
+        r containing scatter-gather result or error
+
+        """
+        try:
+            self.logger.info("Applying scatter-gather pattern")
+            pattern_config = FlextOracleOicModels.OracleOic.ScatterGatherPatternConfig(
+                target_services=target_endpoints,
+                request_data=request_data,
+            )
+            validation_result = (
+                FlextOracleOicUtilities.PatternAnalysis.validate_pattern_configuration(
+                    "scatter_gather",
+                    pattern_config,
+                )
+            )
+            if validation_result.is_failure:
+                return r[t.ContainerMapping].fail(
+                    f"Pattern validation failed: {validation_result.error}",
+                )
+            scatter_result = {
+                "pattern": c.OICPatterns.PATTERN_SCATTER_GATHER,
+                "request_id": request_data.get(
+                    "id",
+                    c.OICPatterns.PATTERN_REQUEST_ID_UNKNOWN,
+                ),
+                "target_count": len(target_endpoints),
+                "status": c.OICPatterns.PatternStatus.PROCESSED,
+            }
+            return r[t.ContainerMapping].ok(scatter_result)
+        except (ConnectionError, TimeoutError, ValueError) as e:
+            error_msg = f"Scatter-gather pattern failed: {e}"
+            self.logger.exception(error_msg)
+            return r[t.ContainerMapping].fail(error_msg)
+
+
+__all__ = ["FlextOracleOicIntegrationPatternsMixin"]

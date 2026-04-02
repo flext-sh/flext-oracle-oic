@@ -34,10 +34,10 @@ if _TYPE_CHECKING:
         api,
         constants,
         ext_client,
-        ext_services,
         models,
         protocols,
         service,
+        services,
         settings,
         typings,
         utilities,
@@ -62,7 +62,6 @@ if _TYPE_CHECKING:
         FlextOracleOicConstants as c,
     )
     from flext_oracle_oic.ext_client import FlextOracleOicClient
-    from flext_oracle_oic.ext_services import FlextOracleOicExtServices, logger
     from flext_oracle_oic.main import FlextOracleOicCli, main
     from flext_oracle_oic.models import FlextOracleOicModels, FlextOracleOicModels as m
     from flext_oracle_oic.protocols import (
@@ -73,6 +72,21 @@ if _TYPE_CHECKING:
         FlextOracleOicService,
         FlextOracleOicService as s,
     )
+    from flext_oracle_oic.services import (
+        FlextOracleOicAuthMixin,
+        FlextOracleOicIntegrationCrudMixin,
+        FlextOracleOicIntegrationLifecycleMixin,
+        FlextOracleOicIntegrationPatternsMixin,
+        FlextOracleOicMonitoringMixin,
+        FlextOracleOicOrchestrationMixin,
+        FlextOracleOicServiceBase,
+        auth,
+        base,
+        integration_crud,
+        integration_lifecycle,
+        integration_patterns,
+        orchestration,
+    )
     from flext_oracle_oic.settings import FlextOracleOicSettings
     from flext_oracle_oic.typings import FlextOracleOicTypes, FlextOracleOicTypes as t
     from flext_oracle_oic.utilities import (
@@ -81,13 +95,15 @@ if _TYPE_CHECKING:
     )
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
-    ("flext_oracle_oic._utilities",),
+    (
+        "flext_oracle_oic._utilities",
+        "flext_oracle_oic.services",
+    ),
     {
         "FlextOracleOicApi": "flext_oracle_oic.api",
         "FlextOracleOicCli": "flext_oracle_oic.main",
         "FlextOracleOicClient": "flext_oracle_oic.ext_client",
         "FlextOracleOicConstants": "flext_oracle_oic.constants",
-        "FlextOracleOicExtServices": "flext_oracle_oic.ext_services",
         "FlextOracleOicModels": "flext_oracle_oic.models",
         "FlextOracleOicProtocols": "flext_oracle_oic.protocols",
         "FlextOracleOicService": "flext_oracle_oic.service",
@@ -101,9 +117,7 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
         "d": "flext_core",
         "e": "flext_core",
         "ext_client": "flext_oracle_oic.ext_client",
-        "ext_services": "flext_oracle_oic.ext_services",
         "h": "flext_core",
-        "logger": "flext_oracle_oic.ext_services",
         "m": ("flext_oracle_oic.models", "FlextOracleOicModels"),
         "main": "flext_oracle_oic.main",
         "models": "flext_oracle_oic.models",
@@ -112,6 +126,7 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
         "r": "flext_core",
         "s": ("flext_oracle_oic.service", "FlextOracleOicService"),
         "service": "flext_oracle_oic.service",
+        "services": "flext_oracle_oic.services",
         "settings": "flext_oracle_oic.settings",
         "t": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
         "typings": "flext_oracle_oic.typings",
