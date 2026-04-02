@@ -26,8 +26,8 @@ logger = FlextLogger(__name__)
 _CONTAINER_MAP_ADAPTER: TypeAdapter[t.ContainerMapping] = TypeAdapter(
     t.ContainerMapping,
 )
-_TOKEN_ADAPTER: TypeAdapter[dict[str, t.NormalizedValue]] = TypeAdapter(
-    dict[str, t.NormalizedValue],
+_TOKEN_ADAPTER: TypeAdapter[t.ContainerMapping] = TypeAdapter(
+    t.ContainerMapping,
 )
 
 

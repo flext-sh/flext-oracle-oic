@@ -10,7 +10,8 @@ from __future__ import annotations
 from unittest.mock import MagicMock, patch
 
 import flext_oracle_oic.main as main_module
-from flext_oracle_oic import FlextOracleOicCli, __version__, main
+from flext_oracle_oic import FlextOracleOicCli, __version__
+from flext_oracle_oic.main import main
 
 
 class TestMainFunction:
