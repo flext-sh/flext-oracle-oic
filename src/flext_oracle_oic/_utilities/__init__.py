@@ -5,14 +5,37 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
-from typing import TYPE_CHECKING as _TYPE_CHECKING
+import typing as _t
 
 from flext_core.lazy import install_lazy_exports
 
-if _TYPE_CHECKING:
-    from flext_core import FlextTypes
-    from flext_oracle_oic._utilities import (
+if _t.TYPE_CHECKING:
+    import flext_oracle_oic._utilities.api_request_builder as _flext_oracle_oic__utilities_api_request_builder
+
+    api_request_builder = _flext_oracle_oic__utilities_api_request_builder
+    import flext_oracle_oic._utilities.authentication_validation as _flext_oracle_oic__utilities_authentication_validation
+
+    authentication_validation = _flext_oracle_oic__utilities_authentication_validation
+    import flext_oracle_oic._utilities.connection_validation as _flext_oracle_oic__utilities_connection_validation
+
+    connection_validation = _flext_oracle_oic__utilities_connection_validation
+    import flext_oracle_oic._utilities.monitoring as _flext_oracle_oic__utilities_monitoring
+
+    monitoring = _flext_oracle_oic__utilities_monitoring
+    import flext_oracle_oic._utilities.oracle_oic as _flext_oracle_oic__utilities_oracle_oic
+
+    oracle_oic = _flext_oracle_oic__utilities_oracle_oic
+    import flext_oracle_oic._utilities.pattern_analysis as _flext_oracle_oic__utilities_pattern_analysis
+
+    pattern_analysis = _flext_oracle_oic__utilities_pattern_analysis
+
+    _ = (
+        FlextOracleOicUtilitiesAPIRequestBuilder,
+        FlextOracleOicUtilitiesAuthenticationValidation,
+        FlextOracleOicUtilitiesConnectionValidation,
+        FlextOracleOicUtilitiesMonitoring,
+        FlextOracleOicUtilitiesOracleOic,
+        FlextOracleOicUtilitiesPatternAnalysis,
         api_request_builder,
         authentication_validation,
         connection_validation,
@@ -20,22 +43,7 @@ if _TYPE_CHECKING:
         oracle_oic,
         pattern_analysis,
     )
-    from flext_oracle_oic._utilities.api_request_builder import (
-        FlextOracleOicUtilitiesAPIRequestBuilder,
-    )
-    from flext_oracle_oic._utilities.authentication_validation import (
-        FlextOracleOicUtilitiesAuthenticationValidation,
-    )
-    from flext_oracle_oic._utilities.connection_validation import (
-        FlextOracleOicUtilitiesConnectionValidation,
-    )
-    from flext_oracle_oic._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
-    from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
-    from flext_oracle_oic._utilities.pattern_analysis import (
-        FlextOracleOicUtilitiesPatternAnalysis,
-    )
-
-_LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
+_LAZY_IMPORTS = {
     "FlextOracleOicUtilitiesAPIRequestBuilder": "flext_oracle_oic._utilities.api_request_builder",
     "FlextOracleOicUtilitiesAuthenticationValidation": "flext_oracle_oic._utilities.authentication_validation",
     "FlextOracleOicUtilitiesConnectionValidation": "flext_oracle_oic._utilities.connection_validation",
@@ -49,6 +57,21 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
     "oracle_oic": "flext_oracle_oic._utilities.oracle_oic",
     "pattern_analysis": "flext_oracle_oic._utilities.pattern_analysis",
 }
+
+__all__ = [
+    "FlextOracleOicUtilitiesAPIRequestBuilder",
+    "FlextOracleOicUtilitiesAuthenticationValidation",
+    "FlextOracleOicUtilitiesConnectionValidation",
+    "FlextOracleOicUtilitiesMonitoring",
+    "FlextOracleOicUtilitiesOracleOic",
+    "FlextOracleOicUtilitiesPatternAnalysis",
+    "api_request_builder",
+    "authentication_validation",
+    "connection_validation",
+    "monitoring",
+    "oracle_oic",
+    "pattern_analysis",
+]
 
 
 install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
