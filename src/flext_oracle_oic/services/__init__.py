@@ -23,7 +23,7 @@ if _TYPE_CHECKING:
     from flext_core.service import FlextService as s
     from flext_core.typings import FlextTypes as t
     from flext_core.utilities import FlextUtilities as u
-    from flext_oracle_oic import (
+    from flext_oracle_oic.services import (
         auth,
         base,
         integration_crud,
@@ -32,38 +32,40 @@ if _TYPE_CHECKING:
         monitoring,
         orchestration,
     )
-    from flext_oracle_oic.auth import FlextOracleOicAuthMixin
-    from flext_oracle_oic.base import FlextOracleOicServiceBase
-    from flext_oracle_oic.integration_crud import FlextOracleOicIntegrationCrudMixin
-    from flext_oracle_oic.integration_lifecycle import (
+    from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
+    from flext_oracle_oic.services.base import FlextOracleOicServiceBase
+    from flext_oracle_oic.services.integration_crud import (
+        FlextOracleOicIntegrationCrudMixin,
+    )
+    from flext_oracle_oic.services.integration_lifecycle import (
         FlextOracleOicIntegrationLifecycleMixin,
     )
-    from flext_oracle_oic.integration_patterns import (
+    from flext_oracle_oic.services.integration_patterns import (
         FlextOracleOicIntegrationPatternsMixin,
     )
-    from flext_oracle_oic.monitoring import FlextOracleOicMonitoringMixin
-    from flext_oracle_oic.orchestration import FlextOracleOicOrchestrationMixin
+    from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
+    from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
 
 _LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
-    "FlextOracleOicAuthMixin": "flext_oracle_oic.auth",
-    "FlextOracleOicIntegrationCrudMixin": "flext_oracle_oic.integration_crud",
-    "FlextOracleOicIntegrationLifecycleMixin": "flext_oracle_oic.integration_lifecycle",
-    "FlextOracleOicIntegrationPatternsMixin": "flext_oracle_oic.integration_patterns",
-    "FlextOracleOicMonitoringMixin": "flext_oracle_oic.monitoring",
-    "FlextOracleOicOrchestrationMixin": "flext_oracle_oic.orchestration",
-    "FlextOracleOicServiceBase": "flext_oracle_oic.base",
-    "auth": "flext_oracle_oic.auth",
-    "base": "flext_oracle_oic.base",
+    "FlextOracleOicAuthMixin": "flext_oracle_oic.services.auth",
+    "FlextOracleOicIntegrationCrudMixin": "flext_oracle_oic.services.integration_crud",
+    "FlextOracleOicIntegrationLifecycleMixin": "flext_oracle_oic.services.integration_lifecycle",
+    "FlextOracleOicIntegrationPatternsMixin": "flext_oracle_oic.services.integration_patterns",
+    "FlextOracleOicMonitoringMixin": "flext_oracle_oic.services.monitoring",
+    "FlextOracleOicOrchestrationMixin": "flext_oracle_oic.services.orchestration",
+    "FlextOracleOicServiceBase": "flext_oracle_oic.services.base",
+    "auth": "flext_oracle_oic.services.auth",
+    "base": "flext_oracle_oic.services.base",
     "c": ("flext_core.constants", "FlextConstants"),
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
     "h": ("flext_core.handlers", "FlextHandlers"),
-    "integration_crud": "flext_oracle_oic.integration_crud",
-    "integration_lifecycle": "flext_oracle_oic.integration_lifecycle",
-    "integration_patterns": "flext_oracle_oic.integration_patterns",
+    "integration_crud": "flext_oracle_oic.services.integration_crud",
+    "integration_lifecycle": "flext_oracle_oic.services.integration_lifecycle",
+    "integration_patterns": "flext_oracle_oic.services.integration_patterns",
     "m": ("flext_core.models", "FlextModels"),
-    "monitoring": "flext_oracle_oic.monitoring",
-    "orchestration": "flext_oracle_oic.orchestration",
+    "monitoring": "flext_oracle_oic.services.monitoring",
+    "orchestration": "flext_oracle_oic.services.orchestration",
     "p": ("flext_core.protocols", "FlextProtocols"),
     "r": ("flext_core.result", "FlextResult"),
     "s": ("flext_core.service", "FlextService"),

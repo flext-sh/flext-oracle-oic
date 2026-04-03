@@ -18,7 +18,7 @@ if _TYPE_CHECKING:
     from flext_core.mixins import FlextMixins as x
     from flext_core.result import FlextResult as r
     from flext_core.service import FlextService as s
-    from flext_oracle_oic import (
+    from tests import (
         constants,
         models,
         protocols,
@@ -32,84 +32,86 @@ if _TYPE_CHECKING:
         test_main,
         test_models,
         test_typings,
-        test_version,
         typings,
         unit,
         utilities,
     )
-    from flext_oracle_oic.constants import (
+    from tests.constants import (
         FlextOracleOicTestConstants,
         FlextOracleOicTestConstants as c,
     )
-    from flext_oracle_oic.models import (
-        FlextOracleOicTestModels,
-        FlextOracleOicTestModels as m,
-    )
-    from flext_oracle_oic.protocols import (
+    from tests.models import FlextOracleOicTestModels, FlextOracleOicTestModels as m
+    from tests.protocols import (
         FlextOracleOicTestProtocols,
         FlextOracleOicTestProtocols as p,
     )
-    from flext_oracle_oic.test_basic import TestBasicFunctionality
-    from flext_oracle_oic.test_cli import TestCLI
-    from flext_oracle_oic.test_config import TestFlextOracleOicSettings
-    from flext_oracle_oic.test_extension import TestOracleOicExtension
-    from flext_oracle_oic.test_import import test_basic_import
-    from flext_oracle_oic.test_main import TestMainFunction
-    from flext_oracle_oic.test_models import TestOICAuthConfig
-    from flext_oracle_oic.test_typings import TestFlextTypes
-    from flext_oracle_oic.typings import (
-        FlextOracleOicTestTypes,
-        FlextOracleOicTestTypes as t,
+    from tests.test_basic import TestBasicFunctionality
+    from tests.test_cli import TestCLI
+    from tests.test_config import TestFlextOracleOicSettings
+    from tests.test_extension import TestOracleOicExtension
+    from tests.test_import import test_basic_import, test_config_import
+    from tests.test_main import TestMainFunction, TestMainModule
+    from tests.test_models import (
+        TestOICAuthConfig,
+        TestOICConnectionConfig,
+        TestOICConnectionInfo,
+        TestOICIntegrationInfo,
     )
-    from flext_oracle_oic.unit import test_version_string
-    from flext_oracle_oic.utilities import (
+    from tests.test_typings import TestFlextTypes
+    from tests.typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
+    from tests.unit import test_version, test_version_info_tuple, test_version_string
+    from tests.utilities import (
         FlextOracleOicTestUtilities,
         FlextOracleOicTestUtilities as u,
     )
 
 _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
-    ("flext_oracle_oic.unit",),
+    ("tests.unit",),
     {
-        "FlextOracleOicTestConstants": "flext_oracle_oic.constants",
-        "FlextOracleOicTestModels": "flext_oracle_oic.models",
-        "FlextOracleOicTestProtocols": "flext_oracle_oic.protocols",
-        "FlextOracleOicTestTypes": "flext_oracle_oic.typings",
-        "FlextOracleOicTestUtilities": "flext_oracle_oic.utilities",
-        "TestBasicFunctionality": "flext_oracle_oic.test_basic",
-        "TestCLI": "flext_oracle_oic.test_cli",
-        "TestFlextOracleOicSettings": "flext_oracle_oic.test_config",
-        "TestFlextTypes": "flext_oracle_oic.test_typings",
-        "TestMainFunction": "flext_oracle_oic.test_main",
-        "TestOICAuthConfig": "flext_oracle_oic.test_models",
-        "TestOracleOicExtension": "flext_oracle_oic.test_extension",
-        "c": ("flext_oracle_oic.constants", "FlextOracleOicTestConstants"),
-        "constants": "flext_oracle_oic.constants",
+        "FlextOracleOicTestConstants": "tests.constants",
+        "FlextOracleOicTestModels": "tests.models",
+        "FlextOracleOicTestProtocols": "tests.protocols",
+        "FlextOracleOicTestTypes": "tests.typings",
+        "FlextOracleOicTestUtilities": "tests.utilities",
+        "TestBasicFunctionality": "tests.test_basic",
+        "TestCLI": "tests.test_cli",
+        "TestFlextOracleOicSettings": "tests.test_config",
+        "TestFlextTypes": "tests.test_typings",
+        "TestMainFunction": "tests.test_main",
+        "TestMainModule": "tests.test_main",
+        "TestOICAuthConfig": "tests.test_models",
+        "TestOICConnectionConfig": "tests.test_models",
+        "TestOICConnectionInfo": "tests.test_models",
+        "TestOICIntegrationInfo": "tests.test_models",
+        "TestOracleOicExtension": "tests.test_extension",
+        "c": ("tests.constants", "FlextOracleOicTestConstants"),
+        "constants": "tests.constants",
         "d": ("flext_core.decorators", "FlextDecorators"),
         "e": ("flext_core.exceptions", "FlextExceptions"),
         "h": ("flext_core.handlers", "FlextHandlers"),
-        "m": ("flext_oracle_oic.models", "FlextOracleOicTestModels"),
-        "models": "flext_oracle_oic.models",
-        "p": ("flext_oracle_oic.protocols", "FlextOracleOicTestProtocols"),
-        "protocols": "flext_oracle_oic.protocols",
+        "m": ("tests.models", "FlextOracleOicTestModels"),
+        "models": "tests.models",
+        "p": ("tests.protocols", "FlextOracleOicTestProtocols"),
+        "protocols": "tests.protocols",
         "r": ("flext_core.result", "FlextResult"),
         "s": ("flext_core.service", "FlextService"),
-        "t": ("flext_oracle_oic.typings", "FlextOracleOicTestTypes"),
-        "test_basic": "flext_oracle_oic.test_basic",
-        "test_basic_import": "flext_oracle_oic.test_import",
-        "test_cli": "flext_oracle_oic.test_cli",
-        "test_config": "flext_oracle_oic.test_config",
-        "test_ext_client": "flext_oracle_oic.test_ext_client",
-        "test_ext_services": "flext_oracle_oic.test_ext_services",
-        "test_extension": "flext_oracle_oic.test_extension",
-        "test_import": "flext_oracle_oic.test_import",
-        "test_main": "flext_oracle_oic.test_main",
-        "test_models": "flext_oracle_oic.test_models",
-        "test_typings": "flext_oracle_oic.test_typings",
-        "test_version": "flext_oracle_oic.test_version",
-        "typings": "flext_oracle_oic.typings",
-        "u": ("flext_oracle_oic.utilities", "FlextOracleOicTestUtilities"),
-        "unit": "flext_oracle_oic.unit",
-        "utilities": "flext_oracle_oic.utilities",
+        "t": ("tests.typings", "FlextOracleOicTestTypes"),
+        "test_basic": "tests.test_basic",
+        "test_basic_import": "tests.test_import",
+        "test_cli": "tests.test_cli",
+        "test_config": "tests.test_config",
+        "test_config_import": "tests.test_import",
+        "test_ext_client": "tests.test_ext_client",
+        "test_ext_services": "tests.test_ext_services",
+        "test_extension": "tests.test_extension",
+        "test_import": "tests.test_import",
+        "test_main": "tests.test_main",
+        "test_models": "tests.test_models",
+        "test_typings": "tests.test_typings",
+        "typings": "tests.typings",
+        "u": ("tests.utilities", "FlextOracleOicTestUtilities"),
+        "unit": "tests.unit",
+        "utilities": "tests.utilities",
         "x": ("flext_core.mixins", "FlextMixins"),
     },
 )
