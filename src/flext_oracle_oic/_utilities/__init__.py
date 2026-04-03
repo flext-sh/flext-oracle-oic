@@ -1,7 +1,7 @@
 # AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
 # Regenerate with: make gen
 #
-"""FLEXT Oracle OIC utilities submodules."""
+"""Utilities package."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from flext_core.lazy import install_lazy_exports
 
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
-    from flext_oracle_oic._utilities import (
+    from flext_oracle_oic import (
         api_request_builder,
         authentication_validation,
         connection_validation,
@@ -20,34 +20,32 @@ if _TYPE_CHECKING:
         oracle_oic,
         pattern_analysis,
     )
-    from flext_oracle_oic._utilities.api_request_builder import (
+    from flext_oracle_oic.api_request_builder import (
         FlextOracleOicUtilitiesAPIRequestBuilder,
     )
-    from flext_oracle_oic._utilities.authentication_validation import (
+    from flext_oracle_oic.authentication_validation import (
         FlextOracleOicUtilitiesAuthenticationValidation,
     )
-    from flext_oracle_oic._utilities.connection_validation import (
+    from flext_oracle_oic.connection_validation import (
         FlextOracleOicUtilitiesConnectionValidation,
     )
-    from flext_oracle_oic._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
-    from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
-    from flext_oracle_oic._utilities.pattern_analysis import (
-        FlextOracleOicUtilitiesPatternAnalysis,
-    )
+    from flext_oracle_oic.monitoring import FlextOracleOicUtilitiesMonitoring
+    from flext_oracle_oic.oracle_oic import FlextOracleOicUtilitiesOracleOic
+    from flext_oracle_oic.pattern_analysis import FlextOracleOicUtilitiesPatternAnalysis
 
 _LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
-    "FlextOracleOicUtilitiesAPIRequestBuilder": "flext_oracle_oic._utilities.api_request_builder",
-    "FlextOracleOicUtilitiesAuthenticationValidation": "flext_oracle_oic._utilities.authentication_validation",
-    "FlextOracleOicUtilitiesConnectionValidation": "flext_oracle_oic._utilities.connection_validation",
-    "FlextOracleOicUtilitiesMonitoring": "flext_oracle_oic._utilities.monitoring",
-    "FlextOracleOicUtilitiesOracleOic": "flext_oracle_oic._utilities.oracle_oic",
-    "FlextOracleOicUtilitiesPatternAnalysis": "flext_oracle_oic._utilities.pattern_analysis",
-    "api_request_builder": "flext_oracle_oic._utilities.api_request_builder",
-    "authentication_validation": "flext_oracle_oic._utilities.authentication_validation",
-    "connection_validation": "flext_oracle_oic._utilities.connection_validation",
-    "monitoring": "flext_oracle_oic._utilities.monitoring",
-    "oracle_oic": "flext_oracle_oic._utilities.oracle_oic",
-    "pattern_analysis": "flext_oracle_oic._utilities.pattern_analysis",
+    "FlextOracleOicUtilitiesAPIRequestBuilder": "flext_oracle_oic.api_request_builder",
+    "FlextOracleOicUtilitiesAuthenticationValidation": "flext_oracle_oic.authentication_validation",
+    "FlextOracleOicUtilitiesConnectionValidation": "flext_oracle_oic.connection_validation",
+    "FlextOracleOicUtilitiesMonitoring": "flext_oracle_oic.monitoring",
+    "FlextOracleOicUtilitiesOracleOic": "flext_oracle_oic.oracle_oic",
+    "FlextOracleOicUtilitiesPatternAnalysis": "flext_oracle_oic.pattern_analysis",
+    "api_request_builder": "flext_oracle_oic.api_request_builder",
+    "authentication_validation": "flext_oracle_oic.authentication_validation",
+    "connection_validation": "flext_oracle_oic.connection_validation",
+    "monitoring": "flext_oracle_oic.monitoring",
+    "oracle_oic": "flext_oracle_oic.oracle_oic",
+    "pattern_analysis": "flext_oracle_oic.pattern_analysis",
 }
 
 
