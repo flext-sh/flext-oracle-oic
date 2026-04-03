@@ -7,62 +7,40 @@ from __future__ import annotations
 
 import typing as _t
 
-from flext_core.decorators import FlextDecorators as d
-from flext_core.exceptions import FlextExceptions as e
-from flext_core.handlers import FlextHandlers as h
 from flext_core.lazy import install_lazy_exports, merge_lazy_imports
-from flext_core.mixins import FlextMixins as x
-from flext_core.result import FlextResult as r
-from flext_core.service import FlextService as s
-from tests.constants import (
-    FlextOracleOicTestConstants,
-    FlextOracleOicTestConstants as c,
-)
-from tests.models import FlextOracleOicTestModels, FlextOracleOicTestModels as m
-from tests.protocols import (
-    FlextOracleOicTestProtocols,
-    FlextOracleOicTestProtocols as p,
-)
-from tests.test_basic import TestBasicFunctionality
-from tests.test_cli import TestCLI
-from tests.test_config import TestFlextOracleOicSettings
-from tests.test_extension import TestOracleOicExtension
-from tests.test_import import test_basic_import, test_config_import
-from tests.test_main import TestMainFunction, TestMainModule
-from tests.test_models import (
-    TestOICAuthConfig,
-    TestOICConnectionConfig,
-    TestOICConnectionInfo,
-    TestOICIntegrationInfo,
-)
-from tests.test_typings import TestFlextTypes
-from tests.typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
-from tests.unit.test_version import test_version_info_tuple, test_version_string
-from tests.utilities import (
-    FlextOracleOicTestUtilities,
-    FlextOracleOicTestUtilities as u,
-)
 
 if _t.TYPE_CHECKING:
     import tests.constants as _tests_constants
 
     constants = _tests_constants
     import tests.models as _tests_models
+    from tests.constants import (
+        FlextOracleOicTestConstants,
+        FlextOracleOicTestConstants as c,
+    )
 
     models = _tests_models
     import tests.protocols as _tests_protocols
+    from tests.models import FlextOracleOicTestModels, FlextOracleOicTestModels as m
 
     protocols = _tests_protocols
     import tests.test_basic as _tests_test_basic
+    from tests.protocols import (
+        FlextOracleOicTestProtocols,
+        FlextOracleOicTestProtocols as p,
+    )
 
     test_basic = _tests_test_basic
     import tests.test_cli as _tests_test_cli
+    from tests.test_basic import TestBasicFunctionality
 
     test_cli = _tests_test_cli
     import tests.test_config as _tests_test_config
+    from tests.test_cli import TestCLI
 
     test_config = _tests_test_config
     import tests.test_ext_client as _tests_test_ext_client
+    from tests.test_config import TestFlextOracleOicSettings
 
     test_ext_client = _tests_test_ext_client
     import tests.test_ext_services as _tests_test_ext_services
@@ -72,79 +50,50 @@ if _t.TYPE_CHECKING:
 
     test_extension = _tests_test_extension
     import tests.test_import as _tests_test_import
+    from tests.test_extension import TestOracleOicExtension
 
     test_import = _tests_test_import
     import tests.test_main as _tests_test_main
+    from tests.test_import import test_basic_import, test_config_import
 
     test_main = _tests_test_main
     import tests.test_models as _tests_test_models
+    from tests.test_main import TestMainFunction, TestMainModule
 
     test_models = _tests_test_models
     import tests.test_typings as _tests_test_typings
+    from tests.test_models import (
+        TestOICAuthConfig,
+        TestOICConnectionConfig,
+        TestOICConnectionInfo,
+        TestOICIntegrationInfo,
+    )
 
     test_typings = _tests_test_typings
     import tests.typings as _tests_typings
+    from tests.test_typings import TestFlextTypes
 
     typings = _tests_typings
     import tests.unit as _tests_unit
+    from tests.typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
 
     unit = _tests_unit
     import tests.unit.test_version as _tests_unit_test_version
 
     test_version = _tests_unit_test_version
     import tests.utilities as _tests_utilities
+    from tests.unit.test_version import test_version_info_tuple, test_version_string
 
     utilities = _tests_utilities
-
-    _ = (
-        FlextOracleOicTestConstants,
-        FlextOracleOicTestModels,
-        FlextOracleOicTestProtocols,
-        FlextOracleOicTestTypes,
+    from flext_core.decorators import FlextDecorators as d
+    from flext_core.exceptions import FlextExceptions as e
+    from flext_core.handlers import FlextHandlers as h
+    from flext_core.mixins import FlextMixins as x
+    from flext_core.result import FlextResult as r
+    from flext_core.service import FlextService as s
+    from tests.utilities import (
         FlextOracleOicTestUtilities,
-        TestBasicFunctionality,
-        TestCLI,
-        TestFlextOracleOicSettings,
-        TestFlextTypes,
-        TestMainFunction,
-        TestMainModule,
-        TestOICAuthConfig,
-        TestOICConnectionConfig,
-        TestOICConnectionInfo,
-        TestOICIntegrationInfo,
-        TestOracleOicExtension,
-        c,
-        constants,
-        d,
-        e,
-        h,
-        m,
-        models,
-        p,
-        protocols,
-        r,
-        s,
-        t,
-        test_basic,
-        test_basic_import,
-        test_cli,
-        test_config,
-        test_config_import,
-        test_ext_client,
-        test_ext_services,
-        test_extension,
-        test_import,
-        test_main,
-        test_models,
-        test_typings,
-        test_version,
-        test_version_info_tuple,
-        test_version_string,
-        typings,
-        u,
-        unit,
-        utilities,
-        x,
+        FlextOracleOicTestUtilities as u,
     )
 _LAZY_IMPORTS = merge_lazy_imports(
     ("tests.unit",),
