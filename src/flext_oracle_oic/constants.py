@@ -16,6 +16,7 @@ from __future__ import annotations
 import re
 from collections.abc import Mapping
 from enum import StrEnum, unique
+from types import MappingProxyType
 from typing import Final
 
 from flext_core import FlextConstants
@@ -272,11 +273,11 @@ class FlextOracleOicConstants(FlextConstants):
             "request_reply",
         })
         MIN_ENDPOINTS_FOR_ROUTER: Final[int] = 2
-        PERFORMANCE_THRESHOLDS: Final[Mapping[str, float]] = {
+        PERFORMANCE_THRESHOLDS: Final[Mapping[str, float]] = MappingProxyType({
             "response_time_ms": 5000.0,
             "success_rate": 0.95,
             "error_rate": 0.05,
-        }
+        })
 
     @unique
     class ProjectType(StrEnum):
