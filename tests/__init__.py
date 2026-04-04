@@ -78,11 +78,8 @@ if _t.TYPE_CHECKING:
     from tests.typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
 
     unit = _tests_unit
-    import tests.unit.test_version as _tests_unit_test_version
-
-    test_version = _tests_unit_test_version
     import tests.utilities as _tests_utilities
-    from tests.unit.test_version import test_version_info_tuple, test_version_string
+    from tests.unit import test_version, test_version_info_tuple, test_version_string
 
     utilities = _tests_utilities
     from flext_core.decorators import FlextDecorators as d

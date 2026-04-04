@@ -24,38 +24,20 @@ if _t.TYPE_CHECKING:
     )
 
     _utilities = _flext_oracle_oic__utilities
-    import flext_oracle_oic._utilities.api_request_builder as _flext_oracle_oic__utilities_api_request_builder
-
-    api_request_builder = _flext_oracle_oic__utilities_api_request_builder
-    import flext_oracle_oic._utilities.authentication_validation as _flext_oracle_oic__utilities_authentication_validation
-    from flext_oracle_oic._utilities.api_request_builder import (
-        FlextOracleOicUtilitiesAPIRequestBuilder,
-    )
-
-    authentication_validation = _flext_oracle_oic__utilities_authentication_validation
-    import flext_oracle_oic._utilities.connection_validation as _flext_oracle_oic__utilities_connection_validation
-    from flext_oracle_oic._utilities.authentication_validation import (
-        FlextOracleOicUtilitiesAuthenticationValidation,
-    )
-
-    connection_validation = _flext_oracle_oic__utilities_connection_validation
-    import flext_oracle_oic._utilities.monitoring as _flext_oracle_oic__utilities_monitoring
-    from flext_oracle_oic._utilities.connection_validation import (
-        FlextOracleOicUtilitiesConnectionValidation,
-    )
-
-    monitoring = _flext_oracle_oic__utilities_monitoring
-    import flext_oracle_oic._utilities.oracle_oic as _flext_oracle_oic__utilities_oracle_oic
-    from flext_oracle_oic._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
-
-    oracle_oic = _flext_oracle_oic__utilities_oracle_oic
-    import flext_oracle_oic._utilities.pattern_analysis as _flext_oracle_oic__utilities_pattern_analysis
-    from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
-
-    pattern_analysis = _flext_oracle_oic__utilities_pattern_analysis
     import flext_oracle_oic.api as _flext_oracle_oic_api
-    from flext_oracle_oic._utilities.pattern_analysis import (
+    from flext_oracle_oic._utilities import (
+        FlextOracleOicUtilitiesAPIRequestBuilder,
+        FlextOracleOicUtilitiesAuthenticationValidation,
+        FlextOracleOicUtilitiesConnectionValidation,
+        FlextOracleOicUtilitiesMonitoring,
+        FlextOracleOicUtilitiesOracleOic,
         FlextOracleOicUtilitiesPatternAnalysis,
+        api_request_builder,
+        authentication_validation,
+        connection_validation,
+        monitoring,
+        oracle_oic,
+        pattern_analysis,
     )
 
     api = _flext_oracle_oic_api
@@ -93,41 +75,23 @@ if _t.TYPE_CHECKING:
     from flext_oracle_oic.service import FlextOracleOicService
 
     services = _flext_oracle_oic_services
-    import flext_oracle_oic.services.auth as _flext_oracle_oic_services_auth
-
-    auth = _flext_oracle_oic_services_auth
-    import flext_oracle_oic.services.base as _flext_oracle_oic_services_base
-    from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
-
-    base = _flext_oracle_oic_services_base
-    import flext_oracle_oic.services.integration_crud as _flext_oracle_oic_services_integration_crud
-    from flext_oracle_oic.services.base import (
+    import flext_oracle_oic.settings as _flext_oracle_oic_settings
+    from flext_oracle_oic.services import (
+        FlextOracleOicAuthMixin,
+        FlextOracleOicIntegrationCrudMixin,
+        FlextOracleOicIntegrationLifecycleMixin,
+        FlextOracleOicIntegrationPatternsMixin,
+        FlextOracleOicMonitoringMixin,
+        FlextOracleOicOrchestrationMixin,
         FlextOracleOicServiceBase,
         FlextOracleOicServiceBase as s,
+        auth,
+        base,
+        integration_crud,
+        integration_lifecycle,
+        integration_patterns,
+        orchestration,
     )
-
-    integration_crud = _flext_oracle_oic_services_integration_crud
-    import flext_oracle_oic.services.integration_lifecycle as _flext_oracle_oic_services_integration_lifecycle
-    from flext_oracle_oic.services.integration_crud import (
-        FlextOracleOicIntegrationCrudMixin,
-    )
-
-    integration_lifecycle = _flext_oracle_oic_services_integration_lifecycle
-    import flext_oracle_oic.services.integration_patterns as _flext_oracle_oic_services_integration_patterns
-    from flext_oracle_oic.services.integration_lifecycle import (
-        FlextOracleOicIntegrationLifecycleMixin,
-    )
-
-    integration_patterns = _flext_oracle_oic_services_integration_patterns
-    import flext_oracle_oic.services.orchestration as _flext_oracle_oic_services_orchestration
-    from flext_oracle_oic.services.integration_patterns import (
-        FlextOracleOicIntegrationPatternsMixin,
-    )
-    from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
-
-    orchestration = _flext_oracle_oic_services_orchestration
-    import flext_oracle_oic.settings as _flext_oracle_oic_settings
-    from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
 
     settings = _flext_oracle_oic_settings
     import flext_oracle_oic.typings as _flext_oracle_oic_typings
