@@ -52,6 +52,13 @@ class FlextOracleOicConstants(FlextConstants):
     - Complete documentation and usage examples
     """
 
+    @unique
+    class OICApiVersion(StrEnum):
+        """OIC API version enumeration."""
+
+        V1 = "v1"
+        V2 = "v2"
+
     class OracleOic:
         """Oracle Integration Cloud specific constants."""
 
