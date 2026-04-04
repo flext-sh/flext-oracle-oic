@@ -22,7 +22,7 @@ from flext_oracle_oic import c, t
 class FlextOracleOicSettings(FlextSettings):
     """Runtime configuration for Oracle OIC integration."""
 
-    OICApiVersion = c.OICApiVersion
+    OICApiVersion: ClassVar[type[c.OICApiVersion]] = c.OICApiVersion
 
     model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(extra="ignore")
 
