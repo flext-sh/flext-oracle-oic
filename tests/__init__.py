@@ -10,7 +10,11 @@ import typing as _t
 from flext_core.lazy import install_lazy_exports, merge_lazy_imports
 
 if _t.TYPE_CHECKING:
+    import tests.conftest as _tests_conftest
+
+    conftest = _tests_conftest
     import tests.constants as _tests_constants
+    from tests.conftest import pytest_plugins
 
     constants = _tests_constants
     import tests.models as _tests_models
@@ -112,6 +116,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "TestOICIntegrationInfo": "tests.test_models",
         "TestOracleOicExtension": "tests.test_extension",
         "c": ("tests.constants", "FlextOracleOicTestConstants"),
+        "conftest": "tests.conftest",
         "constants": "tests.constants",
         "d": ("flext_core.decorators", "FlextDecorators"),
         "e": ("flext_core.exceptions", "FlextExceptions"),
@@ -120,6 +125,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "models": "tests.models",
         "p": ("tests.protocols", "FlextOracleOicTestProtocols"),
         "protocols": "tests.protocols",
+        "pytest_plugins": "tests.conftest",
         "r": ("flext_core.result", "FlextResult"),
         "s": ("flext_core.service", "FlextService"),
         "t": ("tests.typings", "FlextOracleOicTestTypes"),
@@ -161,6 +167,7 @@ __all__ = [
     "TestOICIntegrationInfo",
     "TestOracleOicExtension",
     "c",
+    "conftest",
     "constants",
     "d",
     "e",
@@ -169,6 +176,7 @@ __all__ = [
     "models",
     "p",
     "protocols",
+    "pytest_plugins",
     "r",
     "s",
     "t",

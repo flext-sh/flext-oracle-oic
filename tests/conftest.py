@@ -1,0 +1,5 @@
+"""Test configuration for flext-oracle-oic."""
+
+from __future__ import annotations
+
+pytest_plugins = ["flext_tests.conftest_plugin"]
