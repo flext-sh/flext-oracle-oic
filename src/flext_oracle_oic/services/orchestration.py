@@ -13,8 +13,8 @@ from collections.abc import Callable
 
 from flext_core import r
 from flext_oracle_oic import (
-    FlextOracleOicClient,
     FlextOracleOicServiceBase,
+    p,
     t,
 )
 
@@ -123,7 +123,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
 
     @staticmethod
     def _run_file_transfer(
-        client: FlextOracleOicClient,
+        client: p.OracleOic.HTTPClient,
         integration_id: str,
         operation_config: t.ContainerMapping,
         operation_kwargs: t.ConfigurationMapping,
@@ -136,7 +136,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
 
     @staticmethod
     def _run_scheduled_orchestration(
-        client: FlextOracleOicClient,
+        client: p.OracleOic.HTTPClient,
         integration_id: str,
         operation_config: t.ContainerMapping,
         operation_kwargs: t.ConfigurationMapping,
@@ -153,7 +153,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         operation_config: t.ContainerMapping,
         operation: Callable[
             [
-                FlextOracleOicClient,
+                p.OracleOic.HTTPClient,
                 str,
                 t.ContainerMapping,
                 t.ScalarMapping,

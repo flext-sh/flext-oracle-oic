@@ -87,10 +87,10 @@ class FlextOracleOicCli(FlextService[None]):
             FlextOracleOicSettings.create_for_development()
             service = FlextOracleOicService()
             return self._list_integrations_with_service(service)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as exc:
             if self.logger:
                 self.logger.exception("List integrations failed")
-            return r[bool].fail(f"List integrations failed: {e!s}")
+            return r[bool].fail(f"List integrations failed: {exc!s}")
 
     def run_cli(self, args: t.StrSequence | None = None) -> int:
         """Run the CLI with the given arguments.
@@ -145,10 +145,10 @@ class FlextOracleOicCli(FlextService[None]):
                 "FLEXT CLI Pattern: Enterprise Oracle Integration Cloud\n",
             )
             return r[bool].ok(value=True)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as exc:
             if self.logger:
                 self.logger.exception("Version display failed")
-            return r[bool].fail(f"Version display failed: {e!s}")
+            return r[bool].fail(f"Version display failed: {exc!s}")
 
     def test_connection(self) -> r[bool]:
         """Test connection to Oracle OIC instance.
@@ -172,10 +172,10 @@ class FlextOracleOicCli(FlextService[None]):
                     )
                     return r[bool].ok(value=True)
                 return r[bool].fail(f"Connection failed: {connection_result.error}")
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as exc:
             if self.logger:
                 self.logger.exception("Connection test failed")
-            return r[bool].fail(f"Connection test failed: {e!s}")
+            return r[bool].fail(f"Connection test failed: {exc!s}")
 
     def _list_integrations_with_service(
         self,

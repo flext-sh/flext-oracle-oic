@@ -19,7 +19,7 @@ from typing import Self
 from flext_api import FlextApi, FlextApiSettings
 
 from flext_core import FlextLogger, r
-from flext_oracle_oic import FlextOracleOicModels, c, t
+from flext_oracle_oic import FlextOracleOicModels, c, p, t
 
 logger = FlextLogger(__name__)
 
@@ -47,7 +47,7 @@ class FlextOracleOicClient:
         self.connection_config = connection_config
         self.auth_config = auth_config
         self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
-        self._client: FlextApi | None = None
+        self._client: p.OracleOic.HTTPClient | None = None
         self._access_token: str | None = None
 
     def __enter__(self) -> Self:
@@ -214,7 +214,7 @@ class FlextOracleOicClient:
             .ok((method, endpoint, params, data, json))
             .flat_map(
                 lambda req_data: (
-                    r[FlextApi].ok(self._client)
+                    r[p.OracleOic.HTTPClient].ok(self._client)
                     if self._client is not None
                     else self._create_authenticated_client()
                 ).map(lambda client: (client, req_data)),
@@ -270,8 +270,8 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-        ) as e:
-            error_msg = f"OIC pagination failed: {e}"
+        ) as exc:
+            error_msg = f"OIC pagination failed: {exc}"
             self.logger.exception(error_msg)
             return r[Sequence[t.ContainerMapping]].fail(error_msg)
 
@@ -291,7 +291,7 @@ class FlextOracleOicClient:
             json=json_data,
         )
 
-    def _build_client_with_token(self, token: str) -> r[FlextApi]:
+    def _build_client_with_token(self, token: str) -> r[p.OracleOic.HTTPClient]:
         """Build client with access token."""
         try:
             base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
@@ -306,23 +306,23 @@ class FlextOracleOicClient:
             })
             client = FlextApi(api_config)
             self._client = client
-            return r[FlextApi].ok(client)
+            return r[p.OracleOic.HTTPClient].ok(client)
         except (
             ConnectionError,
             TimeoutError,
             ValueError,
-        ) as e:
-            error_msg = f"Failed to create authenticated client: {e}"
+        ) as exc:
+            error_msg = f"Failed to create authenticated client: {exc}"
             self.logger.exception(error_msg)
-            return r[FlextApi].fail(error_msg)
+            return r[p.OracleOic.HTTPClient].fail(error_msg)
 
-    def _create_authenticated_client(self) -> r[FlextApi]:
+    def _create_authenticated_client(self) -> r[p.OracleOic.HTTPClient]:
         """Create new authenticated client."""
         return self.get_access_token().flat_map(self._build_client_with_token)
 
     def _execute_api_request(
         self,
-        client: FlextApi,
+        client: p.OracleOic.HTTPClient,
         method: str,
         endpoint: str,
         _params: t.StrMapping | None,
@@ -359,8 +359,8 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-        ) as e:
-            error_msg = f"OIC API request failed: {e}"
+        ) as exc:
+            error_msg = f"OIC API request failed: {exc}"
             self.logger.exception(error_msg)
             return r[t.NormalizedValue].fail(error_msg)
 
@@ -394,8 +394,8 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-        ) as e:
-            error_msg = f"OAuth token request failed: {e}"
+        ) as exc:
+            error_msg = f"OAuth token request failed: {exc}"
             self.logger.exception(error_msg)
             return r[t.NormalizedValue].fail(error_msg)
 
@@ -449,8 +449,8 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-        ) as e:
-            error_msg = f"Failed to parse API response: {e}"
+        ) as exc:
+            error_msg = f"Failed to parse API response: {exc}"
             self.logger.exception(error_msg)
             return r[t.ContainerMapping].fail(error_msg)
 
@@ -475,8 +475,8 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-        ) as e:
-            error_msg = f"Failed to parse OAuth response: {e}"
+        ) as exc:
+            error_msg = f"Failed to parse OAuth response: {exc}"
             self.logger.exception(error_msg)
             return r[str].fail(error_msg)
 
@@ -499,8 +499,8 @@ class FlextOracleOicClient:
             ConnectionError,
             TimeoutError,
             ValueError,
-        ) as e:
-            error_msg = f"Failed to prepare OAuth request: {e}"
+        ) as exc:
+            error_msg = f"Failed to prepare OAuth request: {exc}"
             self.logger.exception(error_msg)
             return r[tuple[t.StrMapping, t.StrMapping]].fail(error_msg)
 

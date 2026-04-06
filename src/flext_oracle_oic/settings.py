@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Annotated, ClassVar
+from typing import Annotated, ClassVar, Self
 
 from pydantic import Field, SecretStr
 from pydantic_settings import SettingsConfigDict
@@ -49,7 +49,7 @@ class FlextOracleOicSettings(FlextSettings):
     oauth_scope: Annotated[str, Field(default="")]
 
     @classmethod
-    def create_for_development(cls) -> FlextOracleOicSettings:
+    def create_for_development(cls) -> Self:
         """Build deterministic development settings."""
         return cls.model_validate({
             "base_url": c.OracleOic.DEFAULT_BASE_URL,

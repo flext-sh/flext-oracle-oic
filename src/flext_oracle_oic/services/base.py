@@ -23,6 +23,7 @@ from flext_oracle_oic import (
     FlextOracleOicSettings,
     FlextOracleOicUtilities,
     c,
+    p,
     t,
 )
 
@@ -158,13 +159,13 @@ class FlextOracleOicServiceBase(
             return r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].ok(
                 integrations,
             )
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as exc:
             FlextLogger(__name__).exception("Failed to list integrations")
             return r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].fail(
-                f"Integration listing failed: {e!s}",
+                f"Integration listing failed: {exc!s}",
             )
 
-    def _get_client(self) -> r[FlextOracleOicClient]:
+    def _get_client(self) -> r[p.OracleOic.HTTPClient]:
         """Get or create Oracle OIC client instance.
 
         Returns:
@@ -175,7 +176,7 @@ class FlextOracleOicServiceBase(
             if self._client is None:
                 validation_result = self.validate_business_rules()
                 if validation_result.is_failure:
-                    return r[FlextOracleOicClient].fail(validation_result.error)
+                    return r[p.OracleOic.HTTPClient].fail(validation_result.error)
                 connection_config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
                     base_url=str(self._oic_settings.base_url),
                     api_version=self._oic_settings.api_version,
@@ -194,10 +195,10 @@ class FlextOracleOicServiceBase(
                     connection_config=connection_config,
                     auth_config=auth_config,
                 )
-            return r[FlextOracleOicClient].ok(self._client)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+            return r[p.OracleOic.HTTPClient].ok(self._client)
+        except (ConnectionError, TimeoutError, ValueError) as exc:
             self.logger.exception("Failed to create OIC client")
-            return r[FlextOracleOicClient].fail(f"Client creation failed: {e!s}")
+            return r[p.OracleOic.HTTPClient].fail(f"Client creation failed: {exc!s}")
 
     @override
     def validate_business_rules(self) -> r[bool]:
