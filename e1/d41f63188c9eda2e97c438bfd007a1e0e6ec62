@@ -1,0 +1,27 @@
+src/flext_oracle_oic/services/orchestration.py
+  d3ada1e5d497edb1 16,126,139,156
+src/flext_oracle_oic/services/base.py
+  d3ada1e5d497edb1 167,178,197,200
+src/flext_oracle_oic/ext_client.py
+  d3ada1e5d497edb1 217,309,317,319,325
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "e1d41f63188c9eda2e97c438bfd007a1e0e6ec62",
+  "prompts": {
+    "d3ada1e5d497edb1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7a3e077c-5cc8-4cbe-b4df-b55506e62047",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "FLEXT Bot",
+      "messages": [],
+      "total_additions": 13,
+      "total_deletions": 14,
+      "accepted_lines": 13,
+      "overriden_lines": 0
+    }
+  }
+}
