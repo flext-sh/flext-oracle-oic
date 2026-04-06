@@ -13,8 +13,8 @@ from collections.abc import Callable
 
 from flext_core import r
 from flext_oracle_oic import (
+    FlextOracleOicClient,
     FlextOracleOicServiceBase,
-    p,
     t,
 )
 
@@ -60,13 +60,13 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
                     orchestration_result.error or "Orchestration request failed",
                 )
             return r[t.ContainerMapping].ok(orchestration_result.value)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as exc:
             self.logger.exception(
                 "App-driven orchestration failed for %s",
                 integration_id,
             )
             return r[t.ContainerMapping].fail(
-                f"Orchestration execution failed: {e!s}",
+                f"Orchestration execution failed: {exc!s}",
             )
 
     def execute_file_transfer(
@@ -123,7 +123,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
 
     @staticmethod
     def _run_file_transfer(
-        client: p.OracleOic.HTTPClient,
+        client: FlextOracleOicClient,
         integration_id: str,
         operation_config: t.ContainerMapping,
         operation_kwargs: t.ConfigurationMapping,
@@ -136,7 +136,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
 
     @staticmethod
     def _run_scheduled_orchestration(
-        client: p.OracleOic.HTTPClient,
+        client: FlextOracleOicClient,
         integration_id: str,
         operation_config: t.ContainerMapping,
         operation_kwargs: t.ConfigurationMapping,
@@ -153,7 +153,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         operation_config: t.ContainerMapping,
         operation: Callable[
             [
-                p.OracleOic.HTTPClient,
+                FlextOracleOicClient,
                 str,
                 t.ContainerMapping,
                 t.ScalarMapping,
@@ -180,9 +180,9 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
                 operation_kwargs,
             )
             return r[t.ContainerMapping].ok(result)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except (ConnectionError, TimeoutError, ValueError) as exc:
             self.logger.exception(log_message, integration_id)
-            return r[t.ContainerMapping].fail(f"{error_message}: {e!s}")
+            return r[t.ContainerMapping].fail(f"{error_message}: {exc!s}")
 
 
 __all__ = ["FlextOracleOicOrchestrationMixin"]

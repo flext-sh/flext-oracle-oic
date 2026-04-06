@@ -19,7 +19,7 @@ from typing import Self
 from flext_api import FlextApi, FlextApiSettings
 
 from flext_core import FlextLogger, r
-from flext_oracle_oic import FlextOracleOicModels, c, p, t
+from flext_oracle_oic import FlextOracleOicModels, c, t
 
 logger = FlextLogger(__name__)
 
@@ -47,7 +47,7 @@ class FlextOracleOicClient:
         self.connection_config = connection_config
         self.auth_config = auth_config
         self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
-        self._client: p.OracleOic.HTTPClient | None = None
+        self._client: FlextApi | None = None
         self._access_token: str | None = None
 
     def __enter__(self) -> Self:
@@ -214,7 +214,7 @@ class FlextOracleOicClient:
             .ok((method, endpoint, params, data, json))
             .flat_map(
                 lambda req_data: (
-                    r[p.OracleOic.HTTPClient].ok(self._client)
+                    r[FlextApi].ok(self._client)
                     if self._client is not None
                     else self._create_authenticated_client()
                 ).map(lambda client: (client, req_data)),
@@ -291,7 +291,7 @@ class FlextOracleOicClient:
             json=json_data,
         )
 
-    def _build_client_with_token(self, token: str) -> r[p.OracleOic.HTTPClient]:
+    def _build_client_with_token(self, token: str) -> r[FlextApi]:
         """Build client with access token."""
         try:
             base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
@@ -306,7 +306,7 @@ class FlextOracleOicClient:
             })
             client = FlextApi(api_config)
             self._client = client
-            return r[p.OracleOic.HTTPClient].ok(client)
+            return r[FlextApi].ok(client)
         except (
             ConnectionError,
             TimeoutError,
@@ -314,15 +314,15 @@ class FlextOracleOicClient:
         ) as exc:
             error_msg = f"Failed to create authenticated client: {exc}"
             self.logger.exception(error_msg)
-            return r[p.OracleOic.HTTPClient].fail(error_msg)
+            return r[FlextApi].fail(error_msg)
 
-    def _create_authenticated_client(self) -> r[p.OracleOic.HTTPClient]:
+    def _create_authenticated_client(self) -> r[FlextApi]:
         """Create new authenticated client."""
         return self.get_access_token().flat_map(self._build_client_with_token)
 
     def _execute_api_request(
         self,
-        client: p.OracleOic.HTTPClient,
+        client: FlextApi,
         method: str,
         endpoint: str,
         _params: t.StrMapping | None,
