@@ -58,13 +58,34 @@ if _t.TYPE_CHECKING:
     from flext_core.utilities import FlextUtilities as u
     from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
 _LAZY_IMPORTS = {
-    "FlextOracleOicAuthMixin": "flext_oracle_oic.services.auth",
-    "FlextOracleOicIntegrationCrudMixin": "flext_oracle_oic.services.integration_crud",
-    "FlextOracleOicIntegrationLifecycleMixin": "flext_oracle_oic.services.integration_lifecycle",
-    "FlextOracleOicIntegrationPatternsMixin": "flext_oracle_oic.services.integration_patterns",
-    "FlextOracleOicMonitoringMixin": "flext_oracle_oic.services.monitoring",
-    "FlextOracleOicOrchestrationMixin": "flext_oracle_oic.services.orchestration",
-    "FlextOracleOicServiceBase": "flext_oracle_oic.services.base",
+    "FlextOracleOicAuthMixin": (
+        "flext_oracle_oic.services.auth",
+        "FlextOracleOicAuthMixin",
+    ),
+    "FlextOracleOicIntegrationCrudMixin": (
+        "flext_oracle_oic.services.integration_crud",
+        "FlextOracleOicIntegrationCrudMixin",
+    ),
+    "FlextOracleOicIntegrationLifecycleMixin": (
+        "flext_oracle_oic.services.integration_lifecycle",
+        "FlextOracleOicIntegrationLifecycleMixin",
+    ),
+    "FlextOracleOicIntegrationPatternsMixin": (
+        "flext_oracle_oic.services.integration_patterns",
+        "FlextOracleOicIntegrationPatternsMixin",
+    ),
+    "FlextOracleOicMonitoringMixin": (
+        "flext_oracle_oic.services.monitoring",
+        "FlextOracleOicMonitoringMixin",
+    ),
+    "FlextOracleOicOrchestrationMixin": (
+        "flext_oracle_oic.services.orchestration",
+        "FlextOracleOicOrchestrationMixin",
+    ),
+    "FlextOracleOicServiceBase": (
+        "flext_oracle_oic.services.base",
+        "FlextOracleOicServiceBase",
+    ),
     "auth": "flext_oracle_oic.services.auth",
     "base": "flext_oracle_oic.services.base",
     "c": ("flext_core.constants", "FlextConstants"),

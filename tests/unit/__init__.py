@@ -36,8 +36,8 @@ _LAZY_IMPORTS = {
     "s": ("flext_core.service", "FlextService"),
     "t": ("flext_core.typings", "FlextTypes"),
     "test_version": "tests.unit.test_version",
-    "test_version_info_tuple": "tests.unit.test_version",
-    "test_version_string": "tests.unit.test_version",
+    "test_version_info_tuple": ("tests.unit.test_version", "test_version_info_tuple"),
+    "test_version_string": ("tests.unit.test_version", "test_version_string"),
     "u": ("flext_core.utilities", "FlextUtilities"),
     "x": ("flext_core.mixins", "FlextMixins"),
 }

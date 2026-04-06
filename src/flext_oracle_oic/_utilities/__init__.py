@@ -43,12 +43,30 @@ if _t.TYPE_CHECKING:
         FlextOracleOicUtilitiesPatternAnalysis,
     )
 _LAZY_IMPORTS = {
-    "FlextOracleOicUtilitiesAPIRequestBuilder": "flext_oracle_oic._utilities.api_request_builder",
-    "FlextOracleOicUtilitiesAuthenticationValidation": "flext_oracle_oic._utilities.authentication_validation",
-    "FlextOracleOicUtilitiesConnectionValidation": "flext_oracle_oic._utilities.connection_validation",
-    "FlextOracleOicUtilitiesMonitoring": "flext_oracle_oic._utilities.monitoring",
-    "FlextOracleOicUtilitiesOracleOic": "flext_oracle_oic._utilities.oracle_oic",
-    "FlextOracleOicUtilitiesPatternAnalysis": "flext_oracle_oic._utilities.pattern_analysis",
+    "FlextOracleOicUtilitiesAPIRequestBuilder": (
+        "flext_oracle_oic._utilities.api_request_builder",
+        "FlextOracleOicUtilitiesAPIRequestBuilder",
+    ),
+    "FlextOracleOicUtilitiesAuthenticationValidation": (
+        "flext_oracle_oic._utilities.authentication_validation",
+        "FlextOracleOicUtilitiesAuthenticationValidation",
+    ),
+    "FlextOracleOicUtilitiesConnectionValidation": (
+        "flext_oracle_oic._utilities.connection_validation",
+        "FlextOracleOicUtilitiesConnectionValidation",
+    ),
+    "FlextOracleOicUtilitiesMonitoring": (
+        "flext_oracle_oic._utilities.monitoring",
+        "FlextOracleOicUtilitiesMonitoring",
+    ),
+    "FlextOracleOicUtilitiesOracleOic": (
+        "flext_oracle_oic._utilities.oracle_oic",
+        "FlextOracleOicUtilitiesOracleOic",
+    ),
+    "FlextOracleOicUtilitiesPatternAnalysis": (
+        "flext_oracle_oic._utilities.pattern_analysis",
+        "FlextOracleOicUtilitiesPatternAnalysis",
+    ),
     "api_request_builder": "flext_oracle_oic._utilities.api_request_builder",
     "authentication_validation": "flext_oracle_oic._utilities.authentication_validation",
     "connection_validation": "flext_oracle_oic._utilities.connection_validation",

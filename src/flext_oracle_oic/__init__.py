@@ -42,12 +42,9 @@ if _t.TYPE_CHECKING:
     )
 
     ext_client = _flext_oracle_oic_ext_client
-    import flext_oracle_oic.main as _flext_oracle_oic_main
-    from flext_oracle_oic.ext_client import FlextOracleOicClient
-
-    main = _flext_oracle_oic_main
     import flext_oracle_oic.models as _flext_oracle_oic_models
-    from flext_oracle_oic.main import FlextOracleOicCli
+    from flext_oracle_oic.ext_client import FlextOracleOicClient
+    from flext_oracle_oic.main import FlextOracleOicCli, main
 
     models = _flext_oracle_oic_models
     import flext_oracle_oic.protocols as _flext_oracle_oic_protocols
@@ -107,24 +104,36 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "flext_oracle_oic.services",
     ),
     {
-        "FlextOracleOicApi": "flext_oracle_oic.api",
-        "FlextOracleOicCli": "flext_oracle_oic.main",
-        "FlextOracleOicClient": "flext_oracle_oic.ext_client",
-        "FlextOracleOicConstants": "flext_oracle_oic.constants",
-        "FlextOracleOicModels": "flext_oracle_oic.models",
-        "FlextOracleOicProtocols": "flext_oracle_oic.protocols",
-        "FlextOracleOicService": "flext_oracle_oic.service",
-        "FlextOracleOicSettings": "flext_oracle_oic.settings",
-        "FlextOracleOicTypes": "flext_oracle_oic.typings",
-        "FlextOracleOicUtilities": "flext_oracle_oic.utilities",
-        "__author__": "flext_oracle_oic.__version__",
-        "__author_email__": "flext_oracle_oic.__version__",
-        "__description__": "flext_oracle_oic.__version__",
-        "__license__": "flext_oracle_oic.__version__",
-        "__title__": "flext_oracle_oic.__version__",
-        "__url__": "flext_oracle_oic.__version__",
-        "__version__": "flext_oracle_oic.__version__",
-        "__version_info__": "flext_oracle_oic.__version__",
+        "FlextOracleOicApi": ("flext_oracle_oic.api", "FlextOracleOicApi"),
+        "FlextOracleOicCli": ("flext_oracle_oic.main", "FlextOracleOicCli"),
+        "FlextOracleOicClient": ("flext_oracle_oic.ext_client", "FlextOracleOicClient"),
+        "FlextOracleOicConstants": (
+            "flext_oracle_oic.constants",
+            "FlextOracleOicConstants",
+        ),
+        "FlextOracleOicModels": ("flext_oracle_oic.models", "FlextOracleOicModels"),
+        "FlextOracleOicProtocols": (
+            "flext_oracle_oic.protocols",
+            "FlextOracleOicProtocols",
+        ),
+        "FlextOracleOicService": ("flext_oracle_oic.service", "FlextOracleOicService"),
+        "FlextOracleOicSettings": (
+            "flext_oracle_oic.settings",
+            "FlextOracleOicSettings",
+        ),
+        "FlextOracleOicTypes": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
+        "FlextOracleOicUtilities": (
+            "flext_oracle_oic.utilities",
+            "FlextOracleOicUtilities",
+        ),
+        "__author__": ("flext_oracle_oic.__version__", "__author__"),
+        "__author_email__": ("flext_oracle_oic.__version__", "__author_email__"),
+        "__description__": ("flext_oracle_oic.__version__", "__description__"),
+        "__license__": ("flext_oracle_oic.__version__", "__license__"),
+        "__title__": ("flext_oracle_oic.__version__", "__title__"),
+        "__url__": ("flext_oracle_oic.__version__", "__url__"),
+        "__version__": ("flext_oracle_oic.__version__", "__version__"),
+        "__version_info__": ("flext_oracle_oic.__version__", "__version_info__"),
         "_utilities": "flext_oracle_oic._utilities",
         "api": "flext_oracle_oic.api",
         "c": ("flext_oracle_oic.constants", "FlextOracleOicConstants"),
@@ -134,7 +143,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "ext_client": "flext_oracle_oic.ext_client",
         "h": ("flext_core.handlers", "FlextHandlers"),
         "m": ("flext_oracle_oic.models", "FlextOracleOicModels"),
-        "main": "flext_oracle_oic.main",
+        "main": ("flext_oracle_oic.main", "main"),
         "models": "flext_oracle_oic.models",
         "p": ("flext_oracle_oic.protocols", "FlextOracleOicProtocols"),
         "protocols": "flext_oracle_oic.protocols",
