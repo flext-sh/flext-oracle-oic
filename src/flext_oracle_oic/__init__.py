@@ -22,12 +22,6 @@ if _t.TYPE_CHECKING:
         FlextOracleOicUtilitiesMonitoring,
         FlextOracleOicUtilitiesOracleOic,
         FlextOracleOicUtilitiesPatternAnalysis,
-        api_request_builder,
-        authentication_validation,
-        connection_validation,
-        monitoring,
-        oracle_oic,
-        pattern_analysis,
     )
 
     api = _flext_oracle_oic_api
@@ -58,27 +52,24 @@ if _t.TYPE_CHECKING:
     )
 
     service = _flext_oracle_oic_service
-    import flext_oracle_oic.services as _flext_oracle_oic_services
-    from flext_oracle_oic.service import FlextOracleOicService
-
-    services = _flext_oracle_oic_services
     import flext_oracle_oic.settings as _flext_oracle_oic_settings
-    from flext_oracle_oic.services import (
-        FlextOracleOicAuthMixin,
-        FlextOracleOicIntegrationCrudMixin,
-        FlextOracleOicIntegrationLifecycleMixin,
-        FlextOracleOicIntegrationPatternsMixin,
-        FlextOracleOicMonitoringMixin,
-        FlextOracleOicOrchestrationMixin,
+    from flext_oracle_oic.service import FlextOracleOicService
+    from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
+    from flext_oracle_oic.services.base import (
         FlextOracleOicServiceBase,
         FlextOracleOicServiceBase as s,
-        auth,
-        base,
-        integration_crud,
-        integration_lifecycle,
-        integration_patterns,
-        orchestration,
     )
+    from flext_oracle_oic.services.integration_crud import (
+        FlextOracleOicIntegrationCrudMixin,
+    )
+    from flext_oracle_oic.services.integration_lifecycle import (
+        FlextOracleOicIntegrationLifecycleMixin,
+    )
+    from flext_oracle_oic.services.integration_patterns import (
+        FlextOracleOicIntegrationPatternsMixin,
+    )
+    from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
+    from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
 
     settings = _flext_oracle_oic_settings
     import flext_oracle_oic.typings as _flext_oracle_oic_typings
@@ -99,24 +90,49 @@ if _t.TYPE_CHECKING:
         FlextOracleOicUtilities as u,
     )
 _LAZY_IMPORTS = merge_lazy_imports(
-    (
-        "flext_oracle_oic._utilities",
-        "flext_oracle_oic.services",
-    ),
+    ("flext_oracle_oic._utilities",),
     {
         "FlextOracleOicApi": ("flext_oracle_oic.api", "FlextOracleOicApi"),
+        "FlextOracleOicAuthMixin": (
+            "flext_oracle_oic.services.auth",
+            "FlextOracleOicAuthMixin",
+        ),
         "FlextOracleOicCli": ("flext_oracle_oic.main", "FlextOracleOicCli"),
         "FlextOracleOicClient": ("flext_oracle_oic.ext_client", "FlextOracleOicClient"),
         "FlextOracleOicConstants": (
             "flext_oracle_oic.constants",
             "FlextOracleOicConstants",
         ),
+        "FlextOracleOicIntegrationCrudMixin": (
+            "flext_oracle_oic.services.integration_crud",
+            "FlextOracleOicIntegrationCrudMixin",
+        ),
+        "FlextOracleOicIntegrationLifecycleMixin": (
+            "flext_oracle_oic.services.integration_lifecycle",
+            "FlextOracleOicIntegrationLifecycleMixin",
+        ),
+        "FlextOracleOicIntegrationPatternsMixin": (
+            "flext_oracle_oic.services.integration_patterns",
+            "FlextOracleOicIntegrationPatternsMixin",
+        ),
         "FlextOracleOicModels": ("flext_oracle_oic.models", "FlextOracleOicModels"),
+        "FlextOracleOicMonitoringMixin": (
+            "flext_oracle_oic.services.monitoring",
+            "FlextOracleOicMonitoringMixin",
+        ),
+        "FlextOracleOicOrchestrationMixin": (
+            "flext_oracle_oic.services.orchestration",
+            "FlextOracleOicOrchestrationMixin",
+        ),
         "FlextOracleOicProtocols": (
             "flext_oracle_oic.protocols",
             "FlextOracleOicProtocols",
         ),
         "FlextOracleOicService": ("flext_oracle_oic.service", "FlextOracleOicService"),
+        "FlextOracleOicServiceBase": (
+            "flext_oracle_oic.services.base",
+            "FlextOracleOicServiceBase",
+        ),
         "FlextOracleOicSettings": (
             "flext_oracle_oic.settings",
             "FlextOracleOicSettings",
@@ -148,8 +164,8 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "p": ("flext_oracle_oic.protocols", "FlextOracleOicProtocols"),
         "protocols": "flext_oracle_oic.protocols",
         "r": ("flext_core.result", "FlextResult"),
+        "s": ("flext_oracle_oic.services.base", "FlextOracleOicServiceBase"),
         "service": "flext_oracle_oic.service",
-        "services": "flext_oracle_oic.services",
         "settings": "flext_oracle_oic.settings",
         "t": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
         "typings": "flext_oracle_oic.typings",
@@ -199,33 +215,20 @@ __all__ = [
     "__version_info__",
     "_utilities",
     "api",
-    "api_request_builder",
-    "auth",
-    "authentication_validation",
-    "base",
     "c",
-    "connection_validation",
     "constants",
     "d",
     "e",
     "ext_client",
     "h",
-    "integration_crud",
-    "integration_lifecycle",
-    "integration_patterns",
     "m",
     "main",
     "models",
-    "monitoring",
-    "oracle_oic",
-    "orchestration",
     "p",
-    "pattern_analysis",
     "protocols",
     "r",
     "s",
     "service",
-    "services",
     "settings",
     "t",
     "typings",

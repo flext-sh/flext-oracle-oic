@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import typing as _t
 
-from flext_core.lazy import install_lazy_exports, merge_lazy_imports
+from flext_core.lazy import install_lazy_exports
 
 if _t.TYPE_CHECKING:
     import tests.conftest as _tests_conftest
@@ -36,15 +36,12 @@ if _t.TYPE_CHECKING:
 
     test_basic = _tests_test_basic
     import tests.test_cli as _tests_test_cli
-    from tests.test_basic import TestBasicFunctionality
 
     test_cli = _tests_test_cli
     import tests.test_config as _tests_test_config
-    from tests.test_cli import TestCLI
 
     test_config = _tests_test_config
     import tests.test_ext_client as _tests_test_ext_client
-    from tests.test_config import TestFlextOracleOicSettings
 
     test_ext_client = _tests_test_ext_client
     import tests.test_ext_services as _tests_test_ext_services
@@ -54,36 +51,22 @@ if _t.TYPE_CHECKING:
 
     test_extension = _tests_test_extension
     import tests.test_import as _tests_test_import
-    from tests.test_extension import TestOracleOicExtension
 
     test_import = _tests_test_import
     import tests.test_main as _tests_test_main
-    from tests.test_import import test_basic_import, test_config_import
 
     test_main = _tests_test_main
     import tests.test_models as _tests_test_models
-    from tests.test_main import TestMainFunction, TestMainModule
 
     test_models = _tests_test_models
     import tests.test_typings as _tests_test_typings
-    from tests.test_models import (
-        TestOICAuthConfig,
-        TestOICConnectionConfig,
-        TestOICConnectionInfo,
-        TestOICIntegrationInfo,
-    )
 
     test_typings = _tests_test_typings
     import tests.typings as _tests_typings
-    from tests.test_typings import TestFlextTypes
 
     typings = _tests_typings
-    import tests.unit as _tests_unit
-    from tests.typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
-
-    unit = _tests_unit
     import tests.utilities as _tests_utilities
-    from tests.unit import test_version, test_version_info_tuple, test_version_string
+    from tests.typings import FlextOracleOicTestTypes, FlextOracleOicTestTypes as t
 
     utilities = _tests_utilities
     from flext_core.decorators import FlextDecorators as d
@@ -96,76 +79,41 @@ if _t.TYPE_CHECKING:
         FlextOracleOicTestUtilities,
         FlextOracleOicTestUtilities as u,
     )
-_LAZY_IMPORTS = merge_lazy_imports(
-    ("tests.unit",),
-    {
-        "FlextOracleOicTestConstants": (
-            "tests.constants",
-            "FlextOracleOicTestConstants",
-        ),
-        "FlextOracleOicTestModels": ("tests.models", "FlextOracleOicTestModels"),
-        "FlextOracleOicTestProtocols": (
-            "tests.protocols",
-            "FlextOracleOicTestProtocols",
-        ),
-        "FlextOracleOicTestTypes": ("tests.typings", "FlextOracleOicTestTypes"),
-        "FlextOracleOicTestUtilities": (
-            "tests.utilities",
-            "FlextOracleOicTestUtilities",
-        ),
-        "TestBasicFunctionality": ("tests.test_basic", "TestBasicFunctionality"),
-        "TestCLI": ("tests.test_cli", "TestCLI"),
-        "TestFlextOracleOicSettings": (
-            "tests.test_config",
-            "TestFlextOracleOicSettings",
-        ),
-        "TestFlextTypes": ("tests.test_typings", "TestFlextTypes"),
-        "TestMainFunction": ("tests.test_main", "TestMainFunction"),
-        "TestMainModule": ("tests.test_main", "TestMainModule"),
-        "TestOICAuthConfig": ("tests.test_models", "TestOICAuthConfig"),
-        "TestOICConnectionConfig": ("tests.test_models", "TestOICConnectionConfig"),
-        "TestOICConnectionInfo": ("tests.test_models", "TestOICConnectionInfo"),
-        "TestOICIntegrationInfo": ("tests.test_models", "TestOICIntegrationInfo"),
-        "TestOracleOicExtension": ("tests.test_extension", "TestOracleOicExtension"),
-        "c": ("tests.constants", "FlextOracleOicTestConstants"),
-        "conftest": "tests.conftest",
-        "constants": "tests.constants",
-        "d": ("flext_core.decorators", "FlextDecorators"),
-        "e": ("flext_core.exceptions", "FlextExceptions"),
-        "h": ("flext_core.handlers", "FlextHandlers"),
-        "m": ("tests.models", "FlextOracleOicTestModels"),
-        "models": "tests.models",
-        "p": ("tests.protocols", "FlextOracleOicTestProtocols"),
-        "protocols": "tests.protocols",
-        "pytest_plugins": ("tests.conftest", "pytest_plugins"),
-        "r": ("flext_core.result", "FlextResult"),
-        "s": ("flext_core.service", "FlextService"),
-        "t": ("tests.typings", "FlextOracleOicTestTypes"),
-        "test_basic": "tests.test_basic",
-        "test_basic_import": ("tests.test_import", "test_basic_import"),
-        "test_cli": "tests.test_cli",
-        "test_config": "tests.test_config",
-        "test_config_import": ("tests.test_import", "test_config_import"),
-        "test_ext_client": "tests.test_ext_client",
-        "test_ext_services": "tests.test_ext_services",
-        "test_extension": "tests.test_extension",
-        "test_import": "tests.test_import",
-        "test_main": "tests.test_main",
-        "test_models": "tests.test_models",
-        "test_typings": "tests.test_typings",
-        "typings": "tests.typings",
-        "u": ("tests.utilities", "FlextOracleOicTestUtilities"),
-        "unit": "tests.unit",
-        "utilities": "tests.utilities",
-        "x": ("flext_core.mixins", "FlextMixins"),
-    },
-)
-_ = _LAZY_IMPORTS.pop("cleanup_submodule_namespace", None)
-_ = _LAZY_IMPORTS.pop("install_lazy_exports", None)
-_ = _LAZY_IMPORTS.pop("lazy_getattr", None)
-_ = _LAZY_IMPORTS.pop("merge_lazy_imports", None)
-_ = _LAZY_IMPORTS.pop("output", None)
-_ = _LAZY_IMPORTS.pop("output_reporting", None)
+_LAZY_IMPORTS = {
+    "FlextOracleOicTestConstants": ("tests.constants", "FlextOracleOicTestConstants"),
+    "FlextOracleOicTestModels": ("tests.models", "FlextOracleOicTestModels"),
+    "FlextOracleOicTestProtocols": ("tests.protocols", "FlextOracleOicTestProtocols"),
+    "FlextOracleOicTestTypes": ("tests.typings", "FlextOracleOicTestTypes"),
+    "FlextOracleOicTestUtilities": ("tests.utilities", "FlextOracleOicTestUtilities"),
+    "c": ("tests.constants", "FlextOracleOicTestConstants"),
+    "conftest": "tests.conftest",
+    "constants": "tests.constants",
+    "d": ("flext_core.decorators", "FlextDecorators"),
+    "e": ("flext_core.exceptions", "FlextExceptions"),
+    "h": ("flext_core.handlers", "FlextHandlers"),
+    "m": ("tests.models", "FlextOracleOicTestModels"),
+    "models": "tests.models",
+    "p": ("tests.protocols", "FlextOracleOicTestProtocols"),
+    "protocols": "tests.protocols",
+    "pytest_plugins": ("tests.conftest", "pytest_plugins"),
+    "r": ("flext_core.result", "FlextResult"),
+    "s": ("flext_core.service", "FlextService"),
+    "t": ("tests.typings", "FlextOracleOicTestTypes"),
+    "test_basic": "tests.test_basic",
+    "test_cli": "tests.test_cli",
+    "test_config": "tests.test_config",
+    "test_ext_client": "tests.test_ext_client",
+    "test_ext_services": "tests.test_ext_services",
+    "test_extension": "tests.test_extension",
+    "test_import": "tests.test_import",
+    "test_main": "tests.test_main",
+    "test_models": "tests.test_models",
+    "test_typings": "tests.test_typings",
+    "typings": "tests.typings",
+    "u": ("tests.utilities", "FlextOracleOicTestUtilities"),
+    "utilities": "tests.utilities",
+    "x": ("flext_core.mixins", "FlextMixins"),
+}
 
 __all__ = [
     "FlextOracleOicTestConstants",
@@ -173,17 +121,6 @@ __all__ = [
     "FlextOracleOicTestProtocols",
     "FlextOracleOicTestTypes",
     "FlextOracleOicTestUtilities",
-    "TestBasicFunctionality",
-    "TestCLI",
-    "TestFlextOracleOicSettings",
-    "TestFlextTypes",
-    "TestMainFunction",
-    "TestMainModule",
-    "TestOICAuthConfig",
-    "TestOICConnectionConfig",
-    "TestOICConnectionInfo",
-    "TestOICIntegrationInfo",
-    "TestOracleOicExtension",
     "c",
     "conftest",
     "constants",
@@ -199,10 +136,8 @@ __all__ = [
     "s",
     "t",
     "test_basic",
-    "test_basic_import",
     "test_cli",
     "test_config",
-    "test_config_import",
     "test_ext_client",
     "test_ext_services",
     "test_extension",
@@ -210,12 +145,8 @@ __all__ = [
     "test_main",
     "test_models",
     "test_typings",
-    "test_version",
-    "test_version_info_tuple",
-    "test_version_string",
     "typings",
     "u",
-    "unit",
     "utilities",
     "x",
 ]
