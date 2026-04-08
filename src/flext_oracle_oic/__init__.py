@@ -11,80 +11,70 @@ from flext_core.lazy import install_lazy_exports, merge_lazy_imports
 from flext_oracle_oic.__version__ import *
 
 if _t.TYPE_CHECKING:
-    import flext_oracle_oic._utilities as _flext_oracle_oic__utilities
-
-    _utilities = _flext_oracle_oic__utilities
-    import flext_oracle_oic.api as _flext_oracle_oic_api
-    from flext_oracle_oic._utilities import (
-        FlextOracleOicUtilitiesAPIRequestBuilder,
-        FlextOracleOicUtilitiesAuthenticationValidation,
-        FlextOracleOicUtilitiesConnectionValidation,
-        FlextOracleOicUtilitiesMonitoring,
-        FlextOracleOicUtilitiesOracleOic,
-        FlextOracleOicUtilitiesPatternAnalysis,
-    )
-
-    api = _flext_oracle_oic_api
-    import flext_oracle_oic.constants as _flext_oracle_oic_constants
-    from flext_oracle_oic.api import FlextOracleOicApi
-
-    constants = _flext_oracle_oic_constants
-    import flext_oracle_oic.ext_client as _flext_oracle_oic_ext_client
-    from flext_oracle_oic.constants import (
-        FlextOracleOicConstants,
-        FlextOracleOicConstants as c,
-    )
-
-    ext_client = _flext_oracle_oic_ext_client
-    import flext_oracle_oic.main as _flext_oracle_oic_main
-    from flext_oracle_oic.ext_client import FlextOracleOicClient
-
-    main = _flext_oracle_oic_main
-    import flext_oracle_oic.models as _flext_oracle_oic_models
-    from flext_oracle_oic.main import FlextOracleOicCli
-
-    models = _flext_oracle_oic_models
-    import flext_oracle_oic.protocols as _flext_oracle_oic_protocols
-    from flext_oracle_oic.models import FlextOracleOicModels, FlextOracleOicModels as m
-
-    protocols = _flext_oracle_oic_protocols
-    import flext_oracle_oic.service as _flext_oracle_oic_service
-    from flext_oracle_oic.protocols import (
-        FlextOracleOicProtocols,
-        FlextOracleOicProtocols as p,
-    )
-
-    service = _flext_oracle_oic_service
-    import flext_oracle_oic.services as _flext_oracle_oic_services
-    from flext_oracle_oic.service import FlextOracleOicService
-
-    services = _flext_oracle_oic_services
-    import flext_oracle_oic.settings as _flext_oracle_oic_settings
-    from flext_oracle_oic.services import (
-        FlextOracleOicAuthMixin,
-        FlextOracleOicIntegrationCrudMixin,
-        FlextOracleOicIntegrationLifecycleMixin,
-        FlextOracleOicIntegrationPatternsMixin,
-        FlextOracleOicMonitoringMixin,
-        FlextOracleOicOrchestrationMixin,
-        FlextOracleOicServiceBase,
-        FlextOracleOicServiceBase as s,
-    )
-
-    settings = _flext_oracle_oic_settings
-    import flext_oracle_oic.typings as _flext_oracle_oic_typings
-    from flext_oracle_oic.settings import FlextOracleOicSettings
-
-    typings = _flext_oracle_oic_typings
-    import flext_oracle_oic.utilities as _flext_oracle_oic_utilities
-    from flext_oracle_oic.typings import FlextOracleOicTypes, FlextOracleOicTypes as t
-
-    utilities = _flext_oracle_oic_utilities
     from flext_core.decorators import FlextDecorators as d
     from flext_core.exceptions import FlextExceptions as e
     from flext_core.handlers import FlextHandlers as h
     from flext_core.mixins import FlextMixins as x
     from flext_core.result import FlextResult as r
+    from flext_oracle_oic import (
+        _utilities,
+        api,
+        constants,
+        ext_client,
+        main,
+        models,
+        protocols,
+        service,
+        services,
+        settings,
+        typings,
+        utilities,
+    )
+    from flext_oracle_oic._utilities.api_request_builder import (
+        FlextOracleOicUtilitiesAPIRequestBuilder,
+    )
+    from flext_oracle_oic._utilities.authentication_validation import (
+        FlextOracleOicUtilitiesAuthenticationValidation,
+    )
+    from flext_oracle_oic._utilities.connection_validation import (
+        FlextOracleOicUtilitiesConnectionValidation,
+    )
+    from flext_oracle_oic._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
+    from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
+    from flext_oracle_oic._utilities.pattern_analysis import (
+        FlextOracleOicUtilitiesPatternAnalysis,
+    )
+    from flext_oracle_oic.api import FlextOracleOicApi
+    from flext_oracle_oic.constants import (
+        FlextOracleOicConstants,
+        FlextOracleOicConstants as c,
+    )
+    from flext_oracle_oic.ext_client import FlextOracleOicClient
+    from flext_oracle_oic.main import FlextOracleOicCli
+    from flext_oracle_oic.models import FlextOracleOicModels, FlextOracleOicModels as m
+    from flext_oracle_oic.protocols import (
+        FlextOracleOicProtocols,
+        FlextOracleOicProtocols as p,
+    )
+    from flext_oracle_oic.service import FlextOracleOicService
+    from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
+    from flext_oracle_oic.services.base import (
+        FlextOracleOicServiceBase,
+        FlextOracleOicServiceBase as s,
+    )
+    from flext_oracle_oic.services.integration_crud import (
+        FlextOracleOicIntegrationCrudMixin,
+    )
+    from flext_oracle_oic.services.integration_lifecycle import (
+        FlextOracleOicIntegrationLifecycleMixin,
+    )
+    from flext_oracle_oic.services.integration_patterns import (
+        FlextOracleOicIntegrationPatternsMixin,
+    )
+    from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
+    from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
+    from flext_oracle_oic.settings import FlextOracleOicSettings
+    from flext_oracle_oic.typings import FlextOracleOicTypes, FlextOracleOicTypes as t
     from flext_oracle_oic.utilities import (
         FlextOracleOicUtilities,
         FlextOracleOicUtilities as u,
