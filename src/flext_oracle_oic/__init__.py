@@ -1,7 +1,5 @@
-# AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
-# Regenerate with: make gen
-#
-"""Flext oracle oic package."""
+# AUTO-GENERATED FILE — Regenerate with: make gen
+"""Flext Oracle Oic package."""
 
 from __future__ import annotations
 
