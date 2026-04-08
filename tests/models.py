@@ -1,6 +1,6 @@
 """Test models for flext-oracle-oic.
 
-Provides FlextOracleOicTestModels, combining FlextTestsModels with
+Provides TestsFlextOracleOicModels, combining TestsFlextModels with
 FlextOracleOicModels for test-specific model definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -14,13 +14,13 @@ from flext_tests import FlextTestsModels
 from flext_oracle_oic import FlextOracleOicModels
 
 
-class FlextOracleOicTestModels(FlextTestsModels, FlextOracleOicModels):
-    """Test models combining FlextTestsModels with flext-oracle-oic models."""
+class TestsFlextOracleOicModels(FlextTestsModels, FlextOracleOicModels):
+    """Test models combining TestsFlextModels with flext-oracle-oic models."""
 
 
-m = FlextOracleOicTestModels
+m = TestsFlextOracleOicModels
 
 __all__ = [
-    "FlextOracleOicTestModels",
+    "TestsFlextOracleOicModels",
     "m",
 ]

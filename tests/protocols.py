@@ -1,6 +1,6 @@
 """Test protocol definitions for flext-oracle-oic.
 
-Provides FlextOracleOicTestProtocols, combining FlextTestsProtocols with
+Provides TestsFlextOracleOicProtocols, combining TestsFlextProtocols with
 FlextOracleOicProtocols for test-specific protocol definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -14,8 +14,8 @@ from flext_tests import FlextTestsProtocols
 from flext_oracle_oic import FlextOracleOicProtocols
 
 
-class FlextOracleOicTestProtocols(FlextTestsProtocols, FlextOracleOicProtocols):
-    """Test protocols combining FlextTestsProtocols and FlextOracleOicProtocols."""
+class TestsFlextOracleOicProtocols(FlextTestsProtocols, FlextOracleOicProtocols):
+    """Test protocols combining TestsFlextProtocols and FlextOracleOicProtocols."""
 
     class OracleOic(FlextOracleOicProtocols.OracleOic):
         """OracleOic test protocols namespace."""
@@ -24,5 +24,5 @@ class FlextOracleOicTestProtocols(FlextTestsProtocols, FlextOracleOicProtocols):
             """OracleOic-specific test protocols."""
 
 
-p = FlextOracleOicTestProtocols
-__all__ = ["FlextOracleOicTestProtocols", "p"]
+p = TestsFlextOracleOicProtocols
+__all__ = ["TestsFlextOracleOicProtocols", "p"]

@@ -24,7 +24,6 @@ if _t.TYPE_CHECKING:
     from flext_core.service import FlextService as s
     from flext_core.typings import FlextTypes as t
     from flext_core.utilities import FlextUtilities as u
-    from tests.unit.test_version import test_version_info_tuple, test_version_string
 _LAZY_IMPORTS = {
     "c": ("flext_core.constants", "FlextConstants"),
     "d": ("flext_core.decorators", "FlextDecorators"),
@@ -36,8 +35,6 @@ _LAZY_IMPORTS = {
     "s": ("flext_core.service", "FlextService"),
     "t": ("flext_core.typings", "FlextTypes"),
     "test_version": "tests.unit.test_version",
-    "test_version_info_tuple": ("tests.unit.test_version", "test_version_info_tuple"),
-    "test_version_string": ("tests.unit.test_version", "test_version_string"),
     "u": ("flext_core.utilities", "FlextUtilities"),
     "x": ("flext_core.mixins", "FlextMixins"),
 }
@@ -53,8 +50,6 @@ __all__ = [
     "s",
     "t",
     "test_version",
-    "test_version_info_tuple",
-    "test_version_string",
     "u",
     "x",
 ]

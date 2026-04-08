@@ -1,6 +1,6 @@
 """Test utilities for flext-oracle-oic.
 
-Provides FlextOracleOicTestUtilities, combining FlextTestsUtilities with
+Provides TestsFlextOracleOicUtilities, combining TestsFlextUtilities with
 FlextOracleOicUtilities for test-specific utility definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -14,8 +14,8 @@ from flext_tests import FlextTestsUtilities
 from flext_oracle_oic import FlextOracleOicUtilities
 
 
-class FlextOracleOicTestUtilities(FlextTestsUtilities, FlextOracleOicUtilities):
-    """Test utilities combining FlextTestsUtilities with flext-oracle-oic utilities."""
+class TestsFlextOracleOicUtilities(FlextTestsUtilities, FlextOracleOicUtilities):
+    """Test utilities combining TestsFlextUtilities with flext-oracle-oic utilities."""
 
     class OracleOic(FlextOracleOicUtilities.OracleOic):
         """OracleOic test utilities namespace."""
@@ -24,5 +24,5 @@ class FlextOracleOicTestUtilities(FlextTestsUtilities, FlextOracleOicUtilities):
             """Internal tests declarations."""
 
 
-u = FlextOracleOicTestUtilities
-__all__ = ["FlextOracleOicTestUtilities", "u"]
+u = TestsFlextOracleOicUtilities
+__all__ = ["TestsFlextOracleOicUtilities", "u"]

@@ -20,7 +20,6 @@ from types import MappingProxyType
 from typing import Final
 
 from flext_core import FlextConstants
-from flext_oracle_oic import t
 
 
 class FlextOracleOicConstants(FlextConstants):
@@ -302,4 +301,3 @@ class FlextOracleOicConstants(FlextConstants):
 
 
 c = FlextOracleOicConstants
-__all__: t.StrSequence = ["FlextOracleOicConstants", "c"]

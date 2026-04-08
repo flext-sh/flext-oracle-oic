@@ -1,6 +1,6 @@
 """Test constants for flext-oracle-oic tests.
 
-Provides FlextOracleOicTestConstants, extending FlextTestsConstants with
+Provides TestsFlextOracleOicConstants, extending FlextTestsConstants with
 flext-oracle-oic-specific constants.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -14,9 +14,9 @@ from flext_tests import FlextTestsConstants
 from flext_oracle_oic import FlextOracleOicConstants
 
 
-class FlextOracleOicTestConstants(FlextTestsConstants, FlextOracleOicConstants):
+class TestsFlextOracleOicConstants(FlextTestsConstants, FlextOracleOicConstants):
     """Test constants for flext-oracle-oic."""
 
 
-c = FlextOracleOicTestConstants
-__all__ = ["FlextOracleOicTestConstants", "c"]
+c = TestsFlextOracleOicConstants
+__all__ = ["TestsFlextOracleOicConstants", "c"]
