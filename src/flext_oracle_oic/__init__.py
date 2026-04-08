@@ -34,7 +34,7 @@ if _t.TYPE_CHECKING:
         FlextOracleOicConstants as c,
     )
     from flext_oracle_oic.ext_client import FlextOracleOicClient
-    from flext_oracle_oic.main import FlextOracleOicCli
+    from flext_oracle_oic.main import FlextOracleOicCli, main
     from flext_oracle_oic.models import FlextOracleOicModels, FlextOracleOicModels as m
     from flext_oracle_oic.protocols import (
         FlextOracleOicProtocols,
@@ -92,6 +92,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "e": ("flext_core.exceptions", "FlextExceptions"),
         "h": ("flext_core.handlers", "FlextHandlers"),
         "m": (".models", "FlextOracleOicModels"),
+        "main": ".main",
         "p": (".protocols", "FlextOracleOicProtocols"),
         "r": ("flext_core.result", "FlextResult"),
         "t": (".typings", "FlextOracleOicTypes"),
@@ -147,6 +148,7 @@ __all__ = [
     "e",
     "h",
     "m",
+    "main",
     "p",
     "r",
     "s",
