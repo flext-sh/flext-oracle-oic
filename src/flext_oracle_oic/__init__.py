@@ -67,59 +67,50 @@ if _t.TYPE_CHECKING:
     )
 _LAZY_IMPORTS = merge_lazy_imports(
     (
-        "flext_oracle_oic._utilities",
-        "flext_oracle_oic.services",
+        "._utilities",
+        ".services",
     ),
     {
-        "FlextOracleOicApi": ("flext_oracle_oic.api", "FlextOracleOicApi"),
-        "FlextOracleOicCli": ("flext_oracle_oic.main", "FlextOracleOicCli"),
-        "FlextOracleOicClient": ("flext_oracle_oic.ext_client", "FlextOracleOicClient"),
-        "FlextOracleOicConstants": (
-            "flext_oracle_oic.constants",
-            "FlextOracleOicConstants",
-        ),
-        "FlextOracleOicModels": ("flext_oracle_oic.models", "FlextOracleOicModels"),
-        "FlextOracleOicProtocols": (
-            "flext_oracle_oic.protocols",
-            "FlextOracleOicProtocols",
-        ),
-        "FlextOracleOicService": ("flext_oracle_oic.service", "FlextOracleOicService"),
-        "FlextOracleOicSettings": (
-            "flext_oracle_oic.settings",
-            "FlextOracleOicSettings",
-        ),
-        "FlextOracleOicTypes": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
-        "FlextOracleOicUtilities": (
-            "flext_oracle_oic.utilities",
-            "FlextOracleOicUtilities",
-        ),
-        "__author__": ("flext_oracle_oic.__version__", "__author__"),
-        "__author_email__": ("flext_oracle_oic.__version__", "__author_email__"),
-        "__description__": ("flext_oracle_oic.__version__", "__description__"),
-        "__license__": ("flext_oracle_oic.__version__", "__license__"),
-        "__title__": ("flext_oracle_oic.__version__", "__title__"),
-        "__url__": ("flext_oracle_oic.__version__", "__url__"),
-        "__version__": ("flext_oracle_oic.__version__", "__version__"),
-        "__version_info__": ("flext_oracle_oic.__version__", "__version_info__"),
-        "c": ("flext_oracle_oic.constants", "FlextOracleOicConstants"),
+        "FlextOracleOicApi": ".api",
+        "FlextOracleOicCli": ".main",
+        "FlextOracleOicClient": ".ext_client",
+        "FlextOracleOicConstants": ".constants",
+        "FlextOracleOicModels": ".models",
+        "FlextOracleOicProtocols": ".protocols",
+        "FlextOracleOicService": ".service",
+        "FlextOracleOicSettings": ".settings",
+        "FlextOracleOicTypes": ".typings",
+        "FlextOracleOicUtilities": ".utilities",
+        "__author__": ".__version__",
+        "__author_email__": ".__version__",
+        "__description__": ".__version__",
+        "__license__": ".__version__",
+        "__title__": ".__version__",
+        "__url__": ".__version__",
+        "__version__": ".__version__",
+        "__version_info__": ".__version__",
+        "c": (".constants", "FlextOracleOicConstants"),
         "d": ("flext_core.decorators", "FlextDecorators"),
         "e": ("flext_core.exceptions", "FlextExceptions"),
         "h": ("flext_core.handlers", "FlextHandlers"),
-        "m": ("flext_oracle_oic.models", "FlextOracleOicModels"),
-        "p": ("flext_oracle_oic.protocols", "FlextOracleOicProtocols"),
+        "m": (".models", "FlextOracleOicModels"),
+        "p": (".protocols", "FlextOracleOicProtocols"),
         "r": ("flext_core.result", "FlextResult"),
-        "t": ("flext_oracle_oic.typings", "FlextOracleOicTypes"),
-        "u": ("flext_oracle_oic.utilities", "FlextOracleOicUtilities"),
+        "t": (".typings", "FlextOracleOicTypes"),
+        "u": (".utilities", "FlextOracleOicUtilities"),
         "x": ("flext_core.mixins", "FlextMixins"),
     },
+    exclude_names=(
+        "cleanup_submodule_namespace",
+        "install_lazy_exports",
+        "lazy_getattr",
+        "logger",
+        "merge_lazy_imports",
+        "output",
+        "output_reporting",
+    ),
+    module_name=__name__,
 )
-_ = _LAZY_IMPORTS.pop("cleanup_submodule_namespace", None)
-_ = _LAZY_IMPORTS.pop("install_lazy_exports", None)
-_ = _LAZY_IMPORTS.pop("lazy_getattr", None)
-_ = _LAZY_IMPORTS.pop("logger", None)
-_ = _LAZY_IMPORTS.pop("merge_lazy_imports", None)
-_ = _LAZY_IMPORTS.pop("output", None)
-_ = _LAZY_IMPORTS.pop("output_reporting", None)
 
 __all__ = [
     "FlextOracleOicApi",
