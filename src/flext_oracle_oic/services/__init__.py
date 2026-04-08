@@ -36,13 +36,6 @@ _LAZY_IMPORTS = {
         "flext_oracle_oic.services.base",
         "FlextOracleOicServiceBase",
     ),
-    "auth": "flext_oracle_oic.services.auth",
-    "base": "flext_oracle_oic.services.base",
-    "integration_crud": "flext_oracle_oic.services.integration_crud",
-    "integration_lifecycle": "flext_oracle_oic.services.integration_lifecycle",
-    "integration_patterns": "flext_oracle_oic.services.integration_patterns",
-    "monitoring": "flext_oracle_oic.services.monitoring",
-    "orchestration": "flext_oracle_oic.services.orchestration",
 }
 
 
