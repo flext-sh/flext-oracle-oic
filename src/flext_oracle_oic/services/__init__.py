@@ -3,17 +3,19 @@
 
 from __future__ import annotations
 
-from flext_core.lazy import install_lazy_exports
+from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
-_LAZY_IMPORTS = {
-    "FlextOracleOicAuthMixin": ".auth",
-    "FlextOracleOicIntegrationCrudMixin": ".integration_crud",
-    "FlextOracleOicIntegrationLifecycleMixin": ".integration_lifecycle",
-    "FlextOracleOicIntegrationPatternsMixin": ".integration_patterns",
-    "FlextOracleOicMonitoringMixin": ".monitoring",
-    "FlextOracleOicOrchestrationMixin": ".orchestration",
-    "FlextOracleOicServiceBase": ".base",
-}
+_LAZY_IMPORTS = build_lazy_import_map(
+    {
+        ".auth": ("FlextOracleOicAuthMixin",),
+        ".base": ("FlextOracleOicServiceBase",),
+        ".integration_crud": ("FlextOracleOicIntegrationCrudMixin",),
+        ".integration_lifecycle": ("FlextOracleOicIntegrationLifecycleMixin",),
+        ".integration_patterns": ("FlextOracleOicIntegrationPatternsMixin",),
+        ".monitoring": ("FlextOracleOicMonitoringMixin",),
+        ".orchestration": ("FlextOracleOicOrchestrationMixin",),
+    },
+)
 
 
 install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, publish_all=False)

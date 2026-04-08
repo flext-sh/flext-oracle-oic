@@ -3,16 +3,20 @@
 
 from __future__ import annotations
 
-from flext_core.lazy import install_lazy_exports
+from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
-_LAZY_IMPORTS = {
-    "FlextOracleOicUtilitiesAPIRequestBuilder": ".api_request_builder",
-    "FlextOracleOicUtilitiesAuthenticationValidation": ".authentication_validation",
-    "FlextOracleOicUtilitiesConnectionValidation": ".connection_validation",
-    "FlextOracleOicUtilitiesMonitoring": ".monitoring",
-    "FlextOracleOicUtilitiesOracleOic": ".oracle_oic",
-    "FlextOracleOicUtilitiesPatternAnalysis": ".pattern_analysis",
-}
+_LAZY_IMPORTS = build_lazy_import_map(
+    {
+        ".api_request_builder": ("FlextOracleOicUtilitiesAPIRequestBuilder",),
+        ".authentication_validation": (
+            "FlextOracleOicUtilitiesAuthenticationValidation",
+        ),
+        ".connection_validation": ("FlextOracleOicUtilitiesConnectionValidation",),
+        ".monitoring": ("FlextOracleOicUtilitiesMonitoring",),
+        ".oracle_oic": ("FlextOracleOicUtilitiesOracleOic",),
+        ".pattern_analysis": ("FlextOracleOicUtilitiesPatternAnalysis",),
+    },
+)
 
 
 install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, publish_all=False)
