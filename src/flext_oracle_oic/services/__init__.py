@@ -38,22 +38,11 @@ _LAZY_IMPORTS = {
     ),
     "auth": "flext_oracle_oic.services.auth",
     "base": "flext_oracle_oic.services.base",
-    "c": ("flext_core.constants", "FlextConstants"),
-    "d": ("flext_core.decorators", "FlextDecorators"),
-    "e": ("flext_core.exceptions", "FlextExceptions"),
-    "h": ("flext_core.handlers", "FlextHandlers"),
     "integration_crud": "flext_oracle_oic.services.integration_crud",
     "integration_lifecycle": "flext_oracle_oic.services.integration_lifecycle",
     "integration_patterns": "flext_oracle_oic.services.integration_patterns",
-    "m": ("flext_core.models", "FlextModels"),
     "monitoring": "flext_oracle_oic.services.monitoring",
     "orchestration": "flext_oracle_oic.services.orchestration",
-    "p": ("flext_core.protocols", "FlextProtocols"),
-    "r": ("flext_core.result", "FlextResult"),
-    "s": ("flext_oracle_oic.services.base", "FlextOracleOicServiceBase"),
-    "t": ("flext_core.typings", "FlextTypes"),
-    "u": ("flext_core.utilities", "FlextUtilities"),
-    "x": ("flext_core.mixins", "FlextMixins"),
 }
 
 

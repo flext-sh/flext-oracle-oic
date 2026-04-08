@@ -16,20 +16,7 @@ if _t.TYPE_CHECKING:
     from flext_core.handlers import FlextHandlers as h
     from flext_core.mixins import FlextMixins as x
     from flext_core.result import FlextResult as r
-    from flext_oracle_oic import (
-        _utilities,
-        api,
-        constants,
-        ext_client,
-        main,
-        models,
-        protocols,
-        service,
-        services,
-        settings,
-        typings,
-        utilities,
-    )
+    from flext_oracle_oic import main
     from flext_oracle_oic._utilities.api_request_builder import (
         FlextOracleOicUtilitiesAPIRequestBuilder,
     )

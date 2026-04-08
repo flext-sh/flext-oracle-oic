@@ -32,12 +32,6 @@ _LAZY_IMPORTS = {
         "flext_oracle_oic._utilities.pattern_analysis",
         "FlextOracleOicUtilitiesPatternAnalysis",
     ),
-    "api_request_builder": "flext_oracle_oic._utilities.api_request_builder",
-    "authentication_validation": "flext_oracle_oic._utilities.authentication_validation",
-    "connection_validation": "flext_oracle_oic._utilities.connection_validation",
-    "monitoring": "flext_oracle_oic._utilities.monitoring",
-    "oracle_oic": "flext_oracle_oic._utilities.oracle_oic",
-    "pattern_analysis": "flext_oracle_oic._utilities.pattern_analysis",
 }
 
 

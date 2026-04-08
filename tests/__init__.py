@@ -16,25 +16,6 @@ if _t.TYPE_CHECKING:
     from flext_core.mixins import FlextMixins as x
     from flext_core.result import FlextResult as r
     from flext_core.service import FlextService as s
-    from tests import (
-        conftest,
-        constants,
-        models,
-        protocols,
-        test_basic,
-        test_cli,
-        test_config,
-        test_ext_client,
-        test_ext_services,
-        test_extension,
-        test_import,
-        test_main,
-        test_models,
-        test_typings,
-        typings,
-        unit,
-        utilities,
-    )
     from tests.constants import (
         TestsFlextOracleOicConstants,
         TestsFlextOracleOicConstants as c,
