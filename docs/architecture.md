@@ -76,7 +76,7 @@ The library follows these core principles from the FLEXT ecosystem:
 
 **FLEXT Ecosystem Compliance**
 
-- Missing FlextService inheritance (critical requirement)
+- Missing s inheritance (critical requirement)
 - Direct httpx/typer imports violate FLEXT abstraction patterns
 - Incomplete FlextContainer dependency injection implementation
 - Multiple classes per module violate unified class pattern
@@ -143,7 +143,7 @@ class LifecycleManager                 # Service lifecycle
 class MonitoringService                # Basic monitoring
 
 # Required FLEXT pattern: Single unified class per module
-class OracleOicIntegrationService(FlextService):
+class OracleOicIntegrationService(s):
     """Unified service with nested helpers."""
 
     class _IntegrationHelper:
@@ -197,9 +197,9 @@ from flext_core import FlextSettings
 from flext_core import FlextConstants
 from flext_core import FlextContainer
 from flext_core import FlextContext
-from flext_core import FlextDecorators
+from flext_core import d
 from flext_core import FlextDispatcher
-from flext_core import FlextExceptions
+from flext_core import e
 from flext_core import h
 from flext_core import FlextLogger
 from flext_core import x
@@ -209,7 +209,7 @@ from flext_core import p
 from flext_core import FlextRegistry
 from flext_core import r
 from flext_core import u
-from flext_core import FlextService
+from flext_core import s
 from flext_core import t
 from flext_core import u
 
@@ -229,9 +229,9 @@ from flext_core import FlextSettings
 from flext_core import FlextConstants
 from flext_core import FlextContainer
 from flext_core import FlextContext
-from flext_core import FlextDecorators
+from flext_core import d
 from flext_core import FlextDispatcher
-from flext_core import FlextExceptions
+from flext_core import e
 from flext_core import h
 from flext_core import FlextLogger
 from flext_core import x
@@ -241,7 +241,7 @@ from flext_core import p
 from flext_core import FlextRegistry
 from flext_core import r
 from flext_core import u
-from flext_core import FlextService
+from flext_core import s
 from flext_core import t
 from flext_core import u
 
@@ -253,7 +253,7 @@ class ServiceClass:
 
 ### Missing FLEXT Integration ❌
 
-**FlextService Inheritance**
+**s Inheritance**
 
 ```python
 # ❌ Current implementation
@@ -262,7 +262,7 @@ class OracleOicExtensionService:
 
 
 # ✅ Required FLEXT pattern
-class OracleOicIntegrationService(FlextService):
+class OracleOicIntegrationService(s):
     pass
 ```
 
@@ -366,9 +366,9 @@ tests/
    - Replace `httpx` with `flext-api` patterns
    - Replace `typer` with `flext-cli` patterns
 
-1. **Implement FlextService**
+1. **Implement s**
 
-   - Convert service classes to inherit from FlextService
+   - Convert service classes to inherit from s
    - Implement unified class pattern with nested helpers
 
 ### Phase 2: Oracle OIC Implementation (Months 2-3)

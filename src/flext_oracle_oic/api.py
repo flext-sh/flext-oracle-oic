@@ -13,7 +13,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Self, override
 
-from flext_core import FlextService, r
+from flext_core import r, s
 from flext_oracle_oic import (
     FlextOracleOicModels,
     FlextOracleOicService,
@@ -22,7 +22,7 @@ from flext_oracle_oic import (
 )
 
 
-class FlextOracleOicApi(FlextService[None]):
+class FlextOracleOicApi(s[None]):
     """Thin facade for Oracle OIC operations with complete FLEXT integration.
 
     Integrates:

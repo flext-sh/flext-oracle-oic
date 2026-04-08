@@ -48,7 +48,7 @@
 ### Knowledge Requirements
 
 - Basic understanding of Oracle Integration Cloud concepts
-- Familiarity with FLEXT ecosystem patterns (r, FlextService)
+- Familiarity with FLEXT ecosystem patterns (r, s)
 - Python experience with Pydantic and type annotations
 
 ## Installation
@@ -70,9 +70,9 @@ from flext_core import FlextSettings
 from flext_core import FlextConstants
 from flext_core import FlextContainer
 from flext_core import FlextContext
-from flext_core import FlextDecorators
+from flext_core import d
 from flext_core import FlextDispatcher
-from flext_core import FlextExceptions
+from flext_core import e
 from flext_core import h
 from flext_core import FlextLogger
 from flext_core import x
@@ -82,7 +82,7 @@ from flext_core import p
 from flext_core import FlextRegistry
 from flext_core import r
 from flext_core import u
-from flext_core import FlextService
+from flext_core import s
 from flext_core import t
 from flext_core import u; print('FLEXT-Core accessible')"
 
@@ -206,7 +206,7 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 
 ### Planned Features 🚧
 
-- **FlextService Implementation**: Complete FLEXT compliance (critical requirement)
+- **s Implementation**: Complete FLEXT compliance (critical requirement)
 - **OAuth2/IDCS Authentication**: Full Oracle cloud authentication
 - **Integration Patterns**: App-driven orchestration, scheduled orchestration
 - **Enterprise Features**: Circuit breaker, retry patterns, monitoring
@@ -217,7 +217,7 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 
    - Direct `httpx` import in `ext_client.py:12` (should use flext-api)
    - Direct `typer` import in `main.py:15` (should use flext-cli)
-   - Missing FlextService inheritance
+   - Missing s inheritance
 
 1. **Type Safety Issues**:
 
@@ -243,9 +243,9 @@ from flext_core import FlextSettings
 from flext_core import FlextConstants
 from flext_core import FlextContainer
 from flext_core import FlextContext
-from flext_core import FlextDecorators
+from flext_core import d
 from flext_core import FlextDispatcher
-from flext_core import FlextExceptions
+from flext_core import e
 from flext_core import h
 from flext_core import FlextLogger
 from flext_core import x
@@ -255,7 +255,7 @@ from flext_core import p
 from flext_core import FlextRegistry
 from flext_core import r
 from flext_core import u
-from flext_core import FlextService
+from flext_core import s
 from flext_core import t
 from flext_core import u; print('Success')"
 ```

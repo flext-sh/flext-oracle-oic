@@ -16,7 +16,7 @@ from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiSettings
 
-from flext_core import FlextLogger, FlextService, r
+from flext_core import FlextLogger, r, s
 from flext_oracle_oic import (
     FlextOracleOicClient,
     FlextOracleOicModels,
@@ -28,7 +28,7 @@ from flext_oracle_oic import (
 
 
 class FlextOracleOicServiceBase(
-    FlextService[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]],
+    s[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]],
 ):
     """Base service providing shared infrastructure for all OIC service mixins.
 

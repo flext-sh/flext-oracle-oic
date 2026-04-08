@@ -1,7 +1,7 @@
 """Main entry point for Oracle OIC Extension - FLEXT CLI Pattern.
 
 FLEXT Unified Module Pattern: Single unified CLI class consolidating
-all Oracle OIC CLI functionality. Implements complete FlextService pattern
+all Oracle OIC CLI functionality. Implements complete s pattern
 with railway-oriented error handling.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -17,7 +17,7 @@ from typing import override
 
 from flext_infra import __version__
 
-from flext_core import FlextService, r
+from flext_core import r, s
 from flext_oracle_oic import (
     FlextOracleOicModels,
     FlextOracleOicService,
@@ -26,7 +26,7 @@ from flext_oracle_oic import (
 )
 
 
-class FlextOracleOicCli(FlextService[None]):
+class FlextOracleOicCli(s[None]):
     """Unified Oracle OIC CLI Service - Single Class Pattern.
 
     Consolidates all Oracle OIC CLI functionality into a single unified service class:
@@ -34,7 +34,7 @@ class FlextOracleOicCli(FlextService[None]):
     - Integration listing
     - Version display
 
-    Implements complete FlextService pattern with railway-oriented error handling.
+    Implements complete s pattern with railway-oriented error handling.
     """
 
     def __init__(self) -> None:
