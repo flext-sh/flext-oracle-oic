@@ -36,7 +36,6 @@ class TestMainModule:
 
     def test_cli_class_available(self) -> None:
         """Test FlextOracleOicCli is available from main."""
-        assert hasattr(main_module, "FlextOracleOicCli")
         assert main_module.FlextOracleOicCli is FlextOracleOicCli
 
     def test_version_available(self) -> None:
