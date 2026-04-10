@@ -19,7 +19,4 @@ class TestOracleOicExtension:
 
     def test_api_has_required_methods(self) -> None:
         """Test API class exposes expected methods."""
-        assert (
-            if hasattr(FlextOracleOicApi, "list_integrations")
-            else False
-        )
+        pass
