@@ -31,7 +31,7 @@ class FlextOracleOicApi(s[None]):
     - FlextContext: Operation context management
     - FlextDispatcher: Message routing for OIC patterns
     - FlextRegistry: Component registration for OIC extensions
-    - FlextLogger: Structured logging for OIC operations
+    - `u.fetch_logger(...)` / `p.Logger`: Structured logging for OIC operations
 
     Provides unified access to all Oracle OIC functionality:
     - Integration lifecycle management (create, update, delete, activate)
