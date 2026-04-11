@@ -42,16 +42,18 @@ class FlextOracleOicApi(s[None]):
     - Monitoring and observability
     """
 
-    def __init__(self, config: FlextOracleOicSettings | None = None) -> None:
+    def __init__(self, settings: FlextOracleOicSettings | None = None) -> None:
         """Initialize FlextOracleOic facade with complete ecosystem integration.
 
         Args:
-        config: Oracle OIC configuration. If None, uses global instance.
+        settings: Oracle OIC configuration. If None, uses global instance.
 
         """
         super().__init__()
         self._oic_config: FlextOracleOicSettings = (
-            config if config is not None else FlextOracleOicSettings.model_validate({})
+            settings
+            if settings is not None
+            else FlextOracleOicSettings.model_validate({})
         )
         self._service = FlextOracleOicService()
         if self._context is not None:

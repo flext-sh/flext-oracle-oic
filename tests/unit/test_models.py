@@ -15,41 +15,41 @@ from pydantic import SecretStr, ValidationError
 from tests import m
 
 
-class TestOICAuthConfig:
-    """Test OICAuthConfig model."""
+class TestOICAuthSettings:
+    """Test OICAuthSettings model."""
 
     def test_valid_auth_config(self) -> None:
-        """Test valid auth config creation."""
-        config = m.OracleOic.OICAuthConfig(
+        """Test valid auth settings creation."""
+        settings = m.OracleOic.OICAuthSettings(
             oauth_client_id="test_client_id",
             oauth_client_secret=SecretStr("test_client_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
             oauth_client_aud="test_audience",
             oauth_scope="test_scope",
         )
-        assert config.oauth_client_id == "test_client_id"
-        assert config.oauth_client_secret.get_secret_value() == "test_client_secret"
+        assert settings.oauth_client_id == "test_client_id"
+        assert settings.oauth_client_secret.get_secret_value() == "test_client_secret"
         assert (
-            config.oauth_token_url
+            settings.oauth_token_url
             == "https://test.identity.oraclecloud.com/oauth2/v1/token"
         )
-        assert config.oauth_client_aud == "test_audience"
-        assert config.oauth_scope == "test_scope"
+        assert settings.oauth_client_aud == "test_audience"
+        assert settings.oauth_scope == "test_scope"
 
     def test_auth_config_with_none_audience(self) -> None:
-        """Test auth config with None audience."""
-        config = m.OracleOic.OICAuthConfig(
+        """Test auth settings with None audience."""
+        settings = m.OracleOic.OICAuthSettings(
             oauth_client_id="test_client_id",
             oauth_client_secret=SecretStr("test_client_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
             oauth_client_aud=None,
             oauth_scope="",
         )
-        assert config.oauth_client_aud is None
-        assert config.oauth_scope is not None
+        assert settings.oauth_client_aud is None
+        assert settings.oauth_scope is not None
 
     def test_auth_config_validation_error(self) -> None:
-        """Test auth config validation error."""
+        """Test auth settings validation error."""
         invalid_data: Mapping[str, str | int | None] = {
             "oauth_client_id": "test_client_id",
             "oauth_client_secret": 123,
@@ -58,44 +58,44 @@ class TestOICAuthConfig:
             "oauth_scope": "",
         }
         with pytest.raises(ValidationError):
-            m.OracleOic.OICAuthConfig.model_validate(invalid_data)
+            m.OracleOic.OICAuthSettings.model_validate(invalid_data)
 
 
-class TestOICConnectionConfig:
-    """Test OICConnectionConfig model."""
+class TestOICConnectionSettings:
+    """Test OICConnectionSettings model."""
 
     def test_valid_connection_config(self) -> None:
-        """Test valid connection config creation."""
-        config = m.OracleOic.OICConnectionConfig(
+        """Test valid connection settings creation."""
+        settings = m.OracleOic.OICConnectionSettings(
             base_url="https://test.integration.ocp.oraclecloud.com",
             api_version="v1",
             request_timeout=30,
             max_retries=3,
             verify_ssl=True,
         )
-        assert config.base_url == "https://test.integration.ocp.oraclecloud.com"
-        assert config.api_version == "v1"
-        assert config.request_timeout == 30
-        assert config.max_retries == 3
-        assert config.verify_ssl is True
+        assert settings.base_url == "https://test.integration.ocp.oraclecloud.com"
+        assert settings.api_version == "v1"
+        assert settings.request_timeout == 30
+        assert settings.max_retries == 3
+        assert settings.verify_ssl is True
 
     def test_connection_config_defaults(self) -> None:
-        """Test connection config with defaults."""
-        config = m.OracleOic.OICConnectionConfig.model_validate({
+        """Test connection settings with defaults."""
+        settings = m.OracleOic.OICConnectionSettings.model_validate({
             "base_url": "https://test.integration.ocp.oraclecloud.com",
             "api_version": "v1",
             "request_timeout": 30,
             "max_retries": 3,
         })
-        assert config.api_version == "v1"
-        assert config.request_timeout == 30
-        assert config.max_retries == 3
-        assert config.verify_ssl is True
+        assert settings.api_version == "v1"
+        assert settings.request_timeout == 30
+        assert settings.max_retries == 3
+        assert settings.verify_ssl is True
 
     def test_connection_config_validation_error(self) -> None:
-        """Test connection config validation error."""
+        """Test connection settings validation error."""
         with pytest.raises(ValidationError):
-            m.OracleOic.OICConnectionConfig.model_validate({
+            m.OracleOic.OICConnectionSettings.model_validate({
                 "base_url": "https://test.integration.ocp.oraclecloud.com",
                 "api_version": "v1",
                 "request_timeout": 0,

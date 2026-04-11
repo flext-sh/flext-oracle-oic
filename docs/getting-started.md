@@ -147,7 +147,7 @@ from flext_oracle_oic import (
 
 # Basic configuration validation
 try:
-    config = OracleOicExtensionSettings(
+    settings = OracleOicExtensionSettings(
         connection=FlextOracleOicConnectionSettings(
             base_url="https://test.integration.ocp.oraclecloud.com", api_version="v1"
         )

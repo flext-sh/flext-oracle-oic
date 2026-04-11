@@ -214,11 +214,11 @@ from flext_core import t
 from flext_core import u
 
 
-def validate_connection(config: dict) -> r[ConnectionInfo]:
+def validate_connection(settings: dict) -> r[ConnectionInfo]:
     """Example of current r usage."""
-    if not config.get("base_url"):
+    if not settings.get("base_url"):
         return r[ConnectionInfo].fail("Base URL required")
-    return r[ConnectionInfo].ok(ConnectionInfo(**config))
+    return r[ConnectionInfo].ok(ConnectionInfo(**settings))
 ```
 
 **FlextLogger Integration**
@@ -270,7 +270,7 @@ class OracleOicIntegrationService(s):
 
 ```python
 # ❌ Current: Manual service creation
-service = OracleOicExtensionService(config)
+service = OracleOicExtensionService(settings)
 
 # ✅ Required: Container-managed dependencies
 container = FlextContainer.get_global()

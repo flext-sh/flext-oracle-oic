@@ -43,7 +43,7 @@ class FlextOracleOicServiceBase(
     def __init__(self) -> None:
         """Initialize base Oracle OIC service.
 
-        Uses singleton config pattern - no config parameter needed.
+        Uses singleton settings pattern - no settings parameter needed.
         """
         super().__init__()
         self._oic_settings: FlextOracleOicSettings = (
@@ -254,7 +254,7 @@ class FlextOracleOicServiceBase(
                     log_requests=False,
                     log_responses=False,
                 )
-                self._monitoring_client = FlextApiClient(config=api_config)
+                self._monitoring_client = FlextApiClient(settings=api_config)
         except (ConnectionError, TimeoutError, ValueError):
             u.fetch_logger(__name__).exception(
                 "Failed to initialize service components"

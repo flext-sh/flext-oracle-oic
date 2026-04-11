@@ -17,5 +17,5 @@ def test_basic_import() -> None:
 
 
 def test_config_import() -> None:
-    """Test that we can import config."""
+    """Test that we can import settings."""
     assert FlextOracleOicSettings is not None

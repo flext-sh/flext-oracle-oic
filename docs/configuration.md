@@ -171,9 +171,9 @@ except ValueError as e:
 Based on the actual Pydantic models implementation:
 
 - **base_url**: Must be provided (required field)
-- **oauth_client_id**: Must be provided if auth config is used
-- **oauth_client_secret**: Must be provided if auth config is used
-- **oauth_token_url**: Must be provided if auth config is used
+- **oauth_client_id**: Must be provided if auth settings is used
+- **oauth_client_secret**: Must be provided if auth settings is used
+- **oauth_token_url**: Must be provided if auth settings is used
 - **request_timeout**: Must be positive integer (if specified)
 
 ## Current Implementation Limitations
@@ -266,12 +266,12 @@ from flext_oracle_oic import FlextOracleOicConnectionSettings
 
 # ❌ This will fail - base_url is required
 try:
-    config = FlextOracleOicConnectionSettings(api_version="v1")
+    settings = FlextOracleOicConnectionSettings(api_version="v1")
 except ValueError as e:
     print(f"Error: {e}")  # Field required error
 
 # ✅ This will work - base_url provided
-config = FlextOracleOicConnectionSettings(
+settings = FlextOracleOicConnectionSettings(
     base_url="https://your-instance.integration.ocp.oraclecloud.com"
 )
 ```
@@ -281,7 +281,7 @@ config = FlextOracleOicConnectionSettings(
 ```python
 # ❌ Wrong type for request_timeout
 try:
-    config = FlextOracleOicConnectionSettings(
+    settings = FlextOracleOicConnectionSettings(
         base_url="https://example.com",
         request_timeout="invalid",  # Should be integer
     )
@@ -289,7 +289,7 @@ except ValueError as e:
     print(f"Type error: {e}")
 
 # ✅ Correct type
-config = FlextOracleOicConnectionSettings(
+settings = FlextOracleOicConnectionSettings(
     base_url="https://example.com", request_timeout=30
 )
 ```

@@ -80,7 +80,7 @@ HTTP connection configuration for Oracle Integration Cloud.
 from flext_oracle_oic import FlextOracleOicConnectionSettings
 
 # Basic connection configuration
-config = FlextOracleOicConnectionSettings(
+settings = FlextOracleOicConnectionSettings(
     base_url="https://your-instance.integration.ocp.oraclecloud.com",
     api_version="v1",
     request_timeout=30,
@@ -281,7 +281,7 @@ from flext_oracle_oic import (
 
 # Configuration validation and type safety works correctly
 try:
-    config = FlextOracleOicConnectionSettings(
+    settings = FlextOracleOicConnectionSettings(
         base_url="https://test-instance.integration.ocp.oraclecloud.com"
     )
     print("✅ Configuration valid")
