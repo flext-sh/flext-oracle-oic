@@ -248,7 +248,7 @@ from flext_core import u
 
 class ServiceClass:
     def __init__(self):
-        self.logger = FlextLogger(__name__)
+        self.logger = u.fetch_logger(__name__)
 ```
 
 ### Missing FLEXT Integration ❌

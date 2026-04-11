@@ -18,10 +18,10 @@ from typing import Self
 
 from flext_api import FlextApi, FlextApiSettings
 
-from flext_core import FlextLogger, r
+from flext_core import r
 from flext_oracle_oic import FlextOracleOicModels, c, t
 
-logger = FlextLogger(__name__)
+logger = u.fetch_logger(__name__)
 
 
 class FlextOracleOicClient:
@@ -46,7 +46,7 @@ class FlextOracleOicClient:
         """
         self.connection_config = connection_config
         self.auth_config = auth_config
-        self.logger = FlextLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = u.fetch_logger(f"{__name__}.{self.__class__.__name__}")
         self._client: FlextApi | None = None
         self._access_token: str | None = None
 

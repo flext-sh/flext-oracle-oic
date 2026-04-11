@@ -16,7 +16,7 @@ from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiSettings
 
-from flext_core import FlextLogger, r, s
+from flext_core import r, s
 from flext_oracle_oic import (
     FlextOracleOicClient,
     FlextOracleOicModels,
@@ -45,7 +45,9 @@ class FlextOracleOicServiceBase(
         Uses singleton config pattern - no config parameter needed.
         """
         super().__init__()
-        self._oic_settings: FlextOracleOicSettings = FlextOracleOicSettings.get_global()
+        self._oic_settings: FlextOracleOicSettings = (
+            FlextOracleOicSettings.fetch_global()
+        )
         self._client: FlextOracleOicClient | None = None
         self._monitoring_client: FlextApiClient | None = None
         self._authenticator: t.NormalizedValue | None = None
@@ -159,7 +161,7 @@ class FlextOracleOicServiceBase(
                 integrations,
             )
         except (ConnectionError, TimeoutError, ValueError) as exc:
-            FlextLogger(__name__).exception("Failed to list integrations")
+            u.fetch_logger(__name__).exception("Failed to list integrations")
             return r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].fail(
                 f"Integration listing failed: {exc!s}",
             )
@@ -253,7 +255,9 @@ class FlextOracleOicServiceBase(
                 )
                 self._monitoring_client = FlextApiClient(api_config)
         except (ConnectionError, TimeoutError, ValueError):
-            FlextLogger(__name__).exception("Failed to initialize service components")
+            u.fetch_logger(__name__).exception(
+                "Failed to initialize service components"
+            )
             raise
 
 

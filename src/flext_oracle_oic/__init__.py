@@ -28,7 +28,7 @@ if _t.TYPE_CHECKING:
     from flext_oracle_oic._utilities.pattern_analysis import (
         FlextOracleOicUtilitiesPatternAnalysis,
     )
-    from flext_oracle_oic.api import FlextOracleOicApi
+    from flext_oracle_oic.api import FlextOracleOicApi, oracle_oic
     from flext_oracle_oic.constants import FlextOracleOicConstants, c
     from flext_oracle_oic.ext_client import FlextOracleOicClient
     from flext_oracle_oic.main import FlextOracleOicCli, main
@@ -68,7 +68,10 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "__version__",
                 "__version_info__",
             ),
-            ".api": ("FlextOracleOicApi",),
+            ".api": (
+                "FlextOracleOicApi",
+                "oracle_oic",
+            ),
             ".constants": (
                 "FlextOracleOicConstants",
                 "c",
@@ -161,6 +164,7 @@ __all__ = [
     "h",
     "m",
     "main",
+    "oracle_oic",
     "p",
     "r",
     "s",
