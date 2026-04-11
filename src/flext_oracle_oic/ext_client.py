@@ -304,7 +304,7 @@ class FlextOracleOicClient:
                     "Accept": "application/json",
                 },
             })
-            client = FlextApi(api_config)
+            client = FlextApi(config=api_config)
             self._client = client
             return r[FlextApi].ok(client)
         except (
@@ -374,7 +374,7 @@ class FlextOracleOicClient:
             api_config = FlextApiSettings.model_validate({
                 "base_url": self.auth_config.oauth_token_url,
             })
-            api_client = FlextApi(api_config)
+            api_client = FlextApi(config=api_config)
             oauth_data: t.ContainerValueMapping = {
                 key: str(self._to_api_payload(value)) for key, value in data.items()
             }

@@ -254,7 +254,7 @@ class FlextOracleOicServiceBase(
                     log_requests=False,
                     log_responses=False,
                 )
-                self._monitoring_client = FlextApiClient(api_config)
+                self._monitoring_client = FlextApiClient(config=api_config)
         except (ConnectionError, TimeoutError, ValueError):
             u.fetch_logger(__name__).exception(
                 "Failed to initialize service components"
