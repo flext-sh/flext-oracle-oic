@@ -44,4 +44,6 @@ class FlextOracleOicService(
     """
 
 
-__all__ = ["FlextOracleOicService"]
+s = FlextOracleOicService
+
+__all__ = ["FlextOracleOicService", "s"]

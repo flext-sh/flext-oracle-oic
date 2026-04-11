@@ -19,7 +19,7 @@ from typing import Self
 from flext_api import FlextApi, FlextApiSettings
 
 from flext_core import r
-from flext_oracle_oic import FlextOracleOicModels, c, t
+from flext_oracle_oic import FlextOracleOicModels, c, t, u
 
 logger = u.fetch_logger(__name__)
 
