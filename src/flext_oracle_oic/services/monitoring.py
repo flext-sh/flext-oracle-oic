@@ -62,7 +62,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                     timeout=float(self._oic_settings.request_timeout),
                 )
                 response_result = self._monitoring_client.request(req)
-                if response_result.is_success:
+                if response_result.success:
                     response = response_result.value
                     if response.status_code == c.API.HTTP_STATUS_OK:
                         base_health: t.ContainerMapping = (
@@ -126,7 +126,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                     health_data_dict,
                 )
             )
-            if validation_result.is_success:
+            if validation_result.success:
                 return validation_result
             self.logger.warning(
                 f"Health status validation failed: {validation_result.error}",
@@ -156,7 +156,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             )
             return (
                 validation_result
-                if validation_result.is_success
+                if validation_result.success
                 else r[t.ContainerMapping].ok(error_health)
             )
 
@@ -189,7 +189,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                     timeout=float(self._oic_settings.request_timeout),
                 )
                 response_result = self._monitoring_client.request(req)
-                if response_result.is_success:
+                if response_result.success:
                     response = response_result.value
                     if response.status_code == c.API.HTTP_STATUS_OK:
                         if isinstance(response.body, dict):
@@ -224,7 +224,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                     metrics_dict,
                 )
             )
-            if analysis_result.is_success:
+            if analysis_result.success:
                 return r[t.ContainerMapping].ok({
                     **metrics_dict,
                     "analysis": dict(analysis_result.value),
@@ -245,7 +245,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                     error_metrics,
                 )
             )
-            if analysis_result.is_success:
+            if analysis_result.success:
                 return r[t.ContainerMapping].ok({
                     **error_metrics,
                     "analysis": dict(analysis_result.value),

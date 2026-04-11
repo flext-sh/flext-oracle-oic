@@ -38,14 +38,14 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
                 )
             client = client_result.value
             created_result = client.create_integration(integration_data)
-            if created_result.is_failure:
+            if created_result.failure:
                 error_msg = created_result.error or "Failed to create integration"
                 return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
@@ -88,14 +88,14 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
                 )
             client = client_result.value
             integrations_result = client.get_integrations()
-            if integrations_result.is_failure:
+            if integrations_result.failure:
                 error_msg = integrations_result.error or "Failed to get integrations"
                 return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
@@ -155,14 +155,14 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
                 )
             client = client_result.value
             updated_result = client.update_integration(integration_id, integration_data)
-            if updated_result.is_failure:
+            if updated_result.failure:
                 error_msg = updated_result.error or "Failed to update integration"
                 return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
@@ -202,7 +202,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[bool].fail(error_msg)
             client = client_result.value
@@ -210,7 +210,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 "DELETE",
                 f"/integrations/{integration_id}",
             )
-            if delete_result.is_failure:
+            if delete_result.failure:
                 error_msg = delete_result.error or "Failed to delete integration"
                 return r[bool].fail(error_msg)
             return r[bool].ok(value=True)
@@ -233,12 +233,12 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[str].fail(error_msg)
             client = client_result.value
             created_result = client.create_integration(integration_data)
-            if created_result.is_failure:
+            if created_result.failure:
                 return r[str].fail(created_result.error or "Create integration failed")
             created_data = created_result.value
             integration_id = str(created_data.get("id", ""))
@@ -265,7 +265,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[
                     Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]
@@ -277,7 +277,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 type_filter=type_filter,
                 page_size=c.OracleOic.DEFAULT_PAGE_SIZE,
             )
-            if connections_result.is_failure:
+            if connections_result.failure:
                 error_msg = connections_result.error or "Failed to get connections"
                 return r[
                     Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]

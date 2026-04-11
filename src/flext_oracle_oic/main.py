@@ -106,10 +106,10 @@ class FlextOracleOicCli(s[None]):
         parsed_args = parser.parse_args(args)
         if parsed_args.version or parsed_args.command == "version":
             result = self.show_version()
-            return 0 if result.is_success else 1
+            return 0 if result.success else 1
         if parsed_args.command:
             result = self.run_command(parsed_args.command)
-            return 0 if result.is_success else 1
+            return 0 if result.success else 1
         parser.print_help()
         return 1
 
@@ -164,7 +164,7 @@ class FlextOracleOicCli(s[None]):
             service = FlextOracleOicService()
             with service:
                 connection_result = service.test_connection()
-                if connection_result.is_success:
+                if connection_result.success:
                     if self.logger:
                         self.logger.info("Oracle OIC connection successful!")
                     _ = sys.stdout.write(
@@ -191,7 +191,7 @@ class FlextOracleOicCli(s[None]):
 
         """
         integrations_result = service.list_integrations()
-        if integrations_result.is_failure:
+        if integrations_result.failure:
             return r[bool].fail(
                 f"Failed to list integrations: {integrations_result.error}",
             )

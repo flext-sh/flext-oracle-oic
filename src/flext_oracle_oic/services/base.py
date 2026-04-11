@@ -120,7 +120,7 @@ class FlextOracleOicServiceBase(
         """
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[
                     Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
@@ -129,7 +129,7 @@ class FlextOracleOicServiceBase(
                 )
             client = client_result.value
             integrations_result = client.get_integrations()
-            if integrations_result.is_failure:
+            if integrations_result.failure:
                 error_msg = integrations_result.error or "Failed to get integrations"
                 return r[
                     Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
@@ -174,7 +174,7 @@ class FlextOracleOicServiceBase(
         try:
             if self._client is None:
                 validation_result = self.validate_business_rules()
-                if validation_result.is_failure:
+                if validation_result.failure:
                     return r[FlextOracleOicClient].fail(validation_result.error)
                 connection_config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
                     base_url=str(self._oic_settings.base_url),
@@ -218,7 +218,7 @@ class FlextOracleOicServiceBase(
                 self._oic_settings.oauth_client_id,
             )
         )
-        if client_id_result.is_failure:
+        if client_id_result.failure:
             return r[bool].fail(f"OAuth client ID validation: {client_id_result.error}")
         if not self._oic_settings.oauth_client_secret:
             return r[bool].fail("OAuth client secret is required")

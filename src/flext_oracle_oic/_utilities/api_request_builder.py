@@ -27,7 +27,7 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
         url_result = FlextOracleOicUtilitiesConnectionValidation.validate_base_url(
             base_url,
         )
-        if url_result.is_failure:
+        if url_result.failure:
             return r[str].fail(f"Base URL validation: {url_result.error}")
         validated_base_url = url_result.value
         path_parts = ["ic", "api", "integration", api_version, resource_name]

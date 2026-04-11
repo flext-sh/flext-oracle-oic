@@ -52,7 +52,7 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                     pattern_config,
                 )
             )
-            if validation_result.is_failure:
+            if validation_result.failure:
                 return r[t.ContainerMapping].fail(
                     f"Pattern validation failed: {validation_result.error}",
                 )
@@ -98,7 +98,7 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                     pattern_config,
                 )
             )
-            if validation_result.is_failure:
+            if validation_result.failure:
                 return r[t.ContainerMapping].fail(
                     f"Pattern validation failed: {validation_result.error}",
                 )

@@ -40,7 +40,7 @@ class FlextOracleOicUtilitiesOracleOic:
                             raw_name,
                         )
                     )
-                    if name_result.is_failure:
+                    if name_result.failure:
                         errors.append(f"Name validation: {name_result.error}")
                     else:
                         validated_data["name"] = name_result.value
@@ -57,7 +57,7 @@ class FlextOracleOicUtilitiesOracleOic:
                             raw_version,
                         )
                     )
-                    if version_result.is_failure:
+                    if version_result.failure:
                         errors.append(f"Version validation: {version_result.error}")
                     else:
                         validated_data["version"] = version_result.value
@@ -74,7 +74,7 @@ class FlextOracleOicUtilitiesOracleOic:
                             raw_status,
                         )
                     )
-                    if status_result.is_failure:
+                    if status_result.failure:
                         errors.append(f"Status validation: {status_result.error}")
                     else:
                         validated_data["status"] = status_result.value

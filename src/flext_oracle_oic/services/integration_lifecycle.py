@@ -28,7 +28,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
         """
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[bool].fail(error_msg)
             client = client_result.value
@@ -36,7 +36,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
                 "POST",
                 f"/integrations/{integration_id}/activate",
             )
-            if activate_result.is_failure:
+            if activate_result.failure:
                 error_msg = activate_result.error or "Failed to activate integration"
                 return r[bool].fail(error_msg)
             return r[bool].ok(value=True)
@@ -56,7 +56,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
         """
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[bool].fail(error_msg)
             client = client_result.value
@@ -64,7 +64,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
                 "POST",
                 f"/integrations/{integration_id}/deactivate",
             )
-            if deactivate_result.is_failure:
+            if deactivate_result.failure:
                 error_msg = (
                     deactivate_result.error or "Failed to deactivate integration"
                 )
@@ -83,7 +83,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
         """
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[bool].fail(error_msg)
             client = client_result.value
@@ -91,7 +91,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
                 oic_c.API.Method.GET,
                 "/ic/api/integration/v1/health",
             )
-            if test_result.is_failure:
+            if test_result.failure:
                 error_msg = test_result.error or "Connection test failed"
                 return r[bool].fail(error_msg)
             result_data = test_result.value

@@ -41,7 +41,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         """
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[t.ContainerMapping].fail(error_msg)
             client = client_result.value
@@ -55,7 +55,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
                 endpoint,
                 json=payload_dict,
             )
-            if orchestration_result.is_failure:
+            if orchestration_result.failure:
                 return r[t.ContainerMapping].fail(
                     orchestration_result.error or "Orchestration request failed",
                 )
@@ -166,7 +166,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     ) -> r[t.ContainerMapping]:
         try:
             client_result = self._get_client()
-            if client_result.is_failure:
+            if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
                 return r[t.ContainerMapping].fail(error_msg)
             client = client_result.value

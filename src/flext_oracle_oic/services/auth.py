@@ -51,8 +51,8 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
             validate_fn = getattr(self._authenticator, "validate_token", None)
             if not callable(validate_fn):
                 return r[bool].fail("Authenticator has no validate_token")
-            is_valid = validate_fn(token)
-            return r[bool].ok(bool(is_valid))
+            valid = validate_fn(token)
+            return r[bool].ok(bool(valid))
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Token validation failed")
             return r[bool].fail(f"Token validation failed: {e!s}")

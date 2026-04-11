@@ -247,7 +247,7 @@ class FlextOracleOicClient:
                     endpoint,
                     params=request_params,
                 )
-                if response_result.is_failure:
+                if response_result.failure:
                     return r[Sequence[t.ContainerMapping]].fail(
                         response_result.error or "Request failed",
                     )
@@ -348,7 +348,7 @@ class FlextOracleOicClient:
                 response_result = client.delete(full_url, headers=None)
             else:
                 return r[t.NormalizedValue].fail(f"Unsupported HTTP method: {method}")
-            if response_result.is_failure:
+            if response_result.failure:
                 return r[t.NormalizedValue].fail(
                     f"Request failed: {response_result.error}",
                 )
@@ -379,7 +379,7 @@ class FlextOracleOicClient:
                 key: str(self._to_api_payload(value)) for key, value in data.items()
             }
             response_result = api_client.post("", data=oauth_data, headers=headers)
-            if response_result.is_failure:
+            if response_result.failure:
                 return r[t.NormalizedValue].fail(
                     f"OAuth request failed: {response_result.error}",
                 )
