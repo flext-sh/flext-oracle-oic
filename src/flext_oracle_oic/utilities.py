@@ -53,4 +53,4 @@ class FlextOracleOicUtilities(FlextUtilities):
 
 
 u = FlextOracleOicUtilities
-__all__ = ["FlextOracleOicUtilities", "u"]
+__all__: list[str] = ["FlextOracleOicUtilities", "u"]

@@ -46,4 +46,4 @@ class FlextOracleOicService(
 
 s = FlextOracleOicService
 
-__all__ = ["FlextOracleOicService", "s"]
+__all__: list[str] = ["FlextOracleOicService", "s"]

@@ -56,4 +56,4 @@ class FlextOracleOicSettings(FlextSettings):
         })
 
 
-__all__ = ["FlextOracleOicSettings"]
+__all__: list[str] = ["FlextOracleOicSettings"]

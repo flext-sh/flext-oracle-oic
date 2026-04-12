@@ -32,7 +32,7 @@ except (ConnectionError, TimeoutError, ValueError):
     __author_email__ = ""
     __license__ = "MIT"
     __url__ = ""
-__all__ = [
+__all__: list[str] = [
     "__author__",
     "__author_email__",
     "__description__",

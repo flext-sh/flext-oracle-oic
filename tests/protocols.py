@@ -25,4 +25,4 @@ class TestsFlextOracleOicProtocols(FlextTestsProtocols, FlextOracleOicProtocols)
 
 
 p = TestsFlextOracleOicProtocols
-__all__ = ["TestsFlextOracleOicProtocols", "p"]
+__all__: list[str] = ["TestsFlextOracleOicProtocols", "p"]

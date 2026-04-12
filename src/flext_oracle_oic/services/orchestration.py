@@ -185,4 +185,4 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
             return r[t.ContainerMapping].fail(f"{error_message}: {exc!s}")
 
 
-__all__ = ["FlextOracleOicOrchestrationMixin"]
+__all__: list[str] = ["FlextOracleOicOrchestrationMixin"]

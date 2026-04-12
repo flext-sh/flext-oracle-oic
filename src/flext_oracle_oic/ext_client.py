@@ -529,4 +529,4 @@ class FlextOracleOicClient:
         return r[bool].ok(value=True)
 
 
-__all__ = ["FlextOracleOicClient"]
+__all__: list[str] = ["FlextOracleOicClient"]

@@ -234,4 +234,4 @@ class FlextOracleOicModels(FlextModels):
 
 m = FlextOracleOicModels
 
-__all__ = ["FlextOracleOicModels", "m"]
+__all__: list[str] = ["FlextOracleOicModels", "m"]

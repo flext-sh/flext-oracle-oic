@@ -58,4 +58,4 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
             return r[bool].fail(f"Token validation failed: {e!s}")
 
 
-__all__ = ["FlextOracleOicAuthMixin"]
+__all__: list[str] = ["FlextOracleOicAuthMixin"]

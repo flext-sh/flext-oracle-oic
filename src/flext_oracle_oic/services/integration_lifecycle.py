@@ -107,4 +107,4 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].fail(f"Connection test failed: {e!s}")
 
 
-__all__ = ["FlextOracleOicIntegrationLifecycleMixin"]
+__all__: list[str] = ["FlextOracleOicIntegrationLifecycleMixin"]

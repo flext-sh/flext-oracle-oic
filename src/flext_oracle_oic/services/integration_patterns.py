@@ -118,4 +118,4 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
             return r[t.ContainerMapping].fail(error_msg)
 
 
-__all__ = ["FlextOracleOicIntegrationPatternsMixin"]
+__all__: list[str] = ["FlextOracleOicIntegrationPatternsMixin"]

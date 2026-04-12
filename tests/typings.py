@@ -19,4 +19,4 @@ class TestsFlextOracleOicTypes(FlextTestsTypes, FlextOracleOicTypes):
 
 
 t = TestsFlextOracleOicTypes
-__all__ = ["TestsFlextOracleOicTypes", "t"]
+__all__: list[str] = ["TestsFlextOracleOicTypes", "t"]

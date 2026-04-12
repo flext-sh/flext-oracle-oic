@@ -262,4 +262,4 @@ class FlextOracleOicServiceBase(
             raise
 
 
-__all__ = ["FlextOracleOicServiceBase"]
+__all__: list[str] = ["FlextOracleOicServiceBase"]

@@ -311,4 +311,4 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             )
 
 
-__all__ = ["FlextOracleOicIntegrationCrudMixin"]
+__all__: list[str] = ["FlextOracleOicIntegrationCrudMixin"]

@@ -20,7 +20,7 @@ class TestsFlextOracleOicModels(FlextTestsModels, FlextOracleOicModels):
 
 m = TestsFlextOracleOicModels
 
-__all__ = [
+__all__: list[str] = [
     "TestsFlextOracleOicModels",
     "m",
 ]

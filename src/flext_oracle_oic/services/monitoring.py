@@ -253,4 +253,4 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             return r[t.ContainerMapping].ok(error_metrics)
 
 
-__all__ = ["FlextOracleOicMonitoringMixin"]
+__all__: list[str] = ["FlextOracleOicMonitoringMixin"]

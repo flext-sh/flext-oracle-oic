@@ -33,4 +33,4 @@ class FlextOracleOicTypes(FlextTypes):
 
 
 t = FlextOracleOicTypes
-__all__ = ["FlextOracleOicTypes", "t"]
+__all__: list[str] = ["FlextOracleOicTypes", "t"]

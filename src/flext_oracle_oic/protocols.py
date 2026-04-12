@@ -63,4 +63,4 @@ class FlextOracleOicProtocols(FlextProtocols):
 
 
 p = FlextOracleOicProtocols
-__all__ = ["FlextOracleOicProtocols", "p"]
+__all__: list[str] = ["FlextOracleOicProtocols", "p"]
