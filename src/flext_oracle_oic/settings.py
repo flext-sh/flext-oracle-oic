@@ -1,4 +1,4 @@
-"""Oracle OIC Extension Configuration - Unified Class Pattern.
+"""Oracle OIC Extension Settings - Unified Class Pattern.
 
 FLEXT Unified Class Pattern: Single OracleOicExtensionConfig class
 with nested configuration classes following FLEXT architectural standards.
@@ -26,8 +26,7 @@ class FlextOracleOicSettings(FlextSettings):
     OICApiVersion: ClassVar[type[c.OICApiVersion]] = c.OICApiVersion
 
     model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
-        env_prefix="FLEXT_ORACLE_OIC_",
-        extra="ignore",
+        env_prefix="FLEXT_ORACLE_OIC_", extra="ignore"
     )
 
     base_url: Annotated[t.NonEmptyStr, Field(default=c.OracleOic.DEFAULT_BASE_URL)]
