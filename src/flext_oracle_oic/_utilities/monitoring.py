@@ -14,8 +14,8 @@ class FlextOracleOicUtilitiesMonitoring:
 
     @staticmethod
     def analyze_performance_metrics(
-        metrics: t.ContainerMapping,
-    ) -> r[t.ContainerMapping]:
+        metrics: t.RecursiveContainerMapping,
+    ) -> r[t.RecursiveContainerMapping]:
         """Analyze Oracle OIC performance metrics.
 
         Args:
@@ -26,9 +26,9 @@ class FlextOracleOicUtilitiesMonitoring:
 
         """
         overall_health = "healthy"
-        warnings: MutableSequence[t.NormalizedValue] = []
-        critical_issues: MutableSequence[t.NormalizedValue] = []
-        recommendations: MutableSequence[t.NormalizedValue] = []
+        warnings: MutableSequence[t.RecursiveContainer] = []
+        critical_issues: MutableSequence[t.RecursiveContainer] = []
+        recommendations: MutableSequence[t.RecursiveContainer] = []
         if "average_response_time" in metrics:
             response_time = metrics["average_response_time"]
             if isinstance(response_time, (int, float)):
@@ -65,18 +65,18 @@ class FlextOracleOicUtilitiesMonitoring:
                     recommendations.append(
                         "Review error logs and implement error handling improvements",
                     )
-        analysis: t.ContainerMapping = {
+        analysis: t.RecursiveContainerMapping = {
             "overall_health": overall_health,
             "warnings": tuple(warnings),
             "critical_issues": tuple(critical_issues),
             "recommendations": tuple(recommendations),
         }
-        return r[t.ContainerMapping].ok(analysis)
+        return r[t.RecursiveContainerMapping].ok(analysis)
 
     @staticmethod
     def validate_health_status(
-        health_data: t.ContainerMapping,
-    ) -> r[t.ContainerMapping]:
+        health_data: t.RecursiveContainerMapping,
+    ) -> r[t.RecursiveContainerMapping]:
         """Validate Oracle OIC health check data.
 
         Args:
@@ -86,33 +86,33 @@ class FlextOracleOicUtilitiesMonitoring:
         r containing validated health data or error
 
         """
-        validated_data: t.MutableContainerMapping = {
+        validated_data: t.MutableRecursiveContainerMapping = {
             str(key): value for key, value in health_data.items()
         }
         if "status" not in health_data:
-            return r[t.ContainerMapping].fail(
+            return r[t.RecursiveContainerMapping].fail(
                 "Health data must include status",
             )
         status = health_data["status"]
         if status not in {"healthy", "unhealthy", "error", "unknown"}:
-            return r[t.ContainerMapping].fail(
+            return r[t.RecursiveContainerMapping].fail(
                 "Invalid health status. Valid: healthy, unhealthy, error, unknown",
             )
         if "components" in health_data:
             components = health_data["components"]
             if not isinstance(components, dict):
-                return r[t.ContainerMapping].fail(
+                return r[t.RecursiveContainerMapping].fail(
                     "Components must be a dictionary",
                 )
             for component_name, component_data in components.items():
                 if not isinstance(component_data, dict):
-                    return r[t.ContainerMapping].fail(
+                    return r[t.RecursiveContainerMapping].fail(
                         f"Component {component_name} data must be a dictionary",
                     )
                 if "status" not in component_data:
-                    return r[t.ContainerMapping].fail(
+                    return r[t.RecursiveContainerMapping].fail(
                         f"Component {component_name} must have status",
                     )
         if "timestamp" not in validated_data:
             validated_data["timestamp"] = datetime.now(UTC).isoformat()
-        return r[t.ContainerMapping].ok(validated_data)
+        return r[t.RecursiveContainerMapping].ok(validated_data)

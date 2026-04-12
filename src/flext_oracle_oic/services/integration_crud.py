@@ -25,7 +25,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
     def create_integration(
         self,
-        integration_data: t.ContainerMapping,
+        integration_data: t.RecursiveContainerMapping,
     ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
@@ -141,7 +141,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
     def update_integration(
         self,
         integration_id: str,
-        integration_data: t.ContainerMapping,
+        integration_data: t.RecursiveContainerMapping,
     ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
@@ -220,7 +220,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
     def deploy_integration(
         self,
-        integration_data: t.ContainerMapping,
+        integration_data: t.RecursiveContainerMapping,
     ) -> r[str]:
         """Deploy integration to Oracle OIC.
 

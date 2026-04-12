@@ -14,8 +14,8 @@ class FlextOracleOicUtilitiesOracleOic:
 
     @staticmethod
     def validate_integration_data(
-        integration_data: t.ContainerMapping,
-    ) -> r[t.ContainerMapping]:
+        integration_data: t.RecursiveContainerMapping,
+    ) -> r[t.RecursiveContainerMapping]:
         """Validate complete Oracle OIC integration data.
 
         Args:
@@ -26,7 +26,7 @@ class FlextOracleOicUtilitiesOracleOic:
 
         """
         errors: MutableSequence[str] = []
-        validated_data: t.MutableContainerMapping = {
+        validated_data: t.MutableRecursiveContainerMapping = {
             str(key): value for key, value in integration_data.items()
         }
         if "name" not in integration_data:
@@ -83,10 +83,10 @@ class FlextOracleOicUtilitiesOracleOic:
                         "Status validation: Integration status must be a string",
                     )
         if errors:
-            return r[t.ContainerMapping].fail(
+            return r[t.RecursiveContainerMapping].fail(
                 f"Integration validation failed: {'; '.join(errors)}",
             )
-        return r[t.ContainerMapping].ok(validated_data)
+        return r[t.RecursiveContainerMapping].ok(validated_data)
 
     @staticmethod
     def validate_integration_name(name: str) -> r[str]:

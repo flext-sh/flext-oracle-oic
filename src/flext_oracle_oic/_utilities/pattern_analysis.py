@@ -13,7 +13,7 @@ class FlextOracleOicUtilitiesPatternAnalysis:
 
     @staticmethod
     def analyze_integration_pattern(
-        integration_data: t.ContainerMapping,
+        integration_data: t.RecursiveContainerMapping,
     ) -> r[str]:
         """Analyze Oracle OIC integration to determine pattern type.
 
@@ -27,15 +27,15 @@ class FlextOracleOicUtilitiesPatternAnalysis:
         endpoints_raw = integration_data.get("endpoints", [])
         connections_raw = integration_data.get("connections", [])
         mappings_raw = integration_data.get("mappings", [])
-        endpoints: Sequence[t.ContainerMapping] = (
+        endpoints: Sequence[t.RecursiveContainerMapping] = (
             [dict(endpoint) for endpoint in endpoints_raw if isinstance(endpoint, dict)]
             if isinstance(endpoints_raw, list)
             else []
         )
-        connections: t.ContainerList = (
+        connections: t.RecursiveContainerList = (
             list(connections_raw) if isinstance(connections_raw, list) else []
         )
-        mappings: t.ContainerList = (
+        mappings: t.RecursiveContainerList = (
             list(mappings_raw) if isinstance(mappings_raw, list) else []
         )
         if len(endpoints) > c.OracleOicValidation.MIN_ENDPOINTS_FOR_ROUTER and any(

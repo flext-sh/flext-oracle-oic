@@ -27,9 +27,9 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
 
     def apply_message_router_pattern(
         self,
-        message_data: t.ContainerMapping,
-        routing_rules: Sequence[t.ContainerMapping],
-    ) -> r[t.ContainerMapping]:
+        message_data: t.RecursiveContainerMapping,
+        routing_rules: Sequence[t.RecursiveContainerMapping],
+    ) -> r[t.RecursiveContainerMapping]:
         """Apply message router pattern to OIC integration using FlextOracleOicUtilities.
 
         Args:
@@ -53,7 +53,7 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                 )
             )
             if validation_result.failure:
-                return r[t.ContainerMapping].fail(
+                return r[t.RecursiveContainerMapping].fail(
                     f"Pattern validation failed: {validation_result.error}",
                 )
             routing_result = {
@@ -65,17 +65,17 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                 "applied_rules": len(routing_rules),
                 "status": c.OICPatterns.PatternStatus.PROCESSED,
             }
-            return r[t.ContainerMapping].ok(routing_result)
+            return r[t.RecursiveContainerMapping].ok(routing_result)
         except (ConnectionError, TimeoutError, ValueError) as e:
             error_msg = f"Message router pattern failed: {e}"
             self.logger.exception(error_msg)
-            return r[t.ContainerMapping].fail(error_msg)
+            return r[t.RecursiveContainerMapping].fail(error_msg)
 
     def apply_scatter_gather_pattern(
         self,
-        request_data: t.ContainerMapping,
+        request_data: t.RecursiveContainerMapping,
         target_endpoints: t.StrSequence,
-    ) -> r[t.ContainerMapping]:
+    ) -> r[t.RecursiveContainerMapping]:
         """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
         Args:
@@ -99,7 +99,7 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                 )
             )
             if validation_result.failure:
-                return r[t.ContainerMapping].fail(
+                return r[t.RecursiveContainerMapping].fail(
                     f"Pattern validation failed: {validation_result.error}",
                 )
             scatter_result = {
@@ -111,11 +111,11 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                 "target_count": len(target_endpoints),
                 "status": c.OICPatterns.PatternStatus.PROCESSED,
             }
-            return r[t.ContainerMapping].ok(scatter_result)
+            return r[t.RecursiveContainerMapping].ok(scatter_result)
         except (ConnectionError, TimeoutError, ValueError) as e:
             error_msg = f"Scatter-gather pattern failed: {e}"
             self.logger.exception(error_msg)
-            return r[t.ContainerMapping].fail(error_msg)
+            return r[t.RecursiveContainerMapping].fail(error_msg)
 
 
 __all__: list[str] = ["FlextOracleOicIntegrationPatternsMixin"]

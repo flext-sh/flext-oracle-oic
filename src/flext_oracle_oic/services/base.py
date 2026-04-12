@@ -51,7 +51,7 @@ class FlextOracleOicServiceBase(
         )
         self._client: FlextOracleOicClient | None = None
         self._monitoring_client: FlextApiClient | None = None
-        self._authenticator: t.NormalizedValue | None = None
+        self._authenticator: t.RecursiveContainer | None = None
         self._initialize_components()
 
     def __enter__(self) -> Self:
@@ -67,7 +67,7 @@ class FlextOracleOicServiceBase(
         """Context manager exit."""
 
     @staticmethod
-    def _as_text(value: t.NormalizedValue, default: str = "") -> str:
+    def _as_text(value: t.RecursiveContainer, default: str = "") -> str:
         """Normalize optional OIC values into strings for model construction."""
         match value:
             case str():
@@ -80,9 +80,9 @@ class FlextOracleOicServiceBase(
 
     @staticmethod
     def _to_general_value(
-        value: t.NormalizedValue | t.ContainerValue | bytes | None,
-    ) -> t.NormalizedValue:
-        """Normalize arbitrary runtime values into t.NormalizedValue."""
+        value: t.RecursiveContainer | t.ContainerValue | bytes | None,
+    ) -> t.RecursiveContainer:
+        """Normalize arbitrary runtime values into t.RecursiveContainer."""
         if isinstance(value, bytes):
             return value.decode(errors="replace")
         if isinstance(value, (str, int, float, bool)) or value is None:

@@ -169,11 +169,11 @@ class FlextOracleOicModels(FlextModels):
             """Message router pattern configuration model."""
 
             message_data: Annotated[
-                t.ContainerMapping,
+                t.RecursiveContainerMapping,
                 Field(description="Message payload used for routing"),
             ]
             routing_rules: Annotated[
-                Sequence[t.ContainerMapping],
+                Sequence[t.RecursiveContainerMapping],
                 Field(description="Ordered routing rules"),
             ]
 
@@ -181,7 +181,7 @@ class FlextOracleOicModels(FlextModels):
             """Scatter-gather pattern configuration model."""
 
             request_data: Annotated[
-                t.ContainerMapping,
+                t.RecursiveContainerMapping,
                 Field(description="Request payload to scatter"),
             ]
             target_services: Annotated[
@@ -210,14 +210,14 @@ class FlextOracleOicModels(FlextModels):
                 ),
             ]
             data: Annotated[
-                t.ContainerMapping | None,
+                t.RecursiveContainerMapping | None,
                 Field(
                     default=None,
                     description="Form data",
                 ),
             ]
             json_data: Annotated[
-                t.ContainerMapping | None,
+                t.RecursiveContainerMapping | None,
                 Field(
                     default=None,
                     description="JSON data",

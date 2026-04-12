@@ -25,7 +25,7 @@ from flext_oracle_oic import (
 class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
     """Mixin providing monitoring operations for FlextOracleOicService facade."""
 
-    def get_health_status(self) -> r[t.ContainerMapping]:
+    def get_health_status(self) -> r[t.RecursiveContainerMapping]:
         """Get Oracle OIC health status using FlextOracleOicUtilities.
 
         Returns:
@@ -33,7 +33,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
 
         """
         try:
-            health_data: t.ContainerMapping
+            health_data: t.RecursiveContainerMapping
             if not self._monitoring_client:
                 health_data = {
                     "status": c.Monitoring.HealthStatus.HEALTHY,
@@ -65,7 +65,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 if response_result.success:
                     response = response_result.value
                     if response.status_code == c.API.HTTP_STATUS_OK:
-                        base_health: t.ContainerMapping = (
+                        base_health: t.RecursiveContainerMapping = (
                             {
                                 str(k): self._to_general_value(v)
                                 for k, v in response.body.items()
@@ -120,7 +120,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                         },
                         "error": f"Request failed: {response_result.error}",
                     }
-            health_data_dict: t.ContainerMapping = dict(health_data)
+            health_data_dict: t.RecursiveContainerMapping = dict(health_data)
             validation_result = (
                 FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
                     health_data_dict,
@@ -131,10 +131,10 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             self.logger.warning(
                 f"Health status validation failed: {validation_result.error}",
             )
-            return r[t.ContainerMapping].ok(health_data_dict)
+            return r[t.RecursiveContainerMapping].ok(health_data_dict)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Health check failed")
-            error_health: t.ContainerMapping = {
+            error_health: t.RecursiveContainerMapping = {
                 "status": c.Monitoring.HealthStatus.ERROR,
                 "components": {
                     c.Monitoring.COMPONENT_DATABASE: {
@@ -157,10 +157,10 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             return (
                 validation_result
                 if validation_result.success
-                else r[t.ContainerMapping].ok(error_health)
+                else r[t.RecursiveContainerMapping].ok(error_health)
             )
 
-    def get_performance_metrics(self) -> r[t.ContainerMapping]:
+    def get_performance_metrics(self) -> r[t.RecursiveContainerMapping]:
         """Get Oracle OIC performance metrics with analysis using FlextOracleOicUtilities.
 
         Returns:
@@ -168,7 +168,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
 
         """
         try:
-            metrics_data: t.ContainerMapping
+            metrics_data: t.RecursiveContainerMapping
             if not self._monitoring_client:
                 metrics_data = {
                     "active_integrations": 0,
@@ -198,7 +198,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                                 for k, v in response.body.items()
                             }
                         else:
-                            fallback: t.ContainerMapping = {}
+                            fallback: t.RecursiveContainerMapping = {}
                             metrics_data = fallback
                     else:
                         metrics_data = {
@@ -216,7 +216,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                         "average_response_time": 0.0,
                         "error": f"Request failed: {response_result.error}",
                     }
-            metrics_dict: t.MutableContainerMapping = {}
+            metrics_dict: t.MutableRecursiveContainerMapping = {}
             for key, value in metrics_data.items():
                 metrics_dict[str(key)] = self._to_general_value(value)
             analysis_result = (
@@ -225,15 +225,15 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 )
             )
             if analysis_result.success:
-                return r[t.ContainerMapping].ok({
+                return r[t.RecursiveContainerMapping].ok({
                     **metrics_dict,
                     "analysis": dict(analysis_result.value),
                 })
             self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
-            return r[t.ContainerMapping].ok(metrics_dict)
+            return r[t.RecursiveContainerMapping].ok(metrics_dict)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Performance metrics failed")
-            error_metrics: t.ContainerMapping = {
+            error_metrics: t.RecursiveContainerMapping = {
                 "active_integrations": 0,
                 "total_executions": 0,
                 "success_rate": 0.0,
@@ -246,11 +246,11 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 )
             )
             if analysis_result.success:
-                return r[t.ContainerMapping].ok({
+                return r[t.RecursiveContainerMapping].ok({
                     **error_metrics,
                     "analysis": dict(analysis_result.value),
                 })
-            return r[t.ContainerMapping].ok(error_metrics)
+            return r[t.RecursiveContainerMapping].ok(error_metrics)
 
 
 __all__: list[str] = ["FlextOracleOicMonitoringMixin"]

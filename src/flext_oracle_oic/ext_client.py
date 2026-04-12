@@ -69,10 +69,10 @@ class FlextOracleOicClient:
 
     def create_connection(
         self,
-        connection_data: t.ContainerMapping,
-    ) -> r[t.ContainerMapping]:
+        connection_data: t.RecursiveContainerMapping,
+    ) -> r[t.RecursiveContainerMapping]:
         """Create connection in OIC."""
-        json_data: t.ContainerMapping = {
+        json_data: t.RecursiveContainerMapping = {
             str(k): str(v) for k, v in connection_data.items()
         }
         return self.make_request(
@@ -83,8 +83,8 @@ class FlextOracleOicClient:
 
     def create_integration(
         self,
-        integration_data: t.ContainerMapping,
-    ) -> r[t.ContainerMapping]:
+        integration_data: t.RecursiveContainerMapping,
+    ) -> r[t.RecursiveContainerMapping]:
         """Create integration in OIC."""
         return self.make_request(
             c.API.Method.POST,
@@ -102,9 +102,9 @@ class FlextOracleOicClient:
     def execute_file_transfer(
         self,
         integration_id: str,
-        file_config: t.ContainerMapping,
+        file_config: t.RecursiveContainerMapping,
         **_kwargs: t.Scalar,
-    ) -> t.ContainerMapping:
+    ) -> t.RecursiveContainerMapping:
         """Execute file transfer pattern for an integration."""
         endpoint = f"/integrations/{integration_id}/files"
         result = self.make_request(
@@ -117,9 +117,9 @@ class FlextOracleOicClient:
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
-        schedule_config: t.ContainerMapping,
+        schedule_config: t.RecursiveContainerMapping,
         **_kwargs: t.Scalar,
-    ) -> t.ContainerMapping:
+    ) -> t.RecursiveContainerMapping:
         """Execute scheduled orchestration for an integration."""
         endpoint = f"/integrations/{integration_id}/schedules"
         result = self.make_request(
@@ -145,7 +145,7 @@ class FlextOracleOicClient:
         self,
         type_filter: t.StrSequence | None = None,
         page_size: int = 100,
-    ) -> r[Sequence[t.ContainerMapping]]:
+    ) -> r[Sequence[t.RecursiveContainerMapping]]:
         """Get adapter connections from OIC."""
         params: t.MutableStrMapping = {}
         if type_filter:
@@ -156,7 +156,7 @@ class FlextOracleOicClient:
         self,
         status_filter: t.StrSequence | None = None,
         page_size: int = 100,
-    ) -> r[Sequence[t.ContainerMapping]]:
+    ) -> r[Sequence[t.RecursiveContainerMapping]]:
         """Get integration flows from OIC."""
         params: t.MutableStrMapping = {}
         if status_filter:
@@ -170,7 +170,7 @@ class FlextOracleOicClient:
     def get_lookups(
         self,
         page_size: int = 100,
-    ) -> r[Sequence[t.ContainerMapping]]:
+    ) -> r[Sequence[t.RecursiveContainerMapping]]:
         """Get lookup tables from OIC."""
         return self.paginate_request("/lookups", page_size=page_size)
 
@@ -188,7 +188,7 @@ class FlextOracleOicClient:
     def get_packages(
         self,
         page_size: int = 100,
-    ) -> r[Sequence[t.ContainerMapping]]:
+    ) -> r[Sequence[t.RecursiveContainerMapping]]:
         """Get integration packages from OIC."""
         return self.paginate_request("/packages", page_size=page_size)
 
@@ -198,8 +198,8 @@ class FlextOracleOicClient:
         endpoint: str,
         params: t.StrMapping | None = None,
         data: t.StrMapping | None = None,
-        json: t.ContainerMapping | None = None,
-    ) -> r[t.ContainerMapping]:
+        json: t.RecursiveContainerMapping | None = None,
+    ) -> r[t.RecursiveContainerMapping]:
         """Make authenticated request to OIC API."""
         return (
             r[
@@ -208,7 +208,7 @@ class FlextOracleOicClient:
                     str,
                     t.StrMapping | None,
                     t.StrMapping | None,
-                    t.ContainerMapping | None,
+                    t.RecursiveContainerMapping | None,
                 ]
             ]
             .ok((method, endpoint, params, data, json))
@@ -233,10 +233,10 @@ class FlextOracleOicClient:
         endpoint: str,
         page_size: int = 100,
         params: t.StrMapping | None = None,
-    ) -> r[Sequence[t.ContainerMapping]]:
+    ) -> r[Sequence[t.RecursiveContainerMapping]]:
         """Paginate through OIC API responses."""
         try:
-            all_records: MutableSequence[t.ContainerMapping] = []
+            all_records: MutableSequence[t.RecursiveContainerMapping] = []
             offset = 0
             base_params: t.StrMapping = dict(params) if params else {}
             while True:
@@ -248,16 +248,16 @@ class FlextOracleOicClient:
                     params=request_params,
                 )
                 if response_result.failure:
-                    return r[Sequence[t.ContainerMapping]].fail(
+                    return r[Sequence[t.RecursiveContainerMapping]].fail(
                         response_result.error or "Request failed",
                     )
                 response_data = response_result.value
                 items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):
-                    return r[Sequence[t.ContainerMapping]].fail(
+                    return r[Sequence[t.RecursiveContainerMapping]].fail(
                         "Invalid items format",
                     )
-                items: Sequence[t.ContainerMapping] = [
+                items: Sequence[t.RecursiveContainerMapping] = [
                     dict(item) for item in items_raw if isinstance(item, dict)
                 ]
                 all_records.extend(items)
@@ -265,7 +265,7 @@ class FlextOracleOicClient:
                 if not has_more or len(items) < page_size:
                     break
                 offset += page_size
-            return r[Sequence[t.ContainerMapping]].ok(all_records)
+            return r[Sequence[t.RecursiveContainerMapping]].ok(all_records)
         except (
             ConnectionError,
             TimeoutError,
@@ -273,16 +273,16 @@ class FlextOracleOicClient:
         ) as exc:
             error_msg = f"OIC pagination failed: {exc}"
             self.logger.exception(error_msg)
-            return r[Sequence[t.ContainerMapping]].fail(error_msg)
+            return r[Sequence[t.RecursiveContainerMapping]].fail(error_msg)
 
     def update_integration(
         self,
         integration_id: str,
-        integration_data: t.ContainerMapping,
-    ) -> r[t.ContainerMapping]:
+        integration_data: t.RecursiveContainerMapping,
+    ) -> r[t.RecursiveContainerMapping]:
         """Update integration in OIC."""
         endpoint = f"/integrations/{integration_id}"
-        json_data: t.ContainerMapping = {
+        json_data: t.RecursiveContainerMapping = {
             str(k): str(v) for k, v in integration_data.items()
         }
         return self.make_request(
@@ -327,8 +327,8 @@ class FlextOracleOicClient:
         endpoint: str,
         _params: t.StrMapping | None,
         _data: t.StrMapping | None,
-        json: t.ContainerMapping | None,
-    ) -> r[t.NormalizedValue]:
+        json: t.RecursiveContainerMapping | None,
+    ) -> r[t.RecursiveContainer]:
         """Execute the actual API request."""
         try:
             api_data: t.ContainerValueMapping | None = None
@@ -347,14 +347,16 @@ class FlextOracleOicClient:
             elif method.upper() == "DELETE":
                 response_result = client.delete(full_url, headers=None)
             else:
-                return r[t.NormalizedValue].fail(f"Unsupported HTTP method: {method}")
+                return r[t.RecursiveContainer].fail(
+                    f"Unsupported HTTP method: {method}"
+                )
             if response_result.failure:
-                return r[t.NormalizedValue].fail(
+                return r[t.RecursiveContainer].fail(
                     f"Request failed: {response_result.error}",
                 )
             response = response_result.value
-            body: t.NormalizedValue = getattr(response, "body", str(response))
-            return r[t.NormalizedValue].ok(body)
+            body: t.RecursiveContainer = getattr(response, "body", str(response))
+            return r[t.RecursiveContainer].ok(body)
         except (
             ConnectionError,
             TimeoutError,
@@ -362,12 +364,12 @@ class FlextOracleOicClient:
         ) as exc:
             error_msg = f"OIC API request failed: {exc}"
             self.logger.exception(error_msg)
-            return r[t.NormalizedValue].fail(error_msg)
+            return r[t.RecursiveContainer].fail(error_msg)
 
     def _execute_token_request(
         self,
         request_data: tuple[t.StrMapping, t.StrMapping],
-    ) -> r[t.NormalizedValue]:
+    ) -> r[t.RecursiveContainer]:
         """Execute OAuth token request."""
         headers, data = request_data
         try:
@@ -380,16 +382,16 @@ class FlextOracleOicClient:
             }
             response_result = api_client.post("", data=oauth_data, headers=headers)
             if response_result.failure:
-                return r[t.NormalizedValue].fail(
+                return r[t.RecursiveContainer].fail(
                     f"OAuth request failed: {response_result.error}",
                 )
             response = response_result.value
             if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
-                return r[t.NormalizedValue].fail(
+                return r[t.RecursiveContainer].fail(
                     f"OAuth HTTP error: {response.status_code}",
                 )
-            body: t.NormalizedValue = getattr(response, "body", str(response))
-            return r[t.NormalizedValue].ok(body)
+            body: t.RecursiveContainer = getattr(response, "body", str(response))
+            return r[t.RecursiveContainer].ok(body)
         except (
             ConnectionError,
             TimeoutError,
@@ -397,52 +399,52 @@ class FlextOracleOicClient:
         ) as exc:
             error_msg = f"OAuth token request failed: {exc}"
             self.logger.exception(error_msg)
-            return r[t.NormalizedValue].fail(error_msg)
+            return r[t.RecursiveContainer].fail(error_msg)
 
     def _parse_api_response(
         self,
-        response: t.NormalizedValue,
-    ) -> r[t.ContainerMapping]:
+        response: t.RecursiveContainer,
+    ) -> r[t.RecursiveContainerMapping]:
         """Parse API response based on content type."""
         try:
-            headers: t.ContainerMapping | None = getattr(
+            headers: t.RecursiveContainerMapping | None = getattr(
                 response,
                 "headers",
                 None,
             )
-            body: t.NormalizedValue | None = getattr(response, "body", None)
+            body: t.RecursiveContainer | None = getattr(response, "body", None)
             match headers:
                 case Mapping():
                     content_type_val = headers.get("content-type", "")
                     content_type = str(content_type_val) if content_type_val else ""
                     if content_type.startswith("application/json"):
                         if isinstance(body, Mapping):
-                            return r[t.ContainerMapping].ok(body)
+                            return r[t.RecursiveContainerMapping].ok(body)
                         match body:
                             case str():
                                 parsed_data = t.CONTAINER_MAPPING_ADAPTER.validate_json(
                                     body
                                 )
-                                return r[t.ContainerMapping].ok(
+                                return r[t.RecursiveContainerMapping].ok(
                                     parsed_data,
                                 )
                             case _:
-                                return r[t.ContainerMapping].fail(
+                                return r[t.RecursiveContainerMapping].fail(
                                     "Empty JSON response",
                                 )
                     match body:
                         case str():
-                            return r[t.ContainerMapping].ok({
+                            return r[t.RecursiveContainerMapping].ok({
                                 "raw_content": body,
                             })
                         case _ if isinstance(body, Mapping):
-                            return r[t.ContainerMapping].ok(body)
+                            return r[t.RecursiveContainerMapping].ok(body)
                         case _:
-                            return r[t.ContainerMapping].ok({
+                            return r[t.RecursiveContainerMapping].ok({
                                 "raw_content": str(body),
                             })
                 case _:
-                    return r[t.ContainerMapping].fail(
+                    return r[t.RecursiveContainerMapping].fail(
                         "Invalid response format",
                     )
         except (
@@ -452,22 +454,22 @@ class FlextOracleOicClient:
         ) as exc:
             error_msg = f"Failed to parse API response: {exc}"
             self.logger.exception(error_msg)
-            return r[t.ContainerMapping].fail(error_msg)
+            return r[t.RecursiveContainerMapping].fail(error_msg)
 
-    def _parse_token_response(self, response: t.NormalizedValue) -> r[str]:
+    def _parse_token_response(self, response: t.RecursiveContainer) -> r[str]:
         """Parse access token from OAuth response."""
         try:
-            body_raw: t.NormalizedValue = getattr(response, "body", None)
+            body_raw: t.RecursiveContainer = getattr(response, "body", None)
             if body_raw is None:
                 return r[str].fail("Invalid response format")
-            token_data: t.ContainerMapping
+            token_data: t.RecursiveContainerMapping
             if isinstance(body_raw, Mapping):
                 token_data = {str(k): body_raw[k] for k in body_raw}
             elif isinstance(body_raw, str):
                 token_data = t.CONTAINER_MAPPING_ADAPTER.validate_json(body_raw)
             else:
                 return r[str].fail("Empty or invalid OAuth response body")
-            access_token: t.NormalizedValue | None = token_data.get("access_token")
+            access_token: t.RecursiveContainer | None = token_data.get("access_token")
             if isinstance(access_token, str) and access_token:
                 return r[str].ok(access_token)
             return r[str].fail("No valid access token in response")
@@ -510,8 +512,8 @@ class FlextOracleOicClient:
         self.logger.info("OIC OAuth2 authentication successful")
         return token
 
-    def _to_api_payload(self, value: t.NormalizedValue) -> t.NormalizedValue:
-        """Normalize t.NormalizedValue into flext-api request body value type."""
+    def _to_api_payload(self, value: t.RecursiveContainer) -> t.RecursiveContainer:
+        """Normalize t.RecursiveContainer into flext-api request body value type."""
         if isinstance(value, (str, int, float, bool)) or value is None:
             return value
         if isinstance(value, Mapping):
