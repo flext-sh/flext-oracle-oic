@@ -36,13 +36,13 @@ class TestBasicFunctionality:
 
     def test_models(self) -> None:
         """Test model classes."""
-        auth_config = m.OracleOic.OICAuthSettings.model_validate({
+        auth_config = m.OracleOic.OICAuthConfig.model_validate({
             "oauth_client_id": "test_client_id",
             "oauth_client_secret": SecretStr("test_secret"),
             "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
         })
         assert auth_config.oauth_client_id == "test_client_id"
-        connection_config = m.OracleOic.OICConnectionSettings.model_validate({
+        connection_config = m.OracleOic.OICConnectionConfig.model_validate({
             "base_url": "https://test.integration.ocp.oraclecloud.com",
             "api_version": "v1",
             "request_timeout": 30,
