@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from flext_core import r
+from flext_core import p, r
 from flext_oracle_oic import c, m, t
 
 
@@ -14,7 +14,7 @@ class FlextOracleOicUtilitiesPatternAnalysis:
     @staticmethod
     def analyze_integration_pattern(
         integration_data: t.RecursiveContainerMapping,
-    ) -> r[str]:
+    ) -> p.Result[str]:
         """Analyze Oracle OIC integration to determine pattern type.
 
         Args:
@@ -58,7 +58,7 @@ class FlextOracleOicUtilitiesPatternAnalysis:
         pattern_type: str,
         configuration: m.OracleOic.MessageRouterPatternConfig
         | m.OracleOic.ScatterGatherPatternConfig,
-    ) -> r[
+    ) -> p.Result[
         m.OracleOic.MessageRouterPatternConfig | m.OracleOic.ScatterGatherPatternConfig
     ]:
         """Validate Oracle OIC integration pattern configuration.

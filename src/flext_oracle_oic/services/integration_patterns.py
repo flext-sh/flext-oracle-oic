@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from flext_core import r
+from flext_core import p, r
 from flext_oracle_oic import (
     FlextOracleOicModels,
     FlextOracleOicServiceBase,
@@ -29,7 +29,7 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
         self,
         message_data: t.RecursiveContainerMapping,
         routing_rules: Sequence[t.RecursiveContainerMapping],
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Apply message router pattern to OIC integration using FlextOracleOicUtilities.
 
         Args:
@@ -75,7 +75,7 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
         self,
         request_data: t.RecursiveContainerMapping,
         target_endpoints: t.StrSequence,
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
 
         Args:

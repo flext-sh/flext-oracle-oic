@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import MutableSequence
 from datetime import UTC, datetime
 
-from flext_core import r
+from flext_core import p, r
 from flext_oracle_oic import c, t
 
 
@@ -15,7 +15,7 @@ class FlextOracleOicUtilitiesMonitoring:
     @staticmethod
     def analyze_performance_metrics(
         metrics: t.RecursiveContainerMapping,
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Analyze Oracle OIC performance metrics.
 
         Args:
@@ -76,7 +76,7 @@ class FlextOracleOicUtilitiesMonitoring:
     @staticmethod
     def validate_health_status(
         health_data: t.RecursiveContainerMapping,
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Validate Oracle OIC health check data.
 
         Args:

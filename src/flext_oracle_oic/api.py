@@ -13,7 +13,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Self, override
 
-from flext_core import r, s
+from flext_core import s
 from flext_oracle_oic import (
     FlextOracleOicModels,
     FlextOracleOicService,
@@ -80,7 +80,7 @@ class FlextOracleOicApi(s[None]):
             extra_info=str(self.get_connection_context()),
         )
 
-    def activate_integration(self, integration_id: str) -> r[bool]:
+    def activate_integration(self, integration_id: str) -> p.Result[bool]:
         """Activate Oracle OIC integration.
 
         Args:
@@ -95,7 +95,7 @@ class FlextOracleOicApi(s[None]):
     def create_integration(
         self,
         integration_data: t.RecursiveContainerMapping,
-    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
         Args:
@@ -107,7 +107,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.create_integration(integration_data)
 
-    def deactivate_integration(self, integration_id: str) -> r[bool]:
+    def deactivate_integration(self, integration_id: str) -> p.Result[bool]:
         """Deactivate Oracle OIC integration.
 
         Args:
@@ -119,7 +119,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.deactivate_integration(integration_id)
 
-    def delete_integration(self, integration_id: str) -> r[bool]:
+    def delete_integration(self, integration_id: str) -> p.Result[bool]:
         """Delete Oracle OIC integration.
 
         Args:
@@ -132,7 +132,7 @@ class FlextOracleOicApi(s[None]):
         return self._service.delete_integration(integration_id)
 
     @override
-    def execute(self) -> r[None]:
+    def execute(self) -> p.Result[None]:
         """Execute Oracle OIC API operations - delegates to service."""
         result = self._service.execute()
         return result.map(lambda _: None)
@@ -142,7 +142,7 @@ class FlextOracleOicApi(s[None]):
         integration_id: str,
         payload: t.RecursiveContainerMapping,
         **kwargs: t.Scalar,
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -165,7 +165,7 @@ class FlextOracleOicApi(s[None]):
         integration_id: str,
         file_config: t.RecursiveContainerMapping,
         **kwargs: t.Scalar,
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Execute file transfer pattern.
 
         Args:
@@ -188,7 +188,7 @@ class FlextOracleOicApi(s[None]):
         integration_id: str,
         schedule_config: t.RecursiveContainerMapping,
         **kwargs: t.Scalar,
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -245,7 +245,7 @@ class FlextOracleOicApi(s[None]):
             "verify_ssl": self._oic_config.verify_ssl,
         }
 
-    def get_health_status(self) -> r[t.RecursiveContainerMapping]:
+    def get_health_status(self) -> p.Result[t.RecursiveContainerMapping]:
         """Get Oracle OIC health status.
 
         Returns:
@@ -257,7 +257,7 @@ class FlextOracleOicApi(s[None]):
     def get_integration(
         self,
         integration_id: str,
-    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
         Args:
@@ -269,7 +269,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.get_integration(integration_id)
 
-    def get_performance_metrics(self) -> r[t.RecursiveContainerMapping]:
+    def get_performance_metrics(self) -> p.Result[t.RecursiveContainerMapping]:
         """Get Oracle OIC performance metrics.
 
         Returns:
@@ -280,7 +280,7 @@ class FlextOracleOicApi(s[None]):
 
     def list_integrations(
         self,
-    ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> p.Result[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -289,7 +289,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.list_integrations()
 
-    def refresh_auth_token(self) -> r[str]:
+    def refresh_auth_token(self) -> p.Result[str]:
         """Refresh OAuth2 authentication token.
 
         Returns:
@@ -298,7 +298,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.refresh_auth_token()
 
-    def test_connection(self) -> r[bool]:
+    def test_connection(self) -> p.Result[bool]:
         """Test connection to Oracle OIC instance.
 
         Returns:
@@ -311,7 +311,7 @@ class FlextOracleOicApi(s[None]):
         self,
         integration_id: str,
         integration_data: t.RecursiveContainerMapping,
-    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
         Args:
@@ -324,7 +324,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.update_integration(integration_id, integration_data)
 
-    def validate_auth_token(self, token: str) -> r[bool]:
+    def validate_auth_token(self, token: str) -> p.Result[bool]:
         """Validate OAuth2 authentication token.
 
         Args:

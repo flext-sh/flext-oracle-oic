@@ -17,7 +17,7 @@ from typing import override
 
 from flext_infra import __version__
 
-from flext_core import r, s
+from flext_core import p, r, s
 from flext_oracle_oic import (
     FlextOracleOicModels,
     FlextOracleOicService,
@@ -67,14 +67,14 @@ class FlextOracleOicCli(s[None]):
         return parser
 
     @override
-    def execute(self) -> r[None]:
+    def execute(self) -> p.Result[None]:
         """Execute main CLI operation - run with default arguments."""
         exit_code = self.run_cli()
         if exit_code == 0:
             return r[None].ok(None)
         return r[None].fail(f"CLI execution failed with exit code {exit_code}")
 
-    def list_integrations(self) -> r[bool]:
+    def list_integrations(self) -> p.Result[bool]:
         """List Oracle OIC integrations.
 
         Returns:
@@ -113,7 +113,7 @@ class FlextOracleOicCli(s[None]):
         parser.print_help()
         return 1
 
-    def run_command(self, command: str) -> r[bool]:
+    def run_command(self, command: str) -> p.Result[bool]:
         """Run the specified CLI command.
 
         Args:
@@ -132,7 +132,7 @@ class FlextOracleOicCli(s[None]):
             return r[bool].fail(f"Unknown command: {command}")
         return commands[command]()
 
-    def show_version(self) -> r[bool]:
+    def show_version(self) -> p.Result[bool]:
         """Show Oracle OIC Extension version.
 
         Returns:
@@ -150,7 +150,7 @@ class FlextOracleOicCli(s[None]):
                 self.logger.exception("Version display failed")
             return r[bool].fail(f"Version display failed: {exc!s}")
 
-    def test_connection(self) -> r[bool]:
+    def test_connection(self) -> p.Result[bool]:
         """Test connection to Oracle OIC instance.
 
         Returns:
@@ -180,7 +180,7 @@ class FlextOracleOicCli(s[None]):
     def _list_integrations_with_service(
         self,
         service: FlextOracleOicService,
-    ) -> r[bool]:
+    ) -> p.Result[bool]:
         """List integrations using the provided service.
 
         Args:

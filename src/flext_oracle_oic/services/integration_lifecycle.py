@@ -9,14 +9,14 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import r
+from flext_core import p, r
 from flext_oracle_oic import FlextOracleOicServiceBase, c as oic_c
 
 
 class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
     """Mixin providing integration lifecycle operations for FlextOracleOicService facade."""
 
-    def activate_integration(self, integration_id: str) -> r[bool]:
+    def activate_integration(self, integration_id: str) -> p.Result[bool]:
         """Activate Oracle OIC integration.
 
         Args:
@@ -44,7 +44,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             self.logger.exception("Failed to activate integration %s", integration_id)
             return r[bool].fail(f"Integration activation failed: {e!s}")
 
-    def deactivate_integration(self, integration_id: str) -> r[bool]:
+    def deactivate_integration(self, integration_id: str) -> p.Result[bool]:
         """Deactivate Oracle OIC integration.
 
         Args:
@@ -74,7 +74,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             self.logger.exception("Failed to deactivate integration %s", integration_id)
             return r[bool].fail(f"Integration deactivation failed: {e!s}")
 
-    def test_connection(self) -> r[bool]:
+    def test_connection(self) -> p.Result[bool]:
         """Test connection to Oracle OIC instance.
 
         Returns:

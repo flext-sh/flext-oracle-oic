@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from collections.abc import MutableSequence
 
-from flext_core import r
+from flext_core import p, r
 from flext_oracle_oic import c, t
 
 
@@ -15,7 +15,7 @@ class FlextOracleOicUtilitiesOracleOic:
     @staticmethod
     def validate_integration_data(
         integration_data: t.RecursiveContainerMapping,
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Validate complete Oracle OIC integration data.
 
         Args:
@@ -89,7 +89,7 @@ class FlextOracleOicUtilitiesOracleOic:
         return r[t.RecursiveContainerMapping].ok(validated_data)
 
     @staticmethod
-    def validate_integration_name(name: str) -> r[str]:
+    def validate_integration_name(name: str) -> p.Result[str]:
         """Validate Oracle OIC integration name.
 
         Args:
@@ -116,7 +116,7 @@ class FlextOracleOicUtilitiesOracleOic:
         return r[str].ok(name)
 
     @staticmethod
-    def validate_integration_status(status: str) -> r[str]:
+    def validate_integration_status(status: str) -> p.Result[str]:
         """Validate Oracle OIC integration status.
 
         Args:
@@ -142,7 +142,7 @@ class FlextOracleOicUtilitiesOracleOic:
         return r[str].ok(status)
 
     @staticmethod
-    def validate_integration_version(version: str) -> r[str]:
+    def validate_integration_version(version: str) -> p.Result[str]:
         """Validate Oracle OIC integration version format.
 
         Args:

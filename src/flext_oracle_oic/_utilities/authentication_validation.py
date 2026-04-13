@@ -6,7 +6,7 @@ import re
 
 from pydantic import SecretStr
 
-from flext_core import r
+from flext_core import p, r
 from flext_oracle_oic import c
 
 
@@ -14,7 +14,7 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
     """Oracle OIC authentication validation utilities."""
 
     @staticmethod
-    def validate_oauth_client_id(client_id: str) -> r[str]:
+    def validate_oauth_client_id(client_id: str) -> p.Result[str]:
         """Validate OAuth2 client ID.
 
         Args:
@@ -37,7 +37,7 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
         return r[str].ok(client_id)
 
     @staticmethod
-    def validate_oauth_client_secret(client_secret: SecretStr) -> r[SecretStr]:
+    def validate_oauth_client_secret(client_secret: SecretStr) -> p.Result[SecretStr]:
         """Validate OAuth2 client secret.
 
         Args:

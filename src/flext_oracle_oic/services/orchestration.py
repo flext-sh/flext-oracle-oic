@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from flext_core import r
+from flext_core import p, r
 from flext_oracle_oic import (
     FlextOracleOicClient,
     FlextOracleOicServiceBase,
@@ -27,7 +27,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         integration_id: str,
         payload: t.RecursiveContainerMapping,
         **_kwargs: t.Scalar,
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -74,7 +74,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         integration_id: str,
         file_config: t.RecursiveContainerMapping,
         **kwargs: t.Scalar,
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Execute file transfer pattern.
 
         Args:
@@ -100,7 +100,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         integration_id: str,
         schedule_config: t.RecursiveContainerMapping,
         **kwargs: t.Scalar,
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -163,7 +163,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         log_message: str,
         error_message: str,
         **kwargs: t.Scalar,
-    ) -> r[t.RecursiveContainerMapping]:
+    ) -> p.Result[t.RecursiveContainerMapping]:
         try:
             client_result = self._get_client()
             if client_result.failure:

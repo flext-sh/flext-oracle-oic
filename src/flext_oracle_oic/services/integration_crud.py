@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from collections.abc import MutableSequence, Sequence
 
-from flext_core import r
+from flext_core import p, r
 from flext_oracle_oic import (
     FlextOracleOicModels,
     FlextOracleOicServiceBase,
@@ -26,7 +26,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
     def create_integration(
         self,
         integration_data: t.RecursiveContainerMapping,
-    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
         Args:
@@ -76,7 +76,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
     def get_integration(
         self,
         integration_id: str,
-    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
         Args:
@@ -142,7 +142,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         self,
         integration_id: str,
         integration_data: t.RecursiveContainerMapping,
-    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
         Args:
@@ -190,7 +190,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 f"Integration update failed: {e!s}",
             )
 
-    def delete_integration(self, integration_id: str) -> r[bool]:
+    def delete_integration(self, integration_id: str) -> p.Result[bool]:
         """Delete Oracle OIC integration.
 
         Args:
@@ -221,7 +221,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
     def deploy_integration(
         self,
         integration_data: t.RecursiveContainerMapping,
-    ) -> r[str]:
+    ) -> p.Result[str]:
         """Deploy integration to Oracle OIC.
 
         Args:
@@ -253,7 +253,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
     def list_connections(
         self,
         type_filter: t.StrSequence | None = None,
-    ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
+    ) -> p.Result[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
         """List Oracle OIC connections.
 
         Args:

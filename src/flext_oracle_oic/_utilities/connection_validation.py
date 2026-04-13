@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from flext_core import r
+from flext_core import p, r
 from flext_oracle_oic import c
 
 
@@ -10,7 +10,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
     """Oracle OIC connection validation utilities."""
 
     @staticmethod
-    def validate_base_url(base_url: str) -> r[str]:
+    def validate_base_url(base_url: str) -> p.Result[str]:
         """Validate Oracle OIC base URL.
 
         Args:
@@ -33,7 +33,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
         return r[str].ok(base_url)
 
     @staticmethod
-    def validate_connection_status(status: str) -> r[str]:
+    def validate_connection_status(status: str) -> p.Result[str]:
         """Validate Oracle OIC connection status.
 
         Args:
@@ -59,7 +59,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
         return r[str].ok(status)
 
     @staticmethod
-    def validate_connection_type(connection_type: str) -> r[str]:
+    def validate_connection_type(connection_type: str) -> p.Result[str]:
         """Validate Oracle OIC connection type.
 
         Args:

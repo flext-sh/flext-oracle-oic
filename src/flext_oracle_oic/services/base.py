@@ -16,7 +16,7 @@ from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiSettings
 
-from flext_core import r, s
+from flext_core import p, r, s
 from flext_oracle_oic import (
     FlextOracleOicClient,
     FlextOracleOicModels,
@@ -103,7 +103,7 @@ class FlextOracleOicServiceBase(
     def execute(
         self: Self,
         **kwargs: t.Scalar,
-    ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> p.Result[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """Execute main service operation - list all integrations.
 
         Returns:
@@ -114,7 +114,7 @@ class FlextOracleOicServiceBase(
 
     def list_integrations(
         self,
-    ) -> r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> p.Result[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -167,7 +167,7 @@ class FlextOracleOicServiceBase(
                 f"Integration listing failed: {exc!s}",
             )
 
-    def _get_client(self) -> r[FlextOracleOicClient]:
+    def _get_client(self) -> p.Result[FlextOracleOicClient]:
         """Get or create Oracle OIC client instance.
 
         Returns:
@@ -203,7 +203,7 @@ class FlextOracleOicServiceBase(
             return r[FlextOracleOicClient].fail(f"Client creation failed: {exc!s}")
 
     @override
-    def validate_business_rules(self) -> r[bool]:
+    def validate_business_rules(self) -> p.Result[bool]:
         """Validate Oracle OIC service business rules.
 
         Returns:

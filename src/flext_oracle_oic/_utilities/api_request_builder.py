@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from urllib.parse import urljoin
 
-from flext_core import r
+from flext_core import p, r
 from flext_oracle_oic import (
     FlextOracleOicUtilitiesConnectionValidation,
     t,
@@ -22,7 +22,7 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
         resource_name: str,
         resource_label: str,
         resource_id: str | None = None,
-    ) -> r[str]:
+    ) -> p.Result[str]:
         """Build Oracle OIC endpoint URL for a versioned resource path."""
         url_result = FlextOracleOicUtilitiesConnectionValidation.validate_base_url(
             base_url,
@@ -46,7 +46,7 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
         base_url: str,
         api_version: str = "v1",
         connection_id: str | None = None,
-    ) -> r[str]:
+    ) -> p.Result[str]:
         """Build Oracle OIC connection API endpoint.
 
         Args:
@@ -71,7 +71,7 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
         base_url: str,
         api_version: str = "v1",
         integration_id: str | None = None,
-    ) -> r[str]:
+    ) -> p.Result[str]:
         """Build Oracle OIC integration API endpoint.
 
         Args:
@@ -96,7 +96,7 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
         auth_token: str | None = None,
         content_type: str = "application/json",
         additional_headers: t.StrMapping | None = None,
-    ) -> r[t.StrMapping]:
+    ) -> p.Result[t.StrMapping]:
         """Build Oracle OIC API request headers.
 
         Args:
