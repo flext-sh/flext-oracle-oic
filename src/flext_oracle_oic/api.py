@@ -13,11 +13,12 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Self, override
 
-from flext_core import s
 from flext_oracle_oic import (
-    FlextOracleOicModels,
     FlextOracleOicService,
     FlextOracleOicSettings,
+    m,
+    p,
+    s,
     t,
 )
 
@@ -95,7 +96,7 @@ class FlextOracleOicApi(s[None]):
     def create_integration(
         self,
         integration_data: t.RecursiveContainerMapping,
-    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
         Args:
@@ -257,7 +258,7 @@ class FlextOracleOicApi(s[None]):
     def get_integration(
         self,
         integration_id: str,
-    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
         Args:
@@ -280,7 +281,7 @@ class FlextOracleOicApi(s[None]):
 
     def list_integrations(
         self,
-    ) -> p.Result[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -311,7 +312,7 @@ class FlextOracleOicApi(s[None]):
         self,
         integration_id: str,
         integration_data: t.RecursiveContainerMapping,
-    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
         Args:
