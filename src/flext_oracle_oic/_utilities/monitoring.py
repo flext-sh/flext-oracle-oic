@@ -25,7 +25,7 @@ class FlextOracleOicUtilitiesMonitoring:
         r containing analysis results or error
 
         """
-        overall_health = "healthy"
+        overall_health: str = c.HealthStatus.HEALTHY.value
         warnings: MutableSequence[t.RecursiveContainer] = []
         critical_issues: MutableSequence[t.RecursiveContainer] = []
         recommendations: MutableSequence[t.RecursiveContainer] = []
@@ -50,7 +50,7 @@ class FlextOracleOicUtilitiesMonitoring:
                     critical_issues.append(
                         f"Low success rate: {success_rate:.2%} (threshold: {threshold:.2%})",
                     )
-                    overall_health = "unhealthy"
+                    overall_health = c.HealthStatus.UNHEALTHY.value
                     recommendations.append(
                         "Investigate integration failures and error patterns",
                     )
@@ -94,7 +94,12 @@ class FlextOracleOicUtilitiesMonitoring:
                 "Health data must include status",
             )
         status = health_data["status"]
-        if status not in {"healthy", "unhealthy", "error", "unknown"}:
+        if status not in {
+            c.Monitoring.HealthStatus.HEALTHY.value,
+            c.Monitoring.HealthStatus.UNHEALTHY.value,
+            c.Monitoring.HealthStatus.ERROR.value,
+            c.Monitoring.HealthStatus.UNKNOWN.value,
+        }:
             return r[t.RecursiveContainerMapping].fail(
                 "Invalid health status. Valid: healthy, unhealthy, error, unknown",
             )

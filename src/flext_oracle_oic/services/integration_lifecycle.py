@@ -98,7 +98,9 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             status_value = result_data.get("status", "")
             match status_value:
                 case str():
-                    is_connected = status_value.lower() == "healthy"
+                    is_connected = (
+                        status_value.lower() == oic_c.HealthStatus.HEALTHY.value
+                    )
                 case _:
                     is_connected = False
             return r[bool].ok(is_connected)

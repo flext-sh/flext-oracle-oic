@@ -16,10 +16,9 @@ from collections.abc import Mapping, MutableSequence, Sequence
 from types import TracebackType
 from typing import Self
 
-from flext_api import FlextApi, FlextApiSettings
+from flext_api import FlextApi, FlextApiConstants, FlextApiSettings
 
-from flext_core import p, r
-from flext_oracle_oic import FlextOracleOicModels, c, t, u
+from flext_oracle_oic import FlextOracleOicModels, c, p, r, t, u
 
 logger = u.fetch_logger(__name__)
 
@@ -338,13 +337,13 @@ class FlextOracleOicClient:
                 }
             base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
             full_url = f"{base_url}/{endpoint.lstrip('/')}"
-            if method.upper() == "GET":
+            if method.upper() == FlextApiConstants.Api.Method.GET.value:
                 response_result = client.get(full_url, headers=None)
-            elif method.upper() == "POST":
+            elif method.upper() == FlextApiConstants.Api.Method.POST.value:
                 response_result = client.post(full_url, data=api_data, headers=None)
-            elif method.upper() == "PUT":
+            elif method.upper() == FlextApiConstants.Api.Method.PUT.value:
                 response_result = client.put(full_url, data=api_data, headers=None)
-            elif method.upper() == "DELETE":
+            elif method.upper() == FlextApiConstants.Api.Method.DELETE.value:
                 response_result = client.delete(full_url, headers=None)
             else:
                 return r[t.RecursiveContainer].fail(
