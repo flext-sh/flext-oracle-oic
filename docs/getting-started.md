@@ -28,7 +28,7 @@
 - [Related Documentation](#related-documentation)
 <!-- TOC END -->
 
-**flext-oracle-oic v0.9.9** - Oracle Integration Cloud client library for the FLEXT ecosystem
+**flext-oracle-oic v0.12.0-dev** - Oracle Integration Cloud client library for the FLEXT ecosystem
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
@@ -317,7 +317,7 @@ grep -r "from httpx\|from typer" src/
 
 ______________________________________________________________________
 
-This guide reflects the actual current implementation status as of September 17, 2025. The library is in early development (v0.9.9) with foundation configuration and basic service structure implemented. Full Oracle OIC integration capabilities are planned for future releases following the evidence-based roadmap in TODO.md.
+This guide reflects the actual current implementation status as of April 14, 2026. The library is in early development (v0.12.0-dev) with foundation configuration and basic service structure implemented. Full Oracle OIC integration capabilities are planned for future releases following the evidence-based roadmap in TODO.md.
 
 ## Related Documentation
 

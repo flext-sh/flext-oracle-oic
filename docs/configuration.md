@@ -24,7 +24,7 @@
 - [Future Enhancements](#future-enhancements)
 <!-- TOC END -->
 
-**Configuration Management for flext-oracle-oic v0.9.9**
+**Configuration Management for flext-oracle-oic v0.12.0-dev**
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
@@ -326,4 +326,4 @@ The configuration system will be enhanced in future releases with:
 
 ______________________________________________________________________
 
-This configuration guide reflects the actual implementation status as of September 17, 2025. The basic Pydantic configuration foundation is implemented, with advanced features planned for future releases.
+This configuration guide reflects the actual implementation status as of April 14, 2026. The basic Pydantic configuration foundation is implemented, with advanced features planned for future releases.

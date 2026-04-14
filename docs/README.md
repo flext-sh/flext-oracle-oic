@@ -52,7 +52,7 @@
 
 ## 📊 Status
 
-**Version**: 0.9.9 (Early Development)
+**Version**: 0.12.0-dev (Early Development)
 **Status**: ⏳ In development (Foundation implemented, requires FLEXT compliance)
 **Coverage**: -
 **Documentation**: ⏳ In progress

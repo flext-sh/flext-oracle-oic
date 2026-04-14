@@ -32,13 +32,13 @@
 - [Related Documentation](#related-documentation)
 <!-- TOC END -->
 
-**flext-oracle-oic v0.9.9** - Oracle Integration Cloud Architecture Analysis
+**flext-oracle-oic v0.12.0-dev** - Oracle Integration Cloud Architecture Analysis
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
 ## Overview
 
-This document provides an accurate analysis of the current architecture implementation in flext-oracle-oic v0.9.9, identifying both existing capabilities and areas requiring FLEXT ecosystem compliance improvements.
+This document provides an accurate analysis of the current architecture implementation in flext-oracle-oic v0.12.0-dev, identifying both existing capabilities and areas requiring FLEXT ecosystem compliance improvements.
 
 ### Architecture Principles
 
@@ -272,7 +272,7 @@ service = OracleOicExtensionService(settings)
 
 # ✅ Required: Container-managed dependencies
 container = FlextContainer.get_global()
-service = container.get("oic_service").unwrap()
+service = container.resolve("oic_service").unwrap()
 ```
 
 ## Critical Architecture Issues
@@ -424,7 +424,7 @@ tests/
 
 ______________________________________________________________________
 
-This architecture analysis reflects the actual implementation status as of September 17, 2025. The library provides foundation configuration and basic service structure, with significant FLEXT compliance improvements needed before production use.
+This architecture analysis reflects the actual implementation status as of April 14, 2026. The library provides foundation configuration and basic service structure, with significant FLEXT compliance improvements needed before production use.
 
 ## Related Documentation
 
