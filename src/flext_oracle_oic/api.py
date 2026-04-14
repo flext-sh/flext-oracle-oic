@@ -18,12 +18,11 @@ from flext_oracle_oic import (
     FlextOracleOicSettings,
     m,
     p,
-    s,
     t,
 )
 
 
-class FlextOracleOicApi(s[None]):
+class FlextOracleOicApi(FlextOracleOicService):
     """Thin facade for Oracle OIC operations with complete FLEXT integration.
 
     Integrates:
@@ -81,6 +80,7 @@ class FlextOracleOicApi(s[None]):
             extra_info=str(self.get_connection_context()),
         )
 
+    @override
     def activate_integration(self, integration_id: str) -> p.Result[bool]:
         """Activate Oracle OIC integration.
 
@@ -93,6 +93,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.activate_integration(integration_id)
 
+    @override
     def create_integration(
         self,
         integration_data: t.RecursiveContainerMapping,
@@ -108,6 +109,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.create_integration(integration_data)
 
+    @override
     def deactivate_integration(self, integration_id: str) -> p.Result[bool]:
         """Deactivate Oracle OIC integration.
 
@@ -120,6 +122,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.deactivate_integration(integration_id)
 
+    @override
     def delete_integration(self, integration_id: str) -> p.Result[bool]:
         """Delete Oracle OIC integration.
 
@@ -133,11 +136,11 @@ class FlextOracleOicApi(s[None]):
         return self._service.delete_integration(integration_id)
 
     @override
-    def execute(self) -> p.Result[None]:
+    def execute(self) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """Execute Oracle OIC API operations - delegates to service."""
-        result = self._service.execute()
-        return result.map(lambda _: None)
+        return self._service.execute()
 
+    @override
     def execute_app_driven_orchestration(
         self,
         integration_id: str,
@@ -161,6 +164,7 @@ class FlextOracleOicApi(s[None]):
             **kwargs,
         )
 
+    @override
     def execute_file_transfer(
         self,
         integration_id: str,
@@ -184,6 +188,7 @@ class FlextOracleOicApi(s[None]):
             **kwargs,
         )
 
+    @override
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
@@ -246,6 +251,7 @@ class FlextOracleOicApi(s[None]):
             "verify_ssl": self._oic_config.verify_ssl,
         }
 
+    @override
     def get_health_status(self) -> p.Result[t.RecursiveContainerMapping]:
         """Get Oracle OIC health status.
 
@@ -255,6 +261,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.get_health_status()
 
+    @override
     def get_integration(
         self,
         integration_id: str,
@@ -270,6 +277,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.get_integration(integration_id)
 
+    @override
     def get_performance_metrics(self) -> p.Result[t.RecursiveContainerMapping]:
         """Get Oracle OIC performance metrics.
 
@@ -279,6 +287,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.get_performance_metrics()
 
+    @override
     def list_integrations(
         self,
     ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
@@ -290,6 +299,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.list_integrations()
 
+    @override
     def refresh_auth_token(self) -> p.Result[str]:
         """Refresh OAuth2 authentication token.
 
@@ -299,6 +309,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.refresh_auth_token()
 
+    @override
     def test_connection(self) -> p.Result[bool]:
         """Test connection to Oracle OIC instance.
 
@@ -308,6 +319,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.test_connection()
 
+    @override
     def update_integration(
         self,
         integration_id: str,
@@ -325,6 +337,7 @@ class FlextOracleOicApi(s[None]):
         """
         return self._service.update_integration(integration_id, integration_data)
 
+    @override
     def validate_auth_token(self, token: str) -> p.Result[bool]:
         """Validate OAuth2 authentication token.
 

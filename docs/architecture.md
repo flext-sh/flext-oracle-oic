@@ -44,7 +44,7 @@ This document provides an accurate analysis of the current architecture implemen
 
 The library follows these core principles from the FLEXT ecosystem:
 
-1. **Railway-Oriented Programming**: r[T] for type-safe error handling
+1. **Railway-Oriented Programming**: p.Result[T] for type-safe error handling
 1. **Dependency Injection**: FlextContainer for service management
 1. **Domain-Driven Design**: Rich domain models for Oracle OIC concepts
 1. **Clean Architecture**: Separation of concerns across layers
