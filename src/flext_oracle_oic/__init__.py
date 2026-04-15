@@ -10,9 +10,10 @@ from flext_core.lazy import (
     install_lazy_exports,
     merge_lazy_imports,
 )
+from flext_oracle_oic.__version__ import *
 
 if _t.TYPE_CHECKING:
-    from flext_core import d, e, h, r, x
+    from flext_core import c, d, e, h, r, x
     from flext_oracle_oic._utilities.api_request_builder import (
         FlextOracleOicUtilitiesAPIRequestBuilder,
     )
@@ -28,7 +29,6 @@ if _t.TYPE_CHECKING:
         FlextOracleOicUtilitiesPatternAnalysis,
     )
     from flext_oracle_oic.api import FlextOracleOicApi, oracle_oic
-    from flext_oracle_oic.constants import FlextOracleOicConstants, c
     from flext_oracle_oic.ext_client import FlextOracleOicClient
     from flext_oracle_oic.main import FlextOracleOicCli, main
     from flext_oracle_oic.models import FlextOracleOicModels, m
@@ -57,13 +57,19 @@ _LAZY_IMPORTS = merge_lazy_imports(
     ),
     build_lazy_import_map(
         {
+            ".__version__": (
+                "__author__",
+                "__author_email__",
+                "__description__",
+                "__license__",
+                "__title__",
+                "__url__",
+                "__version__",
+                "__version_info__",
+            ),
             ".api": (
                 "FlextOracleOicApi",
                 "oracle_oic",
-            ),
-            ".constants": (
-                "FlextOracleOicConstants",
-                "c",
             ),
             ".ext_client": ("FlextOracleOicClient",),
             ".main": (
@@ -92,6 +98,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "u",
             ),
             "flext_core": (
+                "c",
                 "d",
                 "e",
                 "h",
@@ -101,10 +108,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
         },
     ),
     exclude_names=(
-        "FlextDispatcher",
-        "FlextLogger",
-        "FlextRegistry",
-        "FlextRuntime",
         "cleanup_submodule_namespace",
         "install_lazy_exports",
         "lazy_getattr",
@@ -124,7 +127,6 @@ __all__: list[str] = [
     "FlextOracleOicAuthMixin",
     "FlextOracleOicCli",
     "FlextOracleOicClient",
-    "FlextOracleOicConstants",
     "FlextOracleOicIntegrationCrudMixin",
     "FlextOracleOicIntegrationLifecycleMixin",
     "FlextOracleOicIntegrationPatternsMixin",
@@ -143,6 +145,14 @@ __all__: list[str] = [
     "FlextOracleOicUtilitiesMonitoring",
     "FlextOracleOicUtilitiesOracleOic",
     "FlextOracleOicUtilitiesPatternAnalysis",
+    "__author__",
+    "__author_email__",
+    "__description__",
+    "__license__",
+    "__title__",
+    "__url__",
+    "__version__",
+    "__version_info__",
     "c",
     "d",
     "e",
