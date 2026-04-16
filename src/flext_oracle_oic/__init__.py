@@ -13,7 +13,7 @@ from flext_core.lazy import (
 from flext_oracle_oic.__version__ import *
 
 if _t.TYPE_CHECKING:
-    from flext_core import c, d, e, h, r, x
+    from flext_core import d, e, h, r, x
     from flext_oracle_oic._utilities.api_request_builder import (
         FlextOracleOicUtilitiesAPIRequestBuilder,
     )
@@ -29,6 +29,7 @@ if _t.TYPE_CHECKING:
         FlextOracleOicUtilitiesPatternAnalysis,
     )
     from flext_oracle_oic.api import FlextOracleOicApi, oracle_oic
+    from flext_oracle_oic.constants import FlextOracleOicConstants, c
     from flext_oracle_oic.ext_client import FlextOracleOicClient
     from flext_oracle_oic.main import FlextOracleOicCli, main
     from flext_oracle_oic.models import FlextOracleOicModels, m
@@ -67,9 +68,25 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "__version__",
                 "__version_info__",
             ),
+            "._utilities.api_request_builder": (
+                "FlextOracleOicUtilitiesAPIRequestBuilder",
+            ),
+            "._utilities.authentication_validation": (
+                "FlextOracleOicUtilitiesAuthenticationValidation",
+            ),
+            "._utilities.connection_validation": (
+                "FlextOracleOicUtilitiesConnectionValidation",
+            ),
+            "._utilities.monitoring": ("FlextOracleOicUtilitiesMonitoring",),
+            "._utilities.oracle_oic": ("FlextOracleOicUtilitiesOracleOic",),
+            "._utilities.pattern_analysis": ("FlextOracleOicUtilitiesPatternAnalysis",),
             ".api": (
                 "FlextOracleOicApi",
                 "oracle_oic",
+            ),
+            ".constants": (
+                "FlextOracleOicConstants",
+                "c",
             ),
             ".ext_client": ("FlextOracleOicClient",),
             ".main": (
@@ -88,6 +105,17 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "FlextOracleOicService",
                 "s",
             ),
+            ".services.auth": ("FlextOracleOicAuthMixin",),
+            ".services.base": ("FlextOracleOicServiceBase",),
+            ".services.integration_crud": ("FlextOracleOicIntegrationCrudMixin",),
+            ".services.integration_lifecycle": (
+                "FlextOracleOicIntegrationLifecycleMixin",
+            ),
+            ".services.integration_patterns": (
+                "FlextOracleOicIntegrationPatternsMixin",
+            ),
+            ".services.monitoring": ("FlextOracleOicMonitoringMixin",),
+            ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
             ".settings": ("FlextOracleOicSettings",),
             ".typings": (
                 "FlextOracleOicTypes",
@@ -98,7 +126,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "u",
             ),
             "flext_core": (
-                "c",
                 "d",
                 "e",
                 "h",
@@ -127,6 +154,7 @@ __all__: list[str] = [
     "FlextOracleOicAuthMixin",
     "FlextOracleOicCli",
     "FlextOracleOicClient",
+    "FlextOracleOicConstants",
     "FlextOracleOicIntegrationCrudMixin",
     "FlextOracleOicIntegrationLifecycleMixin",
     "FlextOracleOicIntegrationPatternsMixin",

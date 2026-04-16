@@ -301,3 +301,5 @@ class FlextOracleOicConstants(FlextConstants):
 
 
 c = FlextOracleOicConstants
+
+__all__: list[str] = ["FlextOracleOicConstants", "c"]
