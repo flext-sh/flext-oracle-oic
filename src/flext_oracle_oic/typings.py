@@ -17,6 +17,7 @@ from __future__ import annotations
 from pydantic import TypeAdapter
 
 from flext_core import FlextTypes
+from flext_oracle_oic import m
 
 
 class FlextOracleOicTypes(FlextTypes):
@@ -27,7 +28,7 @@ class FlextOracleOicTypes(FlextTypes):
     Uses Python 3.13+ type syntax and patterns.
     """
 
-    CONTAINER_MAPPING_ADAPTER: TypeAdapter[FlextTypes.ContainerMapping] = TypeAdapter(
+    CONTAINER_MAPPING_ADAPTER: m.TypeAdapter[FlextTypes.ContainerMapping] = TypeAdapter(
         FlextTypes.ContainerMapping,
     )
 

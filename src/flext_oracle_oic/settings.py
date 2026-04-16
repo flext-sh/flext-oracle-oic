@@ -12,11 +12,11 @@ from __future__ import annotations
 
 from typing import Annotated, ClassVar, Self
 
-from pydantic import Field, SecretStr
+from pydantic import SecretStr
 from pydantic_settings import SettingsConfigDict
 
 from flext_core import FlextSettings
-from flext_oracle_oic import c, t
+from flext_oracle_oic import c, m, t
 
 
 @FlextSettings.auto_register("oracle-oic")
@@ -25,27 +25,29 @@ class FlextOracleOicSettings(FlextSettings):
 
     OICApiVersion: ClassVar[type[c.OICApiVersion]] = c.OICApiVersion
 
-    model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
+    model_config: ClassVar[SettingsConfigDict] = m.SettingsConfigDict(
         env_prefix="FLEXT_ORACLE_OIC_", extra="ignore"
     )
 
-    base_url: Annotated[t.NonEmptyStr, Field(default=c.OracleOic.DEFAULT_BASE_URL)]
-    api_version: Annotated[c.OICApiVersion, Field(default=c.OICApiVersion.V1)]
-    request_timeout: Annotated[t.PositiveInt, Field(default=c.DEFAULT_TIMEOUT_SECONDS)]
-    max_retries: Annotated[t.RetryCount, Field(default=c.MAX_RETRY_ATTEMPTS)]
-    verify_ssl: Annotated[bool, Field(default=True)]
-    use_ssl: Annotated[bool, Field(default=True)]
-    enable_monitoring: Annotated[bool, Field(default=True)]
-    enable_enterprise_patterns: Annotated[bool, Field(default=True)]
-    enable_orchestration: Annotated[bool, Field(default=True)]
-    oauth_client_id: Annotated[str, Field(default="")]
-    oauth_client_secret: Annotated[SecretStr, Field(default=SecretStr(""))]
+    base_url: Annotated[t.NonEmptyStr, m.Field(default=c.OracleOic.DEFAULT_BASE_URL)]
+    api_version: Annotated[c.OICApiVersion, m.Field(default=c.OICApiVersion.V1)]
+    request_timeout: Annotated[
+        t.PositiveInt, m.Field(default=c.DEFAULT_TIMEOUT_SECONDS)
+    ]
+    max_retries: Annotated[t.RetryCount, m.Field(default=c.MAX_RETRY_ATTEMPTS)]
+    verify_ssl: Annotated[bool, m.Field(default=True)]
+    use_ssl: Annotated[bool, m.Field(default=True)]
+    enable_monitoring: Annotated[bool, m.Field(default=True)]
+    enable_enterprise_patterns: Annotated[bool, m.Field(default=True)]
+    enable_orchestration: Annotated[bool, m.Field(default=True)]
+    oauth_client_id: Annotated[str, m.Field(default="")]
+    oauth_client_secret: Annotated[SecretStr, m.Field(default=SecretStr(""))]
     oauth_token_url: Annotated[
         t.NonEmptyStr,
-        Field(default=f"{c.OracleOic.DEFAULT_BASE_URL}/oauth/token"),
+        m.Field(default=f"{c.OracleOic.DEFAULT_BASE_URL}/oauth/token"),
     ]
-    oauth_client_aud: Annotated[str, Field(default="")]
-    oauth_scope: Annotated[str, Field(default="")]
+    oauth_client_aud: Annotated[str, m.Field(default="")]
+    oauth_scope: Annotated[str, m.Field(default="")]
 
     @classmethod
     def create_for_development(cls) -> Self:
