@@ -259,7 +259,7 @@ dev_settings = create_dev_config()
 
 ### Common Configuration Issues
 
-**Missing Required Fields:**
+**Missing Required u.Fields:**
 
 ```python
 from flext_oracle_oic import FlextOracleOicConnectionSettings
@@ -268,7 +268,7 @@ from flext_oracle_oic import FlextOracleOicConnectionSettings
 try:
     settings = FlextOracleOicConnectionSettings(api_version="v1")
 except ValueError as e:
-    print(f"Error: {e}")  # Field required error
+    print(f"Error: {e}")  # u.Field required error
 
 # ✅ This will work - base_url provided
 settings = FlextOracleOicConnectionSettings(
