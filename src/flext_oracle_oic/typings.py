@@ -28,8 +28,10 @@ class FlextOracleOicTypes(FlextTypes):
     Uses Python 3.13+ type syntax and patterns.
     """
 
-    CONTAINER_MAPPING_ADAPTER: m.TypeAdapter[FlextTypes.ContainerMapping] = TypeAdapter(
-        FlextTypes.ContainerMapping,
+    CONTAINER_MAPPING_ADAPTER: m.TypeAdapter[FlextTypes.RecursiveContainerMapping] = (
+        TypeAdapter(
+            FlextTypes.RecursiveContainerMapping,
+        )
     )
 
 
