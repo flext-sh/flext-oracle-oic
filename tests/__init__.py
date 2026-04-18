@@ -19,6 +19,18 @@ if _t.TYPE_CHECKING:
     from tests.models import TestsFlextOracleOicModels, m
     from tests.protocols import TestsFlextOracleOicProtocols, p
     from tests.typings import TestsFlextOracleOicTypes, t
+    from tests.unit.test_basic import TestBasicFunctionality
+    from tests.unit.test_cli import TestCLI
+    from tests.unit.test_config import TestFlextOracleOicSettings
+    from tests.unit.test_extension import TestOracleOicExtension
+    from tests.unit.test_main import TestMainFunction, TestMainModule
+    from tests.unit.test_models import (
+        TestOICAuthConfig,
+        TestOICConnectionConfig,
+        TestOICConnectionInfo,
+        TestOICIntegrationInfo,
+    )
+    from tests.unit.test_typings import TestFlextTypes
     from tests.utilities import TestsFlextOracleOicUtilities, u
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
@@ -40,6 +52,21 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "TestsFlextOracleOicTypes",
                 "t",
             ),
+            ".unit.test_basic": ("TestBasicFunctionality",),
+            ".unit.test_cli": ("TestCLI",),
+            ".unit.test_config": ("TestFlextOracleOicSettings",),
+            ".unit.test_extension": ("TestOracleOicExtension",),
+            ".unit.test_main": (
+                "TestMainFunction",
+                "TestMainModule",
+            ),
+            ".unit.test_models": (
+                "TestOICAuthConfig",
+                "TestOICConnectionConfig",
+                "TestOICConnectionInfo",
+                "TestOICIntegrationInfo",
+            ),
+            ".unit.test_typings": ("TestFlextTypes",),
             ".utilities": (
                 "TestsFlextOracleOicUtilities",
                 "u",
@@ -77,6 +104,17 @@ _LAZY_IMPORTS = merge_lazy_imports(
 install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
 
 __all__: list[str] = [
+    "TestBasicFunctionality",
+    "TestCLI",
+    "TestFlextOracleOicSettings",
+    "TestFlextTypes",
+    "TestMainFunction",
+    "TestMainModule",
+    "TestOICAuthConfig",
+    "TestOICConnectionConfig",
+    "TestOICConnectionInfo",
+    "TestOICIntegrationInfo",
+    "TestOracleOicExtension",
     "TestsFlextOracleOicConstants",
     "TestsFlextOracleOicModels",
     "TestsFlextOracleOicProtocols",
