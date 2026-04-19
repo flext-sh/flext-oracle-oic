@@ -136,9 +136,12 @@ class FlextOracleOicApi(FlextOracleOicService):
         return self._service.delete_integration(integration_id)
 
     @override
-    def execute(self) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    def execute(
+        self,
+        **kwargs: t.Scalar,
+    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """Execute Oracle OIC API operations - delegates to service."""
-        return self._service.execute()
+        return self._service.execute(**kwargs)
 
     @override
     def execute_app_driven_orchestration(
