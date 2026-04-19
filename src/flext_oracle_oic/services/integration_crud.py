@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import MutableSequence, Sequence
+from collections.abc import Mapping, MutableSequence, Sequence
 
 from flext_core import p, r
 from flext_oracle_oic import (
@@ -25,7 +25,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
     def create_integration(
         self,
-        integration_data: t.RecursiveContainerMapping,
+        integration_data: Mapping[str, t.Container],
     ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
@@ -141,7 +141,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
     def update_integration(
         self,
         integration_id: str,
-        integration_data: t.RecursiveContainerMapping,
+        integration_data: Mapping[str, t.Container],
     ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
@@ -220,7 +220,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
     def deploy_integration(
         self,
-        integration_data: t.RecursiveContainerMapping,
+        integration_data: Mapping[str, t.Container],
     ) -> p.Result[str]:
         """Deploy integration to Oracle OIC.
 

@@ -20,7 +20,7 @@ class FlextOracleOicProtocols(FlextProtocols):
         """OracleOic domain namespace."""
 
         @runtime_checkable
-        class HTTPClient(FlextProtocols.Service[t.RecursiveContainer], Protocol):
+        class HTTPClient(FlextProtocols.Service[t.Container], Protocol):
             """Protocol for HTTP client operations used by Oracle OIC services."""
 
             def delete(
@@ -37,27 +37,27 @@ class FlextOracleOicProtocols(FlextProtocols):
                 url: str,
                 *,
                 headers: t.StrMapping | None = None,
-            ) -> FlextProtocols.Result[t.RecursiveContainer]:
+            ) -> FlextProtocols.Result[t.Container]:
                 """Execute HTTP GET request."""
                 ...
 
             def post(
                 self,
                 url: str,
-                data: t.RecursiveContainerMapping | None = None,
+                data: Mapping[str, t.Container] | None = None,
                 *,
                 headers: t.StrMapping | None = None,
-            ) -> FlextProtocols.Result[t.RecursiveContainer]:
+            ) -> FlextProtocols.Result[t.Container]:
                 """Execute HTTP POST request."""
                 ...
 
             def put(
                 self,
                 url: str,
-                data: t.RecursiveContainerMapping | None = None,
+                data: Mapping[str, t.Container] | None = None,
                 *,
                 headers: t.StrMapping | None = None,
-            ) -> FlextProtocols.Result[t.RecursiveContainer]:
+            ) -> FlextProtocols.Result[t.Container]:
                 """Execute HTTP PUT request."""
                 ...
 

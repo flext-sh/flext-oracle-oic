@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from typing import Self, override
 
 from flext_oracle_oic import (
@@ -72,7 +72,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
-        exc_tb: t.RecursiveContainer,
+        exc_tb: t.Container,
     ) -> None:
         """Async context manager exit."""
         self.logger.info(
@@ -96,7 +96,7 @@ class FlextOracleOicApi(FlextOracleOicService):
     @override
     def create_integration(
         self,
-        integration_data: t.RecursiveContainerMapping,
+        integration_data: Mapping[str, t.Container],
     ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
@@ -147,9 +147,9 @@ class FlextOracleOicApi(FlextOracleOicService):
     def execute_app_driven_orchestration(
         self,
         integration_id: str,
-        payload: t.RecursiveContainerMapping,
+        payload: Mapping[str, t.Container],
         **kwargs: t.Scalar,
-    ) -> p.Result[t.RecursiveContainerMapping]:
+    ) -> p.Result[Mapping[str, t.Container]]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -171,9 +171,9 @@ class FlextOracleOicApi(FlextOracleOicService):
     def execute_file_transfer(
         self,
         integration_id: str,
-        file_config: t.RecursiveContainerMapping,
+        file_config: Mapping[str, t.Container],
         **kwargs: t.Scalar,
-    ) -> p.Result[t.RecursiveContainerMapping]:
+    ) -> p.Result[Mapping[str, t.Container]]:
         """Execute file transfer pattern.
 
         Args:
@@ -195,9 +195,9 @@ class FlextOracleOicApi(FlextOracleOicService):
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
-        schedule_config: t.RecursiveContainerMapping,
+        schedule_config: Mapping[str, t.Container],
         **kwargs: t.Scalar,
-    ) -> p.Result[t.RecursiveContainerMapping]:
+    ) -> p.Result[Mapping[str, t.Container]]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -215,7 +215,7 @@ class FlextOracleOicApi(FlextOracleOicService):
             **kwargs,
         )
 
-    def fetch_auth_context(self) -> t.RecursiveContainerMapping:
+    def fetch_auth_context(self) -> Mapping[str, t.Container]:
         """Get current authentication configuration context.
 
         Returns:
@@ -228,7 +228,7 @@ class FlextOracleOicApi(FlextOracleOicService):
             "oauth_scope": self._oic_config.oauth_scope,
         }
 
-    def fetch_connection_context(self) -> t.RecursiveContainerMapping:
+    def fetch_connection_context(self) -> Mapping[str, t.Container]:
         """Get current connection configuration context.
 
         Returns:
@@ -241,7 +241,7 @@ class FlextOracleOicApi(FlextOracleOicService):
             "request_timeout": self._oic_config.request_timeout,
         }
 
-    def fetch_features_context(self) -> t.RecursiveContainerMapping:
+    def fetch_features_context(self) -> Mapping[str, t.Container]:
         """Get current features configuration context.
 
         Returns:
@@ -255,7 +255,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         }
 
     @override
-    def fetch_health_status(self) -> p.Result[t.RecursiveContainerMapping]:
+    def fetch_health_status(self) -> p.Result[Mapping[str, t.Container]]:
         """Get Oracle OIC health status.
 
         Returns:
@@ -281,7 +281,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         return self._service.fetch_integration(integration_id)
 
     @override
-    def fetch_performance_metrics(self) -> p.Result[t.RecursiveContainerMapping]:
+    def fetch_performance_metrics(self) -> p.Result[Mapping[str, t.Container]]:
         """Get Oracle OIC performance metrics.
 
         Returns:
@@ -326,7 +326,7 @@ class FlextOracleOicApi(FlextOracleOicService):
     def update_integration(
         self,
         integration_id: str,
-        integration_data: t.RecursiveContainerMapping,
+        integration_data: Mapping[str, t.Container],
     ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 

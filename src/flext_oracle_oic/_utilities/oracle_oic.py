@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from collections.abc import MutableSequence
+from collections.abc import Mapping, MutableSequence
 
 from flext_core import p, r
 from flext_oracle_oic import c, t
@@ -14,8 +14,8 @@ class FlextOracleOicUtilitiesOracleOic:
 
     @staticmethod
     def validate_integration_data(
-        integration_data: t.RecursiveContainerMapping,
-    ) -> p.Result[t.RecursiveContainerMapping]:
+        integration_data: Mapping[str, t.Container],
+    ) -> p.Result[Mapping[str, t.Container]]:
         """Validate complete Oracle OIC integration data.
 
         Args:
@@ -83,10 +83,10 @@ class FlextOracleOicUtilitiesOracleOic:
                         "Status validation: Integration status must be a string",
                     )
         if errors:
-            return r[t.RecursiveContainerMapping].fail(
+            return r[Mapping[str, t.Container]].fail(
                 f"Integration validation failed: {'; '.join(errors)}",
             )
-        return r[t.RecursiveContainerMapping].ok(validated_data)
+        return r[Mapping[str, t.Container]].ok(validated_data)
 
     @staticmethod
     def validate_integration_name(name: str) -> p.Result[str]:

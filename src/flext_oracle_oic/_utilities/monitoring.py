@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import MutableSequence
+from collections.abc import Mapping, MutableSequence
 from datetime import UTC, datetime
 
 from flext_core import p, r
@@ -14,8 +14,8 @@ class FlextOracleOicUtilitiesMonitoring:
 
     @staticmethod
     def analyze_performance_metrics(
-        metrics: t.RecursiveContainerMapping,
-    ) -> p.Result[t.RecursiveContainerMapping]:
+        metrics: Mapping[str, t.Container],
+    ) -> p.Result[Mapping[str, t.Container]]:
         """Analyze Oracle OIC performance metrics.
 
         Args:
@@ -26,9 +26,9 @@ class FlextOracleOicUtilitiesMonitoring:
 
         """
         overall_health: str = c.HealthStatus.HEALTHY.value
-        warnings: MutableSequence[t.RecursiveContainer] = []
-        critical_issues: MutableSequence[t.RecursiveContainer] = []
-        recommendations: MutableSequence[t.RecursiveContainer] = []
+        warnings: MutableSequence[t.Container] = []
+        critical_issues: MutableSequence[t.Container] = []
+        recommendations: MutableSequence[t.Container] = []
         if "average_response_time" in metrics:
             response_time = metrics["average_response_time"]
             if isinstance(response_time, (int, float)):
@@ -65,18 +65,18 @@ class FlextOracleOicUtilitiesMonitoring:
                     recommendations.append(
                         "Review error logs and implement error handling improvements",
                     )
-        analysis: t.RecursiveContainerMapping = {
+        analysis: Mapping[str, t.Container] = {
             "overall_health": overall_health,
             "warnings": tuple(warnings),
             "critical_issues": tuple(critical_issues),
             "recommendations": tuple(recommendations),
         }
-        return r[t.RecursiveContainerMapping].ok(analysis)
+        return r[Mapping[str, t.Container]].ok(analysis)
 
     @staticmethod
     def validate_health_status(
-        health_data: t.RecursiveContainerMapping,
-    ) -> p.Result[t.RecursiveContainerMapping]:
+        health_data: Mapping[str, t.Container],
+    ) -> p.Result[Mapping[str, t.Container]]:
         """Validate Oracle OIC health check data.
 
         Args:
@@ -90,7 +90,7 @@ class FlextOracleOicUtilitiesMonitoring:
             str(key): value for key, value in health_data.items()
         }
         if "status" not in health_data:
-            return r[t.RecursiveContainerMapping].fail(
+            return r[Mapping[str, t.Container]].fail(
                 "Health data must include status",
             )
         status = health_data["status"]
@@ -100,24 +100,24 @@ class FlextOracleOicUtilitiesMonitoring:
             c.Monitoring.HealthStatus.ERROR.value,
             c.Monitoring.HealthStatus.UNKNOWN.value,
         }:
-            return r[t.RecursiveContainerMapping].fail(
+            return r[Mapping[str, t.Container]].fail(
                 "Invalid health status. Valid: healthy, unhealthy, error, unknown",
             )
         if "components" in health_data:
             components = health_data["components"]
             if not isinstance(components, dict):
-                return r[t.RecursiveContainerMapping].fail(
+                return r[Mapping[str, t.Container]].fail(
                     "Components must be a dictionary",
                 )
             for component_name, component_data in components.items():
                 if not isinstance(component_data, dict):
-                    return r[t.RecursiveContainerMapping].fail(
+                    return r[Mapping[str, t.Container]].fail(
                         f"Component {component_name} data must be a dictionary",
                     )
                 if "status" not in component_data:
-                    return r[t.RecursiveContainerMapping].fail(
+                    return r[Mapping[str, t.Container]].fail(
                         f"Component {component_name} must have status",
                     )
         if "timestamp" not in validated_data:
             validated_data["timestamp"] = datetime.now(UTC).isoformat()
-        return r[t.RecursiveContainerMapping].ok(validated_data)
+        return r[Mapping[str, t.Container]].ok(validated_data)

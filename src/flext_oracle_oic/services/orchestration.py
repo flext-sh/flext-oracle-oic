@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 
 from flext_core import p, r
 from flext_oracle_oic import (
@@ -25,9 +25,9 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     def execute_app_driven_orchestration(
         self,
         integration_id: str,
-        payload: t.RecursiveContainerMapping,
+        payload: Mapping[str, t.Container],
         **_kwargs: t.Scalar,
-    ) -> p.Result[t.RecursiveContainerMapping]:
+    ) -> p.Result[Mapping[str, t.Container]]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -43,10 +43,10 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
             client_result = self._get_client()
             if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[t.RecursiveContainerMapping].fail(error_msg)
+                return r[Mapping[str, t.Container]].fail(error_msg)
             client = client_result.value
             endpoint = f"/integrations/{integration_id}/connections"
-            payload_dict: t.RecursiveContainerMapping = {
+            payload_dict: Mapping[str, t.Container] = {
                 str(key): self._to_general_value(value)
                 for key, value in payload.items()
             }
@@ -56,25 +56,25 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
                 json=payload_dict,
             )
             if orchestration_result.failure:
-                return r[t.RecursiveContainerMapping].fail(
+                return r[Mapping[str, t.Container]].fail(
                     orchestration_result.error or "Orchestration request failed",
                 )
-            return r[t.RecursiveContainerMapping].ok(orchestration_result.value)
+            return r[Mapping[str, t.Container]].ok(orchestration_result.value)
         except (ConnectionError, TimeoutError, ValueError) as exc:
             self.logger.exception(
                 "App-driven orchestration failed for %s",
                 integration_id,
             )
-            return r[t.RecursiveContainerMapping].fail(
+            return r[Mapping[str, t.Container]].fail(
                 f"Orchestration execution failed: {exc!s}",
             )
 
     def execute_file_transfer(
         self,
         integration_id: str,
-        file_config: t.RecursiveContainerMapping,
+        file_config: Mapping[str, t.Container],
         **kwargs: t.Scalar,
-    ) -> p.Result[t.RecursiveContainerMapping]:
+    ) -> p.Result[Mapping[str, t.Container]]:
         """Execute file transfer pattern.
 
         Args:
@@ -98,9 +98,9 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
-        schedule_config: t.RecursiveContainerMapping,
+        schedule_config: Mapping[str, t.Container],
         **kwargs: t.Scalar,
-    ) -> p.Result[t.RecursiveContainerMapping]:
+    ) -> p.Result[Mapping[str, t.Container]]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -125,9 +125,9 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     def _run_file_transfer(
         client: FlextOracleOicClient,
         integration_id: str,
-        operation_config: t.RecursiveContainerMapping,
+        operation_config: Mapping[str, t.Container],
         operation_kwargs: t.ConfigurationMapping,
-    ) -> t.RecursiveContainerMapping:
+    ) -> Mapping[str, t.Container]:
         return client.execute_file_transfer(
             integration_id,
             operation_config,
@@ -138,9 +138,9 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     def _run_scheduled_orchestration(
         client: FlextOracleOicClient,
         integration_id: str,
-        operation_config: t.RecursiveContainerMapping,
+        operation_config: Mapping[str, t.Container],
         operation_kwargs: t.ConfigurationMapping,
-    ) -> t.RecursiveContainerMapping:
+    ) -> Mapping[str, t.Container]:
         return client.execute_scheduled_orchestration(
             integration_id,
             operation_config,
@@ -150,25 +150,25 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     def _execute_integration_operation(
         self,
         integration_id: str,
-        operation_config: t.RecursiveContainerMapping,
+        operation_config: Mapping[str, t.Container],
         operation: Callable[
             [
                 FlextOracleOicClient,
                 str,
-                t.RecursiveContainerMapping,
+                Mapping[str, t.Container],
                 t.ScalarMapping,
             ],
-            t.RecursiveContainerMapping,
+            Mapping[str, t.Container],
         ],
         log_message: str,
         error_message: str,
         **kwargs: t.Scalar,
-    ) -> p.Result[t.RecursiveContainerMapping]:
+    ) -> p.Result[Mapping[str, t.Container]]:
         try:
             client_result = self._get_client()
             if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[t.RecursiveContainerMapping].fail(error_msg)
+                return r[Mapping[str, t.Container]].fail(error_msg)
             client = client_result.value
             operation_kwargs: t.ConfigurationMapping = {
                 str(key): value for key, value in kwargs.items()
@@ -179,10 +179,10 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
                 operation_config,
                 operation_kwargs,
             )
-            return r[t.RecursiveContainerMapping].ok(result)
+            return r[Mapping[str, t.Container]].ok(result)
         except (ConnectionError, TimeoutError, ValueError) as exc:
             self.logger.exception(log_message, integration_id)
-            return r[t.RecursiveContainerMapping].fail(f"{error_message}: {exc!s}")
+            return r[Mapping[str, t.Container]].fail(f"{error_message}: {exc!s}")
 
 
 __all__: list[str] = ["FlextOracleOicOrchestrationMixin"]

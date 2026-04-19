@@ -23,5 +23,5 @@ class TestFlextTypes:
 
     def test_flext_types_can_be_extended(self) -> None:
         """Test t can be extended for domain-specific types."""
-        core_dict = t.RecursiveContainer
+        core_dict = t.Container
         assert core_dict is not None
