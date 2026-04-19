@@ -14,10 +14,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from pydantic import TypeAdapter
-
-from flext_core import FlextTypes
-from flext_oracle_oic import m
+from flext_core import FlextTypes, m
 
 
 class FlextOracleOicTypes(FlextTypes):
@@ -29,7 +26,7 @@ class FlextOracleOicTypes(FlextTypes):
     """
 
     CONTAINER_MAPPING_ADAPTER: m.TypeAdapter[FlextTypes.RecursiveContainerMapping] = (
-        TypeAdapter(
+        m.TypeAdapter(
             FlextTypes.RecursiveContainerMapping,
         )
     )

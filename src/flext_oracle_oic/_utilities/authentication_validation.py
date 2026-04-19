@@ -4,10 +4,8 @@ from __future__ import annotations
 
 import re
 
-from pydantic import SecretStr
-
 from flext_core import p, r
-from flext_oracle_oic import c
+from flext_oracle_oic import c, t
 
 
 class FlextOracleOicUtilitiesAuthenticationValidation:
@@ -37,7 +35,9 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
         return r[str].ok(client_id)
 
     @staticmethod
-    def validate_oauth_client_secret(client_secret: SecretStr) -> p.Result[SecretStr]:
+    def validate_oauth_client_secret(
+        client_secret: t.SecretStr,
+    ) -> p.Result[t.SecretStr]:
         """Validate OAuth2 client secret.
 
         Args:
@@ -49,9 +49,9 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
         """
         secret_value = client_secret.get_secret_value()
         if not secret_value or not secret_value.strip():
-            return r[SecretStr].fail("OAuth client secret cannot be empty")
+            return r[t.SecretStr].fail("OAuth client secret cannot be empty")
         if len(secret_value) < c.OracleOicValidation.MIN_CLIENT_SECRET_LENGTH:
-            return r[SecretStr].fail(
+            return r[t.SecretStr].fail(
                 "OAuth client secret must be at least 8 characters",
             )
-        return r[SecretStr].ok(client_secret)
+        return r[t.SecretStr].ok(client_secret)

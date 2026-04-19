@@ -64,7 +64,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         """Async context manager entry."""
         self.logger.info(
             "Oracle OIC service started",
-            extra_info=str(self.get_connection_context()),
+            extra_info=str(self.fetch_connection_context()),
         )
         return self
 
@@ -77,7 +77,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         """Async context manager exit."""
         self.logger.info(
             "Oracle OIC service stopped",
-            extra_info=str(self.get_connection_context()),
+            extra_info=str(self.fetch_connection_context()),
         )
 
     @override
@@ -215,7 +215,7 @@ class FlextOracleOicApi(FlextOracleOicService):
             **kwargs,
         )
 
-    def get_auth_context(self) -> t.RecursiveContainerMapping:
+    def fetch_auth_context(self) -> t.RecursiveContainerMapping:
         """Get current authentication configuration context.
 
         Returns:
@@ -228,7 +228,7 @@ class FlextOracleOicApi(FlextOracleOicService):
             "oauth_scope": self._oic_config.oauth_scope,
         }
 
-    def get_connection_context(self) -> t.RecursiveContainerMapping:
+    def fetch_connection_context(self) -> t.RecursiveContainerMapping:
         """Get current connection configuration context.
 
         Returns:
@@ -241,7 +241,7 @@ class FlextOracleOicApi(FlextOracleOicService):
             "request_timeout": self._oic_config.request_timeout,
         }
 
-    def get_features_context(self) -> t.RecursiveContainerMapping:
+    def fetch_features_context(self) -> t.RecursiveContainerMapping:
         """Get current features configuration context.
 
         Returns:
@@ -255,17 +255,17 @@ class FlextOracleOicApi(FlextOracleOicService):
         }
 
     @override
-    def get_health_status(self) -> p.Result[t.RecursiveContainerMapping]:
+    def fetch_health_status(self) -> p.Result[t.RecursiveContainerMapping]:
         """Get Oracle OIC health status.
 
         Returns:
         r containing health status information.
 
         """
-        return self._service.get_health_status()
+        return self._service.fetch_health_status()
 
     @override
-    def get_integration(
+    def fetch_integration(
         self,
         integration_id: str,
     ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
@@ -278,17 +278,17 @@ class FlextOracleOicApi(FlextOracleOicService):
         r containing integration information.
 
         """
-        return self._service.get_integration(integration_id)
+        return self._service.fetch_integration(integration_id)
 
     @override
-    def get_performance_metrics(self) -> p.Result[t.RecursiveContainerMapping]:
+    def fetch_performance_metrics(self) -> p.Result[t.RecursiveContainerMapping]:
         """Get Oracle OIC performance metrics.
 
         Returns:
         r containing performance metrics.
 
         """
-        return self._service.get_performance_metrics()
+        return self._service.fetch_performance_metrics()
 
     @override
     def list_integrations(

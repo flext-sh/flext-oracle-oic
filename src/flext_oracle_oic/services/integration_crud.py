@@ -73,7 +73,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 f"Integration creation failed: {e!s}",
             )
 
-    def get_integration(
+    def fetch_integration(
         self,
         integration_id: str,
     ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:

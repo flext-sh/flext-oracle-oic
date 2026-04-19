@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 
 from flext_core import p, r
-from flext_oracle_oic import c, m, t
+from flext_oracle_oic import c, t
 
 
 class FlextOracleOicUtilitiesPatternAnalysis:
@@ -56,11 +56,8 @@ class FlextOracleOicUtilitiesPatternAnalysis:
     @staticmethod
     def validate_pattern_configuration(
         pattern_type: str,
-        configuration: m.OracleOic.MessageRouterPatternConfig
-        | m.OracleOic.ScatterGatherPatternConfig,
-    ) -> p.Result[
-        m.OracleOic.MessageRouterPatternConfig | m.OracleOic.ScatterGatherPatternConfig
-    ]:
+        configuration: t.ValueOrModel,
+    ) -> p.Result[t.RecursiveContainerMapping]:
         """Validate Oracle OIC integration pattern configuration.
 
         Args:
@@ -73,44 +70,41 @@ class FlextOracleOicUtilitiesPatternAnalysis:
         """
         if pattern_type not in c.OracleOicValidation.SUPPORTED_PATTERNS:
             supported = ", ".join(sorted(c.OracleOicValidation.SUPPORTED_PATTERNS))
-            return r[
-                m.OracleOic.MessageRouterPatternConfig
-                | m.OracleOic.ScatterGatherPatternConfig
-            ].fail(
+            return r[t.RecursiveContainerMapping].fail(
                 f"Unsupported pattern type. Supported: {supported}",
             )
+        if configuration is None:
+            return r[t.RecursiveContainerMapping].fail(
+                "Pattern configuration must be a mapping or model",
+            )
+        if isinstance(configuration, Mapping):
+            normalized_configuration: t.RecursiveContainerMapping = dict(configuration)
+        elif hasattr(configuration, "model_dump"):
+            dumped = configuration.model_dump(mode="python")
+            if not isinstance(dumped, Mapping):
+                return r[t.RecursiveContainerMapping].fail(
+                    "Pattern configuration dump must be a mapping",
+                )
+            normalized_configuration = dict(dumped)
+        else:
+            return r[t.RecursiveContainerMapping].fail(
+                "Pattern configuration must be a mapping or model",
+            )
         if pattern_type == "message_router":
-            if not isinstance(
-                configuration,
-                m.OracleOic.MessageRouterPatternConfig,
-            ):
-                return r[
-                    m.OracleOic.MessageRouterPatternConfig
-                    | m.OracleOic.ScatterGatherPatternConfig
-                ].fail(
+            if "routing_rules" not in normalized_configuration:
+                return r[t.RecursiveContainerMapping].fail(
                     "Message router pattern requires MessageRouterPatternConfig",
                 )
         elif pattern_type == "scatter_gather":
-            if not isinstance(
-                configuration,
-                m.OracleOic.ScatterGatherPatternConfig,
-            ):
-                return r[
-                    m.OracleOic.MessageRouterPatternConfig
-                    | m.OracleOic.ScatterGatherPatternConfig
-                ].fail(
+            if "parallel_routes" not in normalized_configuration:
+                return r[t.RecursiveContainerMapping].fail(
                     "Scatter-gather pattern requires ScatterGatherPatternConfig",
                 )
-        elif pattern_type == "publish_subscribe":
-            configuration_data = configuration.model_dump(mode="python")
-            if "event_types" not in configuration_data:
-                return r[
-                    m.OracleOic.MessageRouterPatternConfig
-                    | m.OracleOic.ScatterGatherPatternConfig
-                ].fail(
-                    "Publish-subscribe pattern requires event_types",
-                )
-        return r[
-            m.OracleOic.MessageRouterPatternConfig
-            | m.OracleOic.ScatterGatherPatternConfig
-        ].ok(configuration)
+        elif (
+            pattern_type == "publish_subscribe"
+            and "event_types" not in normalized_configuration
+        ):
+            return r[t.RecursiveContainerMapping].fail(
+                "Publish-subscribe pattern requires event_types",
+            )
+        return r[t.RecursiveContainerMapping].ok(normalized_configuration)

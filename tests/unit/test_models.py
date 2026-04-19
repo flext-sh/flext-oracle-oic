@@ -10,9 +10,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 import pytest
-from pydantic import SecretStr, ValidationError
 
-from tests import m
+from tests import c, m, t
 
 
 class TestOICAuthConfig:
@@ -22,7 +21,7 @@ class TestOICAuthConfig:
         """Test valid auth settings creation."""
         settings = m.OracleOic.OICAuthConfig(
             oauth_client_id="test_client_id",
-            oauth_client_secret=SecretStr("test_client_secret"),
+            oauth_client_secret=t.SecretStr("test_client_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
             oauth_client_aud="test_audience",
             oauth_scope="test_scope",
@@ -40,7 +39,7 @@ class TestOICAuthConfig:
         """Test auth settings with None audience."""
         settings = m.OracleOic.OICAuthConfig(
             oauth_client_id="test_client_id",
-            oauth_client_secret=SecretStr("test_client_secret"),
+            oauth_client_secret=t.SecretStr("test_client_secret"),
             oauth_token_url="https://test.identity.oraclecloud.com/oauth2/v1/token",
             oauth_client_aud=None,
             oauth_scope="",
@@ -57,7 +56,7 @@ class TestOICAuthConfig:
             "oauth_client_aud": None,
             "oauth_scope": "",
         }
-        with pytest.raises(ValidationError):
+        with pytest.raises(c.ValidationError):
             m.OracleOic.OICAuthConfig.model_validate(invalid_data)
 
 
@@ -94,7 +93,7 @@ class TestOICConnectionConfig:
 
     def test_connection_config_validation_error(self) -> None:
         """Test connection settings validation error."""
-        with pytest.raises(ValidationError):
+        with pytest.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig.model_validate({
                 "base_url": "https://test.integration.ocp.oraclecloud.com",
                 "api_version": "v1",

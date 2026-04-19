@@ -25,7 +25,7 @@ from flext_oracle_oic import (
 class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
     """Mixin providing monitoring operations for FlextOracleOicService facade."""
 
-    def get_health_status(self) -> p.Result[t.RecursiveContainerMapping]:
+    def fetch_health_status(self) -> p.Result[t.RecursiveContainerMapping]:
         """Get Oracle OIC health status using FlextOracleOicUtilities.
 
         Returns:
@@ -160,7 +160,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 else r[t.RecursiveContainerMapping].ok(error_health)
             )
 
-    def get_performance_metrics(self) -> p.Result[t.RecursiveContainerMapping]:
+    def fetch_performance_metrics(self) -> p.Result[t.RecursiveContainerMapping]:
         """Get Oracle OIC performance metrics with analysis using FlextOracleOicUtilities.
 
         Returns:

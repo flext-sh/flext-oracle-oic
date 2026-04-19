@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_core import p, r
-from flext_oracle_oic import FlextOracleOicServiceBase, c as oic_c
+from flext_oracle_oic import FlextOracleOicServiceBase, c
 
 
 class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
@@ -88,7 +88,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
                 return r[bool].fail(error_msg)
             client = client_result.value
             test_result = client.make_request(
-                oic_c.API.Method.GET,
+                c.API.Method.GET,
                 "/ic/api/integration/v1/health",
             )
             if test_result.failure:
@@ -98,9 +98,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             status_value = result_data.get("status", "")
             match status_value:
                 case str():
-                    is_connected = (
-                        status_value.lower() == oic_c.HealthStatus.HEALTHY.value
-                    )
+                    is_connected = status_value.lower() == c.HealthStatus.HEALTHY.value
                 case _:
                     is_connected = False
             return r[bool].ok(is_connected)

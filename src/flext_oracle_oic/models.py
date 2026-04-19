@@ -8,8 +8,6 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Annotated
 
-from pydantic import SecretStr
-
 from flext_core import FlextModels
 from flext_oracle_oic import c, t, u
 
@@ -36,7 +34,7 @@ class FlextOracleOicModels(FlextModels):
                 str, u.Field(description="IDCS OAuth2 client ID")
             ]
             oauth_client_secret: Annotated[
-                SecretStr,
+                t.SecretStr,
                 u.Field(description="IDCS OAuth2 client secret"),
             ]
             oauth_token_url: Annotated[
