@@ -5,6 +5,7 @@ from __future__ import annotations
 from urllib.parse import urljoin
 
 from flext_core import p, r
+
 from flext_oracle_oic import (
     FlextOracleOicUtilitiesConnectionValidation,
     t,

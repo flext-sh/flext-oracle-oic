@@ -16,6 +16,7 @@ from collections.abc import (
 )
 
 from flext_core import p, r
+
 from flext_oracle_oic import (
     FlextOracleOicModels,
     FlextOracleOicServiceBase,

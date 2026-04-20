@@ -15,8 +15,8 @@ from collections.abc import (
 )
 
 from flext_api import FlextApiModels
-
 from flext_core import p, r
+
 from flext_oracle_oic import (
     FlextOracleOicServiceBase,
     FlextOracleOicUtilities,

@@ -148,7 +148,19 @@ omit = [ "*/dependency_injector/providers.pyx" ]
 
 # [MANAGED] deptry
 [tool.deptry]
-known_first_party = [ "flext_core", "flext_oracle_oic" ]
+known_first_party = [
+  "flext-core",
+  "flext_oracle_oic",
+  "httpx",
+  "meltano",
+  "pydantic",
+  "pydantic-core",
+  "pydantic-settings",
+  "requests",
+  "tenacity",
+  "typer",
+  "urllib3",
+]
 pep621_dev_dependency_groups = [ "dev" ]
 
 [tool.hatch.metadata]
@@ -470,7 +482,19 @@ select = [ "ALL" ]
 [tool.ruff.lint.isort]
 combine-as-imports = true
 force-single-line = false
-known-first-party = [ "flext_core", "flext_oracle_oic" ]
+known-first-party = [
+  "flext-core",
+  "flext_oracle_oic",
+  "httpx",
+  "meltano",
+  "pydantic",
+  "pydantic-core",
+  "pydantic-settings",
+  "requests",
+  "tenacity",
+  "typer",
+  "urllib3",
+]
 split-on-trailing-comma = true
 
 [tool.ruff.lint.per-file-ignores]

@@ -17,9 +17,9 @@ from collections.abc import (
 )
 from typing import override
 
+from flext_core import p, r, s
 from flext_infra import __version__
 
-from flext_core import p, r, s
 from flext_oracle_oic import (
     FlextOracleOicModels,
     FlextOracleOicService,

@@ -16,6 +16,7 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 from __future__ import annotations
 
 from flext_core import FlextUtilities
+
 from flext_oracle_oic import (
     FlextOracleOicUtilitiesAPIRequestBuilder,
     FlextOracleOicUtilitiesAuthenticationValidation,

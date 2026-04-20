@@ -12,6 +12,7 @@ from collections.abc import (
 from typing import Annotated
 
 from flext_core import FlextModels
+
 from flext_oracle_oic import c, t, u
 
 
