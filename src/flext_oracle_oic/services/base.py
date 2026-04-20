@@ -83,7 +83,7 @@ class FlextOracleOicServiceBase(
 
     @staticmethod
     def _to_general_value(
-        value: t.Container | t.ContainerValue | bytes | None,
+        value: t.Container | bytes | None,
     ) -> t.Container:
         """Normalize arbitrary runtime values into t.Container."""
         if isinstance(value, bytes):

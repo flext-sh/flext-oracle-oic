@@ -29,7 +29,7 @@ class FlextOracleOicUtilitiesOracleOic:
 
         """
         errors: MutableSequence[str] = []
-        validated_data: t.MutableRecursiveContainerMapping = {
+        validated_data: t.MutableFlatContainerMapping = {
             str(key): value for key, value in integration_data.items()
         }
         if "name" not in integration_data:

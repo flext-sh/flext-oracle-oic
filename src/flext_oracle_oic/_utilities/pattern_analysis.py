@@ -35,10 +35,10 @@ class FlextOracleOicUtilitiesPatternAnalysis:
             if isinstance(endpoints_raw, list)
             else []
         )
-        connections: t.RecursiveContainerList = (
+        connections: t.FlatContainerList = (
             list(connections_raw) if isinstance(connections_raw, list) else []
         )
-        mappings: t.RecursiveContainerList = (
+        mappings: t.FlatContainerList = (
             list(mappings_raw) if isinstance(mappings_raw, list) else []
         )
         if len(endpoints) > c.OracleOicValidation.MIN_ENDPOINTS_FOR_ROUTER and any(

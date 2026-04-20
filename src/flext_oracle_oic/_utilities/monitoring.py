@@ -89,7 +89,7 @@ class FlextOracleOicUtilitiesMonitoring:
         r containing validated health data or error
 
         """
-        validated_data: t.MutableRecursiveContainerMapping = {
+        validated_data: t.MutableFlatContainerMapping = {
             str(key): value for key, value in health_data.items()
         }
         if "status" not in health_data:
