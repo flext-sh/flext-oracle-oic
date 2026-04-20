@@ -5,7 +5,10 @@ This module provides data models for Oracle OIC External operations.
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import (
+    Mapping,
+    Sequence,
+)
 from typing import Annotated
 
 from flext_core import FlextModels

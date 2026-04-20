@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableSequence
+from collections.abc import (
+    Mapping,
+    MutableSequence,
+)
 from datetime import UTC, datetime
 
 from flext_core import p, r

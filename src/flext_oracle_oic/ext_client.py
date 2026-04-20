@@ -12,7 +12,11 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import base64
-from collections.abc import Mapping, MutableSequence, Sequence
+from collections.abc import (
+    Mapping,
+    MutableSequence,
+    Sequence,
+)
 from types import TracebackType
 from typing import Self
 

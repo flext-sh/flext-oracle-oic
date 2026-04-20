@@ -9,7 +9,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableSequence, Sequence
+from collections.abc import (
+    Mapping,
+    MutableSequence,
+    Sequence,
+)
 
 from flext_core import p, r
 from flext_oracle_oic import (
