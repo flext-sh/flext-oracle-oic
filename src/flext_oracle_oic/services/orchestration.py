@@ -14,11 +14,11 @@ from collections.abc import (
     Mapping,
 )
 
-from flext_core import p, r
-
 from flext_oracle_oic import (
     FlextOracleOicClient,
     FlextOracleOicServiceBase,
+    p,
+    r,
     t,
 )
 

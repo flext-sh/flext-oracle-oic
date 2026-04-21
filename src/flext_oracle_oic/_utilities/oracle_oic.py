@@ -8,9 +8,7 @@ from collections.abc import (
     MutableSequence,
 )
 
-from flext_core import p, r
-
-from flext_oracle_oic import c, t
+from flext_oracle_oic import c, p, r, t
 
 
 class FlextOracleOicUtilitiesOracleOic:

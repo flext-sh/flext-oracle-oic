@@ -14,10 +14,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes, m
+from flext_auth import m, t
 
 
-class FlextOracleOicTypes(FlextTypes):
+class FlextOracleOicTypes(t):
     """Oracle OIC extension-specific type definitions extending t.
 
     Domain-specific type system for Oracle OIC integration operations.
@@ -25,10 +25,8 @@ class FlextOracleOicTypes(FlextTypes):
     Uses Python 3.13+ type syntax and patterns.
     """
 
-    CONTAINER_MAPPING_ADAPTER: m.TypeAdapter[FlextTypes.FlatContainerMapping] = (
-        m.TypeAdapter(
-            FlextTypes.FlatContainerMapping,
-        )
+    CONTAINER_MAPPING_ADAPTER: m.TypeAdapter[t.FlatContainerMapping] = m.TypeAdapter(
+        t.FlatContainerMapping,
     )
 
 

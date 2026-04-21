@@ -14,14 +14,14 @@ from collections.abc import (
     Mapping,
 )
 
-from flext_api import FlextApiModels
-from flext_core import p, r
-
 from flext_oracle_oic import (
     FlextOracleOicServiceBase,
-    FlextOracleOicUtilities,
     c,
+    m,
+    p,
+    r,
     t,
+    u,
 )
 
 
@@ -29,7 +29,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
     """Mixin providing monitoring operations for FlextOracleOicService facade."""
 
     def fetch_health_status(self) -> p.Result[Mapping[str, t.Container]]:
-        """Get Oracle OIC health status using FlextOracleOicUtilities.
+        """Get Oracle OIC health status using u.
 
         Returns:
         r containing validated health status information
@@ -56,7 +56,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             else:
                 base = str(self._oic_settings.base_url).rstrip("/")
                 health_url = f"{base}{c.API.ENDPOINT_HEALTH}"
-                req = FlextApiModels.Api.HttpRequest(
+                req = m.Api.HttpRequest(
                     method=c.API.Method.GET,
                     url=health_url,
                     headers={},
@@ -124,10 +124,8 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                         "error": f"Request failed: {response_result.error}",
                     }
             health_data_dict: Mapping[str, t.Container] = dict(health_data)
-            validation_result = (
-                FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
-                    health_data_dict,
-                )
+            validation_result = u.MonitoringUtilities.validate_health_status(
+                health_data_dict,
             )
             if validation_result.success:
                 return validation_result
@@ -152,10 +150,8 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 },
                 "error": str(e),
             }
-            validation_result = (
-                FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
-                    error_health,
-                )
+            validation_result = u.MonitoringUtilities.validate_health_status(
+                error_health,
             )
             return (
                 validation_result
@@ -164,7 +160,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             )
 
     def fetch_performance_metrics(self) -> p.Result[Mapping[str, t.Container]]:
-        """Get Oracle OIC performance metrics with analysis using FlextOracleOicUtilities.
+        """Get Oracle OIC performance metrics with analysis using u.
 
         Returns:
         r containing performance metrics with analysis
@@ -183,7 +179,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             else:
                 base = str(self._oic_settings.base_url).rstrip("/")
                 metrics_url = f"{base}/ic/api/integration/v1/metrics"
-                req = FlextApiModels.Api.HttpRequest(
+                req = m.Api.HttpRequest(
                     method=c.API.Method.GET,
                     url=metrics_url,
                     headers={},
@@ -222,10 +218,8 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             metrics_dict: t.MutableFlatContainerMapping = {}
             for key, value in metrics_data.items():
                 metrics_dict[str(key)] = self._to_general_value(value)
-            analysis_result = (
-                FlextOracleOicUtilities.MonitoringUtilities.analyze_performance_metrics(
-                    metrics_dict,
-                )
+            analysis_result = u.MonitoringUtilities.analyze_performance_metrics(
+                metrics_dict,
             )
             if analysis_result.success:
                 return r[Mapping[str, t.Container]].ok({
@@ -243,10 +237,8 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 "average_response_time": 0.0,
                 "error": str(e),
             }
-            analysis_result = (
-                FlextOracleOicUtilities.MonitoringUtilities.analyze_performance_metrics(
-                    error_metrics,
-                )
+            analysis_result = u.MonitoringUtilities.analyze_performance_metrics(
+                error_metrics,
             )
             if analysis_result.success:
                 return r[Mapping[str, t.Container]].ok({

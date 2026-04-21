@@ -15,7 +15,7 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 
 from __future__ import annotations
 
-from flext_core import FlextUtilities
+from flext_auth import u
 
 from flext_oracle_oic import (
     FlextOracleOicUtilitiesAPIRequestBuilder,
@@ -27,7 +27,7 @@ from flext_oracle_oic import (
 )
 
 
-class FlextOracleOicUtilities(FlextUtilities):
+class FlextOracleOicUtilities(u):
     """Unified Oracle OIC Extension utilities.
 
     Extends u with Oracle Integration Cloud

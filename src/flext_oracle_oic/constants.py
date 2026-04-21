@@ -1,10 +1,10 @@
 """Oracle OIC Extension Constants - Unified Constants Pattern.
 
 This module provides centralized constants for the flext-oracle-oic project,
-inheriting from FlextConstants and following FLEXT architectural standards.
+inheriting from c and following FLEXT architectural standards.
 
 FLEXT Unified Constants Pattern: Single FlextOracleOicConstants class
-inheriting from FlextConstants with flat structure and no duplication.
+inheriting from c with flat structure and no duplication.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -21,11 +21,11 @@ from enum import StrEnum, unique
 from types import MappingProxyType
 from typing import Final
 
-from flext_core import FlextConstants
+from flext_auth import c
 
 
-class FlextOracleOicConstants(FlextConstants):
-    """Oracle OIC Extension constants inheriting from FlextConstants.
+class FlextOracleOicConstants(c):
+    """Oracle OIC Extension constants inheriting from c.
 
     Provides centralized constants for Oracle OIC Extension operations,
     following FLEXT architectural standards with flat structure and no duplication.
@@ -40,16 +40,16 @@ class FlextOracleOicConstants(FlextConstants):
     timeout = FlextOracleOicConstants.DEFAULT_TIMEOUT_SECONDS
     page_size = FlextOracleOicConstants.OracleOic.DEFAULT_PAGE_SIZE
 
-    # Access inherited FlextConstants
+    # Access inherited c
     http_ok = FlextOracleOicConstants.Platform.HTTP_STATUS_OK
     default_timeout = FlextOracleOicConstants.TIMEOUT
     ```
 
     IMPLEMENTATION NOTES:
-    - Inherits all constants from FlextConstants base class
+    - Inherits all constants from c base class
     - Flat structure with nested namespaces for organization
     - Single source of truth for all Oracle OIC Extension constants
-    - No duplication with FlextConstants or other modules
+    - No duplication with c or other modules
     - Type-safe constants with Final annotations
     - Complete documentation and usage examples
     """
@@ -235,7 +235,7 @@ class FlextOracleOicConstants(FlextConstants):
         """Oracle OIC Extension specific message constants."""
 
     class OracleOicValidation:
-        """Oracle OIC validation constants (named to avoid overriding FlextConstants)."""
+        """Oracle OIC validation constants (named to avoid overriding c)."""
 
         MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
         MAX_INTEGRATION_NAME_LENGTH: Final[int] = 100

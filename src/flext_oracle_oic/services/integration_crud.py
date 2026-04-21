@@ -15,23 +15,23 @@ from collections.abc import (
     Sequence,
 )
 
-from flext_core import p, r
-
 from flext_oracle_oic import (
-    FlextOracleOicModels,
-    FlextOracleOicServiceBase,
     c,
+    m,
+    p,
+    r,
+    s,
     t,
 )
 
 
-class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
+class FlextOracleOicIntegrationCrudMixin(s):
     """Mixin providing integration CRUD operations for FlextOracleOicService facade."""
 
     def create_integration(
         self,
         integration_data: Mapping[str, t.Container],
-    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
         Args:
@@ -45,18 +45,18 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             client_result = self._get_client()
             if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
+                return r[m.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
                 )
             client = client_result.value
             created_result = client.create_integration(integration_data)
             if created_result.failure:
                 error_msg = created_result.error or "Failed to create integration"
-                return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
+                return r[m.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
                 )
             created_data = created_result.value
-            integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
+            integration = m.OracleOic.OICIntegrationInfo(
                 integration_id=self._as_text(created_data.get("id"), ""),
                 name=self._as_text(created_data.get("name"), ""),
                 description=self._as_text(created_data.get("description"), ""),
@@ -71,17 +71,17 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 created_by=self._as_text(created_data.get("createdBy"), ""),
                 last_updated=self._as_text(created_data.get("lastUpdated"), ""),
             )
-            return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].ok(integration)
+            return r[m.OracleOic.OICIntegrationInfo].ok(integration)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to create integration")
-            return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
+            return r[m.OracleOic.OICIntegrationInfo].fail(
                 f"Integration creation failed: {e!s}",
             )
 
     def fetch_integration(
         self,
         integration_id: str,
-    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
         Args:
@@ -95,14 +95,14 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             client_result = self._get_client()
             if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
+                return r[m.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
                 )
             client = client_result.value
             integrations_result = client.get_integrations()
             if integrations_result.failure:
                 error_msg = integrations_result.error or "Failed to get integrations"
-                return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
+                return r[m.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
                 )
             integrations_list = integrations_result.value
@@ -115,10 +115,10 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 None,
             )
             if not integration_data:
-                return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
+                return r[m.OracleOic.OICIntegrationInfo].fail(
                     f"Integration {integration_id} not found",
                 )
-            integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
+            integration = m.OracleOic.OICIntegrationInfo(
                 integration_id=self._as_text(
                     integration_data.get("id"),
                     integration_id,
@@ -136,10 +136,10 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 created_by=self._as_text(integration_data.get("createdBy"), ""),
                 last_updated=self._as_text(integration_data.get("lastUpdated"), ""),
             )
-            return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].ok(integration)
+            return r[m.OracleOic.OICIntegrationInfo].ok(integration)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to get integration %s", integration_id)
-            return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
+            return r[m.OracleOic.OICIntegrationInfo].fail(
                 f"Integration retrieval failed: {e!s}",
             )
 
@@ -147,7 +147,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         self,
         integration_id: str,
         integration_data: Mapping[str, t.Container],
-    ) -> p.Result[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
         Args:
@@ -162,18 +162,18 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             client_result = self._get_client()
             if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
+                return r[m.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
                 )
             client = client_result.value
             updated_result = client.update_integration(integration_id, integration_data)
             if updated_result.failure:
                 error_msg = updated_result.error or "Failed to update integration"
-                return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
+                return r[m.OracleOic.OICIntegrationInfo].fail(
                     error_msg,
                 )
             updated_data = updated_result.value
-            integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
+            integration = m.OracleOic.OICIntegrationInfo(
                 integration_id=self._as_text(updated_data.get("id"), integration_id),
                 name=self._as_text(updated_data.get("name"), ""),
                 description=self._as_text(updated_data.get("description"), ""),
@@ -188,10 +188,10 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 created_by=self._as_text(updated_data.get("createdBy"), ""),
                 last_updated=self._as_text(updated_data.get("lastUpdated"), ""),
             )
-            return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].ok(integration)
+            return r[m.OracleOic.OICIntegrationInfo].ok(integration)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to update integration %s", integration_id)
-            return r[FlextOracleOicModels.OracleOic.OICIntegrationInfo].fail(
+            return r[m.OracleOic.OICIntegrationInfo].fail(
                 f"Integration update failed: {e!s}",
             )
 
@@ -258,7 +258,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
     def list_connections(
         self,
         type_filter: t.StrSequence | None = None,
-    ) -> p.Result[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]]:
+    ) -> p.Result[Sequence[m.OracleOic.OICConnectionInfo]]:
         """List Oracle OIC connections.
 
         Args:
@@ -272,9 +272,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             client_result = self._get_client()
             if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[
-                    Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]
-                ].fail(
+                return r[Sequence[m.OracleOic.OICConnectionInfo]].fail(
                     error_msg,
                 )
             client = client_result.value
@@ -284,17 +282,13 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             )
             if connections_result.failure:
                 error_msg = connections_result.error or "Failed to get connections"
-                return r[
-                    Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]
-                ].fail(
+                return r[Sequence[m.OracleOic.OICConnectionInfo]].fail(
                     error_msg,
                 )
             connections_data = connections_result.value
-            connections: MutableSequence[
-                FlextOracleOicModels.OracleOic.OICConnectionInfo
-            ] = []
+            connections: MutableSequence[m.OracleOic.OICConnectionInfo] = []
             for item in connections_data:
-                connection = FlextOracleOicModels.OracleOic.OICConnectionInfo(
+                connection = m.OracleOic.OICConnectionInfo(
                     connection_id=self._as_text(item.get("id"), ""),
                     name=self._as_text(item.get("name"), ""),
                     adapter_type=self._as_text(item.get("adapterType"), ""),
@@ -306,12 +300,12 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                     description=self._as_text(item.get("description"), ""),
                 )
                 connections.append(connection)
-            return r[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]].ok(
+            return r[Sequence[m.OracleOic.OICConnectionInfo]].ok(
                 connections,
             )
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to list connections")
-            return r[Sequence[FlextOracleOicModels.OracleOic.OICConnectionInfo]].fail(
+            return r[Sequence[m.OracleOic.OICConnectionInfo]].fail(
                 f"Connection listing failed: {e!s}",
             )
 

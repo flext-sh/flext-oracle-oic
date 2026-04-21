@@ -4,9 +4,7 @@ from __future__ import annotations
 
 import re
 
-from flext_core import p, r
-
-from flext_oracle_oic import c, t
+from flext_oracle_oic import c, p, r, t
 
 
 class FlextOracleOicUtilitiesAuthenticationValidation:

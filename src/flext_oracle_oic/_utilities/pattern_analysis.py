@@ -7,9 +7,7 @@ from collections.abc import (
     Sequence,
 )
 
-from flext_core import p, r
-
-from flext_oracle_oic import c, t
+from flext_oracle_oic import c, p, r, t
 
 
 class FlextOracleOicUtilitiesPatternAnalysis:

@@ -18,21 +18,22 @@ from types import TracebackType
 from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiSettings
-from flext_core import p, r, s
 
 from flext_oracle_oic import (
     FlextOracleOicClient,
-    FlextOracleOicModels,
     FlextOracleOicSettings,
-    FlextOracleOicUtilities,
     c,
+    m,
+    p,
+    r,
+    s,
     t,
     u,
 )
 
 
 class FlextOracleOicServiceBase(
-    s[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]],
+    s[Sequence[m.OracleOic.OICIntegrationInfo]],
 ):
     """Base service providing shared infrastructure for all OIC service mixins.
 
@@ -106,7 +107,7 @@ class FlextOracleOicServiceBase(
     def execute(
         self: Self,
         **kwargs: t.Scalar,
-    ) -> p.Result[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """Execute main service operation - list all integrations.
 
         Returns:
@@ -117,7 +118,7 @@ class FlextOracleOicServiceBase(
 
     def list_integrations(
         self,
-    ) -> p.Result[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -128,24 +129,20 @@ class FlextOracleOicServiceBase(
             client_result = self._get_client()
             if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[
-                    Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
-                ].fail(
+                return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(
                     error_msg,
                 )
             client = client_result.value
             integrations_result = client.get_integrations()
             if integrations_result.failure:
                 error_msg = integrations_result.error or "Failed to get integrations"
-                return r[
-                    Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
-                ].fail(
+                return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(
                     error_msg,
                 )
             integrations_data = integrations_result.value
-            integrations: list[FlextOracleOicModels.OracleOic.OICIntegrationInfo] = []
+            integrations: list[m.OracleOic.OICIntegrationInfo] = []
             for item in integrations_data:
-                integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
+                integration = m.OracleOic.OICIntegrationInfo(
                     integration_id=self._as_text(item.get("id"), ""),
                     name=self._as_text(item.get("name"), ""),
                     description=self._as_text(item.get("description"), ""),
@@ -161,12 +158,12 @@ class FlextOracleOicServiceBase(
                     last_updated=self._as_text(item.get("lastUpdated"), ""),
                 )
                 integrations.append(integration)
-            return r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].ok(
+            return r[Sequence[m.OracleOic.OICIntegrationInfo]].ok(
                 integrations,
             )
         except (ConnectionError, TimeoutError, ValueError) as exc:
             u.fetch_logger(__name__).exception("Failed to list integrations")
-            return r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].fail(
+            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(
                 f"Integration listing failed: {exc!s}",
             )
 
@@ -182,14 +179,14 @@ class FlextOracleOicServiceBase(
                 validation_result = self.validate_business_rules()
                 if validation_result.failure:
                     return r[FlextOracleOicClient].fail(validation_result.error)
-                connection_config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
+                connection_config = m.OracleOic.OICConnectionConfig(
                     base_url=str(self._oic_settings.base_url),
                     api_version=self._oic_settings.api_version,
                     request_timeout=self._oic_settings.request_timeout,
                     max_retries=self._oic_settings.max_retries,
                     verify_ssl=self._oic_settings.verify_ssl,
                 )
-                auth_config = FlextOracleOicModels.OracleOic.OICAuthConfig(
+                auth_config = m.OracleOic.OICAuthConfig(
                     oauth_client_id=self._oic_settings.oauth_client_id,
                     oauth_client_secret=self._oic_settings.oauth_client_secret,
                     oauth_token_url=str(self._oic_settings.oauth_token_url),
@@ -219,10 +216,8 @@ class FlextOracleOicServiceBase(
             return r[bool].fail("Base URL is required")
         if not self._oic_settings.oauth_client_id:
             return r[bool].fail("OAuth client ID is required")
-        client_id_result = (
-            FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_client_id(
-                self._oic_settings.oauth_client_id,
-            )
+        client_id_result = u.AuthenticationValidation.validate_oauth_client_id(
+            self._oic_settings.oauth_client_id,
         )
         if client_id_result.failure:
             return r[bool].fail(f"OAuth client ID validation: {client_id_result.error}")

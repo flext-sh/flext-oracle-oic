@@ -11,15 +11,15 @@ from collections.abc import (
 )
 from typing import Annotated
 
-from flext_core import FlextModels
+from flext_auth import m
 
 from flext_oracle_oic import c, t, u
 
 
-class FlextOracleOicModels(FlextModels):
+class FlextOracleOicModels(m):
     """Unified models for Oracle OIC Extension operations.
 
-    Extends FlextModels to avoid duplication and ensure consistency.
+    Extends m to avoid duplication and ensure consistency.
     This class consolidates all Oracle OIC Extension domain models following
     the [Project]Models pattern for centralized Pydantic validation.
     """
@@ -27,7 +27,7 @@ class FlextOracleOicModels(FlextModels):
     class OracleOic:
         """OracleOic domain namespace."""
 
-        class OICAuthConfig(FlextModels.Value):
+        class OICAuthConfig(m.Value):
             """Oracle Integration Cloud authentication configuration.
 
             EXTENSION Pattern: Value Object for authentication configuration
@@ -53,7 +53,7 @@ class FlextOracleOicModels(FlextModels):
             ] = None
             oauth_scope: Annotated[str, u.Field(description="OAuth2 scope")] = ""
 
-        class OICConnectionConfig(FlextModels.Value):
+        class OICConnectionConfig(m.Value):
             """Oracle Integration Cloud connection configuration.
 
             EXTENSION Pattern: Value Object for connection configuration
@@ -88,7 +88,7 @@ class FlextOracleOicModels(FlextModels):
                 ),
             ] = c.OracleOic.DEFAULT_VERIFY_SSL
 
-        class OICIntegrationInfo(FlextModels.Entity):
+        class OICIntegrationInfo(m.Entity):
             """Oracle OIC Integration information.
 
             EXTENSION Pattern: Value Object representing information
@@ -113,7 +113,7 @@ class FlextOracleOicModels(FlextModels):
                 str, u.Field(description="Last update timestamp")
             ] = ""
 
-        class OICConnectionInfo(FlextModels.Entity):
+        class OICConnectionInfo(m.Entity):
             """Oracle OIC Connection information.
 
             EXTENSION Pattern: Value Object representing information
@@ -132,7 +132,7 @@ class FlextOracleOicModels(FlextModels):
                 str, u.Field(description="Connection description")
             ] = ""
 
-        class IntegrationStatus(FlextModels.Entity):
+        class IntegrationStatus(m.Entity):
             """Oracle OIC Integration status information.
 
             EXTENSION Pattern: Value Object representing status
@@ -158,7 +158,7 @@ class FlextOracleOicModels(FlextModels):
                 ),
             ] = ""
 
-        class MessageRouterPatternConfig(FlextModels.Value):
+        class MessageRouterPatternConfig(m.Value):
             """Message router pattern configuration model."""
 
             message_data: Annotated[
@@ -170,7 +170,7 @@ class FlextOracleOicModels(FlextModels):
                 u.Field(description="Ordered routing rules"),
             ]
 
-        class ScatterGatherPatternConfig(FlextModels.Value):
+        class ScatterGatherPatternConfig(m.Value):
             """Scatter-gather pattern configuration model."""
 
             request_data: Annotated[
@@ -186,7 +186,7 @@ class FlextOracleOicModels(FlextModels):
                 u.Field(description="Aggregation behavior for gathered responses"),
             ] = "collect_all"
 
-        class RequestParams(FlextModels.Value):
+        class RequestParams(m.Value):
             """Parameters for OIC API request.
 
             EXTENSION Pattern: Value Object for request parameters

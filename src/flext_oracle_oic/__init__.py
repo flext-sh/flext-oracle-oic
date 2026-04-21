@@ -14,7 +14,7 @@ from flext_core.lazy import (
 from flext_oracle_oic.__version__ import *
 
 if _t.TYPE_CHECKING:
-    from flext_core import d, e, h, r, x
+    from flext_auth import d, e, h, r, x
 
     from flext_oracle_oic._utilities.api_request_builder import (
         FlextOracleOicUtilitiesAPIRequestBuilder,
@@ -127,7 +127,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "FlextOracleOicUtilities",
                 "u",
             ),
-            "flext_core": (
+            "flext_auth": (
                 "d",
                 "e",
                 "h",

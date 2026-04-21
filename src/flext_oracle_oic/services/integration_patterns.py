@@ -15,14 +15,14 @@ from collections.abc import (
     Sequence,
 )
 
-from flext_core import p, r
-
 from flext_oracle_oic import (
-    FlextOracleOicModels,
     FlextOracleOicServiceBase,
-    FlextOracleOicUtilities,
     c,
+    m,
+    p,
+    r,
     t,
+    u,
 )
 
 
@@ -34,7 +34,7 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
         message_data: Mapping[str, t.Container],
         routing_rules: Sequence[Mapping[str, t.Container]],
     ) -> p.Result[Mapping[str, t.Container]]:
-        """Apply message router pattern to OIC integration using FlextOracleOicUtilities.
+        """Apply message router pattern to OIC integration using u.
 
         Args:
         message_data: Message to route
@@ -46,15 +46,13 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
         """
         try:
             self.logger.info("Applying message router pattern")
-            pattern_config = FlextOracleOicModels.OracleOic.MessageRouterPatternConfig(
+            pattern_config = m.OracleOic.MessageRouterPatternConfig(
                 routing_rules=routing_rules,
                 message_data=message_data,
             )
-            validation_result = (
-                FlextOracleOicUtilities.PatternAnalysis.validate_pattern_configuration(
-                    "message_router",
-                    pattern_config,
-                )
+            validation_result = u.PatternAnalysis.validate_pattern_configuration(
+                "message_router",
+                pattern_config,
             )
             if validation_result.failure:
                 return r[Mapping[str, t.Container]].fail(
@@ -80,7 +78,7 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
         request_data: Mapping[str, t.Container],
         target_endpoints: t.StrSequence,
     ) -> p.Result[Mapping[str, t.Container]]:
-        """Apply scatter-gather pattern to OIC integration using FlextOracleOicUtilities.
+        """Apply scatter-gather pattern to OIC integration using u.
 
         Args:
         request_data: Request to scatter
@@ -92,15 +90,13 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
         """
         try:
             self.logger.info("Applying scatter-gather pattern")
-            pattern_config = FlextOracleOicModels.OracleOic.ScatterGatherPatternConfig(
+            pattern_config = m.OracleOic.ScatterGatherPatternConfig(
                 target_services=target_endpoints,
                 request_data=request_data,
             )
-            validation_result = (
-                FlextOracleOicUtilities.PatternAnalysis.validate_pattern_configuration(
-                    "scatter_gather",
-                    pattern_config,
-                )
+            validation_result = u.PatternAnalysis.validate_pattern_configuration(
+                "scatter_gather",
+                pattern_config,
             )
             if validation_result.failure:
                 return r[Mapping[str, t.Container]].fail(

@@ -11,12 +11,12 @@ from collections.abc import (
 )
 from typing import Protocol, runtime_checkable
 
-from flext_core import FlextProtocols
+from flext_auth import p
 
 from flext_oracle_oic import t
 
 
-class FlextOracleOicProtocols(FlextProtocols):
+class FlextOracleOicProtocols(p):
     """Oracle OIC Extension protocols extending p with Oracle OIC-specific interfaces."""
 
     @runtime_checkable
@@ -24,7 +24,7 @@ class FlextOracleOicProtocols(FlextProtocols):
         """OracleOic domain namespace."""
 
         @runtime_checkable
-        class HTTPClient(FlextProtocols.Service[t.Container], Protocol):
+        class HTTPClient(p.Service[t.Container], Protocol):
             """Protocol for HTTP client operations used by Oracle OIC services."""
 
             def delete(
@@ -32,7 +32,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 url: str,
                 *,
                 headers: t.StrMapping | None = None,
-            ) -> FlextProtocols.Result[bool]:
+            ) -> p.Result[bool]:
                 """Execute HTTP DELETE request."""
                 ...
 
@@ -41,7 +41,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 url: str,
                 *,
                 headers: t.StrMapping | None = None,
-            ) -> FlextProtocols.Result[t.Container]:
+            ) -> p.Result[t.Container]:
                 """Execute HTTP GET request."""
                 ...
 
@@ -51,7 +51,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 data: Mapping[str, t.Container] | None = None,
                 *,
                 headers: t.StrMapping | None = None,
-            ) -> FlextProtocols.Result[t.Container]:
+            ) -> p.Result[t.Container]:
                 """Execute HTTP POST request."""
                 ...
 
@@ -61,7 +61,7 @@ class FlextOracleOicProtocols(FlextProtocols):
                 data: Mapping[str, t.Container] | None = None,
                 *,
                 headers: t.StrMapping | None = None,
-            ) -> FlextProtocols.Result[t.Container]:
+            ) -> p.Result[t.Container]:
                 """Execute HTTP PUT request."""
                 ...
 
