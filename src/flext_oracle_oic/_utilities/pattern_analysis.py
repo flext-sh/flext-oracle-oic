@@ -58,7 +58,7 @@ class FlextOracleOicUtilitiesPatternAnalysis:
     @staticmethod
     def validate_pattern_configuration(
         pattern_type: str,
-        configuration: t.ValueOrModel,
+        configuration: t.RuntimeData,
     ) -> p.Result[Mapping[str, t.Container]]:
         """Validate Oracle OIC integration pattern configuration.
 
