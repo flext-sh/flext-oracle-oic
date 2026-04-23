@@ -29,14 +29,12 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         self,
         integration_id: str,
         payload: t.JsonMapping,
-        **kwargs: t.Scalar,
     ) -> p.Result[t.JsonMapping]:
         """Execute app-driven orchestration pattern.
 
         Args:
         integration_id: The integration identifier.
         payload: Orchestration payload data.
-        **kwargs: Additional execution parameters.
 
         Returns:
         r containing execution result.
@@ -76,14 +74,12 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         self,
         integration_id: str,
         file_config: t.JsonMapping,
-        **kwargs: t.Scalar,
     ) -> p.Result[t.JsonMapping]:
         """Execute file transfer pattern.
 
         Args:
         integration_id: The integration identifier.
         file_config: File transfer configuration.
-        **kwargs: Additional execution parameters.
 
         Returns:
         r containing execution result.
@@ -95,21 +91,18 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
             operation=self._run_file_transfer,
             log_message="File transfer failed for %s",
             error_message="File transfer failed",
-            **kwargs,
         )
 
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
         schedule_config: t.JsonMapping,
-        **kwargs: t.Scalar,
     ) -> p.Result[t.JsonMapping]:
         """Execute scheduled orchestration pattern.
 
         Args:
         integration_id: The integration identifier.
         schedule_config: Schedule configuration.
-        **kwargs: Additional execution parameters.
 
         Returns:
         r containing execution result.
@@ -121,7 +114,6 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
             operation=self._run_scheduled_orchestration,
             log_message="Scheduled orchestration failed for %s",
             error_message="Scheduled orchestration failed",
-            **kwargs,
         )
 
     @staticmethod
@@ -129,43 +121,27 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         client: FlextOracleOicClient,
         integration_id: str,
         operation_config: t.JsonMapping,
-        operation_kwargs: t.ConfigurationMapping,
     ) -> t.JsonMapping:
-        return client.execute_file_transfer(
-            integration_id,
-            operation_config,
-            **operation_kwargs,
-        )
+        return client.execute_file_transfer(integration_id, operation_config)
 
     @staticmethod
     def _run_scheduled_orchestration(
         client: FlextOracleOicClient,
         integration_id: str,
         operation_config: t.JsonMapping,
-        operation_kwargs: t.ConfigurationMapping,
     ) -> t.JsonMapping:
-        return client.execute_scheduled_orchestration(
-            integration_id,
-            operation_config,
-            **operation_kwargs,
-        )
+        return client.execute_scheduled_orchestration(integration_id, operation_config)
 
     def _execute_integration_operation(
         self,
         integration_id: str,
         operation_config: t.JsonMapping,
         operation: Callable[
-            [
-                FlextOracleOicClient,
-                str,
-                t.JsonMapping,
-                t.ScalarMapping,
-            ],
+            [FlextOracleOicClient, str, t.JsonMapping],
             t.JsonMapping,
         ],
         log_message: str,
         error_message: str,
-        **kwargs: t.Scalar,
     ) -> p.Result[t.JsonMapping]:
         try:
             client_result = self._get_client()
@@ -173,15 +149,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
                 error_msg = client_result.error or "Client initialization failed"
                 return r[t.JsonMapping].fail(error_msg)
             client = client_result.value
-            operation_kwargs: t.ConfigurationMapping = {
-                str(key): value for key, value in kwargs.items()
-            }
-            result = operation(
-                client,
-                integration_id,
-                operation_config,
-                operation_kwargs,
-            )
+            result = operation(client, integration_id, operation_config)
             return r[t.JsonMapping].ok(result)
         except (ConnectionError, TimeoutError, ValueError) as exc:
             self.logger.exception(log_message, integration_id)

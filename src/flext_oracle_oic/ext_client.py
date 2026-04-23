@@ -104,7 +104,6 @@ class FlextOracleOicClient:
         self,
         integration_id: str,
         file_config: t.JsonMapping,
-        **kwargs: t.Scalar,
     ) -> t.JsonMapping:
         """Execute file transfer pattern for an integration."""
         endpoint = f"/integrations/{integration_id}/files"
@@ -119,7 +118,6 @@ class FlextOracleOicClient:
         self,
         integration_id: str,
         schedule_config: t.JsonMapping,
-        **kwargs: t.Scalar,
     ) -> t.JsonMapping:
         """Execute scheduled orchestration for an integration."""
         endpoint = f"/integrations/{integration_id}/schedules"

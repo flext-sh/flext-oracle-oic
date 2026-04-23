@@ -147,14 +147,12 @@ class FlextOracleOicApi(FlextOracleOicService):
         self,
         integration_id: str,
         payload: t.JsonMapping,
-        **kwargs: t.Scalar,
     ) -> p.Result[t.JsonMapping]:
         """Execute app-driven orchestration pattern.
 
         Args:
         integration_id: The integration identifier.
         payload: Orchestration payload data.
-        **kwargs: Additional execution parameters.
 
         Returns:
         r containing execution result.
@@ -163,7 +161,6 @@ class FlextOracleOicApi(FlextOracleOicService):
         return self._service.execute_app_driven_orchestration(
             integration_id,
             payload,
-            **kwargs,
         )
 
     @override
@@ -171,38 +168,30 @@ class FlextOracleOicApi(FlextOracleOicService):
         self,
         integration_id: str,
         file_config: t.JsonMapping,
-        **kwargs: t.Scalar,
     ) -> p.Result[t.JsonMapping]:
         """Execute file transfer pattern.
 
         Args:
         integration_id: The integration identifier.
         file_config: File transfer configuration.
-        **kwargs: Additional execution parameters.
 
         Returns:
         r containing execution result.
 
         """
-        return self._service.execute_file_transfer(
-            integration_id,
-            file_config,
-            **kwargs,
-        )
+        return self._service.execute_file_transfer(integration_id, file_config)
 
     @override
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
         schedule_config: t.JsonMapping,
-        **kwargs: t.Scalar,
     ) -> p.Result[t.JsonMapping]:
         """Execute scheduled orchestration pattern.
 
         Args:
         integration_id: The integration identifier.
         schedule_config: Schedule configuration.
-        **kwargs: Additional execution parameters.
 
         Returns:
         r containing execution result.
@@ -211,7 +200,6 @@ class FlextOracleOicApi(FlextOracleOicService):
         return self._service.execute_scheduled_orchestration(
             integration_id,
             schedule_config,
-            **kwargs,
         )
 
     def fetch_auth_context(self) -> t.JsonMapping:
