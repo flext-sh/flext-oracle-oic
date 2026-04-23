@@ -75,8 +75,8 @@ class FlextOracleOicConstants(c):
         MIN_MAX_RETRIES: Final[int] = 0
         DEFAULT_VERIFY_SSL: Final[bool] = True
 
-    class Auth:
-        """Oracle OIC Authentication constants."""
+    class Auth(c.Auth):
+        """Oracle OIC Authentication constants extending base auth namespace."""
 
         DEFAULT_OAUTH_SCOPE: Final[str] = ""
 
