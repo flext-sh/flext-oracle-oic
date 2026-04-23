@@ -29,14 +29,14 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         self,
         integration_id: str,
         payload: t.JsonMapping,
-        **_kwargs: t.Scalar,
+        **kwargs: t.Scalar,
     ) -> p.Result[t.JsonMapping]:
         """Execute app-driven orchestration pattern.
 
         Args:
         integration_id: The integration identifier.
         payload: Orchestration payload data.
-        **_kwargs: Additional execution parameters.
+        **kwargs: Additional execution parameters.
 
         Returns:
         r containing execution result.
