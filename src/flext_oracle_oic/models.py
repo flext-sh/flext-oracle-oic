@@ -6,7 +6,6 @@ This module provides data models for Oracle OIC External operations.
 from __future__ import annotations
 
 from collections.abc import (
-    Mapping,
     Sequence,
 )
 from typing import Annotated
@@ -162,11 +161,11 @@ class FlextOracleOicModels(m):
             """Message router pattern configuration model."""
 
             message_data: Annotated[
-                Mapping[str, t.Container],
+                t.JsonMapping,
                 u.Field(description="Message payload used for routing"),
             ]
             routing_rules: Annotated[
-                Sequence[Mapping[str, t.Container]],
+                Sequence[t.JsonMapping],
                 u.Field(description="Ordered routing rules"),
             ]
 
@@ -174,7 +173,7 @@ class FlextOracleOicModels(m):
             """Scatter-gather pattern configuration model."""
 
             request_data: Annotated[
-                Mapping[str, t.Container],
+                t.JsonMapping,
                 u.Field(description="Request payload to scatter"),
             ]
             target_services: Annotated[
@@ -202,13 +201,13 @@ class FlextOracleOicModels(m):
                 ),
             ] = None
             data: Annotated[
-                Mapping[str, t.Container] | None,
+                t.JsonMapping | None,
                 u.Field(
                     description="Form data",
                 ),
             ] = None
             json_data: Annotated[
-                Mapping[str, t.Container] | None,
+                t.JsonMapping | None,
                 u.Field(
                     description="JSON data",
                 ),

@@ -10,9 +10,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import asyncio
-from collections.abc import (
-    Mapping,
-)
 
 from flext_oracle_oic import (
     FlextOracleOicServiceBase,
@@ -28,7 +25,7 @@ from flext_oracle_oic import (
 class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
     """Mixin providing monitoring operations for FlextOracleOicService facade."""
 
-    def fetch_health_status(self) -> p.Result[Mapping[str, t.Container]]:
+    def fetch_health_status(self) -> p.Result[t.JsonMapping]:
         """Get Oracle OIC health status using u.
 
         Returns:
@@ -36,7 +33,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
 
         """
         try:
-            health_data: Mapping[str, t.Container]
+            health_data: t.JsonMapping
             if not self._monitoring_client:
                 health_data = {
                     "status": c.Monitoring.HealthStatus.HEALTHY,
@@ -68,7 +65,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 if response_result.success:
                     response = response_result.value
                     if response.status_code == c.API.HTTP_STATUS_OK:
-                        base_health: Mapping[str, t.Container] = (
+                        base_health: t.JsonMapping = (
                             {
                                 str(k): self._to_general_value(v)
                                 for k, v in response.body.items()
@@ -123,7 +120,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                         },
                         "error": f"Request failed: {response_result.error}",
                     }
-            health_data_dict: Mapping[str, t.Container] = dict(health_data)
+            health_data_dict: t.JsonMapping = dict(health_data)
             validation_result = u.MonitoringUtilities.validate_health_status(
                 health_data_dict,
             )
@@ -132,10 +129,10 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             self.logger.warning(
                 f"Health status validation failed: {validation_result.error}",
             )
-            return r[Mapping[str, t.Container]].ok(health_data_dict)
+            return r[t.JsonMapping].ok(health_data_dict)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Health check failed")
-            error_health: Mapping[str, t.Container] = {
+            error_health = {
                 "status": c.Monitoring.HealthStatus.ERROR,
                 "components": {
                     c.Monitoring.COMPONENT_DATABASE: {
@@ -156,10 +153,10 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             return (
                 validation_result
                 if validation_result.success
-                else r[Mapping[str, t.Container]].ok(error_health)
+                else r[t.JsonMapping].ok(error_health)
             )
 
-    def fetch_performance_metrics(self) -> p.Result[Mapping[str, t.Container]]:
+    def fetch_performance_metrics(self) -> p.Result[t.JsonMapping]:
         """Get Oracle OIC performance metrics with analysis using u.
 
         Returns:
@@ -167,7 +164,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
 
         """
         try:
-            metrics_data: Mapping[str, t.Container]
+            metrics_data: t.JsonMapping
             if not self._monitoring_client:
                 metrics_data = {
                     "active_integrations": 0,
@@ -197,7 +194,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                                 for k, v in response.body.items()
                             }
                         else:
-                            fallback: Mapping[str, t.Container] = {}
+                            fallback = {}
                             metrics_data = fallback
                     else:
                         metrics_data = {
@@ -215,22 +212,22 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                         "average_response_time": 0.0,
                         "error": f"Request failed: {response_result.error}",
                     }
-            metrics_dict: t.MutableFlatContainerMapping = {}
+            metrics_dict: t.MutableJsonMapping = {}
             for key, value in metrics_data.items():
                 metrics_dict[str(key)] = self._to_general_value(value)
             analysis_result = u.MonitoringUtilities.analyze_performance_metrics(
                 metrics_dict,
             )
             if analysis_result.success:
-                return r[Mapping[str, t.Container]].ok({
+                return r[t.JsonMapping].ok({
                     **metrics_dict,
                     "analysis": dict(analysis_result.value),
                 })
             self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
-            return r[Mapping[str, t.Container]].ok(metrics_dict)
+            return r[t.JsonMapping].ok(metrics_dict)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Performance metrics failed")
-            error_metrics: Mapping[str, t.Container] = {
+            error_metrics = {
                 "active_integrations": 0,
                 "total_executions": 0,
                 "success_rate": 0.0,
@@ -241,11 +238,11 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 error_metrics,
             )
             if analysis_result.success:
-                return r[Mapping[str, t.Container]].ok({
+                return r[t.JsonMapping].ok({
                     **error_metrics,
                     "analysis": dict(analysis_result.value),
                 })
-            return r[Mapping[str, t.Container]].ok(error_metrics)
+            return r[t.JsonMapping].ok(error_metrics)
 
 
 __all__: list[str] = ["FlextOracleOicMonitoringMixin"]

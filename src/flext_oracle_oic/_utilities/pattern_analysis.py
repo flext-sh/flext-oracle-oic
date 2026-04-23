@@ -15,7 +15,7 @@ class FlextOracleOicUtilitiesPatternAnalysis:
 
     @staticmethod
     def analyze_integration_pattern(
-        integration_data: Mapping[str, t.Container],
+        integration_data: t.JsonMapping,
     ) -> p.Result[str]:
         """Analyze Oracle OIC integration to determine pattern type.
 
@@ -29,15 +29,15 @@ class FlextOracleOicUtilitiesPatternAnalysis:
         endpoints_raw = integration_data.get("endpoints", [])
         connections_raw = integration_data.get("connections", [])
         mappings_raw = integration_data.get("mappings", [])
-        endpoints: Sequence[Mapping[str, t.Container]] = (
+        endpoints: Sequence[t.JsonMapping] = (
             [dict(endpoint) for endpoint in endpoints_raw if isinstance(endpoint, dict)]
             if isinstance(endpoints_raw, list)
             else []
         )
-        connections: t.FlatContainerList = (
+        connections: t.JsonList = (
             list(connections_raw) if isinstance(connections_raw, list) else []
         )
-        mappings: t.FlatContainerList = (
+        mappings: t.JsonList = (
             list(mappings_raw) if isinstance(mappings_raw, list) else []
         )
         if len(endpoints) > c.OracleOicValidation.MIN_ENDPOINTS_FOR_ROUTER and any(
@@ -59,7 +59,7 @@ class FlextOracleOicUtilitiesPatternAnalysis:
     def validate_pattern_configuration(
         pattern_type: str,
         configuration: t.RuntimeData,
-    ) -> p.Result[Mapping[str, t.Container]]:
+    ) -> p.Result[t.JsonMapping]:
         """Validate Oracle OIC integration pattern configuration.
 
         Args:
@@ -72,41 +72,41 @@ class FlextOracleOicUtilitiesPatternAnalysis:
         """
         if pattern_type not in c.OracleOicValidation.SUPPORTED_PATTERNS:
             supported = ", ".join(sorted(c.OracleOicValidation.SUPPORTED_PATTERNS))
-            return r[Mapping[str, t.Container]].fail(
+            return r[t.JsonMapping].fail(
                 f"Unsupported pattern type. Supported: {supported}",
             )
         if configuration is None:
-            return r[Mapping[str, t.Container]].fail(
+            return r[t.JsonMapping].fail(
                 "Pattern configuration must be a mapping or model",
             )
         if isinstance(configuration, Mapping):
-            normalized_configuration: Mapping[str, t.Container] = dict(configuration)
+            normalized_configuration: t.JsonMapping = dict(configuration)
         elif hasattr(configuration, "model_dump"):
             dumped = configuration.model_dump(mode="python")
             if not isinstance(dumped, Mapping):
-                return r[Mapping[str, t.Container]].fail(
+                return r[t.JsonMapping].fail(
                     "Pattern configuration dump must be a mapping",
                 )
             normalized_configuration = dict(dumped)
         else:
-            return r[Mapping[str, t.Container]].fail(
+            return r[t.JsonMapping].fail(
                 "Pattern configuration must be a mapping or model",
             )
         if pattern_type == "message_router":
             if "routing_rules" not in normalized_configuration:
-                return r[Mapping[str, t.Container]].fail(
+                return r[t.JsonMapping].fail(
                     "Message router pattern requires MessageRouterPatternConfig",
                 )
         elif pattern_type == "scatter_gather":
             if "parallel_routes" not in normalized_configuration:
-                return r[Mapping[str, t.Container]].fail(
+                return r[t.JsonMapping].fail(
                     "Scatter-gather pattern requires ScatterGatherPatternConfig",
                 )
         elif (
             pattern_type == "publish_subscribe"
             and "event_types" not in normalized_configuration
         ):
-            return r[Mapping[str, t.Container]].fail(
+            return r[t.JsonMapping].fail(
                 "Publish-subscribe pattern requires event_types",
             )
-        return r[Mapping[str, t.Container]].ok(normalized_configuration)
+        return r[t.JsonMapping].ok(normalized_configuration)

@@ -11,7 +11,6 @@ from __future__ import annotations
 
 from collections.abc import (
     Callable,
-    Mapping,
 )
 
 from flext_oracle_oic import (
@@ -29,9 +28,9 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     def execute_app_driven_orchestration(
         self,
         integration_id: str,
-        payload: Mapping[str, t.Container],
+        payload: t.JsonMapping,
         **_kwargs: t.Scalar,
-    ) -> p.Result[Mapping[str, t.Container]]:
+    ) -> p.Result[t.JsonMapping]:
         """Execute app-driven orchestration pattern.
 
         Args:
@@ -47,10 +46,10 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
             client_result = self._get_client()
             if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[Mapping[str, t.Container]].fail(error_msg)
+                return r[t.JsonMapping].fail(error_msg)
             client = client_result.value
             endpoint = f"/integrations/{integration_id}/connections"
-            payload_dict: Mapping[str, t.Container] = {
+            payload_dict = {
                 str(key): self._to_general_value(value)
                 for key, value in payload.items()
             }
@@ -60,25 +59,25 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
                 json=payload_dict,
             )
             if orchestration_result.failure:
-                return r[Mapping[str, t.Container]].fail(
+                return r[t.JsonMapping].fail(
                     orchestration_result.error or "Orchestration request failed",
                 )
-            return r[Mapping[str, t.Container]].ok(orchestration_result.value)
+            return r[t.JsonMapping].ok(orchestration_result.value)
         except (ConnectionError, TimeoutError, ValueError) as exc:
             self.logger.exception(
                 "App-driven orchestration failed for %s",
                 integration_id,
             )
-            return r[Mapping[str, t.Container]].fail(
+            return r[t.JsonMapping].fail(
                 f"Orchestration execution failed: {exc!s}",
             )
 
     def execute_file_transfer(
         self,
         integration_id: str,
-        file_config: Mapping[str, t.Container],
+        file_config: t.JsonMapping,
         **kwargs: t.Scalar,
-    ) -> p.Result[Mapping[str, t.Container]]:
+    ) -> p.Result[t.JsonMapping]:
         """Execute file transfer pattern.
 
         Args:
@@ -102,9 +101,9 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
-        schedule_config: Mapping[str, t.Container],
+        schedule_config: t.JsonMapping,
         **kwargs: t.Scalar,
-    ) -> p.Result[Mapping[str, t.Container]]:
+    ) -> p.Result[t.JsonMapping]:
         """Execute scheduled orchestration pattern.
 
         Args:
@@ -129,9 +128,9 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     def _run_file_transfer(
         client: FlextOracleOicClient,
         integration_id: str,
-        operation_config: Mapping[str, t.Container],
+        operation_config: t.JsonMapping,
         operation_kwargs: t.ConfigurationMapping,
-    ) -> Mapping[str, t.Container]:
+    ) -> t.JsonMapping:
         return client.execute_file_transfer(
             integration_id,
             operation_config,
@@ -142,9 +141,9 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     def _run_scheduled_orchestration(
         client: FlextOracleOicClient,
         integration_id: str,
-        operation_config: Mapping[str, t.Container],
+        operation_config: t.JsonMapping,
         operation_kwargs: t.ConfigurationMapping,
-    ) -> Mapping[str, t.Container]:
+    ) -> t.JsonMapping:
         return client.execute_scheduled_orchestration(
             integration_id,
             operation_config,
@@ -154,25 +153,25 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     def _execute_integration_operation(
         self,
         integration_id: str,
-        operation_config: Mapping[str, t.Container],
+        operation_config: t.JsonMapping,
         operation: Callable[
             [
                 FlextOracleOicClient,
                 str,
-                Mapping[str, t.Container],
+                t.JsonMapping,
                 t.ScalarMapping,
             ],
-            Mapping[str, t.Container],
+            t.JsonMapping,
         ],
         log_message: str,
         error_message: str,
         **kwargs: t.Scalar,
-    ) -> p.Result[Mapping[str, t.Container]]:
+    ) -> p.Result[t.JsonMapping]:
         try:
             client_result = self._get_client()
             if client_result.failure:
                 error_msg = client_result.error or "Client initialization failed"
-                return r[Mapping[str, t.Container]].fail(error_msg)
+                return r[t.JsonMapping].fail(error_msg)
             client = client_result.value
             operation_kwargs: t.ConfigurationMapping = {
                 str(key): value for key, value in kwargs.items()
@@ -183,10 +182,10 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
                 operation_config,
                 operation_kwargs,
             )
-            return r[Mapping[str, t.Container]].ok(result)
+            return r[t.JsonMapping].ok(result)
         except (ConnectionError, TimeoutError, ValueError) as exc:
             self.logger.exception(log_message, integration_id)
-            return r[Mapping[str, t.Container]].fail(f"{error_message}: {exc!s}")
+            return r[t.JsonMapping].fail(f"{error_message}: {exc!s}")
 
 
 __all__: list[str] = ["FlextOracleOicOrchestrationMixin"]

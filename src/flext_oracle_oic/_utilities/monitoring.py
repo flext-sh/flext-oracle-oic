@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from collections.abc import (
-    Mapping,
     MutableSequence,
 )
 from datetime import UTC, datetime
@@ -16,8 +15,8 @@ class FlextOracleOicUtilitiesMonitoring:
 
     @staticmethod
     def analyze_performance_metrics(
-        metrics: Mapping[str, t.Container],
-    ) -> p.Result[Mapping[str, t.Container]]:
+        metrics: t.JsonMapping,
+    ) -> p.Result[t.JsonMapping]:
         """Analyze Oracle OIC performance metrics.
 
         Args:
@@ -28,9 +27,9 @@ class FlextOracleOicUtilitiesMonitoring:
 
         """
         overall_health: str = c.HealthStatus.HEALTHY.value
-        warnings: MutableSequence[t.Container] = []
-        critical_issues: MutableSequence[t.Container] = []
-        recommendations: MutableSequence[t.Container] = []
+        warnings: MutableSequence[t.JsonValue] = []
+        critical_issues: MutableSequence[t.JsonValue] = []
+        recommendations: MutableSequence[t.JsonValue] = []
         if "average_response_time" in metrics:
             response_time = metrics["average_response_time"]
             if isinstance(response_time, (int, float)):
@@ -67,18 +66,18 @@ class FlextOracleOicUtilitiesMonitoring:
                     recommendations.append(
                         "Review error logs and implement error handling improvements",
                     )
-        analysis: Mapping[str, t.Container] = {
+        analysis = {
             "overall_health": overall_health,
             "warnings": tuple(warnings),
             "critical_issues": tuple(critical_issues),
             "recommendations": tuple(recommendations),
         }
-        return r[Mapping[str, t.Container]].ok(analysis)
+        return r[t.JsonMapping].ok(analysis)
 
     @staticmethod
     def validate_health_status(
-        health_data: Mapping[str, t.Container],
-    ) -> p.Result[Mapping[str, t.Container]]:
+        health_data: t.JsonMapping,
+    ) -> p.Result[t.JsonMapping]:
         """Validate Oracle OIC health check data.
 
         Args:
@@ -88,11 +87,11 @@ class FlextOracleOicUtilitiesMonitoring:
         r containing validated health data or error
 
         """
-        validated_data: t.MutableFlatContainerMapping = {
+        validated_data: t.MutableJsonMapping = {
             str(key): value for key, value in health_data.items()
         }
         if "status" not in health_data:
-            return r[Mapping[str, t.Container]].fail(
+            return r[t.JsonMapping].fail(
                 "Health data must include status",
             )
         status = health_data["status"]
@@ -102,24 +101,24 @@ class FlextOracleOicUtilitiesMonitoring:
             c.Monitoring.HealthStatus.ERROR.value,
             c.Monitoring.HealthStatus.UNKNOWN.value,
         }:
-            return r[Mapping[str, t.Container]].fail(
+            return r[t.JsonMapping].fail(
                 "Invalid health status. Valid: healthy, unhealthy, error, unknown",
             )
         if "components" in health_data:
             components = health_data["components"]
             if not isinstance(components, dict):
-                return r[Mapping[str, t.Container]].fail(
+                return r[t.JsonMapping].fail(
                     "Components must be a dictionary",
                 )
             for component_name, component_data in components.items():
                 if not isinstance(component_data, dict):
-                    return r[Mapping[str, t.Container]].fail(
+                    return r[t.JsonMapping].fail(
                         f"Component {component_name} data must be a dictionary",
                     )
                 if "status" not in component_data:
-                    return r[Mapping[str, t.Container]].fail(
+                    return r[t.JsonMapping].fail(
                         f"Component {component_name} must have status",
                     )
         if "timestamp" not in validated_data:
             validated_data["timestamp"] = datetime.now(UTC).isoformat()
-        return r[Mapping[str, t.Container]].ok(validated_data)
+        return r[t.JsonMapping].ok(validated_data)

@@ -11,18 +11,15 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-)
 from importlib.metadata import PackageMetadata, metadata
 
-from flext_core import FlextVersion
+from flext_core import FlextVersion, t
 
 
 class FlextOracleOicVersion(FlextVersion):
     """flext-oracle-oic version — MRO-derived from FlextVersion."""
 
-    _metadata: PackageMetadata | Mapping[str, str] = metadata("flext-oracle-oic")
+    _metadata: PackageMetadata | t.StrMapping = metadata("flext-oracle-oic")
 
 
 __version__ = FlextOracleOicVersion.__version__

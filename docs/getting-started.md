@@ -166,7 +166,7 @@ make setup                 # Complete development environment setup
 poetry install --with dev,test
 
 # Quality gates (run before commits)
-make validate              # Complete validation pipeline (lint + type + test)
+make val              # Complete validation pipeline (lint + type + test)
 make check                 # Quick validation (lint + type-check only)
 make lint                  # Ruff linting with zero tolerance
 make type-check            # MyPy strict mode type checking

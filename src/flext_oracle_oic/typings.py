@@ -25,8 +25,8 @@ class FlextOracleOicTypes(t):
     Uses Python 3.13+ type syntax and patterns.
     """
 
-    CONTAINER_MAPPING_ADAPTER: m.TypeAdapter[t.FlatContainerMapping] = m.TypeAdapter(
-        t.FlatContainerMapping,
+    CONTAINER_MAPPING_ADAPTER: m.TypeAdapter[t.JsonMapping] = m.TypeAdapter(
+        t.JsonMapping,
     )
 
 

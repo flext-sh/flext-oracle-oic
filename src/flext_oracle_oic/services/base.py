@@ -18,6 +18,7 @@ from types import TracebackType
 from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiSettings
+from flext_core import FlextSettings, s
 
 from flext_oracle_oic import (
     FlextOracleOicClient,
@@ -26,7 +27,6 @@ from flext_oracle_oic import (
     m,
     p,
     r,
-    s,
     t,
     u,
 )
@@ -50,12 +50,10 @@ class FlextOracleOicServiceBase(
         Uses singleton settings pattern - no settings parameter needed.
         """
         super().__init__()
-        self._oic_settings: FlextOracleOicSettings = (
-            FlextOracleOicSettings.fetch_global()
-        )
+        self._oic_settings: FlextOracleOicSettings = self.settings
         self._client: FlextOracleOicClient | None = None
         self._monitoring_client: FlextApiClient | None = None
-        self._authenticator: t.Container | None = None
+        self._authenticator: t.JsonValue | None = None
         self._initialize_components()
 
     def __enter__(self) -> Self:
@@ -71,7 +69,7 @@ class FlextOracleOicServiceBase(
         """Context manager exit."""
 
     @staticmethod
-    def _as_text(value: t.Container, default: str = "") -> str:
+    def _as_text(value: t.JsonValue, default: str = "") -> str:
         """Normalize optional OIC values into strings for model construction."""
         match value:
             case str():
@@ -84,9 +82,9 @@ class FlextOracleOicServiceBase(
 
     @staticmethod
     def _to_general_value(
-        value: t.Container | bytes | None,
-    ) -> t.Container:
-        """Normalize arbitrary runtime values into t.Container."""
+        value: t.JsonValue | bytes | None,
+    ) -> t.JsonValue:
+        """Normalize arbitrary runtime values into t.JsonValue."""
         if isinstance(value, bytes):
             return value.decode(errors="replace")
         if isinstance(value, (str, int, float, bool)) or value is None:
@@ -115,6 +113,15 @@ class FlextOracleOicServiceBase(
 
         """
         return self.list_integrations()
+
+    @property
+    @override
+    def settings(self) -> FlextOracleOicSettings:
+        """Return the typed Oracle OIC settings namespace."""
+        return FlextSettings.fetch_global().fetch_namespace(
+            "oracle_oic",
+            FlextOracleOicSettings,
+        )
 
     def list_integrations(
         self,
@@ -236,22 +243,20 @@ class FlextOracleOicServiceBase(
                     refresh_fn = getattr(self._authenticator, "refresh_token", None)
                     if callable(refresh_fn):
                         auth_token = refresh_fn()
-                api_config = FlextApiSettings(
-                    base_url=str(self._oic_settings.base_url),
-                    timeout=self._oic_settings.request_timeout,
-                    max_retries=self._oic_settings.max_retries,
-                    verify_ssl=self._oic_settings.verify_ssl,
-                    default_headers={
-                        "Authorization": f"Bearer {auth_token}",
-                        "Content-Type": "application/json",
-                    },
-                    headers={
-                        "Authorization": f"Bearer {auth_token}",
-                        "Content-Type": "application/json",
-                    },
-                    log_requests=False,
-                    log_responses=False,
-                )
+                auth_headers: t.JsonMapping = {
+                    "Authorization": f"Bearer {auth_token}",
+                    "Content-Type": "application/json",
+                }
+                api_config = FlextApiSettings.model_validate({
+                    "base_url": str(self._oic_settings.base_url),
+                    "timeout": self._oic_settings.request_timeout,
+                    "max_retries": self._oic_settings.max_retries,
+                    "verify_ssl": self._oic_settings.verify_ssl,
+                    "default_headers": auth_headers,
+                    "headers": auth_headers,
+                    "log_requests": False,
+                    "log_responses": False,
+                })
                 self._monitoring_client = FlextApiClient(settings=api_config)
         except (ConnectionError, TimeoutError, ValueError):
             u.fetch_logger(__name__).exception(

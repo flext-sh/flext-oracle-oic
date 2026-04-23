@@ -11,7 +11,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import (
-    Mapping,
     Sequence,
 )
 
@@ -31,9 +30,9 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
 
     def apply_message_router_pattern(
         self,
-        message_data: Mapping[str, t.Container],
-        routing_rules: Sequence[Mapping[str, t.Container]],
-    ) -> p.Result[Mapping[str, t.Container]]:
+        message_data: t.JsonMapping,
+        routing_rules: Sequence[t.JsonMapping],
+    ) -> p.Result[t.JsonMapping]:
         """Apply message router pattern to OIC integration using u.
 
         Args:
@@ -55,7 +54,7 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                 pattern_config,
             )
             if validation_result.failure:
-                return r[Mapping[str, t.Container]].fail(
+                return r[t.JsonMapping].fail(
                     f"Pattern validation failed: {validation_result.error}",
                 )
             routing_result = {
@@ -67,17 +66,17 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                 "applied_rules": len(routing_rules),
                 "status": c.OICPatterns.PatternStatus.PROCESSED,
             }
-            return r[Mapping[str, t.Container]].ok(routing_result)
+            return r[t.JsonMapping].ok(routing_result)
         except (ConnectionError, TimeoutError, ValueError) as e:
             error_msg = f"Message router pattern failed: {e}"
             self.logger.exception(error_msg)
-            return r[Mapping[str, t.Container]].fail(error_msg)
+            return r[t.JsonMapping].fail(error_msg)
 
     def apply_scatter_gather_pattern(
         self,
-        request_data: Mapping[str, t.Container],
+        request_data: t.JsonMapping,
         target_endpoints: t.StrSequence,
-    ) -> p.Result[Mapping[str, t.Container]]:
+    ) -> p.Result[t.JsonMapping]:
         """Apply scatter-gather pattern to OIC integration using u.
 
         Args:
@@ -99,7 +98,7 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                 pattern_config,
             )
             if validation_result.failure:
-                return r[Mapping[str, t.Container]].fail(
+                return r[t.JsonMapping].fail(
                     f"Pattern validation failed: {validation_result.error}",
                 )
             scatter_result = {
@@ -111,11 +110,11 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                 "target_count": len(target_endpoints),
                 "status": c.OICPatterns.PatternStatus.PROCESSED,
             }
-            return r[Mapping[str, t.Container]].ok(scatter_result)
+            return r[t.JsonMapping].ok(scatter_result)
         except (ConnectionError, TimeoutError, ValueError) as e:
             error_msg = f"Scatter-gather pattern failed: {e}"
             self.logger.exception(error_msg)
-            return r[Mapping[str, t.Container]].fail(error_msg)
+            return r[t.JsonMapping].fail(error_msg)
 
 
 __all__: list[str] = ["FlextOracleOicIntegrationPatternsMixin"]

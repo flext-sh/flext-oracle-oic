@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import re
 from collections.abc import (
-    Mapping,
     MutableSequence,
 )
 
@@ -16,8 +15,8 @@ class FlextOracleOicUtilitiesOracleOic:
 
     @staticmethod
     def validate_integration_data(
-        integration_data: Mapping[str, t.Container],
-    ) -> p.Result[Mapping[str, t.Container]]:
+        integration_data: t.JsonMapping,
+    ) -> p.Result[t.JsonMapping]:
         """Validate complete Oracle OIC integration data.
 
         Args:
@@ -28,7 +27,7 @@ class FlextOracleOicUtilitiesOracleOic:
 
         """
         errors: MutableSequence[str] = []
-        validated_data: t.MutableFlatContainerMapping = {
+        validated_data: t.MutableJsonMapping = {
             str(key): value for key, value in integration_data.items()
         }
         if "name" not in integration_data:
@@ -85,10 +84,10 @@ class FlextOracleOicUtilitiesOracleOic:
                         "Status validation: Integration status must be a string",
                     )
         if errors:
-            return r[Mapping[str, t.Container]].fail(
+            return r[t.JsonMapping].fail(
                 f"Integration validation failed: {'; '.join(errors)}",
             )
-        return r[Mapping[str, t.Container]].ok(validated_data)
+        return r[t.JsonMapping].ok(validated_data)
 
     @staticmethod
     def validate_integration_name(name: str) -> p.Result[str]:

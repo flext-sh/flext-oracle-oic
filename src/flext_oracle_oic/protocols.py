@@ -6,9 +6,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-)
 from typing import Protocol, runtime_checkable
 
 from flext_auth import p
@@ -24,7 +21,7 @@ class FlextOracleOicProtocols(p):
         """OracleOic domain namespace."""
 
         @runtime_checkable
-        class HTTPClient(p.Service[t.Container], Protocol):
+        class HTTPClient(p.Service[t.JsonValue], Protocol):
             """Protocol for HTTP client operations used by Oracle OIC services."""
 
             def delete(
@@ -41,27 +38,27 @@ class FlextOracleOicProtocols(p):
                 url: str,
                 *,
                 headers: t.StrMapping | None = None,
-            ) -> p.Result[t.Container]:
+            ) -> p.Result[t.JsonValue]:
                 """Execute HTTP GET request."""
                 ...
 
             def post(
                 self,
                 url: str,
-                data: Mapping[str, t.Container] | None = None,
+                data: t.JsonMapping | None = None,
                 *,
                 headers: t.StrMapping | None = None,
-            ) -> p.Result[t.Container]:
+            ) -> p.Result[t.JsonValue]:
                 """Execute HTTP POST request."""
                 ...
 
             def put(
                 self,
                 url: str,
-                data: Mapping[str, t.Container] | None = None,
+                data: t.JsonMapping | None = None,
                 *,
                 headers: t.StrMapping | None = None,
-            ) -> p.Result[t.Container]:
+            ) -> p.Result[t.JsonValue]:
                 """Execute HTTP PUT request."""
                 ...
 
