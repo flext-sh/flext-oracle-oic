@@ -15,17 +15,14 @@ import sys
 from collections.abc import (
     Sequence,
 )
-from typing import override
 
 from flext_core import p, r, s
 from flext_infra import __version__
 
-from flext_oracle_oic import (
-    FlextOracleOicModels,
-    FlextOracleOicService,
-    FlextOracleOicSettings,
-    t,
-)
+from flext_oracle_oic.models import FlextOracleOicModels
+from flext_oracle_oic.service import FlextOracleOicService
+from flext_oracle_oic.settings import FlextOracleOicSettings
+from flext_oracle_oic.typings import t
 
 
 class FlextOracleOicCli(s[None]):
@@ -68,7 +65,6 @@ class FlextOracleOicCli(s[None]):
         subparsers.add_parser("version", help="Show Oracle OIC Extension version")
         return parser
 
-    @override
     def execute(self) -> p.Result[None]:
         """Execute main CLI operation - run with default arguments."""
         exit_code = self.run_cli()

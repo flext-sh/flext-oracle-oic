@@ -7,7 +7,7 @@ from collections.abc import (
     Sequence,
 )
 
-from flext_oracle_oic import c, p, r, t
+from flext_oracle_oic import c, m, p, r, t
 
 
 class FlextOracleOicUtilitiesPatternAnalysis:
@@ -79,15 +79,20 @@ class FlextOracleOicUtilitiesPatternAnalysis:
             return r[t.JsonMapping].fail(
                 "Pattern configuration must be a mapping or model",
             )
+        json_mapping_adapter: m.TypeAdapter[t.JsonMapping] = m.TypeAdapter(
+            t.JsonMapping,
+        )
         if isinstance(configuration, Mapping):
-            normalized_configuration: t.JsonMapping = dict(configuration)
+            normalized_configuration: t.JsonMapping = (
+                json_mapping_adapter.validate_python(configuration)
+            )
         elif hasattr(configuration, "model_dump"):
             dumped = configuration.model_dump(mode="python")
             if not isinstance(dumped, Mapping):
                 return r[t.JsonMapping].fail(
                     "Pattern configuration dump must be a mapping",
                 )
-            normalized_configuration = dict(dumped)
+            normalized_configuration = json_mapping_adapter.validate_python(dumped)
         else:
             return r[t.JsonMapping].fail(
                 "Pattern configuration must be a mapping or model",

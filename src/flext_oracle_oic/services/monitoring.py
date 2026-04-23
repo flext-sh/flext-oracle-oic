@@ -12,15 +12,13 @@ from __future__ import annotations
 import asyncio
 from collections.abc import Mapping
 
-from flext_oracle_oic import (
-    FlextOracleOicServiceBase,
-    c,
-    m,
-    p,
-    r,
-    t,
-    u,
-)
+from flext_core import p, r
+
+from flext_oracle_oic.constants import c
+from flext_oracle_oic.models import m
+from flext_oracle_oic.services.base import FlextOracleOicServiceBase
+from flext_oracle_oic.typings import t
+from flext_oracle_oic.utilities import u
 
 
 class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):

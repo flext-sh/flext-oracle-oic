@@ -18,18 +18,14 @@ from types import TracebackType
 from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiSettings
-from flext_core import FlextSettings, s
+from flext_core import FlextSettings, p, r, s
 
-from flext_oracle_oic import (
-    FlextOracleOicClient,
-    FlextOracleOicSettings,
-    c,
-    m,
-    p,
-    r,
-    t,
-    u,
-)
+from flext_oracle_oic.constants import c
+from flext_oracle_oic.ext_client import FlextOracleOicClient
+from flext_oracle_oic.models import m
+from flext_oracle_oic.settings import FlextOracleOicSettings
+from flext_oracle_oic.typings import t
+from flext_oracle_oic.utilities import u
 
 
 class FlextOracleOicServiceBase(
@@ -101,10 +97,8 @@ class FlextOracleOicServiceBase(
                 pass
         return str(value)
 
-    @override
     def execute(
         self: Self,
-        **kwargs: t.Scalar,
     ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """Execute main service operation - list all integrations.
 
@@ -209,7 +203,6 @@ class FlextOracleOicServiceBase(
             self.logger.exception("Failed to create OIC client")
             return r[FlextOracleOicClient].fail(f"Client creation failed: {exc!s}")
 
-    @override
     def validate_business_rules(self) -> p.Result[bool]:
         """Validate Oracle OIC service business rules.
 
