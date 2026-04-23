@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import asyncio
+from collections.abc import Mapping
 
 from flext_oracle_oic import (
     FlextOracleOicServiceBase,
@@ -35,21 +36,21 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         try:
             health_data: t.JsonMapping
             if not self._monitoring_client:
-                health_data = {
-                    "status": c.Monitoring.HealthStatus.HEALTHY,
+                health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                    "status": c.Monitoring.HealthStatus.HEALTHY.value,
                     "components": {
                         c.Monitoring.COMPONENT_DATABASE: {
-                            "status": c.Monitoring.ComponentStatus.HEALTHY,
+                            "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                         },
                         c.Monitoring.COMPONENT_MESSAGING: {
-                            "status": c.Monitoring.ComponentStatus.HEALTHY,
+                            "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                         },
                         c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                            "status": c.Monitoring.ComponentStatus.HEALTHY,
+                            "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                         },
                     },
                     "timestamp": asyncio.get_event_loop().time(),
-                }
+                })
             else:
                 base = str(self._oic_settings.base_url).rstrip("/")
                 health_url = f"{base}{c.API.ENDPOINT_HEALTH}"
@@ -70,83 +71,82 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                                 str(k): self._to_general_value(v)
                                 for k, v in response.body.items()
                             }
-                            if isinstance(response.body, dict)
+                            if isinstance(response.body, Mapping)
                             else {"raw": self._to_general_value(response.body)}
                         )
-                        health_data = {
+                        health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
                             **base_health,
-                            "status": c.Monitoring.HealthStatus.HEALTHY,
+                            "status": c.Monitoring.HealthStatus.HEALTHY.value,
                             "components": {
                                 c.Monitoring.COMPONENT_DATABASE: {
-                                    "status": c.Monitoring.ComponentStatus.HEALTHY,
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                                 },
                                 c.Monitoring.COMPONENT_MESSAGING: {
-                                    "status": c.Monitoring.ComponentStatus.HEALTHY,
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                                 },
                                 c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                    "status": c.Monitoring.ComponentStatus.HEALTHY,
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                                 },
                             },
-                        }
+                        })
                     else:
-                        health_data = {
-                            "status": c.Monitoring.HealthStatus.UNHEALTHY,
+                        health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                            "status": c.Monitoring.HealthStatus.UNHEALTHY.value,
                             "components": {
                                 c.Monitoring.COMPONENT_DATABASE: {
-                                    "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                                 },
                                 c.Monitoring.COMPONENT_MESSAGING: {
-                                    "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                                 },
                                 c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                    "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                                 },
                             },
                             "error": f"HTTP {response.status_code}",
-                        }
+                        })
                 else:
-                    health_data = {
-                        "status": c.Monitoring.HealthStatus.ERROR,
+                    health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                        "status": c.Monitoring.HealthStatus.ERROR.value,
                         "components": {
                             c.Monitoring.COMPONENT_DATABASE: {
-                                "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                             },
                             c.Monitoring.COMPONENT_MESSAGING: {
-                                "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                             },
                             c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                             },
                         },
                         "error": f"Request failed: {response_result.error}",
-                    }
-            health_data_dict: t.JsonMapping = dict(health_data)
+                    })
             validation_result = u.MonitoringUtilities.validate_health_status(
-                health_data_dict,
+                health_data,
             )
             if validation_result.success:
                 return validation_result
             self.logger.warning(
                 f"Health status validation failed: {validation_result.error}",
             )
-            return r[t.JsonMapping].ok(health_data_dict)
+            return r[t.JsonMapping].ok(health_data)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Health check failed")
-            error_health = {
-                "status": c.Monitoring.HealthStatus.ERROR,
+            error_health = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                "status": c.Monitoring.HealthStatus.ERROR.value,
                 "components": {
                     c.Monitoring.COMPONENT_DATABASE: {
-                        "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                     },
                     c.Monitoring.COMPONENT_MESSAGING: {
-                        "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                     },
                     c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                        "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                     },
                 },
                 "error": str(e),
-            }
+            })
             validation_result = u.MonitoringUtilities.validate_health_status(
                 error_health,
             )
@@ -194,8 +194,9 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                                 for k, v in response.body.items()
                             }
                         else:
-                            fallback = {}
-                            metrics_data = fallback
+                            metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python(
+                                {},
+                            )
                     else:
                         metrics_data = {
                             "active_integrations": 0,

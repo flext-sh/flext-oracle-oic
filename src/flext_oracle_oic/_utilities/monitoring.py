@@ -2,9 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import (
-    MutableSequence,
-)
 from datetime import UTC, datetime
 
 from flext_oracle_oic import c, p, r, t
@@ -27,9 +24,9 @@ class FlextOracleOicUtilitiesMonitoring:
 
         """
         overall_health: str = c.HealthStatus.HEALTHY.value
-        warnings: MutableSequence[t.JsonValue] = []
-        critical_issues: MutableSequence[t.JsonValue] = []
-        recommendations: MutableSequence[t.JsonValue] = []
+        warnings: list[str] = []
+        critical_issues: list[str] = []
+        recommendations: list[str] = []
         if "average_response_time" in metrics:
             response_time = metrics["average_response_time"]
             if isinstance(response_time, (int, float)):
@@ -68,11 +65,13 @@ class FlextOracleOicUtilitiesMonitoring:
                     )
         analysis = {
             "overall_health": overall_health,
-            "warnings": tuple(warnings),
-            "critical_issues": tuple(critical_issues),
-            "recommendations": tuple(recommendations),
+            "warnings": list(warnings),
+            "critical_issues": list(critical_issues),
+            "recommendations": list(recommendations),
         }
-        return r[t.JsonMapping].ok(analysis)
+        return r[t.JsonMapping].ok(
+            t.CONTAINER_MAPPING_ADAPTER.validate_python(analysis),
+        )
 
     @staticmethod
     def validate_health_status(
