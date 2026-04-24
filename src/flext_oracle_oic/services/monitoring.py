@@ -34,26 +34,26 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         try:
             health_data: t.JsonMapping
             if not self._monitoring_client:
-                health_data = t.OracleOic.CONTAINER_MAPPING_ADAPTER.validate_python({
-                    "status": c.OracleOic.Monitoring.HealthStatus.HEALTHY.value,
+                health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                    "status": c.Monitoring.HealthStatus.HEALTHY.value,
                     "components": {
-                        c.OracleOic.Monitoring.COMPONENT_DATABASE: {
-                            "status": c.OracleOic.Monitoring.ComponentStatus.HEALTHY.value,
+                        c.Monitoring.COMPONENT_DATABASE: {
+                            "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                         },
-                        c.OracleOic.Monitoring.COMPONENT_MESSAGING: {
-                            "status": c.OracleOic.Monitoring.ComponentStatus.HEALTHY.value,
+                        c.Monitoring.COMPONENT_MESSAGING: {
+                            "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                         },
-                        c.OracleOic.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                            "status": c.OracleOic.Monitoring.ComponentStatus.HEALTHY.value,
+                        c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                            "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                         },
                     },
                     "timestamp": asyncio.get_event_loop().time(),
                 })
             else:
                 base = str(self._oic_settings.base_url).rstrip("/")
-                health_url = f"{base}{c.OracleOic.API.ENDPOINT_HEALTH}"
+                health_url = f"{base}{c.API.ENDPOINT_HEALTH}"
                 req = m.Api.HttpRequest(
-                    method=c.OracleOic.API.Method.GET,
+                    method=c.API.Method.GET,
                     url=health_url,
                     headers={},
                     body={},
@@ -63,7 +63,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 response_result = self._monitoring_client.request(req)
                 if response_result.success:
                     response = response_result.value
-                    if response.status_code == c.OracleOic.API.HTTP_STATUS_OK:
+                    if response.status_code == c.API.HTTP_STATUS_OK:
                         base_health: t.JsonMapping = (
                             {
                                 str(k): self._to_general_value(v)
@@ -72,54 +72,54 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                             if isinstance(response.body, Mapping)
                             else {"raw": self._to_general_value(response.body)}
                         )
-                        health_data = t.OracleOic.CONTAINER_MAPPING_ADAPTER.validate_python({
+                        health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
                             **base_health,
-                            "status": c.OracleOic.Monitoring.HealthStatus.HEALTHY.value,
+                            "status": c.Monitoring.HealthStatus.HEALTHY.value,
                             "components": {
-                                c.OracleOic.Monitoring.COMPONENT_DATABASE: {
-                                    "status": c.OracleOic.Monitoring.ComponentStatus.HEALTHY.value,
+                                c.Monitoring.COMPONENT_DATABASE: {
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                                 },
-                                c.OracleOic.Monitoring.COMPONENT_MESSAGING: {
-                                    "status": c.OracleOic.Monitoring.ComponentStatus.HEALTHY.value,
+                                c.Monitoring.COMPONENT_MESSAGING: {
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                                 },
-                                c.OracleOic.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                    "status": c.OracleOic.Monitoring.ComponentStatus.HEALTHY.value,
+                                c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY.value,
                                 },
                             },
                         })
                     else:
-                        health_data = t.OracleOic.CONTAINER_MAPPING_ADAPTER.validate_python({
-                            "status": c.OracleOic.Monitoring.HealthStatus.UNHEALTHY.value,
+                        health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                            "status": c.Monitoring.HealthStatus.UNHEALTHY.value,
                             "components": {
-                                c.OracleOic.Monitoring.COMPONENT_DATABASE: {
-                                    "status": c.OracleOic.Monitoring.ComponentStatus.UNKNOWN.value,
+                                c.Monitoring.COMPONENT_DATABASE: {
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                                 },
-                                c.OracleOic.Monitoring.COMPONENT_MESSAGING: {
-                                    "status": c.OracleOic.Monitoring.ComponentStatus.UNKNOWN.value,
+                                c.Monitoring.COMPONENT_MESSAGING: {
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                                 },
-                                c.OracleOic.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                    "status": c.OracleOic.Monitoring.ComponentStatus.UNKNOWN.value,
+                                c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                                 },
                             },
                             "error": f"HTTP {response.status_code}",
                         })
                 else:
-                    health_data = t.OracleOic.CONTAINER_MAPPING_ADAPTER.validate_python({
-                        "status": c.OracleOic.Monitoring.HealthStatus.ERROR.value,
+                    health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                        "status": c.Monitoring.HealthStatus.ERROR.value,
                         "components": {
-                            c.OracleOic.Monitoring.COMPONENT_DATABASE: {
-                                "status": c.OracleOic.Monitoring.ComponentStatus.UNKNOWN.value,
+                            c.Monitoring.COMPONENT_DATABASE: {
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                             },
-                            c.OracleOic.Monitoring.COMPONENT_MESSAGING: {
-                                "status": c.OracleOic.Monitoring.ComponentStatus.UNKNOWN.value,
+                            c.Monitoring.COMPONENT_MESSAGING: {
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                             },
-                            c.OracleOic.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                                "status": c.OracleOic.Monitoring.ComponentStatus.UNKNOWN.value,
+                            c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                             },
                         },
                         "error": f"Request failed: {response_result.error}",
                     })
-            validation_result = u.OracleOic.MonitoringUtilities.validate_health_status(
+            validation_result = u.MonitoringUtilities.validate_health_status(
                 health_data,
             )
             if validation_result.success:
@@ -130,22 +130,22 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             return r[t.JsonMapping].ok(health_data)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Health check failed")
-            error_health = t.OracleOic.CONTAINER_MAPPING_ADAPTER.validate_python({
-                "status": c.OracleOic.Monitoring.HealthStatus.ERROR.value,
+            error_health = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                "status": c.Monitoring.HealthStatus.ERROR.value,
                 "components": {
-                    c.OracleOic.Monitoring.COMPONENT_DATABASE: {
-                        "status": c.OracleOic.Monitoring.ComponentStatus.UNKNOWN.value,
+                    c.Monitoring.COMPONENT_DATABASE: {
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                     },
-                    c.OracleOic.Monitoring.COMPONENT_MESSAGING: {
-                        "status": c.OracleOic.Monitoring.ComponentStatus.UNKNOWN.value,
+                    c.Monitoring.COMPONENT_MESSAGING: {
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                     },
-                    c.OracleOic.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
-                        "status": c.OracleOic.Monitoring.ComponentStatus.UNKNOWN.value,
+                    c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN.value,
                     },
                 },
                 "error": str(e),
             })
-            validation_result = u.OracleOic.MonitoringUtilities.validate_health_status(
+            validation_result = u.MonitoringUtilities.validate_health_status(
                 error_health,
             )
             return (
@@ -175,7 +175,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 base = str(self._oic_settings.base_url).rstrip("/")
                 metrics_url = f"{base}/ic/api/integration/v1/metrics"
                 req = m.Api.HttpRequest(
-                    method=c.OracleOic.API.Method.GET,
+                    method=c.API.Method.GET,
                     url=metrics_url,
                     headers={},
                     body={},
@@ -185,17 +185,15 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 response_result = self._monitoring_client.request(req)
                 if response_result.success:
                     response = response_result.value
-                    if response.status_code == c.OracleOic.API.HTTP_STATUS_OK:
+                    if response.status_code == c.API.HTTP_STATUS_OK:
                         if isinstance(response.body, dict):
                             metrics_data = {
                                 str(k): self._to_general_value(v)
                                 for k, v in response.body.items()
                             }
                         else:
-                            metrics_data = (
-                                t.OracleOic.CONTAINER_MAPPING_ADAPTER.validate_python(
-                                    {},
-                                )
+                            metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python(
+                                {},
                             )
                     else:
                         metrics_data = {
@@ -216,10 +214,8 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             metrics_dict: t.MutableJsonMapping = {}
             for key, value in metrics_data.items():
                 metrics_dict[str(key)] = self._to_general_value(value)
-            analysis_result = (
-                u.OracleOic.MonitoringUtilities.analyze_performance_metrics(
-                    metrics_dict,
-                )
+            analysis_result = u.MonitoringUtilities.analyze_performance_metrics(
+                metrics_dict,
             )
             if analysis_result.success:
                 return r[t.JsonMapping].ok({
@@ -237,10 +233,8 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 "average_response_time": 0.0,
                 "error": str(e),
             }
-            analysis_result = (
-                u.OracleOic.MonitoringUtilities.analyze_performance_metrics(
-                    error_metrics,
-                )
+            analysis_result = u.MonitoringUtilities.analyze_performance_metrics(
+                error_metrics,
             )
             if analysis_result.success:
                 return r[t.JsonMapping].ok({

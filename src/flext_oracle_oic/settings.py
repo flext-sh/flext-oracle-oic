@@ -21,16 +21,14 @@ from flext_oracle_oic import c, m, t, u
 class FlextOracleOicSettings(FlextSettings):
     """Runtime configuration for Oracle OIC integration."""
 
-    OICApiVersion: ClassVar[type[c.OracleOic.OICApiVersion]] = c.OracleOic.OICApiVersion
+    OICApiVersion: ClassVar[type[c.OICApiVersion]] = c.OICApiVersion
 
     model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
         env_prefix="FLEXT_ORACLE_OIC_", extra="ignore"
     )
 
     base_url: Annotated[t.NonEmptyStr, u.Field(default=c.OracleOic.DEFAULT_BASE_URL)]
-    api_version: Annotated[
-        c.OracleOic.OICApiVersion, u.Field(default=c.OracleOic.OICApiVersion.V1)
-    ]
+    api_version: Annotated[c.OICApiVersion, u.Field(default=c.OICApiVersion.V1)]
     request_timeout: Annotated[
         t.PositiveInt, u.Field(default=c.DEFAULT_TIMEOUT_SECONDS)
     ]
@@ -54,7 +52,7 @@ class FlextOracleOicSettings(FlextSettings):
         """Build deterministic development settings."""
         return cls.model_validate({
             "base_url": c.OracleOic.DEFAULT_BASE_URL,
-            "api_version": c.OracleOic.OICApiVersion.V1.value,
+            "api_version": c.OICApiVersion.V1.value,
         })
 
 

@@ -61,11 +61,11 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 description=self._as_text(created_data.get("description"), ""),
                 integration_version=self._as_text(
                     created_data.get("version"),
-                    c.OracleOic.Integration.DEFAULT_VERSION_FALLBACK,
+                    c.Integration.DEFAULT_VERSION_FALLBACK,
                 ),
                 status=self._as_text(
                     created_data.get("status"),
-                    c.OracleOic.Integration.Status.DRAFT,
+                    c.Integration.Status.DRAFT,
                 ),
                 created_by=self._as_text(created_data.get("createdBy"), ""),
                 last_updated=self._as_text(created_data.get("lastUpdated"), ""),
@@ -126,11 +126,11 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 description=self._as_text(integration_data.get("description"), ""),
                 integration_version=self._as_text(
                     integration_data.get("version"),
-                    c.OracleOic.Integration.DEFAULT_VERSION_FALLBACK,
+                    c.Integration.DEFAULT_VERSION_FALLBACK,
                 ),
                 status=self._as_text(
                     integration_data.get("status"),
-                    c.OracleOic.Connection.Status.UNKNOWN,
+                    c.Connection.Status.UNKNOWN,
                 ),
                 created_by=self._as_text(integration_data.get("createdBy"), ""),
                 last_updated=self._as_text(integration_data.get("lastUpdated"), ""),
@@ -178,11 +178,11 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 description=self._as_text(updated_data.get("description"), ""),
                 integration_version=self._as_text(
                     updated_data.get("version"),
-                    c.OracleOic.Integration.DEFAULT_VERSION_FALLBACK,
+                    c.Integration.DEFAULT_VERSION_FALLBACK,
                 ),
                 status=self._as_text(
                     updated_data.get("status"),
-                    c.OracleOic.Connection.Status.UNKNOWN,
+                    c.Connection.Status.UNKNOWN,
                 ),
                 created_by=self._as_text(updated_data.get("createdBy"), ""),
                 last_updated=self._as_text(updated_data.get("lastUpdated"), ""),
@@ -293,7 +293,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                     adapter_type=self._as_text(item.get("adapterType"), ""),
                     status=self._as_text(
                         item.get("status"),
-                        c.OracleOic.Connection.Status.UNKNOWN,
+                        c.Connection.Status.UNKNOWN,
                     ),
                     connection_type=self._as_text(item.get("connectionType"), ""),
                     description=self._as_text(item.get("description"), ""),

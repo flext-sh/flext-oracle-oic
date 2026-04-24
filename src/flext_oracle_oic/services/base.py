@@ -149,11 +149,11 @@ class FlextOracleOicServiceBase(
                     description=self._as_text(item.get("description"), ""),
                     integration_version=self._as_text(
                         item.get("version"),
-                        c.OracleOic.Integration.DEFAULT_VERSION_FALLBACK,
+                        c.Integration.DEFAULT_VERSION_FALLBACK,
                     ),
                     status=self._as_text(
                         item.get("status"),
-                        c.OracleOic.Connection.Status.UNKNOWN,
+                        c.Connection.Status.UNKNOWN,
                     ),
                     created_by=self._as_text(item.get("createdBy"), ""),
                     last_updated=self._as_text(item.get("lastUpdated"), ""),
@@ -216,10 +216,8 @@ class FlextOracleOicServiceBase(
             return r[bool].fail("Base URL is required")
         if not self._oic_settings.oauth_client_id:
             return r[bool].fail("OAuth client ID is required")
-        client_id_result = (
-            u.OracleOic.AuthenticationValidation.validate_oauth_client_id(
-                self._oic_settings.oauth_client_id,
-            )
+        client_id_result = u.AuthenticationValidation.validate_oauth_client_id(
+            self._oic_settings.oauth_client_id,
         )
         if client_id_result.failure:
             return r[bool].fail(f"OAuth client ID validation: {client_id_result.error}")
