@@ -47,22 +47,24 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                 routing_rules=routing_rules,
                 message_data=message_data,
             )
-            validation_result = u.PatternAnalysis.validate_pattern_configuration(
-                "message_router",
-                pattern_config,
+            validation_result = (
+                u.OracleOic.PatternAnalysis.validate_pattern_configuration(
+                    "message_router",
+                    pattern_config,
+                )
             )
             if validation_result.failure:
                 return r[t.JsonMapping].fail(
                     f"Pattern validation failed: {validation_result.error}",
                 )
             routing_result = {
-                "pattern": c.OICPatterns.PATTERN_MESSAGE_ROUTER,
+                "pattern": c.OracleOic.OICPatterns.PATTERN_MESSAGE_ROUTER,
                 "message_id": message_data.get(
                     "id",
-                    c.OICPatterns.PATTERN_MESSAGE_ID_UNKNOWN,
+                    c.OracleOic.OICPatterns.PATTERN_MESSAGE_ID_UNKNOWN,
                 ),
                 "applied_rules": len(routing_rules),
-                "status": c.OICPatterns.PatternStatus.PROCESSED,
+                "status": c.OracleOic.OICPatterns.PatternStatus.PROCESSED,
             }
             return r[t.JsonMapping].ok(routing_result)
         except (ConnectionError, TimeoutError, ValueError) as e:
@@ -91,22 +93,24 @@ class FlextOracleOicIntegrationPatternsMixin(FlextOracleOicServiceBase):
                 target_services=target_endpoints,
                 request_data=request_data,
             )
-            validation_result = u.PatternAnalysis.validate_pattern_configuration(
-                "scatter_gather",
-                pattern_config,
+            validation_result = (
+                u.OracleOic.PatternAnalysis.validate_pattern_configuration(
+                    "scatter_gather",
+                    pattern_config,
+                )
             )
             if validation_result.failure:
                 return r[t.JsonMapping].fail(
                     f"Pattern validation failed: {validation_result.error}",
                 )
             scatter_result = {
-                "pattern": c.OICPatterns.PATTERN_SCATTER_GATHER,
+                "pattern": c.OracleOic.OICPatterns.PATTERN_SCATTER_GATHER,
                 "request_id": request_data.get(
                     "id",
-                    c.OICPatterns.PATTERN_REQUEST_ID_UNKNOWN,
+                    c.OracleOic.OICPatterns.PATTERN_REQUEST_ID_UNKNOWN,
                 ),
                 "target_count": len(target_endpoints),
-                "status": c.OICPatterns.PatternStatus.PROCESSED,
+                "status": c.OracleOic.OICPatterns.PatternStatus.PROCESSED,
             }
             return r[t.JsonMapping].ok(scatter_result)
         except (ConnectionError, TimeoutError, ValueError) as e:

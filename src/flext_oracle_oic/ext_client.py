@@ -77,7 +77,7 @@ class FlextOracleOicClient:
         """Create connection in OIC."""
         json_data = {str(k): str(v) for k, v in connection_data.items()}
         return self.make_request(
-            c.API.Method.POST,
+            c.OracleOic.API.Method.POST,
             "/connections",
             json=json_data,
         )
@@ -88,7 +88,7 @@ class FlextOracleOicClient:
     ) -> p.Result[t.JsonMapping]:
         """Create integration in OIC."""
         return self.make_request(
-            c.API.Method.POST,
+            c.OracleOic.API.Method.POST,
             "/integrations",
             json=integration_data,
         )
@@ -108,7 +108,7 @@ class FlextOracleOicClient:
         """Execute file transfer pattern for an integration."""
         endpoint = f"/integrations/{integration_id}/files"
         result = self.make_request(
-            c.API.Method.POST,
+            c.OracleOic.API.Method.POST,
             endpoint,
             json=file_config,
         )
@@ -122,7 +122,7 @@ class FlextOracleOicClient:
         """Execute scheduled orchestration for an integration."""
         endpoint = f"/integrations/{integration_id}/schedules"
         result = self.make_request(
-            c.API.Method.POST,
+            c.OracleOic.API.Method.POST,
             endpoint,
             json=schedule_config,
         )
@@ -242,7 +242,7 @@ class FlextOracleOicClient:
                 request_params: t.MutableStrMapping = dict(base_params)
                 request_params.update({"offset": str(offset), "limit": str(page_size)})
                 response_result = self.make_request(
-                    c.API.Method.GET,
+                    c.OracleOic.API.Method.GET,
                     endpoint,
                     params=request_params,
                 )
@@ -283,7 +283,7 @@ class FlextOracleOicClient:
         endpoint = f"/integrations/{integration_id}"
         json_data = {str(k): str(v) for k, v in integration_data.items()}
         return self.make_request(
-            c.API.Method.PUT,
+            c.OracleOic.API.Method.PUT,
             endpoint,
             json=json_data,
         )
@@ -381,7 +381,7 @@ class FlextOracleOicClient:
                     f"OAuth request failed: {response_result.error}",
                 )
             response = response_result.value
-            if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
+            if response.status_code >= c.OracleOic.API.HTTP_ERROR_STATUS_THRESHOLD:
                 return r[t.JsonValue].fail(
                     f"OAuth HTTP error: {response.status_code}",
                 )
@@ -417,8 +417,10 @@ class FlextOracleOicClient:
                             return r[t.JsonMapping].ok(body)
                         match body:
                             case str():
-                                parsed_data = t.CONTAINER_MAPPING_ADAPTER.validate_json(
-                                    body
+                                parsed_data = (
+                                    t.OracleOic.CONTAINER_MAPPING_ADAPTER.validate_json(
+                                        body
+                                    )
                                 )
                                 return r[t.JsonMapping].ok(
                                     parsed_data,
@@ -461,7 +463,9 @@ class FlextOracleOicClient:
             if isinstance(body_raw, Mapping):
                 token_data = {str(k): body_raw[k] for k in body_raw}
             elif isinstance(body_raw, str):
-                token_data = t.CONTAINER_MAPPING_ADAPTER.validate_json(body_raw)
+                token_data = t.OracleOic.CONTAINER_MAPPING_ADAPTER.validate_json(
+                    body_raw
+                )
             else:
                 return r[str].fail("Empty or invalid OAuth response body")
             access_token: t.JsonValue | None = token_data.get("access_token")

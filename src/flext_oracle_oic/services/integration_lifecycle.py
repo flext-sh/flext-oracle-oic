@@ -90,7 +90,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
                 return r[bool].fail(error_msg)
             client = client_result.value
             test_result = client.make_request(
-                c.API.Method.GET,
+                c.OracleOic.API.Method.GET,
                 "/ic/api/integration/v1/health",
             )
             if test_result.failure:
