@@ -7,24 +7,16 @@ from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 _LAZY_IMPORTS = build_lazy_import_map(
     {
-        ".test_basic": ("TestBasicFunctionality",),
-        ".test_cli": ("TestCLI",),
-        ".test_config": ("TestFlextOracleOicSettings",),
+        ".test_basic": ("TestsFlextOracleOicBasic",),
+        ".test_cli": ("TestsFlextOracleOicCli",),
+        ".test_config": ("TestsFlextOracleOicConfig",),
         ".test_ext_client": ("test_ext_client",),
         ".test_ext_services": ("test_ext_services",),
-        ".test_extension": ("TestOracleOicExtension",),
+        ".test_extension": ("TestsFlextOracleOicExtension",),
         ".test_import": ("test_import",),
-        ".test_main": (
-            "TestMainFunction",
-            "TestMainModule",
-        ),
-        ".test_models": (
-            "TestOICAuthConfig",
-            "TestOICConnectionConfig",
-            "TestOICConnectionInfo",
-            "TestOICIntegrationInfo",
-        ),
-        ".test_typings": ("TestFlextTypes",),
+        ".test_main": ("TestsFlextOracleOicMain",),
+        ".test_models": ("TestsFlextOracleOicModelsUnit",),
+        ".test_typings": ("TestsFlextOracleOicTypingsUnit",),
         ".test_version": ("test_version",),
     },
 )
