@@ -10,7 +10,7 @@ from __future__ import annotations
 from flext_oracle_oic import FlextOracleOicApi
 
 
-class TestOracleOicExtension:
+class TestsFlextOracleOicExtension:
     """Test cases for Oracle OIC API (extension facade) functionality."""
 
     def test_api_class_exists(self) -> None:

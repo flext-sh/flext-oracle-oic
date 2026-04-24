@@ -10,7 +10,7 @@ from __future__ import annotations
 from tests import t
 
 
-class TestFlextTypes:
+class TestsFlextOracleOicTypingsUnit:
     """Test t domain-specific types."""
 
     def test_flext_types_inheritance(self) -> None:

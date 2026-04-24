@@ -16,7 +16,7 @@ import pytest
 from tests import c, m, t
 
 
-class TestOICAuthConfig:
+class TestsFlextOracleOicModelsUnit:
     """Test OICAuthConfig model."""
 
     def test_valid_auth_config(self) -> None:
@@ -61,10 +61,6 @@ class TestOICAuthConfig:
         with pytest.raises(c.ValidationError):
             m.OracleOic.OICAuthConfig.model_validate(invalid_data)
 
-
-class TestOICConnectionConfig:
-    """Test OICConnectionConfig model."""
-
     def test_valid_connection_config(self) -> None:
         """Test valid connection settings creation."""
         settings = m.OracleOic.OICConnectionConfig(
@@ -103,10 +99,6 @@ class TestOICConnectionConfig:
                 "max_retries": 3,
             })
 
-
-class TestOICIntegrationInfo:
-    """Test OICIntegrationInfo model."""
-
     def test_valid_integration_info(self) -> None:
         """Test valid integration info creation."""
         info = m.OracleOic.OICIntegrationInfo(
@@ -140,10 +132,6 @@ class TestOICIntegrationInfo:
         assert info.description is not None
         assert info.created_by is not None
         assert info.last_updated is not None
-
-
-class TestOICConnectionInfo:
-    """Test OICConnectionInfo model."""
 
     def test_valid_connection_info(self) -> None:
         """Test valid connection info creation."""

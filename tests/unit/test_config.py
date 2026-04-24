@@ -10,7 +10,7 @@ from __future__ import annotations
 from flext_oracle_oic import FlextOracleOicSettings
 
 
-class TestFlextOracleOicSettings:
+class TestsFlextOracleOicConfig:
     """Test FlextOracleOicSettings."""
 
     def test_default_settings(self) -> None:

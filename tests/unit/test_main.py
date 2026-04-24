@@ -14,7 +14,7 @@ from flext_oracle_oic import FlextOracleOicCli, __version__
 from flext_oracle_oic.main import main
 
 
-class TestMainFunction:
+class TestsFlextOracleOicMain:
     """Test main function entry point."""
 
     def test_main_function_exists(self) -> None:
@@ -30,10 +30,6 @@ class TestMainFunction:
         except SystemExit:
             pass
         mock_exit.assert_called()
-
-
-class TestMainModule:
-    """Test main module exports."""
 
     def test_cli_class_available(self) -> None:
         """Test FlextOracleOicCli is available from main."""

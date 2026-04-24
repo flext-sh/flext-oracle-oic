@@ -13,7 +13,7 @@ from flext_oracle_oic import FlextOracleOicSettings
 from tests import m, t
 
 
-class TestBasicFunctionality:
+class TestsFlextOracleOicBasic:
     """Test basic functionality that actually exists."""
 
     def test_flext_oracle_oic_basic(self) -> None:

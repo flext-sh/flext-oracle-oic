@@ -13,7 +13,7 @@ from flext_oracle_oic import FlextOracleOicCli
 from flext_oracle_oic.main import main
 
 
-class TestCLI:
+class TestsFlextOracleOicCli:
     """Test CLI module functionality."""
 
     def test_imports_available(self) -> None:
