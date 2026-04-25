@@ -11,11 +11,13 @@ import flext_oracle_oic
 from flext_oracle_oic import FlextOracleOicSettings
 
 
-def test_basic_import() -> None:
-    """Test that we can import the module."""
-    assert flext_oracle_oic is not None
+class TestsFlextOracleOicImport:
+    """Behavior contract for test_import."""
 
+    def test_basic_import(self) -> None:
+        """Test that we can import the module."""
+        assert flext_oracle_oic is not None
 
-def test_config_import() -> None:
-    """Test that we can import settings."""
-    assert FlextOracleOicSettings is not None
+    def test_config_import(self) -> None:
+        """Test that we can import settings."""
+        assert FlextOracleOicSettings is not None

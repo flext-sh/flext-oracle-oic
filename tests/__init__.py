@@ -23,9 +23,11 @@ if _t.TYPE_CHECKING:
     from tests.unit.test_cli import TestsFlextOracleOicCli
     from tests.unit.test_config import TestsFlextOracleOicConfig
     from tests.unit.test_extension import TestsFlextOracleOicExtension
+    from tests.unit.test_import import TestsFlextOracleOicImport
     from tests.unit.test_main import TestsFlextOracleOicMain
     from tests.unit.test_models import TestsFlextOracleOicModelsUnit
     from tests.unit.test_typings import TestsFlextOracleOicTypingsUnit
+    from tests.unit.test_version import TestsFlextOracleOicVersion
     from tests.utilities import TestsFlextOracleOicUtilities, u
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
@@ -51,9 +53,11 @@ _LAZY_IMPORTS = merge_lazy_imports(
             ".unit.test_cli": ("TestsFlextOracleOicCli",),
             ".unit.test_config": ("TestsFlextOracleOicConfig",),
             ".unit.test_extension": ("TestsFlextOracleOicExtension",),
+            ".unit.test_import": ("TestsFlextOracleOicImport",),
             ".unit.test_main": ("TestsFlextOracleOicMain",),
             ".unit.test_models": ("TestsFlextOracleOicModelsUnit",),
             ".unit.test_typings": ("TestsFlextOracleOicTypingsUnit",),
+            ".unit.test_version": ("TestsFlextOracleOicVersion",),
             ".utilities": (
                 "TestsFlextOracleOicUtilities",
                 "u",
@@ -106,6 +110,7 @@ __all__: list[str] = [
     "TestsFlextOracleOicConfig",
     "TestsFlextOracleOicConstants",
     "TestsFlextOracleOicExtension",
+    "TestsFlextOracleOicImport",
     "TestsFlextOracleOicMain",
     "TestsFlextOracleOicModels",
     "TestsFlextOracleOicModelsUnit",
@@ -113,6 +118,7 @@ __all__: list[str] = [
     "TestsFlextOracleOicTypes",
     "TestsFlextOracleOicTypingsUnit",
     "TestsFlextOracleOicUtilities",
+    "TestsFlextOracleOicVersion",
     "c",
     "d",
     "e",
