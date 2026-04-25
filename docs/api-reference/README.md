@@ -1,9 +1,3 @@
-<!-- TOC START -->
-- [Source of Truth](#source-of-truth)
-- [Generated Pages](#generated-pages)
-- [Surface Summary](#surface-summary)
-<!-- TOC END -->
-
 <!-- AUTO-GENERATED — DO NOT EDIT MANUALLY -->
 
 # flext-oracle-oic API Reference
@@ -25,7 +19,7 @@ This section is generated from public exports and real docstrings.
 
 ## Surface Summary
 
-- Primary facades: `FlextOracleOicIntegrationCrudMixin`, `FlextOracleOicUtilitiesOracleOic`, `FlextOracleOicTypes`, `FlextOracleOicConstants`, `FlextOracleOicIntegrationPatternsMixin`, `FlextOracleOicUtilities` (+17 more)
+- Primary facades: `FlextOracleOicIntegrationLifecycleMixin`, `FlextOracleOicClient`, `FlextOracleOicCli`, `FlextOracleOicProtocols`, `FlextOracleOicService`, `FlextOracleOicUtilitiesConnectionValidation` (+17 more)
 - Generated module pages: `18`
 
 - [Back to project docs](../index.md)
