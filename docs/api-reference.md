@@ -20,7 +20,7 @@
   - [Import Patterns](#import-patterns)
   - [API Stability](#api-stability)
 - [Usage Recommendations](#usage-recommendations)
-  - [Current Version (v0.12.0-dev)](#current-version-v099)
+  - [Current Version (v0.12.0-dev)](#current-version-v0120-dev)
   - [Future Versions](#future-versions)
 - [Related Documentation](#related-documentation)
 <!-- TOC END -->
