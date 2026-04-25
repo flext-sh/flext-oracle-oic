@@ -22,7 +22,7 @@ from typing import Self
 
 from flext_api import FlextApi, FlextApiConstants, FlextApiSettings
 
-from flext_oracle_oic import FlextOracleOicModels, c, p, r, t, u
+from flext_oracle_oic import c, m, p, r, t, u
 
 logger = u.fetch_logger(__name__)
 
@@ -37,8 +37,8 @@ class FlextOracleOicClient:
 
     def __init__(
         self,
-        connection_config: FlextOracleOicModels.OracleOic.OICConnectionConfig,
-        auth_config: FlextOracleOicModels.OracleOic.OICAuthConfig,
+        connection_config: m.OracleOic.OICConnectionConfig,
+        auth_config: m.OracleOic.OICAuthConfig,
     ) -> None:
         """Initialize unified Oracle OIC client.
 
