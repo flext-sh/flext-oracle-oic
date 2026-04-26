@@ -9,7 +9,28 @@ class FlextOracleOicUtilitiesConnectionValidation:
     """Oracle OIC connection validation utilities."""
 
     @staticmethod
-    def validate_base_url(base_url: str) -> p.Result[str]:
+    def _validate_closed_string(
+        value: object,
+        *,
+        field_label: str,
+        valid_values: frozenset[str],
+    ) -> p.Result[str]:
+        """Validate one upper-cased string against a closed canonical set."""
+        match value:
+            case str():
+                pass
+            case _:
+                return r[str].fail(f"{field_label} must be a string")
+        normalized_value = value.upper().strip()
+        if normalized_value not in valid_values:
+            formatted_values = ", ".join(sorted(valid_values))
+            return r[str].fail(
+                f"Invalid {field_label.lower()}. Valid: {formatted_values}",
+            )
+        return r[str].ok(normalized_value)
+
+    @staticmethod
+    def validate_base_url(base_url: object) -> p.Result[str]:
         """Validate Oracle OIC base URL.
 
         Args:
@@ -32,7 +53,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
         return r[str].ok(base_url)
 
     @staticmethod
-    def validate_connection_status(status: str) -> p.Result[str]:
+    def validate_connection_status(status: object) -> p.Result[str]:
         """Validate Oracle OIC connection status.
 
         Args:
@@ -42,23 +63,14 @@ class FlextOracleOicUtilitiesConnectionValidation:
         r containing validated status or error
 
         """
-        match status:
-            case str():
-                pass
-            case _:
-                return r[str].fail("Connection status must be a string")
-        status = status.upper().strip()
-        if status not in c.OracleOicValidation.VALID_CONNECTION_STATUSES:
-            valid_statuses = ", ".join(
-                sorted(c.OracleOicValidation.VALID_CONNECTION_STATUSES),
-            )
-            return r[str].fail(
-                f"Invalid connection status. Valid: {valid_statuses}",
-            )
-        return r[str].ok(status)
+        return FlextOracleOicUtilitiesConnectionValidation._validate_closed_string(
+            status,
+            field_label="Connection status",
+            valid_values=c.OracleOicValidation.VALID_CONNECTION_STATUSES,
+        )
 
     @staticmethod
-    def validate_connection_type(connection_type: str) -> p.Result[str]:
+    def validate_connection_type(connection_type: object) -> p.Result[str]:
         """Validate Oracle OIC connection type.
 
         Args:
@@ -68,15 +80,8 @@ class FlextOracleOicUtilitiesConnectionValidation:
         r containing validated type or error
 
         """
-        match connection_type:
-            case str():
-                pass
-            case _:
-                return r[str].fail("Connection type must be a string")
-        connection_type = connection_type.upper().strip()
-        if connection_type not in c.OracleOicValidation.VALID_CONNECTION_TYPES:
-            valid_types = ", ".join(
-                sorted(c.OracleOicValidation.VALID_CONNECTION_TYPES),
-            )
-            return r[str].fail(f"Invalid connection type. Valid: {valid_types}")
-        return r[str].ok(connection_type)
+        return FlextOracleOicUtilitiesConnectionValidation._validate_closed_string(
+            connection_type,
+            field_label="Connection type",
+            valid_values=c.OracleOicValidation.VALID_CONNECTION_TYPES,
+        )

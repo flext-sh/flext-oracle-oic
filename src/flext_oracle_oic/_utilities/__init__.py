@@ -14,7 +14,6 @@ _LAZY_IMPORTS = build_lazy_import_map(
         ".connection_validation": ("FlextOracleOicUtilitiesConnectionValidation",),
         ".monitoring": ("FlextOracleOicUtilitiesMonitoring",),
         ".oracle_oic": ("FlextOracleOicUtilitiesOracleOic",),
-        ".pattern_analysis": ("FlextOracleOicUtilitiesPatternAnalysis",),
     },
 )
 

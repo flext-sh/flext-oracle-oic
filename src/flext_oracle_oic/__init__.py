@@ -26,9 +26,6 @@ if _t.TYPE_CHECKING:
     )
     from flext_oracle_oic._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
     from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
-    from flext_oracle_oic._utilities.pattern_analysis import (
-        FlextOracleOicUtilitiesPatternAnalysis,
-    )
     from flext_oracle_oic.api import FlextOracleOicApi, oracle_oic
     from flext_oracle_oic.constants import FlextOracleOicConstants, c
     from flext_oracle_oic.ext_client import FlextOracleOicClient
@@ -43,9 +40,6 @@ if _t.TYPE_CHECKING:
     )
     from flext_oracle_oic.services.integration_lifecycle import (
         FlextOracleOicIntegrationLifecycleMixin,
-    )
-    from flext_oracle_oic.services.integration_patterns import (
-        FlextOracleOicIntegrationPatternsMixin,
     )
     from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
     from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
@@ -80,7 +74,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
             ),
             "._utilities.monitoring": ("FlextOracleOicUtilitiesMonitoring",),
             "._utilities.oracle_oic": ("FlextOracleOicUtilitiesOracleOic",),
-            "._utilities.pattern_analysis": ("FlextOracleOicUtilitiesPatternAnalysis",),
             ".api": (
                 "FlextOracleOicApi",
                 "oracle_oic",
@@ -111,9 +104,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
             ".services.integration_crud": ("FlextOracleOicIntegrationCrudMixin",),
             ".services.integration_lifecycle": (
                 "FlextOracleOicIntegrationLifecycleMixin",
-            ),
-            ".services.integration_patterns": (
-                "FlextOracleOicIntegrationPatternsMixin",
             ),
             ".services.monitoring": ("FlextOracleOicMonitoringMixin",),
             ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
@@ -168,7 +158,6 @@ __all__: list[str] = [
     "FlextOracleOicConstants",
     "FlextOracleOicIntegrationCrudMixin",
     "FlextOracleOicIntegrationLifecycleMixin",
-    "FlextOracleOicIntegrationPatternsMixin",
     "FlextOracleOicModels",
     "FlextOracleOicMonitoringMixin",
     "FlextOracleOicOrchestrationMixin",
@@ -183,7 +172,6 @@ __all__: list[str] = [
     "FlextOracleOicUtilitiesConnectionValidation",
     "FlextOracleOicUtilitiesMonitoring",
     "FlextOracleOicUtilitiesOracleOic",
-    "FlextOracleOicUtilitiesPatternAnalysis",
     "__author__",
     "__author_email__",
     "__description__",

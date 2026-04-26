@@ -11,7 +11,6 @@ _LAZY_IMPORTS = build_lazy_import_map(
         ".base": ("FlextOracleOicServiceBase",),
         ".integration_crud": ("FlextOracleOicIntegrationCrudMixin",),
         ".integration_lifecycle": ("FlextOracleOicIntegrationLifecycleMixin",),
-        ".integration_patterns": ("FlextOracleOicIntegrationPatternsMixin",),
         ".monitoring": ("FlextOracleOicMonitoringMixin",),
         ".orchestration": ("FlextOracleOicOrchestrationMixin",),
     },

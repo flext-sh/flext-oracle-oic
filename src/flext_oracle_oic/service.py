@@ -19,9 +19,6 @@ from flext_oracle_oic.services.integration_crud import (
 from flext_oracle_oic.services.integration_lifecycle import (
     FlextOracleOicIntegrationLifecycleMixin,
 )
-from flext_oracle_oic.services.integration_patterns import (
-    FlextOracleOicIntegrationPatternsMixin,
-)
 from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
 from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
 
@@ -30,7 +27,6 @@ class FlextOracleOicService(
     FlextOracleOicAuthMixin,
     FlextOracleOicMonitoringMixin,
     FlextOracleOicOrchestrationMixin,
-    FlextOracleOicIntegrationPatternsMixin,
     FlextOracleOicIntegrationLifecycleMixin,
     FlextOracleOicIntegrationCrudMixin,
     FlextOracleOicServiceBase,
@@ -40,7 +36,6 @@ class FlextOracleOicService(
     Composes all Oracle OIC functionality via mixin inheritance:
     - FlextOracleOicIntegrationCrudMixin: create, get, update, delete, deploy, list
     - FlextOracleOicIntegrationLifecycleMixin: activate, deactivate, test_connection
-    - FlextOracleOicIntegrationPatternsMixin: message router, scatter-gather
     - FlextOracleOicOrchestrationMixin: app-driven, scheduled, file transfer
     - FlextOracleOicMonitoringMixin: health status, performance metrics
     - FlextOracleOicAuthMixin: token refresh, token validation

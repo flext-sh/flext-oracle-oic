@@ -23,7 +23,6 @@ from flext_oracle_oic import (
     FlextOracleOicUtilitiesConnectionValidation,
     FlextOracleOicUtilitiesMonitoring,
     FlextOracleOicUtilitiesOracleOic,
-    FlextOracleOicUtilitiesPatternAnalysis,
 )
 
 
@@ -45,9 +44,6 @@ class FlextOracleOicUtilities(u):
 
     class APIRequestBuilder(FlextOracleOicUtilitiesAPIRequestBuilder):
         """Oracle OIC API request builder utilities namespace."""
-
-    class PatternAnalysis(FlextOracleOicUtilitiesPatternAnalysis):
-        """Oracle OIC pattern analysis utilities namespace."""
 
     class MonitoringUtilities(FlextOracleOicUtilitiesMonitoring):
         """Oracle OIC monitoring utilities namespace."""

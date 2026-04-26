@@ -5,9 +5,6 @@ This module provides data models for Oracle OIC External operations.
 
 from __future__ import annotations
 
-from collections.abc import (
-    Sequence,
-)
 from typing import Annotated
 
 from flext_auth import m
@@ -156,34 +153,6 @@ class FlextOracleOicModels(m):
                     description="User who activated the integration",
                 ),
             ] = ""
-
-        class MessageRouterPatternConfig(m.Value):
-            """Message router pattern configuration model."""
-
-            message_data: Annotated[
-                t.JsonMapping,
-                u.Field(description="Message payload used for routing"),
-            ]
-            routing_rules: Annotated[
-                Sequence[t.JsonMapping],
-                u.Field(description="Ordered routing rules"),
-            ]
-
-        class ScatterGatherPatternConfig(m.Value):
-            """Scatter-gather pattern configuration model."""
-
-            request_data: Annotated[
-                t.JsonMapping,
-                u.Field(description="Request payload to scatter"),
-            ]
-            target_services: Annotated[
-                t.StrSequence,
-                u.Field(description="Target service endpoints"),
-            ]
-            aggregation_strategy: Annotated[
-                str,
-                u.Field(description="Aggregation behavior for gathered responses"),
-            ] = "collect_all"
 
         class RequestParams(m.Value):
             """Parameters for OIC API request.
