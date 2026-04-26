@@ -18,8 +18,8 @@ from types import TracebackType
 from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiSettings
-from flext_core import FlextSettings, p, r, s
 
+from flext_core import FlextSettings, p, r, s
 from flext_oracle_oic.constants import c
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.models import m

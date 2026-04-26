@@ -13,7 +13,6 @@ from __future__ import annotations
 from typing import Annotated, ClassVar, Self
 
 from flext_core import FlextSettings
-
 from flext_oracle_oic import c, m, t, u
 
 

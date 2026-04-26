@@ -14,7 +14,6 @@ from collections.abc import (
 )
 
 from flext_core import p, r
-
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 from flext_oracle_oic.typings import t

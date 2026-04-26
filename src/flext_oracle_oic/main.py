@@ -16,9 +16,9 @@ from collections.abc import (
     Sequence,
 )
 
-from flext_core import p, r, s
 from flext_infra import __version__
 
+from flext_core import p, r, s
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
 from flext_oracle_oic.settings import FlextOracleOicSettings
