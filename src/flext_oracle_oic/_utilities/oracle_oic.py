@@ -4,14 +4,26 @@ from __future__ import annotations
 
 import re
 from collections.abc import (
+    Callable,
     MutableSequence,
 )
 
-from flext_oracle_oic import c, p, r, t
+from flext_oracle_oic import c, m, p, r, t
 
 
 class FlextOracleOicUtilitiesOracleOic:
     """Oracle OIC integration validation utilities."""
+
+    class FieldValidationPlan(m.Value):
+        """Validated plan for one integration string field."""
+
+        model_config = m.ConfigDict(arbitrary_types_allowed=True, frozen=True)
+
+        field_name: str
+        label: str
+        required: bool = False
+        required_message: str = ""
+        validator: Callable[[str], p.Result[str]]
 
     @staticmethod
     def validate_integration_data(
@@ -30,64 +42,65 @@ class FlextOracleOicUtilitiesOracleOic:
         validated_data: t.MutableJsonMapping = {
             str(key): value for key, value in integration_data.items()
         }
-        if "name" not in integration_data:
-            errors.append("Integration name is required")
-        else:
-            raw_name = integration_data["name"]
-            match raw_name:
-                case str():
-                    name_result = (
-                        FlextOracleOicUtilitiesOracleOic.validate_integration_name(
-                            raw_name,
-                        )
-                    )
-                    if name_result.failure:
-                        errors.append(f"Name validation: {name_result.error}")
-                    else:
-                        validated_data["name"] = name_result.value
-                case _:
-                    errors.append(
-                        "Name validation: Integration name must be a string",
-                    )
-        if "version" in integration_data:
-            raw_version = integration_data["version"]
-            match raw_version:
-                case str():
-                    version_result = (
-                        FlextOracleOicUtilitiesOracleOic.validate_integration_version(
-                            raw_version,
-                        )
-                    )
-                    if version_result.failure:
-                        errors.append(f"Version validation: {version_result.error}")
-                    else:
-                        validated_data["version"] = version_result.value
-                case _:
-                    errors.append(
-                        "Version validation: Integration version must be a string",
-                    )
-        if "status" in integration_data:
-            raw_status = integration_data["status"]
-            match raw_status:
-                case str():
-                    status_result = (
-                        FlextOracleOicUtilitiesOracleOic.validate_integration_status(
-                            raw_status,
-                        )
-                    )
-                    if status_result.failure:
-                        errors.append(f"Status validation: {status_result.error}")
-                    else:
-                        validated_data["status"] = status_result.value
-                case _:
-                    errors.append(
-                        "Status validation: Integration status must be a string",
-                    )
+        field_specs: tuple[
+            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan, ...
+        ] = (
+            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan(
+                field_name="name",
+                label="Name",
+                required=True,
+                required_message="Integration name is required",
+                validator=FlextOracleOicUtilitiesOracleOic.validate_integration_name,
+            ),
+            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan(
+                field_name="version",
+                label="Version",
+                validator=FlextOracleOicUtilitiesOracleOic.validate_integration_version,
+            ),
+            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan(
+                field_name="status",
+                label="Status",
+                validator=FlextOracleOicUtilitiesOracleOic.validate_integration_status,
+            ),
+        )
+        for field_plan in field_specs:
+            FlextOracleOicUtilitiesOracleOic.validate_string_field(
+                integration_data=integration_data,
+                validated_data=validated_data,
+                errors=errors,
+                plan=field_plan,
+            )
         if errors:
             return r[t.JsonMapping].fail(
                 f"Integration validation failed: {'; '.join(errors)}",
             )
         return r[t.JsonMapping].ok(validated_data)
+
+    @staticmethod
+    def validate_string_field(
+        *,
+        integration_data: t.JsonMapping,
+        validated_data: t.MutableJsonMapping,
+        errors: MutableSequence[str],
+        plan: FieldValidationPlan,
+    ) -> None:
+        """Validate one string field and update normalized payload or errors."""
+        if plan.field_name not in integration_data:
+            if plan.required:
+                errors.append(plan.required_message)
+            return
+        field_value = integration_data[plan.field_name]
+        match field_value:
+            case str():
+                field_result = plan.validator(field_value)
+                if field_result.failure:
+                    errors.append(f"{plan.label} validation: {field_result.error}")
+                else:
+                    validated_data[plan.field_name] = field_result.value
+            case _:
+                errors.append(
+                    f"{plan.label} validation: Integration {plan.field_name} must be a string",
+                )
 
     @staticmethod
     def validate_integration_name(name: str) -> p.Result[str]:
@@ -100,11 +113,6 @@ class FlextOracleOicUtilitiesOracleOic:
         r containing validated name or validation error
 
         """
-        match name:
-            case str():
-                pass
-            case _:
-                return r[str].fail("Integration name must be a string")
         name = name.strip()
         if not name:
             return r[str].fail("Integration name cannot be empty")
@@ -127,11 +135,6 @@ class FlextOracleOicUtilitiesOracleOic:
         r containing validated status or error
 
         """
-        match status:
-            case str():
-                pass
-            case _:
-                return r[str].fail("Integration status must be a string")
         status = status.upper().strip()
         if status not in c.OracleOicValidation.VALID_INTEGRATION_STATUSES:
             valid_statuses = ", ".join(
@@ -153,11 +156,6 @@ class FlextOracleOicUtilitiesOracleOic:
         r containing validated version or error
 
         """
-        match version:
-            case str():
-                pass
-            case _:
-                return r[str].fail("Integration version must be a string")
         version = version.strip()
         if not c.OracleOicValidation.VERSION_PATTERN.match(version):
             return r[str].fail("Invalid version format. Expected: XX.XX.XXXX")

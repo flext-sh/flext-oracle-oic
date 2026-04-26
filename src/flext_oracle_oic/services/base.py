@@ -97,6 +97,27 @@ class FlextOracleOicServiceBase(
                 pass
         return str(value)
 
+    def _build_integration_info(
+        self,
+        data: t.JsonMapping,
+        *,
+        fallback_id: str,
+        default_status: str,
+    ) -> m.OracleOic.OICIntegrationInfo:
+        """Build normalized integration model from API payload mapping."""
+        return m.OracleOic.OICIntegrationInfo(
+            integration_id=self._as_text(data.get("id"), fallback_id),
+            name=self._as_text(data.get("name"), ""),
+            description=self._as_text(data.get("description"), ""),
+            integration_version=self._as_text(
+                data.get("version"),
+                c.Integration.DEFAULT_VERSION_FALLBACK,
+            ),
+            status=self._as_text(data.get("status"), default_status),
+            created_by=self._as_text(data.get("createdBy"), ""),
+            last_updated=self._as_text(data.get("lastUpdated"), ""),
+        )
+
     def execute(
         self: Self,
     ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
@@ -143,20 +164,10 @@ class FlextOracleOicServiceBase(
             integrations_data = integrations_result.value
             integrations: list[m.OracleOic.OICIntegrationInfo] = []
             for item in integrations_data:
-                integration = m.OracleOic.OICIntegrationInfo(
-                    integration_id=self._as_text(item.get("id"), ""),
-                    name=self._as_text(item.get("name"), ""),
-                    description=self._as_text(item.get("description"), ""),
-                    integration_version=self._as_text(
-                        item.get("version"),
-                        c.Integration.DEFAULT_VERSION_FALLBACK,
-                    ),
-                    status=self._as_text(
-                        item.get("status"),
-                        c.Connection.Status.UNKNOWN,
-                    ),
-                    created_by=self._as_text(item.get("createdBy"), ""),
-                    last_updated=self._as_text(item.get("lastUpdated"), ""),
+                integration = self._build_integration_info(
+                    item,
+                    fallback_id="",
+                    default_status=c.Connection.Status.UNKNOWN,
                 )
                 integrations.append(integration)
             return r[Sequence[m.OracleOic.OICIntegrationInfo]].ok(

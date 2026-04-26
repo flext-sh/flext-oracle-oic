@@ -14,13 +14,7 @@ from collections.abc import (
     Sequence,
 )
 
-from flext_oracle_oic import (
-    c,
-    m,
-    p,
-    r,
-    t,
-)
+from flext_oracle_oic import c, m, p, r, t
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 
 
@@ -55,20 +49,10 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                     error_msg,
                 )
             created_data = created_result.value
-            integration = m.OracleOic.OICIntegrationInfo(
-                integration_id=self._as_text(created_data.get("id"), ""),
-                name=self._as_text(created_data.get("name"), ""),
-                description=self._as_text(created_data.get("description"), ""),
-                integration_version=self._as_text(
-                    created_data.get("version"),
-                    c.Integration.DEFAULT_VERSION_FALLBACK,
-                ),
-                status=self._as_text(
-                    created_data.get("status"),
-                    c.Integration.Status.DRAFT,
-                ),
-                created_by=self._as_text(created_data.get("createdBy"), ""),
-                last_updated=self._as_text(created_data.get("lastUpdated"), ""),
+            integration = self._build_integration_info(
+                created_data,
+                fallback_id="",
+                default_status=c.Integration.Status.DRAFT,
             )
             return r[m.OracleOic.OICIntegrationInfo].ok(integration)
         except (ConnectionError, TimeoutError, ValueError) as e:
@@ -117,23 +101,10 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 return r[m.OracleOic.OICIntegrationInfo].fail(
                     f"Integration {integration_id} not found",
                 )
-            integration = m.OracleOic.OICIntegrationInfo(
-                integration_id=self._as_text(
-                    integration_data.get("id"),
-                    integration_id,
-                ),
-                name=self._as_text(integration_data.get("name"), ""),
-                description=self._as_text(integration_data.get("description"), ""),
-                integration_version=self._as_text(
-                    integration_data.get("version"),
-                    c.Integration.DEFAULT_VERSION_FALLBACK,
-                ),
-                status=self._as_text(
-                    integration_data.get("status"),
-                    c.Connection.Status.UNKNOWN,
-                ),
-                created_by=self._as_text(integration_data.get("createdBy"), ""),
-                last_updated=self._as_text(integration_data.get("lastUpdated"), ""),
+            integration = self._build_integration_info(
+                integration_data,
+                fallback_id=integration_id,
+                default_status=c.Connection.Status.UNKNOWN,
             )
             return r[m.OracleOic.OICIntegrationInfo].ok(integration)
         except (ConnectionError, TimeoutError, ValueError) as e:
@@ -172,20 +143,10 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                     error_msg,
                 )
             updated_data = updated_result.value
-            integration = m.OracleOic.OICIntegrationInfo(
-                integration_id=self._as_text(updated_data.get("id"), integration_id),
-                name=self._as_text(updated_data.get("name"), ""),
-                description=self._as_text(updated_data.get("description"), ""),
-                integration_version=self._as_text(
-                    updated_data.get("version"),
-                    c.Integration.DEFAULT_VERSION_FALLBACK,
-                ),
-                status=self._as_text(
-                    updated_data.get("status"),
-                    c.Connection.Status.UNKNOWN,
-                ),
-                created_by=self._as_text(updated_data.get("createdBy"), ""),
-                last_updated=self._as_text(updated_data.get("lastUpdated"), ""),
+            integration = self._build_integration_info(
+                updated_data,
+                fallback_id=integration_id,
+                default_status=c.Connection.Status.UNKNOWN,
             )
             return r[m.OracleOic.OICIntegrationInfo].ok(integration)
         except (ConnectionError, TimeoutError, ValueError) as e:

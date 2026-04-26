@@ -11,6 +11,55 @@ class FlextOracleOicUtilitiesMonitoring:
     """Oracle OIC monitoring and health check utilities."""
 
     @staticmethod
+    def _assess_metric(
+        metric_key: str,
+        metric_value: float,
+    ) -> tuple[str | None, str | None, bool]:
+        """Return warning/critical/recommendation for one metric."""
+        match metric_key:
+            case "average_response_time":
+                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
+                    "response_time_ms"
+                ]
+                if metric_value > threshold:
+                    return (
+                        f"High response time: {metric_value}ms (threshold: {threshold}ms)",
+                        "Consider optimizing integration mappings or connection pooling",
+                        False,
+                    )
+            case "success_rate":
+                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["success_rate"]
+                if metric_value < threshold:
+                    return (
+                        f"Low success rate: {metric_value:.2%} (threshold: {threshold:.2%})",
+                        "Investigate integration failures and error patterns",
+                        True,
+                    )
+            case "error_rate":
+                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["error_rate"]
+                if metric_value > threshold:
+                    return (
+                        f"High error rate: {metric_value:.2%} (threshold: {threshold:.2%})",
+                        "Review error logs and implement error handling improvements",
+                        False,
+                    )
+            case _:
+                pass
+        return (None, None, False)
+
+    @staticmethod
+    def _components_validation_error(components: object) -> str | None:
+        """Return first component-validation error, if any."""
+        if not isinstance(components, dict):
+            return "Components must be a dictionary"
+        for component_name, component_data in components.items():
+            if not isinstance(component_data, dict):
+                return f"Component {component_name} data must be a dictionary"
+            if "status" not in component_data:
+                return f"Component {component_name} must have status"
+        return None
+
+    @staticmethod
     def analyze_performance_metrics(
         metrics: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
@@ -27,42 +76,26 @@ class FlextOracleOicUtilitiesMonitoring:
         warnings: list[str] = []
         critical_issues: list[str] = []
         recommendations: list[str] = []
-        if "average_response_time" in metrics:
-            response_time = metrics["average_response_time"]
-            if isinstance(response_time, (int, float)):
-                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
-                    "response_time_ms"
-                ]
-                if response_time > threshold:
-                    warnings.append(
-                        f"High response time: {response_time}ms (threshold: {threshold}ms)",
-                    )
-                    recommendations.append(
-                        "Consider optimizing integration mappings or connection pooling",
-                    )
-        if "success_rate" in metrics:
-            success_rate = metrics["success_rate"]
-            if isinstance(success_rate, (int, float)):
-                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["success_rate"]
-                if success_rate < threshold:
-                    critical_issues.append(
-                        f"Low success rate: {success_rate:.2%} (threshold: {threshold:.2%})",
-                    )
-                    overall_health = c.HealthStatus.UNHEALTHY.value
-                    recommendations.append(
-                        "Investigate integration failures and error patterns",
-                    )
-        if "error_rate" in metrics:
-            error_rate = metrics["error_rate"]
-            if isinstance(error_rate, (int, float)):
-                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["error_rate"]
-                if error_rate > threshold:
-                    warnings.append(
-                        f"High error rate: {error_rate:.2%} (threshold: {threshold:.2%})",
-                    )
-                    recommendations.append(
-                        "Review error logs and implement error handling improvements",
-                    )
+        for metric_key in ("average_response_time", "success_rate", "error_rate"):
+            metric_value_raw = metrics.get(metric_key)
+            if not isinstance(metric_value_raw, (int, float)):
+                continue
+            metric_value = float(metric_value_raw)
+            issue, recommendation, is_critical = (
+                FlextOracleOicUtilitiesMonitoring._assess_metric(
+                    metric_key,
+                    metric_value,
+                )
+            )
+            if issue is None:
+                continue
+            if is_critical:
+                critical_issues.append(issue)
+                overall_health = c.HealthStatus.UNHEALTHY.value
+            else:
+                warnings.append(issue)
+            if recommendation is not None:
+                recommendations.append(recommendation)
         analysis = {
             "overall_health": overall_health,
             "warnings": list(warnings),
@@ -89,35 +122,30 @@ class FlextOracleOicUtilitiesMonitoring:
         validated_data: t.MutableJsonMapping = {
             str(key): value for key, value in health_data.items()
         }
-        if "status" not in health_data:
-            return r[t.JsonMapping].fail(
-                "Health data must include status",
-            )
-        status = health_data["status"]
-        if status not in {
+        error_message: str | None = None
+        status = health_data.get("status")
+        valid_statuses = {
             c.Monitoring.HealthStatus.HEALTHY.value,
             c.Monitoring.HealthStatus.UNHEALTHY.value,
             c.Monitoring.HealthStatus.ERROR.value,
             c.Monitoring.HealthStatus.UNKNOWN.value,
-        }:
-            return r[t.JsonMapping].fail(
-                "Invalid health status. Valid: healthy, unhealthy, error, unknown",
+        }
+        if status is None:
+            error_message = "Health data must include status"
+        elif status not in valid_statuses:
+            error_message = (
+                "Invalid health status. Valid: healthy, unhealthy, error, unknown"
             )
-        if "components" in health_data:
-            components = health_data["components"]
-            if not isinstance(components, dict):
-                return r[t.JsonMapping].fail(
-                    "Components must be a dictionary",
+        else:
+            components = health_data.get("components")
+            if components is not None:
+                error_message = (
+                    FlextOracleOicUtilitiesMonitoring._components_validation_error(
+                        components,
+                    )
                 )
-            for component_name, component_data in components.items():
-                if not isinstance(component_data, dict):
-                    return r[t.JsonMapping].fail(
-                        f"Component {component_name} data must be a dictionary",
-                    )
-                if "status" not in component_data:
-                    return r[t.JsonMapping].fail(
-                        f"Component {component_name} must have status",
-                    )
+        if error_message is not None:
+            return r[t.JsonMapping].fail(error_message)
         if "timestamp" not in validated_data:
             validated_data["timestamp"] = datetime.now(UTC).isoformat()
         return r[t.JsonMapping].ok(validated_data)
