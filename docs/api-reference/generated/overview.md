@@ -7,9 +7,9 @@
 - Description: FLEXT Oracle OIC Extension - Advanced Oracle Integration Cloud Extensions
 - Project class: `domain`
 - Keywords: `adapter`, `enterprise`, `flext`, `integration`, `typed`
-- Main facades: `FlextOracleOicIntegrationLifecycleMixin`, `FlextOracleOicClient`, `FlextOracleOicCli`, `FlextOracleOicProtocols`, `FlextOracleOicService`, `FlextOracleOicUtilitiesConnectionValidation`, `FlextOracleOicIntegrationCrudMixin`, `FlextOracleOicIntegrationPatternsMixin` (+15 more)
+- Main facades: `FlextOracleOicUtilities`, `FlextOracleOicCli`, `FlextOracleOicService`, `FlextOracleOicTypes`, `FlextOracleOicApi`, `FlextOracleOicAuthMixin`, `FlextOracleOicUtilitiesMonitoring`, `FlextOracleOicConstants` (+15 more)
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
-- Public symbol exports: `FlextOracleOicIntegrationLifecycleMixin`, `FlextOracleOicClient`, `FlextOracleOicCli`, `FlextOracleOicProtocols`, `FlextOracleOicService`, `FlextOracleOicUtilitiesConnectionValidation`, `FlextOracleOicIntegrationCrudMixin`, `FlextOracleOicIntegrationPatternsMixin`, `FlextOracleOicMonitoringMixin`, `FlextOracleOicUtilities` (+14 more)
+- Public symbol exports: `FlextOracleOicUtilities`, `FlextOracleOicCli`, `FlextOracleOicService`, `FlextOracleOicTypes`, `FlextOracleOicApi`, `FlextOracleOicAuthMixin`, `FlextOracleOicUtilitiesMonitoring`, `FlextOracleOicConstants`, `FlextOracleOicMonitoringMixin`, `FlextOracleOicIntegrationPatternsMixin` (+14 more)
 - Exported module shortcuts: `main`
 - Generated module pages: `18`
 
