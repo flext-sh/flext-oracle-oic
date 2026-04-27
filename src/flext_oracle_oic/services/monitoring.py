@@ -118,8 +118,10 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                         },
                         "error": f"Request failed: {response_result.error}",
                     })
-            validation_result = u.MonitoringUtilities.validate_health_status(
-                health_data,
+            validation_result: p.Result[t.JsonMapping] = (
+                u.MonitoringUtilities.validate_health_status(
+                    health_data,
+                )
             )
             if validation_result.success:
                 return validation_result
@@ -144,12 +146,14 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 },
                 "error": str(e),
             })
-            validation_result = u.MonitoringUtilities.validate_health_status(
-                error_health,
+            error_validation_result: p.Result[t.JsonMapping] = (
+                u.MonitoringUtilities.validate_health_status(
+                    error_health,
+                )
             )
             return (
-                validation_result
-                if validation_result.success
+                error_validation_result
+                if error_validation_result.success
                 else r[t.JsonMapping].ok(error_health)
             )
 
@@ -160,16 +164,19 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         r containing performance metrics with analysis
 
         """
+        base_metrics = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+            "active_integrations": 0,
+            "total_executions": 0,
+            "success_rate": 0.0,
+            "average_response_time": 0.0,
+        })
+        metrics_data: t.JsonMapping = base_metrics
         try:
-            metrics_data: t.JsonMapping
             if not self._monitoring_client:
-                metrics_data = {
-                    "active_integrations": 0,
-                    "total_executions": 0,
-                    "success_rate": 0.0,
-                    "average_response_time": 0.0,
+                metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                    **base_metrics,
                     "timestamp": asyncio.get_event_loop().time(),
-                }
+                })
             else:
                 base = str(self._oic_settings.base_url).rstrip("/")
                 metrics_url = f"{base}/ic/api/integration/v1/metrics"
@@ -182,65 +189,62 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                     timeout=float(self._oic_settings.request_timeout),
                 )
                 response_result = self._monitoring_client.request(req)
-                if response_result.success:
+                if response_result.failure:
+                    metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                        **base_metrics,
+                        "error": f"Request failed: {response_result.error}",
+                    })
+                else:
                     response = response_result.value
-                    if response.status_code == c.API.HTTP_STATUS_OK:
-                        if isinstance(response.body, dict):
-                            metrics_data = {
-                                str(k): self._to_general_value(v)
-                                for k, v in response.body.items()
-                            }
-                        else:
+                    match (response.status_code, response.body):
+                        case (c.API.HTTP_STATUS_OK, Mapping() as body):
+                            metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python(
+                                {
+                                    str(key): self._to_general_value(value)
+                                    for key, value in body.items()
+                                },
+                            )
+                        case (c.API.HTTP_STATUS_OK, _):
                             metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python(
                                 {},
                             )
-                    else:
-                        metrics_data = {
-                            "active_integrations": 0,
-                            "total_executions": 0,
-                            "success_rate": 0.0,
-                            "average_response_time": 0.0,
-                            "error": f"HTTP {response.status_code}",
-                        }
-                else:
-                    metrics_data = {
-                        "active_integrations": 0,
-                        "total_executions": 0,
-                        "success_rate": 0.0,
-                        "average_response_time": 0.0,
-                        "error": f"Request failed: {response_result.error}",
-                    }
+                        case (status_code, _):
+                            metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                                **base_metrics,
+                                "error": f"HTTP {status_code}",
+                            })
             metrics_dict: t.MutableJsonMapping = {}
             for key, value in metrics_data.items():
                 metrics_dict[str(key)] = self._to_general_value(value)
-            analysis_result = u.MonitoringUtilities.analyze_performance_metrics(
-                metrics_dict,
+            analysis_result: p.Result[t.JsonMapping] = (
+                u.MonitoringUtilities.analyze_performance_metrics(
+                    metrics_dict,
+                )
             )
             if analysis_result.success:
-                return r[t.JsonMapping].ok({
-                    **metrics_dict,
-                    "analysis": dict(analysis_result.value),
-                })
-            self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
-            return r[t.JsonMapping].ok(metrics_dict)
+                metrics_dict["analysis"] = dict(analysis_result.value)
+            else:
+                self.logger.warning(
+                    f"Performance analysis failed: {analysis_result.error}",
+                )
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Performance metrics failed")
-            error_metrics = {
-                "active_integrations": 0,
-                "total_executions": 0,
-                "success_rate": 0.0,
-                "average_response_time": 0.0,
+            error_metrics = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                **base_metrics,
                 "error": str(e),
+            })
+            metrics_dict = {
+                str(key): self._to_general_value(value)
+                for key, value in error_metrics.items()
             }
-            analysis_result = u.MonitoringUtilities.analyze_performance_metrics(
-                error_metrics,
+            error_analysis_result: p.Result[t.JsonMapping] = (
+                u.MonitoringUtilities.analyze_performance_metrics(
+                    metrics_dict,
+                )
             )
-            if analysis_result.success:
-                return r[t.JsonMapping].ok({
-                    **error_metrics,
-                    "analysis": dict(analysis_result.value),
-                })
-            return r[t.JsonMapping].ok(error_metrics)
+            if error_analysis_result.success:
+                metrics_dict["analysis"] = dict(error_analysis_result.value)
+        return r[t.JsonMapping].ok(metrics_dict)
 
 
 __all__: list[str] = ["FlextOracleOicMonitoringMixin"]

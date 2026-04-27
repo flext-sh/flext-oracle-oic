@@ -43,17 +43,7 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
         api_version: str = "v1",
         connection_id: str | None = None,
     ) -> p.Result[str]:
-        """Build Oracle OIC connection API endpoint.
-
-        Args:
-        base_url: OIC instance base URL
-        api_version: API version (default: v1)
-        connection_id: Optional specific connection ID
-
-        Returns:
-        r containing constructed endpoint URL or error
-
-        """
+        """Build the Oracle OIC connections endpoint."""
         return FlextOracleOicUtilitiesAPIRequestBuilder.build_resource_endpoint(
             base_url=base_url,
             api_version=api_version,
@@ -68,17 +58,7 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
         api_version: str = "v1",
         integration_id: str | None = None,
     ) -> p.Result[str]:
-        """Build Oracle OIC integration API endpoint.
-
-        Args:
-        base_url: OIC instance base URL
-        api_version: API version (default: v1)
-        integration_id: Optional specific integration ID
-
-        Returns:
-        r containing constructed endpoint URL or error
-
-        """
+        """Build the Oracle OIC integrations endpoint."""
         return FlextOracleOicUtilitiesAPIRequestBuilder.build_resource_endpoint(
             base_url=base_url,
             api_version=api_version,
