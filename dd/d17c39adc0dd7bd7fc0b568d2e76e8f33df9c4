@@ -1,0 +1,24 @@
+src/flext_oracle_oic/ext_client.py
+  c8a4efa99583d305 411
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "ddd17c39adc0dd7bd7fc0b568d2e76e8f33df9c4",
+  "prompts": {
+    "c8a4efa99583d305": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "064e59bc-4db0-43f3-84df-745838365e34",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "FLEXT Bot",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/94d5a7c7bac44fbd4726a88fc202635f002e4d1b1b2e4b57853f35d9dafc7da0"
+    }
+  }
+}
