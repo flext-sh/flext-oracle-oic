@@ -408,7 +408,7 @@ class FlextOracleOicClient:
                 return r[t.JsonMapping].fail("Invalid response format")
             content_type = str(headers.get("content-type", ""))
             is_json = content_type.startswith("application/json")
-            if is_json and not isinstance(body, str | Mapping):
+            if is_json and not isinstance(body, (str, Mapping)):
                 return r[t.JsonMapping].fail("Empty JSON response")
             parsed_body: t.JsonMapping
             if isinstance(body, str) and is_json:
