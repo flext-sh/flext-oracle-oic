@@ -1,0 +1,16 @@
+src/flext_oracle_oic/services/monitoring.py
+  h_9db9d35f50cf33 121,124,149,152,155-156,167,172-173,176-177,179,192-197,199-200,202-207,211-215,219,222,225-226,228,232-233,235-238,240,242-243,245-247
+src/flext_oracle_oic/_utilities/api_request_builder.py
+  h_9db9d35f50cf33 46,61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "2da9e3b744774a593918c6fececf9e1ff66a5a45",
+  "prompts": {},
+  "humans": {
+    "h_9db9d35f50cf33": {
+      "author": "FLEXT Bot"
+    }
+  }
+}
