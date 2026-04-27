@@ -1,0 +1,14 @@
+src/flext_oracle_oic/ext_client.py
+  h_9db9d35f50cf33 405,407-420
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "c19bd53124f7faeab6244393db71ce32560a283f",
+  "prompts": {},
+  "humans": {
+    "h_9db9d35f50cf33": {
+      "author": "FLEXT Bot"
+    }
+  }
+}
