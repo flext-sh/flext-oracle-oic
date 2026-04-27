@@ -7,6 +7,7 @@ from collections.abc import (
     Callable,
     MutableSequence,
 )
+from typing import ClassVar
 
 from flext_oracle_oic import c, m, p, r, t
 
@@ -17,7 +18,9 @@ class FlextOracleOicUtilitiesOracleOic:
     class FieldValidationPlan(m.Value):
         """Validated plan for one integration string field."""
 
-        model_config = m.ConfigDict(arbitrary_types_allowed=True, frozen=True)
+        model_config: ClassVar[m.ConfigDict] = m.ConfigDict(
+            arbitrary_types_allowed=True, frozen=True
+        )
 
         field_name: str
         label: str
