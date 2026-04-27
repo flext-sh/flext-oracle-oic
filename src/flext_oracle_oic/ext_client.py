@@ -402,46 +402,22 @@ class FlextOracleOicClient:
     ) -> p.Result[t.JsonMapping]:
         """Parse API response based on content type."""
         try:
-            headers: t.JsonMapping | None = getattr(
-                response,
-                "headers",
-                None,
-            )
+            headers: t.JsonMapping | None = getattr(response, "headers", None)
             body: t.JsonValue | None = getattr(response, "body", None)
-            match headers:
-                case Mapping():
-                    content_type_val = headers.get("content-type", "")
-                    content_type = str(content_type_val) if content_type_val else ""
-                    if content_type.startswith("application/json"):
-                        if isinstance(body, Mapping):
-                            return r[t.JsonMapping].ok(body)
-                        match body:
-                            case str():
-                                parsed_data = t.CONTAINER_MAPPING_ADAPTER.validate_json(
-                                    body
-                                )
-                                return r[t.JsonMapping].ok(
-                                    parsed_data,
-                                )
-                            case _:
-                                return r[t.JsonMapping].fail(
-                                    "Empty JSON response",
-                                )
-                    match body:
-                        case str():
-                            return r[t.JsonMapping].ok({
-                                "raw_content": body,
-                            })
-                        case _ if isinstance(body, Mapping):
-                            return r[t.JsonMapping].ok(body)
-                        case _:
-                            return r[t.JsonMapping].ok({
-                                "raw_content": str(body),
-                            })
-                case _:
-                    return r[t.JsonMapping].fail(
-                        "Invalid response format",
-                    )
+            if not isinstance(headers, Mapping):
+                return r[t.JsonMapping].fail("Invalid response format")
+            content_type = str(headers.get("content-type", ""))
+            is_json = content_type.startswith("application/json")
+            if is_json and not isinstance(body, str | Mapping):
+                return r[t.JsonMapping].fail("Empty JSON response")
+            parsed_body: t.JsonMapping
+            if isinstance(body, str) and is_json:
+                parsed_body = t.CONTAINER_MAPPING_ADAPTER.validate_json(body)
+            elif isinstance(body, Mapping):
+                parsed_body = body
+            else:
+                parsed_body = {"raw_content": str(body) if body is not None else ""}
+            return r[t.JsonMapping].ok(parsed_body)
         except (
             ConnectionError,
             TimeoutError,
