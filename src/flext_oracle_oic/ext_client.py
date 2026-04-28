@@ -328,7 +328,7 @@ class FlextOracleOicClient:
     ) -> p.Result[t.JsonValue]:
         """Execute the actual API request."""
         try:
-            api_data: t.JsonMapping | None = None
+            api_data: dict[str, t.JsonValue] | None = None
             if json is not None:
                 api_data = {
                     key: str(self._to_api_payload(value)) for key, value in json.items()
@@ -372,7 +372,7 @@ class FlextOracleOicClient:
                 "base_url": self.auth_config.oauth_token_url,
             })
             api_client = FlextApi(settings=api_config)
-            oauth_data: t.JsonMapping = {
+            oauth_data: dict[str, t.JsonValue] = {
                 key: str(self._to_api_payload(value)) for key, value in data.items()
             }
             response_result = api_client.post("", data=oauth_data, headers=headers)
