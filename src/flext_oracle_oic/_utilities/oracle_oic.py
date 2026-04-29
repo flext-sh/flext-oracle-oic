@@ -7,7 +7,7 @@ from collections.abc import (
     Callable,
     MutableSequence,
 )
-from typing import ClassVar
+from typing import Annotated, ClassVar
 
 from flext_oracle_oic import c, m, p, r, t
 
@@ -22,11 +22,19 @@ class FlextOracleOicUtilitiesOracleOic:
             arbitrary_types_allowed=True, frozen=True
         )
 
-        field_name: str
-        label: str
-        required: bool = False
-        required_message: str = ""
-        validator: Callable[[str], p.Result[str]]
+        field_name: Annotated[str, m.Field(description="Name of the field to validate")]
+        label: Annotated[str, m.Field(description="Human-readable label for the field")]
+        required: Annotated[
+            bool, m.Field(description="Whether the field is required")
+        ] = False
+        required_message: Annotated[
+            str,
+            m.Field(description="Error message when required field is missing"),
+        ] = ""
+        validator: Annotated[
+            Callable[[str], p.Result[str]],
+            m.Field(description="Validation function for the field value"),
+        ]
 
     @staticmethod
     def validate_integration_data(
