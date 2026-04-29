@@ -87,7 +87,7 @@ class FlextOracleOicServiceBase(
             return value
         if isinstance(value, Mapping):
             return {
-                str(k): FlextOracleOicServiceBase._to_general_value(v)
+                k: FlextOracleOicServiceBase._to_general_value(v)
                 for k, v in value.items()
             }
         match value:
@@ -118,6 +118,7 @@ class FlextOracleOicServiceBase(
             last_updated=self._as_text(data.get("lastUpdated"), ""),
         )
 
+    @override
     def execute(
         self: Self,
     ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
@@ -192,7 +193,7 @@ class FlextOracleOicServiceBase(
                 if validation_result.failure:
                     return r[FlextOracleOicClient].fail(validation_result.error)
                 connection_config = m.OracleOic.OICConnectionConfig(
-                    base_url=str(self._oic_settings.base_url),
+                    base_url=self._oic_settings.base_url,
                     api_version=self._oic_settings.api_version,
                     request_timeout=self._oic_settings.request_timeout,
                     max_retries=self._oic_settings.max_retries,
@@ -201,7 +202,7 @@ class FlextOracleOicServiceBase(
                 auth_config = m.OracleOic.OICAuthConfig(
                     oauth_client_id=self._oic_settings.oauth_client_id,
                     oauth_client_secret=self._oic_settings.oauth_client_secret,
-                    oauth_token_url=str(self._oic_settings.oauth_token_url),
+                    oauth_token_url=self._oic_settings.oauth_token_url,
                     oauth_client_aud=self._oic_settings.oauth_client_aud,
                     oauth_scope=self._oic_settings.oauth_scope,
                 )
@@ -252,7 +253,7 @@ class FlextOracleOicServiceBase(
                     "Content-Type": "application/json",
                 }
                 api_config = FlextApiSettings.model_validate({
-                    "base_url": str(self._oic_settings.base_url),
+                    "base_url": self._oic_settings.base_url,
                     "timeout": self._oic_settings.request_timeout,
                     "max_retries": self._oic_settings.max_retries,
                     "verify_ssl": self._oic_settings.verify_ssl,

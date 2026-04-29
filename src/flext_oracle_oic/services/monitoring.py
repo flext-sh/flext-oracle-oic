@@ -49,7 +49,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                     "timestamp": asyncio.get_event_loop().time(),
                 })
             else:
-                base = str(self._oic_settings.base_url).rstrip("/")
+                base = self._oic_settings.base_url.rstrip("/")
                 health_url = f"{base}{c.API.ENDPOINT_HEALTH}"
                 req = m.Api.HttpRequest(
                     method=c.API.Method.GET,
@@ -65,7 +65,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                     if response.status_code == c.API.HTTP_STATUS_OK:
                         base_health: t.JsonMapping = (
                             {
-                                str(k): self._to_general_value(v)
+                                k: self._to_general_value(v)
                                 for k, v in response.body.items()
                             }
                             if isinstance(response.body, Mapping)
@@ -178,7 +178,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                     "timestamp": asyncio.get_event_loop().time(),
                 })
             else:
-                base = str(self._oic_settings.base_url).rstrip("/")
+                base = self._oic_settings.base_url.rstrip("/")
                 metrics_url = f"{base}/ic/api/integration/v1/metrics"
                 req = m.Api.HttpRequest(
                     method=c.API.Method.GET,
@@ -200,7 +200,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                         case (c.API.HTTP_STATUS_OK, Mapping() as body):
                             metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python(
                                 {
-                                    str(key): self._to_general_value(value)
+                                    key: self._to_general_value(value)
                                     for key, value in body.items()
                                 },
                             )
@@ -215,7 +215,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                             })
             metrics_dict: t.MutableJsonMapping = {}
             for key, value in metrics_data.items():
-                metrics_dict[str(key)] = self._to_general_value(value)
+                metrics_dict[key] = self._to_general_value(value)
             analysis_result: p.Result[t.JsonMapping] = (
                 u.MonitoringUtilities.analyze_performance_metrics(
                     metrics_dict,
@@ -234,7 +234,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 "error": str(e),
             })
             metrics_dict = {
-                str(key): self._to_general_value(value)
+                key: self._to_general_value(value)
                 for key, value in error_metrics.items()
             }
             error_analysis_result: p.Result[t.JsonMapping] = (

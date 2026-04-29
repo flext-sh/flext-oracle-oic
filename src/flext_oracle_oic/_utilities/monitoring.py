@@ -119,9 +119,7 @@ class FlextOracleOicUtilitiesMonitoring:
         r containing validated health data or error
 
         """
-        validated_data: t.MutableJsonMapping = {
-            str(key): value for key, value in health_data.items()
-        }
+        validated_data: t.MutableJsonMapping = dict(health_data.items())
         error_message: str | None = None
         status = health_data.get("status")
         valid_statuses = {

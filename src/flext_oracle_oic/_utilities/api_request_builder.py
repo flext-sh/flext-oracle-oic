@@ -98,5 +98,5 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
                         "Auth token must be non-empty string",
                     )
         if additional_headers:
-            headers.update({str(k): str(v) for k, v in additional_headers.items()})
+            headers.update(dict(additional_headers.items()))
         return r[t.StrMapping].ok(headers)

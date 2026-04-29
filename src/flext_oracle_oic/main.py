@@ -15,6 +15,7 @@ import sys
 from collections.abc import (
     Sequence,
 )
+from typing import override
 
 from flext_infra import __version__
 
@@ -65,6 +66,7 @@ class FlextOracleOicCli(s[None]):
         subparsers.add_parser("version", help="Show Oracle OIC Extension version")
         return parser
 
+    @override
     def execute(self) -> p.Result[None]:
         """Execute main CLI operation - run with default arguments."""
         exit_code = self.run_cli()

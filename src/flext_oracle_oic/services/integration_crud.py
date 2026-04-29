@@ -210,7 +210,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             if not integration_id:
                 return r[str].fail("No integration ID returned")
             self.logger.info("Integration deployed successfully: %s", integration_id)
-            return r[str].ok(str(integration_id))
+            return r[str].ok(integration_id)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to deploy integration")
             return r[str].fail(f"Integration deployment failed: {e!s}")

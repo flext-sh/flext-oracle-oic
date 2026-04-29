@@ -45,8 +45,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
             client = client_result.value
             endpoint = f"/integrations/{integration_id}/connections"
             payload_dict = {
-                str(key): self._to_general_value(value)
-                for key, value in payload.items()
+                key: self._to_general_value(value) for key, value in payload.items()
             }
             orchestration_result = client.make_request(
                 "POST",

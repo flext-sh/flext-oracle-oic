@@ -75,7 +75,7 @@ class FlextOracleOicClient:
         connection_data: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
         """Create connection in OIC."""
-        json_data = {str(k): str(v) for k, v in connection_data.items()}
+        json_data = dict(connection_data.items())
         return self.make_request(
             c.API.Method.POST,
             "/connections",
@@ -281,7 +281,7 @@ class FlextOracleOicClient:
     ) -> p.Result[t.JsonMapping]:
         """Update integration in OIC."""
         endpoint = f"/integrations/{integration_id}"
-        json_data = {str(k): str(v) for k, v in integration_data.items()}
+        json_data = dict(integration_data.items())
         return self.make_request(
             c.API.Method.PUT,
             endpoint,
@@ -435,7 +435,7 @@ class FlextOracleOicClient:
                 return r[str].fail("Invalid response format")
             token_data: t.JsonMapping
             if isinstance(body_raw, Mapping):
-                token_data = {str(k): body_raw[k] for k in body_raw}
+                token_data = {k: body_raw[k] for k in body_raw}
             elif isinstance(body_raw, str):
                 token_data = t.CONTAINER_MAPPING_ADAPTER.validate_json(body_raw)
             else:
@@ -488,7 +488,7 @@ class FlextOracleOicClient:
         if isinstance(value, (str, int, float, bool)) or value is None:
             return value
         if isinstance(value, Mapping):
-            return {str(key): self._to_api_payload(item) for key, item in value.items()}
+            return {key: self._to_api_payload(item) for key, item in value.items()}
         match value:
             case list() | tuple():
                 return [self._to_api_payload(item) for item in value]
