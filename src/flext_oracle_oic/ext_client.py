@@ -256,7 +256,7 @@ class FlextOracleOicClient:
                     return r[Sequence[t.JsonMapping]].fail(
                         "Invalid items format",
                     )
-                items: Sequence[t.JsonMapping] = [
+                items: t.SequenceOf[t.JsonMapping] = [
                     dict(item) for item in items_raw if isinstance(item, dict)
                 ]
                 all_records.extend(items)

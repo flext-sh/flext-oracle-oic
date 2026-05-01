@@ -7,10 +7,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-)
-
 import pytest
 
 from tests import c, m, t
@@ -51,7 +47,7 @@ class TestsFlextOracleOicModelsUnit:
 
     def test_auth_config_validation_error(self) -> None:
         """Test auth settings validation error."""
-        invalid_data: Mapping[str, str | int | None] = {
+        invalid_data: t.MappingKV[str, str | int | None] = {
             "oauth_client_id": "test_client_id",
             "oauth_client_secret": 123,
             "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",

@@ -12,9 +12,6 @@ from __future__ import annotations
 
 import argparse
 import sys
-from collections.abc import (
-    Sequence,
-)
 from typing import override
 
 from flext_infra import __version__
@@ -203,7 +200,7 @@ class FlextOracleOicCli(s[None]):
 
     def _print_integrations(
         self,
-        integrations: Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo],
+        integrations: t.SequenceOf[FlextOracleOicModels.OracleOic.OICIntegrationInfo],
     ) -> None:
         """Print integrations to CLI output.
 
