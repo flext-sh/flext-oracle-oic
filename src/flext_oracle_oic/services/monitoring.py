@@ -227,7 +227,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 self.logger.warning(
                     f"Performance analysis failed: {analysis_result.error}",
                 )
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Performance metrics failed")
             error_metrics = t.CONTAINER_MAPPING_ADAPTER.validate_python({
                 **base_metrics,

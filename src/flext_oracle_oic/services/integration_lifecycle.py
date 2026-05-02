@@ -71,7 +71,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
                 )
                 return r[bool].fail(error_msg)
             return r[bool].ok(value=True)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to deactivate integration %s", integration_id)
             return r[bool].fail_op("Integration deactivation", e)
 

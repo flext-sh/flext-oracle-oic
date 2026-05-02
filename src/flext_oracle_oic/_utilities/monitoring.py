@@ -48,7 +48,7 @@ class FlextOracleOicUtilitiesMonitoring:
         return (None, None, False)
 
     @staticmethod
-    def _components_validation_error(components: object) -> str | None:
+    def _components_validation_error(components: p.AttributeProbe) -> str | None:
         """Return first component-validation error, if any."""
         if not isinstance(components, dict):
             return "Components must be a dictionary"

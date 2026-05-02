@@ -209,7 +209,7 @@ class FlextOracleOicServiceBase(
                     auth_config=auth_config,
                 )
             return r[FlextOracleOicClient].ok(self._client)
-        except (ConnectionError, TimeoutError, ValueError) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             self.logger.exception("Failed to create OIC client")
             return r[FlextOracleOicClient].fail_op("Client creation", exc)
 

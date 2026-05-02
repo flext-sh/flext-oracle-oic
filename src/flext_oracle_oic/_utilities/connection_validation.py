@@ -10,7 +10,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
 
     @staticmethod
     def _validate_closed_string(
-        value: object,
+        value: p.AttributeProbe,
         *,
         field_label: str,
         valid_values: frozenset[str],
@@ -30,7 +30,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
         return r[str].ok(normalized_value)
 
     @staticmethod
-    def validate_base_url(base_url: object) -> p.Result[str]:
+    def validate_base_url(base_url: p.AttributeProbe) -> p.Result[str]:
         """Validate Oracle OIC base URL.
 
         Args:
@@ -53,7 +53,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
         return r[str].ok(base_url)
 
     @staticmethod
-    def validate_connection_status(status: object) -> p.Result[str]:
+    def validate_connection_status(status: p.AttributeProbe) -> p.Result[str]:
         """Validate Oracle OIC connection status.
 
         Args:
@@ -70,7 +70,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
         )
 
     @staticmethod
-    def validate_connection_type(connection_type: object) -> p.Result[str]:
+    def validate_connection_type(connection_type: p.AttributeProbe) -> p.Result[str]:
         """Validate Oracle OIC connection type.
 
         Args:

@@ -300,11 +300,7 @@ class FlextOracleOicClient:
             client = FlextApi(settings=api_config)
             self._client = client
             return r[FlextApi].ok(client)
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-        ) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"Failed to create authenticated client: {exc}"
             self.logger.exception(error_msg)
             return r[FlextApi].fail(error_msg)
