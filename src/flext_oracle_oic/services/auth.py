@@ -33,7 +33,7 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
             return r[str].ok(str(token))
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Token refresh failed")
-            return r[str].fail(f"Token refresh failed: {e!s}")
+            return r[str].fail_op("Token refresh", e)
 
     def validate_auth_token(self, token: str) -> p.Result[bool]:
         """Validate OAuth2 authentication token.
@@ -55,7 +55,7 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
             return r[bool].ok(bool(valid))
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Token validation failed")
-            return r[bool].fail(f"Token validation failed: {e!s}")
+            return r[bool].fail_op("Token validation", e)
 
 
 __all__: list[str] = ["FlextOracleOicAuthMixin"]

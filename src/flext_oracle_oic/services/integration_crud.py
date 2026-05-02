@@ -57,9 +57,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[m.OracleOic.OICIntegrationInfo].ok(integration)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to create integration")
-            return r[m.OracleOic.OICIntegrationInfo].fail(
-                f"Integration creation failed: {e!s}",
-            )
+            return r[m.OracleOic.OICIntegrationInfo].fail_op("Integration creation", e)
 
     def fetch_integration(
         self,
@@ -109,9 +107,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[m.OracleOic.OICIntegrationInfo].ok(integration)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to get integration %s", integration_id)
-            return r[m.OracleOic.OICIntegrationInfo].fail(
-                f"Integration retrieval failed: {e!s}",
-            )
+            return r[m.OracleOic.OICIntegrationInfo].fail_op("Integration retrieval", e)
 
     def update_integration(
         self,
@@ -151,9 +147,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[m.OracleOic.OICIntegrationInfo].ok(integration)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to update integration %s", integration_id)
-            return r[m.OracleOic.OICIntegrationInfo].fail(
-                f"Integration update failed: {e!s}",
-            )
+            return r[m.OracleOic.OICIntegrationInfo].fail_op("Integration update", e)
 
     def delete_integration(self, integration_id: str) -> p.Result[bool]:
         """Delete Oracle OIC integration.
@@ -265,9 +259,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             )
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to list connections")
-            return r[Sequence[m.OracleOic.OICConnectionInfo]].fail(
-                f"Connection listing failed: {e!s}",
-            )
+            return r[Sequence[m.OracleOic.OICConnectionInfo]].fail_op("Connection listing", e)
 
 
 __all__: list[str] = ["FlextOracleOicIntegrationCrudMixin"]

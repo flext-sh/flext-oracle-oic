@@ -346,9 +346,7 @@ class FlextOracleOicClient:
             else:
                 return r[t.JsonValue].fail(f"Unsupported HTTP method: {method}")
             if response_result.failure:
-                return r[t.JsonValue].fail(
-                    f"Request failed: {response_result.error}",
-                )
+                return r[t.JsonValue].fail_op("Request", response_result.error)
             response = response_result.value
             body: t.JsonValue = getattr(response, "body", str(response))
             return r[t.JsonValue].ok(body)
@@ -377,9 +375,7 @@ class FlextOracleOicClient:
             }
             response_result = api_client.post("", data=oauth_data, headers=headers)
             if response_result.failure:
-                return r[t.JsonValue].fail(
-                    f"OAuth request failed: {response_result.error}",
-                )
+                return r[t.JsonValue].fail_op("OAuth request", response_result.error)
             response = response_result.value
             if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
                 return r[t.JsonValue].fail(

@@ -176,9 +176,7 @@ class FlextOracleOicServiceBase(
             )
         except (ConnectionError, TimeoutError, ValueError) as exc:
             u.fetch_logger(__name__).exception("Failed to list integrations")
-            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(
-                f"Integration listing failed: {exc!s}",
-            )
+            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail_op("Integration listing", exc)
 
     def _get_client(self) -> p.Result[FlextOracleOicClient]:
         """Get or create Oracle OIC client instance.
@@ -213,7 +211,7 @@ class FlextOracleOicServiceBase(
             return r[FlextOracleOicClient].ok(self._client)
         except (ConnectionError, TimeoutError, ValueError) as exc:
             self.logger.exception("Failed to create OIC client")
-            return r[FlextOracleOicClient].fail(f"Client creation failed: {exc!s}")
+            return r[FlextOracleOicClient].fail_op("Client creation", exc)
 
     def validate_business_rules(self) -> p.Result[bool]:
         """Validate Oracle OIC service business rules.

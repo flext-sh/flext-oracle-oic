@@ -80,9 +80,7 @@ class FlextOracleOicUtilitiesOracleOic:
                 plan=field_plan,
             )
         if errors:
-            return r[t.JsonMapping].fail(
-                f"Integration validation failed: {'; '.join(errors)}",
-            )
+            return r[t.JsonMapping].fail_op("Integration validation", '; '.join(errors))
         return r[t.JsonMapping].ok(validated_data)
 
     @staticmethod

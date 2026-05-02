@@ -62,9 +62,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
                 "App-driven orchestration failed for %s",
                 integration_id,
             )
-            return r[t.JsonMapping].fail(
-                f"Orchestration execution failed: {exc!s}",
-            )
+            return r[t.JsonMapping].fail_op("Orchestration execution", exc)
 
     def execute_file_transfer(
         self,

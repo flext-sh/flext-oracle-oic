@@ -43,7 +43,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].ok(value=True)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to activate integration %s", integration_id)
-            return r[bool].fail(f"Integration activation failed: {e!s}")
+            return r[bool].fail_op("Integration activation", e)
 
     def deactivate_integration(self, integration_id: str) -> p.Result[bool]:
         """Deactivate Oracle OIC integration.
@@ -73,7 +73,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].ok(value=True)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to deactivate integration %s", integration_id)
-            return r[bool].fail(f"Integration deactivation failed: {e!s}")
+            return r[bool].fail_op("Integration deactivation", e)
 
     def test_connection(self) -> p.Result[bool]:
         """Test connection to Oracle OIC instance.
@@ -105,7 +105,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].ok(is_connected)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Connection test failed")
-            return r[bool].fail(f"Connection test failed: {e!s}")
+            return r[bool].fail_op("Connection test", e)
 
 
 __all__: list[str] = ["FlextOracleOicIntegrationLifecycleMixin"]
