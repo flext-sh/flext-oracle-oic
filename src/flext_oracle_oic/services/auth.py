@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import p, r
+from flext_core import c, p, r
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 
 
@@ -31,7 +31,7 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
                 return r[str].fail("Authenticator has no refresh_token")
             token = refresh_fn()
             return r[str].ok(str(token))
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Token refresh failed")
             return r[str].fail_op("Token refresh", e)
 
@@ -53,7 +53,7 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
                 return r[bool].fail("Authenticator has no validate_token")
             valid = validate_fn(token)
             return r[bool].ok(bool(valid))
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Token validation failed")
             return r[bool].fail_op("Token validation", e)
 

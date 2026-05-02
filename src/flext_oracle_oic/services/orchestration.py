@@ -13,7 +13,7 @@ from collections.abc import (
     Callable,
 )
 
-from flext_core import p, r
+from flext_core import c, p, r
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 from flext_oracle_oic.typings import t
@@ -57,7 +57,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
                     orchestration_result.error or "Orchestration request failed",
                 )
             return r[t.JsonMapping].ok(orchestration_result.value)
-        except (ConnectionError, TimeoutError, ValueError) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             self.logger.exception(
                 "App-driven orchestration failed for %s",
                 integration_id,
@@ -145,7 +145,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
             client = client_result.value
             result = operation(client, integration_id, operation_config)
             return r[t.JsonMapping].ok(result)
-        except (ConnectionError, TimeoutError, ValueError) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             self.logger.exception(log_message, integration_id)
             return r[t.JsonMapping].fail(f"{error_message}: {exc!s}")
 

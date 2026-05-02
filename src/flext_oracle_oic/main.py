@@ -16,7 +16,7 @@ from typing import override
 
 from flext_infra import __version__
 
-from flext_core import p, r, s
+from flext_core import c, p, r, s
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
 from flext_oracle_oic.settings import FlextOracleOicSettings
@@ -84,7 +84,7 @@ class FlextOracleOicCli(s[None]):
             FlextOracleOicSettings.create_for_development()
             service = FlextOracleOicService()
             return self._list_integrations_with_service(service)
-        except (ConnectionError, TimeoutError, ValueError) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             if self.logger:
                 self.logger.exception("List integrations failed")
             return r[bool].fail_op("List integrations", exc)
@@ -142,7 +142,7 @@ class FlextOracleOicCli(s[None]):
                 "FLEXT CLI Pattern: Enterprise Oracle Integration Cloud\n",
             )
             return r[bool].ok(value=True)
-        except (ConnectionError, TimeoutError, ValueError) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             if self.logger:
                 self.logger.exception("Version display failed")
             return r[bool].fail_op("Version display", exc)
@@ -169,7 +169,7 @@ class FlextOracleOicCli(s[None]):
                     )
                     return r[bool].ok(value=True)
                 return r[bool].fail_op("Connection", connection_result.error)
-        except (ConnectionError, TimeoutError, ValueError) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             if self.logger:
                 self.logger.exception("Connection test failed")
             return r[bool].fail_op("Connection test", exc)
@@ -236,7 +236,7 @@ def main() -> int:
     except KeyboardInterrupt:
         cli_instance.logger.info("Oracle OIC Extension CLI interrupted by user")
         return 130
-    except (ConnectionError, TimeoutError, ValueError):
+    except c.EXC_NETWORK_TYPE:
         cli_instance.logger.exception("Oracle OIC Extension CLI error")
         return 1
 
