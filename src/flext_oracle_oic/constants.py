@@ -70,7 +70,6 @@ class FlextOracleOicConstants(c):
         DEFAULT_API_VERSION: Final[str] = "v1"
         DEFAULT_PAGE_SIZE: Final[int] = 100
         MIN_PAGE_SIZE: Final[int] = 1
-        DEFAULT_MAX_DELAY_SECONDS: Final[float] = 60.0
         MIN_REQUEST_TIMEOUT: Final[int] = 1
         MIN_MAX_RETRIES: Final[int] = 0
         DEFAULT_VERIFY_SSL: Final[bool] = True
