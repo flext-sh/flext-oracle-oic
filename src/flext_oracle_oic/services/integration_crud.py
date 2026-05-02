@@ -181,7 +181,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[bool].ok(value=True)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to delete integration %s", integration_id)
-            return r[bool].fail(f"Integration deletion failed: {e!s}")
+            return r[bool].fail_op("Integration deletion", e)
 
     def deploy_integration(
         self,
@@ -213,7 +213,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[str].ok(integration_id)
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to deploy integration")
-            return r[str].fail(f"Integration deployment failed: {e!s}")
+            return r[str].fail_op("Integration deployment", e)
 
     def list_connections(
         self,
