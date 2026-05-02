@@ -257,7 +257,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[Sequence[m.OracleOic.OICConnectionInfo]].ok(
                 connections,
             )
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to list connections")
             return r[Sequence[m.OracleOic.OICConnectionInfo]].fail_op(
                 "Connection listing", e

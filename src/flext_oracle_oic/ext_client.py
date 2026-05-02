@@ -420,11 +420,7 @@ class FlextOracleOicClient:
             if isinstance(access_token, str) and access_token:
                 return r[str].ok(access_token)
             return r[str].fail("No valid access token in response")
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-        ) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"Failed to parse OAuth response: {exc}"
             self.logger.exception(error_msg)
             return r[str].fail(error_msg)
@@ -444,11 +440,7 @@ class FlextOracleOicClient:
                 headers,
                 data,
             ))
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-        ) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"Failed to prepare OAuth request: {exc}"
             self.logger.exception(error_msg)
             return r[tuple[t.StrMapping, t.StrMapping]].fail(error_msg)
