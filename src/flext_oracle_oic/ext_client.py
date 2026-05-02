@@ -398,11 +398,7 @@ class FlextOracleOicClient:
             else:
                 parsed_body = {"raw_content": str(body) if body is not None else ""}
             return r[t.JsonMapping].ok(parsed_body)
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-        ) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"Failed to parse API response: {exc}"
             self.logger.exception(error_msg)
             return r[t.JsonMapping].fail(error_msg)
