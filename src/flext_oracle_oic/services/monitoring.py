@@ -129,7 +129,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 f"Health status validation failed: {validation_result.error}",
             )
             return r[t.JsonMapping].ok(health_data)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Health check failed")
             error_health = t.CONTAINER_MAPPING_ADAPTER.validate_python({
                 "status": c.Monitoring.HealthStatus.ERROR.value,

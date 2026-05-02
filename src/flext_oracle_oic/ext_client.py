@@ -265,11 +265,7 @@ class FlextOracleOicClient:
                     break
                 offset += page_size
             return r[Sequence[t.JsonMapping]].ok(all_records)
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-        ) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"OIC pagination failed: {exc}"
             self.logger.exception(error_msg)
             return r[Sequence[t.JsonMapping]].fail(error_msg)

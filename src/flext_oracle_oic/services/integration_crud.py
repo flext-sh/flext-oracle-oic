@@ -55,7 +55,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 default_status=c.Integration.Status.DRAFT,
             )
             return r[m.OracleOic.OICIntegrationInfo].ok(integration)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to create integration")
             return r[m.OracleOic.OICIntegrationInfo].fail_op("Integration creation", e)
 

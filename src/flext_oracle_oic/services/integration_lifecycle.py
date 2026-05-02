@@ -41,7 +41,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
                 error_msg = activate_result.error or "Failed to activate integration"
                 return r[bool].fail(error_msg)
             return r[bool].ok(value=True)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to activate integration %s", integration_id)
             return r[bool].fail_op("Integration activation", e)
 
