@@ -342,11 +342,7 @@ class FlextOracleOicClient:
             response = response_result.value
             body: t.JsonValue = getattr(response, "body", str(response))
             return r[t.JsonValue].ok(body)
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-        ) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"OIC API request failed: {exc}"
             self.logger.exception(error_msg)
             return r[t.JsonValue].fail(error_msg)

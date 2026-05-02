@@ -103,7 +103,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
                 case _:
                     is_connected = False
             return r[bool].ok(is_connected)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Connection test failed")
             return r[bool].fail_op("Connection test", e)
 

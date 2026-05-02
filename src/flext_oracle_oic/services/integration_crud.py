@@ -145,7 +145,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 default_status=c.Connection.Status.UNKNOWN,
             )
             return r[m.OracleOic.OICIntegrationInfo].ok(integration)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to update integration %s", integration_id)
             return r[m.OracleOic.OICIntegrationInfo].fail_op("Integration update", e)
 
