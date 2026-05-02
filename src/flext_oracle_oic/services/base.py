@@ -176,7 +176,9 @@ class FlextOracleOicServiceBase(
             )
         except c.EXC_NETWORK_TYPE as exc:
             u.fetch_logger(__name__).exception("Failed to list integrations")
-            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail_op("Integration listing", exc)
+            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail_op(
+                "Integration listing", exc
+            )
 
     def _get_client(self) -> p.Result[FlextOracleOicClient]:
         """Get or create Oracle OIC client instance.

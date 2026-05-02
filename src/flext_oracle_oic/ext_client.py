@@ -371,11 +371,7 @@ class FlextOracleOicClient:
                 )
             body: t.JsonValue = getattr(response, "body", str(response))
             return r[t.JsonValue].ok(body)
-        except (
-            ConnectionError,
-            TimeoutError,
-            ValueError,
-        ) as exc:
+        except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"OAuth token request failed: {exc}"
             self.logger.exception(error_msg)
             return r[t.JsonValue].fail(error_msg)

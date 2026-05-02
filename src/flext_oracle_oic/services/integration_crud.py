@@ -173,7 +173,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 error_msg = delete_result.error or "Failed to delete integration"
                 return r[bool].fail(error_msg)
             return r[bool].ok(value=True)
-        except (ConnectionError, TimeoutError, ValueError) as e:
+        except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to delete integration %s", integration_id)
             return r[bool].fail_op("Integration deletion", e)
 
@@ -259,7 +259,9 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             )
         except (ConnectionError, TimeoutError, ValueError) as e:
             self.logger.exception("Failed to list connections")
-            return r[Sequence[m.OracleOic.OICConnectionInfo]].fail_op("Connection listing", e)
+            return r[Sequence[m.OracleOic.OICConnectionInfo]].fail_op(
+                "Connection listing", e
+            )
 
 
 __all__: list[str] = ["FlextOracleOicIntegrationCrudMixin"]
