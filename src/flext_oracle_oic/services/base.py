@@ -224,12 +224,14 @@ class FlextOracleOicServiceBase(
         """
         settings = self._oic_settings
         base_url_validation: p.Result[bool] = (
-            u.ConnectionValidation.validate_base_url(settings.base_url)
+            u.ConnectionValidation
+            .validate_base_url(settings.base_url)
             .map(lambda _: True)
             .lash(lambda error: r[bool].fail(f"Base URL validation: {error}"))
         )
         client_id_validation: p.Result[bool] = (
-            u.AuthenticationValidation.validate_oauth_client_id(
+            u.AuthenticationValidation
+            .validate_oauth_client_id(
                 settings.oauth_client_id,
             )
             .map(lambda _: True)
@@ -240,7 +242,8 @@ class FlextOracleOicServiceBase(
             )
         )
         client_secret_validation: p.Result[bool] = (
-            u.AuthenticationValidation.validate_oauth_client_secret(
+            u.AuthenticationValidation
+            .validate_oauth_client_secret(
                 settings.oauth_client_secret,
             )
             .map(lambda _: True)
@@ -251,7 +254,8 @@ class FlextOracleOicServiceBase(
             )
         )
         token_url_validation: p.Result[bool] = (
-            u.ConnectionValidation.validate_base_url(settings.oauth_token_url)
+            u.ConnectionValidation
+            .validate_base_url(settings.oauth_token_url)
             .map(lambda _: True)
             .lash(
                 lambda error: r[bool].fail(
@@ -260,7 +264,8 @@ class FlextOracleOicServiceBase(
             )
         )
         return (
-            base_url_validation.flat_map(lambda _: client_id_validation)
+            base_url_validation
+            .flat_map(lambda _: client_id_validation)
             .flat_map(lambda _: client_secret_validation)
             .flat_map(lambda _: token_url_validation)
         )
