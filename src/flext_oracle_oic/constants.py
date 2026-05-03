@@ -71,7 +71,6 @@ class FlextOracleOicConstants(c):
         DEFAULT_PAGE_SIZE: Final[int] = 100
         MIN_PAGE_SIZE: Final[int] = 1
         MIN_REQUEST_TIMEOUT: Final[int] = 1
-        MIN_MAX_RETRIES: Final[int] = 0
         DEFAULT_VERIFY_SSL: Final[bool] = True
 
     class Auth(c.Auth):
@@ -93,17 +92,12 @@ class FlextOracleOicConstants(c):
             ACTIVATED = "ACTIVATED"
             DEACTIVATED = "DEACTIVATED"
             DRAFT = "DRAFT"
-            PUBLISHED = "PUBLISHED"
             RUNNING = "RUNNING"
             STOPPED = "STOPPED"
             ERROR = "ERROR"
 
         DEFAULT_VERSION: Final[str] = "01.00.0000"
         DEFAULT_VERSION_FALLBACK: Final[str] = "01.00.0000"
-        DEFAULT_LAST_UPDATED: Final[str] = ""
-        DEFAULT_ACTIVATED_BY: Final[str] = ""
-        PATTERN_MESSAGE_ROUTER: Final[str] = "message_router"
-        PATTERN_SCATTER_GATHER: Final[str] = "scatter_gather"
 
     class Connection:
         """Oracle OIC Connection constants."""
@@ -135,7 +129,6 @@ class FlextOracleOicConstants(c):
             DATABASE = "DATABASE"
             FILE = "FILE"
             FTP = "FTP"
-            SFTP = "SFTP"
 
     class Monitoring:
         """Oracle OIC Monitoring constants."""
@@ -191,7 +184,6 @@ class FlextOracleOicConstants(c):
         HEADER_CONTENT_TYPE: Final[str] = "Content-Type"
         HEADER_AUTHORIZATION: Final[str] = "Authorization"
         HEADER_ACCEPT: Final[str] = "Accept"
-        CONTENT_TYPE_JSON: Final[str] = "application/json"
         ENDPOINT_HEALTH: Final[str] = "/ic/api/integration/v1/health"
         HTTP_STATUS_OK: Final[int] = 200
 
@@ -228,13 +220,6 @@ class FlextOracleOicConstants(c):
         })
         MIN_CLIENT_ID_LENGTH: Final[int] = 1
         MIN_CLIENT_SECRET_LENGTH: Final[int] = 8
-        SUPPORTED_PATTERNS: Final[frozenset[str]] = frozenset({
-            "message_router",
-            "scatter_gather",
-            "publish_subscribe",
-            "request_reply",
-        })
-        MIN_ENDPOINTS_FOR_ROUTER: Final[int] = 2
         PERFORMANCE_THRESHOLDS: Final[Mapping[str, float]] = MappingProxyType({
             "response_time_ms": 5000.0,
             "success_rate": 0.95,
@@ -244,23 +229,6 @@ class FlextOracleOicConstants(c):
     @unique
     class ProjectType(StrEnum):
         """Project-type identifiers for Oracle OIC packages."""
-
-        OIC_INTEGRATION = "oic-integration"
-        INTEGRATION_FLOW = "integration-flow"
-        OIC_ADAPTER = "oic-adapter"
-        MESSAGE_PROCESSOR = "message-processor"
-        TRANSFORMATION_SERVICE = "transformation-service"
-        OIC_CONNECTOR = "oic-connector"
-        WORKFLOW_ENGINE = "workflow-engine"
-        INTEGRATION_PLATFORM = "integration-platform"
-        OIC_MONITOR = "oic-monitor"
-        INTEGRATION_GATEWAY = "integration-gateway"
-        OIC_SECURITY = "oic-security"
-        ADAPTER_FRAMEWORK = "adapter-framework"
-        INTEGRATION_API = "integration-api"
-        OIC_EXTENSION = "oic-extension"
-        WORKFLOW_DESIGNER = "workflow-designer"
-        INTEGRATION_HUB = "integration-hub"
 
 
 c = FlextOracleOicConstants
