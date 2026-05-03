@@ -79,18 +79,6 @@ class FlextOracleOicConstants(c):
 
         DEFAULT_OAUTH_SCOPE: Final[str] = ""
 
-        @unique
-        class AuthType(StrEnum):
-            """Authentication types.
-
-            DRY Pattern: This StrEnum is the single source of truth for authentication types.
-            All authentication type-related constants and Literal types MUST reference this enum.
-            """
-
-            OAUTH2 = "oauth2"
-            BASIC = "basic"
-            BEARER = "bearer"
-
     class Integration:
         """Oracle OIC Integration constants."""
 
@@ -206,32 +194,6 @@ class FlextOracleOicConstants(c):
         CONTENT_TYPE_JSON: Final[str] = "application/json"
         ENDPOINT_HEALTH: Final[str] = "/ic/api/integration/v1/health"
         HTTP_STATUS_OK: Final[int] = 200
-
-    class OICPatterns:
-        """Oracle OIC Integration Pattern constants."""
-
-        @unique
-        class PatternStatus(StrEnum):
-            """Pattern status values.
-
-            DRY Pattern: This StrEnum is the single source of truth for pattern statuses.
-            All pattern status-related constants and Literal types MUST reference this enum.
-            """
-
-            PROCESSED = "processed"
-            FAILED = "failed"
-            PENDING = "pending"
-
-        PATTERN_MESSAGE_ROUTER: Final[str] = "message_router"
-        PATTERN_SCATTER_GATHER: Final[str] = "scatter_gather"
-        PATTERN_MESSAGE_ID_UNKNOWN: Final[str] = "unknown"
-        PATTERN_REQUEST_ID_UNKNOWN: Final[str] = "unknown"
-
-    class OICErrors:
-        """Oracle OIC Extension specific error constants."""
-
-    class OICMessages:
-        """Oracle OIC Extension specific message constants."""
 
     class OracleOicValidation:
         """Oracle OIC validation constants (named to avoid overriding c)."""

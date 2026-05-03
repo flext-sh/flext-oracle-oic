@@ -154,40 +154,6 @@ class FlextOracleOicModels(m):
                 ),
             ] = ""
 
-        class RequestParams(m.Value):
-            """Parameters for OIC API request.
-
-            EXTENSION Pattern: Value Object for request parameters
-            Oracle OIC API com tipagem forte.
-            """
-
-            method: Annotated[str, u.Field(description="HTTP method")]
-            url: Annotated[str, u.Field(description="Request URL")]
-            params: Annotated[
-                t.ConfigValueMapping | None,
-                u.Field(
-                    description="Query parameters",
-                ),
-            ] = None
-            data: Annotated[
-                t.JsonMapping | None,
-                u.Field(
-                    description="Form data",
-                ),
-            ] = None
-            json_data: Annotated[
-                t.JsonMapping | None,
-                u.Field(
-                    description="JSON data",
-                ),
-            ] = None
-            headers: Annotated[
-                t.StrMapping | None,
-                u.Field(
-                    description="HTTP headers",
-                ),
-            ] = None
-
 
 m = FlextOracleOicModels
 

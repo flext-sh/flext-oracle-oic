@@ -18,7 +18,6 @@ from __future__ import annotations
 from flext_auth import u
 
 from flext_oracle_oic import (
-    FlextOracleOicUtilitiesAPIRequestBuilder,
     FlextOracleOicUtilitiesAuthenticationValidation,
     FlextOracleOicUtilitiesConnectionValidation,
     FlextOracleOicUtilitiesMonitoring,
@@ -41,9 +40,6 @@ class FlextOracleOicUtilities(u):
 
     class AuthenticationValidation(FlextOracleOicUtilitiesAuthenticationValidation):
         """Oracle OIC authentication validation utilities namespace."""
-
-    class APIRequestBuilder(FlextOracleOicUtilitiesAPIRequestBuilder):
-        """Oracle OIC API request builder utilities namespace."""
 
     class MonitoringUtilities(FlextOracleOicUtilitiesMonitoring):
         """Oracle OIC monitoring utilities namespace."""

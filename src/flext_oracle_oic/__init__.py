@@ -24,9 +24,6 @@ if _t.TYPE_CHECKING:
         __version__,
         __version_info__,
     )
-    from flext_oracle_oic._utilities.api_request_builder import (
-        FlextOracleOicUtilitiesAPIRequestBuilder,
-    )
     from flext_oracle_oic._utilities.authentication_validation import (
         FlextOracleOicUtilitiesAuthenticationValidation,
     )
@@ -71,9 +68,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "__url__",
                 "__version__",
                 "__version_info__",
-            ),
-            "._utilities.api_request_builder": (
-                "FlextOracleOicUtilitiesAPIRequestBuilder",
             ),
             "._utilities.authentication_validation": (
                 "FlextOracleOicUtilitiesAuthenticationValidation",
@@ -176,7 +170,6 @@ __all__: list[str] = [
     "FlextOracleOicSettings",
     "FlextOracleOicTypes",
     "FlextOracleOicUtilities",
-    "FlextOracleOicUtilitiesAPIRequestBuilder",
     "FlextOracleOicUtilitiesAuthenticationValidation",
     "FlextOracleOicUtilitiesConnectionValidation",
     "FlextOracleOicUtilitiesMonitoring",
