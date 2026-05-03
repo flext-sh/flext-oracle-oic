@@ -223,8 +223,6 @@ class FlextOracleOicServiceBase(
 
         """
         settings = self._oic_settings
-        if settings is None:
-            return r[bool].fail("Settings are required")
         base_url_validation: p.Result[bool] = (
             u.ConnectionValidation.validate_base_url(settings.base_url)
             .map(lambda _: True)
