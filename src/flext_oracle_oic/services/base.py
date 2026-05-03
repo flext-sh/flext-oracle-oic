@@ -222,22 +222,50 @@ class FlextOracleOicServiceBase(
         r indicating validation success or failure.
 
         """
-        if not self._oic_settings:
+        settings = self._oic_settings
+        if settings is None:
             return r[bool].fail("Settings are required")
-        if not self._oic_settings.base_url:
-            return r[bool].fail("Base URL is required")
-        if not self._oic_settings.oauth_client_id:
-            return r[bool].fail("OAuth client ID is required")
-        client_id_result = u.AuthenticationValidation.validate_oauth_client_id(
-            self._oic_settings.oauth_client_id,
+        base_url_validation: p.Result[bool] = (
+            u.ConnectionValidation.validate_base_url(settings.base_url)
+            .map(lambda _: True)
+            .lash(lambda error: r[bool].fail(f"Base URL validation: {error}"))
         )
-        if client_id_result.failure:
-            return r[bool].fail(f"OAuth client ID validation: {client_id_result.error}")
-        if not self._oic_settings.oauth_client_secret:
-            return r[bool].fail("OAuth client secret is required")
-        if not self._oic_settings.oauth_token_url:
-            return r[bool].fail("OAuth token URL is required")
-        return r[bool].ok(value=True)
+        client_id_validation: p.Result[bool] = (
+            u.AuthenticationValidation.validate_oauth_client_id(
+                settings.oauth_client_id,
+            )
+            .map(lambda _: True)
+            .lash(
+                lambda error: r[bool].fail(
+                    f"OAuth client ID validation: {error}",
+                )
+            )
+        )
+        client_secret_validation: p.Result[bool] = (
+            u.AuthenticationValidation.validate_oauth_client_secret(
+                settings.oauth_client_secret,
+            )
+            .map(lambda _: True)
+            .lash(
+                lambda error: r[bool].fail(
+                    f"OAuth client secret validation: {error}",
+                )
+            )
+        )
+        token_url_validation: p.Result[bool] = (
+            u.ConnectionValidation.validate_base_url(settings.oauth_token_url)
+            .map(lambda _: True)
+            .lash(
+                lambda error: r[bool].fail(
+                    f"OAuth token URL validation: {error}",
+                )
+            )
+        )
+        return (
+            base_url_validation.flat_map(lambda _: client_id_validation)
+            .flat_map(lambda _: client_secret_validation)
+            .flat_map(lambda _: token_url_validation)
+        )
 
     def _initialize_components(self) -> None:
         """Initialize service components."""
