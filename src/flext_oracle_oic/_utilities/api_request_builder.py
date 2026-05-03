@@ -16,7 +16,6 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
         *,
         api_version: str,
         resource_name: str,
-        resource_label: str,
         resource_id: str | None = None,
     ) -> p.Result[str]:
         """Build Oracle OIC endpoint URL for a versioned resource path."""
@@ -27,6 +26,9 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
             return r[str].fail(f"Base URL validation: {url_result.error}")
         validated_base_url = url_result.value
         path_parts = ["ic", "api", "integration", api_version, resource_name]
+        resource_label = (
+            f"{resource_name.removesuffix('s').replace('_', ' ').title()} ID"
+        )
         if resource_id:
             match resource_id:
                 case str() as raw_resource_id if raw_resource_id.strip():
@@ -48,7 +50,6 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
             base_url=base_url,
             api_version=api_version,
             resource_name="connections",
-            resource_label="Connection ID",
             resource_id=connection_id,
         )
 
@@ -63,7 +64,6 @@ class FlextOracleOicUtilitiesAPIRequestBuilder:
             base_url=base_url,
             api_version=api_version,
             resource_name="integrations",
-            resource_label="Integration ID",
             resource_id=integration_id,
         )
 

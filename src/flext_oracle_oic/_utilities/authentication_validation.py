@@ -21,11 +21,6 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
         r containing validated client ID or error
 
         """
-        match client_id:
-            case str():
-                pass
-            case _:
-                return r[str].fail("OAuth client ID must be a string")
         client_id = client_id.strip()
         if len(client_id) < c.OracleOicValidation.MIN_CLIENT_ID_LENGTH:
             return r[str].fail("OAuth client ID cannot be empty")
