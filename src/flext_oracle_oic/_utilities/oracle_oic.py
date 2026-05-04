@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 from collections.abc import (
     Callable,
     MutableSequence,
@@ -127,7 +126,7 @@ class FlextOracleOicUtilitiesOracleOic:
             return r[str].fail("Integration name too short")
         if len(name) > c.OracleOicValidation.MAX_INTEGRATION_NAME_LENGTH:
             return r[str].fail("Integration name too long")
-        if not re.match(r"^[a-zA-Z0-9_\\-\\s]+$", name):
+        if not c.OracleOicValidation.INTEGRATION_NAME_RE.match(name):
             return r[str].fail("Integration name contains invalid characters")
         return r[str].ok(name)
 

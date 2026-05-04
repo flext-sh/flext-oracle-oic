@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import re
-
 from flext_oracle_oic import c, p, r, t
 
 
@@ -24,7 +22,7 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
         client_id = client_id.strip()
         if len(client_id) < c.OracleOicValidation.MIN_CLIENT_ID_LENGTH:
             return r[str].fail("OAuth client ID cannot be empty")
-        if not re.match(r"^[a-zA-Z0-9_\\-\\.]+$", client_id):
+        if not c.OracleOicValidation.CLIENT_ID_RE.match(client_id):
             return r[str].fail("OAuth client ID contains invalid characters")
         return r[str].ok(client_id)
 
