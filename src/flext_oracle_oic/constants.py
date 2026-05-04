@@ -191,9 +191,7 @@ class FlextOracleOicConstants(c):
         """Oracle OIC validation constants (named to avoid overriding c)."""
 
         # === Regex authority for the OracleOicValidation domain ===
-        INTEGRATION_NAME_RE: Final[re.Pattern[str]] = re.compile(
-            r"^[a-zA-Z0-9_\-\s]+$"
-        )
+        INTEGRATION_NAME_RE: Final[re.Pattern[str]] = re.compile(r"^[a-zA-Z0-9_\-\s]+$")
         CLIENT_ID_RE: Final[re.Pattern[str]] = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
 
         MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
