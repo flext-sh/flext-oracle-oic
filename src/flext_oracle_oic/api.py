@@ -15,12 +15,12 @@ from collections.abc import (
 )
 from typing import Self, override
 
-from flext_core import r
 from flext_oracle_oic import (
     FlextOracleOicService,
     FlextOracleOicSettings,
     m,
     p,
+    r,
     t,
 )
 
