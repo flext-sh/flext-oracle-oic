@@ -14,9 +14,8 @@ import argparse
 import sys
 from typing import override
 
-from flext_infra import __version__
-
 from flext_core import c, p, r, s
+from flext_oracle_oic import __version__
 from flext_oracle_oic.models import FlextOracleOicModels
 from flext_oracle_oic.service import FlextOracleOicService
 from flext_oracle_oic.settings import FlextOracleOicSettings
