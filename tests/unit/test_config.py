@@ -49,7 +49,7 @@ class TestsFlextOracleOicConfig:
         assert (
             "oauth2" in settings.oauth_token_url or "token" in settings.oauth_token_url
         )
-        assert settings.oauth_scope is not None or isinstance(settings.oauth_scope, str)
+        assert isinstance(settings.oauth_scope, str)
 
     def test_custom_auth_settings(self) -> None:
         """Test custom auth settings."""
