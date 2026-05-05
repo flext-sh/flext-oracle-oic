@@ -12,12 +12,11 @@ from __future__ import annotations
 
 from typing import Annotated, ClassVar, Self
 
-from flext_core import FlextSettings
+from flext_core import FlextSettingsBase
 from flext_oracle_oic import c, m, t, u
 
 
-@FlextSettings.auto_register("oracle-oic")
-class FlextOracleOicSettings(FlextSettings):
+class FlextOracleOicSettings(FlextSettingsBase):
     """Runtime configuration for Oracle OIC integration."""
 
     OICApiVersion: ClassVar[type[c.OICApiVersion]] = c.OICApiVersion
