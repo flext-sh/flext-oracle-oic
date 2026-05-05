@@ -15,6 +15,7 @@ from collections.abc import (
 )
 from typing import Self, override
 
+from flext_core import r
 from flext_oracle_oic import (
     FlextOracleOicService,
     FlextOracleOicSettings,
@@ -63,7 +64,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         """Async context manager entry."""
         self.logger.info(
             "Oracle OIC service started",
-            extra_info=str(self.fetch_connection_context()),
+            extra_info=str(self.fetch_connection_context().value),
         )
         return self
 
@@ -76,7 +77,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         """Async context manager exit."""
         self.logger.info(
             "Oracle OIC service stopped",
-            extra_info=str(self.fetch_connection_context()),
+            extra_info=str(self.fetch_connection_context().value),
         )
 
     @override
@@ -202,44 +203,29 @@ class FlextOracleOicApi(FlextOracleOicService):
             schedule_config,
         )
 
-    def fetch_auth_context(self) -> t.JsonMapping:
-        """Get current authentication configuration context.
-
-        Returns:
-        Dictionary containing authentication context information.
-
-        """
-        return {
+    def fetch_auth_context(self) -> p.Result[t.JsonMapping]:
+        """Return the current authentication configuration context (ENFORCE-056)."""
+        return r[t.JsonMapping].ok({
             "oauth_client_id": self._oic_config.oauth_client_id,
             "oauth_token_url": self._oic_config.oauth_token_url,
             "oauth_scope": self._oic_config.oauth_scope,
-        }
+        })
 
-    def fetch_connection_context(self) -> t.JsonMapping:
-        """Get current connection configuration context.
-
-        Returns:
-        Dictionary containing connection context information.
-
-        """
-        return {
+    def fetch_connection_context(self) -> p.Result[t.JsonMapping]:
+        """Return the current connection configuration context (ENFORCE-056)."""
+        return r[t.JsonMapping].ok({
             "base_url": self._oic_config.base_url,
             "api_version": self._oic_config.api_version,
             "request_timeout": self._oic_config.request_timeout,
-        }
+        })
 
-    def fetch_features_context(self) -> t.JsonMapping:
-        """Get current features configuration context.
-
-        Returns:
-        Dictionary containing features context information.
-
-        """
-        return {
+    def fetch_features_context(self) -> p.Result[t.JsonMapping]:
+        """Return the current features configuration context (ENFORCE-056)."""
+        return r[t.JsonMapping].ok({
             "enable_monitoring": self._oic_config.enable_monitoring,
             "use_ssl": self._oic_config.use_ssl,
             "verify_ssl": self._oic_config.verify_ssl,
-        }
+        })
 
     @override
     def fetch_health_status(self) -> p.Result[t.JsonMapping]:
