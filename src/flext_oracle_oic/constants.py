@@ -19,9 +19,12 @@ from collections.abc import (
 )
 from enum import StrEnum, unique
 from types import MappingProxyType
-from typing import Final
+from typing import TYPE_CHECKING, Final
 
 from flext_auth import c
+
+if TYPE_CHECKING:
+    from flext_oracle_oic import t
 
 
 class FlextOracleOicConstants(c):
@@ -191,8 +194,8 @@ class FlextOracleOicConstants(c):
         """Oracle OIC validation constants (named to avoid overriding c)."""
 
         # === Regex authority for the OracleOicValidation domain ===
-        INTEGRATION_NAME_RE: Final[re.Pattern[str]] = re.compile(r"^[a-zA-Z0-9_\-\s]+$")
-        CLIENT_ID_RE: Final[re.Pattern[str]] = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
+        INTEGRATION_NAME_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\s]+$")
+        CLIENT_ID_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
 
         MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
         MAX_INTEGRATION_NAME_LENGTH: Final[int] = 100
@@ -205,7 +208,7 @@ class FlextOracleOicConstants(c):
             "STOPPED",
             "ERROR",
         })
-        VERSION_PATTERN: Final[re.Pattern[str]] = re.compile(
+        VERSION_PATTERN: Final[t.RegexPattern] = re.compile(
             r"^\\d{2}\\.\\d{2}\\.\\d{4}$",
         )
         VALID_CONNECTION_TYPES: Final[frozenset[str]] = frozenset({
