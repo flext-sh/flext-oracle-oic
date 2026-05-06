@@ -1,0 +1,18 @@
+src/flext_oracle_oic/_utilities/oracle_oic.py
+  h_5cf852cc46bf92 52
+src/flext_oracle_oic/main.py
+  h_5cf852cc46bf92 160
+src/flext_oracle_oic/_utilities/monitoring.py
+  h_5cf852cc46bf92 122
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "10e305d7c2a30cc5ec4f3b104148b2d91e50366a",
+  "prompts": {},
+  "humans": {
+    "h_5cf852cc46bf92": {
+      "author": "FLEXT Bot <team@flext.sh>"
+    }
+  }
+}
