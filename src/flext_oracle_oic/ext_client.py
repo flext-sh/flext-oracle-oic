@@ -15,7 +15,6 @@ import base64
 from collections.abc import (
     Mapping,
     MutableSequence,
-    Sequence,
 )
 from types import TracebackType
 from typing import Self
@@ -75,7 +74,7 @@ class FlextOracleOicClient:
         connection_data: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
         """Create connection in OIC."""
-        json_data = dict(connection_data.items())
+        json_data = t.json_dict_adapter().validate_python(connection_data)
         return self.make_request(
             c.API.Method.POST,
             "/connections",
@@ -144,7 +143,7 @@ class FlextOracleOicClient:
         self,
         type_filter: t.StrSequence | None = None,
         page_size: int = 100,
-    ) -> p.Result[Sequence[t.JsonMapping]]:
+    ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
         """Get adapter connections from OIC."""
         params: t.MutableStrMapping = {}
         if type_filter:
@@ -155,7 +154,7 @@ class FlextOracleOicClient:
         self,
         status_filter: t.StrSequence | None = None,
         page_size: int = 100,
-    ) -> p.Result[Sequence[t.JsonMapping]]:
+    ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
         """Get integration flows from OIC."""
         params: t.MutableStrMapping = {}
         if status_filter:
@@ -169,7 +168,7 @@ class FlextOracleOicClient:
     def get_lookups(
         self,
         page_size: int = 100,
-    ) -> p.Result[Sequence[t.JsonMapping]]:
+    ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
         """Get lookup tables from OIC."""
         return self.paginate_request("/lookups", page_size=page_size)
 
@@ -187,7 +186,7 @@ class FlextOracleOicClient:
     def get_packages(
         self,
         page_size: int = 100,
-    ) -> p.Result[Sequence[t.JsonMapping]]:
+    ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
         """Get integration packages from OIC."""
         return self.paginate_request("/packages", page_size=page_size)
 
@@ -232,7 +231,7 @@ class FlextOracleOicClient:
         endpoint: str,
         page_size: int = 100,
         params: t.StrMapping | None = None,
-    ) -> p.Result[Sequence[t.JsonMapping]]:
+    ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
         """Paginate through OIC API responses."""
         try:
             all_records: MutableSequence[t.JsonMapping] = []
@@ -247,13 +246,13 @@ class FlextOracleOicClient:
                     params=request_params,
                 )
                 if response_result.failure:
-                    return r[Sequence[t.JsonMapping]].fail(
+                    return r[t.SequenceOf[t.JsonMapping]].fail(
                         response_result.error or "Request failed",
                     )
                 response_data = response_result.value
                 items_raw = response_data.get("items", [])
                 if not isinstance(items_raw, list):
-                    return r[Sequence[t.JsonMapping]].fail(
+                    return r[t.SequenceOf[t.JsonMapping]].fail(
                         "Invalid items format",
                     )
                 items: t.SequenceOf[t.JsonMapping] = [
@@ -264,11 +263,11 @@ class FlextOracleOicClient:
                 if not has_more or len(items) < page_size:
                     break
                 offset += page_size
-            return r[Sequence[t.JsonMapping]].ok(all_records)
+            return r[t.SequenceOf[t.JsonMapping]].ok(all_records)
         except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"OIC pagination failed: {exc}"
             self.logger.exception(error_msg)
-            return r[Sequence[t.JsonMapping]].fail(error_msg)
+            return r[t.SequenceOf[t.JsonMapping]].fail(error_msg)
 
     def update_integration(
         self,
@@ -277,7 +276,7 @@ class FlextOracleOicClient:
     ) -> p.Result[t.JsonMapping]:
         """Update integration in OIC."""
         endpoint = f"/integrations/{integration_id}"
-        json_data = dict(integration_data.items())
+        json_data = t.json_dict_adapter().validate_python(integration_data)
         return self.make_request(
             c.API.Method.PUT,
             endpoint,

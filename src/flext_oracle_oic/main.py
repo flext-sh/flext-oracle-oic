@@ -14,7 +14,6 @@ import sys
 from typing import ClassVar, override
 
 from flext_cli import cli, m as cli_m
-
 from flext_core import c, p, r, s
 from flext_oracle_oic import __version__
 from flext_oracle_oic.models import FlextOracleOicModels
@@ -158,4 +157,4 @@ def main(args: t.StrSequence | None = None) -> int:
     return 0 if outcome.success else 1
 
 
-__all__: t.StrSequence = ["FlextOracleOicCli", "main"]
+__all__: t.StrSequence = ("FlextOracleOicCli", "main")

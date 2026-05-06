@@ -49,7 +49,7 @@ class FlextOracleOicUtilitiesOracleOic:
 
         """
         errors: MutableSequence[str] = []
-        validated_data: t.MutableJsonMapping = dict(integration_data.items())
+        validated_data = t.json_dict_adapter().validate_python(integration_data)
         field_specs: tuple[
             FlextOracleOicUtilitiesOracleOic.FieldValidationPlan, ...
         ] = (
