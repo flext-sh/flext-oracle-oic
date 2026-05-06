@@ -19,7 +19,7 @@ from typing import Self, override
 
 from flext_api import FlextApiClient, FlextApiSettings
 
-from flext_core import FlextSettings, p, r, s
+from flext_core import p, r, s
 from flext_oracle_oic.constants import c
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.models import m
@@ -134,10 +134,7 @@ class FlextOracleOicServiceBase(
     @override
     def settings(self) -> FlextOracleOicSettings:
         """Return the typed Oracle OIC settings namespace."""
-        return FlextSettings.fetch_global().fetch_namespace(
-            "oracle_oic",
-            FlextOracleOicSettings,
-        )
+        return FlextOracleOicSettings.fetch_global()
 
     def list_integrations(
         self,
