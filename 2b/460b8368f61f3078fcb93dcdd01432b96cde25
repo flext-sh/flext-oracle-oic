@@ -1,0 +1,46 @@
+src/flext_oracle_oic/services/base.py
+  s_0290f35b98ef0c::t_e7f604f7ff0b61 22
+  h_5cf852cc46bf92 137
+pyproject.toml
+  s_5a9c2b140a8456::t_2330e161b21d6e 152,519-560,564
+src/flext_oracle_oic/ext_client.py
+  s_552d8e4891a938::t_fc00896e875238 361
+  s_552d8e4891a938::t_9b470a95fb3042 323
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "2b460b8368f61f3078fcb93dcdd01432b96cde25",
+  "prompts": {},
+  "humans": {
+    "h_5cf852cc46bf92": {
+      "author": "FLEXT Bot <team@flext.sh>"
+    }
+  },
+  "sessions": {
+    "s_0290f35b98ef0c": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "0c4cc853-563f-48ad-a39a-f49b587090b8",
+        "model": "unknown"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>"
+    },
+    "s_552d8e4891a938": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "35c0040b-2ae9-466e-90aa-7721509e1e19",
+        "model": "unknown"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>"
+    },
+    "s_5a9c2b140a8456": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019dfddc-86ee-79a0-b5bf-0433a8110b6a",
+        "model": "gpt-5.5"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>"
+    }
+  }
+}
