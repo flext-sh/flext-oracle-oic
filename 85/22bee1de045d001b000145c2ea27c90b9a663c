@@ -1,0 +1,34 @@
+src/flext_oracle_oic/ext_client.py
+  h_5cf852cc46bf92 394,415
+  s_b15aa8dbf80823::t_364ec87d73c4a1 455
+src/flext_oracle_oic/services/monitoring.py
+  h_5cf852cc46bf92 36,74,90,106,134,167,176,193,201,208,212,232
+src/flext_oracle_oic/typings.py
+  h_5cf852cc46bf92 17
+src/flext_oracle_oic/_utilities/monitoring.py
+  h_5cf852cc46bf92 106
+  s_b15aa8dbf80823::t_b23d963765f61e 81
+src/flext_oracle_oic/services/base.py
+  s_b15aa8dbf80823::t_364ec87d73c4a1 86
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "8522bee1de045d001b000145c2ea27c90b9a663c",
+  "prompts": {},
+  "humans": {
+    "h_5cf852cc46bf92": {
+      "author": "FLEXT Bot <team@flext.sh>"
+    }
+  },
+  "sessions": {
+    "s_b15aa8dbf80823": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d896ab0f-dd16-4dca-9ad4-b3d924a501e7",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>"
+    }
+  }
+}
