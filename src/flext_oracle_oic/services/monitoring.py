@@ -33,7 +33,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         try:
             health_data: t.JsonMapping
             if not self._monitoring_client:
-                health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                health_data = t.json_mapping_adapter().validate_python({
                     "status": c.Monitoring.HealthStatus.HEALTHY.value,
                     "components": {
                         c.Monitoring.COMPONENT_DATABASE: {
@@ -71,7 +71,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                             if isinstance(response.body, Mapping)
                             else {"raw": self._to_general_value(response.body)}
                         )
-                        health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                        health_data = t.json_mapping_adapter().validate_python({
                             **base_health,
                             "status": c.Monitoring.HealthStatus.HEALTHY.value,
                             "components": {
@@ -87,7 +87,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                             },
                         })
                     else:
-                        health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                        health_data = t.json_mapping_adapter().validate_python({
                             "status": c.Monitoring.HealthStatus.UNHEALTHY.value,
                             "components": {
                                 c.Monitoring.COMPONENT_DATABASE: {
@@ -103,7 +103,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                             "error": f"HTTP {response.status_code}",
                         })
                 else:
-                    health_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                    health_data = t.json_mapping_adapter().validate_python({
                         "status": c.Monitoring.HealthStatus.ERROR.value,
                         "components": {
                             c.Monitoring.COMPONENT_DATABASE: {
@@ -131,7 +131,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             return r[t.JsonMapping].ok(health_data)
         except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Health check failed")
-            error_health = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+            error_health = t.json_mapping_adapter().validate_python({
                 "status": c.Monitoring.HealthStatus.ERROR.value,
                 "components": {
                     c.Monitoring.COMPONENT_DATABASE: {
@@ -164,7 +164,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         r containing performance metrics with analysis
 
         """
-        base_metrics = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+        base_metrics = t.json_mapping_adapter().validate_python({
             "active_integrations": 0,
             "total_executions": 0,
             "success_rate": 0.0,
@@ -173,7 +173,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         metrics_data: t.JsonMapping = base_metrics
         try:
             if not self._monitoring_client:
-                metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                metrics_data = t.json_mapping_adapter().validate_python({
                     **base_metrics,
                     "timestamp": asyncio.get_event_loop().time(),
                 })
@@ -190,7 +190,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 )
                 response_result = self._monitoring_client.request(req)
                 if response_result.failure:
-                    metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                    metrics_data = t.json_mapping_adapter().validate_python({
                         **base_metrics,
                         "error": f"Request failed: {response_result.error}",
                     })
@@ -198,18 +198,18 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                     response = response_result.value
                     match (response.status_code, response.body):
                         case (c.API.HTTP_STATUS_OK, Mapping() as body):
-                            metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python(
+                            metrics_data = t.json_mapping_adapter().validate_python(
                                 {
                                     key: self._to_general_value(value)
                                     for key, value in body.items()
                                 },
                             )
                         case (c.API.HTTP_STATUS_OK, _):
-                            metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python(
+                            metrics_data = t.json_mapping_adapter().validate_python(
                                 {},
                             )
                         case (status_code, _):
-                            metrics_data = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+                            metrics_data = t.json_mapping_adapter().validate_python({
                                 **base_metrics,
                                 "error": f"HTTP {status_code}",
                             })
@@ -229,7 +229,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 )
         except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Performance metrics failed")
-            error_metrics = t.CONTAINER_MAPPING_ADAPTER.validate_python({
+            error_metrics = t.json_mapping_adapter().validate_python({
                 **base_metrics,
                 "error": str(e),
             })

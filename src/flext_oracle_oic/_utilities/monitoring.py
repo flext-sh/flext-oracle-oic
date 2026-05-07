@@ -78,7 +78,7 @@ class FlextOracleOicUtilitiesMonitoring:
         recommendations: list[str] = []
         for metric_key in ("average_response_time", "success_rate", "error_rate"):
             metric_value_raw = metrics.get(metric_key)
-            if not isinstance(metric_value_raw, (int, float)):
+            if not isinstance(metric_value_raw, t.NUMERIC_TYPES):
                 continue
             metric_value = float(metric_value_raw)
             issue, recommendation, is_critical = (
@@ -103,7 +103,7 @@ class FlextOracleOicUtilitiesMonitoring:
             "recommendations": list(recommendations),
         }
         return r[t.JsonMapping].ok(
-            t.CONTAINER_MAPPING_ADAPTER.validate_python(analysis),
+            t.json_mapping_adapter().validate_python(analysis),
         )
 
     @staticmethod

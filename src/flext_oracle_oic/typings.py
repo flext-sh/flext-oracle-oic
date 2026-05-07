@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_auth import m, t
+from flext_auth import t
 
 
 class FlextOracleOicTypes(t):
@@ -24,10 +24,6 @@ class FlextOracleOicTypes(t):
     Contains ONLY complex OIC-specific types, no simple aliases.
     Uses Python 3.13+ type syntax and patterns.
     """
-
-    CONTAINER_MAPPING_ADAPTER: m.TypeAdapter[t.JsonMapping] = m.TypeAdapter(
-        t.JsonMapping,
-    )
 
 
 t = FlextOracleOicTypes

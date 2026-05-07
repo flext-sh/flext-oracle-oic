@@ -391,7 +391,7 @@ class FlextOracleOicClient:
                 return r[t.JsonMapping].fail("Empty JSON response")
             parsed_body: t.JsonMapping
             if isinstance(body, str) and is_json:
-                parsed_body = t.CONTAINER_MAPPING_ADAPTER.validate_json(body)
+                parsed_body = t.json_mapping_adapter().validate_json(body)
             elif isinstance(body, Mapping):
                 parsed_body = body
             else:
@@ -412,7 +412,7 @@ class FlextOracleOicClient:
             if isinstance(body_raw, Mapping):
                 token_data = {k: body_raw[k] for k in body_raw}
             elif isinstance(body_raw, str):
-                token_data = t.CONTAINER_MAPPING_ADAPTER.validate_json(body_raw)
+                token_data = t.json_mapping_adapter().validate_json(body_raw)
             else:
                 return r[str].fail("Empty or invalid OAuth response body")
             access_token: t.JsonValue | None = token_data.get("access_token")
@@ -452,7 +452,7 @@ class FlextOracleOicClient:
 
     def _to_api_payload(self, value: t.JsonValue) -> t.JsonValue:
         """Normalize t.JsonValue into flext-api request body value type."""
-        if isinstance(value, (str, int, float, bool)) or value is None:
+        if isinstance(value, t.PRIMITIVES_TYPES) or value is None:
             return value
         if isinstance(value, Mapping):
             return {key: self._to_api_payload(item) for key, item in value.items()}
