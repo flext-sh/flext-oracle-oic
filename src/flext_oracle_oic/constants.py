@@ -42,10 +42,7 @@ class FlextOracleOicConstants(c):
     api_version = FlextOracleOicConstants.OracleOic.DEFAULT_API_VERSION
     timeout = FlextOracleOicConstants.DEFAULT_TIMEOUT_SECONDS
     page_size = FlextOracleOicConstants.OracleOic.DEFAULT_PAGE_SIZE
-
-    # Access inherited c
-    http_ok = FlextOracleOicConstants.Platform.HTTP_STATUS_OK
-    default_timeout = FlextOracleOicConstants.TIMEOUT
+    base_url = FlextOracleOicConstants.OracleOic.DEFAULT_BASE_URL
     ```
 
     IMPLEMENTATION NOTES:
