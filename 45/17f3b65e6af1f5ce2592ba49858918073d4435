@@ -1,0 +1,121 @@
+docs/guides/development.md
+  s_73cbfc60e45e37::t_4be1aa226924b8 404
+  s_73cbfc60e45e37::t_ee12c45d394c62 228
+  s_73cbfc60e45e37::t_98e52b841b9640 313
+  s_73cbfc60e45e37::t_2cb71b35fee8d0 152
+  s_73cbfc60e45e37::t_2302c70e6faf27 432
+  s_73cbfc60e45e37::t_f336cd4684e706 189
+  s_73cbfc60e45e37::t_799645d43706f1 169
+docs/getting-started.md
+  s_73cbfc60e45e37::t_5fec507e1a5c70 133,137-138
+  s_73cbfc60e45e37::t_087c973ff76c01 112,115-121,124
+docs/guides/testing.md
+  s_73cbfc60e45e37::t_e0762527df65b3 611
+  s_73cbfc60e45e37::t_ea8a27c44673ae 357
+  s_73cbfc60e45e37::t_6bd96178add053 333
+  s_73cbfc60e45e37::t_3ebc730935d86c 638
+  s_73cbfc60e45e37::t_767d141cdffe3b 292
+  s_73cbfc60e45e37::t_d0de4410aea649 471
+  s_73cbfc60e45e37::t_fb2c65d72267b8 439
+  s_73cbfc60e45e37::t_0612047faf7ed0 700
+  s_73cbfc60e45e37::t_ac172aac22bc5c 76
+  s_73cbfc60e45e37::t_6640cb3d7570fe 396
+  s_73cbfc60e45e37::t_04722b6f8a2e3b 658
+  s_73cbfc60e45e37::t_26ee1f9c1ba79e 176
+  s_73cbfc60e45e37::t_e9a691c07190b7 517
+  s_73cbfc60e45e37::t_fdd63ef573b020 219
+  s_73cbfc60e45e37::t_56c4fb5be359c2 128
+  s_73cbfc60e45e37::t_87000e0ec1cc7c 588
+docs/guides/troubleshooting.md
+  s_73cbfc60e45e37::t_f0fc2ac3b521e6 88
+  s_73cbfc60e45e37::t_4181c9aa5c37c6 225
+  s_73cbfc60e45e37::t_99e29e53ce0121 558
+  s_73cbfc60e45e37::t_a5b5e4a055093f 722
+  s_73cbfc60e45e37::t_5ee5d601202dea 139
+  s_73cbfc60e45e37::t_cbeab280189789 619
+  s_73cbfc60e45e37::t_1764ab6d7aeb44 325
+  s_73cbfc60e45e37::t_2b204ee3e54809 771
+  s_73cbfc60e45e37::t_a981b778f7b349 784
+  s_73cbfc60e45e37::t_de978b96707c67 175
+  s_73cbfc60e45e37::t_a9935e3c8a3d53 453
+  s_73cbfc60e45e37::t_ce29a6ec543b41 642
+  s_73cbfc60e45e37::t_7a64884b4a62e9 442
+  s_73cbfc60e45e37::t_7cdd4ced08c898 733
+  s_73cbfc60e45e37::t_1f288b5c828f70 196
+  s_73cbfc60e45e37::t_ae5840fa82f548 408
+  s_73cbfc60e45e37::t_eaf0097fc7f814 118
+  s_73cbfc60e45e37::t_52871068f6158f 300
+  s_73cbfc60e45e37::t_57152589a4cca6 148
+  s_73cbfc60e45e37::t_821ddb2eb8a29a 795
+  s_73cbfc60e45e37::t_73923a438243c8 372
+  s_73cbfc60e45e37::t_fa370bfe710df8 380
+  s_73cbfc60e45e37::t_204ef1891eaedf 357
+  s_73cbfc60e45e37::t_39bbe5c78a26fa 527
+  s_73cbfc60e45e37::t_220d8858c33537 255
+  s_73cbfc60e45e37::t_6bafbea1bdb1df 490
+  s_73cbfc60e45e37::t_ed411175b64b18 291
+  s_73cbfc60e45e37::t_6a49216c8af980 210
+  s_73cbfc60e45e37::t_2dc3eb84bb9657 348
+docs/guides/getting-started.md
+  s_73cbfc60e45e37::t_6e9f5f1d519e8c 207
+  s_73cbfc60e45e37::t_357f29d481c104 278
+  s_73cbfc60e45e37::t_afeece463b1273 101
+  s_73cbfc60e45e37::t_b7dfc8fb8c7073 133
+  s_73cbfc60e45e37::t_47759cd73039b7 154
+docs/guides/configuration.md
+  s_73cbfc60e45e37::t_643673627b431a 417
+  s_73cbfc60e45e37::t_31f8e7c9c91023 308
+  s_73cbfc60e45e37::t_4e72d9a92b352b 231
+  s_73cbfc60e45e37::t_56ba43c6499ac4 106
+  s_73cbfc60e45e37::t_107cfbdfb6b0a9 344
+  s_73cbfc60e45e37::t_533e2844389308 455
+  s_73cbfc60e45e37::t_22dc356aaaa34f 380
+  s_73cbfc60e45e37::t_140ed1059b6cd9 178
+  s_73cbfc60e45e37::t_8896c91bc9f4f4 264
+docs/configuration.md
+  s_73cbfc60e45e37::t_448f779f96c1a8 127,130-134,137-144
+  s_73cbfc60e45e37::t_67f88ce50df471 279-280,283,291
+  s_73cbfc60e45e37::t_2e5c67d3ccace5 44,47
+  s_73cbfc60e45e37::t_4bdc7e64487fd7 234,239,243-247
+  s_73cbfc60e45e37::t_cea6c862de9997 65,68-69
+  s_73cbfc60e45e37::t_50b415ca2b016c 262,264,266,268,271
+  s_73cbfc60e45e37::t_d6ac76d9c50268 231-232
+  s_73cbfc60e45e37::t_a2f1a1c0088beb 153,156-157,163
+  s_73cbfc60e45e37::t_14343c24a16b48 88,90-96
+  s_73cbfc60e45e37::t_24b4a82097f0f6 205,208-209
+  s_73cbfc60e45e37::t_32940ba4fb9137 299,302-307,309-312,315-317
+docs/api-reference.md
+  s_73cbfc60e45e37::t_65b281e543b9b1 164-170
+  s_73cbfc60e45e37::t_cc248aaa2c3ab3 177
+  s_73cbfc60e45e37::t_c062c29faeebe1 153-156
+  s_73cbfc60e45e37::t_da40cff89dc84a 242,245-246
+  s_73cbfc60e45e37::t_ccd8d34dff78cb 263,267
+  s_73cbfc60e45e37::t_a6132cb644c9d7 102,105-106
+  s_73cbfc60e45e37::t_41ea90eeccca98 127,129-130
+  s_73cbfc60e45e37::t_c6626f63357acc 40-50
+  s_73cbfc60e45e37::t_c4306a858c3fa4 61,64-65
+  s_73cbfc60e45e37::t_9ddf0d13a1c36c 80,83
+  s_73cbfc60e45e37::t_8b1ae437500929 139-140,142-143
+docs/architecture.md
+  s_73cbfc60e45e37::t_d22a49c5b321d8 138
+  s_73cbfc60e45e37::t_76af1464aad8df 225
+  s_73cbfc60e45e37::t_a43511ac6834c1 269
+  s_73cbfc60e45e37::t_5bb5de0a63bac2 194
+  s_73cbfc60e45e37::t_0a9556f5e274b6 256
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "4517f3b65e6af1f5ce2592ba49858918073d4435",
+  "prompts": {},
+  "sessions": {
+    "s_73cbfc60e45e37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "80f2c44c-f1f2-49a0-8035-ccac60ac602b",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Zed <hi@zed.dev>"
+    }
+  }
+}
