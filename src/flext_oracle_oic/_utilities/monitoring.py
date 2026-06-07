@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
-
+from flext_core import FlextUtilities as ug
 from flext_oracle_oic import c, p, r, t
 
 
@@ -145,5 +144,5 @@ class FlextOracleOicUtilitiesMonitoring:
         if error_message is not None:
             return r[t.JsonMapping].fail(error_message)
         if "timestamp" not in validated_data:
-            validated_data["timestamp"] = datetime.now(UTC).isoformat()
+            validated_data["timestamp"] = ug.now().isoformat()
         return r[t.JsonMapping].ok(validated_data)
