@@ -1,0 +1,20 @@
+src/flext_oracle_oic/_utilities/monitoring.py
+  s_9942ef7a89ba9a::t_c13f91dda0e0ec 5
+  s_9942ef7a89ba9a::t_d6c4efd367a7b3 147
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "bc8932afff5919a2696a2f8c89a952275d965ef5",
+  "prompts": {},
+  "sessions": {
+    "s_9942ef7a89ba9a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "84fb5cb9-a1bd-4654-9339-7a49b63e96d1",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Zed <hi@zed.dev>"
+    }
+  }
+}
