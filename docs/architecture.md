@@ -135,7 +135,7 @@ src/flext_oracle_oic/
 
 **Current Service Classes (FLEXT Compliance Issues)**
 
-```python
+```python notest
 # ext_services.py contains multiple classes (violates FLEXT unified pattern)
 class OracleOicExtensionService        # Main service class
 class OICIntegrationPatternService     # Integration patterns
@@ -191,7 +191,7 @@ from flext_api import FlextApiClient
 
 **r Railway Pattern (Partial)**
 
-```python
+```python notest
 from flext_core import FlextBus
 from flext_core import FlextSettings
 from flext_core import FlextConstants
@@ -222,7 +222,7 @@ def validate_connection(settings: dict) -> p.Result[ConnectionInfo]:
 
 **FlextLogger Integration**
 
-```python
+```python notest
 from flext_core import FlextBus
 from flext_core import FlextSettings
 from flext_core import FlextConstants
@@ -253,7 +253,7 @@ class ServiceClass:
 
 **s Inheritance**
 
-```python
+```python notest
 # ❌ Current implementation
 class OracleOicExtensionService:
     pass
@@ -266,7 +266,7 @@ class OracleOicIntegrationService(s):
 
 **FlextContainer Dependency Injection**
 
-```python
+```python notest
 # ❌ Current: Manual service creation
 service = OracleOicExtensionService(settings)
 
