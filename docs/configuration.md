@@ -288,9 +288,7 @@ except ValueError as e:
     print(f"Type error: {e}")
 
 # ✅ Correct type
-settings = FlextOracleOicSettings(
-    base_url="https://example.com", request_timeout=30
-)
+settings = FlextOracleOicSettings(base_url="https://example.com", request_timeout=30)
 ```
 
 ### Configuration Debugging
