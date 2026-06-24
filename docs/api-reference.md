@@ -1,30 +1,5 @@
 # API Reference
 
-<!-- TOC START -->
-- [Public API Overview](#public-api-overview)
-- [Configuration API](#configuration-api)
-  - [OracleOicExtensionSettings](#oracleoicextensionsettings)
-  - [FlextOracleOicConnectionSettings](#flextoracleoicconnectionsettings)
-  - [FlextOracleOicAuthSettings](#flextoracleoicauthsettings)
-- [Available Components](#available-components)
-  - [Service Classes (Implementation Status Varies)](#service-classes-implementation-status-varies)
-  - [Client Components (FLEXT Compliance Issues)](#client-components-flext-compliance-issues)
-  - [Data Models](#data-models)
-- [Exception Hierarchy](#exception-hierarchy)
-- [Factory and Utility Functions](#factory-and-utility-functions)
-- [Current Implementation Limitations](#current-implementation-limitations)
-  - [Available Features ✅](#available-features)
-  - [Critical Issues ❌](#critical-issues)
-  - [Development Roadmap](#development-roadmap)
-- [API Compatibility](#api-compatibility)
-  - [Import Patterns](#import-patterns)
-  - [API Stability](#api-stability)
-- [Usage Recommendations](#usage-recommendations)
-  - [Current Version (v0.12.0-dev)](#current-version-v0120-dev)
-  - [Future Versions](#future-versions)
-- [Related Documentation](#related-documentation)
-<!-- TOC END -->
-
 **flext-oracle-oic v0.12.0-dev** - Available APIs and Components
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
@@ -174,7 +149,7 @@ connection_error = e.ConnectionError  # Connection problems
 
 ## Factory and Utility Functions
 
-```python notest
+```python
 from flext_oracle_oic import (
     # Factory functions for service creation
     # Implementation details vary
