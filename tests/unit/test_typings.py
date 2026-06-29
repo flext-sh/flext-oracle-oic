@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from tests import t
+from tests.typings import t
 
 
 class TestsFlextOracleOicTypingsUnit:

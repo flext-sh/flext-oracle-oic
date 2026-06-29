@@ -17,7 +17,7 @@ from collections.abc import (
 from types import TracebackType
 from typing import Self, override
 
-from flext_api import FlextApiClient, FlextApiSettings
+from flext_api import FlextApi, FlextApiSettings
 
 from flext_core import p, r, s
 from flext_oracle_oic.constants import c
@@ -48,7 +48,7 @@ class FlextOracleOicServiceBase(
         super().__init__()
         self._oic_settings: FlextOracleOicSettings = self.settings
         self._client: FlextOracleOicClient | None = None
-        self._monitoring_client: FlextApiClient | None = None
+        self._monitoring_client: FlextApi | None = None
         self._authenticator: t.JsonValue | None = None
         self._initialize_components()
 
@@ -290,7 +290,7 @@ class FlextOracleOicServiceBase(
                     "log_requests": False,
                     "log_responses": False,
                 })
-                self._monitoring_client = FlextApiClient(settings=api_config)
+                self._monitoring_client = FlextApi(settings=api_config)
         except c.EXC_NETWORK_TYPE:
             u.fetch_logger(__name__).exception(
                 "Failed to initialize service components"

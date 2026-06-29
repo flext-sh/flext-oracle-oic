@@ -17,10 +17,16 @@ from __future__ import annotations
 
 from flext_auth import u
 
-from flext_oracle_oic import (
+from flext_oracle_oic._utilities.authentication_validation import (
     FlextOracleOicUtilitiesAuthenticationValidation,
+)
+from flext_oracle_oic._utilities.connection_validation import (
     FlextOracleOicUtilitiesConnectionValidation,
+)
+from flext_oracle_oic._utilities.monitoring import (
     FlextOracleOicUtilitiesMonitoring,
+)
+from flext_oracle_oic._utilities.oracle_oic import (
     FlextOracleOicUtilitiesOracleOic,
 )
 
