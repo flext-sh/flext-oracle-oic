@@ -7,14 +7,7 @@ from flext_core.lazy import build_lazy_import_map
 
 FLEXT_ORACLE_OIC_LAZY_IMPORTS_PART_01 = build_lazy_import_map(
     {
-        "._utilities.authentication_validation": (
-            "FlextOracleOicUtilitiesAuthenticationValidation",
-        ),
-        "._utilities.connection_validation": (
-            "FlextOracleOicUtilitiesConnectionValidation",
-        ),
-        "._utilities.monitoring": ("FlextOracleOicUtilitiesMonitoring",),
-        "._utilities.oracle_oic": ("FlextOracleOicUtilitiesOracleOic",),
+        "._utilities": ("_utilities",),
         ".api": (
             "FlextOracleOicApi",
             "oracle_oic",
