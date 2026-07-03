@@ -1,4 +1,4 @@
-"""Oracle OIC Extension Configuration - Unified Class Pattern.
+"""Oracle OIC Extension Settings - Unified Class Pattern.
 
 FLEXT Unified Class Pattern: Single OracleOicExtensionConfig class
 with nested configuration classes following FLEXT architectural standards.
@@ -10,41 +10,48 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Annotated, Literal
+from typing import Annotated, ClassVar, Self
 
-from flext_core import FlextSettings
-from pydantic import Field, SecretStr
-from pydantic_settings import SettingsConfigDict
-
-EnvironmentLiteral = Literal["development", "staging", "production"]
-LogLevelLiteral = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
-OICApiVersionLiteral = Literal["v1", "v2"]
+from flext_core import FlextSettingsBase
+from flext_oracle_oic import c, m, t, u
 
 
-class FlextOracleOicSettings(FlextSettings):
+class FlextOracleOicSettings(FlextSettingsBase):
     """Runtime configuration for Oracle OIC integration."""
 
-    model_config = SettingsConfigDict(extra="ignore")
+    OICApiVersion: ClassVar[type[c.OICApiVersion]] = c.OICApiVersion
 
-    base_url: Annotated[str, Field(default="https://localhost")]
-    api_version: Annotated[OICApiVersionLiteral, Field(default="v1")]
-    request_timeout: Annotated[int, Field(default=30, ge=1, le=300)]
-    max_retries: Annotated[int, Field(default=3, ge=0, le=10)]
-    verify_ssl: Annotated[bool, Field(default=True)]
-    use_ssl: Annotated[bool, Field(default=True)]
-    enable_monitoring: Annotated[bool, Field(default=True)]
-    enable_enterprise_patterns: Annotated[bool, Field(default=True)]
-    enable_orchestration: Annotated[bool, Field(default=True)]
-    oauth_client_id: Annotated[str, Field(default="")]
-    oauth_client_secret: Annotated[SecretStr, Field(default=SecretStr(""))]
-    oauth_token_url: Annotated[str, Field(default="https://localhost/oauth/token")]
-    oauth_client_aud: Annotated[str, Field(default="")]
-    oauth_scope: Annotated[str, Field(default="")]
+    model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
+        env_prefix="FLEXT_ORACLE_OIC_", extra="ignore"
+    )
+
+    base_url: Annotated[t.NonEmptyStr, u.Field(default=c.OracleOic.DEFAULT_BASE_URL)]
+    api_version: Annotated[c.OICApiVersion, u.Field(default=c.OICApiVersion.V1)]
+    request_timeout: Annotated[
+        t.PositiveInt, u.Field(default=c.DEFAULT_TIMEOUT_SECONDS)
+    ]
+    max_retries: Annotated[t.RetryCount, u.Field(default=c.MAX_RETRY_ATTEMPTS)]
+    verify_ssl: Annotated[bool, u.Field(default=True)]
+    use_ssl: Annotated[bool, u.Field(default=True)]
+    enable_monitoring: Annotated[bool, u.Field(default=True)]
+    enable_enterprise_patterns: Annotated[bool, u.Field(default=True)]
+    enable_orchestration: Annotated[bool, u.Field(default=True)]
+    oauth_client_id: Annotated[str, u.Field(default="")]
+    oauth_client_secret: Annotated[t.SecretStr, u.Field(default=t.SecretStr(""))]
+    oauth_token_url: Annotated[
+        t.NonEmptyStr,
+        u.Field(default=f"{c.OracleOic.DEFAULT_BASE_URL}/oauth/token"),
+    ]
+    oauth_client_aud: Annotated[str, u.Field(default="")]
+    oauth_scope: Annotated[str, u.Field(default="")]
 
     @classmethod
-    def create_for_development(cls) -> FlextOracleOicSettings:
+    def create_for_development(cls) -> Self:
         """Build deterministic development settings."""
-        return cls(base_url="https://localhost", api_version="v1")
+        return cls.model_validate({
+            "base_url": c.OracleOic.DEFAULT_BASE_URL,
+            "api_version": c.OICApiVersion.V1.value,
+        })
 
 
-__all__ = ["FlextOracleOicSettings"]
+__all__: list[str] = ["FlextOracleOicSettings"]

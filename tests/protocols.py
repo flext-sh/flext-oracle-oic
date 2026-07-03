@@ -1,6 +1,6 @@
 """Test protocol definitions for flext-oracle-oic.
 
-Provides TestsFlextOracleOicProtocols, combining FlextTestsProtocols with
+Provides TestsFlextOracleOicProtocols, combining TestsFlextProtocols with
 FlextOracleOicProtocols for test-specific protocol definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -11,19 +11,18 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsProtocols
 
-from flext_oracle_oic.protocols import FlextOracleOicProtocols
+from flext_oracle_oic import FlextOracleOicProtocols
 
 
 class TestsFlextOracleOicProtocols(FlextTestsProtocols, FlextOracleOicProtocols):
-    """Test protocols combining FlextTestsProtocols and FlextOracleOicProtocols.
+    """Test protocols combining TestsFlextProtocols and FlextOracleOicProtocols."""
 
-    Provides access to:
-    - p.Tests.Docker.* (from FlextTestsProtocols)
-    - p.Tests.Factory.* (from FlextTestsProtocols)
-    - p.OracleOic.* (from FlextOracleOicProtocols)
-    """
+    class OracleOic(FlextOracleOicProtocols.OracleOic):
+        """OracleOic test protocols namespace."""
+
+        class Tests:
+            """OracleOic-specific test protocols."""
 
 
 p = TestsFlextOracleOicProtocols
-p = TestsFlextOracleOicProtocols
-__all__ = ["TestsFlextOracleOicProtocols", "p"]
+__all__: list[str] = ["TestsFlextOracleOicProtocols", "p"]

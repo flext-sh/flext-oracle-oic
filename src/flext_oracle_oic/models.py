@@ -5,18 +5,17 @@ This module provides data models for Oracle OIC External operations.
 
 from __future__ import annotations
 
-from typing import Annotated, ClassVar
+from typing import Annotated
 
-from flext_core import FlextModels, t
-from pydantic import ConfigDict, Field, SecretStr
+from flext_auth import m
 
-from flext_oracle_oic.constants import FlextOracleOicConstants
+from flext_oracle_oic import c, t, u
 
 
-class FlextOracleOicModels(FlextModels):
+class FlextOracleOicModels(m):
     """Unified models for Oracle OIC Extension operations.
 
-    Extends FlextModels to avoid duplication and ensure consistency.
+    Extends m to avoid duplication and ensure consistency.
     This class consolidates all Oracle OIC Extension domain models following
     the [Project]Models pattern for centralized Pydantic validation.
     """
@@ -24,188 +23,138 @@ class FlextOracleOicModels(FlextModels):
     class OracleOic:
         """OracleOic domain namespace."""
 
-        class OICAuthConfig(FlextModels.Value):
+        class OICAuthConfig(m.Value):
             """Oracle Integration Cloud authentication configuration.
 
             EXTENSION Pattern: Value Object for authentication configuration
             Oracle OIC with validation and security.
             """
 
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
-
-            oauth_client_id: Annotated[str, Field(description="IDCS OAuth2 client ID")]
+            oauth_client_id: Annotated[
+                str, u.Field(description="IDCS OAuth2 client ID")
+            ]
             oauth_client_secret: Annotated[
-                SecretStr,
-                Field(description="IDCS OAuth2 client secret"),
+                t.SecretStr,
+                u.Field(description="IDCS OAuth2 client secret"),
             ]
             oauth_token_url: Annotated[
-                str, Field(description="IDCS OAuth2 token endpoint")
+                str,
+                u.Field(description="IDCS OAuth2 token endpoint"),
             ]
             oauth_client_aud: Annotated[
                 str | None,
-                Field(
-                    default=None,
+                u.Field(
                     description="OAuth2 audience",
                 ),
-            ]
-            oauth_scope: Annotated[str, Field(default="", description="OAuth2 scope")]
+            ] = None
+            oauth_scope: Annotated[str, u.Field(description="OAuth2 scope")] = ""
 
-        class OICConnectionConfig(FlextModels.Value):
+        class OICConnectionConfig(m.Value):
             """Oracle Integration Cloud connection configuration.
 
             EXTENSION Pattern: Value Object for connection configuration
             Oracle OIC with enterprise validation.
             """
 
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
-
-            base_url: Annotated[str, Field(description="Oracle OIC instance base URL")]
+            base_url: Annotated[
+                str, u.Field(description="Oracle OIC instance base URL")
+            ]
             api_version: Annotated[
                 str,
-                Field(
-                    default=FlextOracleOicConstants.OracleOic.DEFAULT_API_VERSION,
+                u.Field(
                     description="OIC API version",
                 ),
-            ]
+            ] = c.OracleOic.DEFAULT_API_VERSION
             request_timeout: Annotated[
-                int,
-                Field(
-                    default=FlextOracleOicConstants.OracleOic.DEFAULT_REQUEST_TIMEOUT,
-                    ge=FlextOracleOicConstants.OracleOic.MIN_REQUEST_TIMEOUT,
+                t.PositiveInt,
+                u.Field(
                     description="Request timeout in seconds",
                 ),
-            ]
+            ] = c.DEFAULT_TIMEOUT_SECONDS
             max_retries: Annotated[
-                int,
-                Field(
-                    default=FlextOracleOicConstants.OracleOic.DEFAULT_MAX_RETRIES,
-                    ge=FlextOracleOicConstants.OracleOic.MIN_MAX_RETRIES,
+                t.RetryCount,
+                u.Field(
                     description="Maximum retry attempts",
                 ),
-            ]
+            ] = c.MAX_RETRY_ATTEMPTS
             verify_ssl: Annotated[
                 bool,
-                Field(
-                    default=FlextOracleOicConstants.OracleOic.DEFAULT_VERIFY_SSL,
+                u.Field(
                     description="Verify SSL certificates",
                 ),
-            ]
+            ] = c.OracleOic.DEFAULT_VERIFY_SSL
 
-        class OICIntegrationInfo(FlextModels.Entity):
+        class OICIntegrationInfo(m.Entity):
             """Oracle OIC Integration information.
 
             EXTENSION Pattern: Value Object representing information
             for an Oracle OIC integration.
             """
 
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
-
             integration_id: Annotated[
-                str, Field(description="Integration unique identifier")
+                str,
+                u.Field(description="Integration unique identifier"),
             ]
-            name: Annotated[str, Field(description="Integration name")]
-            status: Annotated[str, Field(description="Integration status")]
+            name: Annotated[str, u.Field(description="Integration name")]
+            status: Annotated[str, u.Field(description="Integration status")]
             integration_version: Annotated[
-                str, Field(description="Integration version")
+                str,
+                u.Field(description="Integration version"),
             ]
             description: Annotated[
-                str, Field(default="", description="Integration description")
-            ]
-            created_by: Annotated[
-                str, Field(default="", description="Creator username")
-            ]
+                str, u.Field(description="Integration description")
+            ] = ""
+            created_by: Annotated[str, u.Field(description="Creator username")] = ""
             last_updated: Annotated[
-                str, Field(default="", description="Last update timestamp")
-            ]
+                str, u.Field(description="Last update timestamp")
+            ] = ""
 
-        class OICConnectionInfo(FlextModels.Entity):
+        class OICConnectionInfo(m.Entity):
             """Oracle OIC Connection information.
 
             EXTENSION Pattern: Value Object representing information
             for an Oracle OIC connection.
             """
 
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
-
             connection_id: Annotated[
-                str, Field(description="Connection unique identifier")
+                str,
+                u.Field(description="Connection unique identifier"),
             ]
-            name: Annotated[str, Field(description="Connection name")]
-            adapter_type: Annotated[str, Field(description="Adapter type")]
-            status: Annotated[str, Field(description="Connection status")]
-            connection_type: Annotated[str, Field(description="Connection type")]
+            name: Annotated[str, u.Field(description="Connection name")]
+            adapter_type: Annotated[str, u.Field(description="Adapter type")]
+            status: Annotated[str, u.Field(description="Connection status")]
+            connection_type: Annotated[str, u.Field(description="Connection type")]
             description: Annotated[
-                str, Field(default="", description="Connection description")
-            ]
+                str, u.Field(description="Connection description")
+            ] = ""
 
-        class IntegrationStatus(FlextModels.Entity):
+        class IntegrationStatus(m.Entity):
             """Oracle OIC Integration status information.
 
             EXTENSION Pattern: Value Object representing status
             for an Oracle OIC integration.
             """
 
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
-
             integration_id: Annotated[
-                str, Field(description="Integration unique identifier")
+                str,
+                u.Field(description="Integration unique identifier"),
             ]
             integration_version: Annotated[
-                str, Field(description="Integration version")
+                str,
+                u.Field(description="Integration version"),
             ]
-            status: Annotated[str, Field(description="Integration status")]
+            status: Annotated[str, u.Field(description="Integration status")]
             last_updated: Annotated[
-                str, Field(default="", description="Last update timestamp")
-            ]
+                str, u.Field(description="Last update timestamp")
+            ] = ""
             activated_by: Annotated[
                 str,
-                Field(
-                    default="",
+                u.Field(
                     description="User who activated the integration",
                 ),
-            ]
-
-        class RequestParams(FlextModels.Value):
-            """Parameters for OIC API request.
-
-            EXTENSION Pattern: Value Object for request parameters
-            Oracle OIC API com tipagem forte.
-            """
-
-            model_config: ClassVar[ConfigDict] = ConfigDict(extra="forbid")
-
-            method: Annotated[str, Field(description="HTTP method")]
-            url: Annotated[str, Field(description="Request URL")]
-            params: Annotated[
-                dict[str, str | int | float] | None,
-                Field(
-                    default=None,
-                    description="Query parameters",
-                ),
-            ]
-            data: Annotated[
-                dict[str, t.NormalizedValue] | None,
-                Field(
-                    default=None,
-                    description="Form data",
-                ),
-            ]
-            json_data: Annotated[
-                dict[str, t.NormalizedValue] | None,
-                Field(
-                    default=None,
-                    description="JSON data",
-                ),
-            ]
-            headers: Annotated[
-                dict[str, str] | None,
-                Field(
-                    default=None,
-                    description="HTTP headers",
-                ),
-            ]
+            ] = ""
 
 
 m = FlextOracleOicModels
 
-__all__ = ["FlextOracleOicModels", "m"]
+__all__: list[str] = ["FlextOracleOicModels", "m"]

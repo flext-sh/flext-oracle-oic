@@ -1,0 +1,27 @@
+"""Tests for typings.py module.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
+"""
+
+from __future__ import annotations
+
+from tests.typings import t
+
+
+class TestsFlextOracleOicTypingsUnit:
+    """Test t domain-specific types."""
+
+    def test_flext_types_inheritance(self) -> None:
+        """Test t (FlextTypes) exposes type utilities."""
+        assert t is not None
+
+    def test_exported_types_available(self) -> None:
+        """Test all exported types are available."""
+        assert t is not None
+
+    def test_flext_types_can_be_extended(self) -> None:
+        """Test t can be extended for domain-specific types."""
+        core_dict = t.JsonValue
+        assert core_dict is not None

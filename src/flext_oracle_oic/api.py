@@ -10,17 +10,22 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import (
+    Sequence,
+)
 from typing import Self, override
 
-from flext_core import FlextService, r, t
+from flext_oracle_oic import (
+    FlextOracleOicService,
+    FlextOracleOicSettings,
+    m,
+    p,
+    r,
+    t,
+)
 
-from flext_oracle_oic.models import FlextOracleOicModels
-from flext_oracle_oic.service import FlextOracleOicService
-from flext_oracle_oic.settings import FlextOracleOicSettings
 
-
-class FlextOracleOicApi(FlextService[None]):
+class FlextOracleOicApi(FlextOracleOicService):
     """Thin facade for Oracle OIC operations with complete FLEXT integration.
 
     Integrates:
@@ -29,7 +34,7 @@ class FlextOracleOicApi(FlextService[None]):
     - FlextContext: Operation context management
     - FlextDispatcher: Message routing for OIC patterns
     - FlextRegistry: Component registration for OIC extensions
-    - FlextLogger: Structured logging for OIC operations
+    - `u.fetch_logger(...)` / `p.Logger`: Structured logging for OIC operations
 
     Provides unified access to all Oracle OIC functionality:
     - Integration lifecycle management (create, update, delete, activate)
@@ -40,27 +45,26 @@ class FlextOracleOicApi(FlextService[None]):
     - Monitoring and observability
     """
 
-    def __init__(self, config: FlextOracleOicSettings | None = None) -> None:
+    def __init__(self, settings: FlextOracleOicSettings | None = None) -> None:
         """Initialize FlextOracleOic facade with complete ecosystem integration.
 
         Args:
-        config: Oracle OIC configuration. If None, uses global instance.
+        settings: Oracle OIC configuration. If None, uses global instance.
 
         """
         super().__init__()
         self._oic_config: FlextOracleOicSettings = (
-            config if config is not None else FlextOracleOicSettings()
+            settings
+            if settings is not None
+            else FlextOracleOicSettings.model_validate({})
         )
         self._service = FlextOracleOicService()
-        if self._context is not None:
-            self._context.set("oracle_oic_base_url", self._oic_config.base_url)
-            self._context.set("oracle_oic_api_version", self._oic_config.api_version)
 
     def __aenter__(self) -> Self:
         """Async context manager entry."""
         self.logger.info(
             "Oracle OIC service started",
-            extra_info=str(self.get_connection_context()),
+            extra_info=str(self.fetch_connection_context().value),
         )
         return self
 
@@ -68,15 +72,16 @@ class FlextOracleOicApi(FlextService[None]):
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
-        exc_tb: t.NormalizedValue,
+        exc_tb: t.JsonValue,
     ) -> None:
         """Async context manager exit."""
         self.logger.info(
             "Oracle OIC service stopped",
-            extra_info=str(self.get_connection_context()),
+            extra_info=str(self.fetch_connection_context().value),
         )
 
-    def activate_integration(self, integration_id: str) -> r[bool]:
+    @override
+    def activate_integration(self, integration_id: str) -> p.Result[bool]:
         """Activate Oracle OIC integration.
 
         Args:
@@ -88,9 +93,11 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._service.activate_integration(integration_id)
 
+    @override
     def create_integration(
-        self, integration_data: Mapping[str, t.NormalizedValue]
-    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+        self,
+        integration_data: t.JsonMapping,
+    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
         Args:
@@ -102,7 +109,8 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._service.create_integration(integration_data)
 
-    def deactivate_integration(self, integration_id: str) -> r[bool]:
+    @override
+    def deactivate_integration(self, integration_id: str) -> p.Result[bool]:
         """Deactivate Oracle OIC integration.
 
         Args:
@@ -114,7 +122,8 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._service.deactivate_integration(integration_id)
 
-    def delete_integration(self, integration_id: str) -> r[bool]:
+    @override
+    def delete_integration(self, integration_id: str) -> p.Result[bool]:
         """Delete Oracle OIC integration.
 
         Args:
@@ -127,125 +136,112 @@ class FlextOracleOicApi(FlextService[None]):
         return self._service.delete_integration(integration_id)
 
     @override
-    def execute(self) -> r[None]:
+    def execute(
+        self,
+        **kwargs: t.Scalar,
+    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """Execute Oracle OIC API operations - delegates to service."""
-        result = self._service.execute()
-        return result.map(lambda _: None)
+        return self._service.execute(**kwargs)
 
+    @override
     def execute_app_driven_orchestration(
         self,
         integration_id: str,
-        payload: Mapping[str, t.NormalizedValue],
-        **kwargs: t.Scalar,
-    ) -> r[Mapping[str, t.NormalizedValue]]:
+        payload: t.JsonMapping,
+    ) -> p.Result[t.JsonMapping]:
         """Execute app-driven orchestration pattern.
 
         Args:
         integration_id: The integration identifier.
         payload: Orchestration payload data.
-        **kwargs: Additional execution parameters.
 
         Returns:
         r containing execution result.
 
         """
         return self._service.execute_app_driven_orchestration(
-            integration_id, payload, **kwargs
+            integration_id,
+            payload,
         )
 
+    @override
     def execute_file_transfer(
         self,
         integration_id: str,
-        file_config: Mapping[str, t.NormalizedValue],
-        **kwargs: t.Scalar,
-    ) -> r[Mapping[str, t.NormalizedValue]]:
+        file_config: t.JsonMapping,
+    ) -> p.Result[t.JsonMapping]:
         """Execute file transfer pattern.
 
         Args:
         integration_id: The integration identifier.
         file_config: File transfer configuration.
-        **kwargs: Additional execution parameters.
 
         Returns:
         r containing execution result.
 
         """
-        return self._service.execute_file_transfer(
-            integration_id, file_config, **kwargs
-        )
+        return self._service.execute_file_transfer(integration_id, file_config)
 
+    @override
     def execute_scheduled_orchestration(
         self,
         integration_id: str,
-        schedule_config: Mapping[str, t.NormalizedValue],
-        **kwargs: t.Scalar,
-    ) -> r[Mapping[str, t.NormalizedValue]]:
+        schedule_config: t.JsonMapping,
+    ) -> p.Result[t.JsonMapping]:
         """Execute scheduled orchestration pattern.
 
         Args:
         integration_id: The integration identifier.
         schedule_config: Schedule configuration.
-        **kwargs: Additional execution parameters.
 
         Returns:
         r containing execution result.
 
         """
         return self._service.execute_scheduled_orchestration(
-            integration_id, schedule_config, **kwargs
+            integration_id,
+            schedule_config,
         )
 
-    def get_auth_context(self) -> Mapping[str, t.NormalizedValue]:
-        """Get current authentication configuration context.
-
-        Returns:
-        Dictionary containing authentication context information.
-
-        """
-        return {
+    def fetch_auth_context(self) -> p.Result[t.JsonMapping]:
+        """Return the current authentication configuration context (ENFORCE-056)."""
+        return r[t.JsonMapping].ok({
             "oauth_client_id": self._oic_config.oauth_client_id,
             "oauth_token_url": self._oic_config.oauth_token_url,
             "oauth_scope": self._oic_config.oauth_scope,
-        }
+        })
 
-    def get_connection_context(self) -> Mapping[str, t.NormalizedValue]:
-        """Get current connection configuration context.
-
-        Returns:
-        Dictionary containing connection context information.
-
-        """
-        return {
+    def fetch_connection_context(self) -> p.Result[t.JsonMapping]:
+        """Return the current connection configuration context (ENFORCE-056)."""
+        return r[t.JsonMapping].ok({
             "base_url": self._oic_config.base_url,
             "api_version": self._oic_config.api_version,
             "request_timeout": self._oic_config.request_timeout,
-        }
+        })
 
-    def get_features_context(self) -> Mapping[str, t.NormalizedValue]:
-        """Get current features configuration context.
-
-        Returns:
-        Dictionary containing features context information.
-
-        """
-        return {
+    def fetch_features_context(self) -> p.Result[t.JsonMapping]:
+        """Return the current features configuration context (ENFORCE-056)."""
+        return r[t.JsonMapping].ok({
             "enable_monitoring": self._oic_config.enable_monitoring,
             "use_ssl": self._oic_config.use_ssl,
             "verify_ssl": self._oic_config.verify_ssl,
-        }
+        })
 
-    def get_health_status(self) -> r[Mapping[str, t.NormalizedValue]]:
+    @override
+    def fetch_health_status(self) -> p.Result[t.JsonMapping]:
         """Get Oracle OIC health status.
 
         Returns:
         r containing health status information.
 
         """
-        return self._service.get_health_status()
+        return self._service.fetch_health_status()
 
-    def get_integration(
-        self, integration_id: str
-    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+    @override
+    def fetch_integration(
+        self,
+        integration_id: str,
+    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
         Args:
@@ -255,20 +251,22 @@ class FlextOracleOicApi(FlextService[None]):
         r containing integration information.
 
         """
-        return self._service.get_integration(integration_id)
+        return self._service.fetch_integration(integration_id)
 
-    def get_performance_metrics(self) -> r[Mapping[str, t.NormalizedValue]]:
+    @override
+    def fetch_performance_metrics(self) -> p.Result[t.JsonMapping]:
         """Get Oracle OIC performance metrics.
 
         Returns:
         r containing performance metrics.
 
         """
-        return self._service.get_performance_metrics()
+        return self._service.fetch_performance_metrics()
 
+    @override
     def list_integrations(
         self,
-    ) -> r[list[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -277,7 +275,8 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._service.list_integrations()
 
-    def refresh_auth_token(self) -> r[str]:
+    @override
+    def refresh_auth_token(self) -> p.Result[str]:
         """Refresh OAuth2 authentication token.
 
         Returns:
@@ -286,7 +285,8 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._service.refresh_auth_token()
 
-    def test_connection(self) -> r[bool]:
+    @override
+    def test_connection(self) -> p.Result[bool]:
         """Test connection to Oracle OIC instance.
 
         Returns:
@@ -295,9 +295,12 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._service.test_connection()
 
+    @override
     def update_integration(
-        self, integration_id: str, integration_data: Mapping[str, t.NormalizedValue]
-    ) -> r[FlextOracleOicModels.OracleOic.OICIntegrationInfo]:
+        self,
+        integration_id: str,
+        integration_data: t.JsonMapping,
+    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
         Args:
@@ -310,7 +313,8 @@ class FlextOracleOicApi(FlextService[None]):
         """
         return self._service.update_integration(integration_id, integration_data)
 
-    def validate_auth_token(self, token: str) -> r[bool]:
+    @override
+    def validate_auth_token(self, token: str) -> p.Result[bool]:
         """Validate OAuth2 authentication token.
 
         Args:
@@ -323,4 +327,6 @@ class FlextOracleOicApi(FlextService[None]):
         return self._service.validate_auth_token(token)
 
 
-__all__ = ["FlextOracleOicApi"]
+oracle_oic = FlextOracleOicApi
+
+__all__: list[str] = ["FlextOracleOicApi", "oracle_oic"]
