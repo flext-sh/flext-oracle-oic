@@ -8,12 +8,14 @@ SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
+from flext_oracle_oic.constants import c
+from flext_oracle_oic.protocols import p
 
 from collections.abc import (
     Callable,
 )
 
-from flext_core import c, p, r
+from flext_core import r
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 from flext_oracle_oic.typings import t

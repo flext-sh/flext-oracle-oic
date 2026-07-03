@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
+from flext_oracle_oic.protocols import p
 
 from collections.abc import (
     Mapping,
@@ -19,7 +20,7 @@ from typing import Self, override
 
 from flext_api import FlextApi, FlextApiSettings
 
-from flext_core import p, r, s
+from flext_core import r, s
 from flext_oracle_oic.constants import c
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.models import m
