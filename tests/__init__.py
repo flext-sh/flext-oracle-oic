@@ -25,57 +25,53 @@ if TYPE_CHECKING:
         x as x,
     )
 
-    from flext_oracle_oic.tests.base import (
+    from tests.base import (
         TestsFlextOracleOicServiceBase as TestsFlextOracleOicServiceBase,
         s as s,
     )
-    from flext_oracle_oic.tests.constants import (
+    from tests.constants import (
         TestsFlextOracleOicConstants as TestsFlextOracleOicConstants,
         c as c,
     )
-    from flext_oracle_oic.tests.models import (
+    from tests.models import (
         TestsFlextOracleOicModels as TestsFlextOracleOicModels,
         m as m,
     )
-    from flext_oracle_oic.tests.protocols import (
+    from tests.protocols import (
         TestsFlextOracleOicProtocols as TestsFlextOracleOicProtocols,
         p as p,
     )
-    from flext_oracle_oic.tests.settings import (
+    from tests.settings import (
         TestsFlextOracleOicSettings as TestsFlextOracleOicSettings,
     )
-    from flext_oracle_oic.tests.typings import (
+    from tests.typings import (
         TestsFlextOracleOicTypes as TestsFlextOracleOicTypes,
         t as t,
     )
-    from flext_oracle_oic.tests.unit.test_basic import (
+    from tests.unit.test_basic import (
         TestsFlextOracleOicBasic as TestsFlextOracleOicBasic,
     )
-    from flext_oracle_oic.tests.unit.test_cli import (
-        TestsFlextOracleOicCli as TestsFlextOracleOicCli,
-    )
-    from flext_oracle_oic.tests.unit.test_config import (
+    from tests.unit.test_cli import TestsFlextOracleOicCli as TestsFlextOracleOicCli
+    from tests.unit.test_config import (
         TestsFlextOracleOicConfig as TestsFlextOracleOicConfig,
     )
-    from flext_oracle_oic.tests.unit.test_extension import (
+    from tests.unit.test_extension import (
         TestsFlextOracleOicExtension as TestsFlextOracleOicExtension,
     )
-    from flext_oracle_oic.tests.unit.test_import import (
+    from tests.unit.test_import import (
         TestsFlextOracleOicImport as TestsFlextOracleOicImport,
     )
-    from flext_oracle_oic.tests.unit.test_main import (
-        TestsFlextOracleOicMain as TestsFlextOracleOicMain,
-    )
-    from flext_oracle_oic.tests.unit.test_models import (
+    from tests.unit.test_main import TestsFlextOracleOicMain as TestsFlextOracleOicMain
+    from tests.unit.test_models import (
         TestsFlextOracleOicModelsUnit as TestsFlextOracleOicModelsUnit,
     )
-    from flext_oracle_oic.tests.unit.test_typings import (
+    from tests.unit.test_typings import (
         TestsFlextOracleOicTypingsUnit as TestsFlextOracleOicTypingsUnit,
     )
-    from flext_oracle_oic.tests.unit.test_version import (
+    from tests.unit.test_version import (
         TestsFlextOracleOicVersion as TestsFlextOracleOicVersion,
     )
-    from flext_oracle_oic.tests.utilities import (
+    from tests.utilities import (
         TestsFlextOracleOicUtilities as TestsFlextOracleOicUtilities,
         u as u,
     )
