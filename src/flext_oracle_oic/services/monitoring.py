@@ -8,7 +8,6 @@ SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
-from flext_oracle_oic.protocols import p
 
 import asyncio
 from collections.abc import Mapping
@@ -16,6 +15,7 @@ from collections.abc import Mapping
 from flext_core import r
 from flext_oracle_oic.constants import c
 from flext_oracle_oic.models import m
+from flext_oracle_oic.protocols import p
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 from flext_oracle_oic.typings import t
 from flext_oracle_oic.utilities import u

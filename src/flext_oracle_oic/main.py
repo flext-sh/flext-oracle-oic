@@ -9,8 +9,6 @@ SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
-from flext_oracle_oic.constants import c
-from flext_oracle_oic.protocols import p
 
 import sys
 from typing import ClassVar, override
@@ -18,7 +16,9 @@ from typing import ClassVar, override
 from flext_cli import cli, m as cli_m
 from flext_core import r, s
 from flext_oracle_oic import __version__
+from flext_oracle_oic.constants import c
 from flext_oracle_oic.models import FlextOracleOicModels
+from flext_oracle_oic.protocols import p
 from flext_oracle_oic.service import FlextOracleOicService
 from flext_oracle_oic.settings import FlextOracleOicSettings
 from flext_oracle_oic.typings import t
