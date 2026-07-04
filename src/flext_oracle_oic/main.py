@@ -11,65 +11,69 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import sys
-from typing import ClassVar, override
+from typing import ClassVar
 
 from flext_cli import cli, m as cli_m
-from flext_core import r, s
-from flext_oracle_oic import __version__
-from flext_oracle_oic.constants import c
+from flext_core import r
+from flext_oracle_oic import __version__, c, p, t
 from flext_oracle_oic.models import FlextOracleOicModels
-from flext_oracle_oic.protocols import p
 from flext_oracle_oic.service import FlextOracleOicService
 from flext_oracle_oic.settings import FlextOracleOicSettings
-from flext_oracle_oic.typings import t
 
 
-class _TestConnectionCommand(s[bool]):
+class _TestConnectionCommand(cli_m.BaseModel):
     """Test connection to Oracle OIC instance."""
 
-    @override
     def execute(self) -> p.Result[bool]:
         """Test the Oracle OIC connection through the canonical service."""
         try:
-            FlextOracleOicSettings.create_for_development()
-            service = FlextOracleOicService()
-            with service:
-                connection_result = service.test_connection()
-                if connection_result.success:
-                    cli.print(
-                        "Connection to Oracle OIC established successfully",
-                    )
-                    return r[bool].ok(value=True)
-                return r[bool].fail_op("Connection", connection_result.error)
+            return self._execute_connection_test()
         except c.EXC_NETWORK_TYPE as exc:
             return r[bool].fail_op("Connection test", exc)
 
+    @staticmethod
+    def _execute_connection_test() -> p.Result[bool]:
+        """Execute the Oracle OIC connection test."""
+        FlextOracleOicSettings.create_for_development()
+        service = FlextOracleOicService()
+        with service:
+            connection_result = service.test_connection()
+            if connection_result.success:
+                cli.print(
+                    "Connection to Oracle OIC established successfully",
+                )
+                return r[bool].ok(value=True)
+            return r[bool].fail_op("Connection", connection_result.error)
 
-class _ListIntegrationsCommand(s[bool]):
+
+class _ListIntegrationsCommand(cli_m.BaseModel):
     """List Oracle OIC integrations."""
 
-    @override
     def execute(self) -> p.Result[bool]:
         """List integrations through the canonical service."""
         try:
-            FlextOracleOicSettings.create_for_development()
-            service = FlextOracleOicService()
-            integrations_result = service.list_integrations()
-            if integrations_result.failure:
-                return r[bool].fail(
-                    f"Failed to list integrations: {integrations_result.error}",
-                )
-            integrations = integrations_result.value or []
-            _print_integrations(integrations)
-            return r[bool].ok(value=True)
+            return self._execute_list_integrations()
         except c.EXC_NETWORK_TYPE as exc:
             return r[bool].fail_op("List integrations", exc)
 
+    @staticmethod
+    def _execute_list_integrations() -> p.Result[bool]:
+        """Execute Oracle OIC integration listing."""
+        FlextOracleOicSettings.create_for_development()
+        service = FlextOracleOicService()
+        integrations_result = service.list_integrations()
+        if integrations_result.failure:
+            return r[bool].fail(
+                f"Failed to list integrations: {integrations_result.error}",
+            )
+        integrations = integrations_result.value or []
+        _print_integrations(integrations)
+        return r[bool].ok(value=True)
 
-class _ShowVersionCommand(s[bool]):
+
+class _ShowVersionCommand(cli_m.BaseModel):
     """Show Oracle OIC Extension version."""
 
-    @override
     def execute(self) -> p.Result[bool]:
         """Print Oracle OIC Extension version through cli.print."""
         cli.print(f"Oracle OIC Extension v{__version__}")

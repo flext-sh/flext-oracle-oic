@@ -14,11 +14,9 @@ from collections.abc import (
 )
 
 from flext_core import r
-from flext_oracle_oic.constants import c
+from flext_oracle_oic import c, p, t
 from flext_oracle_oic.ext_client import FlextOracleOicClient
-from flext_oracle_oic.protocols import p
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
-from flext_oracle_oic.typings import t
 
 
 class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
@@ -40,31 +38,39 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
 
         """
         try:
-            client_result = self._get_client()
-            if client_result.failure:
-                error_msg = client_result.error or "Client initialization failed"
-                return r[t.JsonMapping].fail(error_msg)
-            client = client_result.value
-            endpoint = f"/integrations/{integration_id}/connections"
-            payload_dict = {
-                key: self._to_general_value(value) for key, value in payload.items()
-            }
-            orchestration_result = client.make_request(
-                "POST",
-                endpoint,
-                json=payload_dict,
-            )
-            if orchestration_result.failure:
-                return r[t.JsonMapping].fail(
-                    orchestration_result.error or "Orchestration request failed",
-                )
-            return r[t.JsonMapping].ok(orchestration_result.value)
+            return self._execute_app_driven_orchestration(integration_id, payload)
         except c.EXC_NETWORK_TYPE as exc:
             self.logger.exception(
                 "App-driven orchestration failed for %s",
                 integration_id,
             )
             return r[t.JsonMapping].fail_op("Orchestration execution", exc)
+
+    def _execute_app_driven_orchestration(
+        self,
+        integration_id: str,
+        payload: t.JsonMapping,
+    ) -> p.Result[t.JsonMapping]:
+        """Execute app-driven orchestration without exception translation."""
+        client_result = self._get_client()
+        if client_result.failure:
+            error_msg = client_result.error or "Client initialization failed"
+            return r[t.JsonMapping].fail(error_msg)
+        client = client_result.value
+        endpoint = f"/integrations/{integration_id}/connections"
+        payload_dict = {
+            key: self._to_general_value(value) for key, value in payload.items()
+        }
+        orchestration_result = client.make_request(
+            "POST",
+            endpoint,
+            json=payload_dict,
+        )
+        if orchestration_result.failure:
+            return r[t.JsonMapping].fail(
+                orchestration_result.error or "Orchestration request failed",
+            )
+        return r[t.JsonMapping].ok(orchestration_result.value)
 
     def execute_file_transfer(
         self,

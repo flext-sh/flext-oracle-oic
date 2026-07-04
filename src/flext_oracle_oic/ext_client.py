@@ -23,8 +23,6 @@ from flext_api import FlextApi, FlextApiConstants, FlextApiSettings
 
 from flext_oracle_oic import c, m, p, r, t, u
 
-logger = u.fetch_logger(__name__)
-
 
 class FlextOracleOicClient:
     """Unified Oracle OIC Client consolidating all client functionality.
@@ -234,40 +232,49 @@ class FlextOracleOicClient:
     ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
         """Paginate through OIC API responses."""
         try:
-            all_records: MutableSequence[t.JsonMapping] = []
-            offset = 0
-            base_params: t.StrMapping = dict(params) if params else {}
-            while True:
-                request_params: t.MutableStrMapping = dict(base_params)
-                request_params.update({"offset": str(offset), "limit": str(page_size)})
-                response_result = self.make_request(
-                    c.API.Method.GET,
-                    endpoint,
-                    params=request_params,
-                )
-                if response_result.failure:
-                    return r[t.SequenceOf[t.JsonMapping]].fail(
-                        response_result.error or "Request failed",
-                    )
-                response_data = response_result.value
-                items_raw = response_data.get("items", [])
-                if not isinstance(items_raw, list):
-                    return r[t.SequenceOf[t.JsonMapping]].fail(
-                        "Invalid items format",
-                    )
-                items: t.SequenceOf[t.JsonMapping] = [
-                    dict(item) for item in items_raw if isinstance(item, dict)
-                ]
-                all_records.extend(items)
-                has_more = response_data.get("hasMore", False)
-                if not has_more or len(items) < page_size:
-                    break
-                offset += page_size
-            return r[t.SequenceOf[t.JsonMapping]].ok(all_records)
+            return self._paginate_request(endpoint, page_size, params)
         except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"OIC pagination failed: {exc}"
             self.logger.exception(error_msg)
             return r[t.SequenceOf[t.JsonMapping]].fail(error_msg)
+
+    def _paginate_request(
+        self,
+        endpoint: str,
+        page_size: int,
+        params: t.StrMapping | None,
+    ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
+        """Paginate through OIC API responses without exception translation."""
+        all_records: MutableSequence[t.JsonMapping] = []
+        offset = 0
+        base_params: t.StrMapping = dict(params) if params else {}
+        while True:
+            request_params: t.MutableStrMapping = dict(base_params)
+            request_params.update({"offset": str(offset), "limit": str(page_size)})
+            response_result = self.make_request(
+                c.API.Method.GET,
+                endpoint,
+                params=request_params,
+            )
+            if response_result.failure:
+                return r[t.SequenceOf[t.JsonMapping]].fail(
+                    response_result.error or "Request failed",
+                )
+            response_data = response_result.value
+            items_raw = response_data.get("items", [])
+            if not isinstance(items_raw, list):
+                return r[t.SequenceOf[t.JsonMapping]].fail(
+                    "Invalid items format",
+                )
+            items: t.SequenceOf[t.JsonMapping] = [
+                dict(item) for item in items_raw if isinstance(item, dict)
+            ]
+            all_records.extend(items)
+            has_more = response_data.get("hasMore", False)
+            if not has_more or len(items) < page_size:
+                break
+            offset += page_size
+        return r[t.SequenceOf[t.JsonMapping]].ok(all_records)
 
     def update_integration(
         self,
@@ -319,61 +326,78 @@ class FlextOracleOicClient:
     ) -> p.Result[t.JsonValue]:
         """Execute the actual API request."""
         try:
-            api_data: t.JsonDict | None = None
-            if json is not None:
-                api_data = {
-                    key: str(self._to_api_payload(value)) for key, value in json.items()
-                }
-            base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
-            full_url = f"{base_url}/{endpoint.lstrip('/')}"
-            if method.upper() == FlextApiConstants.Api.Method.GET.value:
-                response_result = client.get(full_url, headers=None)
-            elif method.upper() == FlextApiConstants.Api.Method.POST.value:
-                response_result = client.post(full_url, data=api_data, headers=None)
-            elif method.upper() == FlextApiConstants.Api.Method.PUT.value:
-                response_result = client.put(full_url, data=api_data, headers=None)
-            elif method.upper() == FlextApiConstants.Api.Method.DELETE.value:
-                response_result = client.delete(full_url, headers=None)
-            else:
-                return r[t.JsonValue].fail(f"Unsupported HTTP method: {method}")
-            if response_result.failure:
-                return r[t.JsonValue].fail_op("Request", response_result.error)
-            response = response_result.value
-            body: t.JsonValue = getattr(response, "body", str(response))
-            return r[t.JsonValue].ok(body)
+            return self._run_api_request(client, method, endpoint, json)
         except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"OIC API request failed: {exc}"
             self.logger.exception(error_msg)
             return r[t.JsonValue].fail(error_msg)
+
+    def _run_api_request(
+        self,
+        client: FlextApi,
+        method: str,
+        endpoint: str,
+        json: t.JsonMapping | None,
+    ) -> p.Result[t.JsonValue]:
+        """Execute the actual API request without exception translation."""
+        api_data: t.JsonDict | None = None
+        if json is not None:
+            api_data = {
+                key: str(self._to_api_payload(value)) for key, value in json.items()
+            }
+        base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
+        full_url = f"{base_url}/{endpoint.lstrip('/')}"
+        if method.upper() == FlextApiConstants.Api.Method.GET.value:
+            response_result = client.get(full_url, headers=None)
+        elif method.upper() == FlextApiConstants.Api.Method.POST.value:
+            response_result = client.post(full_url, data=api_data, headers=None)
+        elif method.upper() == FlextApiConstants.Api.Method.PUT.value:
+            response_result = client.put(full_url, data=api_data, headers=None)
+        elif method.upper() == FlextApiConstants.Api.Method.DELETE.value:
+            response_result = client.delete(full_url, headers=None)
+        else:
+            return r[t.JsonValue].fail(f"Unsupported HTTP method: {method}")
+        if response_result.failure:
+            return r[t.JsonValue].fail_op("Request", response_result.error)
+        response = response_result.value
+        body: t.JsonValue = getattr(response, "body", str(response))
+        return r[t.JsonValue].ok(body)
 
     def _execute_token_request(
         self,
         request_data: tuple[t.StrMapping, t.StrMapping],
     ) -> p.Result[t.JsonValue]:
         """Execute OAuth token request."""
-        headers, data = request_data
         try:
-            api_config = FlextApiSettings.model_validate({
-                "base_url": self.auth_config.oauth_token_url,
-            })
-            api_client = FlextApi(settings=api_config)
-            oauth_data: t.JsonDict = {
-                key: str(self._to_api_payload(value)) for key, value in data.items()
-            }
-            response_result = api_client.post("", data=oauth_data, headers=headers)
-            if response_result.failure:
-                return r[t.JsonValue].fail_op("OAuth request", response_result.error)
-            response = response_result.value
-            if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
-                return r[t.JsonValue].fail(
-                    f"OAuth HTTP error: {response.status_code}",
-                )
-            body: t.JsonValue = getattr(response, "body", str(response))
-            return r[t.JsonValue].ok(body)
+            return self._request_access_token(request_data)
         except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"OAuth token request failed: {exc}"
             self.logger.exception(error_msg)
             return r[t.JsonValue].fail(error_msg)
+
+    def _request_access_token(
+        self,
+        request_data: tuple[t.StrMapping, t.StrMapping],
+    ) -> p.Result[t.JsonValue]:
+        """Execute OAuth token request without exception translation."""
+        headers, data = request_data
+        api_config = FlextApiSettings.model_validate({
+            "base_url": self.auth_config.oauth_token_url,
+        })
+        api_client = FlextApi(settings=api_config)
+        oauth_data: t.JsonDict = {
+            key: str(self._to_api_payload(value)) for key, value in data.items()
+        }
+        response_result = api_client.post("", data=oauth_data, headers=headers)
+        if response_result.failure:
+            return r[t.JsonValue].fail_op("OAuth request", response_result.error)
+        response = response_result.value
+        if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
+            return r[t.JsonValue].fail(
+                f"OAuth HTTP error: {response.status_code}",
+            )
+        body: t.JsonValue = getattr(response, "body", str(response))
+        return r[t.JsonValue].ok(body)
 
     def _parse_api_response(
         self,
@@ -381,48 +405,59 @@ class FlextOracleOicClient:
     ) -> p.Result[t.JsonMapping]:
         """Parse API response based on content type."""
         try:
-            headers: t.JsonMapping | None = getattr(response, "headers", None)
-            body: t.JsonValue | None = getattr(response, "body", None)
-            if not isinstance(headers, Mapping):
-                return r[t.JsonMapping].fail("Invalid response format")
-            content_type = str(headers.get("content-type", ""))
-            is_json = content_type.startswith("application/json")
-            if is_json and not isinstance(body, (str, Mapping)):
-                return r[t.JsonMapping].fail("Empty JSON response")
-            parsed_body: t.JsonMapping
-            if isinstance(body, str) and is_json:
-                parsed_body = t.json_mapping_adapter().validate_json(body)
-            elif isinstance(body, Mapping):
-                parsed_body = body
-            else:
-                parsed_body = {"raw_content": str(body) if body is not None else ""}
-            return r[t.JsonMapping].ok(parsed_body)
+            return self._parse_api_response_value(response)
         except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"Failed to parse API response: {exc}"
             self.logger.exception(error_msg)
             return r[t.JsonMapping].fail(error_msg)
 
+    def _parse_api_response_value(
+        self,
+        response: t.JsonValue,
+    ) -> p.Result[t.JsonMapping]:
+        """Parse API response without exception translation."""
+        headers: t.JsonMapping | None = getattr(response, "headers", None)
+        body: t.JsonValue | None = getattr(response, "body", None)
+        if not isinstance(headers, Mapping):
+            return r[t.JsonMapping].fail("Invalid response format")
+        content_type = str(headers.get("content-type", ""))
+        is_json = content_type.startswith("application/json")
+        if is_json and not isinstance(body, (str, Mapping)):
+            return r[t.JsonMapping].fail("Empty JSON response")
+        parsed_body: t.JsonMapping
+        if isinstance(body, str) and is_json:
+            parsed_body = t.json_mapping_adapter().validate_json(body)
+        elif isinstance(body, Mapping):
+            parsed_body = body
+        else:
+            parsed_body = {"raw_content": str(body) if body is not None else ""}
+        return r[t.JsonMapping].ok(parsed_body)
+
     def _parse_token_response(self, response: t.JsonValue) -> p.Result[str]:
         """Parse access token from OAuth response."""
         try:
-            body_raw: t.JsonValue = getattr(response, "body", None)
-            if body_raw is None:
-                return r[str].fail("Invalid response format")
-            token_data: t.JsonMapping
-            if isinstance(body_raw, Mapping):
-                token_data = {k: body_raw[k] for k in body_raw}
-            elif isinstance(body_raw, str):
-                token_data = t.json_mapping_adapter().validate_json(body_raw)
-            else:
-                return r[str].fail("Empty or invalid OAuth response body")
-            access_token: t.JsonValue | None = token_data.get("access_token")
-            if isinstance(access_token, str) and access_token:
-                return r[str].ok(access_token)
-            return r[str].fail("No valid access token in response")
+            return self._parse_token_response_value(response)
         except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"Failed to parse OAuth response: {exc}"
             self.logger.exception(error_msg)
             return r[str].fail(error_msg)
+
+    def _parse_token_response_value(self, response: t.JsonValue) -> p.Result[str]:
+        """Parse access token without exception translation."""
+        body_raw: t.JsonValue = getattr(response, "body", None)
+        if body_raw is None:
+            return r[str].fail("Invalid response format")
+        token_data: t.JsonMapping
+        if isinstance(body_raw, Mapping):
+            token_data = {k: body_raw[k] for k in body_raw}
+        elif isinstance(body_raw, str):
+            token_data = t.json_mapping_adapter().validate_json(body_raw)
+        else:
+            return r[str].fail("Empty or invalid OAuth response body")
+        access_token: t.JsonValue | None = token_data.get("access_token")
+        if isinstance(access_token, str) and access_token:
+            return r[str].ok(access_token)
+        return r[str].fail("No valid access token in response")
 
     def _prepare_oauth_request(
         self,

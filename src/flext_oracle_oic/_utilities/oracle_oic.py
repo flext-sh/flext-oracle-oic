@@ -8,7 +8,9 @@ from collections.abc import (
 )
 from typing import Annotated, ClassVar
 
-from flext_oracle_oic import c, m, p, r, t
+from flext_auth import m
+
+from flext_oracle_oic import c, p, r, t
 
 
 class FlextOracleOicUtilitiesOracleOic:

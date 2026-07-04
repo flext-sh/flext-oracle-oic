@@ -31,7 +31,13 @@ from flext_oracle_oic._utilities.oracle_oic import (
 )
 
 
-class FlextOracleOicUtilities(u):
+class FlextOracleOicUtilities(
+    u,
+    FlextOracleOicUtilitiesOracleOic,
+    FlextOracleOicUtilitiesConnectionValidation,
+    FlextOracleOicUtilitiesAuthenticationValidation,
+    FlextOracleOicUtilitiesMonitoring,
+):
     """Unified Oracle OIC Extension utilities.
 
     Extends u with Oracle Integration Cloud
