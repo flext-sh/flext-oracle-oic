@@ -16,12 +16,14 @@ from collections.abc import (
     Mapping,
     MutableSequence,
 )
-from types import TracebackType
-from typing import Self
+from typing import TYPE_CHECKING, Self
 
 from flext_api import FlextApi, FlextApiConstants, FlextApiSettings
 
 from flext_oracle_oic import c, m, p, r, t, u
+
+if TYPE_CHECKING:
+    from types import TracebackType
 
 
 class FlextOracleOicClient:

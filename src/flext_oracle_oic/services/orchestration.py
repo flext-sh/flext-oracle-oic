@@ -9,14 +9,18 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import (
-    Callable,
-)
+from typing import TYPE_CHECKING
 
 from flext_core import r
 from flext_oracle_oic import c, p, t
-from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
+
+if TYPE_CHECKING:
+    from collections.abc import (
+        Callable,
+    )
+
+    from flext_oracle_oic.ext_client import FlextOracleOicClient
 
 
 class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):

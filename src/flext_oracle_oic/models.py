@@ -31,7 +31,8 @@ class FlextOracleOicModels(m):
             """
 
             oauth_client_id: Annotated[
-                str, u.Field(description="IDCS OAuth2 client ID")
+                str,
+                u.Field(description="IDCS OAuth2 client ID"),
             ]
             oauth_client_secret: Annotated[
                 t.SecretStr,
@@ -57,7 +58,8 @@ class FlextOracleOicModels(m):
             """
 
             base_url: Annotated[
-                str, u.Field(description="Oracle OIC instance base URL")
+                str,
+                u.Field(description="Oracle OIC instance base URL"),
             ]
             api_version: Annotated[
                 str,
@@ -102,11 +104,13 @@ class FlextOracleOicModels(m):
                 u.Field(description="Integration version"),
             ]
             description: Annotated[
-                str, u.Field(description="Integration description")
+                str,
+                u.Field(description="Integration description"),
             ] = ""
             created_by: Annotated[str, u.Field(description="Creator username")] = ""
             last_updated: Annotated[
-                str, u.Field(description="Last update timestamp")
+                str,
+                u.Field(description="Last update timestamp"),
             ] = ""
 
         class OICConnectionInfo(m.Entity):
@@ -125,7 +129,8 @@ class FlextOracleOicModels(m):
             status: Annotated[str, u.Field(description="Connection status")]
             connection_type: Annotated[str, u.Field(description="Connection type")]
             description: Annotated[
-                str, u.Field(description="Connection description")
+                str,
+                u.Field(description="Connection description"),
             ] = ""
 
         class IntegrationStatus(m.Entity):
@@ -145,7 +150,8 @@ class FlextOracleOicModels(m):
             ]
             status: Annotated[str, u.Field(description="Integration status")]
             last_updated: Annotated[
-                str, u.Field(description="Last update timestamp")
+                str,
+                u.Field(description="Last update timestamp"),
             ] = ""
             activated_by: Annotated[
                 str,

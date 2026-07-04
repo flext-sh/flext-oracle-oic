@@ -14,8 +14,7 @@ from collections.abc import (
     Mapping,
     Sequence,
 )
-from types import TracebackType
-from typing import Self, override
+from typing import TYPE_CHECKING, Self, override
 
 from flext_api import FlextApi, FlextApiSettings
 
@@ -23,6 +22,9 @@ from flext_core import r, s
 from flext_oracle_oic import c, m, p, t, u
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_oracle_oic.settings import FlextOracleOicSettings
+
+if TYPE_CHECKING:
+    from types import TracebackType
 
 
 class FlextOracleOicServiceBase(
@@ -147,7 +149,8 @@ class FlextOracleOicServiceBase(
         except c.EXC_NETWORK_TYPE as exc:
             u.fetch_logger(__name__).exception("Failed to list integrations")
             return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail_op(
-                "Integration listing", exc
+                "Integration listing",
+                exc,
             )
 
     def _list_integrations(
@@ -242,7 +245,7 @@ class FlextOracleOicServiceBase(
             .lash(
                 lambda error: r[bool].fail(
                     f"OAuth client ID validation: {error}",
-                )
+                ),
             )
         )
         client_secret_validation: p.Result[bool] = (
@@ -254,7 +257,7 @@ class FlextOracleOicServiceBase(
             .lash(
                 lambda error: r[bool].fail(
                     f"OAuth client secret validation: {error}",
-                )
+                ),
             )
         )
         token_url_validation: p.Result[bool] = (
@@ -264,7 +267,7 @@ class FlextOracleOicServiceBase(
             .lash(
                 lambda error: r[bool].fail(
                     f"OAuth token URL validation: {error}",
-                )
+                ),
             )
         )
         return (
@@ -280,7 +283,7 @@ class FlextOracleOicServiceBase(
             self._initialize_monitoring_client()
         except c.EXC_NETWORK_TYPE:
             u.fetch_logger(__name__).exception(
-                "Failed to initialize service components"
+                "Failed to initialize service components",
             )
             raise
 

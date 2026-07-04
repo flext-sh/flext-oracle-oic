@@ -14,9 +14,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import re
-from collections.abc import (
-    Mapping,
-)
 from enum import StrEnum, unique
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final
@@ -24,6 +21,10 @@ from typing import TYPE_CHECKING, Final
 from flext_auth import c
 
 if TYPE_CHECKING:
+    from collections.abc import (
+        Mapping,
+    )
+
     from flext_oracle_oic import t
 
 

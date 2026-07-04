@@ -19,4 +19,3 @@ class TestsFlextOracleOicExtension:
 
     def test_api_has_required_methods(self) -> None:
         """Test API class exposes expected methods."""
-        pass

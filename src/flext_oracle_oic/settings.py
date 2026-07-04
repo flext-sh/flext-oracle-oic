@@ -22,13 +22,15 @@ class FlextOracleOicSettings(FlextSettingsBase):
     OICApiVersion: ClassVar[type[c.OICApiVersion]] = c.OICApiVersion
 
     model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
-        env_prefix="FLEXT_ORACLE_OIC_", extra="ignore"
+        env_prefix="FLEXT_ORACLE_OIC_",
+        extra="ignore",
     )
 
     base_url: Annotated[t.NonEmptyStr, u.Field(default=c.OracleOic.DEFAULT_BASE_URL)]
     api_version: Annotated[c.OICApiVersion, u.Field(default=c.OICApiVersion.V1)]
     request_timeout: Annotated[
-        t.PositiveInt, u.Field(default=c.DEFAULT_TIMEOUT_SECONDS)
+        t.PositiveInt,
+        u.Field(default=c.DEFAULT_TIMEOUT_SECONDS),
     ]
     max_retries: Annotated[t.RetryCount, u.Field(default=c.MAX_RETRY_ATTEMPTS)]
     verify_ssl: Annotated[bool, u.Field(default=True)]
