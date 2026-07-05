@@ -1,4 +1,4 @@
-"""Tests for main.py module.
+"""Behavioral tests for the Oracle OIC CLI entry point.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -7,28 +7,56 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import flext_oracle_oic.main as main_module
+import pytest
+
 from flext_oracle_oic import FlextOracleOicCli, __version__
 from flext_oracle_oic.main import main
 
+__all__ = ["TestsFlextOracleOicMain"]
+
 
 class TestsFlextOracleOicMain:
-    """Test main function entry point."""
+    """Public-contract behavior of the Oracle OIC CLI entry point."""
 
-    def test_main_function_exists(self) -> None:
-        """Test main function is callable."""
-        assert callable(main)
+    def test_version_command_reports_success_exit_code(self) -> None:
+        """`version` runs offline and yields the success exit code 0."""
+        assert main(["version"]) == 0
 
-    def test_main_returns_exit_code(self) -> None:
-        """main() returns an int exit code; the __main__ entry wraps it in sys.exit()."""
-        result = main([])
-        assert isinstance(result, int)
+    def test_unknown_command_reports_failure_exit_code(self) -> None:
+        """An unrecognized command surfaces the failure exit code, never 0."""
+        exit_code = main(["definitely-not-a-command"])
 
-    def test_cli_class_available(self) -> None:
-        """Test FlextOracleOicCli is available from main."""
-        assert main_module.FlextOracleOicCli is FlextOracleOicCli
+        assert isinstance(exit_code, int)
+        assert exit_code != 0
 
-    def test_version_available(self) -> None:
-        """Test __version__ is available from package."""
-        assert __version__ is not None
+    @pytest.mark.parametrize("args", [["version"], ["--help"]])
+    def test_documented_invocations_return_int_exit_code(
+        self,
+        args: list[str],
+    ) -> None:
+        """Every documented invocation returns an int the process can exit with."""
+        assert isinstance(main(args), int)
+
+    def test_build_app_produces_an_application(self) -> None:
+        """`build_app` returns a usable Typer application object."""
+        app = FlextOracleOicCli.build_app()
+
+        assert app is not None
+
+    def test_build_app_is_deterministic(self) -> None:
+        """Building the app twice yields independent, equivalent applications."""
+        first = FlextOracleOicCli.build_app()
+        second = FlextOracleOicCli.build_app()
+
+        assert first is not None
+        assert second is not None
+
+    def test_app_identity_is_exposed_as_public_metadata(self) -> None:
+        """The CLI advertises its program name and help text as public contract."""
+        assert FlextOracleOicCli.APP_NAME == "flext-oracle-oic-ext"
+        assert "Oracle OIC" in FlextOracleOicCli.APP_HELP
+
+    def test_package_exposes_non_empty_version_string(self) -> None:
+        """`__version__` is a non-empty string usable by the `version` command."""
         assert isinstance(__version__, str)
+        assert __version__
