@@ -27,9 +27,7 @@ class TestsFlextOracleOicTypingsUnit:
         "base",
         [FlextTestsTypes, FlextOracleOicTypes],
     )
-    def test_facade_composes_both_type_domains(
-        self, base: type[object]
-    ) -> None:
+    def test_facade_composes_both_type_domains(self, base: type[object]) -> None:
         """Facade inherits from both the shared and OIC-specific type roots."""
         assert issubclass(t, base)
 

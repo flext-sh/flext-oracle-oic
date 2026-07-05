@@ -131,9 +131,7 @@ class TestsFlextOracleOicModelsUnit:
             config.verify_ssl = False
 
     @pytest.mark.parametrize("timeout", [0, -1, -30])
-    def test_connection_config_rejects_non_positive_timeout(
-        self, timeout: int
-    ) -> None:
+    def test_connection_config_rejects_non_positive_timeout(self, timeout: int) -> None:
         """request_timeout must be strictly positive."""
         with pytest.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig(
