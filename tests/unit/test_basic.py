@@ -117,7 +117,7 @@ class TestsFlextOracleOicBasic:
     )
     def test_auth_config_requires_mandatory_fields(self, missing: str) -> None:
         """Each required auth field is enforced at validation time."""
-        payload: dict[str, t.SecretStr | str] = {
+        payload: t.MutableMappingKV[str, t.SecretStr | str] = {
             "oauth_client_id": "id",
             "oauth_client_secret": t.SecretStr("secret"),
             "oauth_token_url": "https://token.example/oauth",

@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import FlextTestsTypes
+from flext_tests import t as tests_t
 
 from flext_oracle_oic import FlextOracleOicTypes
 from tests.typings import TestsFlextOracleOicTypes, t
@@ -25,7 +25,7 @@ class TestsFlextOracleOicTypingsUnit:
 
     @pytest.mark.parametrize(
         "base",
-        [FlextTestsTypes, FlextOracleOicTypes],
+        [tests_t, FlextOracleOicTypes],
     )
     def test_facade_composes_both_type_domains(self, base: type[object]) -> None:
         """Facade inherits from both the shared and OIC-specific type roots."""
@@ -45,7 +45,7 @@ class TestsFlextOracleOicTypingsUnit:
     )
     def test_members_resolve_to_the_root_definition(self, member: str) -> None:
         """MRO composition exposes each member without shadowing its root."""
-        assert getattr(t, member) is getattr(FlextTestsTypes, member)
+        assert getattr(t, member) is getattr(tests_t, member)
 
     def test_oic_domain_does_not_shadow_shared_json_value(self) -> None:
         """OIC extension reuses (not redefines) the shared ``JsonValue``."""
