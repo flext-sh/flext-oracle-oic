@@ -8,24 +8,16 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_oracle_oic.services.auth import (
-        FlextOracleOicAuthMixin as FlextOracleOicAuthMixin,
-    )
-    from flext_oracle_oic.services.base import (
-        FlextOracleOicServiceBase as FlextOracleOicServiceBase,
-    )
+    from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
+    from flext_oracle_oic.services.base import FlextOracleOicServiceBase
     from flext_oracle_oic.services.integration_crud import (
-        FlextOracleOicIntegrationCrudMixin as FlextOracleOicIntegrationCrudMixin,
+        FlextOracleOicIntegrationCrudMixin,
     )
     from flext_oracle_oic.services.integration_lifecycle import (
-        FlextOracleOicIntegrationLifecycleMixin as FlextOracleOicIntegrationLifecycleMixin,
+        FlextOracleOicIntegrationLifecycleMixin,
     )
-    from flext_oracle_oic.services.monitoring import (
-        FlextOracleOicMonitoringMixin as FlextOracleOicMonitoringMixin,
-    )
-    from flext_oracle_oic.services.orchestration import (
-        FlextOracleOicOrchestrationMixin as FlextOracleOicOrchestrationMixin,
-    )
+    from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
+    from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
 _LAZY_IMPORTS = build_lazy_import_map(
     {
         ".auth": ("FlextOracleOicAuthMixin",),
