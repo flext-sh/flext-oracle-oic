@@ -48,7 +48,7 @@ _LOCAL_LAZY_IMPORTS = build_lazy_import_map(
             "FlextOracleOicUtilities",
             "u",
         ),
-        "flext_core._root_typing_parts.facades": (
+        "flext_auth": (
             "d",
             "e",
             "h",
