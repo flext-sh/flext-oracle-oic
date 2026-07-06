@@ -24,7 +24,7 @@ from flext_oracle_oic.__version__ import (
 if TYPE_CHECKING:
     from flext_auth import d, e, h, r, x
 
-    from flext_oracle_oic.api import FlextOracleOicApi
+    from flext_oracle_oic.api import FlextOracleOicApi, oracle_oic
     from flext_oracle_oic.constants import FlextOracleOicConstants, c
     from flext_oracle_oic.main import FlextOracleOicCli, main
     from flext_oracle_oic.models import FlextOracleOicModels, m

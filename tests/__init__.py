@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from tests.unit.test_basic import TestsFlextOracleOicBasic
     from tests.unit.test_cli import TestsFlextOracleOicCli
     from tests.unit.test_config import TestsFlextOracleOicConfig
-    from tests.unit.test_ext_client import TestsFlextOracleOicExtClient
+    from tests.unit.test_ext_client import TestsFlextOracleOicExtClient, test_ext_client
     from tests.unit.test_ext_services import TestsFlextOracleOicExtServices
     from tests.unit.test_extension import TestsFlextOracleOicExtension
     from tests.unit.test_import import TestsFlextOracleOicImport
