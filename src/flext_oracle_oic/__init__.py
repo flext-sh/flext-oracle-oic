@@ -20,7 +20,6 @@ from flext_oracle_oic._exports import FLEXT_ORACLE_OIC_LAZY_IMPORTS
 
 if TYPE_CHECKING:
     from flext_core._root_typing_parts import d as d, e as e, h as h, r as r, x as x
-    from flext_oracle_oic import services as services
     from flext_oracle_oic.api import (
         FlextOracleOicApi as FlextOracleOicApi,
         oracle_oic as oracle_oic,
@@ -125,7 +124,6 @@ _PUBLIC_EXPORTS: tuple[str, ...] = (
     "p",
     "r",
     "s",
-    "services",
     "t",
     "u",
     "x",
@@ -165,7 +163,6 @@ __all__: tuple[str, ...] = (
     "p",
     "r",
     "s",
-    "services",
     "t",
     "u",
     "x",

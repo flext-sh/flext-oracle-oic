@@ -55,6 +55,13 @@ if TYPE_CHECKING:
     from tests.unit.test_config import (
         TestsFlextOracleOicConfig as TestsFlextOracleOicConfig,
     )
+    from tests.unit.test_ext_client import (
+        TestsFlextOracleOicExtClient as TestsFlextOracleOicExtClient,
+        test_ext_client as test_ext_client,
+    )
+    from tests.unit.test_ext_services import (
+        TestsFlextOracleOicExtServices as TestsFlextOracleOicExtServices,
+    )
     from tests.unit.test_extension import (
         TestsFlextOracleOicExtension as TestsFlextOracleOicExtension,
     )
@@ -105,6 +112,11 @@ _LAZY_IMPORTS = merge_lazy_imports(
             ".unit.test_basic": ("TestsFlextOracleOicBasic",),
             ".unit.test_cli": ("TestsFlextOracleOicCli",),
             ".unit.test_config": ("TestsFlextOracleOicConfig",),
+            ".unit.test_ext_client": (
+                "TestsFlextOracleOicExtClient",
+                "test_ext_client",
+            ),
+            ".unit.test_ext_services": ("TestsFlextOracleOicExtServices",),
             ".unit.test_extension": ("TestsFlextOracleOicExtension",),
             ".unit.test_import": ("TestsFlextOracleOicImport",),
             ".unit.test_main": ("TestsFlextOracleOicMain",),

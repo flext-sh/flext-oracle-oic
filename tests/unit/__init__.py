@@ -10,8 +10,11 @@ _LAZY_IMPORTS = build_lazy_import_map(
         ".test_basic": ("TestsFlextOracleOicBasic",),
         ".test_cli": ("TestsFlextOracleOicCli",),
         ".test_config": ("TestsFlextOracleOicConfig",),
-        ".test_ext_client": ("test_ext_client",),
-        ".test_ext_services": ("test_ext_services",),
+        ".test_ext_client": (
+            "TestsFlextOracleOicExtClient",
+            "test_ext_client",
+        ),
+        ".test_ext_services": ("TestsFlextOracleOicExtServices",),
         ".test_extension": ("TestsFlextOracleOicExtension",),
         ".test_import": ("TestsFlextOracleOicImport",),
         ".test_main": ("TestsFlextOracleOicMain",),
