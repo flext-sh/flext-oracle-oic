@@ -23,7 +23,6 @@ dependencies = [
   "flext-cli",
   "flext-core",
   "httpx>=0.28.1",
-  "meltano[edk] @ git+https://github.com/flext-sh/meltano.git@flext/relax-deps",
   "pydantic-core>=2.46.3",
   "pydantic-settings>=2.14.0",
   "pydantic>=2.13.3",
