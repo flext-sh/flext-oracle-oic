@@ -27,7 +27,7 @@ from flext_oracle_oic import (
     FlextOracleOicServiceBase,
     s,
 )
-from flext_oracle_oic.settings import FlextOracleOicSettings
+from flext_oracle_oic import FlextOracleOicSettings
 
 __all__: list[str] = ["TestsFlextOracleOicExtServices"]
 
