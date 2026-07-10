@@ -152,8 +152,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
 
 
 __all__: tuple[str, ...] = (
-    "FlextOracleOicSettings",
-    "settings",
     "FlextOracleOicApi",
     "FlextOracleOicAuthMixin",
     "FlextOracleOicCli",
@@ -166,6 +164,7 @@ __all__: tuple[str, ...] = (
     "FlextOracleOicProtocols",
     "FlextOracleOicService",
     "FlextOracleOicServiceBase",
+    "FlextOracleOicSettings",
     "FlextOracleOicTypes",
     "FlextOracleOicUtilities",
     "__author__",
@@ -186,6 +185,7 @@ __all__: tuple[str, ...] = (
     "p",
     "r",
     "s",
+    "settings",
     "t",
     "u",
     "x",
