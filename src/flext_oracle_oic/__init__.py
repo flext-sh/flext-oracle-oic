@@ -66,9 +66,6 @@ if TYPE_CHECKING:
     from flext_oracle_oic.services.orchestration import (
         FlextOracleOicOrchestrationMixin as FlextOracleOicOrchestrationMixin,
     )
-    from flext_oracle_oic.settings import (
-        FlextOracleOicSettings as FlextOracleOicSettings,
-    )
     from flext_oracle_oic.typings import (
         FlextOracleOicTypes as FlextOracleOicTypes,
         t as t,
@@ -81,6 +78,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
     (".services",),
     build_lazy_import_map(
         {
+            "._settings": ("FlextOracleOicSettings", "settings"),
             ".api": (
                 "FlextOracleOicApi",
                 "oracle_oic",
@@ -113,7 +111,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
             ),
             ".services.monitoring": ("FlextOracleOicMonitoringMixin",),
             ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
-            ".settings": ("FlextOracleOicSettings",),
             ".typings": (
                 "FlextOracleOicTypes",
                 "t",
@@ -155,6 +152,8 @@ _LAZY_IMPORTS = merge_lazy_imports(
 
 
 __all__: tuple[str, ...] = (
+    "FlextOracleOicSettings",
+    "settings",
     "FlextOracleOicApi",
     "FlextOracleOicAuthMixin",
     "FlextOracleOicCli",
@@ -167,7 +166,6 @@ __all__: tuple[str, ...] = (
     "FlextOracleOicProtocols",
     "FlextOracleOicService",
     "FlextOracleOicServiceBase",
-    "FlextOracleOicSettings",
     "FlextOracleOicTypes",
     "FlextOracleOicUtilities",
     "__author__",

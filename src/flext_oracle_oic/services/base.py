@@ -20,8 +20,8 @@ from flext_api import FlextApi, FlextApiSettings
 
 from flext_core import r, s
 from flext_oracle_oic import c, m, p, t, u
+from flext_oracle_oic._settings import FlextOracleOicSettings
 from flext_oracle_oic.ext_client import FlextOracleOicClient
-from flext_oracle_oic.settings import FlextOracleOicSettings
 
 if TYPE_CHECKING:
     from types import TracebackType
@@ -45,7 +45,7 @@ class FlextOracleOicServiceBase(
         Uses singleton settings pattern - no settings parameter needed.
         """
         super().__init__()
-        self._oic_settings: FlextOracleOicSettings = self.settings
+        self._oic_settings: FlextOracleOicSettings = settings
         self._client: FlextOracleOicClient | None = None
         self._monitoring_client: FlextApi | None = None
         self._authenticator: t.JsonValue | None = None
@@ -133,7 +133,6 @@ class FlextOracleOicServiceBase(
     @override
     def settings(self) -> FlextOracleOicSettings:
         """Return the typed Oracle OIC settings namespace."""
-        return FlextOracleOicSettings.fetch_global()
 
     def list_integrations(
         self,
@@ -203,18 +202,18 @@ class FlextOracleOicServiceBase(
             if validation_result.failure:
                 return r[FlextOracleOicClient].fail(validation_result.error)
             connection_config = m.OracleOic.OICConnectionConfig(
-                base_url=self._oic_settings.base_url,
-                api_version=self._oic_settings.api_version,
-                request_timeout=self._oic_settings.request_timeout,
-                max_retries=self._oic_settings.max_retries,
-                verify_ssl=self._oic_settings.verify_ssl,
+                base_url=self._oic_settings.OracleOic.base_url,
+                api_version=self._oic_settings.OracleOic.api_version,
+                request_timeout=self._oic_settings.OracleOic.request_timeout,
+                max_retries=self._oic_settings.OracleOic.max_retries,
+                verify_ssl=self._oic_settings.OracleOic.verify_ssl,
             )
             auth_config = m.OracleOic.OICAuthConfig(
-                oauth_client_id=self._oic_settings.oauth_client_id,
-                oauth_client_secret=self._oic_settings.oauth_client_secret,
-                oauth_token_url=self._oic_settings.oauth_token_url,
-                oauth_client_aud=self._oic_settings.oauth_client_aud,
-                oauth_scope=self._oic_settings.oauth_scope,
+                oauth_client_id=self._oic_settings.OracleOic.oauth_client_id,
+                oauth_client_secret=self._oic_settings.OracleOic.oauth_client_secret,
+                oauth_token_url=self._oic_settings.OracleOic.oauth_token_url,
+                oauth_client_aud=self._oic_settings.OracleOic.oauth_client_aud,
+                oauth_scope=self._oic_settings.OracleOic.oauth_scope,
             )
             self._client = FlextOracleOicClient(
                 connection_config=connection_config,
@@ -232,14 +231,14 @@ class FlextOracleOicServiceBase(
         settings = self._oic_settings
         base_url_validation: p.Result[bool] = (
             u.ConnectionValidation
-            .validate_base_url(settings.base_url)
+            .validate_base_url(settings.OracleOic.base_url)
             .map(lambda _: True)
             .lash(lambda error: r[bool].fail(f"Base URL validation: {error}"))
         )
         client_id_validation: p.Result[bool] = (
             u.AuthenticationValidation
             .validate_oauth_client_id(
-                settings.oauth_client_id,
+                settings.OracleOic.oauth_client_id,
             )
             .map(lambda _: True)
             .lash(
@@ -251,7 +250,7 @@ class FlextOracleOicServiceBase(
         client_secret_validation: p.Result[bool] = (
             u.AuthenticationValidation
             .validate_oauth_client_secret(
-                settings.oauth_client_secret,
+                t.SecretStr(settings.OracleOic.oauth_client_secret),
             )
             .map(lambda _: True)
             .lash(
@@ -262,7 +261,7 @@ class FlextOracleOicServiceBase(
         )
         token_url_validation: p.Result[bool] = (
             u.ConnectionValidation
-            .validate_base_url(settings.oauth_token_url)
+            .validate_base_url(settings.OracleOic.oauth_token_url)
             .map(lambda _: True)
             .lash(
                 lambda error: r[bool].fail(
@@ -289,7 +288,7 @@ class FlextOracleOicServiceBase(
 
     def _initialize_monitoring_client(self) -> None:
         """Initialize the monitoring client when monitoring is enabled."""
-        if not self._oic_settings.enable_monitoring:
+        if not self._oic_settings.OracleOic.enable_monitoring:
             return
         auth_token = ""
         if self._authenticator:
@@ -301,10 +300,10 @@ class FlextOracleOicServiceBase(
             "Content-Type": "application/json",
         }
         api_config = FlextApiSettings.model_validate({
-            "base_url": self._oic_settings.base_url,
-            "timeout": self._oic_settings.request_timeout,
-            "max_retries": self._oic_settings.max_retries,
-            "verify_ssl": self._oic_settings.verify_ssl,
+            "base_url": self._oic_settings.OracleOic.base_url,
+            "timeout": self._oic_settings.OracleOic.request_timeout,
+            "max_retries": self._oic_settings.OracleOic.max_retries,
+            "verify_ssl": self._oic_settings.OracleOic.verify_ssl,
             "default_headers": auth_headers,
             "headers": auth_headers,
             "log_requests": False,

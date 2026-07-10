@@ -53,7 +53,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 ),
                 "timestamp": asyncio.get_event_loop().time(),
             })
-        base = self._oic_settings.base_url.rstrip("/")
+        base = self._oic_settings.OracleOic.base_url.rstrip("/")
         health_url = f"{base}{c.API.ENDPOINT_HEALTH}"
         req = m.Api.HttpRequest(
             method=c.API.Method.GET,
@@ -61,7 +61,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             headers={},
             body={},
             query_params={},
-            timeout=float(self._oic_settings.request_timeout),
+            timeout=float(self._oic_settings.OracleOic.request_timeout),
         )
         response_result = self._monitoring_client.request(req)
         if response_result.failure:
@@ -162,7 +162,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 **base_metrics,
                 "timestamp": asyncio.get_event_loop().time(),
             })
-        base = self._oic_settings.base_url.rstrip("/")
+        base = self._oic_settings.OracleOic.base_url.rstrip("/")
         metrics_url = f"{base}/ic/api/integration/v1/metrics"
         req = m.Api.HttpRequest(
             method=c.API.Method.GET,
@@ -170,7 +170,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             headers={},
             body={},
             query_params={},
-            timeout=float(self._oic_settings.request_timeout),
+            timeout=float(self._oic_settings.OracleOic.request_timeout),
         )
         response_result = self._monitoring_client.request(req)
         if response_result.failure:

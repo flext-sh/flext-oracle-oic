@@ -18,7 +18,6 @@ from flext_core import r
 from flext_oracle_oic import c, p, t
 from flext_oracle_oic.__version__ import __version__
 from flext_oracle_oic.service import FlextOracleOicService
-from flext_oracle_oic.settings import FlextOracleOicSettings
 
 if TYPE_CHECKING:
     from flext_oracle_oic.models import FlextOracleOicModels
@@ -37,7 +36,6 @@ class _TestConnectionCommand(cli_m.BaseModel):
     @staticmethod
     def _execute_connection_test() -> p.Result[bool]:
         """Execute the Oracle OIC connection test."""
-        FlextOracleOicSettings.create_for_development()
         service = FlextOracleOicService()
         with service:
             connection_result = service.test_connection()
@@ -62,7 +60,6 @@ class _ListIntegrationsCommand(cli_m.BaseModel):
     @staticmethod
     def _execute_list_integrations() -> p.Result[bool]:
         """Execute Oracle OIC integration listing."""
-        FlextOracleOicSettings.create_for_development()
         service = FlextOracleOicService()
         integrations_result = service.list_integrations()
         if integrations_result.failure:
