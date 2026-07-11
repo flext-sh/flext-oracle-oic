@@ -15,7 +15,7 @@ from collections.abc import Callable
 
 import pytest
 
-from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, p, t
+from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, c, p, t
 from flext_oracle_oic.api import oracle_oic
 
 
@@ -26,9 +26,11 @@ class TestsFlextOracleOicExtension:
     def settings(self) -> FlextOracleOicSettings:
         """Deterministic in-memory settings with distinctive values."""
         return FlextOracleOicSettings.model_validate({
-            "base_url": "https://custom.example.com",
-            "oauth_client_id": "client-abc",
-            "oauth_scope": "urn:opc:idm:__myscopes__",
+            "OracleOic": {
+                "base_url": "https://custom.example.com",
+                "oauth_client_id": "client-abc",
+                "oauth_scope": "urn:opc:idm:__myscopes__",
+            },
         })
 
     @pytest.fixture
@@ -97,7 +99,7 @@ class TestsFlextOracleOicExtension:
         ("key", "expected"),
         [
             ("base_url", "https://custom.example.com"),
-            ("api_version", FlextOracleOicSettings.OICApiVersion.V1),
+            ("api_version", c.OICApiVersion.V1),
         ],
     )
     def test_connection_context_keys(

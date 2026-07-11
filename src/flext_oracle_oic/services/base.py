@@ -45,7 +45,11 @@ class FlextOracleOicServiceBase(
         Uses singleton settings pattern - no settings parameter needed.
         """
         super().__init__()
-        self._oic_settings: FlextOracleOicSettings = settings
+        # NOTE: singleton resolved via fetch_global(), matching the flext-auth
+        # services pattern (no facade-level settings import in layer-1 code).
+        self._oic_settings: FlextOracleOicSettings = (
+            FlextOracleOicSettings.fetch_global()
+        )
         self._client: FlextOracleOicClient | None = None
         self._monitoring_client: FlextApi | None = None
         self._authenticator: t.JsonValue | None = None
@@ -133,6 +137,7 @@ class FlextOracleOicServiceBase(
     @override
     def settings(self) -> FlextOracleOicSettings:
         """Return the typed Oracle OIC settings namespace."""
+        return self._oic_settings
 
     def list_integrations(
         self,

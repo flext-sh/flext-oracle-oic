@@ -208,25 +208,25 @@ class FlextOracleOicApi(FlextOracleOicService):
     def fetch_auth_context(self) -> p.Result[t.JsonMapping]:
         """Return the current authentication configuration context (ENFORCE-056)."""
         return r[t.JsonMapping].ok({
-            "oauth_client_id": self._oic_config.oauth_client_id,
-            "oauth_token_url": self._oic_config.oauth_token_url,
-            "oauth_scope": self._oic_config.oauth_scope,
+            "oauth_client_id": self._oic_config.OracleOic.oauth_client_id,
+            "oauth_token_url": self._oic_config.OracleOic.oauth_token_url,
+            "oauth_scope": self._oic_config.OracleOic.oauth_scope,
         })
 
     def fetch_connection_context(self) -> p.Result[t.JsonMapping]:
         """Return the current connection configuration context (ENFORCE-056)."""
         return r[t.JsonMapping].ok({
-            "base_url": self._oic_config.base_url,
-            "api_version": self._oic_config.api_version,
-            "request_timeout": self._oic_config.request_timeout,
+            "base_url": self._oic_config.OracleOic.base_url,
+            "api_version": self._oic_config.OracleOic.api_version,
+            "request_timeout": self._oic_config.OracleOic.request_timeout,
         })
 
     def fetch_features_context(self) -> p.Result[t.JsonMapping]:
         """Return the current features configuration context (ENFORCE-056)."""
         return r[t.JsonMapping].ok({
-            "enable_monitoring": self._oic_config.enable_monitoring,
-            "use_ssl": self._oic_config.use_ssl,
-            "verify_ssl": self._oic_config.verify_ssl,
+            "enable_monitoring": self._oic_config.OracleOic.enable_monitoring,
+            "use_ssl": self._oic_config.OracleOic.use_ssl,
+            "verify_ssl": self._oic_config.OracleOic.verify_ssl,
         })
 
     @override

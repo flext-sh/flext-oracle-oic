@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Annotated
 
 from pydantic import BaseModel, Field
 from pydantic_settings import SettingsConfigDict
@@ -48,9 +48,16 @@ class FlextOracleOicSettings(FlextSettings):
         enable_orchestration: bool = True
         oauth_client_id: str = ""
         oauth_client_secret: str = ""
-        oauth_token_url: str = (
-            "https://localhost.integration.ocp.oraclecloud.com/oauth/token"
-        )
+        # NOTE (S105): a public OAuth endpoint URL is configuration, not a
+        # secret; Field(default=...) matches the flext-auth layer-0 settings
+        # pattern for non-secret URL defaults.
+        oauth_token_url: Annotated[
+            str,
+            Field(
+                default="https://localhost.integration.ocp.oraclecloud.com/oauth/token",
+                description="IDCS OAuth2 token endpoint URL",
+            ),
+        ]
         oauth_client_aud: str = ""
         oauth_scope: str = ""
 

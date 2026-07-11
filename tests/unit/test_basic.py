@@ -1,8 +1,10 @@
 """Behavioral tests for flext-oracle-oic public settings and config models.
 
-Exercises the observable public contract of FlextOracleOicSettings and the
-OICAuthConfig / OICConnectionConfig models: default values, explicit overrides,
-enum coercion, secret handling, validation error paths, and idempotence.
+Exercises the observable public contract of FlextOracleOicSettings (ADR-005:
+flat scalars namespaced under ``settings.OracleOic.*``) and the
+OICAuthConfig / OICConnectionConfig domain models (range/enum validation lives
+at this boundary, not in settings): default values, explicit overrides, secret
+handling, validation error paths, and idempotence.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -26,25 +28,29 @@ class TestsFlextOracleOicBasic:
     def test_settings_apply_defaults_when_empty(self) -> None:
         """Empty input yields fully-defaulted, usable settings."""
         settings = FlextOracleOicSettings.model_validate({})
+        ns = settings.OracleOic
 
-        assert settings.base_url == c.OracleOic.DEFAULT_BASE_URL
-        assert settings.api_version == c.OICApiVersion.V1
-        assert settings.request_timeout == c.DEFAULT_TIMEOUT_SECONDS
-        assert settings.max_retries == c.MAX_RETRY_ATTEMPTS
-        assert settings.verify_ssl is True
+        assert ns.base_url == c.OracleOic.DEFAULT_BASE_URL
+        assert ns.api_version == c.OracleOic.DEFAULT_API_VERSION
+        assert ns.request_timeout == c.DEFAULT_TIMEOUT_SECONDS
+        assert ns.max_retries == c.MAX_RETRY_ATTEMPTS
+        assert ns.verify_ssl is True
 
     def test_settings_preserve_explicit_overrides(self) -> None:
-        """Explicit values override defaults on the public fields."""
+        """Explicit values override defaults on the namespaced fields."""
         settings = FlextOracleOicSettings.model_validate({
-            "base_url": "https://test.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id",
-            "oauth_client_secret": "test_client_secret",
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+            "OracleOic": {
+                "base_url": "https://test.integration.ocp.oraclecloud.com",
+                "oauth_client_id": "test_client_id",
+                "oauth_client_secret": "test_client_secret",
+                "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+            },
         })
+        ns = settings.OracleOic
 
-        assert settings.base_url == "https://test.integration.ocp.oraclecloud.com"
-        assert settings.oauth_client_id == "test_client_id"
-        assert settings.oauth_token_url.endswith("/oauth2/v1/token")
+        assert ns.base_url == "https://test.integration.ocp.oraclecloud.com"
+        assert ns.oauth_client_id == "test_client_id"
+        assert ns.oauth_token_url.endswith("/oauth2/v1/token")
 
     def test_settings_ignore_unknown_keys(self) -> None:
         """Unknown keys are ignored per the extra=ignore contract."""
@@ -53,7 +59,7 @@ class TestsFlextOracleOicBasic:
         })
 
         assert "not_a_real_setting" not in settings.model_dump()
-        assert settings.base_url == c.OracleOic.DEFAULT_BASE_URL
+        assert settings.OracleOic.base_url == c.OracleOic.DEFAULT_BASE_URL
 
     @pytest.mark.parametrize(
         ("raw", "expected"),
@@ -62,41 +68,40 @@ class TestsFlextOracleOicBasic:
             ("v2", c.OICApiVersion.V2),
         ],
     )
-    def test_settings_coerce_valid_api_version(
+    def test_settings_preserve_api_version_scalar(
         self, raw: str, expected: c.OICApiVersion
     ) -> None:
-        """Valid api_version strings coerce to the enum member."""
-        settings = FlextOracleOicSettings.model_validate({"api_version": raw})
-
-        assert settings.api_version == expected
-
-    def test_settings_reject_invalid_api_version(self) -> None:
-        """Unknown api_version fails validation, never a silent fallback."""
-        with pytest.raises(c.ValidationError):
-            FlextOracleOicSettings.model_validate({"api_version": "v99"})
-
-    def test_settings_reject_non_positive_timeout(self) -> None:
-        """request_timeout enforces its positive-int constraint."""
-        with pytest.raises(c.ValidationError):
-            FlextOracleOicSettings.model_validate({"request_timeout": -1})
-
-    def test_settings_secret_is_masked_in_dump(self) -> None:
-        """The client secret round-trips as a SecretStr, not plaintext."""
+        """api_version is a plain scalar; the enum contract lives in c."""
         settings = FlextOracleOicSettings.model_validate({
-            "oauth_client_secret": "s3cr3t",
+            "OracleOic": {"api_version": raw},
         })
 
-        assert isinstance(settings.oauth_client_secret, t.SecretStr)
-        assert settings.oauth_client_secret.get_secret_value() == "s3cr3t"
-        assert "s3cr3t" not in str(settings.model_dump()["oauth_client_secret"])
+        assert settings.OracleOic.api_version == raw
+        assert settings.OracleOic.api_version == expected
 
-    def test_create_for_development_is_deterministic(self) -> None:
-        """The development factory yields stable, equal settings."""
-        first = FlextOracleOicSettings.create_for_development()
-        second = FlextOracleOicSettings.create_for_development()
+    def test_settings_accept_unvalidated_scalars(self) -> None:
+        """Settings carry raw scalars; range checks live at the domain boundary."""
+        settings = FlextOracleOicSettings.model_validate({
+            "OracleOic": {"request_timeout": -1},
+        })
 
-        assert first.base_url == c.OracleOic.DEFAULT_BASE_URL
-        assert first.api_version == c.OICApiVersion.V1
+        assert settings.OracleOic.request_timeout == -1
+
+    def test_settings_secret_is_plain_scalar(self) -> None:
+        """At the settings layer the OAuth secret is an env-provided plain str."""
+        settings = FlextOracleOicSettings.model_validate({
+            "OracleOic": {"oauth_client_secret": "s3cr3t"},
+        })
+
+        assert settings.OracleOic.oauth_client_secret == "s3cr3t"
+
+    def test_default_construction_is_deterministic(self) -> None:
+        """Default construction yields stable, equal settings."""
+        first = FlextOracleOicSettings.model_validate({})
+        second = FlextOracleOicSettings.model_validate({})
+
+        assert first.OracleOic.base_url == c.OracleOic.DEFAULT_BASE_URL
+        assert first.OracleOic.api_version == c.OICApiVersion.V1
         assert first.model_dump() == second.model_dump()
 
     def test_auth_config_exposes_provided_credentials(self) -> None:
