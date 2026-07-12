@@ -121,7 +121,10 @@ class TestsFlextOracleOicConfig:
             "nonexistent_field": "whatever",
         })
 
-        assert settings.OracleOic.base_url == "https://custom.integration.ocp.oraclecloud.com"
+        assert (
+            settings.OracleOic.base_url
+            == "https://custom.integration.ocp.oraclecloud.com"
+        )
         assert not hasattr(settings, "nonexistent_field")
 
     @pytest.mark.parametrize(
