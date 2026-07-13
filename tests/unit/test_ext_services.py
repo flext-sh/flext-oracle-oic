@@ -16,9 +16,9 @@ from __future__ import annotations
 from collections.abc import Iterator
 
 import pytest
+from flext_tests import tm
 
 from flext_oracle_oic import (
-from flext_tests import tm
     FlextOracleOicAuthMixin,
     FlextOracleOicIntegrationCrudMixin,
     FlextOracleOicIntegrationLifecycleMixin,
