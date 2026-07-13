@@ -15,7 +15,7 @@ import pytest
 from pydantic import ValidationError
 
 from flext_oracle_oic import FlextOracleOicSettings, c
-from tests.models import m
+from tests import m
 
 __all__: list[str] = ["TestsFlextOracleOicConfig"]
 

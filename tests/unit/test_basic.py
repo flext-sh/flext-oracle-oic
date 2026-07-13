@@ -16,8 +16,7 @@ from __future__ import annotations
 import pytest
 
 from flext_oracle_oic import FlextOracleOicSettings, c
-from tests.models import m
-from tests.typings import t
+from tests import m, t
 
 __all__: list[str] = ["TestsFlextOracleOicBasic"]
 

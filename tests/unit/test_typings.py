@@ -11,7 +11,7 @@ import pytest
 from flext_tests import t as tests_t
 
 from flext_oracle_oic import FlextOracleOicTypes
-from tests.typings import TestsFlextOracleOicTypes, t
+from tests import TestsFlextOracleOicTypes, t
 
 __all__: list[str] = ["TestsFlextOracleOicTypingsUnit"]
 

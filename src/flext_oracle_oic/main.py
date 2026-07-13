@@ -20,7 +20,7 @@ from flext_oracle_oic.__version__ import __version__
 from flext_oracle_oic.service import FlextOracleOicService
 
 if TYPE_CHECKING:
-    from flext_oracle_oic.models import FlextOracleOicModels
+    from flext_oracle_oic import FlextOracleOicModels
 
 
 class _TestConnectionCommand(cli_m.BaseModel):
