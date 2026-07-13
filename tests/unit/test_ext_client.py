@@ -10,6 +10,7 @@ from __future__ import annotations
 import base64
 
 import pytest
+from flext_tests import tm
 
 from flext_oracle_oic import m
 from flext_oracle_oic.ext_client import FlextOracleOicClient
@@ -53,7 +54,7 @@ class TestsFlextOracleOicExtClient:
 
         decoded = base64.b64decode(encoded).decode()
 
-        assert decoded == "client-42:s3cr3t"
+        tm.that(decoded, eq="client-42:s3cr3t")
 
     def test_oauth_request_body_uses_scope_when_no_audience(
         self,
@@ -73,10 +74,13 @@ class TestsFlextOracleOicExtClient:
 
         body = client.get_oauth_request_body()
 
-        assert body == {
-            "grant_type": "client_credentials",
-            "scope": "urn:opc:resource:consumer:custom",
-        }
+        tm.that(
+            body,
+            eq={
+                "grant_type": "client_credentials",
+                "scope": "urn:opc:resource:consumer:custom",
+            },
+        )
 
     def test_oauth_request_body_defaults_scope_when_empty(
         self,
@@ -85,8 +89,8 @@ class TestsFlextOracleOicExtClient:
         """An empty scope with no audience falls back to the consumer default."""
         body = client.get_oauth_request_body()
 
-        assert body["grant_type"] == "client_credentials"
-        assert body["scope"] == "urn:opc:resource:consumer:all"
+        tm.that(body["grant_type"], eq="client_credentials")
+        tm.that(body["scope"], eq="urn:opc:resource:consumer:all")
 
     def test_oauth_request_body_composes_audience_scopes(
         self,
@@ -106,8 +110,8 @@ class TestsFlextOracleOicExtClient:
 
         scope = client.get_oauth_request_body()["scope"]
 
-        assert "https://oic.example.com:443urn:opc:resource:consumer:all" in scope
-        assert "https://oic.example.com:443/ic/api/" in scope
+        tm.that(scope, has="https://oic.example.com:443urn:opc:resource:consumer:all")
+        tm.that(scope, has="https://oic.example.com:443/ic/api/")
 
     def test_get_access_token_fails_when_token_url_missing(
         self,
@@ -126,9 +130,9 @@ class TestsFlextOracleOicExtClient:
 
         result = client.get_access_token()
 
-        assert result.failure
-        assert result.error is not None
-        assert "OAuth token URL not configured" in result.error
+        tm.fail(result)
+        tm.that(result.error, none=False)
+        tm.that(result.error, has="OAuth token URL not configured")
 
     def test_context_manager_yields_same_instance(
         self,

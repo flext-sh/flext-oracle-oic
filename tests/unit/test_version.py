@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from flext_tests import tm
+
 from flext_oracle_oic import __version__, __version_info__
 
 
@@ -17,22 +19,22 @@ class TestsFlextOracleOicVersion:
 
     def test_version_is_non_empty_string(self) -> None:
         """__version__ is a non-empty string."""
-        assert isinstance(__version__, str)
-        assert __version__.strip() == __version__
+        tm.that(__version__, is_=str)
+        tm.that(__version__.strip(), eq=__version__)
         assert len(__version__) >= 1
 
     def test_version_info_is_non_empty_tuple(self) -> None:
         """__version_info__ is a non-empty tuple."""
-        assert isinstance(__version_info__, tuple)
+        tm.that(__version_info__, is_=tuple)
         assert len(__version_info__) >= 1
 
     def test_version_info_starts_with_three_integer_components(self) -> None:
         """The first three components form a major.minor.patch integer triple."""
         assert len(__version_info__) >= 3
         major, minor, patch = __version_info__[:3]
-        assert isinstance(major, int)
-        assert isinstance(minor, int)
-        assert isinstance(patch, int)
+        tm.that(major, is_=int)
+        tm.that(minor, is_=int)
+        tm.that(patch, is_=int)
         assert major >= 0
         assert minor >= 0
         assert patch >= 0
@@ -40,15 +42,15 @@ class TestsFlextOracleOicVersion:
     def test_version_info_trailing_components_are_strings(self) -> None:
         """Any component beyond the numeric triple is a pre-release string."""
         for part in __version_info__[3:]:
-            assert isinstance(part, str)
-            assert part != ""
+            tm.that(part, is_=str)
+            tm.that(part, ne="")
 
     def test_version_string_matches_version_info(self) -> None:
         """__version__ equals the tuple components joined by dots (single SSOT)."""
         rebuilt = ".".join(str(part) for part in __version_info__)
-        assert __version__ == rebuilt
+        tm.that(__version__, eq=rebuilt)
 
     def test_version_string_numeric_prefix_matches_info(self) -> None:
         """The dotted numeric prefix of __version__ matches the integer triple."""
         numeric_prefix = __version__.split(".")[:3]
-        assert numeric_prefix == [str(part) for part in __version_info__[:3]]
+        tm.that(numeric_prefix, eq=[str(part) for part in __version_info__[:3]])

@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_tests import tm
 
 import flext_oracle_oic
 from flext_oracle_oic import FlextOracleOicSettings
@@ -35,8 +36,8 @@ class TestsFlextOracleOicImport:
     )
     def test_package_publishes_documented_export(self, export_name: str) -> None:
         """Every advertised name in __all__ resolves to a real attribute."""
-        assert export_name in flext_oracle_oic.__all__
-        assert getattr(flext_oracle_oic, export_name) is not None
+        tm.that(flext_oracle_oic.__all__, has=export_name)
+        tm.that(getattr(flext_oracle_oic, export_name), none=False)
 
     def test_package_entrypoint_is_callable(self) -> None:
         """The published main entrypoint is invocable."""
@@ -45,7 +46,7 @@ class TestsFlextOracleOicImport:
     def test_version_metadata_matches_version_info_tuple(self) -> None:
         """__version__ string is consistent with the __version_info__ tuple."""
         info = flext_oracle_oic.__version_info__
-        assert isinstance(info, tuple)
+        tm.that(info, is_=tuple)
         assert flext_oracle_oic.__version__.startswith(
             ".".join(str(part) for part in info[:3])
         )
@@ -73,9 +74,9 @@ class TestsFlextOracleOicImport:
                 "max_retries": 7,
             }
         )
-        assert settings.OracleOic.base_url == "https://tenant.example.com"
-        assert settings.OracleOic.request_timeout == 99
-        assert settings.OracleOic.max_retries == 7
+        tm.that(settings.OracleOic.base_url, eq="https://tenant.example.com")
+        tm.that(settings.OracleOic.request_timeout, eq=99)
+        tm.that(settings.OracleOic.max_retries, eq=7)
 
     def test_settings_round_trip_via_model_dump(self) -> None:
         """model_dump output re-validates into an equivalent settings instance."""
@@ -83,8 +84,10 @@ class TestsFlextOracleOicImport:
             OracleOic={"request_timeout": 45, "max_retries": 2}
         )
         restored = FlextOracleOicSettings.model_validate(original.model_dump())
-        assert restored.OracleOic.request_timeout == original.OracleOic.request_timeout
-        assert restored.OracleOic.max_retries == original.OracleOic.max_retries
+        tm.that(
+            restored.OracleOic.request_timeout, eq=original.OracleOic.request_timeout
+        )
+        tm.that(restored.OracleOic.max_retries, eq=original.OracleOic.max_retries)
 
     @pytest.mark.parametrize("invalid_timeout", [-5, 0])
     def test_settings_accept_raw_scalars_without_range_checks(
@@ -94,4 +97,4 @@ class TestsFlextOracleOicImport:
         settings = FlextOracleOicSettings(
             OracleOic={"request_timeout": invalid_timeout}
         )
-        assert settings.OracleOic.request_timeout == invalid_timeout
+        tm.that(settings.OracleOic.request_timeout, eq=invalid_timeout)

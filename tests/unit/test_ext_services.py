@@ -18,6 +18,7 @@ from collections.abc import Iterator
 import pytest
 
 from flext_oracle_oic import (
+from flext_tests import tm
     FlextOracleOicAuthMixin,
     FlextOracleOicIntegrationCrudMixin,
     FlextOracleOicIntegrationLifecycleMixin,
@@ -83,7 +84,7 @@ class TestsFlextOracleOicExtServices:
         mixin: type[FlextOracleOicServiceBase],
     ) -> None:
         """The facade is-a every domain mixin it advertises composing."""
-        assert isinstance(unconfigured_service, mixin)
+        tm.that(unconfigured_service, is_=mixin)
 
     def test_module_alias_s_is_the_service_class(self) -> None:
         """The short ``s`` alias resolves to the service facade class."""
@@ -146,7 +147,7 @@ class TestsFlextOracleOicExtServices:
             case _:
                 result = svc.test_connection()
 
-        assert result.failure
+        tm.fail(result)
         assert result.error
 
     def test_execute_delegates_to_integration_listing(
@@ -168,8 +169,8 @@ class TestsFlextOracleOicExtServices:
         """Token refresh fails with an explicit missing-authenticator error."""
         result = unconfigured_service.refresh_auth_token()
 
-        assert result.failure
-        assert result.error == "Authenticator not initialized"
+        tm.fail(result)
+        tm.that(result.error, eq="Authenticator not initialized")
 
     @pytest.mark.parametrize("token", ["", "some-token", "expired.jwt.value"])
     def test_validate_auth_token_reports_missing_authenticator(
@@ -180,8 +181,8 @@ class TestsFlextOracleOicExtServices:
         """Token validation fails identically regardless of the token value."""
         result = unconfigured_service.validate_auth_token(token)
 
-        assert result.failure
-        assert result.error == "Authenticator not initialized"
+        tm.fail(result)
+        tm.that(result.error, eq="Authenticator not initialized")
 
     # -- business-rule validation contract ------------------------------------
 
@@ -193,9 +194,9 @@ class TestsFlextOracleOicExtServices:
         result = unconfigured_service.validate_business_rules()
         error = result.error
 
-        assert result.failure
-        assert error is not None
-        assert "validation" in error.lower()
+        tm.fail(result)
+        tm.that(error, none=False)
+        tm.that(error.lower(), has="validation")
 
     def test_business_rules_pass_with_valid_credentials(
         self,
@@ -204,8 +205,8 @@ class TestsFlextOracleOicExtServices:
         """Valid OAuth credentials satisfy business-rule validation."""
         result = configured_service.validate_business_rules()
 
-        assert result.success
-        assert result.value is True
+        tm.ok(result)
+        tm.that(result.value, eq=True)
 
     def test_business_rules_validation_is_idempotent(
         self,
@@ -216,4 +217,4 @@ class TestsFlextOracleOicExtServices:
         second = configured_service.validate_business_rules()
 
         assert first.success is second.success is True
-        assert first.value == second.value
+        tm.that(first.value, eq=second.value)
