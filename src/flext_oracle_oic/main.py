@@ -117,7 +117,7 @@ class FlextOracleOicCli:
     )
 
     @classmethod
-    def build_app(cls) -> t.Cli.CliApp:
+    def build_app(cls) -> p.Cli.Application:
         """Build the Typer application with the registered commands."""
         app = cli.create_app_with_common_params(
             name=cls.APP_NAME,
