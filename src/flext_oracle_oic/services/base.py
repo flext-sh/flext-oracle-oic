@@ -136,7 +136,7 @@ class FlextOracleOicServiceBase(
     @property
     @override
     def settings(self) -> FlextOracleOicSettings:
-        """Return the typed Oracle OIC settings namespace."""
+        """The typed Oracle OIC settings namespace."""
         return self._oic_settings
 
     def list_integrations(
