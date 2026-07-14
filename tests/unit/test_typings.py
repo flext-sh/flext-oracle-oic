@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import t as tests_t
+from flext_tests import t as tests_t, tm
 
 from flext_oracle_oic import FlextOracleOicTypes
 from tests import TestsFlextOracleOicTypes, t
@@ -37,7 +37,7 @@ class TestsFlextOracleOicTypingsUnit:
     )
     def test_inherited_type_members_are_exposed(self, member: str) -> None:
         """Domain type members are reachable through the composed facade."""
-        assert getattr(t, member, None) is not None
+        tm.that(getattr(t, member, None), none=False)
 
     @pytest.mark.parametrize(
         "member",
