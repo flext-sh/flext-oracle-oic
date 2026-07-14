@@ -46,7 +46,7 @@ if TYPE_CHECKING:
     )
     from flext_oracle_oic.protocols import (
         FlextOracleOicProtocols as FlextOracleOicProtocols,
-        p as p,
+        p,
     )
     from flext_oracle_oic.service import (
         FlextOracleOicService as FlextOracleOicService,
@@ -76,7 +76,7 @@ if TYPE_CHECKING:
     )
     from flext_oracle_oic.utilities import (
         FlextOracleOicUtilities as FlextOracleOicUtilities,
-        u as u,
+        u,
     )
 _LAZY_IMPORTS = merge_lazy_imports(
     (".services",),
