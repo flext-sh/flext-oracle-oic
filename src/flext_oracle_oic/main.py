@@ -11,16 +11,13 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import sys
-from typing import TYPE_CHECKING, ClassVar
+from typing import ClassVar
 
 from flext_cli import cli, m as cli_m
 from flext_core import r
-from flext_oracle_oic import c, p, t
+from flext_oracle_oic import FlextOracleOicModels, c, p, t
 from flext_oracle_oic.__version__ import __version__
 from flext_oracle_oic.service import FlextOracleOicService
-
-if TYPE_CHECKING:
-    from flext_oracle_oic import FlextOracleOicModels
 
 
 class _TestConnectionCommand(cli_m.BaseModel):
