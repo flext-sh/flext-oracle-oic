@@ -35,7 +35,7 @@ class FlextOracleOicConstants(c):
     Usage:
     ```python
     from flext_oracle_oic import FlextOracleOicConstants
-    from flext_oracle_oic import t
+    from flext_oracle_oic import p, t
 
     # Access Oracle OIC specific constants
     api_version = FlextOracleOicConstants.OracleOic.DEFAULT_API_VERSION

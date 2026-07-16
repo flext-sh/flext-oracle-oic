@@ -21,7 +21,7 @@ from typing import Self
 
 from flext_api import FlextApi, FlextApiConstants, FlextApiSettings
 
-from flext_oracle_oic import c, m, p, r, t, u
+from flext_oracle_oic import c, p, r, t, u
 
 
 class FlextOracleOicClient:
@@ -34,8 +34,8 @@ class FlextOracleOicClient:
 
     def __init__(
         self,
-        connection_config: m.OracleOic.OICConnectionConfig,
-        auth_config: m.OracleOic.OICAuthConfig,
+        connection_config: p.OracleOic.OICConnectionConfig,
+        auth_config: p.OracleOic.OICAuthConfig,
     ) -> None:
         """Initialize unified Oracle OIC client.
 

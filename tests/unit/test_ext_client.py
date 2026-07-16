@@ -36,8 +36,8 @@ class TestsFlextOracleOicExtClient:
     @pytest.fixture
     def client(
         self,
-        connection_config: m.OracleOic.OICConnectionConfig,
-        auth_config: m.OracleOic.OICAuthConfig,
+        connection_config: p.OracleOic.OICConnectionConfig,
+        auth_config: p.OracleOic.OICAuthConfig,
     ) -> FlextOracleOicClient:
         """Return a client wired with valid configuration objects."""
         return FlextOracleOicClient(
@@ -58,7 +58,7 @@ class TestsFlextOracleOicExtClient:
 
     def test_oauth_request_body_uses_scope_when_no_audience(
         self,
-        connection_config: m.OracleOic.OICConnectionConfig,
+        connection_config: p.OracleOic.OICConnectionConfig,
     ) -> None:
         """Without audience, the configured scope drives the request body."""
         auth = m.OracleOic.OICAuthConfig(
@@ -94,7 +94,7 @@ class TestsFlextOracleOicExtClient:
 
     def test_oauth_request_body_composes_audience_scopes(
         self,
-        connection_config: m.OracleOic.OICConnectionConfig,
+        connection_config: p.OracleOic.OICConnectionConfig,
     ) -> None:
         """A configured audience yields both resource and api scope fragments."""
         auth = m.OracleOic.OICAuthConfig(
@@ -115,7 +115,7 @@ class TestsFlextOracleOicExtClient:
 
     def test_get_access_token_fails_when_token_url_missing(
         self,
-        connection_config: m.OracleOic.OICConnectionConfig,
+        connection_config: p.OracleOic.OICConnectionConfig,
     ) -> None:
         """A blank token URL short-circuits to a failure result, no network."""
         auth = m.OracleOic.OICAuthConfig(
