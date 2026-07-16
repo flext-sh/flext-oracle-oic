@@ -2,7 +2,7 @@
 
 # flext-oracle-oic Documentation
 
-- Version: `0.12.0-dev`
+- Version: `0.12.0`
 - Project class: `domain`
 - Package: `flext_oracle_oic`
 - Description: FLEXT Oracle OIC Extension - Advanced Oracle Integration Cloud Extensions
