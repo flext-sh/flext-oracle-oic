@@ -20,12 +20,12 @@ class TestsFlextOracleOicExtClient:
     """Observable-behavior tests for the unified Oracle OIC client."""
 
     @pytest.fixture
-    def connection_config(self) -> m.OracleOic.OICConnectionConfig:
+    def connection_config(self) -> p.OracleOic.OICConnectionConfig:
         """Return a valid in-memory OIC connection configuration."""
         return m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
 
     @pytest.fixture
-    def auth_config(self) -> m.OracleOic.OICAuthConfig:
+    def auth_config(self) -> p.OracleOic.OICAuthConfig:
         """Return a valid in-memory OIC authentication configuration."""
         return m.OracleOic.OICAuthConfig(
             oauth_client_id="client-42",

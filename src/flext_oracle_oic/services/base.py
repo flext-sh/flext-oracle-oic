@@ -26,7 +26,7 @@ from flext_oracle_oic.ext_client import FlextOracleOicClient
 
 
 class FlextOracleOicServiceBase(
-    s[Sequence[m.OracleOic.OICIntegrationInfo]],
+    s[Sequence[p.OracleOic.OICIntegrationInfo]],
 ):
     """Base service providing shared infrastructure for all OIC service mixins.
 
@@ -104,7 +104,7 @@ class FlextOracleOicServiceBase(
         *,
         fallback_id: str,
         default_status: str,
-    ) -> m.OracleOic.OICIntegrationInfo:
+    ) -> p.OracleOic.OICIntegrationInfo:
         """Build normalized integration model from API payload mapping."""
         return m.OracleOic.OICIntegrationInfo(
             integration_id=self._as_text(data.get("id"), fallback_id),
@@ -122,7 +122,7 @@ class FlextOracleOicServiceBase(
     @override
     def execute(
         self: Self,
-    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    ) -> p.Result[Sequence[p.OracleOic.OICIntegrationInfo]]:
         """Execute main service operation - list all integrations.
 
         Returns:
@@ -133,7 +133,7 @@ class FlextOracleOicServiceBase(
 
     def list_integrations(
         self,
-    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    ) -> p.Result[Sequence[p.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -144,30 +144,30 @@ class FlextOracleOicServiceBase(
             return self._list_integrations()
         except c.EXC_NETWORK_TYPE as exc:
             u.fetch_logger(__name__).exception("Failed to list integrations")
-            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail_op(
+            return r[Sequence[p.OracleOic.OICIntegrationInfo]].fail_op(
                 "Integration listing",
                 exc,
             )
 
     def _list_integrations(
         self,
-    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    ) -> p.Result[Sequence[p.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations without exception translation."""
         client_result = self._get_client()
         if client_result.failure:
             error_msg = client_result.error or "Client initialization failed"
-            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(
+            return r[Sequence[p.OracleOic.OICIntegrationInfo]].fail(
                 error_msg,
             )
         client = client_result.value
         integrations_result = client.get_integrations()
         if integrations_result.failure:
             error_msg = integrations_result.error or "Failed to get integrations"
-            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(
+            return r[Sequence[p.OracleOic.OICIntegrationInfo]].fail(
                 error_msg,
             )
         integrations_data = integrations_result.value
-        integrations: list[m.OracleOic.OICIntegrationInfo] = []
+        integrations: list[p.OracleOic.OICIntegrationInfo] = []
         for item in integrations_data:
             integration = self._build_integration_info(
                 item,
@@ -175,7 +175,7 @@ class FlextOracleOicServiceBase(
                 default_status=c.Connection.Status.UNKNOWN,
             )
             integrations.append(integration)
-        return r[Sequence[m.OracleOic.OICIntegrationInfo]].ok(
+        return r[Sequence[p.OracleOic.OICIntegrationInfo]].ok(
             integrations,
         )
 
