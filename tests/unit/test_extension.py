@@ -107,7 +107,7 @@ class TestsFlextOracleOicExtension:
         self,
         api: FlextOracleOicApi,
         key: str,
-        expected: object,
+        expected: str,
     ) -> None:
         """Connection context surfaces each expected key with the config value."""
         payload = api.fetch_connection_context().unwrap()

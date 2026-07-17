@@ -32,9 +32,9 @@ class TestsFlextOracleOicVersion:
         """The first three components form a major.minor.patch integer triple."""
         assert len(__version_info__) >= 3
         major, minor, patch = __version_info__[:3]
-        tm.that(major, is_=int)
-        tm.that(minor, is_=int)
-        tm.that(patch, is_=int)
+        assert isinstance(major, int)
+        assert isinstance(minor, int)
+        assert isinstance(patch, int)
         assert major >= 0
         assert minor >= 0
         assert patch >= 0

@@ -147,7 +147,7 @@ class TestsFlextOracleOicExtServices:
             case _:
                 result = svc.test_connection()
 
-        tm.fail(result)
+        assert result.failure
         assert result.error
 
     def test_execute_delegates_to_integration_listing(
@@ -195,7 +195,7 @@ class TestsFlextOracleOicExtServices:
         error = result.error
 
         tm.fail(result)
-        tm.that(error, none=False)
+        assert error is not None
         tm.that(error.lower(), has="validation")
 
     def test_business_rules_pass_with_valid_credentials(
