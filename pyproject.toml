@@ -19,18 +19,18 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-    "flext-api @ git+https://github.com/flext-sh/flext-api.git@0.12.0-dev",
-    "flext-auth @ git+https://github.com/flext-sh/flext-auth.git@0.12.0-dev",
-    "flext-cli @ git+https://github.com/flext-sh/flext-cli.git@0.12.0-dev",
-    "flext-core @ git+https://github.com/flext-sh/flext-core.git@0.12.0-dev",
-    "httpx>=0.28.1",
-    "pydantic-core>=2.46.3",
-    "pydantic-settings>=2.14.0",
-    "pydantic>=2.13.3",
-    "requests>=2.33.1",
-    "tenacity>=9.1.4",
-    "typer>=0.25.1",
-    "urllib3>=2.6.3",
+  "flext-api @ git+https://github.com/flext-sh/flext-api.git@0.12.0-dev",
+  "flext-auth @ git+https://github.com/flext-sh/flext-auth.git@0.12.0-dev",
+  "flext-cli @ git+https://github.com/flext-sh/flext-cli.git@0.12.0-dev",
+  "flext-core @ git+https://github.com/flext-sh/flext-core.git@0.12.0-dev",
+  "httpx>=0.28.1",
+  "pydantic-core>=2.46.3",
+  "pydantic-settings>=2.14.0",
+  "pydantic>=2.13.3",
+  "requests>=2.33.1",
+  "tenacity>=9.1.4",
+  "typer>=0.25.1",
+  "urllib3>=2.6.3",
 ]
 description = "FLEXT Oracle OIC Extension - Advanced Oracle Integration Cloud Extensions"
 keywords = [ "adapter", "enterprise", "flext", "integration", "typed" ]
@@ -213,24 +213,26 @@ project-excludes = [
   "**/typings/**",
   "**/vendor/**",
   "**/venv/**",
-  ".flext-deps/**",
   ".venv/**",
   "typings/**",
   "vendor/**",
 ]
-project-includes = [ "src/**/*.py*", "tests/**/*.py*" ]
+project-includes = [
+  "examples/**/*.py*",
+  "src/**/*.py*",
+  "tests/**/*.py*",
+]
 python-interpreter-path = "../.venv/bin/python"
 python-version = "3.13"
 search-path = [
   ".",
-  # mro-f1fe (agent: kimi-sweep): removed stale search-path to migrated examples (legado/)
+  "../flext-api/src",
+  "../flext-auth/src",
   "../flext-cli/src",
-  "../flext-core/examples",
-  "../flext-core/scripts",
   "../flext-core/src",
   "../flext-infra/src",
-  "../flext-infra/tmp_flow_test",
   "../flext-tests/src",
+  "../flext-web/src",
   "src",
 ]
 use-ignore-files = false
