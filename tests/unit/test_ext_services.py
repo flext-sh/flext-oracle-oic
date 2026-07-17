@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+from typing import TYPE_CHECKING
 
 import pytest
 from flext_tests import tm
@@ -29,6 +29,9 @@ from flext_oracle_oic import (
     FlextOracleOicSettings,
     s,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 __all__: list[str] = ["TestsFlextOracleOicExtServices"]
 

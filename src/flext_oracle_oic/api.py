@@ -10,10 +10,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import (
-    Sequence,
-)
-from typing import Self, override
+from typing import TYPE_CHECKING, Self, override
 
 from flext_oracle_oic import (
     FlextOracleOicService,
@@ -22,6 +19,11 @@ from flext_oracle_oic import (
     r,
     t,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import (
+        Sequence,
+    )
 
 
 class FlextOracleOicApi(FlextOracleOicService):

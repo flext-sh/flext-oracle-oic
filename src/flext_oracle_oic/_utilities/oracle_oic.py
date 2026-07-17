@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
-from collections.abc import (
-    Callable,
-    MutableSequence,
-)
-from typing import Annotated, ClassVar
+from typing import TYPE_CHECKING, Annotated, ClassVar
 
 from flext_auth import m
 
 from flext_oracle_oic import c, p, r, t
+
+if TYPE_CHECKING:
+    from collections.abc import (
+        Callable,
+        MutableSequence,
+    )
 
 
 class FlextOracleOicUtilitiesOracleOic:

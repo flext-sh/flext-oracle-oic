@@ -11,13 +11,16 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 import pytest
 from flext_tests import tm
 
 from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, c, p, t
 from flext_oracle_oic.api import oracle_oic
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class TestsFlextOracleOicExtension:
