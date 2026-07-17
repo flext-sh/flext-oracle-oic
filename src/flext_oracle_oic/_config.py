@@ -1,8 +1,10 @@
-"""FlextOracleOicConfig — frozen config singleton for flext-oracle-oic (ADR-005 §7).
+"""FlextOracleOicConfig — frozen, validated config singleton for flext-oracle-oic.
 
-Model-less: business rules live in ``config/*.yaml`` under the ``OracleOic:`` key and
-are exposed through the open ``config.OracleOic`` namespace (``extra="allow"``), with
-no per-domain model. Access is ``config.OracleOic.<domain>[<key>...]``.
+Every ``config/*.yaml`` file is auto-discovered and deep-merged at first
+``fetch_global`` call (model-less, ``extra=allow`` at the FlextCliConfig base).
+The flat YAML is then validated into the pure-Pydantic ``_models.config``
+shapes and exposed as typed domain objects under ``config.OracleOic`` — never a
+model-less dict subscript.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -10,21 +12,28 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict
+from functools import cached_property
+from pathlib import Path
+from typing import ClassVar
 
 from flext_cli import FlextCliConfig
-
-
-class _OracleOicNamespace(BaseModel):
-    """Open, frozen namespace exposing every ``config/*.yaml`` domain model-less."""
-
-    model_config = ConfigDict(extra="allow", frozen=True)
+from flext_oracle_oic._models.config import FlextOracleOicConfigModels
 
 
 class FlextOracleOicConfig(FlextCliConfig):
-    """OracleOic config auto-loaded model-less from ``config/*.yaml``."""
+    """Oracle OIC config auto-loaded from ``config/*.yaml`` and validated via models."""
 
-    OracleOic: _OracleOicNamespace = _OracleOicNamespace()
+    CONFIG_DIR: ClassVar[str] = str(
+        Path(__file__).resolve().parents[2] / "config",
+    )
+
+    @cached_property
+    def OracleOic(self) -> FlextOracleOicConfigModels.OracleOic:  # noqa: N802
+        """Validated ``OracleOic`` business-rule config namespace."""
+        root = FlextOracleOicConfigModels.Root.model_validate(
+            dict(self.model_extra or {}),
+        )
+        return root.OracleOic
 
 
 config: FlextOracleOicConfig = FlextOracleOicConfig.fetch_global()

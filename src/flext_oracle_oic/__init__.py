@@ -24,6 +24,10 @@ from flext_oracle_oic.__version__ import (
 if TYPE_CHECKING:
     from flext_auth import d as d, e as e, h as h, r as r, x as x
 
+    from flext_oracle_oic._config import (
+        FlextOracleOicConfig as FlextOracleOicConfig,
+        config as config,
+    )
     from flext_oracle_oic._settings import (
         FlextOracleOicSettings as FlextOracleOicSettings,
         settings as settings,
@@ -82,6 +86,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
     (".services",),
     build_lazy_import_map(
         {
+            "._config": ("FlextOracleOicConfig", "config"),
             "._settings": ("FlextOracleOicSettings", "settings"),
             ".api": (
                 "FlextOracleOicApi",
@@ -159,6 +164,7 @@ __all__: tuple[str, ...] = (
     "FlextOracleOicApi",
     "FlextOracleOicAuthMixin",
     "FlextOracleOicCli",
+    "FlextOracleOicConfig",
     "FlextOracleOicConstants",
     "FlextOracleOicIntegrationCrudMixin",
     "FlextOracleOicIntegrationLifecycleMixin",
@@ -180,6 +186,7 @@ __all__: tuple[str, ...] = (
     "__version__",
     "__version_info__",
     "c",
+    "config",
     "d",
     "e",
     "h",

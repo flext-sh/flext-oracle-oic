@@ -1,0 +1,26 @@
+OracleOic:
+  api:
+    base_url: "https://localhost.integration.ocp.oraclecloud.com"
+    api_version: "v1"
+    request_timeout: 30
+    max_retries: 3
+    page_size: 100
+    verify_ssl: true
+    http_error_status_threshold: 400
+  integration:
+    default_version: "01.00.0000"
+  validation:
+    integration_name:
+      min_length: 1
+      max_length: 100
+      pattern: "^[a-zA-Z0-9_\\-\\s]+$"
+    version:
+      pattern: "^\\d{2}\\.\\d{2}\\.\\d{4}$"
+    performance:
+      response_time_ms: 5000.0
+      success_rate: 0.95
+      error_rate: 0.05
+  monitoring:
+    component_database: "database"
+    component_messaging: "messaging"
+    component_integration_engine: "integration_engine"
