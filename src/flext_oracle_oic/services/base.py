@@ -81,7 +81,7 @@ class FlextOracleOicServiceBase(
 
     @staticmethod
     def _to_general_value(
-        value: t.JsonValue | bytes | None,
+        value: object,
     ) -> t.JsonValue:
         """Normalize arbitrary runtime values into t.JsonValue."""
         if isinstance(value, bytes):

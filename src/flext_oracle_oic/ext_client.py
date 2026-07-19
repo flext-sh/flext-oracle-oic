@@ -487,7 +487,7 @@ class FlextOracleOicClient:
         self.logger.info("OIC OAuth2 authentication successful")
         return token
 
-    def _to_api_payload(self, value: t.JsonValue) -> t.JsonValue:
+    def _to_api_payload(self, value: object) -> t.JsonValue:
         """Normalize t.JsonValue into flext-api request body value type."""
         if isinstance(value, t.PRIMITIVES_TYPES) or value is None:
             return value
