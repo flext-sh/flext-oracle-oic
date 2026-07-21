@@ -1,0 +1,4 @@
+--- /home/marlonsc/flext/flext-oracle-oic/custom.mk
++++ /home/marlonsc/flext/flext-oracle-oic/custom.mk.rej
+@@ rejected custom Make surface @@
+custom.mk line 3 is not a private custom handler

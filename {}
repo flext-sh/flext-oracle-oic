@@ -1,0 +1,968 @@
+"""Oracle OIC monitoring and health check utilities mixin."""
+
+from __future__ import annotations
+
+from collections.abc import (
+    Mapping,
+    MutableSequence,
+)
+from datetime import UTC, datetime
+
+from flext_core import p, r
+from flext_oracle_oic import c, t
+
+
+class FlextOracleOicUtilitiesMonitoring:
+    """Oracle OIC monitoring and health check utilities."""
+
+    @staticmethod
+    def analyze_performance_metrics(
+        metrics: Mapping[str, t.Container],
+    ) -> p.Result[Mapping[str, t.Container]]:
+        """Analyze Oracle OIC performance metrics.
+
+        Args:
+        metrics: Performance metrics data
+
+        Returns:
+        r containing analysis results or error
+
+        """
+        overall_health: str = c.HealthStatus.HEALTHY.value
+        warnings: MutableSequence[t.Container] = []
+        critical_issues: MutableSequence[t.Container] = []
+        recommendations: MutableSequence[t.Container] = []
+        if "average_response_time" in metrics:
+            response_time = metrics["average_response_time"]
+            if isinstance(response_time, (int, float)):
+                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
+                    "response_time_ms"
+                ]
+                if response_time > threshold:
+                    warnings.append(
+                        f"High response time: {response_time}ms (threshold: {threshold}ms)",
+                    )
+                    recommendations.append(
+                        "Consider optimizing integration mappings or connection pooling",
+                    )
+        if "success_rate" in metrics:
+            success_rate = metrics["success_rate"]
+            if isinstance(success_rate, (int, float)):
+                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["success_rate"]
+                if success_rate < threshold:
+                    critical_issues.append(
+                        f"Low success rate: {success_rate:.2%} (threshold: {threshold:.2%})",
+                    )
+                    overall_health = c.HealthStatus.UNHEALTHY.value
+                    recommendations.append(
+                        "Investigate integration failures and error patterns",
+                    )
+        if "error_rate" in metrics:
+            error_rate = metrics["error_rate"]
+            if isinstance(error_rate, (int, float)):
+                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["error_rate"]
+                if error_rate > threshold:
+                    warnings.append(
+                        f"High error rate: {error_rate:.2%} (threshold: {threshold:.2%})",
+                    )
+                    recommendations.append(
+                        "Review error logs and implement error handling improvements",
+                    )
+        analysis: Mapping[str, t.Container] = {
+            "overall_health": overall_health,
+            "warnings": tuple(warnings),
+            "critical_issues": tuple(critical_issues),
+            "recommendations": tuple(recommendations),
+        }
+        return r[Mapping[str, t.Container]].ok(analysis)
+
+    @staticmethod
+    def validate_health_status(
+        health_data: Mapping[str, t.Container],
+    ) -> p.Result[Mapping[str, t.Container]]:
+        """Validate Oracle OIC health check data.
+
+        Args:
+        health_data: Health check response data
+
+        Returns:
+        r containing validated health data or error
+
+        """
+        validated_data: t.MutableRecursiveContainerMapping = {
+            str(key): value for key, value in health_data.items()
+        }
+        if "status" not in health_data:
+            return r[Mapping[str, t.Container]].fail(
+                "Health data must include status",
+            )
+        status = health_data["status"]
+        if status not in {
+            c.Monitoring.HealthStatus.HEALTHY.value,
+            c.Monitoring.HealthStatus.UNHEALTHY.value,
+            c.Monitoring.HealthStatus.ERROR.value,
+            c.Monitoring.HealthStatus.UNKNOWN.value,
+        }:
+            return r[Mapping[str, t.Container]].fail(
+                "Invalid health status. Valid: healthy, unhealthy, error, unknown",
+            )
+        if "components" in health_data:
+            components = health_data["components"]
+            if not isinstance(components, dict):
+                return r[Mapping[str, t.Container]].fail(
+                    "Components must be a dictionary",
+                )
+            for component_name, component_data in components.items():
+                if not isinstance(component_data, dict):
+                    return r[Mapping[str, t.Container]].fail(
+                        f"Component {component_name} data must be a dictionary",
+                    )
+                if "status" not in component_data:
+                    return r[Mapping[str, t.Container]].fail(
+                        f"Component {component_name} must have status",
+                    )
+        if "timestamp" not in validated_data:
+            validated_data["timestamp"] = datetime.now(UTC).isoformat()
+        return r[Mapping[str, t.Container]].ok(validated_data)
+"""Oracle OIC integration validation utilities mixin."""
+
+from __future__ import annotations
+
+import re
+from collections.abc import (
+    Mapping,
+    MutableSequence,
+)
+
+from flext_core import p, r
+from flext_oracle_oic import c, t
+
+
+class FlextOracleOicUtilitiesOracleOic:
+    """Oracle OIC integration validation utilities."""
+
+    @staticmethod
+    def validate_integration_data(
+        integration_data: Mapping[str, t.Container],
+    ) -> p.Result[Mapping[str, t.Container]]:
+        """Validate complete Oracle OIC integration data.
+
+        Args:
+        integration_data: Integration configuration data
+
+        Returns:
+        r containing validated data or validation errors
+
+        """
+        errors: MutableSequence[str] = []
+        validated_data: t.MutableRecursiveContainerMapping = {
+            str(key): value for key, value in integration_data.items()
+        }
+        if "name" not in integration_data:
+            errors.append("Integration name is required")
+        else:
+            raw_name = integration_data["name"]
+            match raw_name:
+                case str():
+                    name_result = (
+                        FlextOracleOicUtilitiesOracleOic.validate_integration_name(
+                            raw_name,
+                        )
+                    )
+                    if name_result.failure:
+                        errors.append(f"Name validation: {name_result.error}")
+                    else:
+                        validated_data["name"] = name_result.value
+                case _:
+                    errors.append(
+                        "Name validation: Integration name must be a string",
+                    )
+        if "version" in integration_data:
+            raw_version = integration_data["version"]
+            match raw_version:
+                case str():
+                    version_result = (
+                        FlextOracleOicUtilitiesOracleOic.validate_integration_version(
+                            raw_version,
+                        )
+                    )
+                    if version_result.failure:
+                        errors.append(f"Version validation: {version_result.error}")
+                    else:
+                        validated_data["version"] = version_result.value
+                case _:
+                    errors.append(
+                        "Version validation: Integration version must be a string",
+                    )
+        if "status" in integration_data:
+            raw_status = integration_data["status"]
+            match raw_status:
+                case str():
+                    status_result = (
+                        FlextOracleOicUtilitiesOracleOic.validate_integration_status(
+                            raw_status,
+                        )
+                    )
+                    if status_result.failure:
+                        errors.append(f"Status validation: {status_result.error}")
+                    else:
+                        validated_data["status"] = status_result.value
+                case _:
+                    errors.append(
+                        "Status validation: Integration status must be a string",
+                    )
+        if errors:
+            return r[Mapping[str, t.Container]].fail(
+                f"Integration validation failed: {'; '.join(errors)}",
+            )
+        return r[Mapping[str, t.Container]].ok(validated_data)
+
+    @staticmethod
+    def validate_integration_name(name: str) -> p.Result[str]:
+        """Validate Oracle OIC integration name.
+
+        Args:
+        name: Integration name to validate
+
+        Returns:
+        r containing validated name or validation error
+
+        """
+        match name:
+            case str():
+                pass
+            case _:
+                return r[str].fail("Integration name must be a string")
+        name = name.strip()
+        if not name:
+            return r[str].fail("Integration name cannot be empty")
+        if len(name) < c.OracleOicValidation.MIN_INTEGRATION_NAME_LENGTH:
+            return r[str].fail("Integration name too short")
+        if len(name) > c.OracleOicValidation.MAX_INTEGRATION_NAME_LENGTH:
+            return r[str].fail("Integration name too long")
+        if not re.match(r"^[a-zA-Z0-9_\\-\\s]+$", name):
+            return r[str].fail("Integration name contains invalid characters")
+        return r[str].ok(name)
+
+    @staticmethod
+    def validate_integration_status(status: str) -> p.Result[str]:
+        """Validate Oracle OIC integration status.
+
+        Args:
+        status: Integration status to validate
+
+        Returns:
+        r containing validated status or error
+
+        """
+        match status:
+            case str():
+                pass
+            case _:
+                return r[str].fail("Integration status must be a string")
+        status = status.upper().strip()
+        if status not in c.OracleOicValidation.VALID_INTEGRATION_STATUSES:
+            valid_statuses = ", ".join(
+                sorted(c.OracleOicValidation.VALID_INTEGRATION_STATUSES),
+            )
+            return r[str].fail(
+                f"Invalid integration status. Valid: {valid_statuses}",
+            )
+        return r[str].ok(status)
+
+    @staticmethod
+    def validate_integration_version(version: str) -> p.Result[str]:
+        """Validate Oracle OIC integration version format.
+
+        Args:
+        version: Version string to validate (format: XX.XX.XXXX)
+
+        Returns:
+        r containing validated version or error
+
+        """
+        match version:
+            case str():
+                pass
+            case _:
+                return r[str].fail("Integration version must be a string")
+        version = version.strip()
+        if not c.OracleOicValidation.VERSION_PATTERN.match(version):
+            return r[str].fail("Invalid version format. Expected: XX.XX.XXXX")
+        return r[str].ok(version)
+"""Oracle OIC integration pattern analysis utilities mixin."""
+
+from __future__ import annotations
+
+from collections.abc import (
+    Mapping,
+    Sequence,
+)
+
+from flext_core import p, r
+from flext_oracle_oic import c, t
+
+
+class FlextOracleOicUtilitiesPatternAnalysis:
+    """Oracle OIC integration pattern analysis utilities."""
+
+    @staticmethod
+    def analyze_integration_pattern(
+        integration_data: Mapping[str, t.Container],
+    ) -> p.Result[str]:
+        """Analyze Oracle OIC integration to determine pattern type.
+
+        Args:
+        integration_data: Integration configuration data
+
+        Returns:
+        r containing detected pattern or analysis error
+
+        """
+        endpoints_raw = integration_data.get("endpoints", [])
+        connections_raw = integration_data.get("connections", [])
+        mappings_raw = integration_data.get("mappings", [])
+        endpoints: Sequence[Mapping[str, t.Container]] = (
+            [dict(endpoint) for endpoint in endpoints_raw if isinstance(endpoint, dict)]
+            if isinstance(endpoints_raw, list)
+            else []
+        )
+        connections: t.RecursiveContainerList = (
+            list(connections_raw) if isinstance(connections_raw, list) else []
+        )
+        mappings: t.RecursiveContainerList = (
+            list(mappings_raw) if isinstance(mappings_raw, list) else []
+        )
+        if len(endpoints) > c.OracleOicValidation.MIN_ENDPOINTS_FOR_ROUTER and any(
+            endpoint.get("direction") == "outbound" for endpoint in endpoints
+        ):
+            return r[str].ok("message_router")
+        if len(connections) > 1 and any(
+            "aggregate" in str(mapping).lower() for mapping in mappings
+        ):
+            return r[str].ok("scatter_gather")
+        if any(
+            "event" in str(endpoint).lower() or "publish" in str(endpoint).lower()
+            for endpoint in endpoints
+        ):
+            return r[str].ok("publish_subscribe")
+        return r[str].ok("request_reply")
+
+    @staticmethod
+    def validate_pattern_configuration(
+        pattern_type: str,
+        configuration: t.ValueOrModel,
+    ) -> p.Result[Mapping[str, t.Container]]:
+        """Validate Oracle OIC integration pattern configuration.
+
+        Args:
+        pattern_type: Integration pattern type
+        configuration: Pattern-specific configuration
+
+        Returns:
+        r containing validated configuration or error
+
+        """
+        if pattern_type not in c.OracleOicValidation.SUPPORTED_PATTERNS:
+            supported = ", ".join(sorted(c.OracleOicValidation.SUPPORTED_PATTERNS))
+            return r[Mapping[str, t.Container]].fail(
+                f"Unsupported pattern type. Supported: {supported}",
+            )
+        if configuration is None:
+            return r[Mapping[str, t.Container]].fail(
+                "Pattern configuration must be a mapping or model",
+            )
+        if isinstance(configuration, Mapping):
+            normalized_configuration: Mapping[str, t.Container] = dict(configuration)
+        elif hasattr(configuration, "model_dump"):
+            dumped = configuration.model_dump(mode="python")
+            if not isinstance(dumped, Mapping):
+                return r[Mapping[str, t.Container]].fail(
+                    "Pattern configuration dump must be a mapping",
+                )
+            normalized_configuration = dict(dumped)
+        else:
+            return r[Mapping[str, t.Container]].fail(
+                "Pattern configuration must be a mapping or model",
+            )
+        if pattern_type == "message_router":
+            if "routing_rules" not in normalized_configuration:
+                return r[Mapping[str, t.Container]].fail(
+                    "Message router pattern requires MessageRouterPatternConfig",
+                )
+        elif pattern_type == "scatter_gather":
+            if "parallel_routes" not in normalized_configuration:
+                return r[Mapping[str, t.Container]].fail(
+                    "Scatter-gather pattern requires ScatterGatherPatternConfig",
+                )
+        elif (
+            pattern_type == "publish_subscribe"
+            and "event_types" not in normalized_configuration
+        ):
+            return r[Mapping[str, t.Container]].fail(
+                "Publish-subscribe pattern requires event_types",
+            )
+        return r[Mapping[str, t.Container]].ok(normalized_configuration)
+"""FLEXT Oracle OIC Service Base - Shared infrastructure for service mixins.
+
+Provides client management, value normalization, and component initialization
+shared across all service mixins.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
+"""
+
+from __future__ import annotations
+
+from collections.abc import (
+    Mapping,
+    Sequence,
+)
+from types import TracebackType
+from typing import Self, override
+
+from flext_api import FlextApiClient, FlextApiSettings
+
+from flext_core import p, r, s
+from flext_oracle_oic import (
+    FlextOracleOicClient,
+    FlextOracleOicModels,
+    FlextOracleOicSettings,
+    FlextOracleOicUtilities,
+    c,
+    t,
+    u,
+)
+
+
+class FlextOracleOicServiceBase(
+    s[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]],
+):
+    """Base service providing shared infrastructure for all OIC service mixins.
+
+    Provides:
+    - Client lifecycle management (_get_client, _initialize_components)
+    - Value normalization helpers (_as_text, _to_general_value)
+    - Context manager support
+    - Settings access
+    """
+
+    def __init__(self) -> None:
+        """Initialize base Oracle OIC service.
+
+        Uses singleton settings pattern - no settings parameter needed.
+        """
+        super().__init__()
+        self._oic_settings: FlextOracleOicSettings = (
+            FlextOracleOicSettings.fetch_global()
+        )
+        self._client: FlextOracleOicClient | None = None
+        self._monitoring_client: FlextApiClient | None = None
+        self._authenticator: t.Container | None = None
+        self._initialize_components()
+
+    def __enter__(self) -> Self:
+        """Context manager entry."""
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
+        """Context manager exit."""
+
+    @staticmethod
+    def _as_text(value: t.Container, default: str = "") -> str:
+        """Normalize optional OIC values into strings for model construction."""
+        match value:
+            case str():
+                return value
+            case _:
+                pass
+        if value is None:
+            return default
+        return str(value)
+
+    @staticmethod
+    def _to_general_value(
+        value: t.Container | t.ContainerValue | bytes | None,
+    ) -> t.Container:
+        """Normalize arbitrary runtime values into t.Container."""
+        if isinstance(value, bytes):
+            return value.decode(errors="replace")
+        if isinstance(value, (str, int, float, bool)) or value is None:
+            return value
+        if isinstance(value, Mapping):
+            return {
+                str(k): FlextOracleOicServiceBase._to_general_value(v)
+                for k, v in value.items()
+            }
+        match value:
+            case list() | tuple():
+                return [FlextOracleOicServiceBase._to_general_value(v) for v in value]
+            case _:
+                pass
+        return str(value)
+
+    @override
+    def execute(
+        self: Self,
+        **kwargs: t.Scalar,
+    ) -> p.Result[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+        """Execute main service operation - list all integrations.
+
+        Returns:
+        r containing list of OIC integrations.
+
+        """
+        return self.list_integrations()
+
+    def list_integrations(
+        self,
+    ) -> p.Result[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]]:
+        """List all Oracle OIC integrations.
+
+        Returns:
+        r containing list of integration information.
+
+        """
+        try:
+            client_result = self._get_client()
+            if client_result.failure:
+                error_msg = client_result.error or "Client initialization failed"
+                return r[
+                    Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
+                ].fail(
+                    error_msg,
+                )
+            client = client_result.value
+            integrations_result = client.get_integrations()
+            if integrations_result.failure:
+                error_msg = integrations_result.error or "Failed to get integrations"
+                return r[
+                    Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]
+                ].fail(
+                    error_msg,
+                )
+            integrations_data = integrations_result.value
+            integrations: list[FlextOracleOicModels.OracleOic.OICIntegrationInfo] = []
+            for item in integrations_data:
+                integration = FlextOracleOicModels.OracleOic.OICIntegrationInfo(
+                    integration_id=self._as_text(item.get("id"), ""),
+                    name=self._as_text(item.get("name"), ""),
+                    description=self._as_text(item.get("description"), ""),
+                    integration_version=self._as_text(
+                        item.get("version"),
+                        c.Integration.DEFAULT_VERSION_FALLBACK,
+                    ),
+                    status=self._as_text(
+                        item.get("status"),
+                        c.Connection.Status.UNKNOWN,
+                    ),
+                    created_by=self._as_text(item.get("createdBy"), ""),
+                    last_updated=self._as_text(item.get("lastUpdated"), ""),
+                )
+                integrations.append(integration)
+            return r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].ok(
+                integrations,
+            )
+        except (ConnectionError, TimeoutError, ValueError) as exc:
+            u.fetch_logger(__name__).exception("Failed to list integrations")
+            return r[Sequence[FlextOracleOicModels.OracleOic.OICIntegrationInfo]].fail(
+                f"Integration listing failed: {exc!s}",
+            )
+
+    def _get_client(self) -> p.Result[FlextOracleOicClient]:
+        """Get or create Oracle OIC client instance.
+
+        Returns:
+        r containing the client instance.
+
+        """
+        try:
+            if self._client is None:
+                validation_result = self.validate_business_rules()
+                if validation_result.failure:
+                    return r[FlextOracleOicClient].fail(validation_result.error)
+                connection_config = FlextOracleOicModels.OracleOic.OICConnectionConfig(
+                    base_url=str(self._oic_settings.base_url),
+                    api_version=self._oic_settings.api_version,
+                    request_timeout=self._oic_settings.request_timeout,
+                    max_retries=self._oic_settings.max_retries,
+                    verify_ssl=self._oic_settings.verify_ssl,
+                )
+                auth_config = FlextOracleOicModels.OracleOic.OICAuthConfig(
+                    oauth_client_id=self._oic_settings.oauth_client_id,
+                    oauth_client_secret=self._oic_settings.oauth_client_secret,
+                    oauth_token_url=str(self._oic_settings.oauth_token_url),
+                    oauth_client_aud=self._oic_settings.oauth_client_aud,
+                    oauth_scope=self._oic_settings.oauth_scope,
+                )
+                self._client = FlextOracleOicClient(
+                    connection_config=connection_config,
+                    auth_config=auth_config,
+                )
+            return r[FlextOracleOicClient].ok(self._client)
+        except (ConnectionError, TimeoutError, ValueError) as exc:
+            self.logger.exception("Failed to create OIC client")
+            return r[FlextOracleOicClient].fail(f"Client creation failed: {exc!s}")
+
+    @override
+    def validate_business_rules(self) -> p.Result[bool]:
+        """Validate Oracle OIC service business rules.
+
+        Returns:
+        r indicating validation success or failure.
+
+        """
+        if not self._oic_settings:
+            return r[bool].fail("Settings are required")
+        if not self._oic_settings.base_url:
+            return r[bool].fail("Base URL is required")
+        if not self._oic_settings.oauth_client_id:
+            return r[bool].fail("OAuth client ID is required")
+        client_id_result = (
+            FlextOracleOicUtilities.AuthenticationValidation.validate_oauth_client_id(
+                self._oic_settings.oauth_client_id,
+            )
+        )
+        if client_id_result.failure:
+            return r[bool].fail(f"OAuth client ID validation: {client_id_result.error}")
+        if not self._oic_settings.oauth_client_secret:
+            return r[bool].fail("OAuth client secret is required")
+        if not self._oic_settings.oauth_token_url:
+            return r[bool].fail("OAuth token URL is required")
+        return r[bool].ok(value=True)
+
+    def _initialize_components(self) -> None:
+        """Initialize service components."""
+        try:
+            if self._oic_settings.enable_monitoring:
+                auth_token = ""
+                if self._authenticator:
+                    refresh_fn = getattr(self._authenticator, "refresh_token", None)
+                    if callable(refresh_fn):
+                        auth_token = refresh_fn()
+                api_config = FlextApiSettings(
+                    base_url=str(self._oic_settings.base_url),
+                    timeout=self._oic_settings.request_timeout,
+                    max_retries=self._oic_settings.max_retries,
+                    verify_ssl=self._oic_settings.verify_ssl,
+                    default_headers={
+                        "Authorization": f"Bearer {auth_token}",
+                        "Content-Type": "application/json",
+                    },
+                    headers={
+                        "Authorization": f"Bearer {auth_token}",
+                        "Content-Type": "application/json",
+                    },
+                    log_requests=False,
+                    log_responses=False,
+                )
+                self._monitoring_client = FlextApiClient(settings=api_config)
+        except (ConnectionError, TimeoutError, ValueError):
+            u.fetch_logger(__name__).exception(
+                "Failed to initialize service components"
+            )
+            raise
+
+
+__all__: list[str] = ["FlextOracleOicServiceBase"]
+"""FLEXT Oracle OIC Monitoring - Health checks and performance metrics.
+
+Mixin providing monitoring operations for the FlextOracleOicService facade.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
+"""
+
+from __future__ import annotations
+
+import asyncio
+from collections.abc import (
+    Mapping,
+)
+
+from flext_api import FlextApiModels
+
+from flext_core import p, r
+from flext_oracle_oic import (
+    FlextOracleOicServiceBase,
+    FlextOracleOicUtilities,
+    c,
+    t,
+)
+
+
+class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
+    """Mixin providing monitoring operations for FlextOracleOicService facade."""
+
+    def fetch_health_status(self) -> p.Result[Mapping[str, t.Container]]:
+        """Get Oracle OIC health status using FlextOracleOicUtilities.
+
+        Returns:
+        r containing validated health status information
+
+        """
+        try:
+            health_data: Mapping[str, t.Container]
+            if not self._monitoring_client:
+                health_data = {
+                    "status": c.Monitoring.HealthStatus.HEALTHY,
+                    "components": {
+                        c.Monitoring.COMPONENT_DATABASE: {
+                            "status": c.Monitoring.ComponentStatus.HEALTHY,
+                        },
+                        c.Monitoring.COMPONENT_MESSAGING: {
+                            "status": c.Monitoring.ComponentStatus.HEALTHY,
+                        },
+                        c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                            "status": c.Monitoring.ComponentStatus.HEALTHY,
+                        },
+                    },
+                    "timestamp": asyncio.get_event_loop().time(),
+                }
+            else:
+                base = str(self._oic_settings.base_url).rstrip("/")
+                health_url = f"{base}{c.API.ENDPOINT_HEALTH}"
+                req = FlextApiModels.Api.HttpRequest(
+                    method=c.API.Method.GET,
+                    url=health_url,
+                    headers={},
+                    body={},
+                    query_params={},
+                    timeout=float(self._oic_settings.request_timeout),
+                )
+                response_result = self._monitoring_client.request(req)
+                if response_result.success:
+                    response = response_result.value
+                    if response.status_code == c.API.HTTP_STATUS_OK:
+                        base_health: Mapping[str, t.Container] = (
+                            {
+                                str(k): self._to_general_value(v)
+                                for k, v in response.body.items()
+                            }
+                            if isinstance(response.body, dict)
+                            else {"raw": self._to_general_value(response.body)}
+                        )
+                        health_data = {
+                            **base_health,
+                            "status": c.Monitoring.HealthStatus.HEALTHY,
+                            "components": {
+                                c.Monitoring.COMPONENT_DATABASE: {
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY,
+                                },
+                                c.Monitoring.COMPONENT_MESSAGING: {
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY,
+                                },
+                                c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                                    "status": c.Monitoring.ComponentStatus.HEALTHY,
+                                },
+                            },
+                        }
+                    else:
+                        health_data = {
+                            "status": c.Monitoring.HealthStatus.UNHEALTHY,
+                            "components": {
+                                c.Monitoring.COMPONENT_DATABASE: {
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                                },
+                                c.Monitoring.COMPONENT_MESSAGING: {
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                                },
+                                c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                                    "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                                },
+                            },
+                            "error": f"HTTP {response.status_code}",
+                        }
+                else:
+                    health_data = {
+                        "status": c.Monitoring.HealthStatus.ERROR,
+                        "components": {
+                            c.Monitoring.COMPONENT_DATABASE: {
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                            },
+                            c.Monitoring.COMPONENT_MESSAGING: {
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                            },
+                            c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                                "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                            },
+                        },
+                        "error": f"Request failed: {response_result.error}",
+                    }
+            health_data_dict: Mapping[str, t.Container] = dict(health_data)
+            validation_result = (
+                FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
+                    health_data_dict,
+                )
+            )
+            if validation_result.success:
+                return validation_result
+            self.logger.warning(
+                f"Health status validation failed: {validation_result.error}",
+            )
+            return r[Mapping[str, t.Container]].ok(health_data_dict)
+        except (ConnectionError, TimeoutError, ValueError) as e:
+            self.logger.exception("Health check failed")
+            error_health: Mapping[str, t.Container] = {
+                "status": c.Monitoring.HealthStatus.ERROR,
+                "components": {
+                    c.Monitoring.COMPONENT_DATABASE: {
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                    },
+                    c.Monitoring.COMPONENT_MESSAGING: {
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                    },
+                    c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {
+                        "status": c.Monitoring.ComponentStatus.UNKNOWN,
+                    },
+                },
+                "error": str(e),
+            }
+            validation_result = (
+                FlextOracleOicUtilities.MonitoringUtilities.validate_health_status(
+                    error_health,
+                )
+            )
+            return (
+                validation_result
+                if validation_result.success
+                else r[Mapping[str, t.Container]].ok(error_health)
+            )
+
+    def fetch_performance_metrics(self) -> p.Result[Mapping[str, t.Container]]:
+        """Get Oracle OIC performance metrics with analysis using FlextOracleOicUtilities.
+
+        Returns:
+        r containing performance metrics with analysis
+
+        """
+        try:
+            metrics_data: Mapping[str, t.Container]
+            if not self._monitoring_client:
+                metrics_data = {
+                    "active_integrations": 0,
+                    "total_executions": 0,
+                    "success_rate": 0.0,
+                    "average_response_time": 0.0,
+                    "timestamp": asyncio.get_event_loop().time(),
+                }
+            else:
+                base = str(self._oic_settings.base_url).rstrip("/")
+                metrics_url = f"{base}/ic/api/integration/v1/metrics"
+                req = FlextApiModels.Api.HttpRequest(
+                    method=c.API.Method.GET,
+                    url=metrics_url,
+                    headers={},
+                    body={},
+                    query_params={},
+                    timeout=float(self._oic_settings.request_timeout),
+                )
+                response_result = self._monitoring_client.request(req)
+                if response_result.success:
+                    response = response_result.value
+                    if response.status_code == c.API.HTTP_STATUS_OK:
+                        if isinstance(response.body, dict):
+                            metrics_data = {
+                                str(k): self._to_general_value(v)
+                                for k, v in response.body.items()
+                            }
+                        else:
+                            fallback: Mapping[str, t.Container] = {}
+                            metrics_data = fallback
+                    else:
+                        metrics_data = {
+                            "active_integrations": 0,
+                            "total_executions": 0,
+                            "success_rate": 0.0,
+                            "average_response_time": 0.0,
+                            "error": f"HTTP {response.status_code}",
+                        }
+                else:
+                    metrics_data = {
+                        "active_integrations": 0,
+                        "total_executions": 0,
+                        "success_rate": 0.0,
+                        "average_response_time": 0.0,
+                        "error": f"Request failed: {response_result.error}",
+                    }
+            metrics_dict: t.MutableRecursiveContainerMapping = {}
+            for key, value in metrics_data.items():
+                metrics_dict[str(key)] = self._to_general_value(value)
+            analysis_result = (
+                FlextOracleOicUtilities.MonitoringUtilities.analyze_performance_metrics(
+                    metrics_dict,
+                )
+            )
+            if analysis_result.success:
+                return r[Mapping[str, t.Container]].ok({
+                    **metrics_dict,
+                    "analysis": dict(analysis_result.value),
+                })
+            self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
+            return r[Mapping[str, t.Container]].ok(metrics_dict)
+        except (ConnectionError, TimeoutError, ValueError) as e:
+            self.logger.exception("Performance metrics failed")
+            error_metrics: Mapping[str, t.Container] = {
+                "active_integrations": 0,
+                "total_executions": 0,
+                "success_rate": 0.0,
+                "average_response_time": 0.0,
+                "error": str(e),
+            }
+            analysis_result = (
+                FlextOracleOicUtilities.MonitoringUtilities.analyze_performance_metrics(
+                    error_metrics,
+                )
+            )
+            if analysis_result.success:
+                return r[Mapping[str, t.Container]].ok({
+                    **error_metrics,
+                    "analysis": dict(analysis_result.value),
+                })
+            return r[Mapping[str, t.Container]].ok(error_metrics)
+
+
+__all__: list[str] = ["FlextOracleOicMonitoringMixin"]
+"""FLEXT Oracle OIC Extension Types - Domain-specific Oracle OIC type definitions.
+
+This module provides Oracle OIC extension-specific type definitions extending t.
+Follows FLEXT standards:
+- Domain-specific complex types only
+- No simple aliases to primitive types
+- Python 3.13+ syntax
+- Extends t properly
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
+"""
+
+from __future__ import annotations
+
+from flext_core import FlextTypes, m
+
+
+class FlextOracleOicTypes(FlextTypes):
+    """Oracle OIC extension-specific type definitions extending t.
+
+    Domain-specific type system for Oracle OIC integration operations.
+    Contains ONLY complex OIC-specific types, no simple aliases.
+    Uses Python 3.13+ type syntax and patterns.
+    """
+
+    CONTAINER_MAPPING_ADAPTER: m.TypeAdapter[FlextTypes.RecursiveContainerMapping] = (
+        m.TypeAdapter(
+            FlextTypes.RecursiveContainerMapping,
+        )
+    )
+
+
+t = FlextOracleOicTypes
+__all__: list[str] = ["FlextOracleOicTypes", "t"]
