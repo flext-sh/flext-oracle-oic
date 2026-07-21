@@ -9,10 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import (
-    MutableSequence,
-    Sequence,
-)
+from collections.abc import MutableSequence, Sequence
 
 from flext_oracle_oic import c, m, p, r, t
 from flext_oracle_oic.ext_client import FlextOracleOicClient

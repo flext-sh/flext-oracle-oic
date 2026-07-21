@@ -12,7 +12,7 @@ import base64
 import pytest
 from flext_tests import tm
 
-from flext_oracle_oic import m
+from flext_oracle_oic import m, p
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 
 

@@ -12,18 +12,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Self, override
 
-from flext_oracle_oic import (
-    FlextOracleOicService,
-    FlextOracleOicSettings,
-    p,
-    r,
-    t,
-)
+from flext_oracle_oic import FlextOracleOicService, FlextOracleOicSettings, p, r, t
 
 if TYPE_CHECKING:
-    from collections.abc import (
-        Sequence,
-    )
+    from collections.abc import Sequence
 
 
 class FlextOracleOicApi(FlextOracleOicService):

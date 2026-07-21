@@ -23,7 +23,6 @@ from flext_oracle_oic.__version__ import (
 
 if TYPE_CHECKING:
     from flext_auth import d as d, e as e, h as h, r as r, x as x
-
     from flext_oracle_oic._config import (
         FlextOracleOicConfig as FlextOracleOicConfig,
         config as config,

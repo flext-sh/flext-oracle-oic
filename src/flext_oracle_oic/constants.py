@@ -21,9 +21,7 @@ from typing import TYPE_CHECKING, Final
 from flext_auth import c
 
 if TYPE_CHECKING:
-    from collections.abc import (
-        Mapping,
-    )
+    from collections.abc import Mapping
 
     from flext_oracle_oic import t
 

@@ -28,7 +28,7 @@ class FlextOracleOicConfig(FlextCliConfig):
     )
 
     @cached_property
-    def OracleOic(self) -> FlextOracleOicConfigModels.OracleOic:  # noqa: N802
+    def OracleOic(self) -> FlextOracleOicConfigModels.OracleOic:
         """Validated ``OracleOic`` business-rule config namespace."""
         root = FlextOracleOicConfigModels.Root.model_validate(
             dict(self.model_extra or {}),

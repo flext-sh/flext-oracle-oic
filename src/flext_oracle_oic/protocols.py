@@ -9,7 +9,6 @@ from __future__ import annotations
 from typing import Protocol, runtime_checkable
 
 from flext_auth import p
-
 from flext_oracle_oic import t
 
 

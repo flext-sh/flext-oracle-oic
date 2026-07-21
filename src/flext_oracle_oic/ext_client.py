@@ -12,14 +12,10 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import base64
-from collections.abc import (
-    Mapping,
-    MutableSequence,
-)
+from collections.abc import Mapping, MutableSequence
 from typing import TYPE_CHECKING, Self
 
 from flext_api import FlextApi, FlextApiConstants, FlextApiSettings
-
 from flext_oracle_oic import c, p, r, t, u
 
 if TYPE_CHECKING:

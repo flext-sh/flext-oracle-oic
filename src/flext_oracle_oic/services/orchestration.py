@@ -16,9 +16,7 @@ from flext_oracle_oic import c, p, t
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 
 if TYPE_CHECKING:
-    from collections.abc import (
-        Callable,
-    )
+    from collections.abc import Callable
 
     from flext_oracle_oic.ext_client import FlextOracleOicClient
 
