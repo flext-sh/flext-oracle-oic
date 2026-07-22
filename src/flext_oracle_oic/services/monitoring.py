@@ -49,7 +49,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             return t.json_mapping_adapter().validate_python({
                 "status": c.Monitoring.HealthStatus.HEALTHY.value,
                 "components": self._component_statuses(
-                    c.Monitoring.ComponentStatus.HEALTHY.value,
+                    c.Monitoring.ComponentStatus.HEALTHY.value
                 ),
                 "timestamp": asyncio.get_event_loop().time(),
             })
@@ -68,7 +68,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             return t.json_mapping_adapter().validate_python({
                 "status": c.Monitoring.HealthStatus.ERROR.value,
                 "components": self._component_statuses(
-                    c.Monitoring.ComponentStatus.UNKNOWN.value,
+                    c.Monitoring.ComponentStatus.UNKNOWN.value
                 ),
                 "error": f"Request failed: {response_result.error}",
             })
@@ -77,7 +77,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             return t.json_mapping_adapter().validate_python({
                 "status": c.Monitoring.HealthStatus.UNHEALTHY.value,
                 "components": self._component_statuses(
-                    c.Monitoring.ComponentStatus.UNKNOWN.value,
+                    c.Monitoring.ComponentStatus.UNKNOWN.value
                 ),
                 "error": f"HTTP {response.status_code}",
             })
@@ -90,24 +90,21 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             **base_health,
             "status": c.Monitoring.HealthStatus.HEALTHY.value,
             "components": self._component_statuses(
-                c.Monitoring.ComponentStatus.HEALTHY.value,
+                c.Monitoring.ComponentStatus.HEALTHY.value
             ),
         })
 
     def _validate_health_status_data(
-        self,
-        health_data: t.JsonMapping,
+        self, health_data: t.JsonMapping
     ) -> p.Result[t.JsonMapping]:
         """Validate a health status payload."""
         validation_result: p.Result[t.JsonMapping] = (
-            u.MonitoringUtilities.validate_health_status(
-                health_data,
-            )
+            u.MonitoringUtilities.validate_health_status(health_data)
         )
         if validation_result.success:
             return validation_result
         self.logger.warning(
-            f"Health status validation failed: {validation_result.error}",
+            f"Health status validation failed: {validation_result.error}"
         )
         return r[t.JsonMapping].ok(health_data)
 
@@ -116,14 +113,12 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         error_health = t.json_mapping_adapter().validate_python({
             "status": c.Monitoring.HealthStatus.ERROR.value,
             "components": self._component_statuses(
-                c.Monitoring.ComponentStatus.UNKNOWN.value,
+                c.Monitoring.ComponentStatus.UNKNOWN.value
             ),
             "error": str(exc),
         })
         error_validation_result: p.Result[t.JsonMapping] = (
-            u.MonitoringUtilities.validate_health_status(
-                error_health,
-            )
+            u.MonitoringUtilities.validate_health_status(error_health)
         )
         return (
             error_validation_result
@@ -153,8 +148,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         return r[t.JsonMapping].ok(metrics_dict)
 
     def _fetch_performance_metrics_data(
-        self,
-        base_metrics: t.JsonMapping,
+        self, base_metrics: t.JsonMapping
     ) -> t.JsonMapping:
         """Fetch performance metrics without exception translation."""
         if not self._monitoring_client:
@@ -185,39 +179,30 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
                 "error": f"HTTP {response.status_code}",
             })
         if isinstance(response.body, Mapping):
-            return t.json_mapping_adapter().validate_python(
-                {
-                    key: self._to_general_value(value)
-                    for key, value in response.body.items()
-                },
-            )
+            return t.json_mapping_adapter().validate_python({
+                key: self._to_general_value(value)
+                for key, value in response.body.items()
+            })
         return t.json_mapping_adapter().validate_python({})
 
     def _metrics_with_analysis(
-        self,
-        metrics_data: t.JsonMapping,
+        self, metrics_data: t.JsonMapping
     ) -> t.MutableJsonMapping:
         """Normalize performance metrics and attach analysis when available."""
         metrics_dict: t.MutableJsonMapping = {}
         for key, value in metrics_data.items():
             metrics_dict[key] = self._to_general_value(value)
         analysis_result: p.Result[t.JsonMapping] = (
-            u.MonitoringUtilities.analyze_performance_metrics(
-                metrics_dict,
-            )
+            u.MonitoringUtilities.analyze_performance_metrics(metrics_dict)
         )
         if analysis_result.success:
             metrics_dict["analysis"] = dict(analysis_result.value)
         else:
-            self.logger.warning(
-                f"Performance analysis failed: {analysis_result.error}",
-            )
+            self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
         return metrics_dict
 
     def _exception_metrics(
-        self,
-        base_metrics: t.JsonMapping,
-        exc: BaseException,
+        self, base_metrics: t.JsonMapping, exc: BaseException
     ) -> t.MutableJsonMapping:
         """Build performance metrics result for translated exceptions."""
         error_metrics = t.json_mapping_adapter().validate_python({

@@ -16,7 +16,6 @@ from __future__ import annotations
 from collections.abc import Iterator
 
 import pytest
-from flext_tests import tm
 
 from flext_oracle_oic import (
     FlextOracleOicAuthMixin,
@@ -29,6 +28,7 @@ from flext_oracle_oic import (
     FlextOracleOicSettings,
     s,
 )
+from flext_tests import tm
 
 __all__: list[str] = ["TestsFlextOracleOicExtServices"]
 
@@ -48,8 +48,7 @@ class TestsFlextOracleOicExtServices:
 
     @pytest.fixture
     def configured_service(
-        self,
-        monkeypatch: pytest.MonkeyPatch,
+        self, monkeypatch: pytest.MonkeyPatch
     ) -> Iterator[FlextOracleOicService]:
         """Service backed by global settings with valid OAuth credentials."""
         # NOTE (ADR-005): project fields are namespaced under settings.OracleOic,
@@ -58,8 +57,7 @@ class TestsFlextOracleOicExtServices:
             "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_ID", _VALID_CLIENT_ID
         )
         monkeypatch.setenv(
-            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_SECRET",
-            _VALID_CLIENT_SECRET,
+            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_SECRET", _VALID_CLIENT_SECRET
         )
         FlextOracleOicSettings.reset_for_testing()
         yield FlextOracleOicService()
@@ -91,8 +89,7 @@ class TestsFlextOracleOicExtServices:
         assert s is FlextOracleOicService
 
     def test_context_manager_yields_the_same_service(
-        self,
-        unconfigured_service: FlextOracleOicService,
+        self, unconfigured_service: FlextOracleOicService
     ) -> None:
         """Entering the service context returns the service instance itself."""
         with unconfigured_service as entered:
@@ -117,9 +114,7 @@ class TestsFlextOracleOicExtServices:
         ],
     )
     def test_operations_fail_gracefully_without_credentials(
-        self,
-        unconfigured_service: FlextOracleOicService,
-        operation: str,
+        self, unconfigured_service: FlextOracleOicService, operation: str
     ) -> None:
         """Every fallible op returns a failed ``r`` (never raises) when unconfigured."""
         svc = unconfigured_service
@@ -151,8 +146,7 @@ class TestsFlextOracleOicExtServices:
         assert result.error
 
     def test_execute_delegates_to_integration_listing(
-        self,
-        unconfigured_service: FlextOracleOicService,
+        self, unconfigured_service: FlextOracleOicService
     ) -> None:
         """``execute`` mirrors ``list_integrations`` (same failure error)."""
         assert (
@@ -163,8 +157,7 @@ class TestsFlextOracleOicExtServices:
     # -- authentication contract (independent of settings/network) ------------
 
     def test_refresh_auth_token_reports_missing_authenticator(
-        self,
-        unconfigured_service: FlextOracleOicService,
+        self, unconfigured_service: FlextOracleOicService
     ) -> None:
         """Token refresh fails with an explicit missing-authenticator error."""
         result = unconfigured_service.refresh_auth_token()
@@ -174,9 +167,7 @@ class TestsFlextOracleOicExtServices:
 
     @pytest.mark.parametrize("token", ["", "some-token", "expired.jwt.value"])
     def test_validate_auth_token_reports_missing_authenticator(
-        self,
-        unconfigured_service: FlextOracleOicService,
-        token: str,
+        self, unconfigured_service: FlextOracleOicService, token: str
     ) -> None:
         """Token validation fails identically regardless of the token value."""
         result = unconfigured_service.validate_auth_token(token)
@@ -187,8 +178,7 @@ class TestsFlextOracleOicExtServices:
     # -- business-rule validation contract ------------------------------------
 
     def test_business_rules_fail_without_oauth_credentials(
-        self,
-        unconfigured_service: FlextOracleOicService,
+        self, unconfigured_service: FlextOracleOicService
     ) -> None:
         """Default (credential-less) settings fail business-rule validation."""
         result = unconfigured_service.validate_business_rules()
@@ -199,8 +189,7 @@ class TestsFlextOracleOicExtServices:
         tm.that(error.lower(), has="validation")
 
     def test_business_rules_pass_with_valid_credentials(
-        self,
-        configured_service: FlextOracleOicService,
+        self, configured_service: FlextOracleOicService
     ) -> None:
         """Valid OAuth credentials satisfy business-rule validation."""
         result = configured_service.validate_business_rules()
@@ -209,8 +198,7 @@ class TestsFlextOracleOicExtServices:
         tm.that(result.value, eq=True)
 
     def test_business_rules_validation_is_idempotent(
-        self,
-        configured_service: FlextOracleOicService,
+        self, configured_service: FlextOracleOicService
     ) -> None:
         """Repeated validation of the same settings yields the same success."""
         first = configured_service.validate_business_rules()

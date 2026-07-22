@@ -10,14 +10,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-    Sequence,
-)
+from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Self, override
 
 from flext_api import FlextApi, FlextApiSettings
-
 from flext_core import r, s
 from flext_oracle_oic import c, m, p, t, u
 from flext_oracle_oic._settings import FlextOracleOicSettings
@@ -27,9 +23,7 @@ if TYPE_CHECKING:
     from types import TracebackType
 
 
-class FlextOracleOicServiceBase(
-    s[Sequence[m.OracleOic.OICIntegrationInfo]],
-):
+class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
     """Base service providing shared infrastructure for all OIC service mixins.
 
     Provides:
@@ -80,9 +74,7 @@ class FlextOracleOicServiceBase(
         return str(value)
 
     @staticmethod
-    def _to_general_value(
-        value: object,
-    ) -> t.JsonValue:
+    def _to_general_value(value: object) -> t.JsonValue:
         """Normalize arbitrary runtime values into t.JsonValue."""
         if isinstance(value, bytes):
             return value.decode(errors="replace")
@@ -101,11 +93,7 @@ class FlextOracleOicServiceBase(
         return str(value)
 
     def _build_integration_info(
-        self,
-        data: t.JsonMapping,
-        *,
-        fallback_id: str,
-        default_status: str,
+        self, data: t.JsonMapping, *, fallback_id: str, default_status: str
     ) -> m.OracleOic.OICIntegrationInfo:
         """Build normalized integration model from API payload mapping."""
         return m.OracleOic.OICIntegrationInfo(
@@ -113,8 +101,7 @@ class FlextOracleOicServiceBase(
             name=self._as_text(data.get("name"), ""),
             description=self._as_text(data.get("description"), ""),
             integration_version=self._as_text(
-                data.get("version"),
-                c.Integration.DEFAULT_VERSION_FALLBACK,
+                data.get("version"), c.Integration.DEFAULT_VERSION_FALLBACK
             ),
             status=self._as_text(data.get("status"), default_status),
             created_by=self._as_text(data.get("createdBy"), ""),
@@ -122,9 +109,7 @@ class FlextOracleOicServiceBase(
         )
 
     @override
-    def execute(
-        self: Self,
-    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    def execute(self: Self) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """Execute main service operation - list all integrations.
 
         Returns:
@@ -139,9 +124,7 @@ class FlextOracleOicServiceBase(
         """The typed Oracle OIC settings namespace."""
         return self._oic_settings
 
-    def list_integrations(
-        self,
-    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    def list_integrations(self) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -153,39 +136,28 @@ class FlextOracleOicServiceBase(
         except c.EXC_NETWORK_TYPE as exc:
             u.fetch_logger(__name__).exception("Failed to list integrations")
             return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail_op(
-                "Integration listing",
-                exc,
+                "Integration listing", exc
             )
 
-    def _list_integrations(
-        self,
-    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    def _list_integrations(self) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations without exception translation."""
         client_result = self._get_client()
         if client_result.failure:
             error_msg = client_result.error or "Client initialization failed"
-            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(
-                error_msg,
-            )
+            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(error_msg)
         client = client_result.value
         integrations_result = client.get_integrations()
         if integrations_result.failure:
             error_msg = integrations_result.error or "Failed to get integrations"
-            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(
-                error_msg,
-            )
+            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(error_msg)
         integrations_data = integrations_result.value
         integrations: list[m.OracleOic.OICIntegrationInfo] = []
         for item in integrations_data:
             integration = self._build_integration_info(
-                item,
-                fallback_id="",
-                default_status=c.Connection.Status.UNKNOWN,
+                item, fallback_id="", default_status=c.Connection.Status.UNKNOWN
             )
             integrations.append(integration)
-        return r[Sequence[m.OracleOic.OICIntegrationInfo]].ok(
-            integrations,
-        )
+        return r[Sequence[m.OracleOic.OICIntegrationInfo]].ok(integrations)
 
     def _get_client(self) -> p.Result[FlextOracleOicClient]:
         """Get or create Oracle OIC client instance.
@@ -221,8 +193,7 @@ class FlextOracleOicServiceBase(
                 oauth_scope=self._oic_settings.OracleOic.oauth_scope,
             )
             self._client = FlextOracleOicClient(
-                connection_config=connection_config,
-                auth_config=auth_config,
+                connection_config=connection_config, auth_config=auth_config
             )
         return r[FlextOracleOicClient].ok(self._client)
 
@@ -242,37 +213,25 @@ class FlextOracleOicServiceBase(
         )
         client_id_validation: p.Result[bool] = (
             u.AuthenticationValidation
-            .validate_oauth_client_id(
-                settings.OracleOic.oauth_client_id,
-            )
+            .validate_oauth_client_id(settings.OracleOic.oauth_client_id)
             .map(lambda _: True)
-            .lash(
-                lambda error: r[bool].fail(
-                    f"OAuth client ID validation: {error}",
-                ),
-            )
+            .lash(lambda error: r[bool].fail(f"OAuth client ID validation: {error}"))
         )
         client_secret_validation: p.Result[bool] = (
             u.AuthenticationValidation
             .validate_oauth_client_secret(
-                t.SecretStr(settings.OracleOic.oauth_client_secret),
+                t.SecretStr(settings.OracleOic.oauth_client_secret)
             )
             .map(lambda _: True)
             .lash(
-                lambda error: r[bool].fail(
-                    f"OAuth client secret validation: {error}",
-                ),
+                lambda error: r[bool].fail(f"OAuth client secret validation: {error}")
             )
         )
         token_url_validation: p.Result[bool] = (
             u.ConnectionValidation
             .validate_base_url(settings.OracleOic.oauth_token_url)
             .map(lambda _: True)
-            .lash(
-                lambda error: r[bool].fail(
-                    f"OAuth token URL validation: {error}",
-                ),
-            )
+            .lash(lambda error: r[bool].fail(f"OAuth token URL validation: {error}"))
         )
         return (
             base_url_validation
@@ -287,7 +246,7 @@ class FlextOracleOicServiceBase(
             self._initialize_monitoring_client()
         except c.EXC_NETWORK_TYPE:
             u.fetch_logger(__name__).exception(
-                "Failed to initialize service components",
+                "Failed to initialize service components"
             )
             raise
 

@@ -9,9 +9,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import FlextTestsUtilities
-
 from flext_oracle_oic import FlextOracleOicUtilities
+from flext_tests import FlextTestsUtilities
 
 
 class TestsFlextOracleOicUtilities(FlextTestsUtilities, FlextOracleOicUtilities):

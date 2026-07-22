@@ -29,9 +29,7 @@ class FlextOracleOicSettings(FlextSettings):
     """Oracle OIC settings; all project fields under ``settings.OracleOic.*``."""
 
     model_config = SettingsConfigDict(
-        env_prefix="FLEXT_ORACLE_OIC_",
-        env_nested_delimiter="__",
-        extra="ignore",
+        env_prefix="FLEXT_ORACLE_OIC_", env_nested_delimiter="__", extra="ignore"
     )
 
     class _OracleOic(BaseModel):

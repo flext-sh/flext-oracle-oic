@@ -8,9 +8,9 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import t as tests_t, tm
 
 from flext_oracle_oic import FlextOracleOicTypes
+from flext_tests import t as tests_t, tm
 from tests import TestsFlextOracleOicTypes, t
 
 __all__: list[str] = ["TestsFlextOracleOicTypingsUnit"]
@@ -23,25 +23,20 @@ class TestsFlextOracleOicTypingsUnit:
         """``t`` is the public alias of the composed test-types class."""
         assert t is TestsFlextOracleOicTypes
 
-    @pytest.mark.parametrize(
-        "base",
-        [tests_t, FlextOracleOicTypes],
-    )
+    @pytest.mark.parametrize("base", [tests_t, FlextOracleOicTypes])
     def test_facade_composes_both_type_domains(self, base: type[object]) -> None:
         """Facade inherits from both the shared and OIC-specific type roots."""
         assert issubclass(t, base)
 
     @pytest.mark.parametrize(
-        "member",
-        ["JsonValue", "JsonList", "JsonDict", "ConfigDict"],
+        "member", ["JsonValue", "JsonList", "JsonDict", "ConfigDict"]
     )
     def test_inherited_type_members_are_exposed(self, member: str) -> None:
         """Domain type members are reachable through the composed facade."""
         tm.that(getattr(t, member, None), none=False)
 
     @pytest.mark.parametrize(
-        "member",
-        ["JsonValue", "JsonList", "JsonDict", "ConfigDict"],
+        "member", ["JsonValue", "JsonList", "JsonDict", "ConfigDict"]
     )
     def test_members_resolve_to_the_root_definition(self, member: str) -> None:
         """MRO composition exposes each member without shadowing its root."""

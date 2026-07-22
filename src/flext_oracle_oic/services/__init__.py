@@ -26,21 +26,14 @@ if TYPE_CHECKING:
     from flext_oracle_oic.services.orchestration import (
         FlextOracleOicOrchestrationMixin as FlextOracleOicOrchestrationMixin,
     )
-_LAZY_IMPORTS = build_lazy_import_map(
-    {
-        ".auth": ("FlextOracleOicAuthMixin",),
-        ".base": ("FlextOracleOicServiceBase",),
-        ".integration_crud": ("FlextOracleOicIntegrationCrudMixin",),
-        ".integration_lifecycle": ("FlextOracleOicIntegrationLifecycleMixin",),
-        ".monitoring": ("FlextOracleOicMonitoringMixin",),
-        ".orchestration": ("FlextOracleOicOrchestrationMixin",),
-    },
-)
+_LAZY_IMPORTS = build_lazy_import_map({
+    ".auth": ("FlextOracleOicAuthMixin",),
+    ".base": ("FlextOracleOicServiceBase",),
+    ".integration_crud": ("FlextOracleOicIntegrationCrudMixin",),
+    ".integration_lifecycle": ("FlextOracleOicIntegrationLifecycleMixin",),
+    ".monitoring": ("FlextOracleOicMonitoringMixin",),
+    ".orchestration": ("FlextOracleOicOrchestrationMixin",),
+})
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    publish_all=False,
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, publish_all=False)

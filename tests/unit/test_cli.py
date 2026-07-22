@@ -8,10 +8,10 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import tm
 
 from flext_oracle_oic import FlextOracleOicCli
 from flext_oracle_oic.main import main
+from flext_tests import tm
 
 __all__ = ["TestsFlextOracleOicCli"]
 
@@ -24,8 +24,7 @@ class TestsFlextOracleOicCli:
         tm.that(main(["version"]), eq=0)
 
     def test_version_command_prints_version_banner(
-        self,
-        capsys: pytest.CaptureFixture[str],
+        self, capsys: pytest.CaptureFixture[str]
     ) -> None:
         """The ``version`` command emits the Oracle OIC banner to stdout."""
         exit_code = main(["version"])
@@ -43,8 +42,7 @@ class TestsFlextOracleOicCli:
         ],
     )
     def test_invalid_invocation_returns_failure_exit_code(
-        self,
-        argv: list[str],
+        self, argv: list[str]
     ) -> None:
         """Missing or unknown commands yield a non-zero exit code, never raise."""
         tm.that(main(argv), eq=1)
@@ -57,8 +55,7 @@ class TestsFlextOracleOicCli:
         ],
     )
     def test_network_commands_fail_gracefully_without_backend(
-        self,
-        command: str,
+        self, command: str
     ) -> None:
         """Network commands return an int failure code instead of propagating errors.
 

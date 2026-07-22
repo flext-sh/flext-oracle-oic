@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from flext_tests import tm
 from packaging.version import Version
 
 from flext_oracle_oic import __version__, __version_info__
+from flext_tests import tm
 
 
 class TestsFlextOracleOicVersion:

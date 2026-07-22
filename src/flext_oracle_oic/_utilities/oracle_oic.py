@@ -5,14 +5,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Annotated, ClassVar
 
 from flext_auth import m
-
 from flext_oracle_oic import c, p, r, t
 
 if TYPE_CHECKING:
-    from collections.abc import (
-        Callable,
-        MutableSequence,
-    )
+    from collections.abc import Callable, MutableSequence
 
 
 class FlextOracleOicUtilitiesOracleOic:
@@ -22,19 +18,16 @@ class FlextOracleOicUtilitiesOracleOic:
         """Validated plan for one integration string field."""
 
         model_config: ClassVar[m.ConfigDict] = m.ConfigDict(
-            arbitrary_types_allowed=True,
-            frozen=True,
+            arbitrary_types_allowed=True, frozen=True
         )
 
         field_name: Annotated[str, m.Field(description="Name of the field to validate")]
         label: Annotated[str, m.Field(description="Human-readable label for the field")]
         required: Annotated[
-            bool,
-            m.Field(description="Whether the field is required"),
+            bool, m.Field(description="Whether the field is required")
         ] = False
         required_message: Annotated[
-            str,
-            m.Field(description="Error message when required field is missing"),
+            str, m.Field(description="Error message when required field is missing")
         ] = ""
         validator: Annotated[
             Callable[[str], p.Result[str]],
@@ -57,8 +50,7 @@ class FlextOracleOicUtilitiesOracleOic:
         errors: MutableSequence[str] = []
         validated_data = t.json_dict_adapter().validate_python(integration_data)
         field_specs: tuple[
-            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan,
-            ...,
+            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan, ...
         ] = (
             FlextOracleOicUtilitiesOracleOic.FieldValidationPlan(
                 field_name="name",
@@ -112,7 +104,7 @@ class FlextOracleOicUtilitiesOracleOic:
                     validated_data[plan.field_name] = field_result.value
             case _:
                 errors.append(
-                    f"{plan.label} validation: Integration {plan.field_name} must be a string",
+                    f"{plan.label} validation: Integration {plan.field_name} must be a string"
                 )
 
     @staticmethod
@@ -151,11 +143,9 @@ class FlextOracleOicUtilitiesOracleOic:
         status = status.upper().strip()
         if status not in c.OracleOicValidation.VALID_INTEGRATION_STATUSES:
             valid_statuses = ", ".join(
-                sorted(c.OracleOicValidation.VALID_INTEGRATION_STATUSES),
+                sorted(c.OracleOicValidation.VALID_INTEGRATION_STATUSES)
             )
-            return r[str].fail(
-                f"Invalid integration status. Valid: {valid_statuses}",
-            )
+            return r[str].fail(f"Invalid integration status. Valid: {valid_statuses}")
         return r[str].ok(status)
 
     @staticmethod

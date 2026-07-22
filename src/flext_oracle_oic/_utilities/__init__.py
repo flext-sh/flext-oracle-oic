@@ -20,21 +20,12 @@ if TYPE_CHECKING:
     from flext_oracle_oic._utilities.oracle_oic import (
         FlextOracleOicUtilitiesOracleOic as FlextOracleOicUtilitiesOracleOic,
     )
-_LAZY_IMPORTS = build_lazy_import_map(
-    {
-        ".authentication_validation": (
-            "FlextOracleOicUtilitiesAuthenticationValidation",
-        ),
-        ".connection_validation": ("FlextOracleOicUtilitiesConnectionValidation",),
-        ".monitoring": ("FlextOracleOicUtilitiesMonitoring",),
-        ".oracle_oic": ("FlextOracleOicUtilitiesOracleOic",),
-    },
-)
+_LAZY_IMPORTS = build_lazy_import_map({
+    ".authentication_validation": ("FlextOracleOicUtilitiesAuthenticationValidation",),
+    ".connection_validation": ("FlextOracleOicUtilitiesConnectionValidation",),
+    ".monitoring": ("FlextOracleOicUtilitiesMonitoring",),
+    ".oracle_oic": ("FlextOracleOicUtilitiesOracleOic",),
+})
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    publish_all=False,
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, publish_all=False)

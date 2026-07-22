@@ -14,10 +14,10 @@ from __future__ import annotations
 from collections.abc import Callable
 
 import pytest
-from flext_tests import tm
 
 from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, c, p, t
 from flext_oracle_oic.api import oracle_oic
+from flext_tests import tm
 
 
 class TestsFlextOracleOicExtension:
@@ -31,7 +31,7 @@ class TestsFlextOracleOicExtension:
                 "base_url": "https://custom.example.com",
                 "oauth_client_id": "client-abc",
                 "oauth_scope": "urn:opc:idm:__myscopes__",
-            },
+            }
         })
 
     @pytest.fixture
@@ -50,24 +50,19 @@ class TestsFlextOracleOicExtension:
         tm.that(api, is_=FlextOracleOicApi)
 
     def test_facade_constructs_with_explicit_settings(
-        self,
-        api: FlextOracleOicApi,
+        self, api: FlextOracleOicApi
     ) -> None:
         """Constructing with explicit settings yields a facade instance."""
         tm.that(api, is_=FlextOracleOicApi)
 
-    def test_connection_context_reports_success(
-        self,
-        api: FlextOracleOicApi,
-    ) -> None:
+    def test_connection_context_reports_success(self, api: FlextOracleOicApi) -> None:
         """fetch_connection_context is a total operation that succeeds."""
         result: p.Result[t.JsonMapping] = api.fetch_connection_context()
 
         tm.ok(result)
 
     def test_connection_context_reflects_provided_settings(
-        self,
-        api: FlextOracleOicApi,
+        self, api: FlextOracleOicApi
     ) -> None:
         """The connection context echoes the configured base URL and timeout."""
         payload = api.fetch_connection_context().unwrap()
@@ -76,8 +71,7 @@ class TestsFlextOracleOicExtension:
         tm.that(payload["request_timeout"], eq=30)
 
     def test_auth_context_reflects_provided_settings(
-        self,
-        api: FlextOracleOicApi,
+        self, api: FlextOracleOicApi
     ) -> None:
         """The auth context echoes the configured OAuth client id and scope."""
         payload = api.fetch_auth_context().unwrap()
@@ -86,8 +80,7 @@ class TestsFlextOracleOicExtension:
         tm.that(payload["oauth_scope"], eq="urn:opc:idm:__myscopes__")
 
     def test_features_context_exposes_boolean_feature_flags(
-        self,
-        api: FlextOracleOicApi,
+        self, api: FlextOracleOicApi
     ) -> None:
         """The features context exposes the default-enabled boolean flags."""
         payload = api.fetch_features_context().unwrap()
@@ -104,10 +97,7 @@ class TestsFlextOracleOicExtension:
         ],
     )
     def test_connection_context_keys(
-        self,
-        api: FlextOracleOicApi,
-        key: str,
-        expected: str,
+        self, api: FlextOracleOicApi, key: str, expected: str
     ) -> None:
         """Connection context surfaces each expected key with the config value."""
         payload = api.fetch_connection_context().unwrap()
@@ -115,8 +105,7 @@ class TestsFlextOracleOicExtension:
         tm.that(payload[key], eq=expected)
 
     def test_monitoring_health_status_returns_status_payload(
-        self,
-        api: FlextOracleOicApi,
+        self, api: FlextOracleOicApi
     ) -> None:
         """Health status is a total operation returning a status mapping."""
         result = api.fetch_health_status()
@@ -125,8 +114,7 @@ class TestsFlextOracleOicExtension:
         tm.that(result.unwrap(), has="status")
 
     def test_performance_metrics_returns_metrics_payload(
-        self,
-        api: FlextOracleOicApi,
+        self, api: FlextOracleOicApi
     ) -> None:
         """Performance metrics is a total operation returning a metrics mapping."""
         result = api.fetch_performance_metrics()
@@ -163,8 +151,7 @@ class TestsFlextOracleOicExtension:
         assert result.error
 
     def test_failed_operation_preserves_validation_error_message(
-        self,
-        api: FlextOracleOicApi,
+        self, api: FlextOracleOicApi
     ) -> None:
         """The failure error identifies the offending credential validation."""
         result = api.test_connection()

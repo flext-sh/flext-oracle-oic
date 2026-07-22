@@ -129,8 +129,7 @@ from flext_oracle_oic import FlextOracleOicSettings
 # Manual environment variable loading (current approach)
 settings = FlextOracleOicSettings(
     base_url=os.getenv(
-        "ORACLE_OIC_BASE_URL",
-        "https://your-instance.integration.ocp.oraclecloud.com",
+        "ORACLE_OIC_BASE_URL", "https://your-instance.integration.ocp.oraclecloud.com"
     ),
     api_version=os.getenv("ORACLE_OIC_API_VERSION", "v1"),
     request_timeout=int(os.getenv("ORACLE_OIC_REQUEST_TIMEOUT", "30")),
