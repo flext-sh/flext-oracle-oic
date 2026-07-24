@@ -21,26 +21,19 @@ class FlextOracleOicConfigModels:
 
         model_config = ConfigDict(frozen=True, extra="forbid")
 
-        base_url: str = Field(
-            description="Default Oracle Integration Cloud base URL.",
-        )
-        api_version: str = Field(
-            description="Default OIC REST API version.",
-        )
+        base_url: str = Field(description="Default Oracle Integration Cloud base URL.")
+        api_version: str = Field(description="Default OIC REST API version.")
         request_timeout: int = Field(
-            ge=1,
-            description="Default request timeout in seconds.",
+            ge=1, description="Default request timeout in seconds."
         )
         max_retries: int = Field(
-            ge=0,
-            description="Maximum retry attempts for idempotent requests.",
+            ge=0, description="Maximum retry attempts for idempotent requests."
         )
         page_size: int = Field(
-            ge=1,
-            description="Default page size for paginated list endpoints.",
+            ge=1, description="Default page size for paginated list endpoints."
         )
         verify_ssl: bool = Field(
-            description="Whether to verify TLS certificates by default.",
+            description="Whether to verify TLS certificates by default."
         )
         http_error_status_threshold: int = Field(
             ge=100,
@@ -53,9 +46,7 @@ class FlextOracleOicConfigModels:
 
         model_config = ConfigDict(frozen=True, extra="forbid")
 
-        default_version: str = Field(
-            description="Default integration version string.",
-        )
+        default_version: str = Field(description="Default integration version string.")
 
     class Validation(BaseModel):
         """Oracle OIC validation rule defaults."""
@@ -68,25 +59,19 @@ class FlextOracleOicConfigModels:
             model_config = ConfigDict(frozen=True, extra="forbid")
 
             min_length: int = Field(
-                ge=1,
-                description="Minimum integration name length.",
+                ge=1, description="Minimum integration name length."
             )
             max_length: int = Field(
-                ge=1,
-                description="Maximum integration name length.",
+                ge=1, description="Maximum integration name length."
             )
-            pattern: str = Field(
-                description="Regex validating an integration name.",
-            )
+            pattern: str = Field(description="Regex validating an integration name.")
 
         class Version(BaseModel):
             """Integration version validation rules."""
 
             model_config = ConfigDict(frozen=True, extra="forbid")
 
-            pattern: str = Field(
-                description="Regex validating an integration version.",
-            )
+            pattern: str = Field(description="Regex validating an integration version.")
 
         class Performance(BaseModel):
             """Monitoring performance thresholds."""
@@ -94,28 +79,23 @@ class FlextOracleOicConfigModels:
             model_config = ConfigDict(frozen=True, extra="forbid")
 
             response_time_ms: float = Field(
-                ge=0,
-                description="Maximum acceptable response time in milliseconds.",
+                ge=0, description="Maximum acceptable response time in milliseconds."
             )
             success_rate: float = Field(
-                ge=0,
-                le=1,
-                description="Minimum acceptable success rate.",
+                ge=0, le=1, description="Minimum acceptable success rate."
             )
             error_rate: float = Field(
-                ge=0,
-                le=1,
-                description="Maximum acceptable error rate.",
+                ge=0, le=1, description="Maximum acceptable error rate."
             )
 
         integration_name: FlextOracleOicConfigModels.Validation.IntegrationName = Field(
-            description="Integration name validation thresholds.",
+            description="Integration name validation thresholds."
         )
         version: FlextOracleOicConfigModels.Validation.Version = Field(
-            description="Integration version validation rules.",
+            description="Integration version validation rules."
         )
         performance: FlextOracleOicConfigModels.Validation.Performance = Field(
-            description="Monitoring performance thresholds.",
+            description="Monitoring performance thresholds."
         )
 
     class Monitoring(BaseModel):
@@ -124,13 +104,13 @@ class FlextOracleOicConfigModels:
         model_config = ConfigDict(frozen=True, extra="forbid")
 
         component_database: str = Field(
-            description="Display name for the database component.",
+            description="Display name for the database component."
         )
         component_messaging: str = Field(
-            description="Display name for the messaging component.",
+            description="Display name for the messaging component."
         )
         component_integration_engine: str = Field(
-            description="Display name for the integration engine component.",
+            description="Display name for the integration engine component."
         )
 
     class OracleOic(BaseModel):
@@ -139,16 +119,16 @@ class FlextOracleOicConfigModels:
         model_config = ConfigDict(frozen=True, extra="forbid")
 
         api: FlextOracleOicConfigModels.Api = Field(
-            description="Oracle OIC API defaults and connection policy.",
+            description="Oracle OIC API defaults and connection policy."
         )
         integration: FlextOracleOicConfigModels.Integration = Field(
-            description="Oracle OIC integration defaults.",
+            description="Oracle OIC integration defaults."
         )
         validation: FlextOracleOicConfigModels.Validation = Field(
-            description="Oracle OIC validation rule defaults.",
+            description="Oracle OIC validation rule defaults."
         )
         monitoring: FlextOracleOicConfigModels.Monitoring = Field(
-            description="Oracle OIC monitoring component defaults.",
+            description="Oracle OIC monitoring component defaults."
         )
 
     class Root(BaseModel):
@@ -157,7 +137,7 @@ class FlextOracleOicConfigModels:
         model_config = ConfigDict(frozen=True, extra="ignore")
 
         OracleOic: FlextOracleOicConfigModels.OracleOic = Field(
-            description="Oracle OIC business-rule config namespace.",
+            description="Oracle OIC business-rule config namespace."
         )
 
 

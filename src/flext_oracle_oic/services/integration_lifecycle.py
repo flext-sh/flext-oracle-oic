@@ -41,8 +41,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].fail(error_msg)
         client = client_result.value
         activate_result = client.make_request(
-            "POST",
-            f"/integrations/{integration_id}/activate",
+            "POST", f"/integrations/{integration_id}/activate"
         )
         if activate_result.failure:
             error_msg = activate_result.error or "Failed to activate integration"
@@ -73,8 +72,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].fail(error_msg)
         client = client_result.value
         deactivate_result = client.make_request(
-            "POST",
-            f"/integrations/{integration_id}/deactivate",
+            "POST", f"/integrations/{integration_id}/deactivate"
         )
         if deactivate_result.failure:
             error_msg = deactivate_result.error or "Failed to deactivate integration"
@@ -102,8 +100,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].fail(error_msg)
         client = client_result.value
         test_result = client.make_request(
-            c.API.Method.GET,
-            "/ic/api/integration/v1/health",
+            c.API.Method.GET, "/ic/api/integration/v1/health"
         )
         if test_result.failure:
             error_msg = test_result.error or "Connection test failed"

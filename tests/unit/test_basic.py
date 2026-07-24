@@ -44,7 +44,7 @@ class TestsFlextOracleOicBasic:
                 "oauth_client_id": "test_client_id",
                 "oauth_client_secret": "test_client_secret",
                 "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-            },
+            }
         })
         ns = settings.OracleOic
 
@@ -55,25 +55,21 @@ class TestsFlextOracleOicBasic:
     def test_settings_ignore_unknown_keys(self) -> None:
         """Unknown keys are ignored per the extra=ignore contract."""
         settings = FlextOracleOicSettings.model_validate({
-            "not_a_real_setting": "value",
+            "not_a_real_setting": "value"
         })
 
         tm.that(settings.model_dump(), lacks="not_a_real_setting")
         tm.that(settings.OracleOic.base_url, eq=c.OracleOic.DEFAULT_BASE_URL)
 
     @pytest.mark.parametrize(
-        ("raw", "expected"),
-        [
-            ("v1", c.OICApiVersion.V1),
-            ("v2", c.OICApiVersion.V2),
-        ],
+        ("raw", "expected"), [("v1", c.OICApiVersion.V1), ("v2", c.OICApiVersion.V2)]
     )
     def test_settings_preserve_api_version_scalar(
         self, raw: str, expected: c.OICApiVersion
     ) -> None:
         """api_version is a plain scalar; the enum contract lives in c."""
         settings = FlextOracleOicSettings.model_validate({
-            "OracleOic": {"api_version": raw},
+            "OracleOic": {"api_version": raw}
         })
 
         tm.that(settings.OracleOic.api_version, eq=raw)
@@ -82,7 +78,7 @@ class TestsFlextOracleOicBasic:
     def test_settings_accept_unvalidated_scalars(self) -> None:
         """Settings carry raw scalars; range checks live at the domain boundary."""
         settings = FlextOracleOicSettings.model_validate({
-            "OracleOic": {"request_timeout": -1},
+            "OracleOic": {"request_timeout": -1}
         })
 
         tm.that(settings.OracleOic.request_timeout, eq=-1)
@@ -90,7 +86,7 @@ class TestsFlextOracleOicBasic:
     def test_settings_secret_is_plain_scalar(self) -> None:
         """At the settings layer the OAuth secret is an env-provided plain str."""
         settings = FlextOracleOicSettings.model_validate({
-            "OracleOic": {"oauth_client_secret": "s3cr3t"},
+            "OracleOic": {"oauth_client_secret": "s3cr3t"}
         })
 
         tm.that(settings.OracleOic.oauth_client_secret, eq="s3cr3t")
@@ -117,8 +113,7 @@ class TestsFlextOracleOicBasic:
         tm.that(auth.oauth_client_aud, none=True)
 
     @pytest.mark.parametrize(
-        "missing",
-        ["oauth_client_id", "oauth_client_secret", "oauth_token_url"],
+        "missing", ["oauth_client_id", "oauth_client_secret", "oauth_token_url"]
     )
     def test_auth_config_requires_mandatory_fields(self, missing: str) -> None:
         """Each required auth field is enforced at validation time."""

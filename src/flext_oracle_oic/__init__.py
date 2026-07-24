@@ -83,59 +83,25 @@ if TYPE_CHECKING:
     )
 _LAZY_IMPORTS = merge_lazy_imports(
     (".services",),
-    build_lazy_import_map(
-        {
-            "._config": ("FlextOracleOicConfig", "config"),
-            "._settings": ("FlextOracleOicSettings", "settings"),
-            ".api": (
-                "FlextOracleOicApi",
-                "oracle_oic",
-            ),
-            ".constants": (
-                "FlextOracleOicConstants",
-                "c",
-            ),
-            ".main": (
-                "FlextOracleOicCli",
-                "main",
-            ),
-            ".models": (
-                "FlextOracleOicModels",
-                "m",
-            ),
-            ".protocols": (
-                "FlextOracleOicProtocols",
-                "p",
-            ),
-            ".service": (
-                "FlextOracleOicService",
-                "s",
-            ),
-            ".services.auth": ("FlextOracleOicAuthMixin",),
-            ".services.base": ("FlextOracleOicServiceBase",),
-            ".services.integration_crud": ("FlextOracleOicIntegrationCrudMixin",),
-            ".services.integration_lifecycle": (
-                "FlextOracleOicIntegrationLifecycleMixin",
-            ),
-            ".services.monitoring": ("FlextOracleOicMonitoringMixin",),
-            ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
-            ".typings": (
-                "FlextOracleOicTypes",
-                "t",
-            ),
-            ".utilities": (
-                "FlextOracleOicUtilities",
-                "u",
-            ),
-            "flext_auth": (
-                "d",
-                "e",
-                "h",
-                "r",
-                "x",
-            ),
-        },
-    ),
+    build_lazy_import_map({
+        "._config": ("FlextOracleOicConfig", "config"),
+        "._settings": ("FlextOracleOicSettings", "settings"),
+        ".api": ("FlextOracleOicApi", "oracle_oic"),
+        ".constants": ("FlextOracleOicConstants", "c"),
+        ".main": ("FlextOracleOicCli", "main"),
+        ".models": ("FlextOracleOicModels", "m"),
+        ".protocols": ("FlextOracleOicProtocols", "p"),
+        ".service": ("FlextOracleOicService", "s"),
+        ".services.auth": ("FlextOracleOicAuthMixin",),
+        ".services.base": ("FlextOracleOicServiceBase",),
+        ".services.integration_crud": ("FlextOracleOicIntegrationCrudMixin",),
+        ".services.integration_lifecycle": ("FlextOracleOicIntegrationLifecycleMixin",),
+        ".services.monitoring": ("FlextOracleOicMonitoringMixin",),
+        ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
+        ".typings": ("FlextOracleOicTypes", "t"),
+        ".utilities": ("FlextOracleOicUtilities", "u"),
+        "flext_auth": ("d", "e", "h", "r", "x"),
+    }),
     exclude_names=(
         "cleanup_submodule_namespace",
         "install_lazy_exports",
@@ -202,9 +168,4 @@ __all__: tuple[str, ...] = (
 )
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    public_exports=__all__,
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, public_exports=__all__)

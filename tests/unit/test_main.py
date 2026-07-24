@@ -31,10 +31,7 @@ class TestsFlextOracleOicMain:
         tm.that(exit_code, ne=0)
 
     @pytest.mark.parametrize("args", [["version"], ["--help"]])
-    def test_documented_invocations_return_int_exit_code(
-        self,
-        args: list[str],
-    ) -> None:
+    def test_documented_invocations_return_int_exit_code(self, args: list[str]) -> None:
         """Every documented invocation returns an int the process can exit with."""
         tm.that(main(args), is_=int)
 

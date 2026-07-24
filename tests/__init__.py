@@ -84,63 +84,29 @@ if TYPE_CHECKING:
     )
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
-    build_lazy_import_map(
-        {
-            ".base": (
-                "TestsFlextOracleOicServiceBase",
-                "s",
-            ),
-            ".conftest": ("conftest",),
-            ".constants": (
-                "TestsFlextOracleOicConstants",
-                "c",
-            ),
-            ".models": (
-                "TestsFlextOracleOicModels",
-                "m",
-            ),
-            ".protocols": (
-                "TestsFlextOracleOicProtocols",
-                "p",
-            ),
-            ".settings": ("TestsFlextOracleOicSettings",),
-            ".typings": (
-                "TestsFlextOracleOicTypes",
-                "t",
-            ),
-            ".unit": ("unit",),
-            ".unit.test_basic": ("TestsFlextOracleOicBasic",),
-            ".unit.test_cli": ("TestsFlextOracleOicCli",),
-            ".unit.test_config": ("TestsFlextOracleOicConfig",),
-            ".unit.test_ext_client": (
-                "TestsFlextOracleOicExtClient",
-                "test_ext_client",
-            ),
-            ".unit.test_ext_services": ("TestsFlextOracleOicExtServices",),
-            ".unit.test_extension": ("TestsFlextOracleOicExtension",),
-            ".unit.test_import": ("TestsFlextOracleOicImport",),
-            ".unit.test_main": ("TestsFlextOracleOicMain",),
-            ".unit.test_models": ("TestsFlextOracleOicModelsUnit",),
-            ".unit.test_typings": ("TestsFlextOracleOicTypingsUnit",),
-            ".unit.test_version": ("TestsFlextOracleOicVersion",),
-            ".utilities": (
-                "TestsFlextOracleOicUtilities",
-                "u",
-            ),
-            "flext_tests": (
-                "d",
-                "e",
-                "h",
-                "r",
-                "td",
-                "tf",
-                "tk",
-                "tm",
-                "tv",
-                "x",
-            ),
-        },
-    ),
+    build_lazy_import_map({
+        ".base": ("TestsFlextOracleOicServiceBase", "s"),
+        ".conftest": ("conftest",),
+        ".constants": ("TestsFlextOracleOicConstants", "c"),
+        ".models": ("TestsFlextOracleOicModels", "m"),
+        ".protocols": ("TestsFlextOracleOicProtocols", "p"),
+        ".settings": ("TestsFlextOracleOicSettings",),
+        ".typings": ("TestsFlextOracleOicTypes", "t"),
+        ".unit": ("unit",),
+        ".unit.test_basic": ("TestsFlextOracleOicBasic",),
+        ".unit.test_cli": ("TestsFlextOracleOicCli",),
+        ".unit.test_config": ("TestsFlextOracleOicConfig",),
+        ".unit.test_ext_client": ("TestsFlextOracleOicExtClient", "test_ext_client"),
+        ".unit.test_ext_services": ("TestsFlextOracleOicExtServices",),
+        ".unit.test_extension": ("TestsFlextOracleOicExtension",),
+        ".unit.test_import": ("TestsFlextOracleOicImport",),
+        ".unit.test_main": ("TestsFlextOracleOicMain",),
+        ".unit.test_models": ("TestsFlextOracleOicModelsUnit",),
+        ".unit.test_typings": ("TestsFlextOracleOicTypingsUnit",),
+        ".unit.test_version": ("TestsFlextOracleOicVersion",),
+        ".utilities": ("TestsFlextOracleOicUtilities", "u"),
+        "flext_tests": ("d", "e", "h", "r", "td", "tf", "tk", "tm", "tv", "x"),
+    }),
     exclude_names=(
         "cleanup_submodule_namespace",
         "install_lazy_exports",
@@ -164,9 +130,4 @@ _LAZY_IMPORTS = merge_lazy_imports(
 )
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    publish_all=False,
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, publish_all=False)

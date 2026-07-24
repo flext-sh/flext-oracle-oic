@@ -25,9 +25,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
     """Mixin providing orchestration execution for FlextOracleOicService facade."""
 
     def execute_app_driven_orchestration(
-        self,
-        integration_id: str,
-        payload: t.JsonMapping,
+        self, integration_id: str, payload: t.JsonMapping
     ) -> p.Result[t.JsonMapping]:
         """Execute app-driven orchestration pattern.
 
@@ -43,15 +41,12 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
             return self._execute_app_driven_orchestration(integration_id, payload)
         except c.EXC_NETWORK_TYPE as exc:
             self.logger.exception(
-                "App-driven orchestration failed for %s",
-                integration_id,
+                "App-driven orchestration failed for %s", integration_id
             )
             return r[t.JsonMapping].fail_op("Orchestration execution", exc)
 
     def _execute_app_driven_orchestration(
-        self,
-        integration_id: str,
-        payload: t.JsonMapping,
+        self, integration_id: str, payload: t.JsonMapping
     ) -> p.Result[t.JsonMapping]:
         """Execute app-driven orchestration without exception translation."""
         client_result = self._get_client()
@@ -63,21 +58,15 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         payload_dict = {
             key: self._to_general_value(value) for key, value in payload.items()
         }
-        orchestration_result = client.make_request(
-            "POST",
-            endpoint,
-            json=payload_dict,
-        )
+        orchestration_result = client.make_request("POST", endpoint, json=payload_dict)
         if orchestration_result.failure:
             return r[t.JsonMapping].fail(
-                orchestration_result.error or "Orchestration request failed",
+                orchestration_result.error or "Orchestration request failed"
             )
         return r[t.JsonMapping].ok(orchestration_result.value)
 
     def execute_file_transfer(
-        self,
-        integration_id: str,
-        file_config: t.JsonMapping,
+        self, integration_id: str, file_config: t.JsonMapping
     ) -> p.Result[t.JsonMapping]:
         """Execute file transfer pattern.
 
@@ -98,9 +87,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         )
 
     def execute_scheduled_orchestration(
-        self,
-        integration_id: str,
-        schedule_config: t.JsonMapping,
+        self, integration_id: str, schedule_config: t.JsonMapping
     ) -> p.Result[t.JsonMapping]:
         """Execute scheduled orchestration pattern.
 
@@ -140,10 +127,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         self,
         integration_id: str,
         operation_config: t.JsonMapping,
-        operation: Callable[
-            [FlextOracleOicClient, str, t.JsonMapping],
-            t.JsonMapping,
-        ],
+        operation: Callable[[FlextOracleOicClient, str, t.JsonMapping], t.JsonMapping],
         log_message: str,
         error_message: str,
     ) -> p.Result[t.JsonMapping]:

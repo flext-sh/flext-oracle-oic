@@ -37,9 +37,7 @@ class _TestConnectionCommand(cli_m.BaseModel):
         with service:
             connection_result = service.test_connection()
             if connection_result.success:
-                cli.print(
-                    "Connection to Oracle OIC established successfully",
-                )
+                cli.print("Connection to Oracle OIC established successfully")
                 return r[bool].ok(value=True)
             return r[bool].fail_op("Connection", connection_result.error)
 
@@ -61,7 +59,7 @@ class _ListIntegrationsCommand(cli_m.BaseModel):
         integrations_result = service.list_integrations()
         if integrations_result.failure:
             return r[bool].fail(
-                f"Failed to list integrations: {integrations_result.error}",
+                f"Failed to list integrations: {integrations_result.error}"
             )
         integrations = integrations_result.value or []
         _print_integrations(integrations)
@@ -87,12 +85,10 @@ def _print_integrations(
         return
     cli.print("📋 Oracle OIC Integrations:")
     for integration in integrations:
-        cli.print(
-            f"  • {integration.name} (ID: {integration.integration_id})",
-        )
+        cli.print(f"  • {integration.name} (ID: {integration.integration_id})")
         cli.print(
             f"    Status: {integration.status}, "
-            f"Version: {integration.integration_version}",
+            f"Version: {integration.integration_version}"
         )
         if integration.description:
             cli.print(f"    Description: {integration.description}")
@@ -117,8 +113,7 @@ class FlextOracleOicCli:
     def build_app(cls) -> p.Cli.Application:
         """Build the Typer application with the registered commands."""
         app = cli.create_app_with_common_params(
-            name=cls.APP_NAME,
-            help_text=cls.APP_HELP,
+            name=cls.APP_NAME, help_text=cls.APP_HELP
         )
         cli.register_result_routes(
             app,
