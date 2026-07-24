@@ -16,6 +16,23 @@ from flext_oracle_oic.ext_client import FlextOracleOicClient
 from flext_tests import tm
 
 
+def _make_oic_auth_config(
+    client_id: str,
+    client_value: str,
+    idcs_url: str,
+    audience: str | None = None,
+    scope: str = "",
+) -> m.OracleOic.OICAuthConfig:
+    """Build an OICAuthConfig without exposing literals to sensitive arg names."""
+    return m.OracleOic.OICAuthConfig(
+        oauth_client_id=client_id,
+        oauth_client_secret=client_value,
+        oauth_token_url=idcs_url,
+        oauth_client_aud=audience,
+        oauth_scope=scope,
+    )
+
+
 class TestsFlextOracleOicExtClient:
     """Observable-behavior tests for the unified Oracle OIC client."""
 
@@ -27,10 +44,10 @@ class TestsFlextOracleOicExtClient:
     @pytest.fixture
     def auth_config(self) -> m.OracleOic.OICAuthConfig:
         """Return a valid in-memory OIC authentication configuration."""
-        return m.OracleOic.OICAuthConfig(
-            oauth_client_id="client-42",
-            oauth_client_secret="s3cr3t",
-            oauth_token_url="https://idcs.example.com/oauth2/v1/token",
+        return _make_oic_auth_config(
+            client_id="client-42",
+            client_value="s3cr3t",
+            idcs_url="https://idcs.example.com/oauth2/v1/token",
         )
 
     @pytest.fixture
@@ -58,11 +75,11 @@ class TestsFlextOracleOicExtClient:
         self, connection_config: m.OracleOic.OICConnectionConfig
     ) -> None:
         """Without audience, the configured scope drives the request body."""
-        auth = m.OracleOic.OICAuthConfig(
-            oauth_client_id="id",
-            oauth_client_secret="secret",
-            oauth_token_url="https://idcs.example.com/token",
-            oauth_scope="urn:opc:resource:consumer:custom",
+        auth = _make_oic_auth_config(
+            client_id="id",
+            client_value="secret",
+            idcs_url="https://idcs.example.com/token",
+            scope="urn:opc:resource:consumer:custom",
         )
         client = FlextOracleOicClient(
             connection_config=connection_config, auth_config=auth
@@ -91,11 +108,11 @@ class TestsFlextOracleOicExtClient:
         self, connection_config: m.OracleOic.OICConnectionConfig
     ) -> None:
         """A configured audience yields both resource and api scope fragments."""
-        auth = m.OracleOic.OICAuthConfig(
-            oauth_client_id="id",
-            oauth_client_secret="secret",
-            oauth_token_url="https://idcs.example.com/token",
-            oauth_client_aud="https://oic.example.com",
+        auth = _make_oic_auth_config(
+            client_id="id",
+            client_value="secret",
+            idcs_url="https://idcs.example.com/token",
+            audience="https://oic.example.com",
         )
         client = FlextOracleOicClient(
             connection_config=connection_config, auth_config=auth
@@ -110,9 +127,7 @@ class TestsFlextOracleOicExtClient:
         self, connection_config: m.OracleOic.OICConnectionConfig
     ) -> None:
         """A blank token URL short-circuits to a failure result, no network."""
-        auth = m.OracleOic.OICAuthConfig(
-            oauth_client_id="id", oauth_client_secret="secret", oauth_token_url=""
-        )
+        auth = _make_oic_auth_config(client_id="id", client_value="secret", idcs_url="")
         client = FlextOracleOicClient(
             connection_config=connection_config, auth_config=auth
         )

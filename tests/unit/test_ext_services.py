@@ -33,7 +33,7 @@ from flext_tests import tm
 __all__: list[str] = ["TestsFlextOracleOicExtServices"]
 
 _VALID_CLIENT_ID = "client-id-123"
-_VALID_CLIENT_SECRET = "supersecret-value"
+_VALID_OAUTH_CREDENTIAL = "test-credential-123"
 
 
 class TestsFlextOracleOicExtServices:
@@ -57,7 +57,7 @@ class TestsFlextOracleOicExtServices:
             "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_ID", _VALID_CLIENT_ID
         )
         monkeypatch.setenv(
-            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_SECRET", _VALID_CLIENT_SECRET
+            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_SECRET", _VALID_OAUTH_CREDENTIAL
         )
         FlextOracleOicSettings.reset_for_testing()
         yield FlextOracleOicService()

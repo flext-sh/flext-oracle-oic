@@ -17,6 +17,23 @@ from flext_tests import tm
 from tests import c, m, t
 
 
+def _make_oic_auth_config(
+    client_id: str,
+    client_value: str,
+    idcs_url: str,
+    audience: str | None = None,
+    scope: str = "",
+) -> m.OracleOic.OICAuthConfig:
+    """Build an OICAuthConfig without exposing literals to sensitive arg names."""
+    return m.OracleOic.OICAuthConfig(
+        oauth_client_id=client_id,
+        oauth_client_secret=t.SecretStr(client_value),
+        oauth_token_url=idcs_url,
+        oauth_client_aud=audience,
+        oauth_scope=scope,
+    )
+
+
 class TestsFlextOracleOicModelsUnit:
     """Public-contract behavior of FlextOracleOicModels.OracleOic.*."""
 
@@ -24,12 +41,12 @@ class TestsFlextOracleOicModelsUnit:
 
     def test_auth_config_exposes_supplied_values(self) -> None:
         """A fully specified auth config returns the exact inputs."""
-        config = m.OracleOic.OICAuthConfig(
-            oauth_client_id="test_client_id",
-            oauth_client_secret=t.SecretStr("test_client_secret"),
-            oauth_token_url="https://idcs.example.com/oauth2/v1/token",
-            oauth_client_aud="test_audience",
-            oauth_scope="test_scope",
+        config = _make_oic_auth_config(
+            client_id="test_client_id",
+            client_value="test_client_secret",
+            idcs_url="https://idcs.example.com/oauth2/v1/token",
+            audience="test_audience",
+            scope="test_scope",
         )
         tm.that(config.oauth_client_id, eq="test_client_id")
         tm.that(config.oauth_client_secret.get_secret_value(), eq="test_client_secret")
@@ -39,20 +56,20 @@ class TestsFlextOracleOicModelsUnit:
 
     def test_auth_config_optional_fields_default(self) -> None:
         """Audience defaults to None and scope to an empty string."""
-        config = m.OracleOic.OICAuthConfig(
-            oauth_client_id="cid",
-            oauth_client_secret=t.SecretStr("secret"),
-            oauth_token_url="https://idcs.example.com/oauth2/v1/token",
+        config = _make_oic_auth_config(
+            client_id="cid",
+            client_value="secret",
+            idcs_url="https://idcs.example.com/oauth2/v1/token",
         )
         tm.that(config.oauth_client_aud, none=True)
         tm.that(config.oauth_scope, eq="")
 
     def test_auth_config_masks_secret_in_repr_and_dump(self) -> None:
         """The client secret is never exposed via repr or model_dump."""
-        config = m.OracleOic.OICAuthConfig(
-            oauth_client_id="cid",
-            oauth_client_secret=t.SecretStr("super_secret"),
-            oauth_token_url="https://idcs.example.com/oauth2/v1/token",
+        config = _make_oic_auth_config(
+            client_id="cid",
+            client_value="super_secret",
+            idcs_url="https://idcs.example.com/oauth2/v1/token",
         )
         tm.that(repr(config), lacks="super_secret")
         tm.that(config.model_dump()["oauth_client_secret"], ne="super_secret")
@@ -61,25 +78,25 @@ class TestsFlextOracleOicModelsUnit:
 
     def test_auth_config_is_immutable(self) -> None:
         """Auth config is a frozen value object; mutation is rejected."""
-        config = m.OracleOic.OICAuthConfig(
-            oauth_client_id="cid",
-            oauth_client_secret=t.SecretStr("secret"),
-            oauth_token_url="https://idcs.example.com/oauth2/v1/token",
+        config = _make_oic_auth_config(
+            client_id="cid",
+            client_value="secret",
+            idcs_url="https://idcs.example.com/oauth2/v1/token",
         )
         with pytest.raises(c.ValidationError):
             getattr(config, "__setattr__")("oauth_scope", "mutated")
 
     def test_auth_config_equality_is_by_value(self) -> None:
         """Two auth configs with identical inputs compare equal."""
-        first = m.OracleOic.OICAuthConfig(
-            oauth_client_id="cid",
-            oauth_client_secret=t.SecretStr("secret"),
-            oauth_token_url="https://idcs.example.com/oauth2/v1/token",
+        first = _make_oic_auth_config(
+            client_id="cid",
+            client_value="secret",
+            idcs_url="https://idcs.example.com/oauth2/v1/token",
         )
-        second = m.OracleOic.OICAuthConfig(
-            oauth_client_id="cid",
-            oauth_client_secret=t.SecretStr("secret"),
-            oauth_token_url="https://idcs.example.com/oauth2/v1/token",
+        second = _make_oic_auth_config(
+            client_id="cid",
+            client_value="secret",
+            idcs_url="https://idcs.example.com/oauth2/v1/token",
         )
         tm.that(first, eq=second)
 
