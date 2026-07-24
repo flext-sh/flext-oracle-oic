@@ -1,4 +1,4 @@
-"""Tests for typings.py module.
+"""Behavioral tests for the Oracle OIC test-types facade.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -7,21 +7,41 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from tests.typings import t
+import pytest
+
+from flext_oracle_oic import FlextOracleOicTypes
+from flext_tests import t as tests_t, tm
+from tests import TestsFlextOracleOicTypes, t
+
+__all__: list[str] = ["TestsFlextOracleOicTypingsUnit"]
 
 
 class TestsFlextOracleOicTypingsUnit:
-    """Test t domain-specific types."""
+    """Contract of the composed test-types facade ``t``."""
 
-    def test_flext_types_inheritance(self) -> None:
-        """Test t (FlextTypes) exposes type utilities."""
-        assert t is not None
+    def test_facade_alias_is_the_composed_class(self) -> None:
+        """``t`` is the public alias of the composed test-types class."""
+        assert t is TestsFlextOracleOicTypes
 
-    def test_exported_types_available(self) -> None:
-        """Test all exported types are available."""
-        assert t is not None
+    @pytest.mark.parametrize("base", [tests_t, FlextOracleOicTypes])
+    def test_facade_composes_both_type_domains(self, base: type[object]) -> None:
+        """Facade inherits from both the shared and OIC-specific type roots."""
+        assert issubclass(t, base)
 
-    def test_flext_types_can_be_extended(self) -> None:
-        """Test t can be extended for domain-specific types."""
-        core_dict = t.JsonValue
-        assert core_dict is not None
+    @pytest.mark.parametrize(
+        "member", ["JsonValue", "JsonList", "JsonDict", "ConfigDict"]
+    )
+    def test_inherited_type_members_are_exposed(self, member: str) -> None:
+        """Domain type members are reachable through the composed facade."""
+        tm.that(getattr(t, member, None), none=False)
+
+    @pytest.mark.parametrize(
+        "member", ["JsonValue", "JsonList", "JsonDict", "ConfigDict"]
+    )
+    def test_members_resolve_to_the_root_definition(self, member: str) -> None:
+        """MRO composition exposes each member without shadowing its root."""
+        assert getattr(t, member) is getattr(tests_t, member)
+
+    def test_oic_domain_does_not_shadow_shared_json_value(self) -> None:
+        """OIC extension reuses (not redefines) the shared ``JsonValue``."""
+        assert t.JsonValue is FlextOracleOicTypes.JsonValue

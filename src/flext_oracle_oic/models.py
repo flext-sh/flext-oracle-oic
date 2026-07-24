@@ -8,7 +8,6 @@ from __future__ import annotations
 from typing import Annotated
 
 from flext_auth import m
-
 from flext_oracle_oic import c, t, u
 
 
@@ -34,18 +33,13 @@ class FlextOracleOicModels(m):
                 str, u.Field(description="IDCS OAuth2 client ID")
             ]
             oauth_client_secret: Annotated[
-                t.SecretStr,
-                u.Field(description="IDCS OAuth2 client secret"),
+                t.SecretStr, u.Field(description="IDCS OAuth2 client secret")
             ]
             oauth_token_url: Annotated[
-                str,
-                u.Field(description="IDCS OAuth2 token endpoint"),
+                str, u.Field(description="IDCS OAuth2 token endpoint")
             ]
             oauth_client_aud: Annotated[
-                str | None,
-                u.Field(
-                    description="OAuth2 audience",
-                ),
+                str | None, u.Field(description="OAuth2 audience")
             ] = None
             oauth_scope: Annotated[str, u.Field(description="OAuth2 scope")] = ""
 
@@ -59,29 +53,17 @@ class FlextOracleOicModels(m):
             base_url: Annotated[
                 str, u.Field(description="Oracle OIC instance base URL")
             ]
-            api_version: Annotated[
-                str,
-                u.Field(
-                    description="OIC API version",
-                ),
-            ] = c.OracleOic.DEFAULT_API_VERSION
+            api_version: Annotated[str, u.Field(description="OIC API version")] = (
+                c.OracleOic.DEFAULT_API_VERSION
+            )
             request_timeout: Annotated[
-                t.PositiveInt,
-                u.Field(
-                    description="Request timeout in seconds",
-                ),
+                t.PositiveInt, u.Field(description="Request timeout in seconds")
             ] = c.DEFAULT_TIMEOUT_SECONDS
             max_retries: Annotated[
-                t.RetryCount,
-                u.Field(
-                    description="Maximum retry attempts",
-                ),
+                t.RetryCount, u.Field(description="Maximum retry attempts")
             ] = c.MAX_RETRY_ATTEMPTS
             verify_ssl: Annotated[
-                bool,
-                u.Field(
-                    description="Verify SSL certificates",
-                ),
+                bool, u.Field(description="Verify SSL certificates")
             ] = c.OracleOic.DEFAULT_VERIFY_SSL
 
         class OICIntegrationInfo(m.Entity):
@@ -92,14 +74,12 @@ class FlextOracleOicModels(m):
             """
 
             integration_id: Annotated[
-                str,
-                u.Field(description="Integration unique identifier"),
+                str, u.Field(description="Integration unique identifier")
             ]
             name: Annotated[str, u.Field(description="Integration name")]
             status: Annotated[str, u.Field(description="Integration status")]
             integration_version: Annotated[
-                str,
-                u.Field(description="Integration version"),
+                str, u.Field(description="Integration version")
             ]
             description: Annotated[
                 str, u.Field(description="Integration description")
@@ -117,8 +97,7 @@ class FlextOracleOicModels(m):
             """
 
             connection_id: Annotated[
-                str,
-                u.Field(description="Connection unique identifier"),
+                str, u.Field(description="Connection unique identifier")
             ]
             name: Annotated[str, u.Field(description="Connection name")]
             adapter_type: Annotated[str, u.Field(description="Adapter type")]
@@ -136,22 +115,17 @@ class FlextOracleOicModels(m):
             """
 
             integration_id: Annotated[
-                str,
-                u.Field(description="Integration unique identifier"),
+                str, u.Field(description="Integration unique identifier")
             ]
             integration_version: Annotated[
-                str,
-                u.Field(description="Integration version"),
+                str, u.Field(description="Integration version")
             ]
             status: Annotated[str, u.Field(description="Integration status")]
             last_updated: Annotated[
                 str, u.Field(description="Last update timestamp")
             ] = ""
             activated_by: Annotated[
-                str,
-                u.Field(
-                    description="User who activated the integration",
-                ),
+                str, u.Field(description="User who activated the integration")
             ] = ""
 
 

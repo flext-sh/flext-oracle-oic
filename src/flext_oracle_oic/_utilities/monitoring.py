@@ -11,8 +11,7 @@ class FlextOracleOicUtilitiesMonitoring:
 
     @staticmethod
     def _assess_metric(
-        metric_key: str,
-        metric_value: float,
+        metric_key: str, metric_value: float
     ) -> tuple[str | None, str | None, bool]:
         """Return warning/critical/recommendation for one metric."""
         match metric_key:
@@ -59,9 +58,7 @@ class FlextOracleOicUtilitiesMonitoring:
         return None
 
     @staticmethod
-    def analyze_performance_metrics(
-        metrics: t.JsonMapping,
-    ) -> p.Result[t.JsonMapping]:
+    def analyze_performance_metrics(metrics: t.JsonMapping) -> p.Result[t.JsonMapping]:
         """Analyze Oracle OIC performance metrics.
 
         Args:
@@ -82,8 +79,7 @@ class FlextOracleOicUtilitiesMonitoring:
             metric_value = float(metric_value_raw)
             issue, recommendation, is_critical = (
                 FlextOracleOicUtilitiesMonitoring._assess_metric(
-                    metric_key,
-                    metric_value,
+                    metric_key, metric_value
                 )
             )
             if issue is None:
@@ -101,14 +97,10 @@ class FlextOracleOicUtilitiesMonitoring:
             "critical_issues": list(critical_issues),
             "recommendations": list(recommendations),
         }
-        return r[t.JsonMapping].ok(
-            t.json_mapping_adapter().validate_python(analysis),
-        )
+        return r[t.JsonMapping].ok(t.json_mapping_adapter().validate_python(analysis))
 
     @staticmethod
-    def validate_health_status(
-        health_data: t.JsonMapping,
-    ) -> p.Result[t.JsonMapping]:
+    def validate_health_status(health_data: t.JsonMapping) -> p.Result[t.JsonMapping]:
         """Validate Oracle OIC health check data.
 
         Args:
@@ -138,7 +130,7 @@ class FlextOracleOicUtilitiesMonitoring:
             if components is not None:
                 error_message = (
                     FlextOracleOicUtilitiesMonitoring._components_validation_error(
-                        components,
+                        components
                     )
                 )
         if error_message is not None:

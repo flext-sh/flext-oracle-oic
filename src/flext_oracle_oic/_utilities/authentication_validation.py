@@ -44,6 +44,6 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
             return r[t.SecretStr].fail("OAuth client secret cannot be empty")
         if len(secret_value) < c.OracleOicValidation.MIN_CLIENT_SECRET_LENGTH:
             return r[t.SecretStr].fail(
-                "OAuth client secret must be at least 8 characters",
+                "OAuth client secret must be at least 8 characters"
             )
         return r[t.SecretStr].ok(client_secret)

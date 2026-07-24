@@ -24,7 +24,6 @@ if TYPE_CHECKING:
         tv as tv,
         x as x,
     )
-
     from tests.base import (
         TestsFlextOracleOicServiceBase as TestsFlextOracleOicServiceBase,
         s as s,
@@ -39,7 +38,7 @@ if TYPE_CHECKING:
     )
     from tests.protocols import (
         TestsFlextOracleOicProtocols as TestsFlextOracleOicProtocols,
-        p as p,
+        p,
     )
     from tests.settings import (
         TestsFlextOracleOicSettings as TestsFlextOracleOicSettings,
@@ -54,6 +53,13 @@ if TYPE_CHECKING:
     from tests.unit.test_cli import TestsFlextOracleOicCli as TestsFlextOracleOicCli
     from tests.unit.test_config import (
         TestsFlextOracleOicConfig as TestsFlextOracleOicConfig,
+    )
+    from tests.unit.test_ext_client import (
+        TestsFlextOracleOicExtClient as TestsFlextOracleOicExtClient,
+        test_ext_client as test_ext_client,
+    )
+    from tests.unit.test_ext_services import (
+        TestsFlextOracleOicExtServices as TestsFlextOracleOicExtServices,
     )
     from tests.unit.test_extension import (
         TestsFlextOracleOicExtension as TestsFlextOracleOicExtension,
@@ -73,62 +79,33 @@ if TYPE_CHECKING:
     )
     from tests.utilities import (
         TestsFlextOracleOicUtilities as TestsFlextOracleOicUtilities,
-        u as u,
+        u,
     )
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
-    build_lazy_import_map(
-        {
-            ".base": (
-                "TestsFlextOracleOicServiceBase",
-                "s",
-            ),
-            ".conftest": ("conftest",),
-            ".constants": (
-                "TestsFlextOracleOicConstants",
-                "c",
-            ),
-            ".models": (
-                "TestsFlextOracleOicModels",
-                "m",
-            ),
-            ".protocols": (
-                "TestsFlextOracleOicProtocols",
-                "p",
-            ),
-            ".settings": ("TestsFlextOracleOicSettings",),
-            ".typings": (
-                "TestsFlextOracleOicTypes",
-                "t",
-            ),
-            ".unit": ("unit",),
-            ".unit.test_basic": ("TestsFlextOracleOicBasic",),
-            ".unit.test_cli": ("TestsFlextOracleOicCli",),
-            ".unit.test_config": ("TestsFlextOracleOicConfig",),
-            ".unit.test_extension": ("TestsFlextOracleOicExtension",),
-            ".unit.test_import": ("TestsFlextOracleOicImport",),
-            ".unit.test_main": ("TestsFlextOracleOicMain",),
-            ".unit.test_models": ("TestsFlextOracleOicModelsUnit",),
-            ".unit.test_typings": ("TestsFlextOracleOicTypingsUnit",),
-            ".unit.test_version": ("TestsFlextOracleOicVersion",),
-            ".utilities": (
-                "TestsFlextOracleOicUtilities",
-                "u",
-            ),
-            "flext_tests": (
-                "d",
-                "e",
-                "h",
-                "r",
-                "td",
-                "tf",
-                "tk",
-                "tm",
-                "tv",
-                "x",
-            ),
-        },
-    ),
+    build_lazy_import_map({
+        ".base": ("TestsFlextOracleOicServiceBase", "s"),
+        ".conftest": ("conftest",),
+        ".constants": ("TestsFlextOracleOicConstants", "c"),
+        ".models": ("TestsFlextOracleOicModels", "m"),
+        ".protocols": ("TestsFlextOracleOicProtocols", "p"),
+        ".settings": ("TestsFlextOracleOicSettings",),
+        ".typings": ("TestsFlextOracleOicTypes", "t"),
+        ".unit": ("unit",),
+        ".unit.test_basic": ("TestsFlextOracleOicBasic",),
+        ".unit.test_cli": ("TestsFlextOracleOicCli",),
+        ".unit.test_config": ("TestsFlextOracleOicConfig",),
+        ".unit.test_ext_client": ("TestsFlextOracleOicExtClient", "test_ext_client"),
+        ".unit.test_ext_services": ("TestsFlextOracleOicExtServices",),
+        ".unit.test_extension": ("TestsFlextOracleOicExtension",),
+        ".unit.test_import": ("TestsFlextOracleOicImport",),
+        ".unit.test_main": ("TestsFlextOracleOicMain",),
+        ".unit.test_models": ("TestsFlextOracleOicModelsUnit",),
+        ".unit.test_typings": ("TestsFlextOracleOicTypingsUnit",),
+        ".unit.test_version": ("TestsFlextOracleOicVersion",),
+        ".utilities": ("TestsFlextOracleOicUtilities", "u"),
+        "flext_tests": ("d", "e", "h", "r", "td", "tf", "tk", "tm", "tv", "x"),
+    }),
     exclude_names=(
         "cleanup_submodule_namespace",
         "install_lazy_exports",
@@ -152,9 +129,4 @@ _LAZY_IMPORTS = merge_lazy_imports(
 )
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    publish_all=False,
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, publish_all=False)

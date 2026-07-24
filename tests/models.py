@@ -9,9 +9,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import FlextTestsModels
-
 from flext_oracle_oic import FlextOracleOicModels
+from flext_tests import FlextTestsModels
 
 
 class TestsFlextOracleOicModels(FlextTestsModels, FlextOracleOicModels):
@@ -20,7 +19,4 @@ class TestsFlextOracleOicModels(FlextTestsModels, FlextOracleOicModels):
 
 m = TestsFlextOracleOicModels
 
-__all__: list[str] = [
-    "TestsFlextOracleOicModels",
-    "m",
-]
+__all__: list[str] = ["TestsFlextOracleOicModels", "m"]
