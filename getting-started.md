@@ -96,15 +96,17 @@ from flext_oracle_oic import FlextOracleOicSettings
 
 # Create configuration following FLEXT patterns
 settings = FlextOracleOicSettings(
-    base_url="https://your-oic-instance.integration.ocp.oraclecloud.com",
-    api_version="v1",
-    request_timeout=30,
-    oauth_client_id="your_client_id",
-    oauth_client_secret="your_client_secret",
-    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
+    OracleOic={
+        "base_url": "https://your-oic-instance.integration.ocp.oraclecloud.com",
+        "api_version": "v1",
+        "request_timeout": 30,
+        "oauth_client_id": "your_client_id",
+        "oauth_client_secret": "your_client_secret",
+        "oauth_token_url": "https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
+    }
 )
 
-u.Cli.print(f"Configuration created: {settings.base_url}")
+print(f"Configuration created: {settings.OracleOic.base_url}")
 ```
 
 ### Current Capabilities
@@ -120,9 +122,9 @@ try:
     settings = FlextOracleOicSettings(
         base_url="https://test.integration.ocp.oraclecloud.com", api_version="v1"
     )
-    u.Cli.print("✅ Configuration valid")
+    print("✅ Configuration valid")
 except Exception as e:
-    u.Cli.print(f"❌ Configuration error: {e}")
+    print(f"❌ Configuration error: {e}")
 ```
 
 ## Development Commands

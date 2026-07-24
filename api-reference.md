@@ -38,7 +38,6 @@ The current implementation provides foundation configuration classes and basic s
 ```python
 from flext_oracle_oic import (
     FlextOracleOicApi,
-    FlextOracleOicClient,
     FlextOracleOicService,
     FlextOracleOicSettings,
     FlextOracleOicConstants,
@@ -136,11 +135,8 @@ from flext_oracle_oic import (
 ### Client Components (FLEXT Compliance Issues)
 
 ```python
-# HTTP client wrapper
-from flext_oracle_oic import FlextOracleOicClient
-
-# Authentication is integrated into the client via OAuth2/IDCS settings
-from flext_oracle_oic import FlextOracleOicSettings
+# Service facade and settings (the HTTP client wrapper is not yet exposed)
+from flext_oracle_oic import FlextOracleOicService, FlextOracleOicSettings
 ```
 
 **Critical Issue**: Current client implementation uses direct `httpx` imports (line 12 in `ext_client.py`) which violates FLEXT ecosystem standards. Will be refactored to use `flext-api` patterns.
@@ -174,7 +170,7 @@ connection_error = e.ConnectionError  # Connection problems
 
 ## Factory and Utility Functions
 
-```python notest
+```python
 from flext_oracle_oic import (
     # Factory functions for service creation
     # Implementation details vary
@@ -267,9 +263,9 @@ try:
     settings = FlextOracleOicSettings(
         base_url="https://test-instance.integration.ocp.oraclecloud.com"
     )
-    u.Cli.print("✅ Configuration valid")
+    print("✅ Configuration valid")
 except ValueError as e:
-    u.Cli.print(f"❌ Configuration error: {e}")
+    print(f"❌ Configuration error: {e}")
 ```
 
 ### Future Versions

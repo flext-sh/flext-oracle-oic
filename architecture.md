@@ -138,7 +138,7 @@ src/flext_oracle_oic/
 
 **Current Service Classes (FLEXT Compliance Issues)**
 
-```python
+```text
 # ext_services.py contains multiple classes (violates FLEXT unified pattern)
 class OracleOicExtensionService        # Main service class
 class OICIntegrationPatternService     # Integration patterns
@@ -154,6 +154,7 @@ class OracleOicIntegrationService(s):
 
     class _MonitoringHelper:
         """Nested monitoring and lifecycle management."""
+
 ```
 
 ### Client Layer
@@ -166,12 +167,13 @@ class OracleOicIntegrationService(s):
 
 **FLEXT Compliance Issue**
 
-```python
+```text
 # ❌ Current violation in ext_client.py:12
 import httpx  # Direct dependency violates FLEXT abstraction
 
 # ✅ Required FLEXT pattern
 from flext_api import FlextApiClient
+
 ```
 
 ### Domain Models
@@ -195,6 +197,8 @@ from flext_api import FlextApiClient
 **r Railway Pattern (Partial)**
 
 ```python
+from __future__ import annotations
+
 from flext_cli import u
 from flext_core import FlextSettings
 
@@ -209,6 +213,8 @@ def validate_connection(settings: dict) -> p.Result[ConnectionInfo]:
 **FlextLogger Integration**
 
 ```python
+from __future__ import annotations
+
 from flext_cli import u
 from flext_core import FlextSettings
 
@@ -223,6 +229,11 @@ class ServiceClass:
 **s Inheritance**
 
 ```python
+from __future__ import annotations
+
+from flext_oracle_oic import s
+
+
 # ❌ Current implementation
 class OracleOicExtensionService:
     pass
@@ -235,13 +246,14 @@ class OracleOicIntegrationService(s):
 
 **FlextContainer Dependency Injection**
 
-```python
+```text
 # ❌ Current: Manual service creation
 service = OracleOicExtensionService(settings)
 
 # ✅ Required: Container-managed dependencies
 container = FlextContainer.get_global()
 service = container.resolve("oic_service").unwrap()
+
 ```
 
 ## Critical Architecture Issues
