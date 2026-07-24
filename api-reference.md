@@ -267,9 +267,9 @@ try:
     settings = FlextOracleOicSettings(
         base_url="https://test-instance.integration.ocp.oraclecloud.com"
     )
-    print("✅ Configuration valid")
+    u.Cli.print("✅ Configuration valid")
 except ValueError as e:
-    print(f"❌ Configuration error: {e}")
+    u.Cli.print(f"❌ Configuration error: {e}")
 ```
 
 ### Future Versions

@@ -83,10 +83,10 @@ from flext_core import r, p
 from flext_core import u
 from flext_core import s
 from flext_core import t
-from flext_core import u; print('FLEXT-Core accessible')"
+from flext_core import u; u.Cli.print('FLEXT-Core accessible')"
 
 # Verify installation
-python -c "from flext_oracle_oic import OracleOicExtensionSettings; print('Import successful')"
+python -c "from flext_oracle_oic import OracleOicExtensionSettings; u.Cli.print('Import successful')"
 ```
 
 ### Environment Setup
@@ -121,7 +121,7 @@ settings = FlextOracleOicSettings(
     oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
 )
 
-print(f"Configuration created: {settings.base_url}")
+u.Cli.print(f"Configuration created: {settings.base_url}")
 ```
 
 ### Current Capabilities
@@ -137,9 +137,9 @@ try:
     settings = FlextOracleOicSettings(
         base_url="https://test.integration.ocp.oraclecloud.com", api_version="v1"
     )
-    print("✅ Configuration valid")
+    u.Cli.print("✅ Configuration valid")
 except Exception as e:
-    print(f"❌ Configuration error: {e}")
+    u.Cli.print(f"❌ Configuration error: {e}")
 ```
 
 ## Development Commands
@@ -241,7 +241,7 @@ from flext_core import r, p
 from flext_core import u
 from flext_core import s
 from flext_core import t
-from flext_core import u; print('Success')"
+from flext_core import u; u.Cli.print('Success')"
 ```
 
 **Quality Gate Failures**
