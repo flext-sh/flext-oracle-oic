@@ -65,25 +65,8 @@ cd flext-oracle-oic
 poetry install --with dev,test
 
 # Verify FLEXT-core access
-python -c "from flext_core import FlextBus
-from flext_core import FlextSettings
-from flext_core import FlextConstants
-from flext_core import FlextContainer
-from flext_core import FlextContext
-from flext_core import d
-from flext_core import FlextDispatcher
-from flext_core import e
-from flext_core import h
-from flext_core import x
-from flext_core import FlextModels
-from flext_core import FlextProcessors
-from flext_core import p
-from flext_core import FlextRegistry
-from flext_core import r, p
-from flext_core import u
-from flext_core import s
-from flext_core import t
-from flext_core import u; u.Cli.print('FLEXT-Core accessible')"
+python -c "from flext_cli import u
+from flext_core import FlextSettings; u.Cli.print('FLEXT-Core accessible')"
 
 # Verify installation
 python -c "from flext_oracle_oic import OracleOicExtensionSettings; u.Cli.print('Import successful')"
@@ -223,25 +206,8 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 # Verify FLEXT workspace structure
 ls -la ../flext-core/src/flext_core/
 export PYTHONPATH="$(pwd)/../flext-core/src:$PYTHONPATH"
-python -c "from flext_core import FlextBus
-from flext_core import FlextSettings
-from flext_core import FlextConstants
-from flext_core import FlextContainer
-from flext_core import FlextContext
-from flext_core import d
-from flext_core import FlextDispatcher
-from flext_core import e
-from flext_core import h
-from flext_core import x
-from flext_core import FlextModels
-from flext_core import FlextProcessors
-from flext_core import p
-from flext_core import FlextRegistry
-from flext_core import r, p
-from flext_core import u
-from flext_core import s
-from flext_core import t
-from flext_core import u; u.Cli.print('Success')"
+python -c "from flext_cli import u
+from flext_core import FlextSettings; u.Cli.print('Success')"
 ```
 
 **Quality Gate Failures**

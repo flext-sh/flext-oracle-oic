@@ -1,35 +1,38 @@
 # Architecture
 
 <!-- TOC START -->
-- [Overview](#overview)
-  - [Architecture Principles](#architecture-principles)
-- [Current Implementation Analysis](#current-implementation-analysis)
-  - [Implemented Components ✅](#implemented-components)
-  - [Architecture Gaps ⚠️](#architecture-gaps)
-  - [Module Organization](#module-organization)
-- [Architecture Components](#architecture-components)
-  - [Configuration Management](#configuration-management)
-  - [Service Architecture](#service-architecture)
-  - [Client Layer](#client-layer)
-  - [Domain Models](#domain-models)
-- [FLEXT Ecosystem Integration](#flext-ecosystem-integration)
-  - [Currently Implemented ✅](#currently-implemented)
-  - [Missing FLEXT Integration ❌](#missing-flext-integration)
-- [Critical Architecture Issues](#critical-architecture-issues)
-  - [1. FLEXT Compliance Violations](#1-flext-compliance-violations)
-  - [2. Oracle OIC Integration Gaps](#2-oracle-oic-integration-gaps)
-- [Testing Architecture](#testing-architecture)
-  - [Current Test Status (21% Coverage)](#current-test-status-21-coverage)
-  - [Required Testing Strategy](#required-testing-strategy)
-- [Roadmap to FLEXT Compliance](#roadmap-to-flext-compliance)
-  - [Phase 1: Critical Fixes (Immediate)](#phase-1-critical-fixes-immediate)
-  - [Phase 2: Oracle OIC Implementation (Months 2-3)](#phase-2-oracle-oic-implementation-months-2-3)
-  - [Phase 3: Production Readiness (Month 4+)](#phase-3-production-readiness-month-4)
-- [Integration with FLEXT Ecosystem](#integration-with-flext-ecosystem)
-  - [Direct Dependencies](#direct-dependencies)
-  - [Service Dependencies](#service-dependencies)
-  - [Cross-References](#cross-references)
-- [Related Documentation](#related-documentation)
+
+- [Architecture](#architecture)
+  - [Overview](#overview)
+    - [Architecture Principles](#architecture-principles)
+  - [Current Implementation Analysis](#current-implementation-analysis)
+    - [Implemented Components ✅](#implemented-components-)
+    - [Architecture Gaps ⚠️](#architecture-gaps-️)
+    - [Module Organization](#module-organization)
+  - [Architecture Components](#architecture-components)
+    - [Configuration Management](#configuration-management)
+    - [Service Architecture](#service-architecture)
+    - [Client Layer](#client-layer)
+    - [Domain Models](#domain-models)
+  - [FLEXT Ecosystem Integration](#flext-ecosystem-integration)
+    - [Currently Implemented ✅](#currently-implemented-)
+    - [Missing FLEXT Integration ❌](#missing-flext-integration-)
+  - [Critical Architecture Issues](#critical-architecture-issues)
+    - [1. FLEXT Compliance Violations](#1-flext-compliance-violations)
+    - [2. Oracle OIC Integration Gaps](#2-oracle-oic-integration-gaps)
+  - [Testing Architecture](#testing-architecture)
+    - [Current Test Status (21% Coverage)](#current-test-status-21-coverage)
+    - [Required Testing Strategy](#required-testing-strategy)
+  - [Roadmap to FLEXT Compliance](#roadmap-to-flext-compliance)
+    - [Phase 1: Critical Fixes (Immediate)](#phase-1-critical-fixes-immediate)
+    - [Phase 2: Oracle OIC Implementation (Months 2-3)](#phase-2-oracle-oic-implementation-months-2-3)
+    - [Phase 3: Production Readiness (Month 4+)](#phase-3-production-readiness-month-4)
+  - [Integration with FLEXT Ecosystem](#integration-with-flext-ecosystem)
+    - [Direct Dependencies](#direct-dependencies)
+    - [Service Dependencies](#service-dependencies)
+    - [Cross-References](#cross-references)
+  - [Related Documentation](#related-documentation)
+
 <!-- TOC END -->
 
 **flext-oracle-oic v0.12.0-dev** - Oracle Integration Cloud Architecture Analysis
@@ -45,10 +48,10 @@ This document provides an accurate analysis of the current architecture implemen
 The library follows these core principles from the FLEXT ecosystem:
 
 1. **Railway-Oriented Programming**: p.Result[T] for type-safe error handling
-1. **Dependency Injection**: FlextContainer for service management
-1. **Domain-Driven Design**: Rich domain models for Oracle OIC concepts
-1. **Clean Architecture**: Separation of concerns across layers
-1. **Type Safety**: Complete Python 3.13+ type annotations
+2. **Dependency Injection**: FlextContainer for service management
+3. **Domain-Driven Design**: Rich domain models for Oracle OIC concepts
+4. **Clean Architecture**: Separation of concerns across layers
+5. **Type Safety**: Complete Python 3.13+ type annotations
 
 ## Current Implementation Analysis
 
@@ -135,7 +138,7 @@ src/flext_oracle_oic/
 
 **Current Service Classes (FLEXT Compliance Issues)**
 
-```python notest
+```python
 # ext_services.py contains multiple classes (violates FLEXT unified pattern)
 class OracleOicExtensionService        # Main service class
 class OICIntegrationPatternService     # Integration patterns
@@ -191,26 +194,9 @@ from flext_api import FlextApiClient
 
 **r Railway Pattern (Partial)**
 
-```python notest
-from flext_core import FlextBus
+```python
+from flext_cli import u
 from flext_core import FlextSettings
-from flext_core import FlextConstants
-from flext_core import FlextContainer
-from flext_core import FlextContext
-from flext_core import d
-from flext_core import FlextDispatcher
-from flext_core import e
-from flext_core import h
-from flext_core import x
-from flext_core import FlextModels
-from flext_core import FlextProcessors
-from flext_core import p
-from flext_core import FlextRegistry
-from flext_core import r, p
-from flext_core import u
-from flext_core import s
-from flext_core import t
-from flext_core import u
 
 
 def validate_connection(settings: dict) -> p.Result[ConnectionInfo]:
@@ -222,26 +208,9 @@ def validate_connection(settings: dict) -> p.Result[ConnectionInfo]:
 
 **FlextLogger Integration**
 
-```python notest
-from flext_core import FlextBus
+```python
+from flext_cli import u
 from flext_core import FlextSettings
-from flext_core import FlextConstants
-from flext_core import FlextContainer
-from flext_core import FlextContext
-from flext_core import d
-from flext_core import FlextDispatcher
-from flext_core import e
-from flext_core import h
-from flext_core import x
-from flext_core import FlextModels
-from flext_core import FlextProcessors
-from flext_core import p
-from flext_core import FlextRegistry
-from flext_core import r, p
-from flext_core import u
-from flext_core import s
-from flext_core import t
-from flext_core import u
 
 
 class ServiceClass:
@@ -253,7 +222,7 @@ class ServiceClass:
 
 **s Inheritance**
 
-```python notest
+```python
 # ❌ Current implementation
 class OracleOicExtensionService:
     pass
@@ -266,7 +235,7 @@ class OracleOicIntegrationService(s):
 
 **FlextContainer Dependency Injection**
 
-```python notest
+```python
 # ❌ Current: Manual service creation
 service = OracleOicExtensionService(settings)
 
@@ -358,13 +327,11 @@ tests/
 
    - Resolve `exceptions.py:283` OIC_TOKEN_ERROR issue
    - Fix `test_models.py:61` type mismatch
-
-1. **Replace Direct Imports**
+2. **Replace Direct Imports**
 
    - Replace `httpx` with `flext-api` patterns
    - Replace `typer` with `flext-cli` patterns
-
-1. **Implement s**
+3. **Implement s**
 
    - Convert service classes to inherit from s
    - Implement unified class pattern with nested helpers
@@ -376,14 +343,12 @@ tests/
    - Complete Oracle cloud authentication
    - Token lifecycle management
    - Secure credential storage
-
-1. **Integration Patterns**
+2. **Integration Patterns**
 
    - App-driven orchestration
    - Scheduled orchestration
    - File transfer patterns
-
-1. **Enterprise Features**
+3. **Enterprise Features**
 
    - Circuit breaker implementation
    - Retry strategies
@@ -396,8 +361,7 @@ tests/
    - 70%+ coverage with integration tests
    - Contract testing with Oracle OIC APIs
    - Performance benchmarking
-
-1. **Documentation Completion**
+2. **Documentation Completion**
 
    - Complete API reference
    - Integration examples
@@ -422,7 +386,7 @@ tests/
 - **Authentication**: Integrates with flext-auth for unified authentication
 - **Observability**: Uses flext-observability for monitoring and metrics
 
-______________________________________________________________________
+---
 
 This architecture analysis reflects the actual implementation status as of April 14, 2026. The library provides foundation configuration and basic service structure, with significant FLEXT compliance improvements needed before production use.
 
