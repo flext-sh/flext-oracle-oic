@@ -40,7 +40,7 @@ class _TestConnectionCommand(cli_m.BaseModel):
         with service:
             connection_result = service.test_connection()
             if connection_result.success:
-                cli.u.Cli.print("Connection to Oracle OIC established successfully")
+                cli.print("Connection to Oracle OIC established successfully")
                 return r[bool].ok(value=True)
             return r[bool].fail_op("Connection", connection_result.error)
 
@@ -74,8 +74,8 @@ class _ShowVersionCommand(cli_m.BaseModel):
 
     def execute(self) -> p.Result[bool]:
         """Print Oracle OIC Extension version through cli.print."""
-        cli.u.Cli.print(f"Oracle OIC Extension v{__version__}")
-        cli.u.Cli.print("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud")
+        cli.print(f"Oracle OIC Extension v{__version__}")
+        cli.print("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud")
         return r[bool].ok(value=True)
 
 
@@ -84,17 +84,17 @@ def _print_integrations(
 ) -> None:
     """Print integrations to CLI output via the canonical cli facade."""
     if not integrations:
-        cli.u.Cli.print("📋 No integrations found")
+        cli.print("📋 No integrations found")
         return
-    cli.u.Cli.print("📋 Oracle OIC Integrations:")
+    cli.print("📋 Oracle OIC Integrations:")
     for integration in integrations:
-        cli.u.Cli.print(f"  • {integration.name} (ID: {integration.integration_id})")
-        cli.u.Cli.print(
+        cli.print(f"  • {integration.name} (ID: {integration.integration_id})")
+        cli.print(
             f"    Status: {integration.status}, "
             f"Version: {integration.integration_version}"
         )
         if integration.description:
-            cli.u.Cli.print(f"    Description: {integration.description}")
+            cli.print(f"    Description: {integration.description}")
 
 
 class FlextOracleOicCli:
