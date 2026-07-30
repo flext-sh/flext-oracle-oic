@@ -1,5 +1,5 @@
-# AUTO-GENERATED FILE — Regenerate with: make gen
-"""Services package."""
+# @generated AUTO-GENERATED FILE — Regenerate with: make gen
+"""Flext Oracle Oic.services package."""
 
 from __future__ import annotations
 
@@ -8,32 +8,47 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_oracle_oic.services.auth import (
-        FlextOracleOicAuthMixin as FlextOracleOicAuthMixin,
-    )
-    from flext_oracle_oic.services.base import (
-        FlextOracleOicServiceBase as FlextOracleOicServiceBase,
-    )
-    from flext_oracle_oic.services.integration_crud import (
+    from .auth import FlextOracleOicAuthMixin as FlextOracleOicAuthMixin
+    from .base import FlextOracleOicServiceBase as FlextOracleOicServiceBase
+    from .integration_crud import (
         FlextOracleOicIntegrationCrudMixin as FlextOracleOicIntegrationCrudMixin,
     )
-    from flext_oracle_oic.services.integration_lifecycle import (
+    from .integration_lifecycle import (
         FlextOracleOicIntegrationLifecycleMixin as FlextOracleOicIntegrationLifecycleMixin,
     )
-    from flext_oracle_oic.services.monitoring import (
+    from .monitoring import (
         FlextOracleOicMonitoringMixin as FlextOracleOicMonitoringMixin,
     )
-    from flext_oracle_oic.services.orchestration import (
+    from .orchestration import (
         FlextOracleOicOrchestrationMixin as FlextOracleOicOrchestrationMixin,
     )
-_LAZY_IMPORTS = build_lazy_import_map({
+
+_LAZY_MODULES: dict[str, tuple[str, ...]] = {
     ".auth": ("FlextOracleOicAuthMixin",),
     ".base": ("FlextOracleOicServiceBase",),
     ".integration_crud": ("FlextOracleOicIntegrationCrudMixin",),
     ".integration_lifecycle": ("FlextOracleOicIntegrationLifecycleMixin",),
     ".monitoring": ("FlextOracleOicMonitoringMixin",),
     ".orchestration": ("FlextOracleOicOrchestrationMixin",),
-})
+}
 
 
-install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, publish_all=False)
+_LAZY_ALIAS_GROUPS: dict[str, tuple[tuple[str, str], ...]] = {}
+
+
+_LAZY_IMPORTS = build_lazy_import_map(
+    _LAZY_MODULES, alias_groups=_LAZY_ALIAS_GROUPS, sort_keys=False
+)
+
+_PUBLIC_EXPORTS: tuple[str, ...] = (
+    "FlextOracleOicAuthMixin",
+    "FlextOracleOicIntegrationCrudMixin",
+    "FlextOracleOicIntegrationLifecycleMixin",
+    "FlextOracleOicMonitoringMixin",
+    "FlextOracleOicOrchestrationMixin",
+    "FlextOracleOicServiceBase",
+)
+
+__all__: tuple[str, ...] = tuple(_PUBLIC_EXPORTS)
+
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, public_exports=__all__)
