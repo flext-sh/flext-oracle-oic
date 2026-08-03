@@ -9,8 +9,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import p, r
-from flext_oracle_oic.constants import c
+from flext_core import r
+from flext_oracle_oic import c, p
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 
 
@@ -28,22 +28,25 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
 
         """
         try:
-            client_result = self._get_client()
-            if client_result.failure:
-                error_msg = client_result.error or "Client initialization failed"
-                return r[bool].fail(error_msg)
-            client = client_result.value
-            activate_result = client.make_request(
-                "POST",
-                f"/integrations/{integration_id}/activate",
-            )
-            if activate_result.failure:
-                error_msg = activate_result.error or "Failed to activate integration"
-                return r[bool].fail(error_msg)
-            return r[bool].ok(value=True)
+            return self._activate_integration(integration_id)
         except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to activate integration %s", integration_id)
             return r[bool].fail_op("Integration activation", e)
+
+    def _activate_integration(self, integration_id: str) -> p.Result[bool]:
+        """Activate Oracle OIC integration without exception translation."""
+        client_result = self._get_client()
+        if client_result.failure:
+            error_msg = client_result.error or "Client initialization failed"
+            return r[bool].fail(error_msg)
+        client = client_result.value
+        activate_result = client.make_request(
+            "POST", f"/integrations/{integration_id}/activate"
+        )
+        if activate_result.failure:
+            error_msg = activate_result.error or "Failed to activate integration"
+            return r[bool].fail(error_msg)
+        return r[bool].ok(value=True)
 
     def deactivate_integration(self, integration_id: str) -> p.Result[bool]:
         """Deactivate Oracle OIC integration.
@@ -56,24 +59,25 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
 
         """
         try:
-            client_result = self._get_client()
-            if client_result.failure:
-                error_msg = client_result.error or "Client initialization failed"
-                return r[bool].fail(error_msg)
-            client = client_result.value
-            deactivate_result = client.make_request(
-                "POST",
-                f"/integrations/{integration_id}/deactivate",
-            )
-            if deactivate_result.failure:
-                error_msg = (
-                    deactivate_result.error or "Failed to deactivate integration"
-                )
-                return r[bool].fail(error_msg)
-            return r[bool].ok(value=True)
+            return self._deactivate_integration(integration_id)
         except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to deactivate integration %s", integration_id)
             return r[bool].fail_op("Integration deactivation", e)
+
+    def _deactivate_integration(self, integration_id: str) -> p.Result[bool]:
+        """Deactivate Oracle OIC integration without exception translation."""
+        client_result = self._get_client()
+        if client_result.failure:
+            error_msg = client_result.error or "Client initialization failed"
+            return r[bool].fail(error_msg)
+        client = client_result.value
+        deactivate_result = client.make_request(
+            "POST", f"/integrations/{integration_id}/deactivate"
+        )
+        if deactivate_result.failure:
+            error_msg = deactivate_result.error or "Failed to deactivate integration"
+            return r[bool].fail(error_msg)
+        return r[bool].ok(value=True)
 
     def test_connection(self) -> p.Result[bool]:
         """Test connection to Oracle OIC instance.
@@ -83,29 +87,32 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
 
         """
         try:
-            client_result = self._get_client()
-            if client_result.failure:
-                error_msg = client_result.error or "Client initialization failed"
-                return r[bool].fail(error_msg)
-            client = client_result.value
-            test_result = client.make_request(
-                c.API.Method.GET,
-                "/ic/api/integration/v1/health",
-            )
-            if test_result.failure:
-                error_msg = test_result.error or "Connection test failed"
-                return r[bool].fail(error_msg)
-            result_data = test_result.value
-            status_value = result_data.get("status", "")
-            match status_value:
-                case str():
-                    is_connected = status_value.lower() == c.HealthStatus.HEALTHY.value
-                case _:
-                    is_connected = False
-            return r[bool].ok(is_connected)
+            return self._test_connection()
         except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Connection test failed")
             return r[bool].fail_op("Connection test", e)
+
+    def _test_connection(self) -> p.Result[bool]:
+        """Test Oracle OIC connection without exception translation."""
+        client_result = self._get_client()
+        if client_result.failure:
+            error_msg = client_result.error or "Client initialization failed"
+            return r[bool].fail(error_msg)
+        client = client_result.value
+        test_result = client.make_request(
+            c.API.Method.GET, "/ic/api/integration/v1/health"
+        )
+        if test_result.failure:
+            error_msg = test_result.error or "Connection test failed"
+            return r[bool].fail(error_msg)
+        result_data = test_result.value
+        status_value = result_data.get("status", "")
+        match status_value:
+            case str():
+                is_connected = status_value.lower() == c.HealthStatus.HEALTHY.value
+            case _:
+                is_connected = False
+        return r[bool].ok(is_connected)
 
 
 __all__: list[str] = ["FlextOracleOicIntegrationLifecycleMixin"]

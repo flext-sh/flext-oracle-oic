@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from collections.abc import (
-    Callable,
-    MutableSequence,
-)
-from typing import Annotated, ClassVar
+from typing import TYPE_CHECKING, Annotated, ClassVar
 
-from flext_oracle_oic import c, m, p, r, t
+from flext_auth import m
+from flext_oracle_oic import c, p, r, t
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, MutableSequence
 
 
 class FlextOracleOicUtilitiesOracleOic:
@@ -27,8 +27,7 @@ class FlextOracleOicUtilitiesOracleOic:
             bool, m.Field(description="Whether the field is required")
         ] = False
         required_message: Annotated[
-            str,
-            m.Field(description="Error message when required field is missing"),
+            str, m.Field(description="Error message when required field is missing")
         ] = ""
         validator: Annotated[
             Callable[[str], p.Result[str]],
@@ -105,7 +104,7 @@ class FlextOracleOicUtilitiesOracleOic:
                     validated_data[plan.field_name] = field_result.value
             case _:
                 errors.append(
-                    f"{plan.label} validation: Integration {plan.field_name} must be a string",
+                    f"{plan.label} validation: Integration {plan.field_name} must be a string"
                 )
 
     @staticmethod
@@ -144,11 +143,9 @@ class FlextOracleOicUtilitiesOracleOic:
         status = status.upper().strip()
         if status not in c.OracleOicValidation.VALID_INTEGRATION_STATUSES:
             valid_statuses = ", ".join(
-                sorted(c.OracleOicValidation.VALID_INTEGRATION_STATUSES),
+                sorted(c.OracleOicValidation.VALID_INTEGRATION_STATUSES)
             )
-            return r[str].fail(
-                f"Invalid integration status. Valid: {valid_statuses}",
-            )
+            return r[str].fail(f"Invalid integration status. Valid: {valid_statuses}")
         return r[str].ok(status)
 
     @staticmethod

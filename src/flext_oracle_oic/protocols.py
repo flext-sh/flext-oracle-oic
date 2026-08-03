@@ -9,7 +9,6 @@ from __future__ import annotations
 from typing import Protocol, runtime_checkable
 
 from flext_auth import p
-
 from flext_oracle_oic import t
 
 
@@ -25,19 +24,13 @@ class FlextOracleOicProtocols(p):
             """Protocol for HTTP client operations used by Oracle OIC services."""
 
             def delete(
-                self,
-                url: str,
-                *,
-                headers: t.StrMapping | None = None,
+                self, url: str, *, headers: t.StrMapping | None = None
             ) -> p.Result[bool]:
                 """Execute HTTP DELETE request."""
                 ...
 
             def get(
-                self,
-                url: str,
-                *,
-                headers: t.StrMapping | None = None,
+                self, url: str, *, headers: t.StrMapping | None = None
             ) -> p.Result[t.JsonValue]:
                 """Execute HTTP GET request."""
                 ...
