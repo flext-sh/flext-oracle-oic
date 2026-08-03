@@ -19,10 +19,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated
 
-from pydantic import BaseModel, Field
 from pydantic_settings import SettingsConfigDict
 
-from flext_core import FlextSettings
+from flext_core import FlextSettings, m
 
 
 class FlextOracleOicSettings(FlextSettings):
@@ -32,7 +31,7 @@ class FlextOracleOicSettings(FlextSettings):
         env_prefix="FLEXT_ORACLE_OIC_", env_nested_delimiter="__", extra="ignore"
     )
 
-    class _OracleOic(BaseModel):
+    class _OracleOic(m.BaseModel):
         """Namespaced Oracle OIC connection + OAuth + feature-flag scalars."""
 
         base_url: str = "https://localhost.integration.ocp.oraclecloud.com"
@@ -51,7 +50,7 @@ class FlextOracleOicSettings(FlextSettings):
         # pattern for non-secret URL defaults.
         oauth_token_url: Annotated[
             str,
-            Field(
+            m.Field(
                 default="https://localhost.integration.ocp.oraclecloud.com/oauth/token",
                 description="IDCS OAuth2 token endpoint URL",
             ),
@@ -62,7 +61,7 @@ class FlextOracleOicSettings(FlextSettings):
     if TYPE_CHECKING:
         OracleOic: _OracleOic
     else:
-        OracleOic: _OracleOic = Field(default_factory=_OracleOic)
+        OracleOic: _OracleOic = m.Field(default_factory=_OracleOic)
 
 
 settings: FlextOracleOicSettings = FlextOracleOicSettings.fetch_global()
