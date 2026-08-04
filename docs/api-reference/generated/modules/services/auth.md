@@ -2,6 +2,10 @@
 
 # flext_oracle_oic.services.auth
 
+<!-- TOC START -->
+- No sections found
+<!-- TOC END -->
+
 ::: flext_oracle_oic.services.auth
     options:
       show_root_heading: true

@@ -2,6 +2,10 @@
 
 # flext_oracle_oic.services.monitoring
 
+<!-- TOC START -->
+- No sections found
+<!-- TOC END -->
+
 ::: flext_oracle_oic.services.monitoring
     options:
       show_root_heading: true

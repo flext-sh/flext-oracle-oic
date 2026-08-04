@@ -2,6 +2,10 @@
 
 # flext_oracle_oic.constants
 
+<!-- TOC START -->
+- No sections found
+<!-- TOC END -->
+
 ::: flext_oracle_oic.constants
     options:
       show_root_heading: true
