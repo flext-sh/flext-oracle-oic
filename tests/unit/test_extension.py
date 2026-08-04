@@ -12,12 +12,15 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Callable
+from typing import TypeVar
 
 import pytest
 
 from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, c, p, t
 from flext_oracle_oic.api import oracle_oic
 from flext_tests import tm
+
+_T = TypeVar("_T")
 
 
 class TestsFlextOracleOicExtension:
@@ -137,7 +140,7 @@ class TestsFlextOracleOicExtension:
     def test_client_operations_fail_when_credentials_incomplete(
         self,
         api: FlextOracleOicApi,
-        operation: Callable[[FlextOracleOicApi], p.Result[object]],
+        operation: Callable[[FlextOracleOicApi], p.Result[_T]],
     ) -> None:
         """Client-backed operations return a failure result (never raise).
 
