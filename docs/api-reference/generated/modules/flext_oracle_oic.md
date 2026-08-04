@@ -1,8 +1,12 @@
 <!-- AUTO-GENERATED — DO NOT EDIT MANUALLY -->
 
-# flext_oracle_oic.services.orchestration
+# flext_oracle_oic
 
-::: flext_oracle_oic.services.orchestration
+<!-- TOC START -->
+- No sections found
+<!-- TOC END -->
+
+::: flext_oracle_oic
     options:
       show_root_heading: true
       show_root_full_path: false

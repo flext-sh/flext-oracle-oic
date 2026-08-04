@@ -37,7 +37,7 @@
 ### Required Software
 
 - **Python 3.13+** with Poetry for dependency management
-- **FLEXT workspace** setup with access to [flext-core](https://github.com/organization/flext/tree/main/flext-core/README.md)
+- **FLEXT workspace** setup with access to [flext-core](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)
 - **Git** for version control
 
 ### Optional for Testing
@@ -106,9 +106,7 @@ settings = FlextOracleOicSettings(
     }
 )
 
-print(f"Configuration created: {settings.OracleOic.base_url}")
-```
-
+print(f"Configuration created: {settings.OracleOic.base_url}")```
 ### Current Capabilities
 
 > **Important**: Version 0.9.9 provides foundation configuration and basic service structure:
@@ -124,9 +122,7 @@ try:
     )
     print("✅ Configuration valid")
 except Exception as e:
-    print(f"❌ Configuration error: {e}")
-```
-
+    print(f"❌ Configuration error: {e}")```
 ## Development Commands
 
 ### Essential Commands
@@ -252,7 +248,7 @@ grep -r "from httpx\|from typer" src/
 
 1. **Review Current Implementation**: See [architecture.md](architecture.md) for detailed analysis
 1. **Check Development Roadmap**: See [../TODO.md](../TODO.md) for evidence-based development plan
-1. **Understand FLEXT Patterns**: Review [flext-core documentation](https://github.com/organization/flext/tree/main/flext-core/README.md)
+1. **Understand FLEXT Patterns**: Review [flext-core documentation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)
 1. **Review Configuration**: See [configuration.md](configuration.md) for detailed settings
 
 ## Getting Help
@@ -284,9 +280,9 @@ This guide reflects the actual current implementation status as of April 14, 202
 
 **Across Projects**:
 
-- [flext-core Foundation](https://github.com/organization/flext/tree/main/flext-core/docs/architecture/overview.md) - Clean architecture and CQRS patterns
-- [flext-core Service Patterns](https://github.com/organization/flext/tree/main/flext-core/docs/guides/service-patterns.md) - Service patterns and dependency injection
-- [flext-db-oracle Integration](https://github.com/organization/flext/tree/main/flext-db-oracle/AGENTS.md) - Oracle database integration
+- [flext-core Foundation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/architecture/overview.md) - Clean architecture and CQRS patterns
+- [flext-core Service Patterns](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/guides/service-patterns.md) - Service patterns and dependency injection
+- [flext-db-oracle Integration](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-db-oracle/AGENTS.md) - Oracle database integration
 
 **External Resources**:
 

@@ -68,11 +68,11 @@ class TestsFlextOracleOicImport:
     def test_settings_override_public_fields(self) -> None:
         """Explicit values override defaults and are readable via the public API."""
         settings = FlextOracleOicSettings(
-            OracleOic={
-                "base_url": "https://tenant.example.com",
-                "request_timeout": 99,
-                "max_retries": 7,
-            }
+            OracleOic=FlextOracleOicSettings._OracleOic(
+                base_url="https://tenant.example.com",
+                request_timeout=99,
+                max_retries=7,
+            )
         )
         tm.that(settings.OracleOic.base_url, eq="https://tenant.example.com")
         tm.that(settings.OracleOic.request_timeout, eq=99)
@@ -81,7 +81,7 @@ class TestsFlextOracleOicImport:
     def test_settings_round_trip_via_model_dump(self) -> None:
         """model_dump output re-validates into an equivalent settings instance."""
         original = FlextOracleOicSettings(
-            OracleOic={"request_timeout": 45, "max_retries": 2}
+            OracleOic=FlextOracleOicSettings._OracleOic(request_timeout=45, max_retries=2)
         )
         restored = FlextOracleOicSettings.model_validate(original.model_dump())
         tm.that(
@@ -95,6 +95,6 @@ class TestsFlextOracleOicImport:
     ) -> None:
         """Settings carry raw scalars; range validation lives at the domain boundary."""
         settings = FlextOracleOicSettings(
-            OracleOic={"request_timeout": invalid_timeout}
+            OracleOic=FlextOracleOicSettings._OracleOic(request_timeout=invalid_timeout)
         )
         tm.that(settings.OracleOic.request_timeout, eq=invalid_timeout)

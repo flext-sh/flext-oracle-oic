@@ -1,38 +1,35 @@
 # Architecture
 
 <!-- TOC START -->
-
-- [Architecture](#architecture)
-  - [Overview](#overview)
-    - [Architecture Principles](#architecture-principles)
-  - [Current Implementation Analysis](#current-implementation-analysis)
-    - [Implemented Components ✅](#implemented-components-)
-    - [Architecture Gaps ⚠️](#architecture-gaps-️)
-    - [Module Organization](#module-organization)
-  - [Architecture Components](#architecture-components)
-    - [Configuration Management](#configuration-management)
-    - [Service Architecture](#service-architecture)
-    - [Client Layer](#client-layer)
-    - [Domain Models](#domain-models)
-  - [FLEXT Ecosystem Integration](#flext-ecosystem-integration)
-    - [Currently Implemented ✅](#currently-implemented-)
-    - [Missing FLEXT Integration ❌](#missing-flext-integration-)
-  - [Critical Architecture Issues](#critical-architecture-issues)
-    - [1. FLEXT Compliance Violations](#1-flext-compliance-violations)
-    - [2. Oracle OIC Integration Gaps](#2-oracle-oic-integration-gaps)
-  - [Testing Architecture](#testing-architecture)
-    - [Current Test Status (21% Coverage)](#current-test-status-21-coverage)
-    - [Required Testing Strategy](#required-testing-strategy)
-  - [Roadmap to FLEXT Compliance](#roadmap-to-flext-compliance)
-    - [Phase 1: Critical Fixes (Immediate)](#phase-1-critical-fixes-immediate)
-    - [Phase 2: Oracle OIC Implementation (Months 2-3)](#phase-2-oracle-oic-implementation-months-2-3)
-    - [Phase 3: Production Readiness (Month 4+)](#phase-3-production-readiness-month-4)
-  - [Integration with FLEXT Ecosystem](#integration-with-flext-ecosystem)
-    - [Direct Dependencies](#direct-dependencies)
-    - [Service Dependencies](#service-dependencies)
-    - [Cross-References](#cross-references)
-  - [Related Documentation](#related-documentation)
-
+- [Overview](#overview)
+  - [Architecture Principles](#architecture-principles)
+- [Current Implementation Analysis](#current-implementation-analysis)
+  - [Implemented Components ✅](#implemented-components)
+  - [Architecture Gaps ⚠️](#architecture-gaps)
+  - [Module Organization](#module-organization)
+- [Architecture Components](#architecture-components)
+  - [Configuration Management](#configuration-management)
+  - [Service Architecture](#service-architecture)
+  - [Client Layer](#client-layer)
+  - [Domain Models](#domain-models)
+- [FLEXT Ecosystem Integration](#flext-ecosystem-integration)
+  - [Currently Implemented ✅](#currently-implemented)
+  - [Missing FLEXT Integration ❌](#missing-flext-integration)
+- [Critical Architecture Issues](#critical-architecture-issues)
+  - [1. FLEXT Compliance Violations](#1-flext-compliance-violations)
+  - [2. Oracle OIC Integration Gaps](#2-oracle-oic-integration-gaps)
+- [Testing Architecture](#testing-architecture)
+  - [Current Test Status (21% Coverage)](#current-test-status-21-coverage)
+  - [Required Testing Strategy](#required-testing-strategy)
+- [Roadmap to FLEXT Compliance](#roadmap-to-flext-compliance)
+  - [Phase 1: Critical Fixes (Immediate)](#phase-1-critical-fixes-immediate)
+  - [Phase 2: Oracle OIC Implementation (Months 2-3)](#phase-2-oracle-oic-implementation-months-2-3)
+  - [Phase 3: Production Readiness (Month 4+)](#phase-3-production-readiness-month-4)
+- [Integration with FLEXT Ecosystem](#integration-with-flext-ecosystem)
+  - [Direct Dependencies](#direct-dependencies)
+  - [Service Dependencies](#service-dependencies)
+  - [Cross-References](#cross-references)
+- [Related Documentation](#related-documentation)
 <!-- TOC END -->
 
 **flext-oracle-oic v0.12.0-dev** - Oracle Integration Cloud Architecture Analysis
@@ -199,31 +196,23 @@ from flext_api import FlextApiClient
 ```python
 from __future__ import annotations
 
-from flext_cli import u
-from flext_core import FlextSettings
-
 
 def validate_connection(settings: dict) -> p.Result[ConnectionInfo]:
     """Example of current r usage."""
     if not settings.get("base_url"):
         return r[ConnectionInfo].fail("Base URL required")
-    return r[ConnectionInfo].ok(ConnectionInfo(**settings))
-```
-
+    return r[ConnectionInfo].ok(ConnectionInfo(**settings))```
 **FlextLogger Integration**
 
 ```python
 from __future__ import annotations
 
 from flext_cli import u
-from flext_core import FlextSettings
 
 
 class ServiceClass:
     def __init__(self):
-        self.logger = u.fetch_logger(__name__)
-```
-
+        self.logger = u.fetch_logger(__name__)```
 ### Missing FLEXT Integration ❌
 
 **s Inheritance**
@@ -241,9 +230,7 @@ class OracleOicExtensionService:
 
 # ✅ Required FLEXT pattern
 class OracleOicIntegrationService(s):
-    pass
-```
-
+    pass```
 **FlextContainer Dependency Injection**
 
 ```text
@@ -383,14 +370,14 @@ tests/
 
 ### Direct Dependencies
 
-- **[flext-core](https://github.com/organization/flext/tree/main/flext-core/README.md)** → Foundation patterns and railway programming
-- **[flext-api](https://github.com/organization/flext/tree/main/flext-api/README.md)** → HTTP client abstractions (needs implementation)
-- **[flext-cli](https://github.com/organization/flext/tree/main/flext-cli/README.md)** → CLI interface patterns (needs implementation)
+- **[flext-core](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)** → Foundation patterns and railway programming
+- **[flext-api](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-api/README.md)** → HTTP client abstractions (needs implementation)
+- **[flext-cli](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-cli/README.md)** → CLI interface patterns (needs implementation)
 
 ### Service Dependencies
 
-- **[flext-tap-oracle-oic](https://github.com/organization/flext/tree/main/flext-tap-oracle-oic/README.md)** → Depends on this for OIC data extraction
-- **[flext-target-oracle-oic](https://github.com/organization/flext/tree/main/flext-target-oracle-oic/README.md)** → Depends on this for OIC data loading
+- **[flext-tap-oracle-oic](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-tap-oracle-oic/README.md)** → Depends on this for OIC data extraction
+- **[flext-target-oracle-oic](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-target-oracle-oic/README.md)** → Depends on this for OIC data loading
 
 ### Cross-References
 
@@ -413,9 +400,9 @@ This architecture analysis reflects the actual implementation status as of April
 
 **Across Projects**:
 
-- [flext-core Foundation](https://github.com/organization/flext/tree/main/flext-core/docs/architecture/overview.md) - Clean architecture and CQRS patterns
-- [flext-core Service Patterns](https://github.com/organization/flext/tree/main/flext-core/docs/guides/service-patterns.md) - Service patterns and dependency injection
-- [flext-db-oracle Integration](https://github.com/organization/flext/tree/main/flext-db-oracle/AGENTS.md) - Oracle database integration
+- [flext-core Foundation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/architecture/overview.md) - Clean architecture and CQRS patterns
+- [flext-core Service Patterns](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/guides/service-patterns.md) - Service patterns and dependency injection
+- [flext-db-oracle Integration](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-db-oracle/AGENTS.md) - Oracle database integration
 
 **External Resources**:
 
