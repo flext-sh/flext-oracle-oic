@@ -36,6 +36,8 @@ src/flext_oracle_oic/
 ## Conventions (specific to this package)
 
 - `FlextOracleOicApi` is an **async context manager** and depends on `flext-auth` for authentication/token handling.
+- Config/settings canonical pattern: ADR-012.
+- Codemod governance (ast-grep + make mod): ADR-014.
 
 ## Anti-Patterns / Gotchas
 
