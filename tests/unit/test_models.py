@@ -83,8 +83,14 @@ class TestsFlextOracleOicModelsUnit:
             client_value="secret",
             idcs_url="https://idcs.example.com/oauth2/v1/token",
         )
+        # The model is frozen, so a plain attribute assignment does not type-check.
+        # Routing through the model's own mutation entry point states the runtime
+        # intent -- a consumer trying to change a field -- and lets the test assert
+        # the ValidationError the model actually raises.
         with pytest.raises(c.ValidationError):
-            getattr(config, "__setattr__")("oauth_scope", "mutated")
+            config.__pydantic_validator__.validate_assignment(
+                config, "oauth_scope", "mutated"
+            )
 
     def test_auth_config_equality_is_by_value(self) -> None:
         """Two auth configs with identical inputs compare equal."""
@@ -142,8 +148,12 @@ class TestsFlextOracleOicModelsUnit:
     def test_connection_config_is_immutable(self) -> None:
         """Connection config is a frozen value object."""
         config = m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
+        # Frozen model: route through its own assignment validator so the test
+        # asserts the ValidationError the model actually raises.
         with pytest.raises(c.ValidationError):
-            getattr(config, "__setattr__")("verify_ssl", False)
+            config.__pydantic_validator__.validate_assignment(
+                config, "verify_ssl", False
+            )
 
     @pytest.mark.parametrize("timeout", [0, -1, -30])
     def test_connection_config_rejects_non_positive_timeout(self, timeout: int) -> None:

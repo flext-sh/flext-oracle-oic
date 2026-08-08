@@ -144,9 +144,7 @@ make format                # Auto-format code with Ruff
 make t                     # Alias for test
 make l                     # Alias for lint
 make c                    # Alias for type-check
-make v                     # Alias for validate
-```
-
+make v                     # Alias for validate```
 ### Testing Commands
 
 ```bash
@@ -159,9 +157,7 @@ pytest tests/integration/ -v             # Integration tests (when available)
 pytest -m "not slow" -v                  # Skip slow tests
 
 # Coverage reporting
-pytest tests/ --cov=src --cov-report=html:coverage-report
-```
-
+pytest tests/ --cov=src --cov-report=html:coverage-report```
 ## Current Implementation Status
 
 ### Available Features ✅

@@ -239,10 +239,7 @@ service = OracleOicExtensionService(settings)
 
 # ✅ Required: Container-managed dependencies
 container = FlextContainer.get_global()
-service = container.resolve("oic_service").unwrap()
-
-```
-
+service = container.resolve("oic_service").unwrap()```
 ## Critical Architecture Issues
 
 ### 1. FLEXT Compliance Violations
@@ -285,9 +282,7 @@ service = container.resolve("oic_service").unwrap()
 
 ### Current Test Status (21% Coverage)
 
-**Test Structure**
-
-```
+**Test Structure**```
 tests/
 ├── unit/                    # Basic unit tests
 │   ├── test_config.py      # Configuration validation

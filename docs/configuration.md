@@ -111,9 +111,7 @@ export ORACLE_OIC_REQUEST_TIMEOUT="30"
 # OAuth2/IDCS Authentication
 export ORACLE_OIC_OAUTH_CLIENT_ID="your_oauth_client_id"
 export ORACLE_OIC_OAUTH_CLIENT_SECRET="your_oauth_client_secret"
-export ORACLE_OIC_OAUTH_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
-```
-
+export ORACLE_OIC_OAUTH_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"```
 ### Loading from Environment
 
 ```python
