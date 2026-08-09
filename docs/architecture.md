@@ -201,7 +201,9 @@ def validate_connection(settings: dict) -> p.Result[ConnectionInfo]:
     """Example of current r usage."""
     if not settings.get("base_url"):
         return r[ConnectionInfo].fail("Base URL required")
-    return r[ConnectionInfo].ok(ConnectionInfo(**settings))```
+    return r[ConnectionInfo].ok(ConnectionInfo(**settings))
+```
+
 **FlextLogger Integration**
 
 ```python
@@ -212,7 +214,9 @@ from flext_cli import u
 
 class ServiceClass:
     def __init__(self):
-        self.logger = u.fetch_logger(__name__)```
+        self.logger = u.fetch_logger(__name__)
+```
+
 ### Missing FLEXT Integration ❌
 
 **s Inheritance**
@@ -230,7 +234,9 @@ class OracleOicExtensionService:
 
 # ✅ Required FLEXT pattern
 class OracleOicIntegrationService(s):
-    pass```
+    pass
+```
+
 **FlextContainer Dependency Injection**
 
 ```text
@@ -239,7 +245,9 @@ service = OracleOicExtensionService(settings)
 
 # ✅ Required: Container-managed dependencies
 container = FlextContainer.get_global()
-service = container.resolve("oic_service").unwrap()```
+service = container.resolve("oic_service").unwrap()
+```
+
 ## Critical Architecture Issues
 
 ### 1. FLEXT Compliance Violations
@@ -282,7 +290,9 @@ service = container.resolve("oic_service").unwrap()```
 
 ### Current Test Status (21% Coverage)
 
-**Test Structure**```
+**Test Structure**
+```
+
 tests/
 ├── unit/                    # Basic unit tests
 │   ├── test_config.py      # Configuration validation

@@ -48,7 +48,9 @@ connection_config = FlextOracleOicSettings(
     base_url="https://your-instance.integration.ocp.oraclecloud.com",
     api_version="v1",
     request_timeout=30,
-)```
+)
+```
+
 **Available Parameters:**
 
 - `base_url` (required): Oracle OIC instance URL
@@ -68,7 +70,9 @@ auth_config = FlextOracleOicSettings(
     oauth_client_id="your_client_id",
     oauth_client_secret="your_client_secret",
     oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
-)```
+)
+```
+
 **Available Parameters:**
 
 - `oauth_client_id` (required): OAuth2 client identifier from Oracle IDCS
@@ -89,7 +93,9 @@ settings = FlextOracleOicSettings(
     oauth_client_id="your_client_id",
     oauth_client_secret="your_client_secret",
     oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
-)```
+)
+```
+
 **Primary Configuration Object:**
 
 - `connection` (required): Connection configuration t.JsonValue
@@ -111,7 +117,9 @@ export ORACLE_OIC_REQUEST_TIMEOUT="30"
 # OAuth2/IDCS Authentication
 export ORACLE_OIC_OAUTH_CLIENT_ID="your_oauth_client_id"
 export ORACLE_OIC_OAUTH_CLIENT_SECRET="your_oauth_client_secret"
-export ORACLE_OIC_OAUTH_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"```
+export ORACLE_OIC_OAUTH_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
+```
+
 ### Loading from Environment
 
 ```python
@@ -133,7 +141,9 @@ settings = FlextOracleOicSettings(
         "ORACLE_OIC_OAUTH_TOKEN_URL",
         "https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
     ),
-)```
+)
+```
+
 ## Configuration Validation
 
 Pydantic automatically validates configuration objects:
@@ -154,7 +164,9 @@ try:
     )
     print("✅ Configuration valid")
 except ValueError as e:
-    print(f"❌ Configuration error: {e}")```
+    print(f"❌ Configuration error: {e}")
+```
+
 ### Current Validation Rules
 
 Based on the actual Pydantic models implementation:
@@ -199,7 +211,9 @@ auth_config = m.OracleOic.OICAuthConfig(
 )
 
 # Secret is protected from accidental exposure
-print(auth_config.oauth_client_secret)  # Shows SecretStr('**********')```
+print(auth_config.oauth_client_secret)  # Shows SecretStr('**********')
+```
+
 **Security Recommendations:**
 
 - Use environment variables for all sensitive configuration
@@ -233,7 +247,9 @@ def create_dev_config():
 
 
 # Create development configuration
-dev_settings = create_dev_config()```
+dev_settings = create_dev_config()
+```
+
 ## Troubleshooting
 
 ### Common Configuration Issues
@@ -252,7 +268,9 @@ except ValueError as e:
 # ✅ This will work - base_url provided
 settings = FlextOracleOicSettings(
     base_url="https://your-instance.integration.ocp.oraclecloud.com"
-)```
+)
+```
+
 **Type Validation Errors:**
 
 ```python
@@ -268,7 +286,9 @@ except ValueError as e:
     print(f"Type error: {e}")
 
 # ✅ Correct type
-settings = FlextOracleOicSettings(base_url="https://example.com", request_timeout=30)```
+settings = FlextOracleOicSettings(base_url="https://example.com", request_timeout=30)
+```
+
 ### Configuration Debugging
 
 ```python
@@ -292,7 +312,9 @@ print(f"Timeout: {settings.OracleOic.request_timeout}")
 # Debug auth settings (careful with secrets)
 print(f"Client ID: {settings.OracleOic.oauth_client_id}")
 print(f"Token URL: {settings.OracleOic.oauth_token_url}")
-# oauth_client_secret is stored as a plain string in the current settings model```
+# oauth_client_secret is stored as a plain string in the current settings model
+
+```
 ## Future Enhancements
 
 The configuration system will be enhanced in future releases with:

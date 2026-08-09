@@ -106,7 +106,9 @@ settings = FlextOracleOicSettings(
     }
 )
 
-print(f"Configuration created: {settings.OracleOic.base_url}")```
+print(f"Configuration created: {settings.OracleOic.base_url}")
+```
+
 ### Current Capabilities
 
 > **Important**: Version 0.9.9 provides foundation configuration and basic service structure:
@@ -122,7 +124,9 @@ try:
     )
     print("✅ Configuration valid")
 except Exception as e:
-    print(f"❌ Configuration error: {e}")```
+    print(f"❌ Configuration error: {e}")
+```
+
 ## Development Commands
 
 ### Essential Commands
@@ -144,7 +148,9 @@ make format                # Auto-format code with Ruff
 make t                     # Alias for test
 make l                     # Alias for lint
 make c                    # Alias for type-check
-make v                     # Alias for validate```
+make v                     # Alias for validate
+```
+
 ### Testing Commands
 
 ```bash
@@ -157,7 +163,9 @@ pytest tests/integration/ -v             # Integration tests (when available)
 pytest -m "not slow" -v                  # Skip slow tests
 
 # Coverage reporting
-pytest tests/ --cov=src --cov-report=html:coverage-report```
+pytest tests/ --cov=src --cov-report=html:coverage-report
+```
+
 ## Current Implementation Status
 
 ### Available Features ✅
@@ -243,7 +251,7 @@ grep -r "from httpx\|from typer" src/
 ## Next Steps
 
 1. **Review Current Implementation**: See [architecture.md](architecture.md) for detailed analysis
-1. **Check Development Roadmap**: See [../TODO.md](../TODO.md) for evidence-based development plan
+1. **Check Development Workflow**: See [guides/development.md](guides/development.md) for the evidence-based development plan
 1. **Understand FLEXT Patterns**: Review [flext-core documentation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)
 1. **Review Configuration**: See [configuration.md](configuration.md) for detailed settings
 
@@ -251,19 +259,19 @@ grep -r "from httpx\|from typer" src/
 
 ### Resources
 
-- **Documentation**: Complete docs in [docs/](../docs/) directory
-- **FLEXT Ecosystem**: See [workspace README](../../README.md) for context
+- **Documentation**: Complete docs in the [documentation index](index.md)
+- **FLEXT Ecosystem**: See the [workspace README](https://github.com/flext-sh/flext/blob/0.12.0-dev/README.md) for context
 - **API Reference**: See [api-reference.md](api-reference.md) for available APIs
 
 ### Support Channels
 
 - **Issues**: Create GitHub issue with detailed error information
 - **Questions**: Check existing documentation and README files first
-- **Contributing**: Follow development guidelines in [../TODO.md](../TODO.md)
+- **Contributing**: Follow development guidelines in [guides/development.md](guides/development.md)
 
 ______________________________________________________________________
 
-This guide reflects the actual current implementation status as of April 14, 2026. The library is in early development (v0.12.0-dev) with foundation configuration and basic service structure implemented. Full Oracle OIC integration capabilities are planned for future releases following the evidence-based roadmap in TODO.md.
+This guide reflects the actual current implementation status as of April 14, 2026. The library is in early development (v0.12.0-dev) with foundation configuration and basic service structure implemented. Full Oracle OIC integration capabilities are planned for future releases following the evidence-based roadmap in the development guide.
 
 ## Related Documentation
 
