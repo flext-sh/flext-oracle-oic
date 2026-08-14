@@ -49,7 +49,9 @@ from flext_oracle_oic import FlextOracleOicSettings
 # Basic configuration creation
 settings = FlextOracleOicSettings(
     base_url="https://your-instance.integration.ocp.oraclecloud.com"
-)```
+)
+```
+
 **Constructor Parameters:**
 
 - `connection: FlextOracleOicConnectionSettings` (required) - Connection configuration
@@ -68,7 +70,9 @@ settings = FlextOracleOicSettings(
     base_url="https://your-instance.integration.ocp.oraclecloud.com",
     api_version="v1",
     request_timeout=30,
-)```
+)
+```
+
 **Constructor Parameters:**
 
 - `base_url: str` (required) - Oracle OIC instance base URL
@@ -89,7 +93,9 @@ auth_config = FlextOracleOicSettings(
     oauth_client_id="your_client_id",
     oauth_client_secret="your_client_secret",
     oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
-)```
+)
+```
+
 **Constructor Parameters:**
 
 - `oauth_client_id: str` (required) - OAuth2 client ID from Oracle IDCS
@@ -104,13 +110,17 @@ auth_config = FlextOracleOicSettings(
 ### Service Classes (Implementation Status Varies)
 
 ```python
-# Service and API entry points```
+# Service and API entry points
+
+```
 **Usage Note**: Current service implementations provide basic structure. Full Oracle OIC integration capabilities are in development.
 
 ### Client Components (FLEXT Compliance Issues)
 
 ```python
-# Service facade and settings (the HTTP client wrapper is not yet exposed)```
+# Service facade and settings (the HTTP client wrapper is not yet exposed)
+
+```
 **Critical Issue**: Current client implementation uses direct `httpx` imports (line 12 in `ext_client.py`) which violates FLEXT ecosystem standards. Will be refactored to use `flext-api` patterns.
 
 ### Data Models
@@ -121,7 +131,9 @@ Basic Pydantic data models are available:
 from flext_oracle_oic import FlextOracleOicModels
 
 # Domain models are namespaced under the FlextOracleOicModels facade
-integration_model = FlextOracleOicModels.Api```
+integration_model = FlextOracleOicModels.Api
+```
+
 ## Exception Hierarchy
 
 Oracle OIC-specific exception classes:
@@ -133,7 +145,9 @@ from flext_oracle_oic import e
 base_error = e.BaseError  # Base exception
 auth_error = e.AuthenticationError  # Authentication failures
 config_error = e.ConfigurationError  # Configuration issues
-connection_error = e.ConnectionError  # Connection problems```
+connection_error = e.ConnectionError  # Connection problems
+```
+
 **Implementation Note**: Exception hierarchy provides structured error handling for Oracle OIC operations.
 
 ## Factory and Utility Functions
@@ -142,7 +156,9 @@ connection_error = e.ConnectionError  # Connection problems```
 from flext_oracle_oic import (
     # Factory functions for service creation
     # Implementation details vary
-)```
+)
+```
+
 ## Current Implementation Limitations
 
 ### Available Features ✅
@@ -206,7 +222,9 @@ from flext_oracle_oic import FlextOracleOicSettings
 # Create basic configuration
 settings = FlextOracleOicSettings(
     base_url="https://your-instance.integration.ocp.oraclecloud.com"
-)```
+)
+```
+
 ### API Stability
 
 - **Configuration Classes**: Stable API, backward compatibility maintained
@@ -229,7 +247,9 @@ try:
     )
     print("✅ Configuration valid")
 except ValueError as e:
-    print(f"❌ Configuration error: {e}")```
+    print(f"❌ Configuration error: {e}")
+```
+
 ### Future Versions
 
 API will be enhanced with:
