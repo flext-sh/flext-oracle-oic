@@ -44,7 +44,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
       259              client = FlextApi(settings=api_config)
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 2 · 🟠 CRITICAL · CODE_SMELL · `python:S1192`
 **Local**: `src/flext_oracle_oic/services/integration_crud.py:31` · **Effort**: 14min
@@ -63,7 +63,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        35      def _create_integration_impl(
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 3 · 🟠 CRITICAL · CODE_SMELL · `python:S1192`
 **Local**: `src/flext_oracle_oic/services/integration_lifecycle.py:40` · **Effort**: 6min
@@ -82,7 +82,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        44              "POST", f"/integrations/{integration_id}/activate"
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 4 · 🟡 MAJOR · VULNERABILITY · `githubactions:S8264`
 **Local**: `.github/workflows/docs.yml:18` · **Effort**: 5min
@@ -101,7 +101,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        22  concurrency:
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 5 · 🟡 MAJOR · VULNERABILITY · `githubactions:S8233`
 **Local**: `.github/workflows/docs.yml:19` · **Effort**: 5min
@@ -120,7 +120,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        23    group: pages
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 6 · 🟡 MAJOR · VULNERABILITY · `githubactions:S8233`
 **Local**: `.github/workflows/docs.yml:20` · **Effort**: 5min
@@ -139,7 +139,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        24    cancel-in-progress: false
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 7 · 🟡 MAJOR · VULNERABILITY · `text:S8565`
 **Local**: `pyproject.toml:-` · **Effort**: 5min
@@ -147,7 +147,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 > Dependency versions are not predictable if the lock file (uv.lock, poetry.lock, pdm.lock or pylock.toml) is missing.
 
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 8 · 🟡 MAJOR · CODE_SMELL · `python:S108`
 **Local**: `src/flext_oracle_oic/_utilities/connection_validation.py:18` · **Effort**: 5min
@@ -166,7 +166,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        22          if normalized_value not in valid_values:
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 9 · 🟡 MAJOR · CODE_SMELL · `python:S108`
 **Local**: `src/flext_oracle_oic/_utilities/connection_validation.py:42` · **Effort**: 5min
@@ -185,7 +185,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        46          if not base_url:
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 10 · 🟡 MAJOR · CODE_SMELL · `python:S108`
 **Local**: `src/flext_oracle_oic/_utilities/monitoring.py:45` · **Effort**: 5min
@@ -204,7 +204,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        49      def _components_validation_error(components: p.AttributeProbe) -> str | None:
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 11 · 🟡 MAJOR · CODE_SMELL · `python:S108`
 **Local**: `src/flext_oracle_oic/services/base.py:71` · **Effort**: 5min
@@ -223,7 +223,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        75  
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 12 · 🟡 MAJOR · CODE_SMELL · `python:S108`
 **Local**: `src/flext_oracle_oic/services/base.py:92` · **Effort**: 5min
@@ -242,7 +242,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        96          self, data: t.JsonMapping, *, fallback_id: str, default_status: str
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 13 · 🟡 MAJOR · CODE_SMELL · `python:S5778`
 **Local**: `tests/unit/test_models.py:86` · **Effort**: 5min
@@ -261,7 +261,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        90          """Two auth configs with identical inputs compare equal."""
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 14 · 🟡 MAJOR · CODE_SMELL · `python:S5778`
 **Local**: `tests/unit/test_models.py:145` · **Effort**: 5min
@@ -280,7 +280,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
       149      def test_connection_config_rejects_non_positive_timeout(self, timeout: int) -> None:
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 15 · ⚪ MINOR · CODE_SMELL · `python:S7504`
 **Local**: `conftest.py:20` · **Effort**: 5min
@@ -299,7 +299,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        24                  sys.modules.pop(module_name, None)
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 16 · ⚪ MINOR · VULNERABILITY · `python:S5332`
 **Local**: `src/flext_oracle_oic/_utilities/connection_validation.py:48` · **Effort**: 30min
@@ -318,5 +318,4 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        52      @staticmethod
 ```
 
-**Decisão**: 
-
+**Decisão**: pendente
