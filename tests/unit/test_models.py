@@ -11,6 +11,9 @@ and validation error paths. No private attributes, no internal spying.
 
 from __future__ import annotations
 
+from collections.abc import Callable
+from typing import cast
+
 import pytest
 
 from flext_tests import tm
@@ -83,8 +86,13 @@ class TestsFlextOracleOicModelsUnit:
             client_value="secret",
             idcs_url="https://idcs.example.com/oauth2/v1/token",
         )
+        # The model is frozen: assignment raises at the attribute boundary, which
+        # `validate_assignment` bypasses entirely (that path only runs when a model
+        # opts into validate_assignment=True, and a frozen model never does). Go
+        # through setattr so the test exercises the boundary a real consumer hits.
+        mutate = cast("Callable[[object, str, object], None]", setattr)
         with pytest.raises(c.ValidationError):
-            getattr(config, "__setattr__")("oauth_scope", "mutated")
+            mutate(config, "oauth_scope", "mutated")
 
     def test_auth_config_equality_is_by_value(self) -> None:
         """Two auth configs with identical inputs compare equal."""
@@ -142,8 +150,11 @@ class TestsFlextOracleOicModelsUnit:
     def test_connection_config_is_immutable(self) -> None:
         """Connection config is a frozen value object."""
         config = m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
+        # Frozen model: assignment raises at the attribute boundary, so go through
+        # setattr to exercise the path a real consumer hits.
+        mutate = cast("Callable[[object, str, object], None]", setattr)
         with pytest.raises(c.ValidationError):
-            getattr(config, "__setattr__")("verify_ssl", False)
+            mutate(config, "verify_ssl", False)
 
     @pytest.mark.parametrize("timeout", [0, -1, -30])
     def test_connection_config_rejects_non_positive_timeout(self, timeout: int) -> None:
