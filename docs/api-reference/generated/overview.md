@@ -27,7 +27,7 @@
   `FlextOracleOicProtocols`, `FlextOracleOicService`, `FlextOracleOicSettings`,
   `FlextOracleOicTypes`, `FlextOracleOicUtilities` (+3 more)
 - Exported module shortcuts: `main`
-- Generated module pages: `8`
+- Generated module pages: `0`
 
 ## Next Pages
 

@@ -28,6 +28,6 @@ This section is generated from public exports and real docstrings.
 - Primary facades: `FlextOracleOicApi`, `FlextOracleOicCli`,
   `FlextOracleOicConfig`, `FlextOracleOicConstants`, `FlextOracleOicModels`,
   `FlextOracleOicProtocols` (+4 more)
-- Generated module pages: `8`
+- Generated module pages: `0`
 
 Back to [project docs](../index.md).
