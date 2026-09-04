@@ -16,11 +16,43 @@ from typing import TypeVar
 
 import pytest
 
-from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, c, p, t
+from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, c, m, p, t
 from flext_oracle_oic.api import oracle_oic
 from flext_tests import tm
 
 _T = TypeVar("_T")
+
+
+def _call_test_connection(api: FlextOracleOicApi) -> p.Result[bool]:
+    return api.test_connection()
+
+
+def _call_list_integrations(
+    api: FlextOracleOicApi,
+) -> p.Result[t.SequenceOf[m.OracleOic.OICIntegrationInfo]]:
+    return api.list_integrations()
+
+
+def _call_execute(
+    api: FlextOracleOicApi,
+) -> p.Result[t.SequenceOf[m.OracleOic.OICIntegrationInfo]]:
+    return api.execute()
+
+
+def _call_refresh_auth_token(api: FlextOracleOicApi) -> p.Result[str]:
+    return api.refresh_auth_token()
+
+
+def _call_validate_auth_token(api: FlextOracleOicApi) -> p.Result[bool]:
+    return api.validate_auth_token("some-token")
+
+
+def _call_activate_integration(api: FlextOracleOicApi) -> p.Result[bool]:
+    return api.activate_integration("int-1")
+
+
+def _call_deactivate_integration(api: FlextOracleOicApi) -> p.Result[bool]:
+    return api.deactivate_integration("int-1")
 
 
 class TestsFlextOracleOicExtension:
@@ -128,13 +160,13 @@ class TestsFlextOracleOicExtension:
     @pytest.mark.parametrize(
         "operation",
         [
-            lambda api: api.test_connection(),
-            lambda api: api.list_integrations(),
-            lambda api: api.execute(),
-            lambda api: api.refresh_auth_token(),
-            lambda api: api.validate_auth_token("some-token"),
-            lambda api: api.activate_integration("int-1"),
-            lambda api: api.deactivate_integration("int-1"),
+            _call_test_connection,
+            _call_list_integrations,
+            _call_execute,
+            _call_refresh_auth_token,
+            _call_validate_auth_token,
+            _call_activate_integration,
+            _call_deactivate_integration,
         ],
     )
     def test_client_operations_fail_when_credentials_incomplete(

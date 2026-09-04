@@ -79,6 +79,21 @@ class _ShowVersionCommand(cli_m.BaseModel):
         return r[bool].ok(value=True)
 
 
+def _run_test_connection(params: _TestConnectionCommand) -> p.Result[bool]:
+    """Explicitly typed handler bridging the type-erased CLI route contract."""
+    return params.execute()
+
+
+def _run_list_integrations(params: _ListIntegrationsCommand) -> p.Result[bool]:
+    """Explicitly typed handler bridging the type-erased CLI route contract."""
+    return params.execute()
+
+
+def _run_show_version(params: _ShowVersionCommand) -> p.Result[bool]:
+    """Explicitly typed handler bridging the type-erased CLI route contract."""
+    return params.execute()
+
+
 def _print_integrations(
     integrations: t.SequenceOf[FlextOracleOicModels.OracleOic.OICIntegrationInfo],
 ) -> None:
@@ -125,19 +140,19 @@ class FlextOracleOicCli:
                     name="test-connection",
                     help_text="Test connection to Oracle OIC instance",
                     model_cls=_TestConnectionCommand,
-                    handler=lambda params: params.execute(),
+                    handler=_run_test_connection,
                 ),
                 cli_m.Cli.ResultCommandRoute(
                     name="list-integrations",
                     help_text="List Oracle OIC integrations",
                     model_cls=_ListIntegrationsCommand,
-                    handler=lambda params: params.execute(),
+                    handler=_run_list_integrations,
                 ),
                 cli_m.Cli.ResultCommandRoute(
                     name="version",
                     help_text="Show Oracle OIC Extension version",
                     model_cls=_ShowVersionCommand,
-                    handler=lambda params: params.execute(),
+                    handler=_run_show_version,
                 ),
             ],
         )
