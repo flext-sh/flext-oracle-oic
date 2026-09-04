@@ -178,13 +178,7 @@ class FlextOracleOicClient:
                 ]
             ]
             .ok((method, endpoint, params, data, json))
-            .flat_map(
-                lambda req_data: (
-                    r[FlextApi].ok(self._client)
-                    if self._client is not None
-                    else self._create_authenticated_client()
-                ).map(lambda client: (client, req_data))
-            )
+            .flat_map(self._attach_client)
             .flat_map(
                 lambda client_req: self._execute_api_request(
                     client_req[0], *client_req[1]
@@ -192,6 +186,49 @@ class FlextOracleOicClient:
             )
             .flat_map(self._parse_api_response)
         )
+
+    def _ensure_client(self) -> p.Result[FlextApi]:
+        """Return the active client or authenticate a new one."""
+        if self._client is not None:
+            return r[FlextApi].ok(self._client)
+        return self._create_authenticated_client()
+
+    def _attach_client(
+        self,
+        req_data: tuple[
+            str,
+            str,
+            t.StrMapping | None,
+            t.StrMapping | None,
+            t.JsonMapping | None,
+        ],
+    ) -> p.Result[
+        tuple[
+            FlextApi,
+            tuple[
+                str,
+                str,
+                t.StrMapping | None,
+                t.StrMapping | None,
+                t.JsonMapping | None,
+            ],
+        ]
+    ]:
+        """Pair an authenticated client with the pending request data."""
+
+        def pair_with_client(client: FlextApi) -> tuple[
+            FlextApi,
+            tuple[
+                str,
+                str,
+                t.StrMapping | None,
+                t.StrMapping | None,
+                t.JsonMapping | None,
+            ],
+        ]:
+            return (client, req_data)
+
+        return self._ensure_client().map(pair_with_client)
 
     def paginate_request(
         self, endpoint: str, page_size: int = 100, params: t.StrMapping | None = None
