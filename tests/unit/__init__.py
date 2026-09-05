@@ -3,9 +3,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from types import MappingProxyType
+from typing import TYPE_CHECKING
 
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
@@ -22,7 +21,6 @@ if TYPE_CHECKING:
     from .test_main import TestsFlextOracleOicMain
     from .test_models import TestsFlextOracleOicModelsUnit
     from .test_typings import TestsFlextOracleOicTypingsUnit
-    from .test_version import TestsFlextOracleOicVersion
 __all__: tuple[str, ...] = (
     "TestsFlextOracleOicBasic",
     "TestsFlextOracleOicCli",
@@ -34,7 +32,6 @@ __all__: tuple[str, ...] = (
     "TestsFlextOracleOicMain",
     "TestsFlextOracleOicModelsUnit",
     "TestsFlextOracleOicTypingsUnit",
-    "TestsFlextOracleOicVersion",
     "c",
     "d",
     "e",
@@ -67,7 +64,6 @@ _LAZY_IMPORTS = MappingProxyType(
             ".test_main": ("TestsFlextOracleOicMain",),
             ".test_models": ("TestsFlextOracleOicModelsUnit",),
             ".test_typings": ("TestsFlextOracleOicTypingsUnit",),
-            ".test_version": ("TestsFlextOracleOicVersion",),
             "flext_tests": (
                 "c",
                 "d",
