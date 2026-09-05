@@ -125,19 +125,24 @@ class FlextOracleOicCli:
                     name="test-connection",
                     help_text="Test connection to Oracle OIC instance",
                     model_cls=_TestConnectionCommand,
-                    handler=lambda params: params.execute(),
+                    # Why: bound-method reference instead of a lambda wrapper
+                    # so pyrefly resolves the parameter type from
+                    # `_TestConnectionCommand.execute` (was flagged
+                    # implicit-any-lambda on the erased `Callable[..., ...]`
+                    # handler signature).
+                    handler=_TestConnectionCommand.execute,
                 ),
                 cli_m.Cli.ResultCommandRoute(
                     name="list-integrations",
                     help_text="List Oracle OIC integrations",
                     model_cls=_ListIntegrationsCommand,
-                    handler=lambda params: params.execute(),
+                    handler=_ListIntegrationsCommand.execute,
                 ),
                 cli_m.Cli.ResultCommandRoute(
                     name="version",
                     help_text="Show Oracle OIC Extension version",
                     model_cls=_ShowVersionCommand,
-                    handler=lambda params: params.execute(),
+                    handler=_ShowVersionCommand.execute,
                 ),
             ],
         )

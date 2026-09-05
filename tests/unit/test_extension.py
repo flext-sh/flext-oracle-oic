@@ -12,7 +12,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import TypeVar
 
 import pytest
 
@@ -20,7 +19,20 @@ from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, c, p, t
 from flext_oracle_oic.api import oracle_oic
 from flext_tests import tm
 
-_T = TypeVar("_T")
+# Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
+# this Callable annotation instead of leaving it implicit (was flagged
+# implicit-any-lambda); the success payload is discarded via `.map(lambda
+# _: None)` so every client-backed operation, despite differing success
+# value types, normalizes to one homogeneous `p.Result[None]` shape here.
+_CLIENT_OPERATIONS: t.SequenceOf[Callable[[FlextOracleOicApi], p.Result[None]]] = [
+    lambda api: api.test_connection().map(lambda _: None),
+    lambda api: api.list_integrations().map(lambda _: None),
+    lambda api: api.execute().map(lambda _: None),
+    lambda api: api.refresh_auth_token().map(lambda _: None),
+    lambda api: api.validate_auth_token("some-token").map(lambda _: None),
+    lambda api: api.activate_integration("int-1").map(lambda _: None),
+    lambda api: api.deactivate_integration("int-1").map(lambda _: None),
+]
 
 
 class TestsFlextOracleOicExtension:
@@ -125,22 +137,11 @@ class TestsFlextOracleOicExtension:
         tm.ok(result)
         tm.that(result.unwrap(), has="success_rate")
 
-    @pytest.mark.parametrize(
-        "operation",
-        [
-            lambda api: api.test_connection(),
-            lambda api: api.list_integrations(),
-            lambda api: api.execute(),
-            lambda api: api.refresh_auth_token(),
-            lambda api: api.validate_auth_token("some-token"),
-            lambda api: api.activate_integration("int-1"),
-            lambda api: api.deactivate_integration("int-1"),
-        ],
-    )
+    @pytest.mark.parametrize("operation", _CLIENT_OPERATIONS)
     def test_client_operations_fail_when_credentials_incomplete(
         self,
         api: FlextOracleOicApi,
-        operation: Callable[[FlextOracleOicApi], p.Result[_T]],
+        operation: Callable[[FlextOracleOicApi], p.Result[None]],
     ) -> None:
         """Client-backed operations return a failure result (never raise).
 
