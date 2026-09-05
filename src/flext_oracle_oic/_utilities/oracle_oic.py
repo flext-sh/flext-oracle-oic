@@ -17,7 +17,7 @@ class FlextOracleOicUtilitiesOracleOic:
     class FieldValidationPlan(m.Value):
         """Validated plan for one integration string field."""
 
-        model_config: ClassVar[m.ConfigDict] = m.ConfigDict(
+        model_config: ClassVar[t.ConfigDict] = m.ConfigDict(
             arbitrary_types_allowed=True, frozen=True
         )
 

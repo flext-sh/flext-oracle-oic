@@ -38,9 +38,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """Core implementation for create_integration."""
         client_result = self._get_client_or_fail()
         if client_result.failure:
-            return r[m.OracleOic.OICIntegrationInfo].fail(
-                client_result.error or "Client initialization failed"
-            )
+            return r[m.OracleOic.OICIntegrationInfo].from_failure(client_result)
         client = client_result.value
         created_result = client.create_integration(integration_data)
         if created_result.failure:
@@ -76,9 +74,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """Core implementation for fetch_integration."""
         client_result = self._get_client_or_fail()
         if client_result.failure:
-            return r[m.OracleOic.OICIntegrationInfo].fail(
-                client_result.error or "Client initialization failed"
-            )
+            return r[m.OracleOic.OICIntegrationInfo].from_failure(client_result)
         client = client_result.value
         integrations_result = client.get_integrations()
         if integrations_result.failure:
@@ -124,9 +120,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """Core implementation for update_integration."""
         client_result = self._get_client_or_fail()
         if client_result.failure:
-            return r[m.OracleOic.OICIntegrationInfo].fail(
-                client_result.error or "Client initialization failed"
-            )
+            return r[m.OracleOic.OICIntegrationInfo].from_failure(client_result)
         client = client_result.value
         updated_result = client.update_integration(integration_id, integration_data)
         if updated_result.failure:
@@ -163,7 +157,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """Core implementation for delete_integration."""
         client_result = self._get_client_or_fail()
         if client_result.failure:
-            return r[bool].fail(client_result.error or "Client initialization failed")
+            return r[bool].from_failure(client_result)
         client = client_result.value
         delete_result = client.make_request("DELETE", f"/integrations/{integration_id}")
         if delete_result.failure:
@@ -193,11 +187,11 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """Core implementation for deploy_integration."""
         client_result = self._get_client_or_fail()
         if client_result.failure:
-            return r[str].fail(client_result.error or "Client initialization failed")
+            return r[str].from_failure(client_result)
         client = client_result.value
         created_result = client.create_integration(integration_data)
         if created_result.failure:
-            return r[str].fail(created_result.error or "Create integration failed")
+            return r[str].from_failure(created_result)
         created_data = created_result.value
         integration_id = str(created_data.get("id", ""))
         if not integration_id:
@@ -227,9 +221,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """Core implementation for list_connections."""
         client_result = self._get_client_or_fail()
         if client_result.failure:
-            return r[Sequence[m.OracleOic.OICConnectionInfo]].fail(
-                client_result.error or "Client initialization failed"
-            )
+            return r[Sequence[m.OracleOic.OICConnectionInfo]].from_failure(client_result)
         client = client_result.value
         connections_result = client.get_connections(
             type_filter=type_filter, page_size=c.DEFAULT_PAGE_SIZE

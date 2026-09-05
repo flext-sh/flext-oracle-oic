@@ -60,9 +60,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         }
         orchestration_result = client.make_request("POST", endpoint, json=payload_dict)
         if orchestration_result.failure:
-            return r[t.JsonMapping].fail(
-                orchestration_result.error or "Orchestration request failed"
-            )
+            return r[t.JsonMapping].from_failure(orchestration_result)
         return r[t.JsonMapping].ok(orchestration_result.value)
 
     def execute_file_transfer(

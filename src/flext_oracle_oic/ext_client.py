@@ -167,31 +167,19 @@ class FlextOracleOicClient:
         json: t.JsonMapping | None = None,
     ) -> p.Result[t.JsonMapping]:
         """Make authenticated request to OIC API."""
-        return (
-            r[
-                tuple[
-                    str,
-                    str,
-                    t.StrMapping | None,
-                    t.StrMapping | None,
-                    t.JsonMapping | None,
-                ]
-            ]
-            .ok((method, endpoint, params, data, json))
-            .flat_map(
-                lambda req_data: (
-                    r[FlextApi].ok(self._client)
-                    if self._client is not None
-                    else self._create_authenticated_client()
-                ).map(lambda client: (client, req_data))
-            )
-            .flat_map(
-                lambda client_req: self._execute_api_request(
-                    client_req[0], *client_req[1]
-                )
-            )
-            .flat_map(self._parse_api_response)
+        # Why: annotate explicitly so pyrefly binds the flat_map generic to
+        # FlextApi instead of leaving the ternary's join implicit (was
+        # flagged implicit-any-lambda on the downstream `client` parameter).
+        client_result: p.Result[FlextApi] = (
+            r[FlextApi].ok(self._client)
+            if self._client is not None
+            else self._create_authenticated_client()
         )
+        return client_result.flat_map(
+            lambda client: self._execute_api_request(
+                client, method, endpoint, params, data, json
+            )
+        ).flat_map(self._parse_api_response)
 
     def paginate_request(
         self, endpoint: str, page_size: int = 100, params: t.StrMapping | None = None
@@ -218,9 +206,7 @@ class FlextOracleOicClient:
                 c.API.Method.GET, endpoint, params=request_params
             )
             if response_result.failure:
-                return r[t.SequenceOf[t.JsonMapping]].fail(
-                    response_result.error or "Request failed"
-                )
+                return r[t.SequenceOf[t.JsonMapping]].from_failure(response_result)
             response_data = response_result.value
             items_raw = response_data.get("items", [])
             if not isinstance(items_raw, list):
