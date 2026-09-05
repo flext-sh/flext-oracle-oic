@@ -206,9 +206,7 @@ class FlextOracleOicClient:
                 c.API.Method.GET, endpoint, params=request_params
             )
             if response_result.failure:
-                return r[t.SequenceOf[t.JsonMapping]].fail(
-                    response_result.error or "Request failed"
-                )
+                return r[t.SequenceOf[t.JsonMapping]].from_failure(response_result)
             response_data = response_result.value
             items_raw = response_data.get("items", [])
             if not isinstance(items_raw, list):
