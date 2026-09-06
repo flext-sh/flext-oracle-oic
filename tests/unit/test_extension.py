@@ -15,7 +15,14 @@ from collections.abc import Callable
 
 import pytest
 
-from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, c, p, t
+from flext_oracle_oic import (
+    FlextOracleOicApi,
+    FlextOracleOicSettings,
+    c,
+    oracle_oic,
+    p,
+    t,
+)
 from flext_tests import tm
 
 # Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
@@ -55,7 +62,7 @@ class TestsFlextOracleOicExtension:
 
     def test_facade_alias_refers_to_the_api_class(self) -> None:
         """The public `oracle_oic` alias is the FlextOracleOicApi class itself."""
-        assert FlextOracleOicApi is FlextOracleOicApi
+        assert oracle_oic is FlextOracleOicApi
 
     def test_facade_constructs_without_settings(self) -> None:
         """Constructing with no settings yields a usable facade instance."""
