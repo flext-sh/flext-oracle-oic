@@ -221,7 +221,9 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         """Core implementation for list_connections."""
         client_result = self._get_client_or_fail()
         if client_result.failure:
-            return r[Sequence[m.OracleOic.OICConnectionInfo]].from_failure(client_result)
+            return r[Sequence[m.OracleOic.OICConnectionInfo]].from_failure(
+                client_result
+            )
         client = client_result.value
         connections_result = client.get_connections(
             type_filter=type_filter, page_size=c.DEFAULT_PAGE_SIZE
