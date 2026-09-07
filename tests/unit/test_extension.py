@@ -12,47 +12,33 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import TypeVar
 
 import pytest
 
-from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, c, m, p, t
-from flext_oracle_oic.api import oracle_oic
+from flext_oracle_oic import (
+    FlextOracleOicApi,
+    FlextOracleOicSettings,
+    c,
+    oracle_oic,
+    p,
+    t,
+)
 from flext_tests import tm
 
-_T = TypeVar("_T")
-
-
-def _call_test_connection(api: FlextOracleOicApi) -> p.Result[bool]:
-    return api.test_connection()
-
-
-def _call_list_integrations(
-    api: FlextOracleOicApi,
-) -> p.Result[t.SequenceOf[m.OracleOic.OICIntegrationInfo]]:
-    return api.list_integrations()
-
-
-def _call_execute(
-    api: FlextOracleOicApi,
-) -> p.Result[t.SequenceOf[m.OracleOic.OICIntegrationInfo]]:
-    return api.execute()
-
-
-def _call_refresh_auth_token(api: FlextOracleOicApi) -> p.Result[str]:
-    return api.refresh_auth_token()
-
-
-def _call_validate_auth_token(api: FlextOracleOicApi) -> p.Result[bool]:
-    return api.validate_auth_token("some-token")
-
-
-def _call_activate_integration(api: FlextOracleOicApi) -> p.Result[bool]:
-    return api.activate_integration("int-1")
-
-
-def _call_deactivate_integration(api: FlextOracleOicApi) -> p.Result[bool]:
-    return api.deactivate_integration("int-1")
+# Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
+# this Callable annotation instead of leaving it implicit (was flagged
+# implicit-any-lambda); the success payload is discarded via `.map(lambda
+# _: None)` so every client-backed operation, despite differing success
+# value types, normalizes to one homogeneous `p.Result[None]` shape here.
+_CLIENT_OPERATIONS: t.SequenceOf[Callable[[FlextOracleOicApi], p.Result[None]]] = [
+    lambda api: api.test_connection().map(lambda _: None),
+    lambda api: api.list_integrations().map(lambda _: None),
+    lambda api: api.execute().map(lambda _: None),
+    lambda api: api.refresh_auth_token().map(lambda _: None),
+    lambda api: api.validate_auth_token("some-token").map(lambda _: None),
+    lambda api: api.activate_integration("int-1").map(lambda _: None),
+    lambda api: api.deactivate_integration("int-1").map(lambda _: None),
+]
 
 
 class TestsFlextOracleOicExtension:
@@ -157,22 +143,11 @@ class TestsFlextOracleOicExtension:
         tm.ok(result)
         tm.that(result.unwrap(), has="success_rate")
 
-    @pytest.mark.parametrize(
-        "operation",
-        [
-            _call_test_connection,
-            _call_list_integrations,
-            _call_execute,
-            _call_refresh_auth_token,
-            _call_validate_auth_token,
-            _call_activate_integration,
-            _call_deactivate_integration,
-        ],
-    )
+    @pytest.mark.parametrize("operation", _CLIENT_OPERATIONS)
     def test_client_operations_fail_when_credentials_incomplete(
         self,
         api: FlextOracleOicApi,
-        operation: Callable[[FlextOracleOicApi], p.Result[_T]],
+        operation: Callable[[FlextOracleOicApi], p.Result[None]],
     ) -> None:
         """Client-backed operations return a failure result (never raise).
 
