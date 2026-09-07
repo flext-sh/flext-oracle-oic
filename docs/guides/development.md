@@ -397,7 +397,6 @@ def process_data(data: t.JsonMapping) -> p.Result[ProcessedData]:
 
     """
     # Implementation here
-
 ```
 ### README Updates
 

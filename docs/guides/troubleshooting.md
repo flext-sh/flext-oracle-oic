@@ -288,7 +288,6 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 # Your LDIF processing code
-
 ```
 **Validate LDIF format:**
 

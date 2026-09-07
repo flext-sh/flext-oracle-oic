@@ -196,34 +196,24 @@ class FlextOracleOicClient:
     def _attach_client(
         self,
         req_data: tuple[
-            str,
-            str,
-            t.StrMapping | None,
-            t.StrMapping | None,
-            t.JsonMapping | None,
+            str, str, t.StrMapping | None, t.StrMapping | None, t.JsonMapping | None
         ],
     ) -> p.Result[
         tuple[
             FlextApi,
             tuple[
-                str,
-                str,
-                t.StrMapping | None,
-                t.StrMapping | None,
-                t.JsonMapping | None,
+                str, str, t.StrMapping | None, t.StrMapping | None, t.JsonMapping | None
             ],
         ]
     ]:
         """Pair an authenticated client with the pending request data."""
 
-        def pair_with_client(client: FlextApi) -> tuple[
+        def pair_with_client(
+            client: FlextApi,
+        ) -> tuple[
             FlextApi,
             tuple[
-                str,
-                str,
-                t.StrMapping | None,
-                t.StrMapping | None,
-                t.JsonMapping | None,
+                str, str, t.StrMapping | None, t.StrMapping | None, t.JsonMapping | None
             ],
         ]:
             return (client, req_data)
