@@ -303,4 +303,6 @@ class FlextOracleOicApi(FlextOracleOicService):
         return self._service.validate_auth_token(token)
 
 
-__all__: list[str] = ["FlextOracleOicApi"]
+oracle_oic = FlextOracleOicApi
+
+__all__: list[str] = ["FlextOracleOicApi", "oracle_oic"]
