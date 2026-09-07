@@ -17,17 +17,18 @@
   Software Development :: Libraries :: Python Modules` (+1 more)
 - Project class: `domain`
 - Keywords: `adapter`, `enterprise`, `flext`, `integration`, `typed`
-- Main facades: `FlextOracleOicApi`, `FlextOracleOicCli`,
-  `FlextOracleOicConfig`, `FlextOracleOicConstants`, `FlextOracleOicModels`,
-  `FlextOracleOicProtocols`, `FlextOracleOicService`, `FlextOracleOicSettings`
-  (+2 more)
+- Main facades: `FlextOracleOicApi`, `FlextOracleOicAuthMixin`,
+  `FlextOracleOicCli`, `FlextOracleOicClient`, `FlextOracleOicConfig`,
+  `FlextOracleOicConstants`, `FlextOracleOicIntegrationCrudMixin`,
+  `FlextOracleOicIntegrationLifecycleMixin` (+9 more)
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
-- Public symbol exports: `FlextOracleOicApi`, `FlextOracleOicCli`,
-  `FlextOracleOicConfig`, `FlextOracleOicConstants`, `FlextOracleOicModels`,
-  `FlextOracleOicProtocols`, `FlextOracleOicService`, `FlextOracleOicSettings`,
-  `FlextOracleOicTypes`, `FlextOracleOicUtilities` (+3 more)
-- Exported module shortcuts: `main`
-- Generated module pages: `0`
+- Public symbol exports: `FlextOracleOicApi`, `FlextOracleOicAuthMixin`,
+  `FlextOracleOicCli`, `FlextOracleOicClient`, `FlextOracleOicConfig`,
+  `FlextOracleOicConstants`, `FlextOracleOicIntegrationCrudMixin`,
+  `FlextOracleOicIntegrationLifecycleMixin`, `FlextOracleOicModels`,
+  `FlextOracleOicMonitoringMixin` (+10 more)
+- Exported module shortcuts: `main`, `services`
+- Generated module pages: `16`
 
 ## Next Pages
 
