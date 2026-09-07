@@ -99,7 +99,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
     ) -> p.Result[t.JsonMapping]:
         """Validate a health status payload."""
         validation_result: p.Result[t.JsonMapping] = (
-            u.MonitoringUtilities.validate_health_status(health_data)
+            u.OracleOic.validate_health_status(health_data)
         )
         if validation_result.success:
             return validation_result
@@ -118,7 +118,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             "error": str(exc),
         })
         error_validation_result: p.Result[t.JsonMapping] = (
-            u.MonitoringUtilities.validate_health_status(error_health)
+            u.OracleOic.validate_health_status(error_health)
         )
         return (
             error_validation_result
@@ -193,7 +193,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         for key, value in metrics_data.items():
             metrics_dict[key] = self._to_general_value(value)
         analysis_result: p.Result[t.JsonMapping] = (
-            u.MonitoringUtilities.analyze_performance_metrics(metrics_dict)
+            u.OracleOic.analyze_performance_metrics(metrics_dict)
         )
         if analysis_result.success:
             metrics_dict["analysis"] = dict(analysis_result.value)

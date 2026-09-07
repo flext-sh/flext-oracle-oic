@@ -39,17 +39,18 @@ class FlextOracleOicUtilities(
     functionality organized in domain-specific nested classes composed via MRO.
     """
 
-    class OracleOic(FlextOracleOicUtilitiesOracleOic):
-        """Oracle OIC domain utilities namespace."""
+    class OracleOic(
+        FlextOracleOicUtilitiesOracleOic,
+        FlextOracleOicUtilitiesConnectionValidation,
+        FlextOracleOicUtilitiesAuthenticationValidation,
+        FlextOracleOicUtilitiesMonitoring,
+    ):
+        """Oracle OIC domain utilities namespace.
 
-    class ConnectionValidation(FlextOracleOicUtilitiesConnectionValidation):
-        """Oracle OIC connection validation utilities namespace."""
-
-    class AuthenticationValidation(FlextOracleOicUtilitiesAuthenticationValidation):
-        """Oracle OIC authentication validation utilities namespace."""
-
-    class MonitoringUtilities(FlextOracleOicUtilitiesMonitoring):
-        """Oracle OIC monitoring utilities namespace."""
+        One nested domain class per facade: connection validation,
+        authentication validation and monitoring are composed here through the
+        MRO instead of standing as sibling sub-namespaces.
+        """
 
 
 u = FlextOracleOicUtilities
