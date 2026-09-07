@@ -98,8 +98,8 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         self, health_data: t.JsonMapping
     ) -> p.Result[t.JsonMapping]:
         """Validate a health status payload."""
-        validation_result: p.Result[t.JsonMapping] = (
-            u.OracleOic.validate_health_status(health_data)
+        validation_result: p.Result[t.JsonMapping] = u.OracleOic.validate_health_status(
+            health_data
         )
         if validation_result.success:
             return validation_result

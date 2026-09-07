@@ -313,7 +313,6 @@ print(f"Timeout: {settings.OracleOic.request_timeout}")
 print(f"Client ID: {settings.OracleOic.oauth_client_id}")
 print(f"Token URL: {settings.OracleOic.oauth_token_url}")
 # oauth_client_secret is stored as a plain string in the current settings model
-
 ```
 ## Future Enhancements
 
