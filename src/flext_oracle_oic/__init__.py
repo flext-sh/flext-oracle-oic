@@ -22,7 +22,7 @@ from .__version__ import (
 if TYPE_CHECKING:
     from flext_auth import d, e, h, r, x
 
-    from . import services as services
+    from . import services
     from ._config import FlextOracleOicConfig, config
     from ._settings import FlextOracleOicSettings, settings
     from .api import FlextOracleOicApi, oracle_oic

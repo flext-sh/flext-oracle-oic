@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from flext_oracle_oic import FlextOracleOicConstants
     from flext_tests import FlextTestsConstants, d, e, h, r, td, tf, tk, tm, tv, x
 
-    from . import unit as unit
+    from . import unit
     from .base import (
         TestsFlextOracleOicServiceBase,
         TestsFlextOracleOicServiceBase as s,
