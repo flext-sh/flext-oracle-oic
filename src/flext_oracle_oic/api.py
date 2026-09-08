@@ -303,6 +303,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         return self._service.validate_auth_token(token)
 
 
-oracle_oic = FlextOracleOicApi
+oracle_oic: FlextOracleOicApi = FlextOracleOicApi.fetch_global()
+"""Process-wide Oracle OIC API facade singleton resolved from the global container."""
 
 __all__: list[str] = ["FlextOracleOicApi", "oracle_oic"]

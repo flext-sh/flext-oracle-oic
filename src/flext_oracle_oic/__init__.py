@@ -20,9 +20,6 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from enum import StrEnum, unique
-    from typing import TYPE_CHECKING, Final
-
     from flext_auth import d, e, h, r, x
 
     from . import services as services
@@ -44,8 +41,6 @@ if TYPE_CHECKING:
     from .typings import FlextOracleOicTypes, FlextOracleOicTypes as t
     from .utilities import FlextOracleOicUtilities, FlextOracleOicUtilities as u
 __all__: tuple[str, ...] = (
-    "TYPE_CHECKING",
-    "Final",
     "FlextOracleOicApi",
     "FlextOracleOicAuthMixin",
     "FlextOracleOicCli",
@@ -63,8 +58,6 @@ __all__: tuple[str, ...] = (
     "FlextOracleOicSettings",
     "FlextOracleOicTypes",
     "FlextOracleOicUtilities",
-    "MappingProxyType",
-    "StrEnum",
     "__author__",
     "__author_email__",
     "__description__",
@@ -88,7 +81,6 @@ __all__: tuple[str, ...] = (
     "settings",
     "t",
     "u",
-    "unique",
     "x",
 )
 
@@ -115,10 +107,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
             ".typings": ("FlextOracleOicTypes", "t"),
             ".utilities": ("FlextOracleOicUtilities", "u"),
-            "enum": ("StrEnum", "unique"),
             "flext_auth": ("d", "e", "h", "r", "x"),
-            "types": ("MappingProxyType",),
-            "typing": ("Final", "TYPE_CHECKING"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,

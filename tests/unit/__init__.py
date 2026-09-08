@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from .test_basic import TestsFlextOracleOicBasic
     from .test_cli import TestsFlextOracleOicCli
     from .test_config import TestsFlextOracleOicConfig
-    from .test_ext_client import TestsFlextOracleOicExtClient, test_ext_client
+    from .test_ext_client import TestsFlextOracleOicExtClient
     from .test_ext_services import TestsFlextOracleOicExtServices
     from .test_extension import TestsFlextOracleOicExtension
     from .test_import import TestsFlextOracleOicImport
@@ -42,7 +42,6 @@ __all__: tuple[str, ...] = (
     "s",
     "t",
     "td",
-    "test_ext_client",
     "tf",
     "tk",
     "tm",
@@ -57,7 +56,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".test_basic": ("TestsFlextOracleOicBasic",),
             ".test_cli": ("TestsFlextOracleOicCli",),
             ".test_config": ("TestsFlextOracleOicConfig",),
-            ".test_ext_client": ("TestsFlextOracleOicExtClient", "test_ext_client"),
+            ".test_ext_client": ("TestsFlextOracleOicExtClient",),
             ".test_ext_services": ("TestsFlextOracleOicExtServices",),
             ".test_extension": ("TestsFlextOracleOicExtension",),
             ".test_import": ("TestsFlextOracleOicImport",),

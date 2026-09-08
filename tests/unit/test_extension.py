@@ -60,9 +60,9 @@ class TestsFlextOracleOicExtension:
         """Facade built from the deterministic settings fixture."""
         return FlextOracleOicApi(settings)
 
-    def test_facade_alias_refers_to_the_api_class(self) -> None:
-        """The public `oracle_oic` alias is the FlextOracleOicApi class itself."""
-        assert oracle_oic is FlextOracleOicApi
+    def test_facade_singleton_is_the_shared_api_instance(self) -> None:
+        """The public `oracle_oic` singleton is the shared FlextOracleOicApi instance."""
+        tm.that(oracle_oic, is_=FlextOracleOicApi.fetch_global())
 
     def test_facade_constructs_without_settings(self) -> None:
         """Constructing with no settings yields a usable facade instance."""

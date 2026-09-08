@@ -153,7 +153,4 @@ class TestsFlextOracleOicExtClient:
         client.__exit__(None, None, None)
 
 
-# Registry alias: tests/unit/__init__.py lazily re-exports this module symbol.
-test_ext_client = TestsFlextOracleOicExtClient
-
-__all__: list[str] = ["TestsFlextOracleOicExtClient", "test_ext_client"]
+__all__: list[str] = ["TestsFlextOracleOicExtClient"]
