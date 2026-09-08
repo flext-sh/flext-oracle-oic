@@ -62,7 +62,8 @@ class TestsFlextOracleOicExtension:
 
     def test_facade_singleton_is_the_shared_api_instance(self) -> None:
         """The public `oracle_oic` singleton is the shared FlextOracleOicApi instance."""
-        tm.that(oracle_oic, is_=FlextOracleOicApi.fetch_global())
+        tm.that(oracle_oic, is_=FlextOracleOicApi)
+        tm.that(FlextOracleOicApi.fetch_global(), eq=oracle_oic)
 
     def test_facade_constructs_without_settings(self) -> None:
         """Constructing with no settings yields a usable facade instance."""
