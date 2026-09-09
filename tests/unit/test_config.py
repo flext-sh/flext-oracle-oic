@@ -12,10 +12,10 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_tests import tm
 from pydantic import ValidationError
 
 from flext_oracle_oic import FlextOracleOicSettings, c
-from flext_tests import tm
 from tests import m
 
 __all__: list[str] = ["TestsFlextOracleOicConfig"]

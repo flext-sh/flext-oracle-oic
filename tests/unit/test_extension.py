@@ -14,6 +14,7 @@ from __future__ import annotations
 from collections.abc import Callable
 
 import pytest
+from flext_tests import tm
 
 from flext_oracle_oic import (
     FlextOracleOicApi,
@@ -23,7 +24,6 @@ from flext_oracle_oic import (
     p,
     t,
 )
-from flext_tests import tm
 
 # Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
 # this Callable annotation instead of leaving it implicit (was flagged

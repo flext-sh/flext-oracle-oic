@@ -14,6 +14,7 @@ from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Self, override
 
 from flext_api import FlextApi, FlextApiSettings
+
 from flext_core import r, s
 from flext_oracle_oic import c, m, p, t, u
 from flext_oracle_oic.ext_client import FlextOracleOicClient

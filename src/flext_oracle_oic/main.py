@@ -14,6 +14,7 @@ import sys
 from typing import TYPE_CHECKING, ClassVar
 
 from flext_cli import cli, m as cli_m
+
 from flext_core import r
 from flext_oracle_oic import c, p, t
 from flext_oracle_oic.__version__ import __version__

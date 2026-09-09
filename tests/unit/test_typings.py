@@ -8,9 +8,9 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_tests import t as tests_t, tm
 
 from flext_oracle_oic import FlextOracleOicTypes
-from flext_tests import t as tests_t, tm
 from tests import TestsFlextOracleOicTypes, t
 
 __all__: list[str] = ["TestsFlextOracleOicTypingsUnit"]

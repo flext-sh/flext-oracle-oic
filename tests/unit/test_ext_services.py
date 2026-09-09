@@ -16,6 +16,7 @@ from __future__ import annotations
 from collections.abc import Iterator
 
 import pytest
+from flext_tests import tm
 
 from flext_oracle_oic import FlextOracleOicService, FlextOracleOicSettings, s
 from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
@@ -28,7 +29,6 @@ from flext_oracle_oic.services.integration_lifecycle import (
 )
 from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
 from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
-from flext_tests import tm
 
 __all__: list[str] = ["TestsFlextOracleOicExtServices"]
 

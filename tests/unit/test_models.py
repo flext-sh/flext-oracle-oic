@@ -15,8 +15,8 @@ from collections.abc import Callable
 from typing import cast
 
 import pytest
-
 from flext_tests import tm
+
 from tests import c, m, t
 
 

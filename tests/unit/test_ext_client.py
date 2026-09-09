@@ -10,10 +10,10 @@ from __future__ import annotations
 import base64
 
 import pytest
+from flext_tests import tm
 
 from flext_oracle_oic import m
 from flext_oracle_oic.ext_client import FlextOracleOicClient
-from flext_tests import tm
 
 
 def _make_oic_auth_config(

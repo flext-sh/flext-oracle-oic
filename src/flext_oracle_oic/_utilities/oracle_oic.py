@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Annotated, ClassVar
 
 from flext_auth import m
+
 from flext_oracle_oic import c, p, r, t
 
 if TYPE_CHECKING:
