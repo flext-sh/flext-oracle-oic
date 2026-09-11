@@ -50,7 +50,7 @@ class FlextOracleOicClient:
         self._access_token: str | None = None
 
     def __enter__(self) -> Self:
-        """Context manager entry."""
+        """Context manager entry — OIC client enters its session."""
         return self
 
     def __exit__(
