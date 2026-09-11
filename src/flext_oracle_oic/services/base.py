@@ -14,10 +14,12 @@ from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Self, override
 
 from flext_api import FlextApi, FlextApiSettings
+
 from flext_core import r, s
 from flext_oracle_oic import c, m, p, t, u
-from flext_oracle_oic._settings import FlextOracleOicSettings
 from flext_oracle_oic.ext_client import FlextOracleOicClient
+
+from .._settings import FlextOracleOicSettings
 
 if TYPE_CHECKING:
     from types import TracebackType
@@ -206,19 +208,19 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         """
         settings = self._oic_settings
         base_url_validation: p.Result[bool] = (
-            u.ConnectionValidation
+            u.OracleOic
             .validate_base_url(settings.OracleOic.base_url)
             .map(lambda _: True)
             .lash(lambda error: r[bool].fail(f"Base URL validation: {error}"))
         )
         client_id_validation: p.Result[bool] = (
-            u.AuthenticationValidation
+            u.OracleOic
             .validate_oauth_client_id(settings.OracleOic.oauth_client_id)
             .map(lambda _: True)
             .lash(lambda error: r[bool].fail(f"OAuth client ID validation: {error}"))
         )
         client_secret_validation: p.Result[bool] = (
-            u.AuthenticationValidation
+            u.OracleOic
             .validate_oauth_client_secret(
                 t.SecretStr(settings.OracleOic.oauth_client_secret)
             )
@@ -228,7 +230,7 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
             )
         )
         token_url_validation: p.Result[bool] = (
-            u.ConnectionValidation
+            u.OracleOic
             .validate_base_url(settings.OracleOic.oauth_token_url)
             .map(lambda _: True)
             .lash(lambda error: r[bool].fail(f"OAuth token URL validation: {error}"))

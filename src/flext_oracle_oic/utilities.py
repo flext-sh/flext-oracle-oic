@@ -16,14 +16,15 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 from __future__ import annotations
 
 from flext_auth import u
-from flext_oracle_oic._utilities.authentication_validation import (
+
+from ._utilities.authentication_validation import (
     FlextOracleOicUtilitiesAuthenticationValidation,
 )
-from flext_oracle_oic._utilities.connection_validation import (
+from ._utilities.connection_validation import (
     FlextOracleOicUtilitiesConnectionValidation,
 )
-from flext_oracle_oic._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
-from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
+from ._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
+from ._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
 
 
 class FlextOracleOicUtilities(
@@ -39,17 +40,18 @@ class FlextOracleOicUtilities(
     functionality organized in domain-specific nested classes composed via MRO.
     """
 
-    class OracleOic(FlextOracleOicUtilitiesOracleOic):
-        """Oracle OIC domain utilities namespace."""
+    class OracleOic(
+        FlextOracleOicUtilitiesOracleOic,
+        FlextOracleOicUtilitiesConnectionValidation,
+        FlextOracleOicUtilitiesAuthenticationValidation,
+        FlextOracleOicUtilitiesMonitoring,
+    ):
+        """Oracle OIC domain utilities namespace.
 
-    class ConnectionValidation(FlextOracleOicUtilitiesConnectionValidation):
-        """Oracle OIC connection validation utilities namespace."""
-
-    class AuthenticationValidation(FlextOracleOicUtilitiesAuthenticationValidation):
-        """Oracle OIC authentication validation utilities namespace."""
-
-    class MonitoringUtilities(FlextOracleOicUtilitiesMonitoring):
-        """Oracle OIC monitoring utilities namespace."""
+        One nested domain class per facade: connection validation,
+        authentication validation and monitoring are composed here through the
+        MRO instead of standing as sibling sub-namespaces.
+        """
 
 
 u = FlextOracleOicUtilities

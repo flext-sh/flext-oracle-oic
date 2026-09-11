@@ -8,10 +8,10 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_tests import tm
 
 from flext_oracle_oic import FlextOracleOicCli, __version__
 from flext_oracle_oic.main import main
-from flext_tests import tm
 
 __all__ = ["TestsFlextOracleOicMain"]
 

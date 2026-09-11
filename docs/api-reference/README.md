@@ -25,9 +25,9 @@ This section is generated from public exports and real docstrings.
 
 ## Surface Summary
 
-- Primary facades: `FlextOracleOicApi`, `FlextOracleOicCli`,
-  `FlextOracleOicConfig`, `FlextOracleOicConstants`, `FlextOracleOicModels`,
-  `FlextOracleOicProtocols` (+4 more)
-- Generated module pages: `0`
+- Primary facades: `FlextOracleOicApi`, `FlextOracleOicAuthMixin`,
+  `FlextOracleOicCli`, `FlextOracleOicClient`, `FlextOracleOicConfig`,
+  `FlextOracleOicConstants` (+11 more)
+- Generated module pages: `16`
 
 Back to [project docs](../index.md).
