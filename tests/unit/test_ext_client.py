@@ -149,8 +149,10 @@ class TestsFlextOracleOicExtClient:
         self, client: FlextOracleOicClient
     ) -> None:
         """Exiting with no established API client is a safe no-op, repeatable."""
-        client.__exit__(None, None, None)
-        client.__exit__(None, None, None)
+        with client:
+            pass
+        with client:
+            pass
 
 
 __all__: list[str] = ["TestsFlextOracleOicExtClient"]
