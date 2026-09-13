@@ -564,6 +564,7 @@ environments = ["sys_platform == 'linux'", "sys_platform == 'darwin'"]
 [tool.flext.docs]
 package_name = "flext_oracle_oic"
 
+
 [tool.flext.project.budget.boundary]
 time-seconds = 600
 memory-mb = 2048
