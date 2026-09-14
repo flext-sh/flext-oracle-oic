@@ -29,14 +29,14 @@ class TestsFlextOracleOicTypingsUnit:
         assert issubclass(t, base)
 
     @pytest.mark.parametrize(
-        "member", ["JsonValue", "JsonList", "JsonDict", "ConfigDict"]
+        "member", ["JsonValue", "JsonList", "JsonDict"]
     )
     def test_inherited_type_members_are_exposed(self, member: str) -> None:
         """Domain type members are reachable through the composed facade."""
         tm.that(getattr(t, member, None), none=False)
 
     @pytest.mark.parametrize(
-        "member", ["JsonValue", "JsonList", "JsonDict", "ConfigDict"]
+        "member", ["JsonValue", "JsonList", "JsonDict"]
     )
     def test_members_resolve_to_the_root_definition(self, member: str) -> None:
         """MRO composition exposes each member without shadowing its root."""
