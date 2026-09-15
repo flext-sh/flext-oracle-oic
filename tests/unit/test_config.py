@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import pytest
 from flext_tests import tm
-from pydantic import ValidationError
 
 from flext_oracle_oic import FlextOracleOicSettings, c
 from tests import m
@@ -147,7 +146,7 @@ class TestsFlextOracleOicConfig:
             field: value,
         }
 
-        with pytest.raises(ValidationError) as exc_info:
+        with pytest.raises(m.ValidationError) as exc_info:
             m.OracleOic.OICConnectionConfig.model_validate(payload)
 
         tm.that(str(exc_info.value), has=field)
