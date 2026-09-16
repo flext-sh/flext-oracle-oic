@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING
 
 from flext_core import r
 from flext_oracle_oic import c, p, t
-from flext_oracle_oic.services.base import FlextOracleOicServiceBase
+from .base import FlextOracleOicServiceBase
 
 if TYPE_CHECKING:
     from collections.abc import Callable

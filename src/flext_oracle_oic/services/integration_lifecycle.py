@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from flext_core import r
 from flext_oracle_oic import c, p
-from flext_oracle_oic.services.base import FlextOracleOicServiceBase
+from .base import FlextOracleOicServiceBase
 
 
 class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):

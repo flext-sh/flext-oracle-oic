@@ -11,16 +11,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
-from flext_oracle_oic.services.base import FlextOracleOicServiceBase
-from flext_oracle_oic.services.integration_crud import (
-    FlextOracleOicIntegrationCrudMixin,
-)
-from flext_oracle_oic.services.integration_lifecycle import (
-    FlextOracleOicIntegrationLifecycleMixin,
-)
-from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
-from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
+from .services.auth import FlextOracleOicAuthMixin
+from .services.base import FlextOracleOicServiceBase
+from .services.integration_crud import FlextOracleOicIntegrationCrudMixin
+from .services.integration_lifecycle import FlextOracleOicIntegrationLifecycleMixin
+from .services.monitoring import FlextOracleOicMonitoringMixin
+from .services.orchestration import FlextOracleOicOrchestrationMixin
 
 
 class FlextOracleOicService(
