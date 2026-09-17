@@ -23,6 +23,7 @@
   - [Common Configuration Issues](#common-configuration-issues)
   - [Configuration Debugging](#configuration-debugging)
 - [Future Enhancements](#future-enhancements)
+
 <!-- TOC END -->
 
 **Configuration Management for flext-oracle-oic v0.12.0-dev**

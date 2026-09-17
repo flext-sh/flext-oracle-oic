@@ -27,6 +27,7 @@
   - [Resources](#resources)
   - [Support Channels](#support-channels)
 - [Related Documentation](#related-documentation)
+
 <!-- TOC END -->
 
 **flext-oracle-oic v0.12.0-dev** - Oracle Integration Cloud client library for the FLEXT ecosystem

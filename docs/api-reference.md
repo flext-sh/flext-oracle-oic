@@ -24,6 +24,7 @@
   - [Current Version (v0.12.0-dev)](#current-version-v0120-dev)
   - [Future Versions](#future-versions)
 - [Related Documentation](#related-documentation)
+
 <!-- TOC END -->
 
 **flext-oracle-oic v0.12.0-dev** - Available APIs and Components
