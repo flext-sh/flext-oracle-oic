@@ -62,7 +62,7 @@ git clone <repository-url> flext-oracle-oic
 cd flext-oracle-oic
 
 # Install dependencies with development tools
-poetry install --with dev,test
+make setup --with dev,test
 
 # Verify FLEXT-core access
 python -c "from flext_cli import u
@@ -134,10 +134,10 @@ except Exception as e:
 ```bash
 # Setup development environment
 make setup                 # Complete development environment setup
-poetry install --with dev,test
+make setup --with dev,test
 
 # Quality gates (run before commits)
-make val              # Complete validation pipeline (lint + type + test)
+make check              # Complete validation pipeline (lint + type + test)
 make check                 # Quick validation (lint + type-check only)
 make lint                  # Ruff linting with zero tolerance
 make type-check            # MyPy strict mode type checking
@@ -230,8 +230,8 @@ mypy src/ --show-error-codes           # Show specific type errors
 ```bash
 # Reset poetry environment
 poetry env remove python
-poetry install --with dev,test
-poetry shell
+make setup --with dev,test
+make setup
 ```
 
 ### Development Issues
