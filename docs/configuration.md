@@ -1,6 +1,7 @@
 # Configuration
 
 <!-- TOC START -->
+
 - [Overview](#overview)
 - [Current Configuration Components](#current-configuration-components)
   - [Connection Configuration](#connection-configuration)
@@ -314,6 +315,7 @@ print(f"Client ID: {settings.OracleOic.oauth_client_id}")
 print(f"Token URL: {settings.OracleOic.oauth_token_url}")
 # oauth_client_secret is stored as a plain string in the current settings model
 ```
+
 ## Future Enhancements
 
 The configuration system will be enhanced in future releases with:
@@ -324,6 +326,6 @@ The configuration system will be enhanced in future releases with:
 - **Oracle Cloud Integration**: Native Oracle Vault and IDCS integration
 - **Dynamic Configuration**: Runtime configuration updates and validation
 
-______________________________________________________________________
+---
 
 This configuration guide reflects the actual implementation status as of April 14, 2026. The basic Pydantic configuration foundation is implemented, with advanced features planned for future releases.

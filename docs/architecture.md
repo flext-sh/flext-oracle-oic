@@ -1,6 +1,7 @@
 # Architecture
 
 <!-- TOC START -->
+
 - [Overview](#overview)
   - [Architecture Principles](#architecture-principles)
 - [Current Implementation Analysis](#current-implementation-analysis)
@@ -291,6 +292,7 @@ service = container.resolve("oic_service").unwrap()
 ### Current Test Status (21% Coverage)
 
 **Test Structure**
+
 ```
 
 tests/
@@ -331,10 +333,12 @@ tests/
 
    - Resolve `exceptions.py:283` OIC_TOKEN_ERROR issue
    - Fix `test_models.py:61` type mismatch
+
 2. **Replace Direct Imports**
 
    - Replace `httpx` with `flext-api` patterns
    - Replace `typer` with `flext-cli` patterns
+
 3. **Implement s**
 
    - Convert service classes to inherit from s
@@ -347,11 +351,13 @@ tests/
    - Complete Oracle cloud authentication
    - Token lifecycle management
    - Secure credential storage
+
 2. **Integration Patterns**
 
    - App-driven orchestration
    - Scheduled orchestration
    - File transfer patterns
+
 3. **Enterprise Features**
 
    - Circuit breaker implementation
@@ -365,6 +371,7 @@ tests/
    - 70%+ coverage with integration tests
    - Contract testing with Oracle OIC APIs
    - Performance benchmarking
+
 2. **Documentation Completion**
 
    - Complete API reference

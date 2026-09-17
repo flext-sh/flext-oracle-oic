@@ -1,6 +1,7 @@
 # API Reference
 
 <!-- TOC START -->
+
 - [Public API Overview](#public-api-overview)
 - [Configuration API](#configuration-api)
   - [OracleOicExtensionSettings](#oracleoicextensionsettings)
@@ -36,7 +37,9 @@
 The current implementation provides foundation configuration classes and basic service structure. All public APIs are available through the main module import.
 
 ```python
+
 ```
+
 ## Configuration API
 
 ### OracleOicExtensionSettings
@@ -113,6 +116,7 @@ auth_config = FlextOracleOicSettings(
 # Service and API entry points
 
 ```
+
 **Usage Note**: Current service implementations provide basic structure. Full Oracle OIC integration capabilities are in development.
 
 ### Client Components (FLEXT Compliance Issues)
@@ -121,6 +125,7 @@ auth_config = FlextOracleOicSettings(
 # Service facade and settings (the HTTP client wrapper is not yet exposed)
 
 ```
+
 **Critical Issue**: Current client implementation uses direct `httpx` imports (line 12 in `ext_client.py`) which violates FLEXT ecosystem standards. Will be refactored to use `flext-api` patterns.
 
 ### Data Models
@@ -259,7 +264,7 @@ API will be enhanced with:
 - Professional enterprise features
 - Comprehensive testing and validation
 
-______________________________________________________________________
+---
 
 This API reference reflects the actual implementation status as of April 14, 2026. Version 0.9.9 provides foundation configuration and basic service structure, with significant enhancements planned for FLEXT compliance and Oracle OIC integration.
 

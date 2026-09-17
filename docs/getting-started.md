@@ -1,6 +1,7 @@
 # Getting Started
 
 <!-- TOC START -->
+
 - [Prerequisites](#prerequisites)
   - [Required Software](#required-software)
   - [Optional for Testing](#optional-for-testing)
@@ -269,7 +270,7 @@ grep -r "from httpx\|from typer" src/
 - **Questions**: Check existing documentation and README files first
 - **Contributing**: Follow development guidelines in [guides/development.md](guides/development.md)
 
-______________________________________________________________________
+---
 
 This guide reflects the actual current implementation status as of April 14, 2026. The library is in early development (v0.12.0-dev) with foundation configuration and basic service structure implemented. Full Oracle OIC integration capabilities are planned for future releases following the evidence-based roadmap in the development guide.
 
