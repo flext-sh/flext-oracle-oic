@@ -225,12 +225,10 @@ ruff check --fix src/                  # Auto-fix linting
 mypy src/ --show-error-codes           # Show specific type errors
 ```
 
-**Poetry Dependency Issues**
+**Dependency Reset**
 
 ```bash
-# Reset poetry environment
-poetry env remove python
-make setup --with dev,test
+# Reset environment
 make setup
 ```
 
@@ -261,7 +259,7 @@ grep -r "from httpx\|from typer" src/
 
 - **Documentation**: Complete docs in the [documentation index](index.md)
 - **FLEXT Ecosystem**: See the [workspace README](https://github.com/flext-sh/flext/blob/0.12.0-dev/README.md) for context
-- **API Reference**: See [api-reference.md](api-reference.md) for available APIs
+- **API Reference**: See [API reference](api-reference/README.md) for available APIs
 
 ### Support Channels
 
@@ -278,7 +276,7 @@ This guide reflects the actual current implementation status as of April 14, 202
 **Within Project**:
 
 - [Architecture](architecture.md) - Architecture and design patterns
-- [API Reference](api-reference.md) - Complete API documentation
+- [API Reference](api-reference/README.md) - Generated API documentation
 - [Integration](integration.md) - Integration patterns
 - [Troubleshooting](troubleshooting.md) - Common issues
 

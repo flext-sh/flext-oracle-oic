@@ -1,5 +1,27 @@
 # Triagem SonarCloud — flext-sh/flext-oracle-oic
 
+<!-- TOC START -->
+- [Resumo](#resumo)
+- [Como usar](#como-usar)
+- [Issues](#issues)
+  - [1 · 🟠 CRITICAL · CODE_SMELL · python:S1192](#1-critical-code_smell-pythons1192)
+  - [2 · 🟠 CRITICAL · CODE_SMELL · python:S1192](#2-critical-code_smell-pythons1192)
+  - [3 · 🟠 CRITICAL · CODE_SMELL · python:S1192](#3-critical-code_smell-pythons1192)
+  - [4 · 🟡 MAJOR · VULNERABILITY · githubactions:S8264](#4-major-vulnerability-githubactionss8264)
+  - [5 · 🟡 MAJOR · VULNERABILITY · githubactions:S8233](#5-major-vulnerability-githubactionss8233)
+  - [6 · 🟡 MAJOR · VULNERABILITY · githubactions:S8233](#6-major-vulnerability-githubactionss8233)
+  - [7 · 🟡 MAJOR · VULNERABILITY · text:S8565](#7-major-vulnerability-texts8565)
+  - [8 · 🟡 MAJOR · CODE_SMELL · python:S108](#8-major-code_smell-pythons108)
+  - [9 · 🟡 MAJOR · CODE_SMELL · python:S108](#9-major-code_smell-pythons108)
+  - [10 · 🟡 MAJOR · CODE_SMELL · python:S108](#10-major-code_smell-pythons108)
+  - [11 · 🟡 MAJOR · CODE_SMELL · python:S108](#11-major-code_smell-pythons108)
+  - [12 · 🟡 MAJOR · CODE_SMELL · python:S108](#12-major-code_smell-pythons108)
+  - [13 · 🟡 MAJOR · CODE_SMELL · python:S5778](#13-major-code_smell-pythons5778)
+  - [14 · 🟡 MAJOR · CODE_SMELL · python:S5778](#14-major-code_smell-pythons5778)
+  - [15 · ⚪ MINOR · CODE_SMELL · python:S7504](#15-minor-code_smell-pythons7504)
+  - [16 · ⚪ MINOR · VULNERABILITY · python:S5332](#16-minor-vulnerability-pythons5332)
+<!-- TOC END -->
+
 Gerado do dump da plataforma SonarCloud (2026-08-06).
 
 Bead: `mro-2wjm.13`
@@ -32,7 +54,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Define a constant instead of duplicating this literal "application/json" 3 times.
 
-```python
+```text
       251                  "base_url": base_url,
       252                  "timeout": self.connection_config.request_timeout,
       253                  "headers": {
@@ -51,7 +73,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Define a constant instead of duplicating this literal "Client initialization failed" 7 times.
 
-```python
+```text
        27  
        28          """
        29          client_result = self._get_client()
@@ -70,7 +92,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Define a constant instead of duplicating this literal "Client initialization failed" 3 times.
 
-```python
+```text
        36      def _activate_integration(self, integration_id: str) -> p.Result[bool]:
        37          """Activate Oracle OIC integration without exception translation."""
        38          client_result = self._get_client()
@@ -153,7 +175,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Either remove or fill this block of code.
 
-```python
+```text
        14      ) -> p.Result[str]:
        15          """Validate one upper-cased string against a closed canonical set."""
        16          match value:
@@ -172,7 +194,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Either remove or fill this block of code.
 
-```python
+```text
        38  
        39          """
        40          match base_url:
@@ -191,7 +213,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Either remove or fill this block of code.
 
-```python
+```text
        41                          "Review error logs and implement error handling improvements",
        42                          False,
        43                      )
@@ -210,7 +232,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Either remove or fill this block of code.
 
-```python
+```text
        67          match value:
        68              case str():
        69                  return value
@@ -229,7 +251,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Either remove or fill this block of code.
 
-```python
+```text
        88          match value:
        89              case list() | tuple():
        90                  return [FlextOracleOicServiceBase._to_general_value(v) for v in value]
@@ -248,7 +270,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Refactor this exception test to have only one invocation possibly throwing an exception.
 
-```python
+```text
        82              client_id="cid",
        83              client_value="secret",
        84              idcs_url="https://idcs.example.com/oauth2/v1/token",
@@ -267,7 +289,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Refactor this exception test to have only one invocation possibly throwing an exception.
 
-```python
+```text
       141  
       142      def test_connection_config_is_immutable(self) -> None:
       143          """Connection config is a frozen value object."""
@@ -286,7 +308,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Remove this unnecessary `list()` call on an already iterable object.
 
-```python
+```text
        16      if (
        17          existing_package is None
        18          or Path(getattr(existing_package, "__file__", "")).resolve() != init_file
@@ -305,7 +327,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 > Using HTTP protocol is insecure. Use HTTPS instead.
 
-```python
+```text
        44                  return r[str].fail("Base URL must be a string")
        45          base_url = base_url.strip()
        46          if not base_url:
