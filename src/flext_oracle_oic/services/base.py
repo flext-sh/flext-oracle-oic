@@ -275,7 +275,7 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
             "log_requests": False,
             "log_responses": False,
         })
-        self._monitoring_client = FlextApi(settings=api_config)
+        self._monitoring_client = FlextApi(runtime_settings=api_config)
 
 
 __all__: list[str] = ["FlextOracleOicServiceBase"]

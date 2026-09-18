@@ -131,6 +131,7 @@ export ORACLE_OIC_OAUTH_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oa
 
 ```python
 import os
+
 from flext_oracle_oic import FlextOracleOicSettings
 
 # Manual environment variable loading (current approach)
@@ -149,7 +150,7 @@ settings = FlextOracleOicSettings(
         "https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
     ),
 )
-```
+
 
 ## Configuration Validation
 
@@ -236,6 +237,7 @@ print(auth_config.oauth_client_secret)  # Shows SecretStr('**********')
 from __future__ import annotations
 
 import os
+
 from flext_oracle_oic import FlextOracleOicSettings
 
 
@@ -255,7 +257,7 @@ def create_dev_config():
 
 # Create development configuration
 dev_settings = create_dev_config()
-```
+
 
 ## Troubleshooting
 

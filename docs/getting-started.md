@@ -73,7 +73,8 @@ python -c "from flext_cli import u
 from flext_core import FlextSettings; u.Cli.print('FLEXT-Core accessible')"
 
 # Verify installation
-python -c "from flext_oracle_oic import OracleOicExtensionSettings; u.Cli.print('Import successful')"
+python -c "from flext_oracle_oic import OracleOicExtensionSettings; \
+    u.Cli.print('Import successful')"
 ```
 
 ### Environment Setup

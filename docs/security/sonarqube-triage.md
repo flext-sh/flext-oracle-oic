@@ -253,7 +253,7 @@ padrão.
 ```python
        88          match value:
        89              case list() | tuple():
-       90                  return [FlextOracleOicServiceBase._to_general_value(v) for v in value]
+       90                  return [FlextOracleOicServiceBase._to_general_value(v) fo ...
        91              case _:
 >>>    92                  pass
        93          return str(value)
@@ -301,7 +301,7 @@ padrão.
       146              getattr(config, "__setattr__")("verify_ssl", False)
       147
       148      @pytest.mark.parametrize("timeout", [0, -1, -30])
-      149      def test_connection_config_rejects_non_positive_timeout(self, timeout: int) -> None:
+      149      def test_connection_config_rejects_non_positive_timeout(self, timeout ...
 ```
 
 **Decisão**: pendente

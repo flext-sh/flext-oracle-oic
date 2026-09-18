@@ -243,7 +243,7 @@ class FlextOracleOicClient:
                     "Accept": "application/json",
                 },
             })
-            client = FlextApi(settings=api_config)
+            client = FlextApi(runtime_settings=api_config)
             self._client = client
             return r[FlextApi].ok(client)
         except c.EXC_NETWORK_TYPE as exc:
@@ -318,7 +318,7 @@ class FlextOracleOicClient:
         api_config = FlextApiSettings.model_validate({
             "base_url": self.auth_config.oauth_token_url
         })
-        api_client = FlextApi(settings=api_config)
+        api_client = FlextApi(runtime_settings=api_config)
         oauth_data: t.JsonDict = {
             key: str(self._to_api_payload(value)) for key, value in data.items()
         }
