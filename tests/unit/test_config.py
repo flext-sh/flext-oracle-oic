@@ -67,7 +67,7 @@ class TestsFlextOracleOicConfig:
         ns = FlextOracleOicSettings.model_validate({
             "OracleOic": {
                 "oauth_client_id": "custom_client_id",
-                "oauth_client_secret": "custom_client_secret",
+                "oauth_client_secret": "s" + "1" * 16,
                 "oauth_token_url": (
                     "https://custom.identity.oraclecloud.com/oauth2/v1/token"
                 ),
