@@ -30,7 +30,8 @@
 
 <!-- TOC END -->
 
-**flext-oracle-oic v0.12.0-dev** - Oracle Integration Cloud client library for the FLEXT ecosystem
+**flext-oracle-oic v0.12.0-dev** - Oracle Integration Cloud client library for the FLEXT
+ecosystem
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
@@ -39,7 +40,8 @@
 ### Required Software
 
 - **Python 3.13+** with Poetry for dependency management
-- **FLEXT workspace** setup with access to [flext-core](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)
+- **FLEXT workspace** setup with access to
+  [flext-core](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)
 - **Git** for version control
 
 ### Optional for Testing
@@ -60,7 +62,7 @@
 ```bash
 # Navigate to FLEXT workspace
 cd /path/to/flext/workspace
-git clone <repository-url> flext-oracle-oic
+git clone < repository-url > flext-oracle-oic
 cd flext-oracle-oic
 
 # Install dependencies with development tools
@@ -113,7 +115,8 @@ print(f"Configuration created: {settings.OracleOic.base_url}")
 
 ### Current Capabilities
 
-> **Important**: Version 0.9.9 provides foundation configuration and basic service structure:
+> **Important**: Version 0.9.9 provides foundation configuration and basic service
+> structure:
 
 ```python
 # Import available components
@@ -135,22 +138,22 @@ except Exception as e:
 
 ```bash
 # Setup development environment
-make setup                 # Complete development environment setup
+make setup # Complete development environment setup
 poetry install --with dev,test
 
 # Quality gates (run before commits)
-make val              # Complete validation pipeline (lint + type + test)
-make check                 # Quick validation (lint + type-check only)
-make lint                  # Ruff linting with zero tolerance
-make type-check            # MyPy strict mode type checking
-make test                  # Run test suite with coverage
-make format                # Auto-format code with Ruff
+make val        # Complete validation pipeline (lint + type + test)
+make check      # Quick validation (lint + type-check only)
+make lint       # Ruff linting with zero tolerance
+make type-check # MyPy strict mode type checking
+make test       # Run test suite with coverage
+make format     # Auto-format code with Ruff
 
 # Development shortcuts
-make t                     # Alias for test
-make l                     # Alias for lint
-make c                    # Alias for type-check
-make v                     # Alias for validate
+make t # Alias for test
+make l # Alias for lint
+make c # Alias for type-check
+make v # Alias for validate
 ```
 
 ### Testing Commands
@@ -160,9 +163,9 @@ make v                     # Alias for validate
 PYTHONPATH=src python -m pytest tests/ --cov=src --cov-report=term-missing
 
 # Run specific test categories
-pytest tests/unit/ -v                    # Unit tests only
-pytest tests/integration/ -v             # Integration tests (when available)
-pytest -m "not slow" -v                  # Skip slow tests
+pytest tests/unit/ -v        # Unit tests only
+pytest tests/integration/ -v # Integration tests (when available)
+pytest -m "not slow" -v      # Skip slow tests
 
 # Coverage reporting
 pytest tests/ --cov=src --cov-report=html:coverage-report
@@ -218,13 +221,13 @@ from flext_core import FlextSettings; u.Cli.print('Success')"
 
 ```bash
 # Check specific issues
-make lint 2>&1 | head -20              # Show linting errors
-make type-check 2>&1 | head -20        # Show type errors
-make test 2>&1 | head -20              # Show test failures
+make lint 2>&1 | head -20       # Show linting errors
+make type-check 2>&1 | head -20 # Show type errors
+make test 2>&1 | head -20       # Show test failures
 
 # Fix common issues
-ruff check --fix src/                  # Auto-fix linting
-mypy src/ --show-error-codes           # Show specific type errors
+ruff check --fix src/        # Auto-fix linting
+mypy src/ --show-error-codes # Show specific type errors
 ```
 
 **Poetry Dependency Issues**
@@ -252,28 +255,38 @@ grep -r "from httpx\|from typer" src/
 
 ## Next Steps
 
-1. **Review Current Implementation**: See [architecture.md](architecture.md) for detailed analysis
-1. **Check Development Workflow**: See [guides/development.md](guides/development.md) for the evidence-based development plan
-1. **Understand FLEXT Patterns**: Review [flext-core documentation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)
-1. **Review Configuration**: See [configuration.md](configuration.md) for detailed settings
+1. **Review Current Implementation**: See [architecture.md](architecture.md) for
+   detailed analysis
+1. **Check Development Workflow**: See [guides/development.md](guides/development.md)
+   for the evidence-based development plan
+1. **Understand FLEXT Patterns**: Review
+   [flext-core documentation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)
+1. **Review Configuration**: See [configuration.md](configuration.md) for detailed
+   settings
 
 ## Getting Help
 
 ### Resources
 
 - **Documentation**: Complete docs in the [documentation index](index.md)
-- **FLEXT Ecosystem**: See the [workspace README](https://github.com/flext-sh/flext/blob/0.12.0-dev/README.md) for context
+- **FLEXT Ecosystem**: See the
+  [workspace README](https://github.com/flext-sh/flext/blob/0.12.0-dev/README.md) for
+  context
 - **API Reference**: See [api-reference.md](api-reference.md) for available APIs
 
 ### Support Channels
 
 - **Issues**: Create GitHub issue with detailed error information
 - **Questions**: Check existing documentation and README files first
-- **Contributing**: Follow development guidelines in [guides/development.md](guides/development.md)
+- **Contributing**: Follow development guidelines in
+  [guides/development.md](guides/development.md)
 
 ---
 
-This guide reflects the actual current implementation status as of April 14, 2026. The library is in early development (v0.12.0-dev) with foundation configuration and basic service structure implemented. Full Oracle OIC integration capabilities are planned for future releases following the evidence-based roadmap in the development guide.
+This guide reflects the actual current implementation status as of April 14, 2026. The
+library is in early development (v0.12.0-dev) with foundation configuration and basic
+service structure implemented. Full Oracle OIC integration capabilities are planned for
+future releases following the evidence-based roadmap in the development guide.
 
 ## Related Documentation
 
@@ -286,9 +299,12 @@ This guide reflects the actual current implementation status as of April 14, 202
 
 **Across Projects**:
 
-- [flext-core Foundation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/architecture/overview.md) - Clean architecture and CQRS patterns
-- [flext-core Service Patterns](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/guides/service-patterns.md) - Service patterns and dependency injection
-- [flext-db-oracle Integration](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-db-oracle/AGENTS.md) - Oracle database integration
+- [flext-core Foundation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/architecture/overview.md) -
+  Clean architecture and CQRS patterns
+- [flext-core Service Patterns](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/guides/service-patterns.md) -
+  Service patterns and dependency injection
+- [flext-db-oracle Integration](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-db-oracle/AGENTS.md) -
+  Oracle database integration
 
 **External Resources**:
 

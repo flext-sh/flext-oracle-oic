@@ -6,8 +6,8 @@ Bead: `mro-2wjm.13`
 
 ## Resumo
 
-**16 issues** — BLOCKER 0, CRITICAL 3, MAJOR 11, MINOR 2
-Tipos: VULNERABILITY 5, BUG 0, CODE_SMELL 11 · **Debt total: 116min**
+**16 issues** — BLOCKER 0, CRITICAL 3, MAJOR 11, MINOR 2 Tipos: VULNERABILITY 5, BUG 0,
+CODE_SMELL 11 · **Debt total: 116min**
 
 | regra                 | issues |
 | --------------------- | ------ |
@@ -22,8 +22,11 @@ Tipos: VULNERABILITY 5, BUG 0, CODE_SMELL 11 · **Debt total: 116min**
 
 ## Como usar
 
-Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o **código real** (linha `>>>`), o tipo e o effort estimado.
-**Decisão**: `corrigir` / `falso-positivo` (marcar na plataforma com justificativa) / `risco-aceito`. Ordem: BLOCKER → CRITICAL → VULNERABILITY → MAJOR. CODE_SMELL em volume pede correção de padrão.
+Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
+**código real** (linha `>>>`), o tipo e o effort estimado. **Decisão**: `corrigir` /
+`falso-positivo` (marcar na plataforma com justificativa) / `risco-aceito`. Ordem:
+BLOCKER → CRITICAL → VULNERABILITY → MAJOR. CODE_SMELL em volume pede correção de
+padrão.
 
 ## Issues
 
@@ -51,7 +54,8 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 **Local**: `src/flext_oracle_oic/services/integration_crud.py:31` · **Effort**: 14min
 
-> Define a constant instead of duplicating this literal "Client initialization failed" 7 times.
+> Define a constant instead of duplicating this literal "Client initialization failed" 7
+> times.
 
 ```python
        27
@@ -69,9 +73,11 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 ### 3 · 🟠 CRITICAL · CODE_SMELL · `python:S1192`
 
-**Local**: `src/flext_oracle_oic/services/integration_lifecycle.py:40` · **Effort**: 6min
+**Local**: `src/flext_oracle_oic/services/integration_lifecycle.py:40` · **Effort**:
+6min
 
-> Define a constant instead of duplicating this literal "Client initialization failed" 3 times.
+> Define a constant instead of duplicating this literal "Client initialization failed" 3
+> times.
 
 ```python
        36      def _activate_integration(self, integration_id: str) -> p.Result[bool]:
@@ -151,13 +157,15 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 **Local**: `pyproject.toml:-` · **Effort**: 5min
 
-> Dependency versions are not predictable if the lock file (uv.lock, poetry.lock, pdm.lock or pylock.toml) is missing.
+> Dependency versions are not predictable if the lock file (uv.lock, poetry.lock,
+> pdm.lock or pylock.toml) is missing.
 
 **Decisão**: pendente
 
 ### 8 · 🟡 MAJOR · CODE_SMELL · `python:S108`
 
-**Local**: `src/flext_oracle_oic/_utilities/connection_validation.py:18` · **Effort**: 5min
+**Local**: `src/flext_oracle_oic/_utilities/connection_validation.py:18` · **Effort**:
+5min
 
 > Either remove or fill this block of code.
 
@@ -177,7 +185,8 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 ### 9 · 🟡 MAJOR · CODE_SMELL · `python:S108`
 
-**Local**: `src/flext_oracle_oic/_utilities/connection_validation.py:42` · **Effort**: 5min
+**Local**: `src/flext_oracle_oic/_utilities/connection_validation.py:42` · **Effort**:
+5min
 
 > Either remove or fill this block of code.
 
@@ -259,7 +268,8 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 **Local**: `tests/unit/test_models.py:86` · **Effort**: 5min
 
-> Refactor this exception test to have only one invocation possibly throwing an exception.
+> Refactor this exception test to have only one invocation possibly throwing an
+> exception.
 
 ```python
        82              client_id="cid",
@@ -279,7 +289,8 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 **Local**: `tests/unit/test_models.py:145` · **Effort**: 5min
 
-> Refactor this exception test to have only one invocation possibly throwing an exception.
+> Refactor this exception test to have only one invocation possibly throwing an
+> exception.
 
 ```python
       141
@@ -317,7 +328,8 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 
 ### 16 · ⚪ MINOR · VULNERABILITY · `python:S5332`
 
-**Local**: `src/flext_oracle_oic/_utilities/connection_validation.py:48` · **Effort**: 30min
+**Local**: `src/flext_oracle_oic/_utilities/connection_validation.py:48` · **Effort**:
+30min
 
 > Using HTTP protocol is insecure. Use HTTPS instead.
 

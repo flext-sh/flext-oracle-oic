@@ -32,15 +32,19 @@
 
 ## Overview
 
-flext-oracle-oic provides Pydantic-based configuration management following FLEXT ecosystem patterns. The current implementation offers basic configuration structure with type safety and validation.
+flext-oracle-oic provides Pydantic-based configuration management following FLEXT
+ecosystem patterns. The current implementation offers basic configuration structure with
+type safety and validation.
 
-> **Implementation Status**: Version 0.9.9 provides foundation configuration models. Full Oracle OIC integration and enterprise features are planned for future releases.
+> **Implementation Status**: Version 0.9.9 provides foundation configuration models.
+> Full Oracle OIC integration and enterprise features are planned for future releases.
 
 ## Current Configuration Components
 
 ### Connection Configuration
 
-Configure Oracle Integration Cloud connection parameters using `FlextOracleOicConnectionSettings`:
+Configure Oracle Integration Cloud connection parameters using
+`FlextOracleOicConnectionSettings`:
 
 ```python
 from flext_oracle_oic import FlextOracleOicSettings
@@ -106,7 +110,8 @@ settings = FlextOracleOicSettings(
 
 ## Environment Variables
 
-Environment variables can be used for configuration, though the current implementation requires manual handling:
+Environment variables can be used for configuration, though the current implementation
+requires manual handling:
 
 ### Oracle OIC Connection Variables
 
@@ -329,4 +334,6 @@ The configuration system will be enhanced in future releases with:
 
 ---
 
-This configuration guide reflects the actual implementation status as of April 14, 2026. The basic Pydantic configuration foundation is implemented, with advanced features planned for future releases.
+This configuration guide reflects the actual implementation status as of April 14, 2026.
+The basic Pydantic configuration foundation is implemented, with advanced features
+planned for future releases.
