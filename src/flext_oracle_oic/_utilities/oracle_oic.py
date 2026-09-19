@@ -6,7 +6,8 @@ from typing import TYPE_CHECKING, Annotated, ClassVar
 
 from flext_auth import m
 
-from flext_oracle_oic import c, p, r, t
+from flext_core import r
+from flext_oracle_oic import c, p, t
 
 if TYPE_CHECKING:
     from collections.abc import Callable, MutableSequence
