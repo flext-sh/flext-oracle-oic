@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from flext_oracle_oic import FlextOracleOicModels
 
 
-class _TestConnectionCommand(cli_m.BaseModel):
+class _TestConnectionCommand(cli_m.ManagedModel):
     """Test connection to Oracle OIC instance."""
 
     def execute(self) -> p.Result[bool]:
@@ -46,7 +46,7 @@ class _TestConnectionCommand(cli_m.BaseModel):
             return r[bool].fail_op("Connection", connection_result.error)
 
 
-class _ListIntegrationsCommand(cli_m.BaseModel):
+class _ListIntegrationsCommand(cli_m.ManagedModel):
     """List Oracle OIC integrations."""
 
     def execute(self) -> p.Result[bool]:
@@ -70,7 +70,7 @@ class _ListIntegrationsCommand(cli_m.BaseModel):
         return r[bool].ok(value=True)
 
 
-class _ShowVersionCommand(cli_m.BaseModel):
+class _ShowVersionCommand(cli_m.ManagedModel):
     """Show Oracle OIC Extension version."""
 
     def execute(self) -> p.Result[bool]:

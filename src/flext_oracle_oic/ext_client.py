@@ -94,7 +94,7 @@ class FlextOracleOicClient:
         """Execute file transfer pattern for an integration."""
         endpoint = f"/integrations/{integration_id}/files"
         result = self.make_request(c.API.Method.POST, endpoint, json=file_config)
-        return result.unwrap_or({})
+        return result.unwrap()
 
     def execute_scheduled_orchestration(
         self, integration_id: str, schedule_config: t.JsonMapping
@@ -102,7 +102,7 @@ class FlextOracleOicClient:
         """Execute scheduled orchestration for an integration."""
         endpoint = f"/integrations/{integration_id}/schedules"
         result = self.make_request(c.API.Method.POST, endpoint, json=schedule_config)
-        return result.unwrap_or({})
+        return result.unwrap()
 
     def get_access_token(self) -> p.Result[str]:
         """Get access token using OAuth2 client credentials flow."""
@@ -408,7 +408,9 @@ class FlextOracleOicClient:
         self.logger.info("OIC OAuth2 authentication successful")
         return token
 
-    def _to_api_payload(self, value: object) -> t.JsonValue:
+    def _to_api_payload(
+        self, value: t.JsonValue | t.Scalar | t.ScalarMapping | t.ScalarList
+    ) -> t.JsonValue:
         """Normalize t.JsonValue into flext-api request body value type."""
         if isinstance(value, t.PRIMITIVES_TYPES) or value is None:
             return value
