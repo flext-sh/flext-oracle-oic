@@ -19,8 +19,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated
 
-from pydantic_settings import SettingsConfigDict
-
 from flext_core import FlextSettings
 from flext_oracle_oic import m
 
@@ -28,7 +26,7 @@ from flext_oracle_oic import m
 class FlextOracleOicSettings(FlextSettings):
     """Oracle OIC settings; all project fields under ``settings.OracleOic.*``."""
 
-    model_config = SettingsConfigDict(
+    model_config = m.SettingsConfigDict(
         env_prefix="FLEXT_ORACLE_OIC_", env_nested_delimiter="__", extra="ignore"
     )
 
