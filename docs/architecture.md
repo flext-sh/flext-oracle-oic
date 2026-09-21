@@ -248,7 +248,7 @@ class OracleOicIntegrationService(s):
 service = OracleOicExtensionService(settings)
 
 # ✅ Required: Container-managed dependencies
-container = FlextContainer.get_global()
+container = FlextContainer()
 service = container.resolve("oic_service").unwrap()
 ```
 
@@ -416,7 +416,7 @@ with significant FLEXT compliance improvements needed before production use.
 **Within Project**:
 
 - [Getting Started](getting-started.md) - Installation and basic usage
-- [API Reference](api-reference.md) - Complete API documentation
+- [API Reference](api-reference/README.md) - Generated API documentation
 - [Integration](integration.md) - Integration patterns
 - [Troubleshooting](troubleshooting.md) - Common issues
 

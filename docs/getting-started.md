@@ -66,7 +66,7 @@ git clone < repository-url > flext-oracle-oic
 cd flext-oracle-oic
 
 # Install dependencies with development tools
-poetry install --with dev,test
+make setup
 
 # Verify FLEXT-core access
 python -c "from flext_cli import u
@@ -139,22 +139,17 @@ except Exception as e:
 
 ```bash
 # Setup development environment
-make setup # Complete development environment setup
-poetry install --with dev,test
+make setup
+make gen
+make mod
+make gen
+make gen
+make fix
+make fmt
+make check
+make test
+make build
 
-# Quality gates (run before commits)
-make val        # Complete validation pipeline (lint + type + test)
-make check      # Quick validation (lint + type-check only)
-make lint       # Ruff linting with zero tolerance
-make type-check # MyPy strict mode type checking
-make test       # Run test suite with coverage
-make format     # Auto-format code with Ruff
-
-# Development shortcuts
-make t # Alias for test
-make l # Alias for lint
-make c # Alias for type-check
-make v # Alias for validate
 ```
 
 ### Testing Commands
@@ -231,13 +226,11 @@ ruff check --fix src/        # Auto-fix linting
 mypy src/ --show-error-codes # Show specific type errors
 ```
 
-**Poetry Dependency Issues**
+**Dependency Reset**
 
 ```bash
-# Reset poetry environment
-poetry env remove python
-poetry install --with dev,test
-poetry shell
+# Reset environment
+make setup
 ```
 
 ### Development Issues
@@ -294,7 +287,7 @@ future releases following the evidence-based roadmap in the development guide.
 **Within Project**:
 
 - [Architecture](architecture.md) - Architecture and design patterns
-- [API Reference](api-reference.md) - Complete API documentation
+- [API Reference](api-reference/README.md) - Generated API documentation
 - [Integration](integration.md) - Integration patterns
 - [Troubleshooting](troubleshooting.md) - Common issues
 

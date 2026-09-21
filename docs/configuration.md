@@ -129,7 +129,7 @@ export ORACLE_OIC_OAUTH_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oa
 
 ### Loading from Environment
 
-````python
+```python
 import os
 
 from flext_oracle_oic import FlextOracleOicSettings
@@ -150,8 +150,7 @@ settings = FlextOracleOicSettings(
         "https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
     ),
 )
-
-
+```
 ## Configuration Validation
 
 Pydantic automatically validates configuration objects:
@@ -173,7 +172,7 @@ try:
     print("✅ Configuration valid")
 except ValueError as e:
     print(f"❌ Configuration error: {e}")
-````
+```
 
 ### Current Validation Rules
 
@@ -233,7 +232,7 @@ print(auth_config.oauth_client_secret)  # Shows SecretStr('**********')
 
 ### Basic Development Setup
 
-````python
+```python
 from __future__ import annotations
 
 import os
@@ -257,8 +256,7 @@ def create_dev_config():
 
 # Create development configuration
 dev_settings = create_dev_config()
-
-
+```
 ## Troubleshooting
 
 ### Common Configuration Issues
@@ -278,7 +276,7 @@ except ValueError as e:
 settings = FlextOracleOicSettings(
     base_url="https://your-instance.integration.ocp.oraclecloud.com"
 )
-````
+```
 
 **Type Validation Errors:**
 
