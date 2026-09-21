@@ -10,6 +10,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import Annotated
+
 from flext_cli import FlextCliConfig, m
 
 from flext_core import FlextSettings
@@ -30,7 +32,10 @@ class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
     construction machinery stays intact.
     """
 
-    OracleOic: _OracleOicNamespace = _OracleOicNamespace()
+    OracleOic: Annotated[
+        _OracleOicNamespace,
+        m.Field(description="Open namespace exposing ``config/*.yaml`` under ``OracleOic``."),
+    ] = _OracleOicNamespace()
 
 
 config: FlextOracleOicConfig = FlextOracleOicConfig.fetch_global()
