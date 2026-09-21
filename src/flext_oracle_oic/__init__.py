@@ -23,6 +23,7 @@ if TYPE_CHECKING:
     from flext_auth import d, e, h, r, x
 
     from . import services
+    from .__version__ import FlextOracleOicVersion
     from ._config import FlextOracleOicConfig, config
     from ._settings import FlextOracleOicSettings, settings
     from .api import FlextOracleOicApi, oracle_oic
@@ -58,6 +59,7 @@ __all__: tuple[str, ...] = (
     "FlextOracleOicSettings",
     "FlextOracleOicTypes",
     "FlextOracleOicUtilities",
+    "FlextOracleOicVersion",
     "__author__",
     "__author_email__",
     "__description__",
@@ -87,6 +89,7 @@ __all__: tuple[str, ...] = (
 _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
         MappingProxyType({
+            ".__version__": ("FlextOracleOicVersion",),
             "._config": ("FlextOracleOicConfig", "config"),
             "._settings": ("FlextOracleOicSettings", "settings"),
             ".api": ("FlextOracleOicApi", "oracle_oic"),
