@@ -20,6 +20,9 @@ from typing import TYPE_CHECKING, Final
 
 from flext_auth import c
 
+from ._constants.base import FlextOracleOicConstantsBase
+from ._constants.values import FlextOracleOicConstantsValues
+
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
@@ -60,22 +63,13 @@ class FlextOracleOicConstants(c):
         V1 = "v1"
         V2 = "v2"
 
-    class OracleOic:
+    class OracleOic(
+        FlextOracleOicConstantsBase, FlextOracleOicConstantsValues.OracleOic
+    ):
         """Oracle Integration Cloud specific constants."""
 
-        DEFAULT_BASE_URL: Final[str] = (
-            "https://localhost.integration.ocp.oraclecloud.com"
-        )
-        DEFAULT_API_VERSION: Final[str] = "v1"
-        DEFAULT_PAGE_SIZE: Final[int] = 100
-        MIN_PAGE_SIZE: Final[int] = 1
-        MIN_REQUEST_TIMEOUT: Final[int] = 1
-        DEFAULT_VERIFY_SSL: Final[bool] = True
-
-    class Auth(c.Auth):
+    class Auth(c.Auth, FlextOracleOicConstantsValues.Auth):
         """Oracle OIC Authentication constants extending base auth namespace."""
-
-        DEFAULT_OAUTH_SCOPE: Final[str] = ""
 
     class Integration:
         """Oracle OIC Integration constants."""
