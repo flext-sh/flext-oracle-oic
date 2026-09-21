@@ -71,8 +71,12 @@ class FlextOracleOicConstants(c):
     class Auth(c.Auth, FlextOracleOicConstantsValues.Auth):
         """Oracle OIC Authentication constants extending base auth namespace."""
 
-    class Integration:
-        """Oracle OIC Integration constants."""
+    class Integration(FlextOracleOicConstantsValues.Integration):
+        """Oracle OIC Integration constants.
+
+        ``DEFAULT_VERSION`` is owned by ``flext_oracle_oic._constants`` and
+        inherited through this facade subclass.
+        """
 
         @unique
         class Status(StrEnum):
@@ -89,7 +93,6 @@ class FlextOracleOicConstants(c):
             STOPPED = "STOPPED"
             ERROR = "ERROR"
 
-        DEFAULT_VERSION: Final[str] = "01.00.0000"
         DEFAULT_VERSION_FALLBACK: Final[str] = "01.00.0000"
 
     class Connection:
@@ -123,8 +126,12 @@ class FlextOracleOicConstants(c):
             FILE = "FILE"
             FTP = "FTP"
 
-    class Monitoring:
-        """Oracle OIC Monitoring constants."""
+    class Monitoring(FlextOracleOicConstantsValues.Monitoring):
+        """Oracle OIC Monitoring constants.
+
+        ``COMPONENT_DATABASE`` is owned by ``flext_oracle_oic._constants`` and
+        inherited through this facade subclass.
+        """
 
         @unique
         class HealthStatus(StrEnum):
@@ -151,14 +158,16 @@ class FlextOracleOicConstants(c):
             UNHEALTHY = "unhealthy"
             UNKNOWN = "unknown"
 
-        COMPONENT_DATABASE: Final[str] = "database"
         COMPONENT_MESSAGING: Final[str] = "messaging"
         COMPONENT_INTEGRATION_ENGINE: Final[str] = "integration_engine"
 
-    class API:
-        """Oracle OIC API constants."""
+    class API(FlextOracleOicConstantsValues.API):
+        """Oracle OIC API constants.
 
-        HTTP_ERROR_STATUS_THRESHOLD: Final[int] = 400
+        ``HTTP_ERROR_STATUS_THRESHOLD`` is owned by
+        ``flext_oracle_oic._constants`` and inherited through this facade
+        subclass.
+        """
 
         @unique
         class Method(StrEnum):
@@ -180,14 +189,18 @@ class FlextOracleOicConstants(c):
         ENDPOINT_HEALTH: Final[str] = "/ic/api/integration/v1/health"
         HTTP_STATUS_OK: Final[int] = 200
 
-    class OracleOicValidation:
-        """Oracle OIC validation constants (named to avoid overriding c)."""
+    class OracleOicValidation(FlextOracleOicConstantsValues.OracleOicValidation):
+        """Oracle OIC validation constants (named to avoid overriding c).
+
+        ``MIN_INTEGRATION_NAME_LENGTH`` is owned by
+        ``flext_oracle_oic._constants`` and inherited through this facade
+        subclass.
+        """
 
         # === Regex authority for the OracleOicValidation domain ===
         INTEGRATION_NAME_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\s]+$")
         CLIENT_ID_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
 
-        MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
         MAX_INTEGRATION_NAME_LENGTH: Final[int] = 100
         VALID_INTEGRATION_STATUSES: Final[frozenset[str]] = frozenset({
             "ACTIVATED",
