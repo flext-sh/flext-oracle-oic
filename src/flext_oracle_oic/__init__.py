@@ -9,12 +9,18 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 from .__version__ import (
-    __author__ as __author__, __author_email__ as __author_email__, __description__ as __description__, __license__ as __license__,
-    __title__ as __title__, __url__ as __url__, __version__ as __version__, __version_info__ as __version_info__,
+    __author__ as __author__,
+    __author_email__ as __author_email__,
+    __description__ as __description__,
+    __license__ as __license__,
+    __title__ as __title__,
+    __url__ as __url__,
+    __version__ as __version__,
+    __version_info__ as __version_info__,
 )
 
 if TYPE_CHECKING:
-    from flext_auth import d, e, h, r, x
+    from flext_core import d, e, h, r, x
 
     from . import services
     from .__version__ import FlextOracleOicVersion
@@ -36,17 +42,48 @@ if TYPE_CHECKING:
     from .typings import FlextOracleOicTypes, FlextOracleOicTypes as t
     from .utilities import FlextOracleOicUtilities, FlextOracleOicUtilities as u
 __all__: tuple[str, ...] = (
-    "FlextOracleOicApi", "FlextOracleOicAuthMixin", "FlextOracleOicCli", "FlextOracleOicClient",
-    "FlextOracleOicConfig", "FlextOracleOicConstants", "FlextOracleOicIntegrationCrudMixin", "FlextOracleOicIntegrationLifecycleMixin",
-    "FlextOracleOicModels", "FlextOracleOicMonitoringMixin", "FlextOracleOicOrchestrationMixin", "FlextOracleOicProtocols",
-    "FlextOracleOicService", "FlextOracleOicServiceBase", "FlextOracleOicSettings", "FlextOracleOicTypes",
-    "FlextOracleOicUtilities", "FlextOracleOicVersion", "__author__", "__author_email__",
-    "__description__", "__license__", "__title__", "__url__",
-    "__version__", "__version_info__", "c", "config",
-    "d", "e", "h", "m",
-    "main", "oracle_oic", "p", "r",
-    "s", "services", "settings", "t",
-    "u", "x",
+    "FlextOracleOicApi",
+    "FlextOracleOicAuthMixin",
+    "FlextOracleOicCli",
+    "FlextOracleOicClient",
+    "FlextOracleOicConfig",
+    "FlextOracleOicConstants",
+    "FlextOracleOicIntegrationCrudMixin",
+    "FlextOracleOicIntegrationLifecycleMixin",
+    "FlextOracleOicModels",
+    "FlextOracleOicMonitoringMixin",
+    "FlextOracleOicOrchestrationMixin",
+    "FlextOracleOicProtocols",
+    "FlextOracleOicService",
+    "FlextOracleOicServiceBase",
+    "FlextOracleOicSettings",
+    "FlextOracleOicTypes",
+    "FlextOracleOicUtilities",
+    "FlextOracleOicVersion",
+    "__author__",
+    "__author_email__",
+    "__description__",
+    "__license__",
+    "__title__",
+    "__url__",
+    "__version__",
+    "__version_info__",
+    "c",
+    "config",
+    "d",
+    "e",
+    "h",
+    "m",
+    "main",
+    "oracle_oic",
+    "p",
+    "r",
+    "s",
+    "services",
+    "settings",
+    "t",
+    "u",
+    "x",
 )
 
 _LAZY_IMPORTS = MappingProxyType(
@@ -73,7 +110,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
             ".typings": ("FlextOracleOicTypes", "t"),
             ".utilities": ("FlextOracleOicUtilities", "u"),
-            "flext_auth": ("d", "e", "h", "r", "x"),
+            "flext_core": ("d", "e", "h", "r", "x"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
