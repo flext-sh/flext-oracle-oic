@@ -20,13 +20,7 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_api import api
-    from flext_auth import auth
-    from flext_cli import cli
-    from flext_web import web
-    from pydantic_core import from_json, to_json, to_jsonable_python
-
-    from flext_core import core, d, e, h, lazy_attribute, r, x
+    from flext_auth import api, auth, d, e, h, main, providers, r, web, x
 
     from . import services
     from ._config import FlextOracleOicConfig, config
@@ -34,7 +28,7 @@ if TYPE_CHECKING:
     from .api import FlextOracleOicApi, oracle_oic
     from .constants import FlextOracleOicConstants, c
     from .ext_client import FlextOracleOicClient
-    from .main import FlextOracleOicCli, main
+    from .main import FlextOracleOicCli
     from .models import FlextOracleOicModels, m
     from .protocols import FlextOracleOicProtocols, p
     from .service import FlextOracleOicService, FlextOracleOicService as s
@@ -75,25 +69,20 @@ __all__: tuple[str, ...] = (
     "api",
     "auth",
     "c",
-    "cli",
     "config",
-    "core",
     "d",
     "e",
-    "from_json",
     "h",
-    "lazy_attribute",
     "m",
     "main",
     "oracle_oic",
     "p",
+    "providers",
     "r",
     "s",
     "services",
     "settings",
     "t",
-    "to_json",
-    "to_jsonable_python",
     "u",
     "web",
     "x",
@@ -107,7 +96,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".api": ("FlextOracleOicApi", "oracle_oic"),
             ".constants": ("FlextOracleOicConstants", "c"),
             ".ext_client": ("FlextOracleOicClient",),
-            ".main": ("FlextOracleOicCli", "main"),
+            ".main": ("FlextOracleOicCli",),
             ".models": ("FlextOracleOicModels", "m"),
             ".protocols": ("FlextOracleOicProtocols", "p"),
             ".service": ("FlextOracleOicService", "s"),
@@ -122,12 +111,18 @@ _LAZY_IMPORTS = MappingProxyType(
             ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
             ".typings": ("FlextOracleOicTypes", "t"),
             ".utilities": ("FlextOracleOicUtilities", "u"),
-            "flext_api": ("api",),
-            "flext_auth": ("auth",),
-            "flext_cli": ("cli",),
-            "flext_core": ("core", "d", "e", "h", "lazy_attribute", "r", "x"),
-            "flext_web": ("web",),
-            "pydantic_core": ("from_json", "to_json", "to_jsonable_python"),
+            "flext_auth": (
+                "api",
+                "auth",
+                "d",
+                "e",
+                "h",
+                "main",
+                "providers",
+                "r",
+                "web",
+                "x",
+            ),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
