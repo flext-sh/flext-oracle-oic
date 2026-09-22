@@ -34,7 +34,9 @@ class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
 
     OracleOic: Annotated[
         _OracleOicNamespace,
-        m.Field(description="Open namespace exposing ``config/*.yaml`` under ``OracleOic``."),
+        m.Field(
+            description="Open namespace exposing ``config/*.yaml`` under ``OracleOic``."
+        ),
     ] = _OracleOicNamespace()
 
 

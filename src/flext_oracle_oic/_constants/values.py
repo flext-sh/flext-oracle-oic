@@ -10,7 +10,8 @@ from typing import Final
 
 
 class FlextOracleOicConstantsValues:
-    """Scalar constants mixed into ``c.OracleOic`` and ``c.Auth``."""
+    """Scalar constants mixed into ``c.OracleOic``, ``c.Auth``, ``c.Integration``,
+    ``c.Monitoring``, ``c.API`` and ``c.OracleOicValidation``."""
 
     class OracleOic:
         """Oracle Integration Cloud specific constants."""
@@ -28,6 +29,26 @@ class FlextOracleOicConstantsValues:
         """Oracle OIC Authentication scalar constants."""
 
         DEFAULT_OAUTH_SCOPE: Final[str] = ""
+
+    class Integration:
+        """Oracle OIC Integration scalar constants."""
+
+        DEFAULT_VERSION: Final[str] = "01.00.0000"
+
+    class Monitoring:
+        """Oracle OIC Monitoring scalar constants."""
+
+        COMPONENT_DATABASE: Final[str] = "database"
+
+    class API:
+        """Oracle OIC API scalar constants."""
+
+        HTTP_ERROR_STATUS_THRESHOLD: Final[int] = 400
+
+    class OracleOicValidation:
+        """Oracle OIC validation scalar constants."""
+
+        MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
 
 
 __all__: list[str] = ["FlextOracleOicConstantsValues"]
