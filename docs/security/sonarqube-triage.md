@@ -1,6 +1,7 @@
 # Triagem SonarCloud — flext-sh/flext-oracle-oic
 
 <!-- TOC START -->
+
 - [Resumo](#resumo)
 - [Como usar](#como-usar)
 - [Issues](#issues)
@@ -20,7 +21,7 @@
   - [14 · 🟡 MAJOR · CODE_SMELL · python:S5778](#14-major-code_smell-pythons5778)
   - [15 · ⚪ MINOR · CODE_SMELL · python:S7504](#15-minor-code_smell-pythons7504)
   - [16 · ⚪ MINOR · VULNERABILITY · python:S5332](#16-minor-vulnerability-pythons5332)
-<!-- TOC END -->
+  <!-- TOC END -->
 
 Gerado do dump da plataforma SonarCloud (2026-08-06).
 
