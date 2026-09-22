@@ -20,14 +20,14 @@
 - Keywords: `adapter`, `enterprise`, `flext`, `integration`, `typed`
 - Main facades: `FlextOracleOicApi`, `FlextOracleOicAuthMixin`, `FlextOracleOicCli`,
   `FlextOracleOicClient`, `FlextOracleOicConfig`, `FlextOracleOicConstants`,
-  `FlextOracleOicIntegrationCrudMixin`, `FlextOracleOicIntegrationLifecycleMixin` (+10
+  `FlextOracleOicIntegrationCrudMixin`, `FlextOracleOicIntegrationLifecycleMixin` (+9
   more)
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
 - Public symbol exports: `FlextOracleOicApi`, `FlextOracleOicAuthMixin`,
   `FlextOracleOicCli`, `FlextOracleOicClient`, `FlextOracleOicConfig`,
   `FlextOracleOicConstants`, `FlextOracleOicIntegrationCrudMixin`,
   `FlextOracleOicIntegrationLifecycleMixin`, `FlextOracleOicModels`,
-  `FlextOracleOicMonitoringMixin` (+11 more)
+  `FlextOracleOicMonitoringMixin` (+10 more)
 - Exported module shortcuts: `main`, `services`
 - Generated module pages: `16`
 
