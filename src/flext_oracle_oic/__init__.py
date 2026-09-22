@@ -20,7 +20,12 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_auth import api, auth, d, e, h, main, providers, r, web, x
+    from flext_api import api
+    from flext_auth import auth, main
+    from flext_cli import cli
+    from flext_web import web
+
+    from flext_core import core, d, e, h, lazy_attribute, r, x
 
     from . import services
     from ._config import FlextOracleOicConfig, config
@@ -40,6 +45,8 @@ if TYPE_CHECKING:
     from .services.orchestration import FlextOracleOicOrchestrationMixin
     from .typings import FlextOracleOicTypes, t
     from .utilities import FlextOracleOicUtilities, u
+
+
 __all__: tuple[str, ...] = (
     "FlextOracleOicApi",
     "FlextOracleOicAuthMixin",
@@ -69,15 +76,17 @@ __all__: tuple[str, ...] = (
     "api",
     "auth",
     "c",
+    "cli",
     "config",
+    "core",
     "d",
     "e",
     "h",
+    "lazy_attribute",
     "m",
     "main",
     "oracle_oic",
     "p",
-    "providers",
     "r",
     "s",
     "services",
@@ -111,18 +120,11 @@ _LAZY_IMPORTS = MappingProxyType(
             ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
             ".typings": ("FlextOracleOicTypes", "t"),
             ".utilities": ("FlextOracleOicUtilities", "u"),
-            "flext_auth": (
-                "api",
-                "auth",
-                "d",
-                "e",
-                "h",
-                "main",
-                "providers",
-                "r",
-                "web",
-                "x",
-            ),
+            "flext_api": ("api",),
+            "flext_auth": ("auth", "main"),
+            "flext_cli": ("cli",),
+            "flext_core": ("core", "d", "e", "h", "lazy_attribute", "r", "x"),
+            "flext_web": ("web",),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
