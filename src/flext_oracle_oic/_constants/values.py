@@ -11,7 +11,8 @@ from typing import Final
 
 class FlextOracleOicConstantsValues:
     """Scalar constants mixed into ``c.OracleOic``, ``c.Auth``, ``c.Integration``,
-    ``c.Monitoring``, ``c.API`` and ``c.OracleOicValidation``."""
+    ``c.Monitoring``, ``c.API`` and ``c.OracleOicValidation``.
+    """
 
     class OracleOic:
         """Oracle Integration Cloud specific constants."""

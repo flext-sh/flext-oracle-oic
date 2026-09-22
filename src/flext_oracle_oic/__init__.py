@@ -20,7 +20,7 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_auth import d, e, h, r, x
+    from flext_core import d, e, h, r, x
 
     from . import services
     from .__version__ import FlextOracleOicVersion
@@ -110,7 +110,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
             ".typings": ("FlextOracleOicTypes", "t"),
             ".utilities": ("FlextOracleOicUtilities", "u"),
-            "flext_auth": ("d", "e", "h", "r", "x"),
+            "flext_core": ("d", "e", "h", "r", "x"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
