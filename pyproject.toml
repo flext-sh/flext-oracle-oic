@@ -44,8 +44,8 @@ email = "team@flext.sh"
 name = "FLEXT Team"
 
 [project.scripts]
-flext-oracle-oic = "flext_oracle_oic.cli:main"
-oracle-oic-ext = "flext_oracle_oic.cli:main"
+flext-oracle-oic = "flext_oracle_oic.main:main"
+oracle-oic-ext = "flext_oracle_oic.main:main"
 
 [project.urls]
 Documentation = "https://github.com/flext-sh/flext/blob/main/README.md"
