@@ -20,27 +20,32 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_auth import d, e, h, r, x
+    from flext_api import api
+    from flext_auth import auth
+    from flext_cli import cli
+    from flext_web import web
+    from pydantic_core import from_json, to_json, to_jsonable_python
+
+    from flext_core import core, d, e, h, lazy_attribute, r, x
 
     from . import services
-    from .__version__ import FlextOracleOicVersion
     from ._config import FlextOracleOicConfig, config
     from ._settings import FlextOracleOicSettings, settings
     from .api import FlextOracleOicApi, oracle_oic
-    from .constants import FlextOracleOicConstants, FlextOracleOicConstants as c
+    from .constants import FlextOracleOicConstants, c
     from .ext_client import FlextOracleOicClient
     from .main import FlextOracleOicCli, main
-    from .models import FlextOracleOicModels, FlextOracleOicModels as m
-    from .protocols import FlextOracleOicProtocols, FlextOracleOicProtocols as p
-    from .service import FlextOracleOicService, s
+    from .models import FlextOracleOicModels, m
+    from .protocols import FlextOracleOicProtocols, p
+    from .service import FlextOracleOicService, FlextOracleOicService as s
     from .services.auth import FlextOracleOicAuthMixin
     from .services.base import FlextOracleOicServiceBase
     from .services.integration_crud import FlextOracleOicIntegrationCrudMixin
     from .services.integration_lifecycle import FlextOracleOicIntegrationLifecycleMixin
     from .services.monitoring import FlextOracleOicMonitoringMixin
     from .services.orchestration import FlextOracleOicOrchestrationMixin
-    from .typings import FlextOracleOicTypes, FlextOracleOicTypes as t
-    from .utilities import FlextOracleOicUtilities, FlextOracleOicUtilities as u
+    from .typings import FlextOracleOicTypes, t
+    from .utilities import FlextOracleOicUtilities, u
 __all__: tuple[str, ...] = (
     "FlextOracleOicApi",
     "FlextOracleOicAuthMixin",
@@ -59,7 +64,6 @@ __all__: tuple[str, ...] = (
     "FlextOracleOicSettings",
     "FlextOracleOicTypes",
     "FlextOracleOicUtilities",
-    "FlextOracleOicVersion",
     "__author__",
     "__author_email__",
     "__description__",
@@ -68,11 +72,17 @@ __all__: tuple[str, ...] = (
     "__url__",
     "__version__",
     "__version_info__",
+    "api",
+    "auth",
     "c",
+    "cli",
     "config",
+    "core",
     "d",
     "e",
+    "from_json",
     "h",
+    "lazy_attribute",
     "m",
     "main",
     "oracle_oic",
@@ -82,14 +92,16 @@ __all__: tuple[str, ...] = (
     "services",
     "settings",
     "t",
+    "to_json",
+    "to_jsonable_python",
     "u",
+    "web",
     "x",
 )
 
 _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
         MappingProxyType({
-            ".__version__": ("FlextOracleOicVersion",),
             "._config": ("FlextOracleOicConfig", "config"),
             "._settings": ("FlextOracleOicSettings", "settings"),
             ".api": ("FlextOracleOicApi", "oracle_oic"),
@@ -110,7 +122,12 @@ _LAZY_IMPORTS = MappingProxyType(
             ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
             ".typings": ("FlextOracleOicTypes", "t"),
             ".utilities": ("FlextOracleOicUtilities", "u"),
-            "flext_auth": ("d", "e", "h", "r", "x"),
+            "flext_api": ("api",),
+            "flext_auth": ("auth",),
+            "flext_cli": ("cli",),
+            "flext_core": ("core", "d", "e", "h", "lazy_attribute", "r", "x"),
+            "flext_web": ("web",),
+            "pydantic_core": ("from_json", "to_json", "to_jsonable_python"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
