@@ -10,7 +10,9 @@ from typing import Final
 
 
 class FlextOracleOicConstantsValues:
-    """Scalar constants mixed into ``c.OracleOic``, ``c.Auth``, ``c.Integration``,
+    """Scalar constants.
+
+    Mixed into ``c.OracleOic``, ``c.Auth``, ``c.Integration``,
     ``c.Monitoring``, ``c.API`` and ``c.OracleOicValidation``.
     """
 
