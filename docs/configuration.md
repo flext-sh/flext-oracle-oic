@@ -151,6 +151,7 @@ settings = FlextOracleOicSettings(
     ),
 )
 ```
+
 ## Configuration Validation
 
 Pydantic automatically validates configuration objects:
@@ -257,6 +258,7 @@ def create_dev_config():
 # Create development configuration
 dev_settings = create_dev_config()
 ```
+
 ## Troubleshooting
 
 ### Common Configuration Issues
