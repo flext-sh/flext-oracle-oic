@@ -20,21 +20,7 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_auth import (
-        api,
-        auth,
-        cli,
-        core,
-        d,
-        e,
-        h,
-        lazy_attribute,
-        main,
-        providers,
-        r,
-        web,
-        x,
-    )
+    from flext_auth import d, e, h, r, x
 
     from . import services
     from ._config import FlextOracleOicConfig, config
@@ -42,7 +28,7 @@ if TYPE_CHECKING:
     from .api import FlextOracleOicApi, oracle_oic
     from .constants import FlextOracleOicConstants, c
     from .ext_client import FlextOracleOicClient
-    from .main import FlextOracleOicCli
+    from .main import FlextOracleOicCli, main
     from .models import FlextOracleOicModels, m
     from .protocols import FlextOracleOicProtocols, p
     from .service import FlextOracleOicService, FlextOracleOicService as s
@@ -82,28 +68,21 @@ __all__: tuple[str, ...] = (
     "__url__",
     "__version__",
     "__version_info__",
-    "api",
-    "auth",
     "c",
-    "cli",
     "config",
-    "core",
     "d",
     "e",
     "h",
-    "lazy_attribute",
     "m",
     "main",
     "oracle_oic",
     "p",
-    "providers",
     "r",
     "s",
     "services",
     "settings",
     "t",
     "u",
-    "web",
     "x",
 )
 
@@ -115,7 +94,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".api": ("FlextOracleOicApi", "oracle_oic"),
             ".constants": ("FlextOracleOicConstants", "c"),
             ".ext_client": ("FlextOracleOicClient",),
-            ".main": ("FlextOracleOicCli",),
+            ".main": ("FlextOracleOicCli", "main"),
             ".models": ("FlextOracleOicModels", "m"),
             ".protocols": ("FlextOracleOicProtocols", "p"),
             ".service": ("FlextOracleOicService", "s"),
@@ -130,21 +109,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".services.orchestration": ("FlextOracleOicOrchestrationMixin",),
             ".typings": ("FlextOracleOicTypes", "t"),
             ".utilities": ("FlextOracleOicUtilities", "u"),
-            "flext_auth": (
-                "api",
-                "auth",
-                "cli",
-                "core",
-                "d",
-                "e",
-                "h",
-                "lazy_attribute",
-                "main",
-                "providers",
-                "r",
-                "web",
-                "x",
-            ),
+            "flext_auth": ("d", "e", "h", "r", "x"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,

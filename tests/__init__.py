@@ -9,30 +9,7 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_auth import auth, main, providers, web
-    from flext_tests import (
-        api,
-        cli,
-        config,
-        core,
-        d,
-        e,
-        h,
-        install_local_packages,
-        lazy_attribute,
-        load_infra_report,
-        r,
-        services,
-        settings,
-        td,
-        tf,
-        tk,
-        tm,
-        tv,
-        x,
-    )
-
-    from flext_oracle_oic import oracle_oic
+    from flext_tests import api, d, e, h, r, td, tf, tk, tm, tv, x
 
     from . import unit
     from .base import (
@@ -65,26 +42,14 @@ __all__: tuple[str, ...] = (
     "TestsFlextOracleOicTypes",
     "TestsFlextOracleOicUtilities",
     "api",
-    "auth",
     "c",
-    "cli",
-    "config",
-    "core",
     "d",
     "e",
     "h",
-    "install_local_packages",
-    "lazy_attribute",
-    "load_infra_report",
     "m",
-    "main",
-    "oracle_oic",
     "p",
-    "providers",
     "r",
     "s",
-    "services",
-    "settings",
     "t",
     "td",
     "tf",
@@ -93,7 +58,6 @@ __all__: tuple[str, ...] = (
     "tv",
     "u",
     "unit",
-    "web",
     "x",
 )
 
@@ -108,22 +72,12 @@ _LAZY_IMPORTS = MappingProxyType(
             ".typings": ("TestsFlextOracleOicTypes", "t"),
             ".unit": ("unit",),
             ".utilities": ("TestsFlextOracleOicUtilities", "u"),
-            "flext_auth": ("auth", "main", "providers", "web"),
-            "flext_oracle_oic": ("oracle_oic",),
             "flext_tests": (
                 "api",
-                "cli",
-                "config",
-                "core",
                 "d",
                 "e",
                 "h",
-                "install_local_packages",
-                "lazy_attribute",
-                "load_infra_report",
                 "r",
-                "services",
-                "settings",
                 "td",
                 "tf",
                 "tk",
