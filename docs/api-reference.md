@@ -118,7 +118,6 @@ auth_config = FlextOracleOicSettings(
 
 ```python
 # Service and API entry points
-
 ```
 
 **Usage Note**: Current service implementations provide basic structure. Full Oracle OIC
@@ -128,7 +127,6 @@ integration capabilities are in development.
 
 ```python
 # Service facade and settings (the HTTP client wrapper is not yet exposed)
-
 ```
 
 **Critical Issue**: Current client implementation uses direct `httpx` imports (line 12

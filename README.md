@@ -57,7 +57,7 @@ verification).
   classes listed under Module Map above.
 - Public extensions exposed by this project: `FlextOracleOicApi`,
   `FlextOracleOicAuthMixin`, `FlextOracleOicCli`, `FlextOracleOicClient`,
-  `FlextOracleOicConfig`, `FlextOracleOicConstants` (+12 more).
+  `FlextOracleOicConfig`, `FlextOracleOicConstants` (+11 more).
 - Library abstraction boundaries: see AGENTS.md §2.7.
 
 ## Quality Gates
