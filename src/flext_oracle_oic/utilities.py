@@ -15,7 +15,7 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 
 from __future__ import annotations
 
-from flext_auth import u
+from flext_auth import FlextAuthUtilities
 
 from ._utilities.authentication_validation import (
     FlextOracleOicUtilitiesAuthenticationValidation,
@@ -28,7 +28,7 @@ from ._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
 
 
 class FlextOracleOicUtilities(
-    u,
+    FlextAuthUtilities,
     FlextOracleOicUtilitiesOracleOic,
     FlextOracleOicUtilitiesConnectionValidation,
     FlextOracleOicUtilitiesAuthenticationValidation,

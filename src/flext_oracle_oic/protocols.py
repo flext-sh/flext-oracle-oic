@@ -8,12 +8,12 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from flext_auth import p
+from flext_auth import FlextAuthProtocols
 
 from flext_oracle_oic import t
 
 
-class FlextOracleOicProtocols(p):
+class FlextOracleOicProtocols(FlextAuthProtocols):
     """Oracle OIC Extension protocols extending p with Oracle OIC-specific interfaces."""
 
     @runtime_checkable
@@ -21,7 +21,7 @@ class FlextOracleOicProtocols(p):
         """OracleOic domain namespace."""
 
         @runtime_checkable
-        class HTTPClient(p.Service[t.JsonValue], Protocol):
+        class HTTPClient(FlextAuthProtocols.Service[t.JsonValue], Protocol):
             """Protocol for HTTP client operations used by Oracle OIC services."""
 
             def delete(

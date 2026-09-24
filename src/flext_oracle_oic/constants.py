@@ -18,7 +18,7 @@ from enum import StrEnum, unique
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final
 
-from flext_auth import c
+from flext_auth import FlextAuthConstants
 
 from ._constants.base import FlextOracleOicConstantsBase
 from ._constants.values import FlextOracleOicConstantsValues
@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from flext_oracle_oic import t
 
 
-class FlextOracleOicConstants(c):
+class FlextOracleOicConstants(FlextAuthConstants):
     """Oracle OIC Extension constants inheriting from c.
 
     Provides centralized constants for Oracle OIC Extension operations,
@@ -68,7 +68,7 @@ class FlextOracleOicConstants(c):
     ):
         """Oracle Integration Cloud specific constants."""
 
-    class Auth(c.Auth, FlextOracleOicConstantsValues.Auth):
+    class Auth(FlextAuthConstants.Auth, FlextOracleOicConstantsValues.Auth):
         """Oracle OIC Authentication constants extending base auth namespace."""
 
     class Integration(FlextOracleOicConstantsValues.Integration):

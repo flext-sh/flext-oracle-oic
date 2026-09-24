@@ -26,11 +26,11 @@ if TYPE_CHECKING:
     from ._config import FlextOracleOicConfig, config
     from ._settings import FlextOracleOicSettings, settings
     from .api import FlextOracleOicApi, oracle_oic
-    from .constants import FlextOracleOicConstants, c
+    from .constants import FlextOracleOicConstants, FlextOracleOicConstants as c
     from .ext_client import FlextOracleOicClient
     from .main import FlextOracleOicCli, main
-    from .models import FlextOracleOicModels, m
-    from .protocols import FlextOracleOicProtocols, p
+    from .models import FlextOracleOicModels, FlextOracleOicModels as m
+    from .protocols import FlextOracleOicProtocols, FlextOracleOicProtocols as p
     from .service import FlextOracleOicService, FlextOracleOicService as s
     from .services.auth import FlextOracleOicAuthMixin
     from .services.base import FlextOracleOicServiceBase
@@ -38,8 +38,8 @@ if TYPE_CHECKING:
     from .services.integration_lifecycle import FlextOracleOicIntegrationLifecycleMixin
     from .services.monitoring import FlextOracleOicMonitoringMixin
     from .services.orchestration import FlextOracleOicOrchestrationMixin
-    from .typings import FlextOracleOicTypes, t
-    from .utilities import FlextOracleOicUtilities, u
+    from .typings import FlextOracleOicTypes, FlextOracleOicTypes as t
+    from .utilities import FlextOracleOicUtilities, FlextOracleOicUtilities as u
 
 
 __all__: tuple[str, ...] = (

@@ -28,7 +28,7 @@
   `FlextOracleOicConstants`, `FlextOracleOicIntegrationCrudMixin`,
   `FlextOracleOicIntegrationLifecycleMixin`, `FlextOracleOicModels`,
   `FlextOracleOicMonitoringMixin` (+10 more)
-- Exported module shortcuts: `services`
+- Exported module shortcuts: `main`, `services`
 - Generated module pages: `16`
 
 ## Next Pages
