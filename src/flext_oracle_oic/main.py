@@ -164,4 +164,4 @@ def main(args: t.StrSequence | None = None) -> int:
     return 0 if outcome.success else 1
 
 
-__all__: t.StrSequence = ("FlextOracleOicCli",)
+__all__: t.StrSequence = ("FlextOracleOicCli", "main")
