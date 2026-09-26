@@ -13,8 +13,6 @@ from flext_tests import tm
 from flext_oracle_oic import FlextOracleOicCli, __version__
 from flext_oracle_oic.main import main
 
-__all__ = ["TestsFlextOracleOicMain"]
-
 
 class TestsFlextOracleOicMain:
     """Public-contract behavior of the Oracle OIC CLI entry point."""

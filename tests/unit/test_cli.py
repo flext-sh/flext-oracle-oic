@@ -13,8 +13,6 @@ from flext_tests import tm
 from flext_oracle_oic import FlextOracleOicCli
 from flext_oracle_oic.main import main
 
-__all__ = ["TestsFlextOracleOicCli"]
-
 
 class TestsFlextOracleOicCli:
     """Observable behavior of the ``main`` entry point and CLI app builder."""

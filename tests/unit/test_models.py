@@ -75,7 +75,9 @@ class TestsFlextOracleOicModelsUnit:
             idcs_url="https://idcs.example.com/oauth2/v1/token",
         )
         tm.that(repr(config), lacks="super_secret")
-        tm.that(config.model_dump()["oauth_client_secret"], ne="super_secret")
+        tm.that(
+            config.model_dump(mode="json")["oauth_client_secret"], ne="super_secret"
+        )
         # The real value stays retrievable through the explicit accessor.
         tm.that(config.oauth_client_secret.get_secret_value(), eq="super_secret")
 
@@ -271,6 +273,3 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(dumped["status"], eq="ACTIVATED")
         tm.that(dumped["last_updated"], eq="")
         tm.that(dumped["activated_by"], eq="")
-
-
-__all__: list[str] = ["TestsFlextOracleOicModelsUnit"]

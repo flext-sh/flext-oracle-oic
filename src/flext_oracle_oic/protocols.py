@@ -56,6 +56,21 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
                 """Execute HTTP PUT request."""
                 ...
 
+        @runtime_checkable
+        class ServiceRules(FlextAuthProtocols.Base, Protocol):
+            """Protocol for an Oracle OIC service that validates its own rules.
+
+            Declares only the ``validate_business_rules`` capability this member
+            actually consumes, deliberately not extending ``p.Service`` while that
+            base still carries unimplemented members (``service_info``, ``ok``,
+            ``fail_op``) which would make this protocol structurally
+            unsatisfiable by real services.
+            """
+
+            def validate_business_rules(self) -> p.Result[bool]:
+                """Validate the service's own business rules."""
+                ...
+
 
 p = FlextOracleOicProtocols
 __all__: list[str] = ["FlextOracleOicProtocols", "p"]
