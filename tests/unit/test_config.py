@@ -17,8 +17,6 @@ from flext_tests import tm
 from flext_oracle_oic import FlextOracleOicSettings, c
 from tests import m
 
-__all__: list[str] = ["TestsFlextOracleOicConfig"]
-
 
 class TestsFlextOracleOicConfig:
     """Public-contract behavior of FlextOracleOicSettings."""

@@ -271,6 +271,3 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(dumped["status"], eq="ACTIVATED")
         tm.that(dumped["last_updated"], eq="")
         tm.that(dumped["activated_by"], eq="")
-
-
-__all__: list[str] = ["TestsFlextOracleOicModelsUnit"]

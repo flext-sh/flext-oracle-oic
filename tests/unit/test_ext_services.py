@@ -18,7 +18,7 @@ from collections.abc import Iterator
 import pytest
 from flext_tests import tm
 
-from flext_oracle_oic import FlextOracleOicService, FlextOracleOicSettings, s
+from flext_oracle_oic import FlextOracleOicService, FlextOracleOicSettings, p, s
 from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 from flext_oracle_oic.services.integration_crud import (
@@ -29,8 +29,6 @@ from flext_oracle_oic.services.integration_lifecycle import (
 )
 from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
 from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
-
-__all__: list[str] = ["TestsFlextOracleOicExtServices"]
 
 _VALID_CLIENT_ID = "client-id-123"
 _VALID_OAUTH_CREDENTIAL = "test-credential-123"
@@ -206,3 +204,17 @@ class TestsFlextOracleOicExtServices:
 
         assert first.success is second.success is True
         tm.that(first.value, eq=second.value)
+
+    @staticmethod
+    def _is_service_rules(candidate: p.Base) -> bool:
+        """Report structural conformance without a type-narrowed argument."""
+        return isinstance(candidate, p.OracleOic.ServiceRules)
+
+    def test_configured_service_satisfies_its_own_rules_protocol(
+        self, configured_service: FlextOracleOicService
+    ) -> None:
+        """The real service structurally satisfies its own declared protocol."""
+        tm.that(self._is_service_rules(configured_service), eq=True)
+        result = configured_service.validate_business_rules()
+        tm.ok(result)
+        tm.that(result.value, eq=True)
