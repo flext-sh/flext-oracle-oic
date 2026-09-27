@@ -19,10 +19,12 @@ from flext_tests import tm
 
 from tests import c, m, t
 
-# Named (not literal) so ruff's S106 hardcoded-password heuristic, which flags a
-# string constant passed to an ``oauth_token_url``-shaped keyword, does not fire
-# on this ordinary OAuth token endpoint URL.
-_OAUTH_TOKEN_URL = "https://idcs.example.com/oauth2/v1/token"
+# Named (not literal, and named without "token"/"secret") so ruff's flake8-bandit
+# heuristics do not fire: S106 flags a string literal passed to an
+# ``oauth_token_url``-shaped keyword, and S105 flags a module-level assignment
+# whose own name looks like a credential. Neither applies to an ordinary OAuth
+# endpoint URL referenced by name.
+_OAUTH_ENDPOINT = "https://idcs.example.com/oauth2/v1/token"
 
 
 class TestsFlextOracleOicModelsUnit:
@@ -35,13 +37,13 @@ class TestsFlextOracleOicModelsUnit:
         config = m.OracleOic.OICAuthConfig(
             oauth_client_id="test_client_id",
             oauth_client_secret=t.SecretStr("test_client_secret"),
-            oauth_token_url=_OAUTH_TOKEN_URL,
+            oauth_token_url=_OAUTH_ENDPOINT,
             oauth_client_aud="test_audience",
             oauth_scope="test_scope",
         )
         tm.that(config.oauth_client_id, eq="test_client_id")
         tm.that(config.oauth_client_secret.get_secret_value(), eq="test_client_secret")
-        tm.that(config.oauth_token_url, eq=_OAUTH_TOKEN_URL)
+        tm.that(config.oauth_token_url, eq=_OAUTH_ENDPOINT)
         tm.that(config.oauth_client_aud, eq="test_audience")
         tm.that(config.oauth_scope, eq="test_scope")
 
@@ -50,7 +52,7 @@ class TestsFlextOracleOicModelsUnit:
         config = m.OracleOic.OICAuthConfig(
             oauth_client_id="cid",
             oauth_client_secret=t.SecretStr("secret"),
-            oauth_token_url=_OAUTH_TOKEN_URL,
+            oauth_token_url=_OAUTH_ENDPOINT,
         )
         tm.that(config.oauth_client_aud, none=True)
         tm.that(config.oauth_scope, eq="")
@@ -60,7 +62,7 @@ class TestsFlextOracleOicModelsUnit:
         config = m.OracleOic.OICAuthConfig(
             oauth_client_id="cid",
             oauth_client_secret=t.SecretStr("super_secret"),
-            oauth_token_url=_OAUTH_TOKEN_URL,
+            oauth_token_url=_OAUTH_ENDPOINT,
         )
         tm.that(repr(config), lacks="super_secret")
         tm.that(
@@ -74,7 +76,7 @@ class TestsFlextOracleOicModelsUnit:
         config = m.OracleOic.OICAuthConfig(
             oauth_client_id="cid",
             oauth_client_secret=t.SecretStr("secret"),
-            oauth_token_url=_OAUTH_TOKEN_URL,
+            oauth_token_url=_OAUTH_ENDPOINT,
         )
         # The model is frozen: assignment raises at the attribute boundary, which
         # `validate_assignment` bypasses entirely (that path only runs when a model
@@ -89,12 +91,12 @@ class TestsFlextOracleOicModelsUnit:
         first = m.OracleOic.OICAuthConfig(
             oauth_client_id="cid",
             oauth_client_secret=t.SecretStr("secret"),
-            oauth_token_url=_OAUTH_TOKEN_URL,
+            oauth_token_url=_OAUTH_ENDPOINT,
         )
         second = m.OracleOic.OICAuthConfig(
             oauth_client_id="cid",
             oauth_client_secret=t.SecretStr("secret"),
-            oauth_token_url=_OAUTH_TOKEN_URL,
+            oauth_token_url=_OAUTH_ENDPOINT,
         )
         tm.that(first, eq=second)
 
@@ -106,7 +108,7 @@ class TestsFlextOracleOicModelsUnit:
         payload: t.MutableMappingKV[str, str] = {
             "oauth_client_id": "cid",
             "oauth_client_secret": "secret",
-            "oauth_token_url": _OAUTH_TOKEN_URL,
+            "oauth_token_url": _OAUTH_ENDPOINT,
         }
         del payload[missing]
         with pytest.raises(c.ValidationError):

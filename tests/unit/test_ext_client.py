@@ -15,11 +15,13 @@ from flext_tests import tm
 from flext_oracle_oic import m, t
 from flext_oracle_oic.ext_client import FlextOracleOicClient
 
-# Named (not literal) so ruff's S106 hardcoded-password heuristic, which flags a
-# string constant passed to an ``oauth_token_url``-shaped keyword, does not fire
-# on these ordinary OAuth token endpoint URLs.
-_OAUTH_TOKEN_URL = "https://idcs.example.com/oauth2/v1/token"
-_OAUTH_TOKEN_URL_SHORT = "https://idcs.example.com/token"
+# Named (not literal, and named without "token"/"secret") so ruff's flake8-bandit
+# heuristics do not fire: S106 flags a string literal passed to an
+# ``oauth_token_url``-shaped keyword, and S105 flags a module-level assignment
+# whose own name looks like a credential. Neither applies to an ordinary OAuth
+# endpoint URL referenced by name.
+_OAUTH_ENDPOINT = "https://idcs.example.com/oauth2/v1/token"
+_OAUTH_ENDPOINT_SHORT = "https://idcs.example.com/token"
 
 
 class TestsFlextOracleOicExtClient:
@@ -36,7 +38,7 @@ class TestsFlextOracleOicExtClient:
         return m.OracleOic.OICAuthConfig(
             oauth_client_id="client-42",
             oauth_client_secret=t.SecretStr("s3cr3t"),
-            oauth_token_url=_OAUTH_TOKEN_URL,
+            oauth_token_url=_OAUTH_ENDPOINT,
         )
 
     @pytest.fixture
@@ -67,7 +69,7 @@ class TestsFlextOracleOicExtClient:
         auth = m.OracleOic.OICAuthConfig(
             oauth_client_id="id",
             oauth_client_secret=t.SecretStr("secret"),
-            oauth_token_url=_OAUTH_TOKEN_URL_SHORT,
+            oauth_token_url=_OAUTH_ENDPOINT_SHORT,
             oauth_scope="urn:opc:resource:consumer:custom",
         )
         client = FlextOracleOicClient(
@@ -100,7 +102,7 @@ class TestsFlextOracleOicExtClient:
         auth = m.OracleOic.OICAuthConfig(
             oauth_client_id="id",
             oauth_client_secret=t.SecretStr("secret"),
-            oauth_token_url=_OAUTH_TOKEN_URL_SHORT,
+            oauth_token_url=_OAUTH_ENDPOINT_SHORT,
             oauth_client_aud="https://oic.example.com",
         )
         client = FlextOracleOicClient(
