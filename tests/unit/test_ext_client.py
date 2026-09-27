@@ -140,6 +140,3 @@ class TestsFlextOracleOicExtClient:
             pass
         with client:
             pass
-
-
-__all__: list[str] = ["TestsFlextOracleOicExtClient"]

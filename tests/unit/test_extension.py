@@ -169,6 +169,3 @@ class TestsFlextOracleOicExtension:
 
         tm.fail(result)
         tm.that((result.error or "").lower(), has="secret")
-
-
-__all__: list[str] = ["TestsFlextOracleOicExtension"]

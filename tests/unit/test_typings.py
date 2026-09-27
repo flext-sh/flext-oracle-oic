@@ -13,8 +13,6 @@ from flext_tests import t as tests_t, tm
 from flext_oracle_oic import FlextOracleOicTypes
 from tests import TestsFlextOracleOicTypes, t
 
-__all__: list[str] = ["TestsFlextOracleOicTypingsUnit"]
-
 
 class TestsFlextOracleOicTypingsUnit:
     """Contract of the composed test-types facade ``t``."""
