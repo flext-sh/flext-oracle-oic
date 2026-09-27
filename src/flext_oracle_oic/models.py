@@ -7,13 +7,13 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from flext_auth import m
+from flext_auth import FlextAuthModels
 
 from flext_core import m as _m
 from flext_oracle_oic import c, t
 
 
-class FlextOracleOicModels(m):
+class FlextOracleOicModels(FlextAuthModels):
     """Unified models for Oracle OIC Extension operations.
 
     Extends m to avoid duplication and ensure consistency.
@@ -24,7 +24,7 @@ class FlextOracleOicModels(m):
     class OracleOic:
         """OracleOic domain namespace."""
 
-        class OICAuthConfig(m.Value):
+        class OICAuthConfig(FlextAuthModels.Value):
             """Oracle Integration Cloud authentication configuration.
 
             EXTENSION Pattern: Value Object for authentication configuration
@@ -45,7 +45,7 @@ class FlextOracleOicModels(m):
             ] = None
             oauth_scope: Annotated[str, _m.Field(description="OAuth2 scope")] = ""
 
-        class OICConnectionConfig(m.Value):
+        class OICConnectionConfig(FlextAuthModels.Value):
             """Oracle Integration Cloud connection configuration.
 
             EXTENSION Pattern: Value Object for connection configuration
@@ -68,7 +68,7 @@ class FlextOracleOicModels(m):
                 bool, _m.Field(description="Verify SSL certificates")
             ] = c.OracleOic.DEFAULT_VERIFY_SSL
 
-        class OICIntegrationInfo(m.Entity):
+        class OICIntegrationInfo(FlextAuthModels.Entity):
             """Oracle OIC Integration information.
 
             EXTENSION Pattern: Value Object representing information
@@ -91,7 +91,7 @@ class FlextOracleOicModels(m):
                 str, _m.Field(description="Last update timestamp")
             ] = ""
 
-        class OICConnectionInfo(m.Entity):
+        class OICConnectionInfo(FlextAuthModels.Entity):
             """Oracle OIC Connection information.
 
             EXTENSION Pattern: Value Object representing information
@@ -109,7 +109,7 @@ class FlextOracleOicModels(m):
                 str, _m.Field(description="Connection description")
             ] = ""
 
-        class IntegrationStatus(m.Entity):
+        class IntegrationStatus(FlextAuthModels.Entity):
             """Oracle OIC Integration status information.
 
             EXTENSION Pattern: Value Object representing status
