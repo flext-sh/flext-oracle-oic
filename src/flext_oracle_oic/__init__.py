@@ -74,6 +74,7 @@ __all__: tuple[str, ...] = (
     "e",
     "h",
     "m",
+    "main",
     "oracle_oic",
     "p",
     "r",
