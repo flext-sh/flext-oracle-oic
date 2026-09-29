@@ -48,13 +48,13 @@ name = "FLEXT Team"
 email = "team@flext.sh"
 name = "FLEXT Team"
 
-[project.scripts]
-flext-oracle-oic = "flext_oracle_oic.main:main"
-oracle-oic-ext = "flext_oracle_oic.main:main"
-
 [project.urls]
 Documentation = "https://github.com/flext-sh/flext/blob/main/README.md"
 Homepage = "https://github.com/flext-sh/flext"
+
+[project.scripts]
+flext-oracle-oic = "flext_oracle_oic.main:main"
+oracle-oic-ext = "flext_oracle_oic.main:main"
 
 [dependency-groups]
 codegen = [
@@ -79,6 +79,7 @@ dev = [
   "mkdocstrings>=1.0.6",
   "mkdocstrings-python>=2.0.8",
   "mypy>=2.3.1",
+  "platformdirs>=4.12.0",
   "pymdown-extensions",
   "pyrefly>=1.2.0",
   "pyright>=1.1.411",
@@ -411,7 +412,7 @@ addopts = [
   "--durations=10",
   "--timeout=10",
 ]
-flext_slow_timeout_seconds = "60"
+flext_slow_timeout_seconds = "30"
 asyncio_default_fixture_loop_scope = "function"
 filterwarnings = [
   "error",
