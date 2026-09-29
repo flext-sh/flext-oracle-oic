@@ -1,6 +1,7 @@
 # Configuration
 
 <!-- TOC START -->
+
 - [Overview](#overview)
 - [Current Configuration Components](#current-configuration-components)
   - [Connection Configuration](#connection-configuration)
@@ -22,6 +23,7 @@
   - [Common Configuration Issues](#common-configuration-issues)
   - [Configuration Debugging](#configuration-debugging)
 - [Future Enhancements](#future-enhancements)
+
 <!-- TOC END -->
 
 **Configuration Management for flext-oracle-oic v0.12.0-dev**
@@ -30,15 +32,19 @@
 
 ## Overview
 
-flext-oracle-oic provides Pydantic-based configuration management following FLEXT ecosystem patterns. The current implementation offers basic configuration structure with type safety and validation.
+flext-oracle-oic provides Pydantic-based configuration management following FLEXT
+ecosystem patterns. The current implementation offers basic configuration structure with
+type safety and validation.
 
-> **Implementation Status**: Version 0.9.9 provides foundation configuration models. Full Oracle OIC integration and enterprise features are planned for future releases.
+> **Implementation Status**: Version 0.9.9 provides foundation configuration models.
+> Full Oracle OIC integration and enterprise features are planned for future releases.
 
 ## Current Configuration Components
 
 ### Connection Configuration
 
-Configure Oracle Integration Cloud connection parameters using `FlextOracleOicConnectionSettings`:
+Configure Oracle Integration Cloud connection parameters using
+`FlextOracleOicConnectionSettings`:
 
 ```python
 from flext_oracle_oic import FlextOracleOicSettings
@@ -104,7 +110,8 @@ settings = FlextOracleOicSettings(
 
 ## Environment Variables
 
-Environment variables can be used for configuration, though the current implementation requires manual handling:
+Environment variables can be used for configuration, though the current implementation
+requires manual handling:
 
 ### Oracle OIC Connection Variables
 
@@ -124,6 +131,7 @@ export ORACLE_OIC_OAUTH_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oa
 
 ```python
 import os
+
 from flext_oracle_oic import FlextOracleOicSettings
 
 # Manual environment variable loading (current approach)
@@ -229,6 +237,7 @@ print(auth_config.oauth_client_secret)  # Shows SecretStr('**********')
 from __future__ import annotations
 
 import os
+
 from flext_oracle_oic import FlextOracleOicSettings
 
 
@@ -314,6 +323,7 @@ print(f"Client ID: {settings.OracleOic.oauth_client_id}")
 print(f"Token URL: {settings.OracleOic.oauth_token_url}")
 # oauth_client_secret is stored as a plain string in the current settings model
 ```
+
 ## Future Enhancements
 
 The configuration system will be enhanced in future releases with:
@@ -324,6 +334,8 @@ The configuration system will be enhanced in future releases with:
 - **Oracle Cloud Integration**: Native Oracle Vault and IDCS integration
 - **Dynamic Configuration**: Runtime configuration updates and validation
 
-______________________________________________________________________
+---
 
-This configuration guide reflects the actual implementation status as of April 14, 2026. The basic Pydantic configuration foundation is implemented, with advanced features planned for future releases.
+This configuration guide reflects the actual implementation status as of April 14, 2026.
+The basic Pydantic configuration foundation is implemented, with advanced features
+planned for future releases.

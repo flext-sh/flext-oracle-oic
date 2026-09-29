@@ -10,10 +10,8 @@ from __future__ import annotations
 import pytest
 from flext_tests import tm
 
-from flext_oracle_oic import FlextOracleOicCli
+from flext_oracle_oic import FlextOracleOicCli, c
 from flext_oracle_oic.main import main
-
-__all__ = ["TestsFlextOracleOicCli"]
 
 
 class TestsFlextOracleOicCli:
@@ -83,5 +81,5 @@ class TestsFlextOracleOicCli:
 
     def test_app_identity_constants_are_populated(self) -> None:
         """The CLI exposes a stable application name and help text."""
-        tm.that(FlextOracleOicCli.APP_NAME, eq="flext-oracle-oic-ext")
-        tm.that(FlextOracleOicCli.APP_HELP, has="Oracle OIC")
+        tm.that(c.Cli.APP_NAME, eq="flext-oracle-oic-ext")
+        tm.that(c.Cli.APP_HELP, has="Oracle OIC")

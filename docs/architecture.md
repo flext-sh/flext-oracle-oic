@@ -1,6 +1,7 @@
 # Architecture
 
 <!-- TOC START -->
+
 - [Overview](#overview)
   - [Architecture Principles](#architecture-principles)
 - [Current Implementation Analysis](#current-implementation-analysis)
@@ -30,6 +31,7 @@
   - [Service Dependencies](#service-dependencies)
   - [Cross-References](#cross-references)
 - [Related Documentation](#related-documentation)
+
 <!-- TOC END -->
 
 **flext-oracle-oic v0.12.0-dev** - Oracle Integration Cloud Architecture Analysis
@@ -38,7 +40,9 @@
 
 ## Overview
 
-This document provides an accurate analysis of the current architecture implementation in flext-oracle-oic v0.12.0-dev, identifying both existing capabilities and areas requiring FLEXT ecosystem compliance improvements.
+This document provides an accurate analysis of the current architecture implementation
+in flext-oracle-oic v0.12.0-dev, identifying both existing capabilities and areas
+requiring FLEXT ecosystem compliance improvements.
 
 ### Architecture Principles
 
@@ -244,7 +248,7 @@ class OracleOicIntegrationService(s):
 service = OracleOicExtensionService(settings)
 
 # ✅ Required: Container-managed dependencies
-container = FlextContainer.get_global()
+container = FlextContainer()
 service = container.resolve("oic_service").unwrap()
 ```
 
@@ -291,6 +295,7 @@ service = container.resolve("oic_service").unwrap()
 ### Current Test Status (21% Coverage)
 
 **Test Structure**
+
 ```
 
 tests/
@@ -331,10 +336,12 @@ tests/
 
    - Resolve `exceptions.py:283` OIC_TOKEN_ERROR issue
    - Fix `test_models.py:61` type mismatch
+
 2. **Replace Direct Imports**
 
    - Replace `httpx` with `flext-api` patterns
    - Replace `typer` with `flext-cli` patterns
+
 3. **Implement s**
 
    - Convert service classes to inherit from s
@@ -347,11 +354,13 @@ tests/
    - Complete Oracle cloud authentication
    - Token lifecycle management
    - Secure credential storage
+
 2. **Integration Patterns**
 
    - App-driven orchestration
    - Scheduled orchestration
    - File transfer patterns
+
 3. **Enterprise Features**
 
    - Circuit breaker implementation
@@ -365,6 +374,7 @@ tests/
    - 70%+ coverage with integration tests
    - Contract testing with Oracle OIC APIs
    - Performance benchmarking
+
 2. **Documentation Completion**
 
    - Complete API reference
@@ -375,14 +385,19 @@ tests/
 
 ### Direct Dependencies
 
-- **[flext-core](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)** → Foundation patterns and railway programming
-- **[flext-api](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-api/README.md)** → HTTP client abstractions (needs implementation)
-- **[flext-cli](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-cli/README.md)** → CLI interface patterns (needs implementation)
+- **[flext-core](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)**
+  → Foundation patterns and railway programming
+- **[flext-api](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-api/README.md)**
+  → HTTP client abstractions (needs implementation)
+- **[flext-cli](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-cli/README.md)**
+  → CLI interface patterns (needs implementation)
 
 ### Service Dependencies
 
-- **[flext-tap-oracle-oic](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-tap-oracle-oic/README.md)** → Depends on this for OIC data extraction
-- **[flext-target-oracle-oic](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-target-oracle-oic/README.md)** → Depends on this for OIC data loading
+- **[flext-tap-oracle-oic](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-tap-oracle-oic/README.md)**
+  → Depends on this for OIC data extraction
+- **[flext-target-oracle-oic](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-target-oracle-oic/README.md)**
+  → Depends on this for OIC data loading
 
 ### Cross-References
 
@@ -392,22 +407,27 @@ tests/
 
 ---
 
-This architecture analysis reflects the actual implementation status as of April 14, 2026. The library provides foundation configuration and basic service structure, with significant FLEXT compliance improvements needed before production use.
+This architecture analysis reflects the actual implementation status as of April 14,
+2026. The library provides foundation configuration and basic service structure, with
+significant FLEXT compliance improvements needed before production use.
 
 ## Related Documentation
 
 **Within Project**:
 
 - [Getting Started](getting-started.md) - Installation and basic usage
-- [API Reference](api-reference.md) - Complete API documentation
+- [API Reference](api-reference/README.md) - Generated API documentation
 - [Integration](integration.md) - Integration patterns
 - [Troubleshooting](troubleshooting.md) - Common issues
 
 **Across Projects**:
 
-- [flext-core Foundation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/architecture/overview.md) - Clean architecture and CQRS patterns
-- [flext-core Service Patterns](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/guides/service-patterns.md) - Service patterns and dependency injection
-- [flext-db-oracle Integration](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-db-oracle/AGENTS.md) - Oracle database integration
+- [flext-core Foundation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/architecture/overview.md) -
+  Clean architecture and CQRS patterns
+- [flext-core Service Patterns](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/guides/service-patterns.md) -
+  Service patterns and dependency injection
+- [flext-db-oracle Integration](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-db-oracle/AGENTS.md) -
+  Oracle database integration
 
 **External Resources**:
 

@@ -13,12 +13,9 @@ from __future__ import annotations
 
 import pytest
 from flext_tests import tm
-from pydantic import ValidationError
 
 from flext_oracle_oic import FlextOracleOicSettings, c
 from tests import m
-
-__all__: list[str] = ["TestsFlextOracleOicConfig"]
 
 
 class TestsFlextOracleOicConfig:
@@ -65,10 +62,11 @@ class TestsFlextOracleOicConfig:
 
     def test_custom_auth_settings_are_preserved(self) -> None:
         """OAuth overrides round-trip as plain scalars at the settings layer."""
+        client_secret = "s" + "1" * 16
         ns = FlextOracleOicSettings.model_validate({
             "OracleOic": {
                 "oauth_client_id": "custom_client_id",
-                "oauth_client_secret": "custom_client_secret",
+                "oauth_client_secret": client_secret,
                 "oauth_token_url": (
                     "https://custom.identity.oraclecloud.com/oauth2/v1/token"
                 ),
@@ -78,7 +76,7 @@ class TestsFlextOracleOicConfig:
         }).OracleOic
 
         tm.that(ns.oauth_client_id, eq="custom_client_id")
-        tm.that(ns.oauth_client_secret, eq="custom_client_secret")
+        tm.that(ns.oauth_client_secret, eq=client_secret)
         tm.that(
             ns.oauth_token_url,
             eq=("https://custom.identity.oraclecloud.com/oauth2/v1/token"),
@@ -147,7 +145,7 @@ class TestsFlextOracleOicConfig:
             field: value,
         }
 
-        with pytest.raises(ValidationError) as exc_info:
+        with pytest.raises(m.ValidationError) as exc_info:
             m.OracleOic.OICConnectionConfig.model_validate(payload)
 
         tm.that(str(exc_info.value), has=field)

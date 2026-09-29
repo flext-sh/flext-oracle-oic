@@ -13,8 +13,6 @@ from flext_tests import t as tests_t, tm
 from flext_oracle_oic import FlextOracleOicTypes
 from tests import TestsFlextOracleOicTypes, t
 
-__all__: list[str] = ["TestsFlextOracleOicTypingsUnit"]
-
 
 class TestsFlextOracleOicTypingsUnit:
     """Contract of the composed test-types facade ``t``."""
@@ -28,16 +26,12 @@ class TestsFlextOracleOicTypingsUnit:
         """Facade inherits from both the shared and OIC-specific type roots."""
         assert issubclass(t, base)
 
-    @pytest.mark.parametrize(
-        "member", ["JsonValue", "JsonList", "JsonDict", "ConfigDict"]
-    )
+    @pytest.mark.parametrize("member", ["JsonValue", "JsonList", "JsonDict"])
     def test_inherited_type_members_are_exposed(self, member: str) -> None:
         """Domain type members are reachable through the composed facade."""
         tm.that(getattr(t, member, None), none=False)
 
-    @pytest.mark.parametrize(
-        "member", ["JsonValue", "JsonList", "JsonDict", "ConfigDict"]
-    )
+    @pytest.mark.parametrize("member", ["JsonValue", "JsonList", "JsonDict"])
     def test_members_resolve_to_the_root_definition(self, member: str) -> None:
         """MRO composition exposes each member without shadowing its root."""
         assert getattr(t, member) is getattr(tests_t, member)

@@ -76,11 +76,13 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         return str(value)
 
     @staticmethod
-    def _to_general_value(value: object) -> t.JsonValue:
+    def _to_general_value(
+        value: t.JsonValue | t.Scalar | t.ScalarMapping | t.ScalarList,
+    ) -> t.JsonValue:
         """Normalize arbitrary runtime values into t.JsonValue."""
         if isinstance(value, bytes):
             return value.decode(errors="replace")
-        if isinstance(value, t.PRIMITIVES_TYPES) or value is None:
+        if isinstance(value, c.PRIMITIVES_TYPES) or value is None:
             return value
         if isinstance(value, Mapping):
             return {
@@ -256,13 +258,13 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         """Initialize the monitoring client when monitoring is enabled."""
         if not self._oic_settings.OracleOic.enable_monitoring:
             return
-        auth_token = ""
+        auth_token: str | None = None
         if self._authenticator:
             refresh_fn = getattr(self._authenticator, "refresh_token", None)
             if callable(refresh_fn):
                 auth_token = refresh_fn()
         auth_headers: t.JsonMapping = {
-            "Authorization": f"Bearer {auth_token}",
+            "Authorization": f"Bearer {auth_token or ''}",
             "Content-Type": "application/json",
         }
         api_config = FlextApiSettings.model_validate({
@@ -275,7 +277,7 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
             "log_requests": False,
             "log_responses": False,
         })
-        self._monitoring_client = FlextApi(settings=api_config)
+        self._monitoring_client = FlextApi(runtime_settings=api_config)
 
 
 __all__: list[str] = ["FlextOracleOicServiceBase"]

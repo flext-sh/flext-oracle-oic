@@ -31,7 +31,7 @@ if TYPE_CHECKING:
     from .main import FlextOracleOicCli, main
     from .models import FlextOracleOicModels, FlextOracleOicModels as m
     from .protocols import FlextOracleOicProtocols, FlextOracleOicProtocols as p
-    from .service import FlextOracleOicService, s
+    from .service import FlextOracleOicService, FlextOracleOicService as s
     from .services.auth import FlextOracleOicAuthMixin
     from .services.base import FlextOracleOicServiceBase
     from .services.integration_crud import FlextOracleOicIntegrationCrudMixin
@@ -40,6 +40,8 @@ if TYPE_CHECKING:
     from .services.orchestration import FlextOracleOicOrchestrationMixin
     from .typings import FlextOracleOicTypes, FlextOracleOicTypes as t
     from .utilities import FlextOracleOicUtilities, FlextOracleOicUtilities as u
+
+
 __all__: tuple[str, ...] = (
     "FlextOracleOicApi",
     "FlextOracleOicAuthMixin",

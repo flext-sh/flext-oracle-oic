@@ -10,7 +10,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import Annotated
+
 from flext_cli import FlextCliConfig, m
+
+from flext_core import FlextSettings
 
 
 class _OracleOicNamespace(m.BaseModel):
@@ -19,10 +23,21 @@ class _OracleOicNamespace(m.BaseModel):
     model_config = m.ConfigDict(extra="allow", frozen=True)
 
 
-class FlextOracleOicConfig(FlextCliConfig):
-    """OracleOic config auto-loaded model-less from ``config/*.yaml``."""
+class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
+    """OracleOic config auto-loaded model-less from ``config/*.yaml``.
 
-    OracleOic: _OracleOicNamespace = _OracleOicNamespace()
+    MRO carries ``FlextSettings`` FIRST (ENFORCE-042); unlike never-instantiated
+    namespace holders, this class IS instantiated by ``fetch_global``, so the
+    instance-inert holder contract does not apply and pydantic settings
+    construction machinery stays intact.
+    """
+
+    OracleOic: Annotated[
+        _OracleOicNamespace,
+        m.Field(
+            description="Open namespace exposing ``config/*.yaml`` under ``OracleOic``."
+        ),
+    ] = _OracleOicNamespace()
 
 
 config: FlextOracleOicConfig = FlextOracleOicConfig.fetch_global()

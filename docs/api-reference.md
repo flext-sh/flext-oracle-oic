@@ -1,6 +1,7 @@
 # API Reference
 
 <!-- TOC START -->
+
 - [Public API Overview](#public-api-overview)
 - [Configuration API](#configuration-api)
   - [OracleOicExtensionSettings](#oracleoicextensionsettings)
@@ -23,20 +24,25 @@
   - [Current Version (v0.12.0-dev)](#current-version-v0120-dev)
   - [Future Versions](#future-versions)
 - [Related Documentation](#related-documentation)
+
 <!-- TOC END -->
 
 **flext-oracle-oic v0.12.0-dev** - Available APIs and Components
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
-> **Implementation Status**: Version 0.9.9 provides basic configuration and service structure. Full Oracle OIC integration capabilities are in development.
+> **Implementation Status**: Version 0.9.9 provides basic configuration and service
+> structure. Full Oracle OIC integration capabilities are in development.
 
 ## Public API Overview
 
-The current implementation provides foundation configuration classes and basic service structure. All public APIs are available through the main module import.
+The current implementation provides foundation configuration classes and basic service
+structure. All public APIs are available through the main module import.
 
 ```python
+
 ```
+
 ## Configuration API
 
 ### OracleOicExtensionSettings
@@ -105,23 +111,27 @@ auth_config = FlextOracleOicSettings(
 
 ## Available Components
 
-> **Important**: The following components exist in the codebase but may have limited or placeholder functionality. Refer to source code for actual implementation details.
+> **Important**: The following components exist in the codebase but may have limited or
+> placeholder functionality. Refer to source code for actual implementation details.
 
 ### Service Classes (Implementation Status Varies)
 
 ```python
 # Service and API entry points
-
 ```
-**Usage Note**: Current service implementations provide basic structure. Full Oracle OIC integration capabilities are in development.
+
+**Usage Note**: Current service implementations provide basic structure. Full Oracle OIC
+integration capabilities are in development.
 
 ### Client Components (FLEXT Compliance Issues)
 
 ```python
 # Service facade and settings (the HTTP client wrapper is not yet exposed)
-
 ```
-**Critical Issue**: Current client implementation uses direct `httpx` imports (line 12 in `ext_client.py`) which violates FLEXT ecosystem standards. Will be refactored to use `flext-api` patterns.
+
+**Critical Issue**: Current client implementation uses direct `httpx` imports (line 12
+in `ext_client.py`) which violates FLEXT ecosystem standards. Will be refactored to use
+`flext-api` patterns.
 
 ### Data Models
 
@@ -148,7 +158,8 @@ config_error = e.ConfigurationError  # Configuration issues
 connection_error = e.ConnectionError  # Connection problems
 ```
 
-**Implementation Note**: Exception hierarchy provides structured error handling for Oracle OIC operations.
+**Implementation Note**: Exception hierarchy provides structured error handling for
+Oracle OIC operations.
 
 ## Factory and Utility Functions
 
@@ -259,9 +270,11 @@ API will be enhanced with:
 - Professional enterprise features
 - Comprehensive testing and validation
 
-______________________________________________________________________
+---
 
-This API reference reflects the actual implementation status as of April 14, 2026. Version 0.9.9 provides foundation configuration and basic service structure, with significant enhancements planned for FLEXT compliance and Oracle OIC integration.
+This API reference reflects the actual implementation status as of April 14, 2026.
+Version 0.9.9 provides foundation configuration and basic service structure, with
+significant enhancements planned for FLEXT compliance and Oracle OIC integration.
 
 ## Related Documentation
 
@@ -274,9 +287,12 @@ This API reference reflects the actual implementation status as of April 14, 202
 
 **Across Projects**:
 
-- [flext-core Foundation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/api-reference/foundation.md) - Core APIs and patterns
-- [flext-core Railway-Oriented Programming](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/guides/railway-oriented-programming.md) - r patterns
-- [flext-db-oracle Integration](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-db-oracle/AGENTS.md) - Oracle database integration
+- [flext-core Foundation](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/api-reference/foundation.md) -
+  Core APIs and patterns
+- [flext-core Railway-Oriented Programming](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/guides/railway-oriented-programming.md) -
+  r patterns
+- [flext-db-oracle Integration](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-db-oracle/AGENTS.md) -
+  Oracle database integration
 
 **External Resources**:
 

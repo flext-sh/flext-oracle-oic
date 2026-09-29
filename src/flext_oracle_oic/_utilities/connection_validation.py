@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from flext_oracle_oic import c, p, r
+from flext_core import r
+from flext_oracle_oic import c, p
 
 
 class FlextOracleOicUtilitiesConnectionValidation:

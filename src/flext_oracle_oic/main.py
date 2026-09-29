@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import sys
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING
 
 from flext_cli import cli, m as cli_m
 
@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from flext_oracle_oic import FlextOracleOicModels
 
 
-class _TestConnectionCommand(cli_m.BaseModel):
+class _TestConnectionCommand(cli_m.ManagedModel):
     """Test connection to Oracle OIC instance."""
 
     def execute(self) -> p.Result[bool]:
@@ -46,7 +46,7 @@ class _TestConnectionCommand(cli_m.BaseModel):
             return r[bool].fail_op("Connection", connection_result.error)
 
 
-class _ListIntegrationsCommand(cli_m.BaseModel):
+class _ListIntegrationsCommand(cli_m.ManagedModel):
     """List Oracle OIC integrations."""
 
     def execute(self) -> p.Result[bool]:
@@ -70,7 +70,7 @@ class _ListIntegrationsCommand(cli_m.BaseModel):
         return r[bool].ok(value=True)
 
 
-class _ShowVersionCommand(cli_m.BaseModel):
+class _ShowVersionCommand(cli_m.ManagedModel):
     """Show Oracle OIC Extension version."""
 
     def execute(self) -> p.Result[bool]:
@@ -107,17 +107,11 @@ class FlextOracleOicCli:
     - version: print the Oracle OIC Extension version
     """
 
-    APP_NAME: ClassVar[str] = "flext-oracle-oic-ext"
-    APP_HELP: ClassVar[str] = (
-        "FLEXT Oracle OIC Extension CLI - Enterprise Oracle "
-        "Integration Cloud operations"
-    )
-
     @classmethod
     def build_app(cls) -> p.Cli.Application:
         """Build the Typer application with the registered commands."""
         app = cli.create_app_with_common_params(
-            name=cls.APP_NAME, help_text=cls.APP_HELP
+            name=c.Cli.APP_NAME, help_text=c.Cli.APP_HELP
         )
         cli.register_result_routes(
             app,
@@ -156,7 +150,7 @@ def main(args: t.StrSequence | None = None) -> int:
     try:
         outcome = cli.execute_app(
             app,
-            prog_name=FlextOracleOicCli.APP_NAME,
+            prog_name=c.Cli.APP_NAME,
             args=list(args) if args is not None else sys.argv[1:],
         )
     except KeyboardInterrupt:

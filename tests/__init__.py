@@ -9,8 +9,7 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_oracle_oic import FlextOracleOicConstants
-    from flext_tests import FlextTestsConstants, d, e, h, r, td, tf, tk, tm, tv, x
+    from flext_tests import api, d, e, h, r, td, tf, tk, tm, tv, x
 
     from . import unit
     from .base import (
@@ -32,9 +31,9 @@ if TYPE_CHECKING:
         TestsFlextOracleOicUtilities,
         TestsFlextOracleOicUtilities as u,
     )
+
+
 __all__: tuple[str, ...] = (
-    "FlextOracleOicConstants",
-    "FlextTestsConstants",
     "TestsFlextOracleOicConstants",
     "TestsFlextOracleOicModels",
     "TestsFlextOracleOicProtocols",
@@ -42,6 +41,7 @@ __all__: tuple[str, ...] = (
     "TestsFlextOracleOicSettings",
     "TestsFlextOracleOicTypes",
     "TestsFlextOracleOicUtilities",
+    "api",
     "c",
     "d",
     "e",
@@ -72,9 +72,8 @@ _LAZY_IMPORTS = MappingProxyType(
             ".typings": ("TestsFlextOracleOicTypes", "t"),
             ".unit": ("unit",),
             ".utilities": ("TestsFlextOracleOicUtilities", "u"),
-            "flext_oracle_oic": ("FlextOracleOicConstants",),
             "flext_tests": (
-                "FlextTestsConstants",
+                "api",
                 "d",
                 "e",
                 "h",

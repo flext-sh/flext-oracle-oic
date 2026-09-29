@@ -14,8 +14,6 @@ import flext_oracle_oic
 from flext_oracle_oic import FlextOracleOicSettings
 from flext_oracle_oic.main import main as main_entrypoint
 
-__all__ = ["TestsFlextOracleOicImport"]
-
 
 class TestsFlextOracleOicImport:
     """Public-contract behavior for the flext_oracle_oic package facade."""

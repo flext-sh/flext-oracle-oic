@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from flext_core import FlextUtilities as ug
-from flext_oracle_oic import c, p, r, t
+from flext_core import FlextUtilities as ug, r
+from flext_oracle_oic import c, p, t
 
 
 class FlextOracleOicUtilitiesMonitoring:
