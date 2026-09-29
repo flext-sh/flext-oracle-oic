@@ -513,7 +513,7 @@ dependencies = [
 [[package]]
 name = "flext-auth"
 version = "0.12.0"
-source = { git = "https://github.com/flext-sh/flext-auth.git?rev=0.12.0-dev#989e14e78282929c4faec7cf5842a9c1d6aa9757" }
+source = { git = "https://github.com/flext-sh/flext-auth.git?rev=0.12.0-dev#41a8641ba19b9447a5e92e6de8e83d35b08c3549" }
 dependencies = [
     { name = "annotated-types" },
     { name = "bcrypt" },
@@ -560,7 +560,7 @@ dependencies = [
 [[package]]
 name = "flext-core"
 version = "0.12.0"
-source = { git = "https://github.com/flext-sh/flext-core.git?rev=0.12.0-dev#84d150c7b157aac892aa0ba78e3684411c630df5" }
+source = { git = "https://github.com/flext-sh/flext-core.git?rev=0.12.0-dev#43bc0f35a7cdae17f453350d672b2850b08030a9" }
 dependencies = [
     { name = "annotated-types" },
     { name = "beartype" },
@@ -576,7 +576,7 @@ dependencies = [
 [[package]]
 name = "flext-infra"
 version = "0.12.0"
-source = { git = "https://github.com/flext-sh/flext-infra.git?rev=0.12.0-dev#8b12ca9a9c22976f29fbf58ff885cf7891022aa6" }
+source = { git = "https://github.com/flext-sh/flext-infra.git?rev=0.12.0-dev#03b78270fcf6e56fba713517f09297b289643e6e" }
 dependencies = [
     { name = "annotated-types" },
     { name = "beartype" },
