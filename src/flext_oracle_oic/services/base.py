@@ -82,7 +82,7 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         """Normalize arbitrary runtime values into t.JsonValue."""
         if isinstance(value, bytes):
             return value.decode(errors="replace")
-        if isinstance(value, t.PRIMITIVES_TYPES) or value is None:
+        if isinstance(value, c.PRIMITIVES_TYPES) or value is None:
             return value
         if isinstance(value, Mapping):
             return {
