@@ -10,7 +10,7 @@ from __future__ import annotations
 import pytest
 from flext_tests import tm
 
-from flext_oracle_oic import FlextOracleOicCli, __version__
+from flext_oracle_oic import FlextOracleOicCli, __version__, c
 from flext_oracle_oic.main import main
 
 
@@ -49,8 +49,8 @@ class TestsFlextOracleOicMain:
 
     def test_app_identity_is_exposed_as_public_metadata(self) -> None:
         """The CLI advertises its program name and help text as public contract."""
-        tm.that(FlextOracleOicCli.APP_NAME, eq="flext-oracle-oic-ext")
-        tm.that(FlextOracleOicCli.APP_HELP, has="Oracle OIC")
+        tm.that(c.Cli.APP_NAME, eq="flext-oracle-oic-ext")
+        tm.that(c.Cli.APP_HELP, has="Oracle OIC")
 
     def test_package_exposes_non_empty_version_string(self) -> None:
         """`__version__` is a non-empty string usable by the `version` command."""
