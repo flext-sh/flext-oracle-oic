@@ -412,7 +412,7 @@ class FlextOracleOicClient:
         self, value: t.JsonValue | t.Scalar | t.ScalarMapping | t.ScalarList
     ) -> t.JsonValue:
         """Normalize t.JsonValue into flext-api request body value type."""
-        if isinstance(value, t.PRIMITIVES_TYPES) or value is None:
+        if isinstance(value, c.PRIMITIVES_TYPES) or value is None:
             return value
         if isinstance(value, Mapping):
             return {key: self._to_api_payload(item) for key, item in value.items()}
