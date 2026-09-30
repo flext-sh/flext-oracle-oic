@@ -68,9 +68,7 @@ class FlextOracleOicConstantsValues:
 
         MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
         MAX_INTEGRATION_NAME_LENGTH: Final[int] = 100
-        INTEGRATION_NAME_RE: Final[t.RegexPattern] = re.compile(
-            r"^[a-zA-Z0-9_\-\s]+$"
-        )
+        INTEGRATION_NAME_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\s]+$")
         CLIENT_ID_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
         VERSION_PATTERN: Final[t.RegexPattern] = re.compile(
             r"^\\d{2}\\.\\d{2}\\.\\d{4}$"
