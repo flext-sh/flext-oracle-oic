@@ -1,4 +1,8 @@
-"""Oracle OIC connection validation utilities mixin."""
+"""Oracle OIC connection validation utilities mixin.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
@@ -11,9 +15,13 @@ class FlextOracleOicUtilitiesConnectionValidation:
 
     @staticmethod
     def _validate_closed_string(
-        value: p.AttributeProbe, *, field_label: str, valid_values: frozenset[str]
+        value: p.AttributeProbe, *, field_label: str, valid_values: frozenset[str],
     ) -> p.Result[str]:
-        """Validate one upper-cased string against a closed canonical set."""
+        """Validate one upper-cased string against a closed canonical set.
+
+        Returns:
+            The resulting ``p.Result[str]``.
+        """
         match value:
             case str():
                 pass
@@ -23,7 +31,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
         if normalized_value not in valid_values:
             formatted_values = ", ".join(sorted(valid_values))
             return r[str].fail(
-                f"Invalid {field_label.lower()}. Valid: {formatted_values}"
+                f"Invalid {field_label.lower()}. Valid: {formatted_values}",
             )
         return r[str].ok(normalized_value)
 

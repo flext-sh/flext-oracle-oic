@@ -25,13 +25,13 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
             """Protocol for HTTP client operations used by Oracle OIC services."""
 
             def delete(
-                self, url: str, *, headers: t.StrMapping | None = None
+                self, url: str, *, headers: t.StrMapping | None = None,
             ) -> p.Result[bool]:
                 """Execute HTTP DELETE request."""
                 ...
 
             def get(
-                self, url: str, *, headers: t.StrMapping | None = None
+                self, url: str, *, headers: t.StrMapping | None = None,
             ) -> p.Result[t.JsonValue]:
                 """Execute HTTP GET request."""
                 ...

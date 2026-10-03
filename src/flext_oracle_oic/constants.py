@@ -13,20 +13,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import re
 from enum import StrEnum, unique
-from types import MappingProxyType
-from typing import TYPE_CHECKING, Final
 
 from flext_auth import FlextAuthConstants
 
-from ._constants.base import FlextOracleOicConstantsBase
-from ._constants.values import FlextOracleOicConstantsValues
-
-if TYPE_CHECKING:
-    from collections.abc import Mapping
-
-    from flext_oracle_oic import t
+from flext_oracle_oic._constants.base import FlextOracleOicConstantsBase
+from flext_oracle_oic._constants.values import FlextOracleOicConstantsValues
 
 
 class FlextOracleOicConstants(FlextAuthConstants):
@@ -64,12 +56,18 @@ class FlextOracleOicConstants(FlextAuthConstants):
         V2 = "v2"
 
     class OracleOic(
-        FlextOracleOicConstantsBase, FlextOracleOicConstantsValues.OracleOic
+        FlextOracleOicConstantsBase, FlextOracleOicConstantsValues.OracleOic,
     ):
         """Oracle Integration Cloud specific constants."""
 
     class Auth(FlextAuthConstants.Auth, FlextOracleOicConstantsValues.Auth):
         """Oracle OIC Authentication constants extending base auth namespace."""
+
+    class Cli(FlextOracleOicConstantsValues.Cli, FlextAuthConstants.Cli):
+        """Oracle OIC CLI constants extending the shared CLI namespace.
+
+        OIC-owned scalars are re-exported from ``_constants``.
+        """
 
     class Integration(FlextOracleOicConstantsValues.Integration):
         """Oracle OIC Integration constants.
@@ -92,8 +90,6 @@ class FlextOracleOicConstants(FlextAuthConstants):
             RUNNING = "RUNNING"
             STOPPED = "STOPPED"
             ERROR = "ERROR"
-
-        DEFAULT_VERSION_FALLBACK: Final[str] = "01.00.0000"
 
     class Connection:
         """Oracle OIC Connection constants."""
@@ -129,8 +125,8 @@ class FlextOracleOicConstants(FlextAuthConstants):
     class Monitoring(FlextOracleOicConstantsValues.Monitoring):
         """Oracle OIC Monitoring constants.
 
-        ``COMPONENT_DATABASE`` is owned by ``flext_oracle_oic._constants`` and
-        inherited through this facade subclass.
+        Scalars are owned by ``flext_oracle_oic._constants`` and inherited
+        through this facade subclass.
         """
 
         @unique
@@ -158,9 +154,6 @@ class FlextOracleOicConstants(FlextAuthConstants):
             UNHEALTHY = "unhealthy"
             UNKNOWN = "unknown"
 
-        COMPONENT_MESSAGING: Final[str] = "messaging"
-        COMPONENT_INTEGRATION_ENGINE: Final[str] = "integration_engine"
-
     class API(FlextOracleOicConstantsValues.API):
         """Oracle OIC API constants.
 
@@ -183,58 +176,13 @@ class FlextOracleOicConstants(FlextAuthConstants):
             DELETE = "DELETE"
             PATCH = "PATCH"
 
-        HEADER_CONTENT_TYPE: Final[str] = "Content-Type"
-        HEADER_AUTHORIZATION: Final[str] = "Authorization"
-        HEADER_ACCEPT: Final[str] = "Accept"
-        ENDPOINT_HEALTH: Final[str] = "/ic/api/integration/v1/health"
-        HTTP_STATUS_OK: Final[int] = 200
-
     class OracleOicValidation(FlextOracleOicConstantsValues.OracleOicValidation):
         """Oracle OIC validation constants (named to avoid overriding c).
 
-        ``MIN_INTEGRATION_NAME_LENGTH`` is owned by
+        All scalars, patterns and whitelists are owned by
         ``flext_oracle_oic._constants`` and inherited through this facade
         subclass.
         """
-
-        # === Regex authority for the OracleOicValidation domain ===
-        INTEGRATION_NAME_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\s]+$")
-        CLIENT_ID_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
-
-        MAX_INTEGRATION_NAME_LENGTH: Final[int] = 100
-        VALID_INTEGRATION_STATUSES: Final[frozenset[str]] = frozenset({
-            "ACTIVATED",
-            "DEACTIVATED",
-            "DRAFT",
-            "PUBLISHED",
-            "RUNNING",
-            "STOPPED",
-            "ERROR",
-        })
-        VERSION_PATTERN: Final[t.RegexPattern] = re.compile(
-            r"^\\d{2}\\.\\d{2}\\.\\d{4}$"
-        )
-        VALID_CONNECTION_TYPES: Final[frozenset[str]] = frozenset({
-            "REST",
-            "SOAP",
-            "DATABASE",
-            "FILE",
-            "FTP",
-            "SFTP",
-        })
-        VALID_CONNECTION_STATUSES: Final[frozenset[str]] = frozenset({
-            "ACTIVE",
-            "INACTIVE",
-            "ERROR",
-            "unknown",
-        })
-        MIN_CLIENT_ID_LENGTH: Final[int] = 1
-        MIN_CLIENT_SECRET_LENGTH: Final[int] = 8
-        PERFORMANCE_THRESHOLDS: Final[Mapping[str, float]] = MappingProxyType({
-            "response_time_ms": 5000.0,
-            "success_rate": 0.95,
-            "error_rate": 0.05,
-        })
 
     @unique
     class ProjectType(StrEnum):
