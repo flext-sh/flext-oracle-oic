@@ -11,20 +11,23 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 - Railway-oriented programming with r
 - Type-safe operations with proper validation
 - SOLID principles with clean separation of concerns
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
 
 from flext_auth import FlextAuthUtilities
 
-from ._utilities.authentication_validation import (
+from flext_oracle_oic._utilities.authentication_validation import (
     FlextOracleOicUtilitiesAuthenticationValidation,
 )
-from ._utilities.connection_validation import (
+from flext_oracle_oic._utilities.connection_validation import (
     FlextOracleOicUtilitiesConnectionValidation,
 )
-from ._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
-from ._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
+from flext_oracle_oic._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
+from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
 
 
 class FlextOracleOicUtilities(

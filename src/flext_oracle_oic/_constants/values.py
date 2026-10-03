@@ -71,7 +71,7 @@ class FlextOracleOicConstantsValues:
         INTEGRATION_NAME_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\s]+$")
         CLIENT_ID_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
         VERSION_PATTERN: Final[t.RegexPattern] = re.compile(
-            r"^\\d{2}\\.\\d{2}\\.\\d{4}$"
+            r"^\\d{2}\\.\\d{2}\\.\\d{4}$",
         )
         VALID_INTEGRATION_STATUSES: Final[frozenset[str]] = frozenset({
             "ACTIVATED",

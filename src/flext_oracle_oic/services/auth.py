@@ -11,8 +11,7 @@ from __future__ import annotations
 
 from flext_core import r
 from flext_oracle_oic import c, p
-
-from .base import FlextOracleOicServiceBase
+from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 
 
 class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):

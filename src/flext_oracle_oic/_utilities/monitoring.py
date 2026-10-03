@@ -1,4 +1,8 @@
-"""Oracle OIC monitoring and health check utilities mixin."""
+"""Oracle OIC monitoring and health check utilities mixin.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
@@ -11,7 +15,8 @@ class FlextOracleOicUtilitiesMonitoring:
 
     @staticmethod
     def _assess_metric(
-        metric_key: str, metric_value: float
+        metric_key: str,
+        metric_value: float,
     ) -> tuple[str | None, str | None, bool]:
         """Return warning/critical/recommendation for one metric."""
         match metric_key:
@@ -74,12 +79,13 @@ class FlextOracleOicUtilitiesMonitoring:
         recommendations: list[str] = []
         for metric_key in ("average_response_time", "success_rate", "error_rate"):
             metric_value_raw = metrics.get(metric_key)
-            if not isinstance(metric_value_raw, t.NUMERIC_TYPES):
+            if not isinstance(metric_value_raw, c.NUMERIC_TYPES):
                 continue
             metric_value = float(metric_value_raw)
             issue, recommendation, is_critical = (
                 FlextOracleOicUtilitiesMonitoring._assess_metric(
-                    metric_key, metric_value
+                    metric_key,
+                    metric_value,
                 )
             )
             if issue is None:
@@ -130,7 +136,7 @@ class FlextOracleOicUtilitiesMonitoring:
             if components is not None:
                 error_message = (
                     FlextOracleOicUtilitiesMonitoring._components_validation_error(
-                        components
+                        components,
                     )
                 )
         if error_message is not None:

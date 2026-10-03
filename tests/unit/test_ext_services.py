@@ -37,25 +37,35 @@ _VALID_OAUTH_CREDENTIAL = "test-credential-123"
 class TestsFlextOracleOicExtServices:
     """Public-contract behavior of the Oracle OIC service facade."""
 
+    @staticmethod
     @pytest.fixture
-    def unconfigured_service(self) -> Iterator[FlextOracleOicService]:
-        """Service backed by default (credential-less) global settings."""
+    def unconfigured_service() -> Iterator[FlextOracleOicService]:
+        """Service backed by default (credential-less) global settings.
+
+        Yields:
+            Each ``FlextOracleOicService``.
+        """
         FlextOracleOicSettings.reset_for_testing()
         yield FlextOracleOicService()
         FlextOracleOicSettings.reset_for_testing()
 
+    @staticmethod
     @pytest.fixture
     def configured_service(
-        self, monkeypatch: pytest.MonkeyPatch
+        monkeypatch: pytest.MonkeyPatch,
     ) -> Iterator[FlextOracleOicService]:
-        """Service backed by global settings with valid OAuth credentials."""
+        """Service backed by global settings with valid OAuth credentials.
+
+        Yields:
+            Each ``FlextOracleOicService``.
+        """
         # NOTE (ADR-005): project fields are namespaced under settings.OracleOic,
         # so env vars use the nested delimiter form ORACLEOIC__<FIELD>.
         monkeypatch.setenv(
-            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_ID", _VALID_CLIENT_ID
+            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_ID", _VALID_CLIENT_ID,
         )
         monkeypatch.setenv(
-            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_SECRET", _VALID_OAUTH_CREDENTIAL
+            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_SECRET", _VALID_OAUTH_CREDENTIAL,
         )
         FlextOracleOicSettings.reset_for_testing()
         yield FlextOracleOicService()
@@ -63,6 +73,7 @@ class TestsFlextOracleOicExtServices:
 
     # -- composition contract -------------------------------------------------
 
+    @staticmethod
     @pytest.mark.parametrize(
         "mixin",
         [
@@ -75,19 +86,20 @@ class TestsFlextOracleOicExtServices:
         ],
     )
     def test_service_composes_every_documented_domain_mixin(
-        self,
         unconfigured_service: FlextOracleOicService,
         mixin: type[FlextOracleOicServiceBase],
     ) -> None:
         """The facade is-a every domain mixin it advertises composing."""
         tm.that(unconfigured_service, is_=mixin)
 
-    def test_module_alias_s_is_the_service_class(self) -> None:
+    @staticmethod
+    def test_module_alias_s_is_the_service_class() -> None:
         """The short ``s`` alias resolves to the service facade class."""
         assert s is FlextOracleOicService
 
+    @staticmethod
     def test_context_manager_yields_the_same_service(
-        self, unconfigured_service: FlextOracleOicService
+        unconfigured_service: FlextOracleOicService,
     ) -> None:
         """Entering the service context returns the service instance itself."""
         with unconfigured_service as entered:
@@ -95,6 +107,7 @@ class TestsFlextOracleOicExtServices:
 
     # -- fallible operations: graceful failure when unconfigured --------------
 
+    @staticmethod
     @pytest.mark.parametrize(
         "operation",
         [
@@ -112,7 +125,7 @@ class TestsFlextOracleOicExtServices:
         ],
     )
     def test_operations_fail_gracefully_without_credentials(
-        self, unconfigured_service: FlextOracleOicService, operation: str
+        unconfigured_service: FlextOracleOicService, operation: str,
     ) -> None:
         """Every fallible op returns a failed ``r`` (never raises) when unconfigured."""
         svc = unconfigured_service
@@ -143,8 +156,9 @@ class TestsFlextOracleOicExtServices:
         assert result.failure
         assert result.error
 
+    @staticmethod
     def test_execute_delegates_to_integration_listing(
-        self, unconfigured_service: FlextOracleOicService
+        unconfigured_service: FlextOracleOicService,
     ) -> None:
         """``execute`` mirrors ``list_integrations`` (same failure error)."""
         assert (
@@ -154,8 +168,9 @@ class TestsFlextOracleOicExtServices:
 
     # -- authentication contract (independent of settings/network) ------------
 
+    @staticmethod
     def test_refresh_auth_token_reports_missing_authenticator(
-        self, unconfigured_service: FlextOracleOicService
+        unconfigured_service: FlextOracleOicService,
     ) -> None:
         """Token refresh fails with an explicit missing-authenticator error."""
         result = unconfigured_service.refresh_auth_token()
@@ -163,9 +178,10 @@ class TestsFlextOracleOicExtServices:
         tm.fail(result)
         tm.that(result.error, eq="Authenticator not initialized")
 
+    @staticmethod
     @pytest.mark.parametrize("token", ["", "some-token", "expired.jwt.value"])
     def test_validate_auth_token_reports_missing_authenticator(
-        self, unconfigured_service: FlextOracleOicService, token: str
+        unconfigured_service: FlextOracleOicService, token: str,
     ) -> None:
         """Token validation fails identically regardless of the token value."""
         result = unconfigured_service.validate_auth_token(token)
@@ -175,8 +191,9 @@ class TestsFlextOracleOicExtServices:
 
     # -- business-rule validation contract ------------------------------------
 
+    @staticmethod
     def test_business_rules_fail_without_oauth_credentials(
-        self, unconfigured_service: FlextOracleOicService
+        unconfigured_service: FlextOracleOicService,
     ) -> None:
         """Default (credential-less) settings fail business-rule validation."""
         result = unconfigured_service.validate_business_rules()
@@ -186,8 +203,9 @@ class TestsFlextOracleOicExtServices:
         assert error is not None
         tm.that(error.lower(), has="validation")
 
+    @staticmethod
     def test_business_rules_pass_with_valid_credentials(
-        self, configured_service: FlextOracleOicService
+        configured_service: FlextOracleOicService,
     ) -> None:
         """Valid OAuth credentials satisfy business-rule validation."""
         result = configured_service.validate_business_rules()
@@ -195,8 +213,9 @@ class TestsFlextOracleOicExtServices:
         tm.ok(result)
         tm.that(result.value, eq=True)
 
+    @staticmethod
     def test_business_rules_validation_is_idempotent(
-        self, configured_service: FlextOracleOicService
+        configured_service: FlextOracleOicService,
     ) -> None:
         """Repeated validation of the same settings yields the same success."""
         first = configured_service.validate_business_rules()
@@ -207,11 +226,15 @@ class TestsFlextOracleOicExtServices:
 
     @staticmethod
     def _is_service_rules(candidate: p.Base) -> bool:
-        """Report structural conformance without a type-narrowed argument."""
+        """Report structural conformance without a type-narrowed argument.
+
+        Returns:
+            The resulting ``bool``.
+        """
         return isinstance(candidate, p.OracleOic.ServiceRules)
 
     def test_configured_service_satisfies_its_own_rules_protocol(
-        self, configured_service: FlextOracleOicService
+        self, configured_service: FlextOracleOicService,
     ) -> None:
         """The real service structurally satisfies its own declared protocol."""
         tm.that(self._is_service_rules(configured_service), eq=True)
