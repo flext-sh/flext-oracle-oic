@@ -13,8 +13,7 @@ from collections.abc import MutableSequence, Sequence
 
 from flext_oracle_oic import c, m, p, r, t
 from flext_oracle_oic.ext_client import FlextOracleOicClient
-
-from .base import FlextOracleOicServiceBase
+from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 
 
 class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
@@ -34,9 +33,13 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         return client_result
 
     def _create_integration_impl(
-        self, integration_data: t.JsonMapping
+        self, integration_data: t.JsonMapping,
     ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
-        """Core implementation for create_integration."""
+        """Core implementation for create_integration.
+
+        Returns:
+            The resulting ``p.Result[m.OracleOic.OICIntegrationInfo]``.
+        """
         client_result = self._get_client_or_fail()
         if client_result.failure:
             return r[m.OracleOic.OICIntegrationInfo].from_failure(client_result)
@@ -47,12 +50,12 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[m.OracleOic.OICIntegrationInfo].fail(error_msg)
         created_data = created_result.value
         integration = self._build_integration_info(
-            created_data, fallback_id="", default_status=c.Integration.Status.DRAFT
+            created_data, fallback_id="", default_status=c.Integration.Status.DRAFT,
         )
         return r[m.OracleOic.OICIntegrationInfo].ok(integration)
 
     def create_integration(
-        self, integration_data: t.JsonMapping
+        self, integration_data: t.JsonMapping,
     ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Create new Oracle OIC integration.
 
@@ -70,9 +73,13 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[m.OracleOic.OICIntegrationInfo].fail_op("Integration creation", e)
 
     def _fetch_integration_impl(
-        self, integration_id: str
+        self, integration_id: str,
     ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
-        """Core implementation for fetch_integration."""
+        """Core implementation for fetch_integration.
+
+        Returns:
+            The resulting ``p.Result[m.OracleOic.OICIntegrationInfo]``.
+        """
         client_result = self._get_client_or_fail()
         if client_result.failure:
             return r[m.OracleOic.OICIntegrationInfo].from_failure(client_result)
@@ -88,7 +95,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         )
         if not integration_data:
             return r[m.OracleOic.OICIntegrationInfo].fail(
-                f"Integration {integration_id} not found"
+                f"Integration {integration_id} not found",
             )
         integration = self._build_integration_info(
             integration_data,
@@ -98,7 +105,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         return r[m.OracleOic.OICIntegrationInfo].ok(integration)
 
     def fetch_integration(
-        self, integration_id: str
+        self, integration_id: str,
     ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Get specific Oracle OIC integration by ID.
 
@@ -116,9 +123,13 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[m.OracleOic.OICIntegrationInfo].fail_op("Integration retrieval", e)
 
     def _update_integration_impl(
-        self, integration_id: str, integration_data: t.JsonMapping
+        self, integration_id: str, integration_data: t.JsonMapping,
     ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
-        """Core implementation for update_integration."""
+        """Core implementation for update_integration.
+
+        Returns:
+            The resulting ``p.Result[m.OracleOic.OICIntegrationInfo]``.
+        """
         client_result = self._get_client_or_fail()
         if client_result.failure:
             return r[m.OracleOic.OICIntegrationInfo].from_failure(client_result)
@@ -136,7 +147,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         return r[m.OracleOic.OICIntegrationInfo].ok(integration)
 
     def update_integration(
-        self, integration_id: str, integration_data: t.JsonMapping
+        self, integration_id: str, integration_data: t.JsonMapping,
     ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
         """Update existing Oracle OIC integration.
 
@@ -155,7 +166,11 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[m.OracleOic.OICIntegrationInfo].fail_op("Integration update", e)
 
     def _delete_integration_impl(self, integration_id: str) -> p.Result[bool]:
-        """Core implementation for delete_integration."""
+        """Core implementation for delete_integration.
+
+        Returns:
+            The resulting ``p.Result[bool]``.
+        """
         client_result = self._get_client_or_fail()
         if client_result.failure:
             return r[bool].from_failure(client_result)
@@ -183,9 +198,13 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[bool].fail_op("Integration deletion", e)
 
     def _deploy_integration_impl(
-        self, integration_data: t.JsonMapping
+        self, integration_data: t.JsonMapping,
     ) -> p.Result[str]:
-        """Core implementation for deploy_integration."""
+        """Core implementation for deploy_integration.
+
+        Returns:
+            The resulting ``p.Result[str]``.
+        """
         client_result = self._get_client_or_fail()
         if client_result.failure:
             return r[str].from_failure(client_result)
@@ -217,17 +236,21 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             return r[str].fail_op("Integration deployment", e)
 
     def _list_connections_impl(
-        self, type_filter: t.StrSequence | None
+        self, type_filter: t.StrSequence | None,
     ) -> p.Result[Sequence[m.OracleOic.OICConnectionInfo]]:
-        """Core implementation for list_connections."""
+        """Core implementation for list_connections.
+
+        Returns:
+            The resulting ``p.Result[Sequence[m.OracleOic.OICConnectionInfo]]``.
+        """
         client_result = self._get_client_or_fail()
         if client_result.failure:
             return r[Sequence[m.OracleOic.OICConnectionInfo]].from_failure(
-                client_result
+                client_result,
             )
         client = client_result.value
         connections_result = client.get_connections(
-            type_filter=type_filter, page_size=c.DEFAULT_PAGE_SIZE
+            type_filter=type_filter, page_size=c.DEFAULT_PAGE_SIZE,
         )
         if connections_result.failure:
             error_msg = connections_result.error or "Failed to get connections"
@@ -247,7 +270,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         return r[Sequence[m.OracleOic.OICConnectionInfo]].ok(connections)
 
     def list_connections(
-        self, type_filter: t.StrSequence | None = None
+        self, type_filter: t.StrSequence | None = None,
     ) -> p.Result[Sequence[m.OracleOic.OICConnectionInfo]]:
         """List Oracle OIC connections.
 
@@ -263,7 +286,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to list connections")
             return r[Sequence[m.OracleOic.OICConnectionInfo]].fail_op(
-                "Connection listing", e
+                "Connection listing", e,
             )
 
 

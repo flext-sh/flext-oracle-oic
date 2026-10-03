@@ -1,12 +1,12 @@
 """Behavioral tests for Oracle OIC unified models.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
 Asserts the OBSERVABLE PUBLIC CONTRACT of the model namespace only:
 construction results, field values via the public API, value-object
 immutability and equality, secret masking, entity identity surface,
 and validation error paths. No private attributes, no internal spying.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
@@ -32,7 +32,8 @@ class TestsFlextOracleOicModelsUnit:
 
     # ---- OICAuthConfig ---------------------------------------------------
 
-    def test_auth_config_exposes_supplied_values(self) -> None:
+    @staticmethod
+    def test_auth_config_exposes_supplied_values() -> None:
         """A fully specified auth config returns the exact inputs."""
         config = m.OracleOic.OICAuthConfig(
             oauth_client_id="test_client_id",
@@ -47,7 +48,8 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.oauth_client_aud, eq="test_audience")
         tm.that(config.oauth_scope, eq="test_scope")
 
-    def test_auth_config_optional_fields_default(self) -> None:
+    @staticmethod
+    def test_auth_config_optional_fields_default() -> None:
         """Audience defaults to None and scope to an empty string."""
         config = m.OracleOic.OICAuthConfig(
             oauth_client_id="cid",
@@ -57,7 +59,8 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.oauth_client_aud, none=True)
         tm.that(config.oauth_scope, eq="")
 
-    def test_auth_config_masks_secret_in_repr_and_dump(self) -> None:
+    @staticmethod
+    def test_auth_config_masks_secret_in_repr_and_dump() -> None:
         """The client secret is never exposed via repr or model_dump."""
         config = m.OracleOic.OICAuthConfig(
             oauth_client_id="cid",
@@ -66,12 +69,14 @@ class TestsFlextOracleOicModelsUnit:
         )
         tm.that(repr(config), lacks="super_secret")
         tm.that(
-            config.model_dump(mode="json")["oauth_client_secret"], ne="super_secret"
+            config.model_dump(mode="json")["oauth_client_secret"],
+            ne="super_secret",
         )
         # The real value stays retrievable through the explicit accessor.
         tm.that(config.oauth_client_secret.get_secret_value(), eq="super_secret")
 
-    def test_auth_config_is_immutable(self) -> None:
+    @staticmethod
+    def test_auth_config_is_immutable() -> None:
         """Auth config is a frozen value object; mutation is rejected."""
         config = m.OracleOic.OICAuthConfig(
             oauth_client_id="cid",
@@ -86,7 +91,8 @@ class TestsFlextOracleOicModelsUnit:
         with pytest.raises(c.ValidationError):
             mutate(config, "oauth_scope", "mutated")
 
-    def test_auth_config_equality_is_by_value(self) -> None:
+    @staticmethod
+    def test_auth_config_equality_is_by_value() -> None:
         """Two auth configs with identical inputs compare equal."""
         first = m.OracleOic.OICAuthConfig(
             oauth_client_id="cid",
@@ -100,10 +106,12 @@ class TestsFlextOracleOicModelsUnit:
         )
         tm.that(first, eq=second)
 
+    @staticmethod
     @pytest.mark.parametrize(
-        "missing", ["oauth_client_id", "oauth_client_secret", "oauth_token_url"]
+        "missing",
+        ["oauth_client_id", "oauth_client_secret", "oauth_token_url"],
     )
-    def test_auth_config_requires_mandatory_fields(self, missing: str) -> None:
+    def test_auth_config_requires_mandatory_fields(missing: str) -> None:
         """Omitting any required field raises a validation error."""
         payload: t.MutableMappingKV[str, str] = {
             "oauth_client_id": "cid",
@@ -116,7 +124,8 @@ class TestsFlextOracleOicModelsUnit:
 
     # ---- OICConnectionConfig --------------------------------------------
 
-    def test_connection_config_exposes_supplied_values(self) -> None:
+    @staticmethod
+    def test_connection_config_exposes_supplied_values() -> None:
         """A fully specified connection config returns the exact inputs."""
         config = m.OracleOic.OICConnectionConfig(
             base_url="https://oic.example.com",
@@ -131,7 +140,8 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.max_retries, eq=5)
         tm.that(config.verify_ssl, eq=False)
 
-    def test_connection_config_applies_documented_defaults(self) -> None:
+    @staticmethod
+    def test_connection_config_applies_documented_defaults() -> None:
         """Only base_url is required; the rest fall back to catalog defaults."""
         config = m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
         tm.that(config.api_version, eq=c.OracleOic.DEFAULT_API_VERSION)
@@ -139,7 +149,8 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.max_retries, eq=c.MAX_RETRY_ATTEMPTS)
         assert config.verify_ssl is c.OracleOic.DEFAULT_VERIFY_SSL
 
-    def test_connection_config_is_immutable(self) -> None:
+    @staticmethod
+    def test_connection_config_is_immutable() -> None:
         """Connection config is a frozen value object."""
         config = m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
         # Frozen model: assignment raises at the attribute boundary, so go through
@@ -148,24 +159,29 @@ class TestsFlextOracleOicModelsUnit:
         with pytest.raises(c.ValidationError):
             mutate(config, "verify_ssl", False)
 
+    @staticmethod
     @pytest.mark.parametrize("timeout", [0, -1, -30])
-    def test_connection_config_rejects_non_positive_timeout(self, timeout: int) -> None:
+    def test_connection_config_rejects_non_positive_timeout(timeout: int) -> None:
         """request_timeout must be strictly positive."""
         with pytest.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig(
-                base_url="https://oic.example.com", request_timeout=timeout
+                base_url="https://oic.example.com",
+                request_timeout=timeout,
             )
 
-    def test_connection_config_rejects_negative_retries(self) -> None:
+    @staticmethod
+    def test_connection_config_rejects_negative_retries() -> None:
         """max_retries cannot be negative."""
         with pytest.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig(
-                base_url="https://oic.example.com", max_retries=-1
+                base_url="https://oic.example.com",
+                max_retries=-1,
             )
 
     # ---- OICIntegrationInfo (entity) ------------------------------------
 
-    def test_integration_info_roundtrips_public_state(self) -> None:
+    @staticmethod
+    def test_integration_info_roundtrips_public_state() -> None:
         """Supplied domain fields survive a model_dump roundtrip."""
         info = m.OracleOic.OICIntegrationInfo(
             integration_id="int-1",
@@ -185,7 +201,8 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(dumped["created_by"], eq="user")
         tm.that(dumped["last_updated"], eq="2025-01-08T10:00:00Z")
 
-    def test_integration_info_optional_fields_default_empty(self) -> None:
+    @staticmethod
+    def test_integration_info_optional_fields_default_empty() -> None:
         """Description, creator, and timestamp default to empty strings."""
         info = m.OracleOic.OICIntegrationInfo(
             integration_id="int-1",
@@ -197,7 +214,8 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(info.created_by, eq="")
         tm.that(info.last_updated, eq="")
 
-    def test_integration_info_carries_entity_identity(self) -> None:
+    @staticmethod
+    def test_integration_info_carries_entity_identity() -> None:
         """As an entity it exposes a stable non-empty identity surface."""
         info = m.OracleOic.OICIntegrationInfo(
             integration_id="int-1",
@@ -209,14 +227,16 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(dumped["unique_id"], is_=str)
         assert dumped["unique_id"]
 
-    def test_integration_info_requires_core_fields(self) -> None:
+    @staticmethod
+    def test_integration_info_requires_core_fields() -> None:
         """The domain identifier and descriptors are mandatory."""
         with pytest.raises(c.ValidationError):
             m.OracleOic.OICIntegrationInfo.model_validate({"name": "only name"})
 
     # ---- OICConnectionInfo (entity) -------------------------------------
 
-    def test_connection_info_roundtrips_public_state(self) -> None:
+    @staticmethod
+    def test_connection_info_roundtrips_public_state() -> None:
         """Supplied connection fields survive a model_dump roundtrip."""
         info = m.OracleOic.OICConnectionInfo(
             connection_id="conn-1",
@@ -234,7 +254,8 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(dumped["connection_type"], eq="HTTP")
         tm.that(dumped["description"], eq="desc")
 
-    def test_connection_info_description_defaults_empty(self) -> None:
+    @staticmethod
+    def test_connection_info_description_defaults_empty() -> None:
         """Description defaults to an empty string when omitted."""
         info = m.OracleOic.OICConnectionInfo(
             connection_id="conn-1",
@@ -245,17 +266,21 @@ class TestsFlextOracleOicModelsUnit:
         )
         tm.that(info.description, eq="")
 
-    def test_connection_info_requires_core_fields(self) -> None:
+    @staticmethod
+    def test_connection_info_requires_core_fields() -> None:
         """Connection identifier and descriptors are mandatory."""
         with pytest.raises(c.ValidationError):
             m.OracleOic.OICConnectionInfo.model_validate({"name": "only name"})
 
     # ---- IntegrationStatus (entity) -------------------------------------
 
-    def test_integration_status_roundtrips_public_state(self) -> None:
+    @staticmethod
+    def test_integration_status_roundtrips_public_state() -> None:
         """Status fields survive a model_dump roundtrip with defaults."""
         status = m.OracleOic.IntegrationStatus(
-            integration_id="int-1", integration_version="1.0.0", status="ACTIVATED"
+            integration_id="int-1",
+            integration_version="1.0.0",
+            status="ACTIVATED",
         )
         dumped = status.model_dump()
         tm.that(dumped["integration_id"], eq="int-1")
