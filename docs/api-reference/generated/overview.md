@@ -29,7 +29,7 @@
   `FlextOracleOicIntegrationLifecycleMixin`, `FlextOracleOicModels`,
   `FlextOracleOicMonitoringMixin` (+10 more)
 - Exported module shortcuts: `main`, `services`
-- Generated module pages: `16`
+- Generated module pages: `9`
 
 ## Next Pages
 

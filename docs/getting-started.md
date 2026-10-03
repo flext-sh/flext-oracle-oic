@@ -81,7 +81,7 @@ python -c "from flext_oracle_oic import OracleOicExtensionSettings; \
 
 ```bash
 # Set Python path for FLEXT workspace access
-export PYTHONPATH="$PWD/src:$PYTHONPATH"
+export PYTHONPATH="${PWD}/src:$PYTHONPATH"
 
 # Optional: Oracle OIC testing environment
 export ORACLE_OIC_BASE_URL="https://your-instance.integration.ocp.oraclecloud.com"

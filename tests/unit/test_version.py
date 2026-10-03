@@ -1,4 +1,8 @@
-"""Behavioral contract tests for flext-oracle-oic package version metadata."""
+"""Behavioral contract tests for flext-oracle-oic package version metadata.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
@@ -16,19 +20,22 @@ class TestsFlextOracleOicVersion:
     Qualifiers remain represented only in the version string.
     """
 
-    def test_version_is_non_empty_string(self) -> None:
+    @staticmethod
+    def test_version_is_non_empty_string() -> None:
         """__version__ is a non-empty string."""
         tm.that(__version__, is_=str)
         tm.that(__version__.strip(), eq=__version__)
         assert len(__version__) >= 1
 
-    def test_version_info_is_release_triple(self) -> None:
+    @staticmethod
+    def test_version_info_is_release_triple() -> None:
         """__version_info__ is an exact three-integer release tuple."""
         tm.that(__version_info__, is_=tuple)
         tm.that(len(__version_info__), eq=3)
         assert all(isinstance(part, int) for part in __version_info__)
 
-    def test_version_info_starts_with_three_integer_components(self) -> None:
+    @staticmethod
+    def test_version_info_starts_with_three_integer_components() -> None:
         """The first three components form a major.minor.patch integer triple."""
         assert len(__version_info__) >= 3
         major, minor, patch = __version_info__[:3]
@@ -39,6 +46,7 @@ class TestsFlextOracleOicVersion:
         assert minor >= 0
         assert patch >= 0
 
-    def test_version_string_matches_version_info(self) -> None:
+    @staticmethod
+    def test_version_string_matches_version_info() -> None:
         """__version_info__ equals the exact PEP 440 release triple."""
         tm.that(__version_info__, eq=Version(__version__).release)

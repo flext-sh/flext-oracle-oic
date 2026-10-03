@@ -17,25 +17,30 @@ from tests import TestsFlextOracleOicTypes, t
 class TestsFlextOracleOicTypingsUnit:
     """Contract of the composed test-types facade ``t``."""
 
-    def test_facade_alias_is_the_composed_class(self) -> None:
+    @staticmethod
+    def test_facade_alias_is_the_composed_class() -> None:
         """``t`` is the public alias of the composed test-types class."""
         assert t is TestsFlextOracleOicTypes
 
+    @staticmethod
     @pytest.mark.parametrize("base", [tests_t, FlextOracleOicTypes])
-    def test_facade_composes_both_type_domains(self, base: type[object]) -> None:
+    def test_facade_composes_both_type_domains(base: type[object]) -> None:
         """Facade inherits from both the shared and OIC-specific type roots."""
         assert issubclass(t, base)
 
+    @staticmethod
     @pytest.mark.parametrize("member", ["JsonValue", "JsonList", "JsonDict"])
-    def test_inherited_type_members_are_exposed(self, member: str) -> None:
+    def test_inherited_type_members_are_exposed(member: str) -> None:
         """Domain type members are reachable through the composed facade."""
         tm.that(getattr(t, member, None), none=False)
 
+    @staticmethod
     @pytest.mark.parametrize("member", ["JsonValue", "JsonList", "JsonDict"])
-    def test_members_resolve_to_the_root_definition(self, member: str) -> None:
+    def test_members_resolve_to_the_root_definition(member: str) -> None:
         """MRO composition exposes each member without shadowing its root."""
         assert getattr(t, member) is getattr(tests_t, member)
 
-    def test_oic_domain_does_not_shadow_shared_json_value(self) -> None:
+    @staticmethod
+    def test_oic_domain_does_not_shadow_shared_json_value() -> None:
         """OIC extension reuses (not redefines) the shared ``JsonValue``."""
         assert t.JsonValue is FlextOracleOicTypes.JsonValue

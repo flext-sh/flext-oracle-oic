@@ -17,8 +17,8 @@ from enum import StrEnum, unique
 
 from flext_auth import FlextAuthConstants
 
-from ._constants.base import FlextOracleOicConstantsBase
-from ._constants.values import FlextOracleOicConstantsValues
+from flext_oracle_oic._constants.base import FlextOracleOicConstantsBase
+from flext_oracle_oic._constants.values import FlextOracleOicConstantsValues
 
 
 class FlextOracleOicConstants(FlextAuthConstants):
@@ -56,7 +56,7 @@ class FlextOracleOicConstants(FlextAuthConstants):
         V2 = "v2"
 
     class OracleOic(
-        FlextOracleOicConstantsBase, FlextOracleOicConstantsValues.OracleOic
+        FlextOracleOicConstantsBase, FlextOracleOicConstantsValues.OracleOic,
     ):
         """Oracle Integration Cloud specific constants."""
 
@@ -125,8 +125,8 @@ class FlextOracleOicConstants(FlextAuthConstants):
     class Monitoring(FlextOracleOicConstantsValues.Monitoring):
         """Oracle OIC Monitoring constants.
 
-        ``COMPONENT_DATABASE`` is owned by ``flext_oracle_oic._constants`` and
-        inherited through this facade subclass.
+        Scalars are owned by ``flext_oracle_oic._constants`` and inherited
+        through this facade subclass.
         """
 
         @unique
