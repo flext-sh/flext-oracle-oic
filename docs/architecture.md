@@ -94,30 +94,31 @@ The library follows these core principles from the FLEXT ecosystem:
 
 ### Module Organization
 
-**Current Structure (2,937 lines across 13 modules)**
+**Public and Implementation Owners**
 
 ```
 src/flext_oracle_oic/
-├── __init__.py              # Module exports and version (65 lines)
-├── ext_config.py            # Pydantic configuration models (215 lines)
-├── ext_exceptions.py        # Exception hierarchy (89 lines)
-├── ext_client.py            # HTTP client wrapper (312 lines)
-├── ext_services.py          # Service layer (445 lines)
-├── ext_models.py            # Data models using Pydantic (267 lines)
-├── cli.py                   # CLI implementation (198 lines)
-├── extension.py             # Extension pattern base (156 lines)
-├── factory.py               # Service factory methods (89 lines)
-├── container.py             # Basic container (134 lines)
-├── main.py                  # Main entry point (78 lines)
-├── typings.py               # Type definitions (123 lines)
-└── version.py               # Version management (45 lines)
+├── __init__.py              # Generated public exports
+├── _settings.py             # settings.OracleOic deployment inputs
+├── _config.py               # config.OracleOic business rules
+├── config/                 # YAML business-rule owners
+├── api.py                   # FlextOracleOicApi composition root
+├── ext_client.py            # FlextOracleOicClient HTTP adapter
+├── service.py               # FlextOracleOicService MRO facade
+├── services/               # Domain service mixins
+├── models.py                # m.OracleOic Pydantic contracts
+├── main.py                  # FlextOracleOicCli transport
+├── constants.py             # c facade
+├── protocols.py             # p facade
+├── typings.py               # t facade
+└── utilities.py             # u facade
 ```
 
 ## Architecture Components
 
 ### Configuration Management
 
-**OracleOicExtensionSettings**
+**FlextOracleOicSettings**
 
 - Main configuration container using Pydantic
 - Environment variable integration for Oracle OIC settings
@@ -137,25 +138,13 @@ src/flext_oracle_oic/
 
 ### Service Architecture
 
-**Current Service Classes (FLEXT Compliance Issues)**
+**Current Service Composition**
 
 ```text
-# ext_services.py contains multiple classes (violates FLEXT unified pattern)
-class OracleOicExtensionService        # Main service class
-class OICIntegrationPatternService     # Integration patterns
-class LifecycleManager                 # Service lifecycle
-class MonitoringService                # Basic monitoring
-
-# Required FLEXT pattern: Single unified class per module
-class OracleOicIntegrationService(s):
-    """Unified service with nested helpers."""
-
-    class _IntegrationHelper:
-        """Nested pattern execution logic."""
-
-    class _MonitoringHelper:
-        """Nested monitoring and lifecycle management."""
-
+FlextOracleOicApi -> FlextOracleOicService
+FlextOracleOicService composes authentication, monitoring, orchestration,
+integration lifecycle, integration CRUD, and service-base mixins.
+The public s alias names FlextOracleOicService, not a settings class.
 ```
 
 ### Client Layer
@@ -166,15 +155,11 @@ class OracleOicIntegrationService(s):
 - Request/response handling with basic error management
 - OAuth2 authentication preparation (incomplete)
 
-**FLEXT Compliance Issue**
+**HTTP Boundary**
 
 ```text
-# ❌ Current violation in ext_client.py:12
-import httpx  # Direct dependency violates FLEXT abstraction
-
-# ✅ Required FLEXT pattern
-from flext_api import FlextApiClient
-
+FlextOracleOicClient uses the public FlextApi HTTP facade from flext_api.
+Connection and OAuth inputs enter through m.OracleOic domain models.
 ```
 
 ### Domain Models
@@ -218,7 +203,7 @@ logger = u.fetch_logger(__name__)
 logger.info("oic.connection.configuration.validated")
 ```
 
-### Missing FLEXT Integration ❌
+### Public Composition Boundary
 
 **Public Service Composition**
 
@@ -231,16 +216,10 @@ assert connection_context["base_url"] == settings.OracleOic.base_url
 assert connection_context["request_timeout"] == settings.OracleOic.request_timeout
 ```
 
-**FlextContainer Dependency Injection**
-
-```text
-# ❌ Current: Manual service creation
-service = OracleOicExtensionService(settings)
-
-# ✅ Required: Container-managed dependencies
-container = FlextContainer()
-service = container.resolve("oic_service").unwrap()
-```
+Pass the typed settings instance to the public API composition root. Reading its
+connection context above is an offline operation, not proof that delegated service
+operations or Oracle authentication succeed. The parent implementation lane owns the
+remaining composition and runtime findings.
 
 ## Critical Architecture Issues
 
