@@ -48,7 +48,7 @@ assert api.fetch_connection_context().unwrap()["base_url"] == settings.OracleOic
 
 ## Configuration API
 
-### OracleOicExtensionSettings
+### FlextOracleOicSettings
 
 Main configuration container for Oracle OIC extension settings.
 
@@ -65,7 +65,7 @@ runtime_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
 - Settings are loaded from the environment; domain models validate their ranges.
 - Flat connection or authentication keywords are not the namespaced settings contract.
 
-### FlextOracleOicConnectionSettings
+### OICConnectionConfig
 
 HTTP connection configuration for Oracle Integration Cloud.
 
@@ -86,7 +86,7 @@ connection_config = m.OracleOic.OICConnectionConfig.model_validate(
 - `settings.OracleOic.request_timeout` controls the request timeout.
 - Defaults and validation constraints belong to the settings and model owners.
 
-### FlextOracleOicAuthSettings
+### OICAuthConfig
 
 OAuth2/IDCS authentication configuration for Oracle cloud integration.
 
@@ -140,9 +140,9 @@ client = FlextOracleOicClient(
 )
 ```
 
-**Critical Issue**: Current client implementation uses direct `httpx` imports (line 12
-in `ext_client.py`) which violates FLEXT ecosystem standards. Will be refactored to use
-`flext-api` patterns.
+`FlextOracleOicClient` accepts both validated connection and authentication models.
+Construction does not contact Oracle; network operations require configured credentials
+and a reachable instance. HTTP operations use the upstream `FlextApi` facade.
 
 ### Data Models
 
