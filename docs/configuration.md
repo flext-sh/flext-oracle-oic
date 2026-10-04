@@ -51,8 +51,8 @@ from flext_oracle_oic import m, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
-        include=set(m.OracleOic.OICConnectionConfig.model_fields)
-    )
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
 )
 ```
 
@@ -70,7 +70,7 @@ Validate OAuth2/IDCS authentication using `m.OracleOic.OICAuthConfig`:
 from flext_oracle_oic import m, settings
 
 auth_config = m.OracleOic.OICAuthConfig.model_validate(
-    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields))
+    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
 )
 ```
 
@@ -89,7 +89,9 @@ Connection, authentication, and feature inputs share `FlextOracleOicSettings.Ora
 from flext_oracle_oic import FlextOracleOicSettings, settings
 
 runtime_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
-assert runtime_settings.OracleOic == settings.OracleOic
+if runtime_settings.OracleOic != settings.OracleOic:
+    message = "Settings validation did not preserve the configured namespace"
+    raise ValueError(message)
 ```
 
 **Primary Configuration Object:**
@@ -131,10 +133,12 @@ from flext_oracle_oic import m, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
-        include=set(m.OracleOic.OICConnectionConfig.model_fields)
-    )
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
 )
-assert connection_config.request_timeout == settings.OracleOic.request_timeout
+if connection_config.request_timeout != settings.OracleOic.request_timeout:
+    message = "Connection validation did not preserve the configured timeout"
+    raise ValueError(message)
 ```
 
 ### Current Validation Rules
@@ -174,11 +178,16 @@ Based on the actual Pydantic models implementation:
 from flext_oracle_oic import m, settings
 
 auth_config = m.OracleOic.OICAuthConfig.model_validate(
-    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields))
+    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
 )
 
 # Validate secret preservation without logging either settings or the secret.
-assert auth_config.oauth_client_secret.get_secret_value() == settings.OracleOic.oauth_client_secret
+if (
+    auth_config.oauth_client_secret.get_secret_value()
+    != settings.OracleOic.oauth_client_secret
+):
+    message = "Authentication validation did not preserve the configured secret"
+    raise ValueError(message)
 ```
 
 **Security Recommendations:**
@@ -197,7 +206,9 @@ from flext_oracle_oic import FlextOracleOicSettings, settings
 
 # Use the same namespace in development and deployment.
 dev_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
-assert dev_settings.OracleOic.request_timeout == settings.OracleOic.request_timeout
+if dev_settings.OracleOic.request_timeout != settings.OracleOic.request_timeout:
+    message = "Development settings did not preserve the configured timeout"
+    raise ValueError(message)
 ```
 
 ## Troubleshooting
@@ -213,14 +224,17 @@ from flext_oracle_oic import e, m, settings
 try:
     m.OracleOic.OICConnectionConfig.model_validate({})
 except e.PydanticValidationError as error:
-    assert any(item["loc"] == ("base_url",) for item in error.errors())
+    if not any(item["loc"] == ("base_url",) for item in error.errors()):
+        message = "Expected a missing base_url validation error"
+        raise ValueError(message) from error
 else:
-    raise AssertionError("Missing base_url must fail domain validation")
+    message = "Missing base_url must fail domain validation"
+    raise AssertionError(message)
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
-        include=set(m.OracleOic.OICConnectionConfig.model_fields)
-    )
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
 )
 ```
 
@@ -230,15 +244,18 @@ connection_config = m.OracleOic.OICConnectionConfig.model_validate(
 from flext_oracle_oic import e, m, settings
 
 connection_data = settings.OracleOic.model_dump(
-    include=set(m.OracleOic.OICConnectionConfig.model_fields)
+    include=set(m.OracleOic.OICConnectionConfig.model_fields),
 )
 connection_data["request_timeout"] = "invalid"
 try:
     m.OracleOic.OICConnectionConfig.model_validate(connection_data)
 except e.PydanticValidationError as error:
-    assert any(item["loc"] == ("request_timeout",) for item in error.errors())
+    if not any(item["loc"] == ("request_timeout",) for item in error.errors()):
+        message = "Expected an invalid timeout validation error"
+        raise ValueError(message) from error
 else:
-    raise AssertionError("Invalid timeout must fail domain validation")
+    message = "Invalid timeout must fail domain validation"
+    raise AssertionError(message)
 ```
 
 ### Configuration Debugging
