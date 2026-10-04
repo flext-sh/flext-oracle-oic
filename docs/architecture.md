@@ -195,50 +195,40 @@ from flext_api import FlextApiClient
 
 ### Currently Implemented ✅
 
-**r Railway Pattern (Partial)**
+**Typed Connection Validation and Railway Results**
 
 ```python
-from __future__ import annotations
+from flext_oracle_oic import m, r, settings
 
-
-def validate_connection(settings: dict) -> p.Result[ConnectionInfo]:
-    """Example of current r usage."""
-    if not settings.get("base_url"):
-        return r[ConnectionInfo].fail("Base URL required")
-    return r[ConnectionInfo].ok(ConnectionInfo(**settings))
+connection = m.OracleOic.OICConnectionConfig.model_validate(
+    settings.OracleOic.model_dump(
+        include=set(m.OracleOic.OICConnectionConfig.model_fields)
+    )
+)
+result = r[m.OracleOic.OICConnectionConfig].ok(connection)
+assert result.unwrap().base_url == settings.OracleOic.base_url
 ```
 
 **FlextLogger Integration**
 
 ```python
-from __future__ import annotations
+from flext_oracle_oic import u
 
-from flext_cli import u
-
-
-class ServiceClass:
-    def __init__(self):
-        self.logger = u.fetch_logger(__name__)
+logger = u.fetch_logger(__name__)
+logger.info("oic.connection.configuration.validated")
 ```
 
 ### Missing FLEXT Integration ❌
 
-**s Inheritance**
+**Public Service Composition**
 
 ```python
-from __future__ import annotations
+from flext_oracle_oic import FlextOracleOicApi, settings
 
-from flext_oracle_oic import s
-
-
-# ❌ Current implementation
-class OracleOicExtensionService:
-    pass
-
-
-# ✅ Required FLEXT pattern
-class OracleOicIntegrationService(s):
-    pass
+api = FlextOracleOicApi(settings=settings)
+connection_context = api.fetch_connection_context().unwrap()
+assert connection_context["base_url"] == settings.OracleOic.base_url
+assert connection_context["request_timeout"] == settings.OracleOic.request_timeout
 ```
 
 **FlextContainer Dependency Injection**
