@@ -4,9 +4,9 @@
 
 - [Public API Overview](#public-api-overview)
 - [Configuration API](#configuration-api)
-  - [OracleOicExtensionSettings](#oracleoicextensionsettings)
-  - [FlextOracleOicConnectionSettings](#flextoracleoicconnectionsettings)
-  - [FlextOracleOicAuthSettings](#flextoracleoicauthsettings)
+  - [FlextOracleOicSettings](#flextoracleoicsettings)
+  - [OICConnectionConfig](#oicconnectionconfig)
+  - [OICAuthConfig](#oicauthconfig)
 - [Available Components](#available-components)
   - [Service Classes (Implementation Status Varies)](#service-classes-implementation-status-varies)
   - [Client Components (FLEXT Compliance Issues)](#client-components-flext-compliance-issues)
@@ -43,7 +43,10 @@ structure. All public APIs are available through the main module import.
 from flext_oracle_oic import FlextOracleOicApi, settings
 
 api = FlextOracleOicApi(settings=settings)
-assert api.fetch_connection_context().unwrap()["base_url"] == settings.OracleOic.base_url
+connection_context = api.fetch_connection_context().unwrap()
+if connection_context["base_url"] != settings.OracleOic.base_url:
+    message = "Connection context did not preserve the configured URL"
+    raise ValueError(message)
 ```
 
 ## Configuration API
@@ -74,7 +77,7 @@ from flext_oracle_oic import m, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
-        include=set(m.OracleOic.OICConnectionConfig.model_fields)
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
     ),
 )
 ```
@@ -94,7 +97,7 @@ OAuth2/IDCS authentication configuration for Oracle cloud integration.
 from flext_oracle_oic import m, settings
 
 auth_config = m.OracleOic.OICAuthConfig.model_validate(
-    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields))
+    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
 )
 ```
 
@@ -116,7 +119,10 @@ auth_config = m.OracleOic.OICAuthConfig.model_validate(
 from flext_oracle_oic import FlextOracleOicApi, settings
 
 api = FlextOracleOicApi(settings=settings)
-assert api.fetch_features_context().unwrap()["verify_ssl"] == settings.OracleOic.verify_ssl
+features_context = api.fetch_features_context().unwrap()
+if features_context["verify_ssl"] != settings.OracleOic.verify_ssl:
+    message = "Feature context did not preserve configured TLS verification"
+    raise ValueError(message)
 ```
 
 **Usage Note**: Current service implementations provide basic structure. Full Oracle OIC
@@ -129,14 +135,14 @@ from flext_oracle_oic import FlextOracleOicClient, m, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
-        include=set(m.OracleOic.OICConnectionConfig.model_fields)
-    )
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
 )
 auth_config = m.OracleOic.OICAuthConfig.model_validate(
-    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields))
+    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
 )
 client = FlextOracleOicClient(
-    connection_config=connection_config, auth_config=auth_config
+    connection_config=connection_config, auth_config=auth_config,
 )
 ```
 
@@ -165,7 +171,7 @@ from flext_oracle_oic import e
 base_error = e.BaseError  # Base exception
 auth_error = e.AuthenticationError  # Authentication failures
 config_error = e.ConfigurationError  # Configuration issues
-connection_error = e.ConnectionError  # Connection problems
+connection_error = e.FlextConnectionError  # Connection problems
 ```
 
 **Implementation Note**: Exception hierarchy provides structured error handling for
@@ -237,7 +243,9 @@ reachable instance.
 from flext_oracle_oic import FlextOracleOicSettings, settings
 
 runtime_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
-assert runtime_settings.OracleOic == settings.OracleOic
+if runtime_settings.OracleOic != settings.OracleOic:
+    message = "Settings validation did not preserve the configured namespace"
+    raise ValueError(message)
 ```
 
 ### API Stability
@@ -256,10 +264,12 @@ from flext_oracle_oic import m, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
-        include=set(m.OracleOic.OICConnectionConfig.model_fields)
-    )
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
 )
-assert connection_config.base_url == settings.OracleOic.base_url
+if connection_config.base_url != settings.OracleOic.base_url:
+    message = "Connection validation did not preserve the configured URL"
+    raise ValueError(message)
 ```
 
 ### Future Versions

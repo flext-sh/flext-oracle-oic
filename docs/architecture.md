@@ -15,7 +15,7 @@
   - [Domain Models](#domain-models)
 - [FLEXT Ecosystem Integration](#flext-ecosystem-integration)
   - [Currently Implemented ✅](#currently-implemented)
-  - [Missing FLEXT Integration ❌](#missing-flext-integration)
+  - [Public Composition Boundary](#public-composition-boundary)
 - [Critical Architecture Issues](#critical-architecture-issues)
   - [1. FLEXT Compliance Violations](#1-flext-compliance-violations)
   - [2. Oracle OIC Integration Gaps](#2-oracle-oic-integration-gaps)
@@ -187,11 +187,14 @@ from flext_oracle_oic import m, r, settings
 
 connection = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
-        include=set(m.OracleOic.OICConnectionConfig.model_fields)
-    )
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
 )
-result = r[m.OracleOic.OICConnectionConfig].ok(connection)
-assert result.unwrap().base_url == settings.OracleOic.base_url
+result = r[str].ok(connection.model_dump_json())
+restored_connection = m.OracleOic.OICConnectionConfig.model_validate_json(result.unwrap())
+if restored_connection.base_url != settings.OracleOic.base_url:
+    message = "Result did not preserve the configured connection URL"
+    raise ValueError(message)
 ```
 
 **FlextLogger Integration**
@@ -212,8 +215,12 @@ from flext_oracle_oic import FlextOracleOicApi, settings
 
 api = FlextOracleOicApi(settings=settings)
 connection_context = api.fetch_connection_context().unwrap()
-assert connection_context["base_url"] == settings.OracleOic.base_url
-assert connection_context["request_timeout"] == settings.OracleOic.request_timeout
+if connection_context["base_url"] != settings.OracleOic.base_url:
+    message = "Connection context did not preserve the configured URL"
+    raise ValueError(message)
+if connection_context["request_timeout"] != settings.OracleOic.request_timeout:
+    message = "Connection context did not preserve the configured timeout"
+    raise ValueError(message)
 ```
 
 Pass the typed settings instance to the public API composition root. Reading its

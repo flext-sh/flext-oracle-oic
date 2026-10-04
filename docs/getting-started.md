@@ -100,7 +100,9 @@ The library provides Pydantic-based configuration following FLEXT patterns:
 from flext_oracle_oic import FlextOracleOicSettings, settings
 
 runtime_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
-assert runtime_settings.OracleOic.base_url == settings.OracleOic.base_url
+if runtime_settings.OracleOic.base_url != settings.OracleOic.base_url:
+    message = "Settings validation did not preserve the configured URL"
+    raise ValueError(message)
 ```
 
 ### Current Capabilities
@@ -113,10 +115,12 @@ from flext_oracle_oic import m, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
-        include=set(m.OracleOic.OICConnectionConfig.model_fields)
-    )
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
 )
-assert connection_config.base_url == settings.OracleOic.base_url
+if connection_config.base_url != settings.OracleOic.base_url:
+    message = "Connection validation did not preserve the configured URL"
+    raise ValueError(message)
 ```
 
 ## Development Commands
