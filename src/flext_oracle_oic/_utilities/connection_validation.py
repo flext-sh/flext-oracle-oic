@@ -15,7 +15,10 @@ class FlextOracleOicUtilitiesConnectionValidation:
 
     @staticmethod
     def _validate_closed_string(
-        value: p.AttributeProbe, *, field_label: str, valid_values: frozenset[str],
+        value: p.AttributeProbe,
+        *,
+        field_label: str,
+        valid_values: frozenset[str],
     ) -> p.Result[str]:
         """Validate one upper-cased string against a closed canonical set.
 
@@ -31,7 +34,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
         if normalized_value not in valid_values:
             formatted_values = ", ".join(sorted(valid_values))
             return r[str].fail(
-                f"Invalid {field_label.lower()}. Valid: {formatted_values}"
+                f"Invalid {field_label.lower()}. Valid: {formatted_values}",
             )
         return r[str].ok(normalized_value)
 

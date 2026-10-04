@@ -132,7 +132,8 @@ class FlextOracleOicCli:
             The resulting ``p.Cli.Application``.
         """
         app = cli.create_app_with_common_params(
-            name=c.Cli.APP_NAME, help_text=c.Cli.APP_HELP,
+            name=c.Cli.APP_NAME,
+            help_text=c.Cli.APP_HELP,
         )
         cli.register_result_routes(
             app,

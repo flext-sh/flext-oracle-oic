@@ -52,7 +52,7 @@ class TestsFlextOracleOicConfig:
                 "max_retries": 5,
                 "use_ssl": False,
                 "verify_ssl": False,
-            }
+            },
         }).OracleOic
 
         tm.that(ns.base_url, eq="https://custom.integration.ocp.oraclecloud.com")
@@ -75,7 +75,7 @@ class TestsFlextOracleOicConfig:
                 ),
                 "oauth_client_aud": "custom_audience",
                 "oauth_scope": "custom_scope",
-            }
+            },
         }).OracleOic
 
         tm.that(ns.oauth_client_id, eq="custom_client_id")
@@ -96,7 +96,7 @@ class TestsFlextOracleOicConfig:
                 "enable_monitoring": enabled,
                 "enable_enterprise_patterns": enabled,
                 "enable_orchestration": enabled,
-            }
+            },
         }).OracleOic
 
         assert ns.enable_monitoring is enabled
@@ -107,7 +107,7 @@ class TestsFlextOracleOicConfig:
     def test_domain_auth_config_masks_secret_but_settings_do_not() -> None:
         """SecretStr masking lives at the domain boundary, not in settings."""
         ns = FlextOracleOicSettings.model_validate({
-            "OracleOic": {"oauth_client_secret": "topsecret"}
+            "OracleOic": {"oauth_client_secret": "topsecret"},
         }).OracleOic
         auth = m.OracleOic.OICAuthConfig.model_validate({
             "oauth_client_id": "id",
@@ -144,7 +144,9 @@ class TestsFlextOracleOicConfig:
         ],
     )
     def test_domain_boundary_rejects_out_of_range_values(
-        *, field: str, value: int,
+        *,
+        field: str,
+        value: int,
     ) -> None:
         """Range constraints are enforced by OICConnectionConfig, not settings."""
         payload: dict[str, str | int] = {
@@ -165,14 +167,15 @@ class TestsFlextOracleOicConfig:
                 "base_url": "https://custom.integration.ocp.oraclecloud.com",
                 "api_version": "v2",
                 "request_timeout": 45,
-            }
+            },
         })
         reparsed = FlextOracleOicSettings.model_validate(original.model_dump())
 
         tm.that(reparsed.OracleOic.base_url, eq=original.OracleOic.base_url)
         tm.that(reparsed.OracleOic.api_version, eq=original.OracleOic.api_version)
         tm.that(
-            reparsed.OracleOic.request_timeout, eq=original.OracleOic.request_timeout,
+            reparsed.OracleOic.request_timeout,
+            eq=original.OracleOic.request_timeout,
         )
 
     @staticmethod

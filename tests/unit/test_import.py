@@ -89,7 +89,8 @@ class TestsFlextOracleOicImport:
         })
         restored = FlextOracleOicSettings.model_validate(original.model_dump())
         tm.that(
-            restored.OracleOic.request_timeout, eq=original.OracleOic.request_timeout,
+            restored.OracleOic.request_timeout,
+            eq=original.OracleOic.request_timeout,
         )
         tm.that(restored.OracleOic.max_retries, eq=original.OracleOic.max_retries)
 
