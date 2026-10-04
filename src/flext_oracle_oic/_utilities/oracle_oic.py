@@ -24,16 +24,19 @@ class FlextOracleOicUtilitiesOracleOic:
         """Validated plan for one integration string field."""
 
         model_config: ClassVar[m.ConfigDict] = m.ConfigDict(
-            arbitrary_types_allowed=True, frozen=True,
+            arbitrary_types_allowed=True,
+            frozen=True,
         )
 
         field_name: Annotated[str, m.Field(description="Name of the field to validate")]
         label: Annotated[str, m.Field(description="Human-readable label for the field")]
         required: Annotated[
-            bool, m.Field(description="Whether the field is required"),
+            bool,
+            m.Field(description="Whether the field is required"),
         ] = False
         required_message: Annotated[
-            str, m.Field(description="Error message when required field is missing"),
+            str,
+            m.Field(description="Error message when required field is missing"),
         ] = ""
         validator: Annotated[
             Callable[[str], p.Result[str]],
@@ -56,7 +59,8 @@ class FlextOracleOicUtilitiesOracleOic:
         errors: MutableSequence[str] = []
         validated_data = t.json_dict_adapter().validate_python(integration_data)
         field_specs: tuple[
-            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan, ...,
+            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan,
+            ...,
         ] = (
             FlextOracleOicUtilitiesOracleOic.FieldValidationPlan(
                 field_name="name",

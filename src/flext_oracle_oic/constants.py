@@ -56,7 +56,8 @@ class FlextOracleOicConstants(FlextAuthConstants):
         V2 = "v2"
 
     class OracleOic(
-        FlextOracleOicConstantsBase, FlextOracleOicConstantsValues.OracleOic,
+        FlextOracleOicConstantsBase,
+        FlextOracleOicConstantsValues.OracleOic,
     ):
         """Oracle Integration Cloud specific constants."""
 

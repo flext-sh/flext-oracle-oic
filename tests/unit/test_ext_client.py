@@ -51,7 +51,8 @@ class TestsFlextOracleOicExtClient:
     ) -> FlextOracleOicClient:
         """Return a client wired with valid configuration objects."""
         return FlextOracleOicClient(
-            connection_config=connection_config, auth_config=auth_config,
+            connection_config=connection_config,
+            auth_config=auth_config,
         )
 
     @staticmethod
@@ -77,7 +78,8 @@ class TestsFlextOracleOicExtClient:
             oauth_scope="urn:opc:resource:consumer:custom",
         )
         client = FlextOracleOicClient(
-            connection_config=connection_config, auth_config=auth,
+            connection_config=connection_config,
+            auth_config=auth,
         )
 
         body = client.get_oauth_request_body()
@@ -112,7 +114,8 @@ class TestsFlextOracleOicExtClient:
             oauth_client_aud="https://oic.example.com",
         )
         client = FlextOracleOicClient(
-            connection_config=connection_config, auth_config=auth,
+            connection_config=connection_config,
+            auth_config=auth,
         )
 
         scope = client.get_oauth_request_body()["scope"]
@@ -131,7 +134,8 @@ class TestsFlextOracleOicExtClient:
             oauth_token_url="",
         )
         client = FlextOracleOicClient(
-            connection_config=connection_config, auth_config=auth,
+            connection_config=connection_config,
+            auth_config=auth,
         )
 
         result = client.get_access_token()

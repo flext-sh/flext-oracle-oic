@@ -108,7 +108,11 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         return str(value)
 
     def _build_integration_info(
-        self, data: t.JsonMapping, *, fallback_id: str, default_status: str,
+        self,
+        data: t.JsonMapping,
+        *,
+        fallback_id: str,
+        default_status: str,
     ) -> m.OracleOic.OICIntegrationInfo:
         """Build normalized integration model from API payload mapping.
 
@@ -120,7 +124,8 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
             name=self._as_text(data.get("name"), ""),
             description=self._as_text(data.get("description"), ""),
             integration_version=self._as_text(
-                data.get("version"), c.Integration.DEFAULT_VERSION_FALLBACK,
+                data.get("version"),
+                c.Integration.DEFAULT_VERSION_FALLBACK,
             ),
             status=self._as_text(data.get("status"), default_status),
             created_by=self._as_text(data.get("createdBy"), ""),
@@ -155,7 +160,8 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         except c.EXC_NETWORK_TYPE as exc:
             u.fetch_logger(__name__).exception("Failed to list integrations")
             return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail_op(
-                "Integration listing", exc,
+                "Integration listing",
+                exc,
             )
 
     def _list_integrations(self) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
@@ -177,7 +183,9 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         integrations: list[m.OracleOic.OICIntegrationInfo] = []
         for item in integrations_data:
             integration = self._build_integration_info(
-                item, fallback_id="", default_status=c.Connection.Status.UNKNOWN,
+                item,
+                fallback_id="",
+                default_status=c.Connection.Status.UNKNOWN,
             )
             integrations.append(integration)
         return r[Sequence[m.OracleOic.OICIntegrationInfo]].ok(integrations)
@@ -220,7 +228,8 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
                 oauth_scope=self._oic_settings.OracleOic.oauth_scope,
             )
             self._client = FlextOracleOicClient(
-                connection_config=connection_config, auth_config=auth_config,
+                connection_config=connection_config,
+                auth_config=auth_config,
             )
         return r[FlextOracleOicClient].ok(self._client)
 

@@ -64,10 +64,12 @@ class TestsFlextOracleOicBasic:
 
     @staticmethod
     @pytest.mark.parametrize(
-        ("raw", "expected"), [("v1", c.OICApiVersion.V1), ("v2", c.OICApiVersion.V2)],
+        ("raw", "expected"),
+        [("v1", c.OICApiVersion.V1), ("v2", c.OICApiVersion.V2)],
     )
     def test_settings_preserve_api_version_scalar(
-        raw: str, expected: c.OICApiVersion,
+        raw: str,
+        expected: c.OICApiVersion,
     ) -> None:
         """api_version is a plain scalar; the enum contract lives in c."""
         settings = FlextOracleOicSettings.model_validate({
@@ -120,7 +122,8 @@ class TestsFlextOracleOicBasic:
 
     @staticmethod
     @pytest.mark.parametrize(
-        "missing", ["oauth_client_id", "oauth_client_secret", "oauth_token_url"],
+        "missing",
+        ["oauth_client_id", "oauth_client_secret", "oauth_token_url"],
     )
     def test_auth_config_requires_mandatory_fields(missing: str) -> None:
         """Each required auth field is enforced at validation time."""

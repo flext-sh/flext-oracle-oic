@@ -108,7 +108,8 @@ class TestsFlextOracleOicModelsUnit:
 
     @staticmethod
     @pytest.mark.parametrize(
-        "missing", ["oauth_client_id", "oauth_client_secret", "oauth_token_url"]
+        "missing",
+        ["oauth_client_id", "oauth_client_secret", "oauth_token_url"],
     )
     def test_auth_config_requires_mandatory_fields(missing: str) -> None:
         """Omitting any required field raises a validation error."""
@@ -164,7 +165,8 @@ class TestsFlextOracleOicModelsUnit:
         """request_timeout must be strictly positive."""
         with pytest.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig(
-                base_url="https://oic.example.com", request_timeout=timeout
+                base_url="https://oic.example.com",
+                request_timeout=timeout,
             )
 
     @staticmethod
@@ -172,7 +174,8 @@ class TestsFlextOracleOicModelsUnit:
         """max_retries cannot be negative."""
         with pytest.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig(
-                base_url="https://oic.example.com", max_retries=-1
+                base_url="https://oic.example.com",
+                max_retries=-1,
             )
 
     # ---- OICIntegrationInfo (entity) ------------------------------------
@@ -275,7 +278,9 @@ class TestsFlextOracleOicModelsUnit:
     def test_integration_status_roundtrips_public_state() -> None:
         """Status fields survive a model_dump roundtrip with defaults."""
         status = m.OracleOic.IntegrationStatus(
-            integration_id="int-1", integration_version="1.0.0", status="ACTIVATED"
+            integration_id="int-1",
+            integration_version="1.0.0",
+            status="ACTIVATED",
         )
         dumped = status.model_dump()
         tm.that(dumped["integration_id"], eq="int-1")
