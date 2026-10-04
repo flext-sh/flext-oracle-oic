@@ -62,10 +62,12 @@ class TestsFlextOracleOicExtServices:
         # NOTE (ADR-005): project fields are namespaced under settings.OracleOic,
         # so env vars use the nested delimiter form ORACLEOIC__<FIELD>.
         monkeypatch.setenv(
-            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_ID", _VALID_CLIENT_ID,
+            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_ID",
+            _VALID_CLIENT_ID,
         )
         monkeypatch.setenv(
-            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_SECRET", _VALID_OAUTH_CREDENTIAL,
+            "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_SECRET",
+            _VALID_OAUTH_CREDENTIAL,
         )
         FlextOracleOicSettings.reset_for_testing()
         yield FlextOracleOicService()
@@ -125,7 +127,8 @@ class TestsFlextOracleOicExtServices:
         ],
     )
     def test_operations_fail_gracefully_without_credentials(
-        unconfigured_service: FlextOracleOicService, operation: str,
+        unconfigured_service: FlextOracleOicService,
+        operation: str,
     ) -> None:
         """Every fallible op returns a failed ``r`` (never raises) when unconfigured."""
         svc = unconfigured_service
@@ -181,7 +184,8 @@ class TestsFlextOracleOicExtServices:
     @staticmethod
     @pytest.mark.parametrize("token", ["", "some-token", "expired.jwt.value"])
     def test_validate_auth_token_reports_missing_authenticator(
-        unconfigured_service: FlextOracleOicService, token: str,
+        unconfigured_service: FlextOracleOicService,
+        token: str,
     ) -> None:
         """Token validation fails identically regardless of the token value."""
         result = unconfigured_service.validate_auth_token(token)
@@ -234,7 +238,8 @@ class TestsFlextOracleOicExtServices:
         return isinstance(candidate, p.OracleOic.ServiceRules)
 
     def test_configured_service_satisfies_its_own_rules_protocol(
-        self, configured_service: FlextOracleOicService,
+        self,
+        configured_service: FlextOracleOicService,
     ) -> None:
         """The real service structurally satisfies its own declared protocol."""
         tm.that(self._is_service_rules(configured_service), eq=True)

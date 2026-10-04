@@ -86,21 +86,6 @@ class _ListIntegrationsCommand(cli_m.ManagedModel):
         return r[bool].ok(value=True)
 
 
-class _ShowVersionCommand(cli_m.ManagedModel):
-    """Show Oracle OIC Extension version."""
-
-    @staticmethod
-    def execute() -> p.Result[bool]:
-        """Print Oracle OIC Extension version through cli.print.
-
-        Returns:
-            The resulting ``p.Result[bool]``.
-        """
-        cli.print(f"Oracle OIC Extension v{__version__}")
-        cli.print("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud")
-        return r[bool].ok(value=True)
-
-
 def _print_integrations(
     integrations: t.SequenceOf[FlextOracleOicModels.OracleOic.OICIntegrationInfo],
 ) -> None:
@@ -128,6 +113,17 @@ class FlextOracleOicCli:
     - version: print the Oracle OIC Extension version
     """
 
+    @staticmethod
+    def show_version(_params: t.Cli.ModelLike) -> p.Result[bool]:
+        """Print the package version for a validated empty CLI request.
+
+        Returns:
+            The resulting ``p.Result[bool]``.
+        """
+        cli.print(f"Oracle OIC Extension v{__version__}")
+        cli.print("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud")
+        return r[bool].ok(value=True)
+
     @classmethod
     def build_app(cls) -> p.Cli.Application:
         """Build the Typer application with the registered commands.
@@ -136,7 +132,8 @@ class FlextOracleOicCli:
             The resulting ``p.Cli.Application``.
         """
         app = cli.create_app_with_common_params(
-            name=c.Cli.APP_NAME, help_text=c.Cli.APP_HELP,
+            name=c.Cli.APP_NAME,
+            help_text=c.Cli.APP_HELP,
         )
         cli.register_result_routes(
             app,
@@ -161,8 +158,8 @@ class FlextOracleOicCli:
                 cli_m.Cli.ResultCommandRoute(
                     name="version",
                     help_text="Show Oracle OIC Extension version",
-                    model_cls=_ShowVersionCommand,
-                    handler=_ShowVersionCommand.execute,
+                    model_cls=cli_m.Cli.EmptyRequest,
+                    handler=cls.show_version,
                 ),
             ],
         )

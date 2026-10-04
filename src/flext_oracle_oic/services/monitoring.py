@@ -103,7 +103,8 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         })
 
     def _validate_health_status_data(
-        self, health_data: t.JsonMapping,
+        self,
+        health_data: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
         """Validate a health status payload.
 
@@ -164,7 +165,8 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         return r[t.JsonMapping].ok(metrics_dict)
 
     def _fetch_performance_metrics_data(
-        self, base_metrics: t.JsonMapping,
+        self,
+        base_metrics: t.JsonMapping,
     ) -> t.JsonMapping:
         """Fetch performance metrics without exception translation.
 
@@ -206,7 +208,8 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         return t.json_mapping_adapter().validate_python({})
 
     def _metrics_with_analysis(
-        self, metrics_data: t.JsonMapping,
+        self,
+        metrics_data: t.JsonMapping,
     ) -> t.MutableJsonMapping:
         """Normalize performance metrics and attach analysis when available.
 
@@ -226,7 +229,9 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         return metrics_dict
 
     def _exception_metrics(
-        self, base_metrics: t.JsonMapping, exc: BaseException,
+        self,
+        base_metrics: t.JsonMapping,
+        exc: BaseException,
     ) -> t.MutableJsonMapping:
         """Build performance metrics result for translated exceptions.
 

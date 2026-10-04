@@ -50,64 +50,57 @@ structure. All public APIs are available through the main module import.
 Main configuration container for Oracle OIC extension settings.
 
 ```python
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import FlextOracleOicSettings, settings
 
-# Basic configuration creation
-settings = FlextOracleOicSettings(
-    base_url="https://your-instance.integration.ocp.oraclecloud.com"
-)
+# Validate the same namespaced settings the runtime consumes.
+runtime_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
 ```
 
 **Constructor Parameters:**
 
-- `connection: FlextOracleOicConnectionSettings` (required) - Connection configuration
-- `auth: FlextOracleOicAuthSettings` (optional) - Authentication configuration
-- Additional parameters may vary based on actual implementation
+- `OracleOic` contains the connection, authentication, and feature settings.
+- Settings are loaded from the environment; domain models validate their ranges.
+- Flat connection or authentication keywords are not the namespaced settings contract.
 
 ### FlextOracleOicConnectionSettings
 
 HTTP connection configuration for Oracle Integration Cloud.
 
 ```python
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import m, settings
 
-# Basic connection configuration
-settings = FlextOracleOicSettings(
-    base_url="https://your-instance.integration.ocp.oraclecloud.com",
-    api_version="v1",
-    request_timeout=30,
+connection_config = m.OracleOic.OICConnectionConfig.model_validate(
+    settings.OracleOic.model_dump(
+        include=set(m.OracleOic.OICConnectionConfig.model_fields)
+    ),
 )
 ```
 
 **Constructor Parameters:**
 
-- `base_url: str` (required) - Oracle OIC instance base URL
-- `api_version: str` (optional) - API version, defaults to "v1"
-- `request_timeout: int` (optional) - Request timeout in seconds, defaults to 30
-- Additional parameters based on actual Pydantic model implementation
+- `settings.OracleOic.base_url` selects the Oracle OIC instance.
+- `settings.OracleOic.api_version` selects the API version.
+- `settings.OracleOic.request_timeout` controls the request timeout.
+- Defaults and validation constraints belong to the settings and model owners.
 
 ### FlextOracleOicAuthSettings
 
 OAuth2/IDCS authentication configuration for Oracle cloud integration.
 
 ```python
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import m, settings
 
-# OAuth2 authentication setup
-auth_config = FlextOracleOicSettings(
-    base_url="https://your-instance.integration.ocp.oraclecloud.com",
-    oauth_client_id="your_client_id",
-    oauth_client_secret="your_client_secret",
-    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
+auth_config = m.OracleOic.OICAuthConfig.model_validate(
+    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields))
 )
 ```
 
 **Constructor Parameters:**
 
-- `oauth_client_id: str` (required) - OAuth2 client ID from Oracle IDCS
-- `oauth_client_secret: str` (required) - OAuth2 client secret (uses SecretStr)
-- `oauth_token_url: str` (required) - OAuth2 token endpoint URL
-- Additional OAuth2 parameters may be available based on implementation
+- Supply credentials through the declared environment settings, never literal examples.
+- The prefix is `FLEXT_ORACLE_OIC_`, with `__` separating the namespace and field.
+- The domain authentication model wraps the secret in `SecretStr`; do not print it.
+- Model construction alone does not prove successful authentication or connectivity.
 
 ## Available Components
 
@@ -138,10 +131,9 @@ in `ext_client.py`) which violates FLEXT ecosystem standards. Will be refactored
 Basic Pydantic data models are available:
 
 ```python
-from flext_oracle_oic import FlextOracleOicModels
+from flext_oracle_oic import m
 
-# Domain models are namespaced under the FlextOracleOicModels facade
-integration_model = FlextOracleOicModels.Api
+integration_fields = tuple(m.OracleOic.OICIntegrationInfo.model_fields)
 ```
 
 ## Exception Hierarchy
@@ -163,12 +155,9 @@ Oracle OIC operations.
 
 ## Factory and Utility Functions
 
-```python
-from flext_oracle_oic import (
-    # Factory functions for service creation
-    # Implementation details vary
-)
-```
+Use the public `FlextOracleOicApi` composition root rather than undocumented factory
+functions. Successful network operations require configured Oracle credentials and a
+reachable instance.
 
 ## Current Implementation Limitations
 
@@ -232,7 +221,7 @@ from flext_oracle_oic import FlextOracleOicSettings
 
 # Create basic configuration
 settings = FlextOracleOicSettings(
-    base_url="https://your-instance.integration.ocp.oraclecloud.com"
+    base_url="https://your-instance.integration.ocp.oraclecloud.com",
 )
 ```
 
@@ -254,7 +243,7 @@ from flext_oracle_oic import FlextOracleOicSettings
 # Configuration validation and type safety works correctly
 try:
     settings = FlextOracleOicSettings(
-        base_url="https://test-instance.integration.ocp.oraclecloud.com"
+        base_url="https://test-instance.integration.ocp.oraclecloud.com",
     )
     print("✅ Configuration valid")
 except ValueError as e:
