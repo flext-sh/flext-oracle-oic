@@ -143,9 +143,8 @@ class FlextOracleOicClient:
             The resulting ``p.Result[str]``.
         """
         return (
-            r[bool]
-            .ok(True)
-            .flat_map(lambda _: self._validate_token_url())
+            self
+            ._validate_token_url()
             .flat_map(lambda _: self._prepare_oauth_request())
             .flat_map(self._execute_token_request)
             .flat_map(self._parse_token_response)

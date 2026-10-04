@@ -11,9 +11,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import cast
-
 import pytest
 from flext_tests import tm
 
@@ -76,20 +73,16 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.oauth_client_secret.get_secret_value(), eq="super_secret")
 
     @staticmethod
-    def test_auth_config_is_immutable() -> None:
+    @pytest.mark.parametrize("field_name", m.OracleOic.OICAuthConfig.model_fields)
+    def test_auth_config_is_immutable(field_name: str) -> None:
         """Auth config is a frozen value object; mutation is rejected."""
         config = m.OracleOic.OICAuthConfig(
             oauth_client_id="cid",
             oauth_client_secret=t.SecretStr("secret"),
             oauth_token_url=_OAUTH_ENDPOINT,
         )
-        # The model is frozen: assignment raises at the attribute boundary, which
-        # `validate_assignment` bypasses entirely (that path only runs when a model
-        # opts into validate_assignment=True, and a frozen model never does). Go
-        # through setattr so the test exercises the boundary a real consumer hits.
-        mutate = cast("Callable[[object, str, object], None]", setattr)
-        with pytest.raises(c.ValidationError):
-            mutate(config, "oauth_scope", "mutated")
+        with pytest.raises(c.ValidationError, match="frozen_instance"):
+            setattr(config, field_name, "mutated")
 
     @staticmethod
     def test_auth_config_equality_is_by_value() -> None:
@@ -150,14 +143,12 @@ class TestsFlextOracleOicModelsUnit:
         assert config.verify_ssl is c.OracleOic.DEFAULT_VERIFY_SSL
 
     @staticmethod
-    def test_connection_config_is_immutable() -> None:
+    @pytest.mark.parametrize("field_name", m.OracleOic.OICConnectionConfig.model_fields)
+    def test_connection_config_is_immutable(field_name: str) -> None:
         """Connection config is a frozen value object."""
         config = m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
-        # Frozen model: assignment raises at the attribute boundary, so go through
-        # setattr to exercise the path a real consumer hits.
-        mutate = cast("Callable[[object, str, object], None]", setattr)
-        with pytest.raises(c.ValidationError):
-            mutate(config, "verify_ssl", False)
+        with pytest.raises(c.ValidationError, match="frozen_instance"):
+            setattr(config, field_name, not config.verify_ssl)
 
     @staticmethod
     @pytest.mark.parametrize("timeout", [0, -1, -30])
