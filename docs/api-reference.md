@@ -40,7 +40,10 @@ The current implementation provides foundation configuration classes and basic s
 structure. All public APIs are available through the main module import.
 
 ```python
+from flext_oracle_oic import FlextOracleOicApi, settings
 
+api = FlextOracleOicApi(settings=settings)
+assert api.fetch_connection_context().unwrap()["base_url"] == settings.OracleOic.base_url
 ```
 
 ## Configuration API
@@ -110,7 +113,10 @@ auth_config = m.OracleOic.OICAuthConfig.model_validate(
 ### Service Classes (Implementation Status Varies)
 
 ```python
-# Service and API entry points
+from flext_oracle_oic import FlextOracleOicApi, settings
+
+api = FlextOracleOicApi(settings=settings)
+assert api.fetch_features_context().unwrap()["verify_ssl"] == settings.OracleOic.verify_ssl
 ```
 
 **Usage Note**: Current service implementations provide basic structure. Full Oracle OIC
@@ -119,7 +125,19 @@ integration capabilities are in development.
 ### Client Components (FLEXT Compliance Issues)
 
 ```python
-# Service facade and settings (the HTTP client wrapper is not yet exposed)
+from flext_oracle_oic import FlextOracleOicClient, m, settings
+
+connection_config = m.OracleOic.OICConnectionConfig.model_validate(
+    settings.OracleOic.model_dump(
+        include=set(m.OracleOic.OICConnectionConfig.model_fields)
+    )
+)
+auth_config = m.OracleOic.OICAuthConfig.model_validate(
+    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields))
+)
+client = FlextOracleOicClient(
+    connection_config=connection_config, auth_config=auth_config
+)
 ```
 
 **Critical Issue**: Current client implementation uses direct `httpx` imports (line 12
@@ -216,13 +234,10 @@ reachable instance.
 ### Import Patterns
 
 ```python
-# Recommended import pattern for current version
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import FlextOracleOicSettings, settings
 
-# Create basic configuration
-settings = FlextOracleOicSettings(
-    base_url="https://your-instance.integration.ocp.oraclecloud.com",
-)
+runtime_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
+assert runtime_settings.OracleOic == settings.OracleOic
 ```
 
 ### API Stability
@@ -237,17 +252,14 @@ settings = FlextOracleOicSettings(
 ### Current Version (v0.12.0-dev)
 
 ```python
-# Safe to use for configuration and basic setup
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import m, settings
 
-# Configuration validation and type safety works correctly
-try:
-    settings = FlextOracleOicSettings(
-        base_url="https://test-instance.integration.ocp.oraclecloud.com",
+connection_config = m.OracleOic.OICConnectionConfig.model_validate(
+    settings.OracleOic.model_dump(
+        include=set(m.OracleOic.OICConnectionConfig.model_fields)
     )
-    print("✅ Configuration valid")
-except ValueError as e:
-    print(f"❌ Configuration error: {e}")
+)
+assert connection_config.base_url == settings.OracleOic.base_url
 ```
 
 ### Future Versions

@@ -97,21 +97,10 @@ export ORACLE_OIC_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oauth2/v
 The library provides Pydantic-based configuration following FLEXT patterns:
 
 ```python
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import FlextOracleOicSettings, settings
 
-# Create configuration following FLEXT patterns
-settings = FlextOracleOicSettings(
-    OracleOic={
-        "base_url": "https://your-oic-instance.integration.ocp.oraclecloud.com",
-        "api_version": "v1",
-        "request_timeout": 30,
-        "oauth_client_id": "your_client_id",
-        "oauth_client_secret": "your_client_secret",
-        "oauth_token_url": "https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
-    }
-)
-
-print(f"Configuration created: {settings.OracleOic.base_url}")
+runtime_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
+assert runtime_settings.OracleOic.base_url == settings.OracleOic.base_url
 ```
 
 ### Current Capabilities
@@ -120,17 +109,14 @@ print(f"Configuration created: {settings.OracleOic.base_url}")
 > structure:
 
 ```python
-# Import available components
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import m, settings
 
-# Basic configuration validation
-try:
-    settings = FlextOracleOicSettings(
-        base_url="https://test.integration.ocp.oraclecloud.com", api_version="v1"
+connection_config = m.OracleOic.OICConnectionConfig.model_validate(
+    settings.OracleOic.model_dump(
+        include=set(m.OracleOic.OICConnectionConfig.model_fields)
     )
-    print("✅ Configuration valid")
-except Exception as e:
-    print(f"❌ Configuration error: {e}")
+)
+assert connection_config.base_url == settings.OracleOic.base_url
 ```
 
 ## Development Commands
