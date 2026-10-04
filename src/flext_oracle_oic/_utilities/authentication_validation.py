@@ -1,8 +1,13 @@
-"""Oracle OIC authentication validation utilities mixin."""
+"""Oracle OIC authentication validation utilities mixin.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
-from flext_oracle_oic import c, p, r, t
+from flext_core import r
+from flext_oracle_oic import c, p, t
 
 
 class FlextOracleOicUtilitiesAuthenticationValidation:

@@ -1,9 +1,13 @@
-"""Oracle OIC monitoring and health check utilities mixin."""
+"""Oracle OIC monitoring and health check utilities mixin.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
-from flext_core import FlextUtilities as ug
-from flext_oracle_oic import c, p, r, t
+from flext_core import FlextUtilities as ug, r
+from flext_oracle_oic import c, p, t
 
 
 class FlextOracleOicUtilitiesMonitoring:
@@ -74,7 +78,7 @@ class FlextOracleOicUtilitiesMonitoring:
         recommendations: list[str] = []
         for metric_key in ("average_response_time", "success_rate", "error_rate"):
             metric_value_raw = metrics.get(metric_key)
-            if not isinstance(metric_value_raw, t.NUMERIC_TYPES):
+            if not isinstance(metric_value_raw, c.NUMERIC_TYPES):
                 continue
             metric_value = float(metric_value_raw)
             issue, recommendation, is_critical = (

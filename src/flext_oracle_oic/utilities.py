@@ -11,11 +11,15 @@ FLEXT COMPLIANCE: Follows [Project]Utilities pattern with:
 - Railway-oriented programming with r
 - Type-safe operations with proper validation
 - SOLID principles with clean separation of concerns
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
 
-from flext_auth import u
+from flext_auth import FlextAuthUtilities
+
 from flext_oracle_oic._utilities.authentication_validation import (
     FlextOracleOicUtilitiesAuthenticationValidation,
 )
@@ -27,7 +31,7 @@ from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracle
 
 
 class FlextOracleOicUtilities(
-    u,
+    FlextAuthUtilities,
     FlextOracleOicUtilitiesOracleOic,
     FlextOracleOicUtilitiesConnectionValidation,
     FlextOracleOicUtilitiesAuthenticationValidation,
@@ -39,17 +43,18 @@ class FlextOracleOicUtilities(
     functionality organized in domain-specific nested classes composed via MRO.
     """
 
-    class OracleOic(FlextOracleOicUtilitiesOracleOic):
-        """Oracle OIC domain utilities namespace."""
+    class OracleOic(
+        FlextOracleOicUtilitiesOracleOic,
+        FlextOracleOicUtilitiesConnectionValidation,
+        FlextOracleOicUtilitiesAuthenticationValidation,
+        FlextOracleOicUtilitiesMonitoring,
+    ):
+        """Oracle OIC domain utilities namespace.
 
-    class ConnectionValidation(FlextOracleOicUtilitiesConnectionValidation):
-        """Oracle OIC connection validation utilities namespace."""
-
-    class AuthenticationValidation(FlextOracleOicUtilitiesAuthenticationValidation):
-        """Oracle OIC authentication validation utilities namespace."""
-
-    class MonitoringUtilities(FlextOracleOicUtilitiesMonitoring):
-        """Oracle OIC monitoring utilities namespace."""
+        One nested domain class per facade: connection validation,
+        authentication validation and monitoring are composed here through the
+        MRO instead of standing as sibling sub-namespaces.
+        """
 
 
 u = FlextOracleOicUtilities

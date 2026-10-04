@@ -10,21 +10,21 @@ from __future__ import annotations
 import pytest
 from flext_tests import tm
 
-from flext_oracle_oic import FlextOracleOicCli
+from flext_oracle_oic import FlextOracleOicCli, c
 from flext_oracle_oic.main import main
-
-__all__ = ["TestsFlextOracleOicCli"]
 
 
 class TestsFlextOracleOicCli:
     """Observable behavior of the ``main`` entry point and CLI app builder."""
 
-    def test_version_command_returns_success_exit_code(self) -> None:
+    @staticmethod
+    def test_version_command_returns_success_exit_code() -> None:
         """The ``version`` command completes and reports success (exit code 0)."""
         tm.that(main(["version"]), eq=0)
 
+    @staticmethod
     def test_version_command_prints_version_banner(
-        self, capsys: pytest.CaptureFixture[str]
+        capsys: pytest.CaptureFixture[str],
     ) -> None:
         """The ``version`` command emits the Oracle OIC banner to stdout."""
         exit_code = main(["version"])
@@ -34,6 +34,7 @@ class TestsFlextOracleOicCli:
         tm.that(out, has="Oracle OIC Extension v")
         tm.that(out, has="FLEXT CLI Pattern")
 
+    @staticmethod
     @pytest.mark.parametrize(
         "argv",
         [
@@ -42,11 +43,12 @@ class TestsFlextOracleOicCli:
         ],
     )
     def test_invalid_invocation_returns_failure_exit_code(
-        self, argv: list[str]
+        argv: list[str],
     ) -> None:
         """Missing or unknown commands yield a non-zero exit code, never raise."""
         tm.that(main(argv), eq=1)
 
+    @staticmethod
     @pytest.mark.parametrize(
         "command",
         [
@@ -55,7 +57,7 @@ class TestsFlextOracleOicCli:
         ],
     )
     def test_network_commands_fail_gracefully_without_backend(
-        self, command: str
+        command: str,
     ) -> None:
         """Network commands return an int failure code instead of propagating errors.
 
@@ -64,15 +66,18 @@ class TestsFlextOracleOicCli:
         """
         tm.that(main([command]), eq=1)
 
-    def test_main_returns_integer_exit_code(self) -> None:
+    @staticmethod
+    def test_main_returns_integer_exit_code() -> None:
         """The entry point always returns an ``int`` exit status."""
         tm.that(main(["version"]), is_=int)
 
-    def test_build_app_produces_a_runnable_application(self) -> None:
+    @staticmethod
+    def test_build_app_produces_a_runnable_application() -> None:
         """``build_app`` returns a non-null application object on every call."""
         tm.that(FlextOracleOicCli.build_app(), none=False)
 
-    def test_build_app_is_idempotent_across_calls(self) -> None:
+    @staticmethod
+    def test_build_app_is_idempotent_across_calls() -> None:
         """Repeated ``build_app`` calls each yield an independent, usable app."""
         first = FlextOracleOicCli.build_app()
         second = FlextOracleOicCli.build_app()
@@ -81,7 +86,8 @@ class TestsFlextOracleOicCli:
         tm.that(second, none=False)
         assert first is not second
 
-    def test_app_identity_constants_are_populated(self) -> None:
+    @staticmethod
+    def test_app_identity_constants_are_populated() -> None:
         """The CLI exposes a stable application name and help text."""
-        tm.that(FlextOracleOicCli.APP_NAME, eq="flext-oracle-oic-ext")
-        tm.that(FlextOracleOicCli.APP_HELP, has="Oracle OIC")
+        tm.that(c.Cli.APP_NAME, eq="flext-oracle-oic-ext")
+        tm.that(c.Cli.APP_HELP, has="Oracle OIC")

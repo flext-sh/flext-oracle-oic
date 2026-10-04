@@ -11,61 +11,95 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from collections.abc import Callable
 
 import pytest
 from flext_tests import tm
 
-from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, c, p, t
-from flext_oracle_oic.api import oracle_oic
+from flext_oracle_oic import (
+    FlextOracleOicApi,
+    FlextOracleOicSettings,
+    c,
+    oracle_oic,
+    p,
+    t,
+)
 
-if TYPE_CHECKING:
-    from collections.abc import Callable
+# Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
+# this Callable annotation instead of leaving it implicit (was flagged
+# implicit-any-lambda); the success payload is discarded via `.map(lambda
+# _: None)` so every client-backed operation, despite differing success
+# value types, normalizes to one homogeneous `p.Result[None]` shape here.
+_CLIENT_OPERATIONS: t.SequenceOf[Callable[[FlextOracleOicApi], p.Result[None]]] = [
+    lambda api: api.test_connection().map(lambda _: None),
+    lambda api: api.list_integrations().map(lambda _: None),
+    lambda api: api.execute().map(lambda _: None),
+    lambda api: api.refresh_auth_token().map(lambda _: None),
+    lambda api: api.validate_auth_token("some-token").map(lambda _: None),
+    lambda api: api.activate_integration("int-1").map(lambda _: None),
+    lambda api: api.deactivate_integration("int-1").map(lambda _: None),
+]
 
 
 class TestsFlextOracleOicExtension:
     """Public-contract tests for the Oracle OIC API facade."""
 
+    @staticmethod
     @pytest.fixture
-    def settings(self) -> FlextOracleOicSettings:
-        """Deterministic in-memory settings with distinctive values."""
+    def settings() -> FlextOracleOicSettings:
+        """Deterministic in-memory settings with distinctive values.
+
+        Returns:
+            The resulting ``FlextOracleOicSettings``.
+        """
         return FlextOracleOicSettings.model_validate({
             "OracleOic": {
                 "base_url": "https://custom.example.com",
                 "oauth_client_id": "client-abc",
                 "oauth_scope": "urn:opc:idm:__myscopes__",
-            }
+            },
         })
 
+    @staticmethod
     @pytest.fixture
-    def api(self, settings: FlextOracleOicSettings) -> FlextOracleOicApi:
-        """Facade built from the deterministic settings fixture."""
+    def api(settings: FlextOracleOicSettings) -> FlextOracleOicApi:
+        """Facade built from the deterministic settings fixture.
+
+        Returns:
+            The resulting ``FlextOracleOicApi``.
+        """
         return FlextOracleOicApi(settings)
 
-    def test_facade_alias_refers_to_the_api_class(self) -> None:
-        """The public `oracle_oic` alias is the FlextOracleOicApi class itself."""
-        assert oracle_oic is FlextOracleOicApi
+    @staticmethod
+    def test_facade_singleton_is_the_shared_api_instance() -> None:
+        """The public `oracle_oic` singleton is the shared FlextOracleOicApi instance."""
+        tm.that(oracle_oic, is_=FlextOracleOicApi)
+        tm.that(FlextOracleOicApi.fetch_global(), eq=oracle_oic)
 
-    def test_facade_constructs_without_settings(self) -> None:
+    @staticmethod
+    def test_facade_constructs_without_settings() -> None:
         """Constructing with no settings yields a usable facade instance."""
         api = FlextOracleOicApi()
 
         tm.that(api, is_=FlextOracleOicApi)
 
+    @staticmethod
     def test_facade_constructs_with_explicit_settings(
-        self, api: FlextOracleOicApi
+        api: FlextOracleOicApi,
     ) -> None:
         """Constructing with explicit settings yields a facade instance."""
         tm.that(api, is_=FlextOracleOicApi)
 
-    def test_connection_context_reports_success(self, api: FlextOracleOicApi) -> None:
+    @staticmethod
+    def test_connection_context_reports_success(api: FlextOracleOicApi) -> None:
         """fetch_connection_context is a total operation that succeeds."""
         result: p.Result[t.JsonMapping] = api.fetch_connection_context()
 
         tm.ok(result)
 
+    @staticmethod
     def test_connection_context_reflects_provided_settings(
-        self, api: FlextOracleOicApi
+        api: FlextOracleOicApi,
     ) -> None:
         """The connection context echoes the configured base URL and timeout."""
         payload = api.fetch_connection_context().unwrap()
@@ -73,8 +107,9 @@ class TestsFlextOracleOicExtension:
         tm.that(payload["base_url"], eq="https://custom.example.com")
         tm.that(payload["request_timeout"], eq=30)
 
+    @staticmethod
     def test_auth_context_reflects_provided_settings(
-        self, api: FlextOracleOicApi
+        api: FlextOracleOicApi,
     ) -> None:
         """The auth context echoes the configured OAuth client id and scope."""
         payload = api.fetch_auth_context().unwrap()
@@ -82,8 +117,9 @@ class TestsFlextOracleOicExtension:
         tm.that(payload["oauth_client_id"], eq="client-abc")
         tm.that(payload["oauth_scope"], eq="urn:opc:idm:__myscopes__")
 
+    @staticmethod
     def test_features_context_exposes_boolean_feature_flags(
-        self, api: FlextOracleOicApi
+        api: FlextOracleOicApi,
     ) -> None:
         """The features context exposes the default-enabled boolean flags."""
         payload = api.fetch_features_context().unwrap()
@@ -92,6 +128,7 @@ class TestsFlextOracleOicExtension:
         tm.that(payload["use_ssl"], eq=True)
         tm.that(payload["verify_ssl"], eq=True)
 
+    @staticmethod
     @pytest.mark.parametrize(
         ("key", "expected"),
         [
@@ -100,15 +137,16 @@ class TestsFlextOracleOicExtension:
         ],
     )
     def test_connection_context_keys(
-        self, api: FlextOracleOicApi, key: str, expected: str
+        api: FlextOracleOicApi, key: str, expected: str,
     ) -> None:
         """Connection context surfaces each expected key with the config value."""
         payload = api.fetch_connection_context().unwrap()
 
         tm.that(payload[key], eq=expected)
 
+    @staticmethod
     def test_monitoring_health_status_returns_status_payload(
-        self, api: FlextOracleOicApi
+        api: FlextOracleOicApi,
     ) -> None:
         """Health status is a total operation returning a status mapping."""
         result = api.fetch_health_status()
@@ -116,8 +154,9 @@ class TestsFlextOracleOicExtension:
         tm.ok(result)
         tm.that(result.unwrap(), has="status")
 
+    @staticmethod
     def test_performance_metrics_returns_metrics_payload(
-        self, api: FlextOracleOicApi
+        api: FlextOracleOicApi,
     ) -> None:
         """Performance metrics is a total operation returning a metrics mapping."""
         result = api.fetch_performance_metrics()
@@ -125,22 +164,11 @@ class TestsFlextOracleOicExtension:
         tm.ok(result)
         tm.that(result.unwrap(), has="success_rate")
 
-    @pytest.mark.parametrize(
-        "operation",
-        [
-            lambda api: api.test_connection(),
-            lambda api: api.list_integrations(),
-            lambda api: api.execute(),
-            lambda api: api.refresh_auth_token(),
-            lambda api: api.validate_auth_token("some-token"),
-            lambda api: api.activate_integration("int-1"),
-            lambda api: api.deactivate_integration("int-1"),
-        ],
-    )
+    @staticmethod
+    @pytest.mark.parametrize("operation", _CLIENT_OPERATIONS)
     def test_client_operations_fail_when_credentials_incomplete(
-        self,
         api: FlextOracleOicApi,
-        operation: Callable[[FlextOracleOicApi], p.Result[object]],
+        operation: Callable[[FlextOracleOicApi], p.Result[None]],
     ) -> None:
         """Client-backed operations return a failure result (never raise).
 
@@ -153,14 +181,12 @@ class TestsFlextOracleOicExtension:
         tm.fail(result)
         assert result.error
 
+    @staticmethod
     def test_failed_operation_preserves_validation_error_message(
-        self, api: FlextOracleOicApi
+        api: FlextOracleOicApi,
     ) -> None:
         """The failure error identifies the offending credential validation."""
         result = api.test_connection()
 
         tm.fail(result)
         tm.that((result.error or "").lower(), has="secret")
-
-
-__all__: list[str] = ["TestsFlextOracleOicExtension"]

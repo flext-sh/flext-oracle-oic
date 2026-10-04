@@ -11,20 +11,28 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import sys
-from typing import ClassVar
+from typing import TYPE_CHECKING
 
 from flext_cli import cli, m as cli_m
+
 from flext_core import r
-from flext_oracle_oic import FlextOracleOicModels, c, p, t
+from flext_oracle_oic import c, p, t
 from flext_oracle_oic.__version__ import __version__
 from flext_oracle_oic.service import FlextOracleOicService
 
+if TYPE_CHECKING:
+    from flext_oracle_oic import FlextOracleOicModels
 
-class _TestConnectionCommand(cli_m.BaseModel):
+
+class _TestConnectionCommand(cli_m.ManagedModel):
     """Test connection to Oracle OIC instance."""
 
     def execute(self) -> p.Result[bool]:
-        """Test the Oracle OIC connection through the canonical service."""
+        """Test the Oracle OIC connection through the canonical service.
+
+        Returns:
+            The resulting ``p.Result[bool]``.
+        """
         try:
             return self._execute_connection_test()
         except c.EXC_NETWORK_TYPE as exc:
@@ -32,7 +40,11 @@ class _TestConnectionCommand(cli_m.BaseModel):
 
     @staticmethod
     def _execute_connection_test() -> p.Result[bool]:
-        """Execute the Oracle OIC connection test."""
+        """Execute the Oracle OIC connection test.
+
+        Returns:
+            The resulting ``p.Result[bool]``.
+        """
         service = FlextOracleOicService()
         with service:
             connection_result = service.test_connection()
@@ -42,11 +54,15 @@ class _TestConnectionCommand(cli_m.BaseModel):
             return r[bool].fail_op("Connection", connection_result.error)
 
 
-class _ListIntegrationsCommand(cli_m.BaseModel):
+class _ListIntegrationsCommand(cli_m.ManagedModel):
     """List Oracle OIC integrations."""
 
     def execute(self) -> p.Result[bool]:
-        """List integrations through the canonical service."""
+        """List integrations through the canonical service.
+
+        Returns:
+            The resulting ``p.Result[bool]``.
+        """
         try:
             return self._execute_list_integrations()
         except c.EXC_NETWORK_TYPE as exc:
@@ -54,23 +70,32 @@ class _ListIntegrationsCommand(cli_m.BaseModel):
 
     @staticmethod
     def _execute_list_integrations() -> p.Result[bool]:
-        """Execute Oracle OIC integration listing."""
+        """Execute Oracle OIC integration listing.
+
+        Returns:
+            The resulting ``p.Result[bool]``.
+        """
         service = FlextOracleOicService()
         integrations_result = service.list_integrations()
         if integrations_result.failure:
             return r[bool].fail(
-                f"Failed to list integrations: {integrations_result.error}"
+                f"Failed to list integrations: {integrations_result.error}",
             )
         integrations = integrations_result.value or []
         _print_integrations(integrations)
         return r[bool].ok(value=True)
 
 
-class _ShowVersionCommand(cli_m.BaseModel):
+class _ShowVersionCommand(cli_m.ManagedModel):
     """Show Oracle OIC Extension version."""
 
-    def execute(self) -> p.Result[bool]:
-        """Print Oracle OIC Extension version through cli.print."""
+    @staticmethod
+    def execute() -> p.Result[bool]:
+        """Print Oracle OIC Extension version through cli.print.
+
+        Returns:
+            The resulting ``p.Result[bool]``.
+        """
         cli.print(f"Oracle OIC Extension v{__version__}")
         cli.print("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud")
         return r[bool].ok(value=True)
@@ -88,7 +113,7 @@ def _print_integrations(
         cli.print(f"  • {integration.name} (ID: {integration.integration_id})")
         cli.print(
             f"    Status: {integration.status}, "
-            f"Version: {integration.integration_version}"
+            f"Version: {integration.integration_version}",
         )
         if integration.description:
             cli.print(f"    Description: {integration.description}")
@@ -103,17 +128,15 @@ class FlextOracleOicCli:
     - version: print the Oracle OIC Extension version
     """
 
-    APP_NAME: ClassVar[str] = "flext-oracle-oic-ext"
-    APP_HELP: ClassVar[str] = (
-        "FLEXT Oracle OIC Extension CLI - Enterprise Oracle "
-        "Integration Cloud operations"
-    )
-
     @classmethod
     def build_app(cls) -> p.Cli.Application:
-        """Build the Typer application with the registered commands."""
+        """Build the Typer application with the registered commands.
+
+        Returns:
+            The resulting ``p.Cli.Application``.
+        """
         app = cli.create_app_with_common_params(
-            name=cls.APP_NAME, help_text=cls.APP_HELP
+            name=c.Cli.APP_NAME, help_text=c.Cli.APP_HELP,
         )
         cli.register_result_routes(
             app,
@@ -122,19 +145,24 @@ class FlextOracleOicCli:
                     name="test-connection",
                     help_text="Test connection to Oracle OIC instance",
                     model_cls=_TestConnectionCommand,
-                    handler=lambda params: params.execute(),
+                    # Why: bound-method reference instead of a lambda wrapper
+                    # so pyrefly resolves the parameter type from
+                    # `_TestConnectionCommand.execute` (was flagged
+                    # implicit-any-lambda on the erased `Callable[..., ...]`
+                    # handler signature).
+                    handler=_TestConnectionCommand.execute,
                 ),
                 cli_m.Cli.ResultCommandRoute(
                     name="list-integrations",
                     help_text="List Oracle OIC integrations",
                     model_cls=_ListIntegrationsCommand,
-                    handler=lambda params: params.execute(),
+                    handler=_ListIntegrationsCommand.execute,
                 ),
                 cli_m.Cli.ResultCommandRoute(
                     name="version",
                     help_text="Show Oracle OIC Extension version",
                     model_cls=_ShowVersionCommand,
-                    handler=lambda params: params.execute(),
+                    handler=_ShowVersionCommand.execute,
                 ),
             ],
         )
@@ -142,12 +170,16 @@ class FlextOracleOicCli:
 
 
 def main(args: t.StrSequence | None = None) -> int:
-    """Run main CLI entry point - FLEXT CLI Pattern."""
+    """Run main CLI entry point - FLEXT CLI Pattern.
+
+    Returns:
+        The resulting ``int``.
+    """
     app = FlextOracleOicCli.build_app()
     try:
         outcome = cli.execute_app(
             app,
-            prog_name=FlextOracleOicCli.APP_NAME,
+            prog_name=c.Cli.APP_NAME,
             args=list(args) if args is not None else sys.argv[1:],
         )
     except KeyboardInterrupt:

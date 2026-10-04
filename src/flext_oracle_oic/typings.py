@@ -14,10 +14,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_auth import t
+from flext_auth import FlextAuthTypes
 
 
-class FlextOracleOicTypes(t):
+class FlextOracleOicTypes(FlextAuthTypes):
     """Oracle OIC extension-specific type definitions extending t.
 
     Domain-specific type system for Oracle OIC integration operations.

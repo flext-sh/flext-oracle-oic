@@ -1,10 +1,8 @@
-"""FlextOracleOicConfig — frozen, validated config singleton for flext-oracle-oic.
+"""FlextOracleOicConfig — frozen config singleton for flext-oracle-oic (ADR-005 §7).
 
-Every ``config/*.yaml`` file is auto-discovered and deep-merged at first
-``fetch_global`` call (model-less, ``extra=allow`` at the FlextCliConfig base).
-The flat YAML is then validated into the pure-Pydantic ``_models.config``
-shapes and exposed as typed domain objects under ``config.OracleOic`` — never a
-model-less dict subscript.
+Model-less: business rules live in ``config/*.yaml`` under the ``OracleOic:`` key and
+are exposed through the open ``config.OracleOic`` namespace (``extra="allow"``), with
+no per-domain model. Access is ``config.OracleOic.<domain>[<key>...]``.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -12,26 +10,34 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from functools import cached_property
-from pathlib import Path
-from typing import ClassVar
+from typing import Annotated
 
-from flext_cli import FlextCliConfig
-from flext_oracle_oic._models.config import FlextOracleOicConfigModels
+from flext_cli import FlextCliConfig, m
+
+from flext_core import FlextSettings
 
 
-class FlextOracleOicConfig(FlextCliConfig):
-    """Oracle OIC config auto-loaded from ``config/*.yaml`` and validated via models."""
+class _OracleOicNamespace(m.BaseModel):
+    """Open, frozen namespace exposing every ``config/*.yaml`` domain model-less."""
 
-    CONFIG_DIR: ClassVar[str] = str(Path(__file__).resolve().parents[2] / "config")
+    model_config = m.ConfigDict(extra="allow", frozen=True)
 
-    @cached_property
-    def OracleOic(self) -> FlextOracleOicConfigModels.OracleOic:
-        """Validated ``OracleOic`` business-rule config namespace."""
-        root = FlextOracleOicConfigModels.Root.model_validate(
-            dict(self.model_extra or {})
-        )
-        return root.OracleOic
+
+class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
+    """OracleOic config auto-loaded model-less from ``config/*.yaml``.
+
+    MRO carries ``FlextSettings`` FIRST (ENFORCE-042); unlike never-instantiated
+    namespace holders, this class IS instantiated by ``fetch_global``, so the
+    instance-inert holder contract does not apply and pydantic settings
+    construction machinery stays intact.
+    """
+
+    OracleOic: Annotated[
+        _OracleOicNamespace,
+        m.Field(
+            description="Open namespace exposing ``config/*.yaml`` under ``OracleOic``.",
+        ),
+    ] = _OracleOicNamespace()
 
 
 config: FlextOracleOicConfig = FlextOracleOicConfig.fetch_global()

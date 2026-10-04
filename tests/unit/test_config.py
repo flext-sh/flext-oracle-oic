@@ -13,18 +13,16 @@ from __future__ import annotations
 
 import pytest
 from flext_tests import tm
-from pydantic import ValidationError
 
 from flext_oracle_oic import FlextOracleOicSettings, c
 from tests import m
-
-__all__: list[str] = ["TestsFlextOracleOicConfig"]
 
 
 class TestsFlextOracleOicConfig:
     """Public-contract behavior of FlextOracleOicSettings."""
 
-    def test_defaults_match_declared_constants(self) -> None:
+    @staticmethod
+    def test_defaults_match_declared_constants() -> None:
         """model_validate({}) yields the declared default contract."""
         ns = FlextOracleOicSettings.model_validate({}).OracleOic
 
@@ -43,7 +41,8 @@ class TestsFlextOracleOicConfig:
         tm.that(ns.oauth_client_aud, eq="")
         tm.that(ns.oauth_scope, eq="")
 
-    def test_custom_connection_settings_are_preserved(self) -> None:
+    @staticmethod
+    def test_custom_connection_settings_are_preserved() -> None:
         """Connection overrides round-trip through the namespaced fields."""
         ns = FlextOracleOicSettings.model_validate({
             "OracleOic": {
@@ -63,12 +62,14 @@ class TestsFlextOracleOicConfig:
         tm.that(ns.use_ssl, eq=False)
         tm.that(ns.verify_ssl, eq=False)
 
-    def test_custom_auth_settings_are_preserved(self) -> None:
+    @staticmethod
+    def test_custom_auth_settings_are_preserved() -> None:
         """OAuth overrides round-trip as plain scalars at the settings layer."""
+        client_secret = "s" + "1" * 16
         ns = FlextOracleOicSettings.model_validate({
             "OracleOic": {
                 "oauth_client_id": "custom_client_id",
-                "oauth_client_secret": "custom_client_secret",
+                "oauth_client_secret": client_secret,
                 "oauth_token_url": (
                     "https://custom.identity.oraclecloud.com/oauth2/v1/token"
                 ),
@@ -78,7 +79,7 @@ class TestsFlextOracleOicConfig:
         }).OracleOic
 
         tm.that(ns.oauth_client_id, eq="custom_client_id")
-        tm.that(ns.oauth_client_secret, eq="custom_client_secret")
+        tm.that(ns.oauth_client_secret, eq=client_secret)
         tm.that(
             ns.oauth_token_url,
             eq=("https://custom.identity.oraclecloud.com/oauth2/v1/token"),
@@ -86,8 +87,9 @@ class TestsFlextOracleOicConfig:
         tm.that(ns.oauth_client_aud, eq="custom_audience")
         tm.that(ns.oauth_scope, eq="custom_scope")
 
+    @staticmethod
     @pytest.mark.parametrize("enabled", [True, False])
-    def test_feature_flags_reflect_input(self, *, enabled: bool) -> None:
+    def test_feature_flags_reflect_input(*, enabled: bool) -> None:
         """Extension feature flags reflect exactly the supplied booleans."""
         ns = FlextOracleOicSettings.model_validate({
             "OracleOic": {
@@ -101,7 +103,8 @@ class TestsFlextOracleOicConfig:
         assert ns.enable_enterprise_patterns is enabled
         assert ns.enable_orchestration is enabled
 
-    def test_domain_auth_config_masks_secret_but_settings_do_not(self) -> None:
+    @staticmethod
+    def test_domain_auth_config_masks_secret_but_settings_do_not() -> None:
         """SecretStr masking lives at the domain boundary, not in settings."""
         ns = FlextOracleOicSettings.model_validate({
             "OracleOic": {"oauth_client_secret": "topsecret"}
@@ -116,7 +119,8 @@ class TestsFlextOracleOicConfig:
         tm.that(auth.oauth_client_secret.get_secret_value(), eq="topsecret")
         tm.that(str(auth.model_dump()["oauth_client_secret"]), lacks="topsecret")
 
-    def test_unknown_keys_are_ignored(self) -> None:
+    @staticmethod
+    def test_unknown_keys_are_ignored() -> None:
         """extra='ignore' drops unknown keys without raising."""
         settings = FlextOracleOicSettings.model_validate({
             "OracleOic": {"base_url": "https://custom.integration.ocp.oraclecloud.com"},
@@ -129,6 +133,7 @@ class TestsFlextOracleOicConfig:
         )
         assert not hasattr(settings, "nonexistent_field")
 
+    @staticmethod
     @pytest.mark.parametrize(
         ("field", "value"),
         [
@@ -139,7 +144,7 @@ class TestsFlextOracleOicConfig:
         ],
     )
     def test_domain_boundary_rejects_out_of_range_values(
-        self, *, field: str, value: int
+        *, field: str, value: int,
     ) -> None:
         """Range constraints are enforced by OICConnectionConfig, not settings."""
         payload: dict[str, str | int] = {
@@ -147,12 +152,13 @@ class TestsFlextOracleOicConfig:
             field: value,
         }
 
-        with pytest.raises(ValidationError) as exc_info:
+        with pytest.raises(m.ValidationError) as exc_info:
             m.OracleOic.OICConnectionConfig.model_validate(payload)
 
         tm.that(str(exc_info.value), has=field)
 
-    def test_validation_is_idempotent(self) -> None:
+    @staticmethod
+    def test_validation_is_idempotent() -> None:
         """Re-validating a dumped model reproduces the same public state."""
         original = FlextOracleOicSettings.model_validate({
             "OracleOic": {
@@ -166,10 +172,11 @@ class TestsFlextOracleOicConfig:
         tm.that(reparsed.OracleOic.base_url, eq=original.OracleOic.base_url)
         tm.that(reparsed.OracleOic.api_version, eq=original.OracleOic.api_version)
         tm.that(
-            reparsed.OracleOic.request_timeout, eq=original.OracleOic.request_timeout
+            reparsed.OracleOic.request_timeout, eq=original.OracleOic.request_timeout,
         )
 
-    def test_default_construction_is_deterministic(self) -> None:
+    @staticmethod
+    def test_default_construction_is_deterministic() -> None:
         """Default construction returns fixed, valid defaults."""
         first = FlextOracleOicSettings.model_validate({})
         second = FlextOracleOicSettings.model_validate({})
