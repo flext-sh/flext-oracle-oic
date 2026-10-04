@@ -15,8 +15,7 @@ class FlextOracleOicUtilitiesMonitoring:
 
     @staticmethod
     def _assess_metric(
-        metric_key: str,
-        metric_value: float,
+        metric_key: str, metric_value: float
     ) -> tuple[str | None, str | None, bool]:
         """Return warning/critical/recommendation for one metric."""
         match metric_key:
@@ -84,8 +83,7 @@ class FlextOracleOicUtilitiesMonitoring:
             metric_value = float(metric_value_raw)
             issue, recommendation, is_critical = (
                 FlextOracleOicUtilitiesMonitoring._assess_metric(
-                    metric_key,
-                    metric_value,
+                    metric_key, metric_value
                 )
             )
             if issue is None:
@@ -136,7 +134,7 @@ class FlextOracleOicUtilitiesMonitoring:
             if components is not None:
                 error_message = (
                     FlextOracleOicUtilitiesMonitoring._components_validation_error(
-                        components,
+                        components
                     )
                 )
         if error_message is not None:
