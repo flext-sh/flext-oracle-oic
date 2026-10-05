@@ -1,8 +1,8 @@
 """FlextOracleOicConfig — frozen config singleton for flext-oracle-oic (ADR-005 §7).
 
-Model-less: business rules live in ``config/*.yaml`` under the ``OracleOic:`` key and
-are exposed through the open ``config.OracleOic`` namespace (``extra="allow"``), with
-no per-domain model. Access is ``config.OracleOic.<domain>[<key>...]``.
+Business rules live in ``config/*.yaml`` under the ``OracleOic:`` key and are
+validated through the project's config declarations. Access remains
+``config.OracleOic.<domain>[<key>...]``; values come from the YAML owner.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -10,34 +10,28 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Annotated
+from functools import cached_property
+from typing import TYPE_CHECKING
 
-from flext_cli import FlextCliConfig, m
+from flext_cli import FlextCliConfig
 
 from flext_core import FlextSettings
+from flext_oracle_oic import m
 
-
-class _OracleOicNamespace(m.BaseModel):
-    """Open, frozen namespace exposing every ``config/*.yaml`` domain model-less."""
-
-    model_config = m.ConfigDict(extra="allow", frozen=True)
+if TYPE_CHECKING:
+    from flext_oracle_oic import p
 
 
 class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
-    """OracleOic config auto-loaded model-less from ``config/*.yaml``.
+    """Oracle OIC business config validated from the canonical YAML source."""
 
-    MRO carries ``FlextSettings`` FIRST (ENFORCE-042); unlike never-instantiated
-    namespace holders, this class IS instantiated by ``fetch_global``, so the
-    instance-inert holder contract does not apply and pydantic settings
-    construction machinery stays intact.
-    """
-
-    OracleOic: Annotated[
-        _OracleOicNamespace,
-        m.Field(
-            description="Open namespace exposing ``config/*.yaml`` under ``OracleOic``.",
-        ),
-    ] = _OracleOicNamespace()
+    @cached_property
+    def OracleOic(self) -> p.OracleOic.Config:
+        """Return the required business namespace without synthesized defaults."""
+        if self.model_extra is None:
+            msg = "Oracle OIC business configuration namespace is missing"
+            raise ValueError(msg)
+        return m.OracleOic.Config.model_validate(self.model_extra["OracleOic"])
 
 
 config: FlextOracleOicConfig = FlextOracleOicConfig.fetch_global()
