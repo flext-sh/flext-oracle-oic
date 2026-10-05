@@ -142,7 +142,8 @@ auth_config = m.OracleOic.OICAuthConfig.model_validate(
     settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
 )
 client = FlextOracleOicClient(
-    connection_config=connection_config, auth_config=auth_config,
+    connection_config=connection_config,
+    auth_config=auth_config,
 )
 ```
 

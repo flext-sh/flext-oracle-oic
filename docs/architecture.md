@@ -191,7 +191,9 @@ connection = m.OracleOic.OICConnectionConfig.model_validate(
     ),
 )
 result = r[str].ok(connection.model_dump_json())
-restored_connection = m.OracleOic.OICConnectionConfig.model_validate_json(result.unwrap())
+restored_connection = m.OracleOic.OICConnectionConfig.model_validate_json(
+    result.unwrap()
+)
 if restored_connection.base_url != settings.OracleOic.base_url:
     message = "Result did not preserve the configured connection URL"
     raise ValueError(message)

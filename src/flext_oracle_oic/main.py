@@ -11,7 +11,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import sys
-from typing import TYPE_CHECKING
 
 from flext_cli import cli, m as cli_m
 
@@ -19,89 +18,6 @@ from flext_core import r
 from flext_oracle_oic import c, p, t
 from flext_oracle_oic.__version__ import __version__
 from flext_oracle_oic.service import FlextOracleOicService
-
-if TYPE_CHECKING:
-    from flext_oracle_oic import FlextOracleOicModels
-
-
-class _TestConnectionCommand(cli_m.ManagedModel):
-    """Test connection to Oracle OIC instance."""
-
-    def execute(self) -> p.Result[bool]:
-        """Test the Oracle OIC connection through the canonical service.
-
-        Returns:
-            The resulting ``p.Result[bool]``.
-        """
-        try:
-            return self._execute_connection_test()
-        except c.EXC_NETWORK_TYPE as exc:
-            return r[bool].fail_op("Connection test", exc)
-
-    @staticmethod
-    def _execute_connection_test() -> p.Result[bool]:
-        """Execute the Oracle OIC connection test.
-
-        Returns:
-            The resulting ``p.Result[bool]``.
-        """
-        service = FlextOracleOicService()
-        with service:
-            connection_result = service.test_connection()
-            if connection_result.success:
-                cli.print("Connection to Oracle OIC established successfully")
-                return r[bool].ok(value=True)
-            return r[bool].fail_op("Connection", connection_result.error)
-
-
-class _ListIntegrationsCommand(cli_m.ManagedModel):
-    """List Oracle OIC integrations."""
-
-    def execute(self) -> p.Result[bool]:
-        """List integrations through the canonical service.
-
-        Returns:
-            The resulting ``p.Result[bool]``.
-        """
-        try:
-            return self._execute_list_integrations()
-        except c.EXC_NETWORK_TYPE as exc:
-            return r[bool].fail_op("List integrations", exc)
-
-    @staticmethod
-    def _execute_list_integrations() -> p.Result[bool]:
-        """Execute Oracle OIC integration listing.
-
-        Returns:
-            The resulting ``p.Result[bool]``.
-        """
-        service = FlextOracleOicService()
-        integrations_result = service.list_integrations()
-        if integrations_result.failure:
-            return r[bool].fail(
-                f"Failed to list integrations: {integrations_result.error}",
-            )
-        integrations = integrations_result.value or []
-        _print_integrations(integrations)
-        return r[bool].ok(value=True)
-
-
-def _print_integrations(
-    integrations: t.SequenceOf[FlextOracleOicModels.OracleOic.OICIntegrationInfo],
-) -> None:
-    """Print integrations to CLI output via the canonical cli facade."""
-    if not integrations:
-        cli.print("📋 No integrations found")
-        return
-    cli.print("📋 Oracle OIC Integrations:")
-    for integration in integrations:
-        cli.print(f"  • {integration.name} (ID: {integration.integration_id})")
-        cli.print(
-            f"    Status: {integration.status}, "
-            f"Version: {integration.integration_version}",
-        )
-        if integration.description:
-            cli.print(f"    Description: {integration.description}")
 
 
 class FlextOracleOicCli:
@@ -112,6 +28,55 @@ class FlextOracleOicCli:
     - list-integrations: enumerate published integrations
     - version: print the Oracle OIC Extension version
     """
+
+    @staticmethod
+    def probe_connection(_params: t.Cli.ModelLike) -> p.Result[bool]:
+        """Probe the configured connection for a validated empty CLI request.
+
+        Returns:
+            The resulting ``p.Result[bool]``.
+        """
+        try:
+            service = FlextOracleOicService()
+            with service:
+                connection_result = service.test_connection()
+                if connection_result.success:
+                    cli.print("Connection to Oracle OIC established successfully")
+                    return r[bool].ok(value=True)
+                return r[bool].fail_op("Connection", connection_result.error)
+        except c.EXC_NETWORK_TYPE as exc:
+            return r[bool].fail_op("Connection test", exc)
+
+    @staticmethod
+    def list_integrations(_params: t.Cli.ModelLike) -> p.Result[bool]:
+        """List integrations for a validated empty CLI request.
+
+        Returns:
+            The resulting ``p.Result[bool]``.
+        """
+        try:
+            service = FlextOracleOicService()
+            integrations_result = service.list_integrations()
+        except c.EXC_NETWORK_TYPE as exc:
+            return r[bool].fail_op("List integrations", exc)
+        if integrations_result.failure:
+            return r[bool].fail(
+                f"Failed to list integrations: {integrations_result.error}",
+            )
+        integrations = integrations_result.unwrap()
+        if not integrations:
+            cli.print("📋 No integrations found")
+            return r[bool].ok(value=True)
+        cli.print("📋 Oracle OIC Integrations:")
+        for integration in integrations:
+            cli.print(f"  • {integration.name} (ID: {integration.integration_id})")
+            cli.print(
+                f"    Status: {integration.status}, "
+                f"Version: {integration.integration_version}",
+            )
+            if integration.description:
+                cli.print(f"    Description: {integration.description}")
+        return r[bool].ok(value=True)
 
     @staticmethod
     def show_version(_params: t.Cli.ModelLike) -> p.Result[bool]:
@@ -141,19 +106,14 @@ class FlextOracleOicCli:
                 cli_m.Cli.ResultCommandRoute(
                     name="test-connection",
                     help_text="Test connection to Oracle OIC instance",
-                    model_cls=_TestConnectionCommand,
-                    # Why: bound-method reference instead of a lambda wrapper
-                    # so pyrefly resolves the parameter type from
-                    # `_TestConnectionCommand.execute` (was flagged
-                    # implicit-any-lambda on the erased `Callable[..., ...]`
-                    # handler signature).
-                    handler=_TestConnectionCommand.execute,
+                    model_cls=cli_m.Cli.EmptyRequest,
+                    handler=cls.probe_connection,
                 ),
                 cli_m.Cli.ResultCommandRoute(
                     name="list-integrations",
                     help_text="List Oracle OIC integrations",
-                    model_cls=_ListIntegrationsCommand,
-                    handler=_ListIntegrationsCommand.execute,
+                    model_cls=cli_m.Cli.EmptyRequest,
+                    handler=cls.list_integrations,
                 ),
                 cli_m.Cli.ResultCommandRoute(
                     name="version",
