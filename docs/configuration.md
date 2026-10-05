@@ -36,8 +36,8 @@ flext-oracle-oic provides Pydantic-based configuration management following FLEX
 ecosystem patterns. The current implementation offers basic configuration structure with
 type safety and validation.
 
-> **Implementation Status**: Version 0.9.9 provides foundation configuration models.
-> Full Oracle OIC integration and enterprise features are planned for future releases.
+> **Implementation Status**: Settings and domain-model examples below are offline
+> contracts. They do not prove business-YAML loading or successful Oracle authentication.
 
 ## Current Configuration Components
 
@@ -94,11 +94,18 @@ if runtime_settings.OracleOic != settings.OracleOic:
     raise ValueError(message)
 ```
 
-**Primary Configuration Object:**
+**Deployment Settings Namespace:**
 
 - `OracleOic`: Typed namespace for connection, authentication, and feature inputs.
 - Domain models validate the fields selected from this namespace.
 - Flat connection/auth keywords are not the settings contract and may be ignored.
+
+Business rules have a separate public `config.OracleOic` boundary. The root
+`config/oracle_oic.yaml` declares API, integration, validation, and monitoring rules;
+`src/flext_oracle_oic/config/oracle-oic.yaml` currently contains identity metadata.
+The config owner must reconcile the loader and packaging route and validate the
+business-YAML consumer. Do not substitute settings defaults or the identity file for
+that proof, and do not copy the business rules into a second configuration owner.
 
 ## Environment Variables
 
@@ -163,7 +170,8 @@ Based on the actual Pydantic models implementation:
 
 ### Missing Features ⚠️
 
-- **Configuration File Support**: No direct JSON/YAML file loading
+- **Business YAML Loading**: A public config loader exists, but the current root/package
+  layout requires its owner's canonical cutover and runtime validation
 - **Environment-Specific Configs**: No dev/staging/prod separation
 - **Dynamic Configuration**: No runtime configuration updates
 - **Secure Storage Integration**: No Vault or secret manager integration
@@ -278,13 +286,12 @@ print(f"Token URL: {settings.OracleOic.oauth_token_url}")
 
 The configuration system will be enhanced in future releases with:
 
-- **Configuration File Support**: JSON, YAML, and TOML file loading
+- **Business YAML Consumer**: Complete and verify the existing canonical loader route
 - **Environment-Specific Configs**: Development, staging, production profiles
 - **Oracle Cloud Integration**: Native Oracle Vault and IDCS integration
 - **Dynamic Configuration**: Runtime configuration updates and validation
 
 ---
 
-This configuration guide reflects the actual implementation status as of April 14, 2026.
-The basic Pydantic configuration foundation is implemented, with advanced features
-planned for future releases.
+Settings validation, business-config loading, and Oracle authentication are separate
+contracts. Validate each through its actual public consumer before claiming readiness.

@@ -50,7 +50,7 @@ The library follows these core principles from the FLEXT ecosystem:
 
 1. **Railway-Oriented Programming**: p.Result[T] for type-safe error handling
 2. **Dependency Injection**: FlextContainer for service management
-3. **Domain-Driven Design**: Rich domain models for Oracle OIC concepts
+3. **Domain-Driven Design**: Declarative value and entity models for Oracle OIC concepts
 4. **Clean Architecture**: Separation of concerns across layers
 5. **Type Safety**: Complete Python 3.13+ type annotations
 
@@ -80,17 +80,16 @@ The library follows these core principles from the FLEXT ecosystem:
 
 **FLEXT Ecosystem Compliance**
 
-- Missing s inheritance (critical requirement)
-- Direct httpx/typer imports violate FLEXT abstraction patterns
-- Incomplete FlextContainer dependency injection implementation
-- Multiple classes per module violate unified class pattern
+- The client, CLI, and service already use upstream HTTP, CLI, and `s` abstractions.
+- Remaining facade-layer, composition, and type findings require current `make check`
+  and `make mod` evidence; abstraction presence does not establish compliance.
 
 **Oracle OIC Integration**
 
-- No actual Oracle Integration Cloud API connectivity
-- OAuth2/IDCS authentication framework incomplete
-- Missing integration pattern execution engine
-- No enterprise features (circuit breaker, retry patterns)
+- OAuth, integration CRUD, orchestration, and health-check code paths exist.
+- Successful configured Oracle execution is a separate validation requirement.
+- Credential provisioning, response contracts, and service lifecycle behavior remain
+  explicit runtime boundaries, not guarantees from model construction.
 
 ### Module Organization
 
@@ -100,8 +99,8 @@ The library follows these core principles from the FLEXT ecosystem:
 src/flext_oracle_oic/
 ├── __init__.py              # Generated public exports
 ├── _settings.py             # settings.OracleOic deployment inputs
-├── _config.py               # config.OracleOic business rules
-├── config/                 # YAML business-rule owners
+├── _config.py               # Public config.OracleOic loading boundary
+├── config/                 # Package metadata YAML, not root business rules
 ├── api.py                   # FlextOracleOicApi composition root
 ├── ext_client.py            # FlextOracleOicClient HTTP adapter
 ├── service.py               # FlextOracleOicService MRO facade
@@ -123,6 +122,13 @@ src/flext_oracle_oic/
 - Main configuration container using Pydantic
 - Environment variable integration for Oracle OIC settings
 - Type-safe configuration validation
+
+Business configuration and deployment settings have distinct owners. The root
+`config/oracle_oic.yaml` declares business rules; the package's
+`src/flext_oracle_oic/config/oracle-oic.yaml` contains identity metadata. The public
+`config.OracleOic` loader boundary exists, but the config owner must reconcile this
+layout and prove its runtime loading before either file can be described as a complete
+business-rule consumer. These offline examples validate `settings`, not that cutover.
 
 **Connection Configuration**
 
@@ -170,11 +176,12 @@ Connection and OAuth inputs enter through m.OracleOic domain models.
 - `OICConnectionInfo`: Connection parameters
 - `OICAuthConfig`: Authentication configuration
 
-**Missing Domain-Driven Design**
+**Declaration Boundaries**
 
-- No rich domain entities for Oracle OIC concepts
-- No value objects for business rules
-- No aggregate roots for consistency boundaries
+- `OICAuthConfig` and `OICConnectionConfig` inherit upstream value-model presets.
+- `OICIntegrationInfo` and `OICConnectionInfo` inherit upstream entity presets.
+- Models declare data and validation; behavior belongs to utilities and services.
+- These declarations do not establish an Oracle transaction or aggregate boundary.
 
 ## FLEXT Ecosystem Integration
 
@@ -192,7 +199,7 @@ connection = m.OracleOic.OICConnectionConfig.model_validate(
 )
 result = r[str].ok(connection.model_dump_json())
 restored_connection = m.OracleOic.OICConnectionConfig.model_validate_json(
-    result.unwrap()
+    result.unwrap(),
 )
 if restored_connection.base_url != settings.OracleOic.base_url:
     message = "Result did not preserve the configured connection URL"
@@ -234,19 +241,21 @@ remaining composition and runtime findings.
 
 ### 1. FLEXT Compliance Violations
 
-**Direct Import Dependencies**
+**Existing Dependency Boundaries**
 
-- `ext_client.py:12` - Direct `httpx` import (should use flext-api)
-- `main.py:15` - Direct `typer` import (should use flext-cli)
+- `ext_client.py` imports the public `FlextApi` facade.
+- `main.py` imports public `flext-cli` abstractions.
+- `services/base.py` inherits upstream `s`; `service.py` composes the service mixins.
 
 **Unified Class Pattern Violations**
 
-- `ext_services.py` contains 4 classes (should be 1 unified class)
-- Helper functions outside classes (should be nested classes)
+- Use current `make mod` and runtime-census findings to identify remaining declaration
+  and facade violations; the old `ext_services.py` module is not a current owner.
 
 **Type Safety Issues**
 
-- 2 MyPy errors in `exceptions.py:283` and `test_models.py:61`
+- Current lint and type receipts come from `make check`; historical counts and extinct
+  exception paths are not evidence that today's candidate passes or fails.
 
 ### 2. Oracle OIC Integration Gaps
 
@@ -258,19 +267,24 @@ remaining composition and runtime findings.
 
 **Integration Patterns**
 
-- No app-driven orchestration implementation
-- No scheduled orchestration capabilities
-- Missing file transfer pattern support
+- The orchestration service exposes app-driven, scheduled, and file-transfer operations.
+- Validate their public result and Oracle execution contracts independently; an available
+  method is not proof of a successful deployed integration.
 
 **Enterprise Features**
 
 - No circuit breaker pattern
 - No exponential backoff retry strategy
-- Missing monitoring and health checks
+- Monitoring and health-check methods exist; successful configured behavior still
+  requires public runtime evidence.
 
 ## Testing Architecture
 
-### Current Test Status (21% Coverage)
+### Current Test Evidence
+
+Coverage and execution counts must come from the current canonical test receipt, not
+an old percentage. Executable Markdown tests exercise the public package contract;
+they do not substitute for configured Oracle integration tests.
 
 **Test Structure**
 
@@ -280,16 +294,16 @@ tests/
 ├── unit/                    # Basic unit tests
 │   ├── test_config.py      # Configuration validation
 │   ├── test_models.py      # Data model tests
-│   └── test_extension.py   # Extension pattern tests
-├── conftest.py             # Pytest configuration
-└── test_basic.py           # Basic functionality tests
+│   ├── test_extension.py   # Extension pattern tests
+│   └── test_basic.py       # Basic functionality tests
+└── conftest.py             # Pytest configuration
 ```
 
 **Testing Limitations**
 
 - No integration tests with Oracle OIC APIs
 - No contract testing for API compliance
-- Limited mock strategy for Oracle cloud services
+- Offline tests must not replace Oracle evidence with mocks or dummy credentials
 - Missing performance and security tests
 
 ### Required Testing Strategy
@@ -310,20 +324,15 @@ tests/
 
 ### Phase 1: Critical Fixes (Immediate)
 
-1. **Fix MyPy Errors**
+1. **Resolve Measured Findings**
 
-   - Resolve `exceptions.py:283` OIC_TOKEN_ERROR issue
-   - Fix `test_models.py:61` type mismatch
+   - Repair current lint, type, facade, and composition findings at their canonical owners
+   - Preserve existing public HTTP, CLI, and service boundaries
 
-2. **Replace Direct Imports**
+2. **Validate Canonical Fixed Points**
 
-   - Replace `httpx` with `flext-api` patterns
-   - Replace `typer` with `flext-cli` patterns
-
-3. **Implement s**
-
-   - Convert service classes to inherit from s
-   - Implement unified class pattern with nested helpers
+   - Run generation, repair, formatting, and modernization through root Make verbs
+   - Verify the resulting public consumer and rerun applicable checks
 
 ### Phase 2: Oracle OIC Implementation (Months 2-3)
 
@@ -349,7 +358,7 @@ tests/
 
 1. **Comprehensive Testing**
 
-   - 70%+ coverage with integration tests
+   - Coverage against the configured policy with meaningful integration tests
    - Contract testing with Oracle OIC APIs
    - Performance benchmarking
 
@@ -366,9 +375,9 @@ tests/
 - **[flext-core](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)**
   → Foundation patterns and railway programming
 - **[flext-api](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-api/README.md)**
-  → HTTP client abstractions (needs implementation)
+  → Existing HTTP client abstraction used by `FlextOracleOicClient`
 - **[flext-cli](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-cli/README.md)**
-  → CLI interface patterns (needs implementation)
+  → Existing CLI command and result abstractions
 
 ### Service Dependencies
 
@@ -385,9 +394,8 @@ tests/
 
 ---
 
-This architecture analysis reflects the actual implementation status as of 2026-04-14.
-The library provides foundation configuration and basic service structure, with
-significant FLEXT compliance improvements needed before production use.
+This analysis distinguishes implemented public contracts from validated runtime
+behavior. Current canonical gate and configured Oracle receipts determine readiness.
 
 ## Related Documentation
 

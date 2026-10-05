@@ -97,8 +97,8 @@ if runtime_settings.OracleOic.base_url != settings.OracleOic.base_url:
 
 ### Current Capabilities
 
-> **Important**: Version 0.9.9 provides foundation configuration and basic service
-> structure:
+> **Important**: This offline example validates the configured domain-model boundary.
+> It does not contact Oracle or prove authentication succeeds:
 
 ```python
 from flext_oracle_oic import m, settings
@@ -154,27 +154,25 @@ make test-file FILE=docs/configuration.md
 
 ### Planned Features 🚧
 
-- **s Implementation**: Complete FLEXT compliance (critical requirement)
 - **OAuth2/IDCS Authentication**: Full Oracle cloud authentication
-- **Integration Patterns**: App-driven orchestration, scheduled orchestration
+- **Integration Patterns**: Validate existing app-driven and scheduled orchestration
 - **Enterprise Features**: Circuit breaker, retry patterns, monitoring
 
 ### Known Limitations ⚠️
 
 1. **FLEXT Compliance Violations**:
 
-   - Direct `httpx` import in `ext_client.py:12` (should use flext-api)
-   - Direct `typer` import in `main.py:15` (should use flext-cli)
-   - Missing s inheritance
+   - HTTP and CLI use upstream facades, and the service inherits upstream `s`
+   - Remaining facade, composition, and declaration findings require canonical repair
 
 1. **Type Safety Issues**:
 
-   - 2 MyPy errors in `exceptions.py:283` and `test_models.py:61`
+   - Use current `make check` lint and type receipts, not historical error counts
 
 1. **Test Coverage**:
 
-   - Current: 21% coverage (measured)
-   - Target: 70%+ with integration tests
+   - Obtain current coverage from canonical tests against the configured policy
+   - Offline examples do not establish configured Oracle integration success
 
 ## Troubleshooting
 
@@ -245,10 +243,8 @@ make check
 
 ---
 
-This guide reflects the actual current implementation status as of April 14, 2026. The
-library is in early development (v0.12.0-dev) with foundation configuration and basic
-service structure implemented. Full Oracle OIC integration capabilities are planned for
-future releases following the evidence-based roadmap in the development guide.
+This guide validates public setup and offline model contracts. Production readiness
+requires current canonical gates and successful configured Oracle runtime evidence.
 
 ## Related Documentation
 
