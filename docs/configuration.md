@@ -36,46 +36,41 @@ flext-oracle-oic provides Pydantic-based configuration management following FLEX
 ecosystem patterns. The current implementation offers basic configuration structure with
 type safety and validation.
 
-> **Implementation Status**: Version 0.9.9 provides foundation configuration models.
-> Full Oracle OIC integration and enterprise features are planned for future releases.
+> **Implementation Status**: Settings and domain-model examples below are offline
+> contracts. They do not prove business-YAML loading or successful Oracle authentication.
 
 ## Current Configuration Components
 
 ### Connection Configuration
 
 Configure Oracle Integration Cloud connection parameters using
-`FlextOracleOicConnectionSettings`:
+`m.OracleOic.OICConnectionConfig`:
 
 ```python
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import m, settings
 
-# Basic connection configuration
-connection_config = FlextOracleOicSettings(
-    base_url="https://your-instance.integration.ocp.oraclecloud.com",
-    api_version="v1",
-    request_timeout=30,
+connection_config = m.OracleOic.OICConnectionConfig.model_validate(
+    settings.OracleOic.model_dump(
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
 )
 ```
 
 **Available Parameters:**
 
 - `base_url` (required): Oracle OIC instance URL
-- `api_version` (optional): API version, defaults to "v1"
-- `request_timeout` (optional): HTTP timeout in seconds, defaults to 30
+- `api_version`: API version from `settings.OracleOic.api_version`
+- `request_timeout`: HTTP timeout from `settings.OracleOic.request_timeout`
 
 ### Authentication Configuration
 
-Configure OAuth2/IDCS authentication using `FlextOracleOicAuthSettings`:
+Validate OAuth2/IDCS authentication using `m.OracleOic.OICAuthConfig`:
 
 ```python
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import m, settings
 
-# OAuth2 authentication setup
-auth_config = FlextOracleOicSettings(
-    base_url="https://your-instance.integration.ocp.oraclecloud.com",
-    oauth_client_id="your_client_id",
-    oauth_client_secret="your_client_secret",
-    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
+auth_config = m.OracleOic.OICAuthConfig.model_validate(
+    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
 )
 ```
 
@@ -88,68 +83,52 @@ auth_config = FlextOracleOicSettings(
 
 ### Main Settings Container
 
-Combine configuration components using `OracleOicExtensionSettings`:
+Connection, authentication, and feature inputs share `FlextOracleOicSettings.OracleOic`:
 
 ```python
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import FlextOracleOicSettings, settings
 
-# Complete configuration (connection + auth fields are flat on a single model)
-settings = FlextOracleOicSettings(
-    base_url="https://your-instance.integration.ocp.oraclecloud.com",
-    oauth_client_id="your_client_id",
-    oauth_client_secret="your_client_secret",
-    oauth_token_url="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
-)
+runtime_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
+if runtime_settings.OracleOic != settings.OracleOic:
+    message = "Settings validation did not preserve the configured namespace"
+    raise ValueError(message)
 ```
 
-**Primary Configuration Object:**
+**Deployment Settings Namespace:**
 
-- `connection` (required): Connection configuration t.JsonValue
-- `auth` (optional): Authentication configuration t.JsonValue
-- Additional settings based on actual implementation
+- `OracleOic`: Typed namespace for connection, authentication, and feature inputs.
+- Domain models validate the fields selected from this namespace.
+- Flat connection/auth keywords are not the settings contract and may be ignored.
+
+Business rules have a separate public `config.OracleOic` boundary. The root
+`config/oracle_oic.yaml` declares API, integration, validation, and monitoring rules;
+`src/flext_oracle_oic/config/oracle-oic.yaml` currently contains identity metadata.
+The config owner must reconcile the loader and packaging route and validate the
+business-YAML consumer. Do not substitute settings defaults or the identity file for
+that proof, and do not copy the business rules into a second configuration owner.
 
 ## Environment Variables
 
-Environment variables can be used for configuration, though the current implementation
-requires manual handling:
+Settings bind environment inputs automatically using `FLEXT_ORACLE_OIC_` and the
+`__` namespace delimiter. Provision credentials outside version control.
 
 ### Oracle OIC Connection Variables
 
 ```bash
-# Required Oracle OIC connection settings
-export ORACLE_OIC_BASE_URL="https://your-instance.integration.ocp.oraclecloud.com"
-export ORACLE_OIC_API_VERSION="v1"
-export ORACLE_OIC_REQUEST_TIMEOUT="30"
-
-# OAuth2/IDCS Authentication
-export ORACLE_OIC_OAUTH_CLIENT_ID="your_oauth_client_id"
-export ORACLE_OIC_OAUTH_CLIENT_SECRET="your_oauth_client_secret"
-export ORACLE_OIC_OAUTH_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
+# Require the deployment's configured inputs rather than providing dummy defaults.
+: "${FLEXT_ORACLE_OIC_ORACLEOIC__BASE_URL:?Set the OIC instance URL}"
+: "${FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_ID:?Set the OAuth client ID}"
+: "${FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_SECRET:?Set the OAuth secret}"
+: "${FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_TOKEN_URL:?Set the OAuth token endpoint}"
 ```
 
 ### Loading from Environment
 
 ```python
-import os
-
 from flext_oracle_oic import FlextOracleOicSettings
 
-# Manual environment variable loading (current approach)
-settings = FlextOracleOicSettings(
-    base_url=os.getenv(
-        "ORACLE_OIC_BASE_URL", "https://your-instance.integration.ocp.oraclecloud.com"
-    ),
-    api_version=os.getenv("ORACLE_OIC_API_VERSION", "v1"),
-    request_timeout=int(os.getenv("ORACLE_OIC_REQUEST_TIMEOUT", "30")),
-    oauth_client_id=os.getenv("ORACLE_OIC_OAUTH_CLIENT_ID", "your_client_id"),
-    oauth_client_secret=os.getenv(
-        "ORACLE_OIC_OAUTH_CLIENT_SECRET", "your_client_secret"
-    ),
-    oauth_token_url=os.getenv(
-        "ORACLE_OIC_OAUTH_TOKEN_URL",
-        "https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
-    ),
-)
+# Construct after deployment inputs have been provisioned.
+runtime_settings = FlextOracleOicSettings()
 ```
 
 ## Configuration Validation
@@ -157,29 +136,24 @@ settings = FlextOracleOicSettings(
 Pydantic automatically validates configuration objects:
 
 ```python
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import m, settings
 
-try:
-    # Invalid configuration - empty base_url is rejected
-    connection_config = FlextOracleOicSettings(base_url="")
-except ValueError as e:
-    print(f"Configuration validation error: {e}")
-
-try:
-    # Valid configuration
-    connection_config = FlextOracleOicSettings(
-        base_url="https://valid-oic-instance.integration.ocp.oraclecloud.com"
-    )
-    print("✅ Configuration valid")
-except ValueError as e:
-    print(f"❌ Configuration error: {e}")
+connection_config = m.OracleOic.OICConnectionConfig.model_validate(
+    settings.OracleOic.model_dump(
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
+)
+if connection_config.request_timeout != settings.OracleOic.request_timeout:
+    message = "Connection validation did not preserve the configured timeout"
+    raise ValueError(message)
 ```
 
 ### Current Validation Rules
 
 Based on the actual Pydantic models implementation:
 
-- **base_url**: Must be provided (required field)
+- **base_url**: Required string at the domain-model boundary; no URL/nonempty
+  validator is declared there. Construction is not a connectivity check.
 - **oauth_client_id**: Must be provided if auth settings is used
 - **oauth_client_secret**: Must be provided if auth settings is used
 - **oauth_token_url**: Must be provided if auth settings is used
@@ -191,13 +165,13 @@ Based on the actual Pydantic models implementation:
 
 - **Pydantic Type Safety**: Automatic validation and type conversion
 - **Basic Configuration Models**: Connection and authentication structures
-- **Environment Variable Support**: Manual loading from environment
+- **Environment Variable Support**: Automatic namespaced settings binding
 - **Secret String Support**: OAuth2 client secrets use SecretStr
 
 ### Missing Features ⚠️
 
-- **Automatic Environment Loading**: No built-in environment variable binding
-- **Configuration File Support**: No direct JSON/YAML file loading
+- **Business YAML Loading**: A public config loader exists, but the current root/package
+  layout requires its owner's canonical cutover and runtime validation
 - **Environment-Specific Configs**: No dev/staging/prod separation
 - **Dynamic Configuration**: No runtime configuration updates
 - **Secure Storage Integration**: No Vault or secret manager integration
@@ -209,17 +183,19 @@ Based on the actual Pydantic models implementation:
 **Secret Handling:**
 
 ```python
-from flext_oracle_oic import FlextOracleOicModels as m
+from flext_oracle_oic import m, settings
 
-# OICAuthConfig stores OAuth credentials as a SecretStr
-auth_config = m.OracleOic.OICAuthConfig(
-    oauth_client_id="public_client_id",
-    oauth_client_secret="secret_value",
-    oauth_token_url="https://idcs.example.com/oauth2/v1/token",
+auth_config = m.OracleOic.OICAuthConfig.model_validate(
+    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
 )
 
-# Secret is protected from accidental exposure
-print(auth_config.oauth_client_secret)  # Shows SecretStr('**********')
+# Validate secret preservation without logging either settings or the secret.
+if (
+    auth_config.oauth_client_secret.get_secret_value()
+    != settings.OracleOic.oauth_client_secret
+):
+    message = "Authentication validation did not preserve the configured secret"
+    raise ValueError(message)
 ```
 
 **Security Recommendations:**
@@ -234,84 +210,66 @@ print(auth_config.oauth_client_secret)  # Shows SecretStr('**********')
 ### Basic Development Setup
 
 ```python
-from __future__ import annotations
+from flext_oracle_oic import FlextOracleOicSettings, settings
 
-import os
-
-from flext_oracle_oic import FlextOracleOicSettings
-
-
-# Development configuration with environment variables
-def create_dev_config():
-    return FlextOracleOicSettings(
-        base_url=os.getenv("DEV_ORACLE_OIC_BASE_URL", "https://dev-instance.com"),
-        api_version="v1",
-        request_timeout=60,  # Longer timeout for development
-        oauth_client_id=os.getenv("DEV_OIC_CLIENT_ID", "dev_client_id"),
-        oauth_client_secret=os.getenv("DEV_OIC_CLIENT_SECRET", "dev_client_secret"),
-        oauth_token_url=os.getenv(
-            "DEV_OIC_TOKEN_URL", "https://dev-idcs.example.com/oauth2/v1/token"
-        ),
-    )
-
-
-# Create development configuration
-dev_settings = create_dev_config()
+# Use the same namespace in development and deployment.
+dev_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
+if dev_settings.OracleOic.request_timeout != settings.OracleOic.request_timeout:
+    message = "Development settings did not preserve the configured timeout"
+    raise ValueError(message)
 ```
 
 ## Troubleshooting
 
 ### Common Configuration Issues
 
-**Missing Required u.Fields:**
+**Missing Required Domain Fields:**
 
 ```python
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import e, m, settings
 
-# ❌ This will fail - empty base_url is rejected
+# Missing required domain fields produce structured Pydantic errors.
 try:
-    settings = FlextOracleOicSettings(base_url="", api_version="v1")
-except ValueError as e:
-    print(f"Error: {e}")  # field validation error
+    m.OracleOic.OICConnectionConfig.model_validate({})
+except e.PydanticValidationError as error:
+    if not any(item["loc"] == ("base_url",) for item in error.errors()):
+        message = "Expected a missing base_url validation error"
+        raise ValueError(message) from error
+else:
+    message = "Missing base_url must fail domain validation"
+    raise AssertionError(message)
 
-# ✅ This will work - base_url provided
-settings = FlextOracleOicSettings(
-    base_url="https://your-instance.integration.ocp.oraclecloud.com"
+connection_config = m.OracleOic.OICConnectionConfig.model_validate(
+    settings.OracleOic.model_dump(
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
 )
 ```
 
 **Type Validation Errors:**
 
 ```python
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import e, m, settings
 
-# ❌ Wrong type for request_timeout
+connection_data = settings.OracleOic.model_dump(
+    include=set(m.OracleOic.OICConnectionConfig.model_fields),
+)
+connection_data["request_timeout"] = "invalid"
 try:
-    settings = FlextOracleOicSettings(
-        base_url="https://example.com",
-        request_timeout="invalid",  # Should be integer
-    )
-except ValueError as e:
-    print(f"Type error: {e}")
-
-# ✅ Correct type
-settings = FlextOracleOicSettings(base_url="https://example.com", request_timeout=30)
+    m.OracleOic.OICConnectionConfig.model_validate(connection_data)
+except e.PydanticValidationError as error:
+    if not any(item["loc"] == ("request_timeout",) for item in error.errors()):
+        message = "Expected an invalid timeout validation error"
+        raise ValueError(message) from error
+else:
+    message = "Invalid timeout must fail domain validation"
+    raise AssertionError(message)
 ```
 
 ### Configuration Debugging
 
 ```python
-from flext_oracle_oic import FlextOracleOicSettings
-
-# Create and inspect configuration
-settings = FlextOracleOicSettings(
-    OracleOic={
-        "base_url": "https://your-instance.integration.ocp.oraclecloud.com",
-        "oauth_client_id": "your_client_id",
-        "oauth_client_secret": "your_client_secret",
-        "oauth_token_url": "https://your-idcs.identity.oraclecloud.com/oauth2/v1/token",
-    }
-)
+from flext_oracle_oic import settings
 
 # Debug connection settings
 print(f"Base URL: {settings.OracleOic.base_url}")
@@ -328,14 +286,12 @@ print(f"Token URL: {settings.OracleOic.oauth_token_url}")
 
 The configuration system will be enhanced in future releases with:
 
-- **Automatic Environment Binding**: Direct Pydantic Settings integration
-- **Configuration File Support**: JSON, YAML, and TOML file loading
+- **Business YAML Consumer**: Complete and verify the existing canonical loader route
 - **Environment-Specific Configs**: Development, staging, production profiles
 - **Oracle Cloud Integration**: Native Oracle Vault and IDCS integration
 - **Dynamic Configuration**: Runtime configuration updates and validation
 
 ---
 
-This configuration guide reflects the actual implementation status as of April 14, 2026.
-The basic Pydantic configuration foundation is implemented, with advanced features
-planned for future releases.
+Settings validation, business-config loading, and Oracle authentication are separate
+contracts. Validate each through its actual public consumer before claiming readiness.

@@ -4,9 +4,9 @@
 
 - [Public API Overview](#public-api-overview)
 - [Configuration API](#configuration-api)
-  - [OracleOicExtensionSettings](#oracleoicextensionsettings)
-  - [FlextOracleOicConnectionSettings](#flextoracleoicconnectionsettings)
-  - [FlextOracleOicAuthSettings](#flextoracleoicauthsettings)
+  - [FlextOracleOicSettings](#flextoracleoicsettings)
+  - [OICConnectionConfig](#oicconnectionconfig)
+  - [OICAuthConfig](#oicauthconfig)
 - [Available Components](#available-components)
   - [Service Classes (Implementation Status Varies)](#service-classes-implementation-status-varies)
   - [Client Components (FLEXT Compliance Issues)](#client-components-flext-compliance-issues)
@@ -31,8 +31,9 @@
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
-> **Implementation Status**: Version 0.9.9 provides basic configuration and service
-> structure. Full Oracle OIC integration capabilities are in development.
+> **Implementation Status**: Public settings, domain models, client, and service
+> operations exist. Offline examples validate these contracts, not successful Oracle
+> authentication or deployed integration behavior.
 
 ## Public API Overview
 
@@ -40,12 +41,18 @@ The current implementation provides foundation configuration classes and basic s
 structure. All public APIs are available through the main module import.
 
 ```python
+from flext_oracle_oic import FlextOracleOicApi, settings
 
+api = FlextOracleOicApi(settings=settings)
+connection_context = api.fetch_connection_context().unwrap()
+if connection_context["base_url"] != settings.OracleOic.base_url:
+    message = "Connection context did not preserve the configured URL"
+    raise ValueError(message)
 ```
 
 ## Configuration API
 
-### OracleOicExtensionSettings
+### FlextOracleOicSettings
 
 Main configuration container for Oracle OIC extension settings.
 
@@ -62,7 +69,7 @@ runtime_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
 - Settings are loaded from the environment; domain models validate their ranges.
 - Flat connection or authentication keywords are not the namespaced settings contract.
 
-### FlextOracleOicConnectionSettings
+### OICConnectionConfig
 
 HTTP connection configuration for Oracle Integration Cloud.
 
@@ -71,7 +78,7 @@ from flext_oracle_oic import m, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
-        include=set(m.OracleOic.OICConnectionConfig.model_fields)
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
     ),
 )
 ```
@@ -83,7 +90,7 @@ connection_config = m.OracleOic.OICConnectionConfig.model_validate(
 - `settings.OracleOic.request_timeout` controls the request timeout.
 - Defaults and validation constraints belong to the settings and model owners.
 
-### FlextOracleOicAuthSettings
+### OICAuthConfig
 
 OAuth2/IDCS authentication configuration for Oracle cloud integration.
 
@@ -91,7 +98,7 @@ OAuth2/IDCS authentication configuration for Oracle cloud integration.
 from flext_oracle_oic import m, settings
 
 auth_config = m.OracleOic.OICAuthConfig.model_validate(
-    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields))
+    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
 )
 ```
 
@@ -110,7 +117,13 @@ auth_config = m.OracleOic.OICAuthConfig.model_validate(
 ### Service Classes (Implementation Status Varies)
 
 ```python
-# Service and API entry points
+from flext_oracle_oic import FlextOracleOicApi, settings
+
+api = FlextOracleOicApi(settings=settings)
+features_context = api.fetch_features_context().unwrap()
+if features_context["verify_ssl"] != settings.OracleOic.verify_ssl:
+    message = "Feature context did not preserve configured TLS verification"
+    raise ValueError(message)
 ```
 
 **Usage Note**: Current service implementations provide basic structure. Full Oracle OIC
@@ -119,12 +132,25 @@ integration capabilities are in development.
 ### Client Components (FLEXT Compliance Issues)
 
 ```python
-# Service facade and settings (the HTTP client wrapper is not yet exposed)
+from flext_oracle_oic import FlextOracleOicClient, m, settings
+
+connection_config = m.OracleOic.OICConnectionConfig.model_validate(
+    settings.OracleOic.model_dump(
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
+)
+auth_config = m.OracleOic.OICAuthConfig.model_validate(
+    settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
+)
+client = FlextOracleOicClient(
+    connection_config=connection_config,
+    auth_config=auth_config,
+)
 ```
 
-**Critical Issue**: Current client implementation uses direct `httpx` imports (line 12
-in `ext_client.py`) which violates FLEXT ecosystem standards. Will be refactored to use
-`flext-api` patterns.
+`FlextOracleOicClient` accepts both validated connection and authentication models.
+Construction does not contact Oracle; network operations require configured credentials
+and a reachable instance. HTTP operations use the upstream `FlextApi` facade.
 
 ### Data Models
 
@@ -147,7 +173,7 @@ from flext_oracle_oic import e
 base_error = e.BaseError  # Base exception
 auth_error = e.AuthenticationError  # Authentication failures
 config_error = e.ConfigurationError  # Configuration issues
-connection_error = e.ConnectionError  # Connection problems
+connection_error = e.FlextConnectionError  # Connection problems
 ```
 
 **Implementation Note**: Exception hierarchy provides structured error handling for
@@ -172,37 +198,37 @@ reachable instance.
 
 **FLEXT Compliance Violations:**
 
-- Direct `httpx` import in `ext_client.py:12` (should use flext-api)
-- Direct `typer` import in `main.py:15` (should use flext-cli)
-- Missing s inheritance across service classes
-- Multiple classes per module violate FLEXT unified class pattern
+- The client uses `FlextApi`, the CLI uses `flext-cli`, and the service base inherits
+  the upstream `s`; those integrations do not need replacement.
+- Remaining facade, composition, and type findings are measured by `make check` and
+  `make mod`, not by historical file/line counts in this reference.
 
 **Oracle OIC Integration Gaps:**
 
-- No actual Oracle Integration Cloud API connectivity
-- OAuth2/IDCS authentication framework incomplete
-- No integration pattern execution capabilities
-- Missing enterprise features (circuit breaker, retry patterns)
+- OAuth, integration CRUD, orchestration, and health-check paths are implemented.
+- Their existence does not prove successful operations against a configured Oracle
+  instance. Validate credentials, response contracts, and lifecycle behavior through
+  the public consumer before claiming network readiness.
 
 **Type Safety Issues:**
 
-- 2 MyPy errors: `exceptions.py:283` and `test_models.py:61`
+- `make check` runs the configured lint and type owners; inspect its current receipts.
+  Passing the offline examples does not establish a zero-finding project baseline.
 
 ### Development Roadmap
 
 **Phase 1: FLEXT Compliance (Critical)**
 
-1. Fix MyPy errors in exceptions and test files
-1. Replace direct httpx/typer imports with FLEXT abstractions
-1. Implement s inheritance
-1. Convert to unified class pattern (single class per module)
+1. Resolve current lint, type, facade, and composition findings at their owners.
+1. Preserve existing HTTP, CLI, and service abstractions while repairing their contracts.
+1. Regenerate managed surfaces and verify repeated canonical fixed points.
 
 **Phase 2: Oracle OIC Implementation**
 
 1. Complete OAuth2/IDCS authentication with Oracle Cloud Identity
-1. Implement real Oracle OIC REST API integration
-1. Add integration pattern execution engine
-1. Enterprise features (circuit breaker, retry, monitoring)
+1. Validate existing Oracle OIC REST operations against the configured service.
+1. Verify orchestration and monitoring results through their public contracts.
+1. Measure remaining resilience requirements before adding new mechanisms.
 
 **Phase 3: Production Readiness**
 
@@ -216,13 +242,12 @@ reachable instance.
 ### Import Patterns
 
 ```python
-# Recommended import pattern for current version
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import FlextOracleOicSettings, settings
 
-# Create basic configuration
-settings = FlextOracleOicSettings(
-    base_url="https://your-instance.integration.ocp.oraclecloud.com",
-)
+runtime_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
+if runtime_settings.OracleOic != settings.OracleOic:
+    message = "Settings validation did not preserve the configured namespace"
+    raise ValueError(message)
 ```
 
 ### API Stability
@@ -237,17 +262,16 @@ settings = FlextOracleOicSettings(
 ### Current Version (v0.12.0-dev)
 
 ```python
-# Safe to use for configuration and basic setup
-from flext_oracle_oic import FlextOracleOicSettings
+from flext_oracle_oic import m, settings
 
-# Configuration validation and type safety works correctly
-try:
-    settings = FlextOracleOicSettings(
-        base_url="https://test-instance.integration.ocp.oraclecloud.com",
-    )
-    print("✅ Configuration valid")
-except ValueError as e:
-    print(f"❌ Configuration error: {e}")
+connection_config = m.OracleOic.OICConnectionConfig.model_validate(
+    settings.OracleOic.model_dump(
+        include=set(m.OracleOic.OICConnectionConfig.model_fields),
+    ),
+)
+if connection_config.base_url != settings.OracleOic.base_url:
+    message = "Connection validation did not preserve the configured URL"
+    raise ValueError(message)
 ```
 
 ### Future Versions
@@ -261,9 +285,8 @@ API will be enhanced with:
 
 ---
 
-This API reference reflects the actual implementation status as of April 14, 2026.
-Version 0.9.9 provides foundation configuration and basic service structure, with
-significant enhancements planned for FLEXT compliance and Oracle OIC integration.
+This reference describes public source contracts. Readiness requires current canonical
+gate receipts and successful configured runtime validation, not API presence alone.
 
 ## Related Documentation
 
