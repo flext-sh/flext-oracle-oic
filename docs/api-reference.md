@@ -31,8 +31,9 @@
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 
-> **Implementation Status**: Version 0.9.9 provides basic configuration and service
-> structure. Full Oracle OIC integration capabilities are in development.
+> **Implementation Status**: Public settings, domain models, client, and service
+> operations exist. Offline examples validate these contracts, not successful Oracle
+> authentication or deployed integration behavior.
 
 ## Public API Overview
 
@@ -197,37 +198,37 @@ reachable instance.
 
 **FLEXT Compliance Violations:**
 
-- Direct `httpx` import in `ext_client.py:12` (should use flext-api)
-- Direct `typer` import in `main.py:15` (should use flext-cli)
-- Missing s inheritance across service classes
-- Multiple classes per module violate FLEXT unified class pattern
+- The client uses `FlextApi`, the CLI uses `flext-cli`, and the service base inherits
+  the upstream `s`; those integrations do not need replacement.
+- Remaining facade, composition, and type findings are measured by `make check` and
+  `make mod`, not by historical file/line counts in this reference.
 
 **Oracle OIC Integration Gaps:**
 
-- No actual Oracle Integration Cloud API connectivity
-- OAuth2/IDCS authentication framework incomplete
-- No integration pattern execution capabilities
-- Missing enterprise features (circuit breaker, retry patterns)
+- OAuth, integration CRUD, orchestration, and health-check paths are implemented.
+- Their existence does not prove successful operations against a configured Oracle
+  instance. Validate credentials, response contracts, and lifecycle behavior through
+  the public consumer before claiming network readiness.
 
 **Type Safety Issues:**
 
-- 2 MyPy errors: `exceptions.py:283` and `test_models.py:61`
+- `make check` runs the configured lint and type owners; inspect its current receipts.
+  Passing the offline examples does not establish a zero-finding project baseline.
 
 ### Development Roadmap
 
 **Phase 1: FLEXT Compliance (Critical)**
 
-1. Fix MyPy errors in exceptions and test files
-1. Replace direct httpx/typer imports with FLEXT abstractions
-1. Implement s inheritance
-1. Convert to unified class pattern (single class per module)
+1. Resolve current lint, type, facade, and composition findings at their owners.
+1. Preserve existing HTTP, CLI, and service abstractions while repairing their contracts.
+1. Regenerate managed surfaces and verify repeated canonical fixed points.
 
 **Phase 2: Oracle OIC Implementation**
 
 1. Complete OAuth2/IDCS authentication with Oracle Cloud Identity
-1. Implement real Oracle OIC REST API integration
-1. Add integration pattern execution engine
-1. Enterprise features (circuit breaker, retry, monitoring)
+1. Validate existing Oracle OIC REST operations against the configured service.
+1. Verify orchestration and monitoring results through their public contracts.
+1. Measure remaining resilience requirements before adding new mechanisms.
 
 **Phase 3: Production Readiness**
 
@@ -284,9 +285,8 @@ API will be enhanced with:
 
 ---
 
-This API reference reflects the actual implementation status as of April 14, 2026.
-Version 0.9.9 provides foundation configuration and basic service structure, with
-significant enhancements planned for FLEXT compliance and Oracle OIC integration.
+This reference describes public source contracts. Readiness requires current canonical
+gate receipts and successful configured runtime validation, not API presence alone.
 
 ## Related Documentation
 
