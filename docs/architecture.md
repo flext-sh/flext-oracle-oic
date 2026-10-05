@@ -273,8 +273,8 @@ remaining composition and runtime findings.
 
 **Enterprise Features**
 
-- No circuit breaker pattern
-- No exponential backoff retry strategy
+- Failure handling must preserve the first exception, traceback, causal chain, and
+  subprocess outcome; the absence of retry or circuit-breaker paths is not a defect.
 - Monitoring and health-check methods exist; successful configured behavior still
   requires public runtime evidence.
 
@@ -348,11 +348,11 @@ tests/
    - Scheduled orchestration
    - File transfer patterns
 
-3. **Enterprise Features**
+3. **Failure and Monitoring Contracts**
 
-   - Circuit breaker implementation
-   - Retry strategies
-   - Monitoring and health checks
+   - Preserve the first failure and its original causal diagnostics
+   - Do not add retry, fallback, or circuit-breaker paths to continue after a failure
+   - Validate the implemented monitoring and health-check operations
 
 ### Phase 3: Production Readiness (Month 4+)
 

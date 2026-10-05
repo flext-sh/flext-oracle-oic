@@ -156,7 +156,9 @@ make test-file FILE=docs/configuration.md
 
 - **OAuth2/IDCS Authentication**: Full Oracle cloud authentication
 - **Integration Patterns**: Validate existing app-driven and scheduled orchestration
-- **Enterprise Features**: Circuit breaker, retry patterns, monitoring
+- **Operational Validation**: Verify the existing monitoring and health-check paths.
+  Preserve the original failure and nonzero outcome; retries, fallback, and circuit
+  breakers must not turn a failed operation into apparent success.
 
 ### Known Limitations ⚠️
 
@@ -236,7 +238,9 @@ make check
 
 ### Support Channels
 
-- **Issues**: Create GitHub issue with detailed error information
+- **Defects and Work**: Record execution intent, dependencies, and exact command
+  evidence in the selected Beads store. Pull requests and CI mirror that record;
+  GitHub issues are not a second source of execution status.
 - **Questions**: Check existing documentation and README files first
 - **Contributing**: Follow development guidelines in
   [guides/development.md](guides/development.md)
