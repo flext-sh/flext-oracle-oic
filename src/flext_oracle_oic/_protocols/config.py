@@ -21,22 +21,22 @@ class FlextOracleOicProtocolsConfig:
 
         @property
         def api(self) -> t.JsonMapping:
-            """Return the configured API rules."""
+            """The configured API rules."""
             ...
 
         @property
         def integration(self) -> t.JsonMapping:
-            """Return the configured integration rules."""
+            """The configured integration rules."""
             ...
 
         @property
         def validation(self) -> t.JsonMapping:
-            """Return the configured validation rules."""
+            """The configured validation rules."""
             ...
 
         @property
         def monitoring(self) -> t.JsonMapping:
-            """Return the configured monitoring rules."""
+            """The configured monitoring rules."""
             ...
 
 

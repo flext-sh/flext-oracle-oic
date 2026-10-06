@@ -117,7 +117,8 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         if validation_result.success:
             return validation_result
         self.logger.warning(
-            f"Health status validation failed: {validation_result.error}",
+            "Health status validation failed: %s",
+            validation_result.error,
         )
         return r[t.JsonMapping].ok(health_data)
 
@@ -225,7 +226,10 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         if analysis_result.success:
             metrics_dict["analysis"] = dict(analysis_result.value)
         else:
-            self.logger.warning(f"Performance analysis failed: {analysis_result.error}")
+            self.logger.warning(
+                "Performance analysis failed: %s",
+                analysis_result.error,
+            )
         return metrics_dict
 
     def _exception_metrics(

@@ -72,7 +72,7 @@ class TestsFlextOracleOicExtension:
 
     @staticmethod
     def test_facade_singleton_is_the_shared_api_instance() -> None:
-        """The public `oracle_oic` singleton is the shared FlextOracleOicApi instance."""
+        """The public ``oracle_oic`` singleton is the shared API instance."""
         tm.that(oracle_oic, is_=FlextOracleOicApi)
         tm.that(FlextOracleOicApi.fetch_global(), eq=oracle_oic)
 

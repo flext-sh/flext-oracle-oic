@@ -81,8 +81,9 @@ class FlextOracleOicConstants(FlextAuthConstants):
         class Status(StrEnum):
             """Integration status values.
 
-            DRY Pattern: This StrEnum is the single source of truth for integration statuses.
-            All integration status-related constants and Literal types MUST reference this enum.
+            DRY Pattern: This StrEnum is the single source of truth for
+            integration statuses. All integration status constants and Literal
+            types MUST reference this enum.
             """
 
             ACTIVATED = "ACTIVATED"
@@ -99,8 +100,9 @@ class FlextOracleOicConstants(FlextAuthConstants):
         class Status(StrEnum):
             """Connection status values.
 
-            DRY Pattern: This StrEnum is the single source of truth for connection statuses.
-            All connection status-related constants and Literal types MUST reference this enum.
+            DRY Pattern: This StrEnum is the single source of truth for
+            connection statuses. All connection status constants and Literal
+            types MUST reference this enum.
             """
 
             ACTIVE = "ACTIVE"
@@ -112,8 +114,9 @@ class FlextOracleOicConstants(FlextAuthConstants):
         class Type(StrEnum):
             """Connection type values.
 
-            DRY Pattern: This StrEnum is the single source of truth for connection types.
-            All connection type-related constants and Literal types MUST reference this enum.
+            DRY Pattern: This StrEnum is the single source of truth for
+            connection types. All connection type constants and Literal types
+            MUST reference this enum.
             Note: ADAPTER_TYPE_* constants are aliases to these values.
             """
 
@@ -135,7 +138,8 @@ class FlextOracleOicConstants(FlextAuthConstants):
             """Health status values.
 
             DRY Pattern: This StrEnum is the single source of truth for health statuses.
-            All health status-related constants and Literal types MUST reference this enum.
+            All health status constants and Literal types MUST reference this
+            enum.
             """
 
             HEALTHY = "healthy"
@@ -147,8 +151,9 @@ class FlextOracleOicConstants(FlextAuthConstants):
         class ComponentStatus(StrEnum):
             """Component status values.
 
-            DRY Pattern: This StrEnum is the single source of truth for component statuses.
-            All component status-related constants and Literal types MUST reference this enum.
+            DRY Pattern: This StrEnum is the single source of truth for
+            component statuses. All component status constants and Literal
+            types MUST reference this enum.
             """
 
             HEALTHY = "healthy"
@@ -168,7 +173,7 @@ class FlextOracleOicConstants(FlextAuthConstants):
             """HTTP method values.
 
             DRY Pattern: This StrEnum is the single source of truth for HTTP methods.
-            All HTTP method-related constants and Literal types MUST reference this enum.
+            All HTTP method constants and Literal types MUST reference this enum.
             """
 
             GET = "GET"

@@ -331,7 +331,10 @@ class FlextOracleOicClient:
             The resulting ``p.Result[FlextApi]``.
         """
         try:
-            base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
+            base_url = (
+                f"{self.connection_config.base_url.rstrip('/')}"
+                f"/ic/api/{self.connection_config.api_version}"
+            )
             api_config = FlextApiSettings.model_validate({
                 "base_url": base_url,
                 "timeout": self.connection_config.request_timeout,
@@ -395,7 +398,10 @@ class FlextOracleOicClient:
             api_data = {
                 key: str(self._to_api_payload(value)) for key, value in json.items()
             }
-        base_url = f"{self.connection_config.base_url.rstrip('/')}/ic/api/{self.connection_config.api_version}"
+        base_url = (
+            f"{self.connection_config.base_url.rstrip('/')}"
+            f"/ic/api/{self.connection_config.api_version}"
+        )
         full_url = f"{base_url}/{endpoint.lstrip('/')}"
         if method.upper() == FlextApiConstants.Api.Method.GET.value:
             response_result = client.get(full_url, headers=None)
