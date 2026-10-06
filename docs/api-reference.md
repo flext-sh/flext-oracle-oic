@@ -112,7 +112,7 @@ auth_config = m.OracleOic.OICAuthConfig.model_validate(
 ## Available Components
 
 > **Important**: The following components exist in the codebase but may have limited or
-> placeholder functionality. Refer to source code for actual implementation details.
+> partially implemented functionality. Refer to source code for actual implementation details.
 
 ### Service Classes (Implementation Status Varies)
 
