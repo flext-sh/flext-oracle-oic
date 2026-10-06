@@ -12,16 +12,11 @@ from __future__ import annotations
 
 from typing import Annotated
 
+import _oracle_oic_namespace
 from flext_cli import FlextCliConfig
 
 from flext_core import FlextSettings
 from flext_oracle_oic import m
-
-
-class _OracleOicNamespace(m.BaseModel):
-    """Open, frozen namespace exposing every ``config/*.yaml`` domain model-less."""
-
-    model_config = m.ConfigDict(extra="allow", frozen=True)
 
 
 class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
@@ -34,11 +29,11 @@ class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
     """
 
     OracleOic: Annotated[
-        _OracleOicNamespace,
+        _oracle_oic_namespace._OracleOicNamespace,
         m.Field(
             description="Open namespace exposing ``config/*.yaml`` under ``OracleOic``.",
         ),
-    ] = _OracleOicNamespace()
+    ] = _oracle_oic_namespace._OracleOicNamespace()
 
 
 config: FlextOracleOicConfig = FlextOracleOicConfig.fetch_global()

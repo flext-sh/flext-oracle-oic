@@ -443,7 +443,6 @@ runtime-evaluated-base-classes = [
   "flext_auth.FlextAuthModels.Value",
   "flext_auth.m.Value",
   "flext_cli.FlextCliConfig",
-  "flext_cli.m.BaseModel",
   "flext_core.FlextSettings",
   "flext_core.s",
   "flext_oracle_oic.FlextOracleOicService",
