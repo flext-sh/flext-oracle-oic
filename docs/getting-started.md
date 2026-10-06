@@ -39,7 +39,7 @@ ecosystem
 
 ### Required Software
 
-- **Python 3.13+** with Poetry for dependency management
+- **Managed Python toolchain** provisioned by `make setup` through Mise and uv
 - **FLEXT workspace** setup with access to
   [flext-core](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/README.md)
 - **Git** for version control
@@ -60,34 +60,24 @@ ecosystem
 ### Development Installation (Recommended)
 
 ```bash
-# Navigate to FLEXT workspace
-cd /path/to/flext/workspace
-git clone < repository-url > flext-oracle-oic
+# Standalone checkout on the configured integration line
+git clone --branch 0.12.0-dev https://github.com/flext-sh/flext-oracle-oic.git
 cd flext-oracle-oic
 
-# Install dependencies with development tools
+# Provision and validate through this checkout's canonical Make interface
 make setup
-
-# Verify FLEXT-core access
-python -c "from flext_cli import u
-from flext_core import FlextSettings; u.Cli.print('FLEXT-Core accessible')"
-
-# Verify installation
-python -c "from flext_oracle_oic import OracleOicExtensionSettings; \
-    u.Cli.print('Import successful')"
+make check
 ```
 
 ### Environment Setup
 
 ```bash
-# Set Python path for FLEXT workspace access
-export PYTHONPATH="${PWD}/src:$PYTHONPATH"
-
-# Optional: Oracle OIC testing environment
-export ORACLE_OIC_BASE_URL="https://your-instance.integration.ocp.oraclecloud.com"
-export ORACLE_OIC_CLIENT_ID="your_oauth_client_id"
-export ORACLE_OIC_CLIENT_SECRET="your_oauth_client_secret"
-export ORACLE_OIC_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
+# Before selecting network operations, provision the declared deployment inputs.
+# These checks do not print credentials or invent defaults.
+: "${FLEXT_ORACLE_OIC_ORACLEOIC__BASE_URL:?Set the OIC instance URL}"
+: "${FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_ID:?Set the OAuth client ID}"
+: "${FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_SECRET:?Set the OAuth secret}"
+: "${FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_TOKEN_URL:?Set the OAuth token endpoint}"
 ```
 
 ## Basic Usage
@@ -145,16 +135,13 @@ make build
 ### Testing Commands
 
 ```bash
-# Run tests with coverage analysis
-PYTHONPATH=src python -m pytest tests/ --cov=src --cov-report=term-missing
+# Preserve the canonical persistent testmon database and runner budgets.
+make test
+make test-full
+make test-file FILE=tests/unit/test_models.py
 
-# Run specific test categories
-pytest tests/unit/ -v        # Unit tests only
-pytest tests/integration/ -v # Integration tests (when available)
-pytest -m "not slow" -v      # Skip slow tests
-
-# Coverage reporting
-pytest tests/ --cov=src --cov-report=html:coverage-report
+# Execute the existing authored Markdown examples through the public consumer.
+make test-file FILE=docs/configuration.md
 ```
 
 ## Current Implementation Status
@@ -169,7 +156,9 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 
 - **OAuth2/IDCS Authentication**: Full Oracle cloud authentication
 - **Integration Patterns**: Validate existing app-driven and scheduled orchestration
-- **Enterprise Features**: Circuit breaker, retry patterns, monitoring
+- **Operational Validation**: Verify the existing monitoring and health-check paths.
+  Preserve the original failure and nonzero outcome; retries, fallback, and circuit
+  breakers must not turn a failed operation into apparent success.
 
 ### Known Limitations ⚠️
 
@@ -194,24 +183,19 @@ pytest tests/ --cov=src --cov-report=html:coverage-report
 **Import Errors from FLEXT-Core**
 
 ```bash
-# Verify FLEXT workspace structure
-ls -la ../flext-core/src/flext_core/
-export PYTHONPATH="$(pwd)/../flext-core/src:$PYTHONPATH"
-python -c "from flext_cli import u
-from flext_core import FlextSettings; u.Cli.print('Success')"
+# Reconcile this checkout's managed environment, then inspect native import gates.
+make setup
+make check
 ```
 
 **Quality Gate Failures**
 
 ```bash
-# Check specific issues
-make lint 2>&1 | head -20       # Show linting errors
-make type-check 2>&1 | head -20 # Show type errors
-make test 2>&1 | head -20       # Show test failures
-
-# Fix common issues
-ruff check --fix src/        # Auto-fix linting
-mypy src/ --show-error-codes # Show specific type errors
+# Preserve full native diagnostics; do not truncate the first failure.
+make check
+make fix
+make fmt
+make check
 ```
 
 **Dependency Reset**
@@ -226,13 +210,9 @@ make setup
 **FLEXT Pattern Violations**
 
 ```bash
-# Check for direct imports (violations)
-grep -r "import httpx\|import typer" src/
-grep -r "from httpx\|from typer" src/
-
-# Should be replaced with:
-# from flext_api import FlextApiClient
-# from flext_cli import FlextCliCommands
+# Use the canonical modernization owner and then verify its findings.
+make mod
+make check
 ```
 
 ## Next Steps
@@ -258,7 +238,9 @@ grep -r "from httpx\|from typer" src/
 
 ### Support Channels
 
-- **Issues**: Create GitHub issue with detailed error information
+- **Defects and Work**: Record execution intent, dependencies, and exact command
+  evidence in the selected Beads store. Pull requests and CI mirror that record;
+  GitHub issues are not a second source of execution status.
 - **Questions**: Check existing documentation and README files first
 - **Contributing**: Follow development guidelines in
   [guides/development.md](guides/development.md)
