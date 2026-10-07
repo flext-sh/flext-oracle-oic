@@ -11,13 +11,14 @@ from typing import Protocol, runtime_checkable
 from flext_auth import FlextAuthProtocols
 
 from flext_oracle_oic import t
+from flext_oracle_oic._protocols.config import FlextOracleOicProtocolsConfig
 
 
 class FlextOracleOicProtocols(FlextAuthProtocols):
-    """Oracle OIC Extension protocols extending p with Oracle OIC-specific interfaces."""
+    """Oracle OIC Extension protocols extending ``p`` with OIC-specific interfaces."""
 
     @runtime_checkable
-    class OracleOic(Protocol):
+    class OracleOic(FlextOracleOicProtocolsConfig, Protocol):
         """OracleOic domain namespace."""
 
         @runtime_checkable

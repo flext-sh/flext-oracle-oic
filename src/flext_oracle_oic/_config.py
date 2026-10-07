@@ -27,7 +27,11 @@ class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
 
     @cached_property
     def OracleOic(self) -> p.OracleOic.Config:
-        """Return the required business namespace without synthesized defaults."""
+        """The required business namespace without synthesized defaults.
+
+        Raises:
+            ValueError: If Oracle OIC business configuration namespace is missing.
+        """
         if self.model_extra is None:
             msg = "Oracle OIC business configuration namespace is missing"
             raise ValueError(msg)
@@ -35,6 +39,9 @@ class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
 
 
 config: FlextOracleOicConfig = FlextOracleOicConfig.fetch_global()
-"""Pre-instantiated frozen config singleton — ``from flext_oracle_oic import config``."""
+"""Pre-instantiated frozen config singleton.
+
+Exposed as ``from flext_oracle_oic import config``.
+"""
 
 __all__: list[str] = ["FlextOracleOicConfig", "config"]
