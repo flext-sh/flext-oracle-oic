@@ -20,7 +20,7 @@
   - [1. FLEXT Compliance Violations](#1-flext-compliance-violations)
   - [2. Oracle OIC Integration Gaps](#2-oracle-oic-integration-gaps)
 - [Testing Architecture](#testing-architecture)
-  - [Current Test Status (21% Coverage)](#current-test-status-21-coverage)
+  - [Current Test Evidence](#current-test-evidence)
   - [Required Testing Strategy](#required-testing-strategy)
 - [Roadmap to FLEXT Compliance](#roadmap-to-flext-compliance)
   - [Phase 1: Critical Fixes (Immediate)](#phase-1-critical-fixes-immediate)
@@ -273,8 +273,8 @@ remaining composition and runtime findings.
 
 **Enterprise Features**
 
-- No circuit breaker pattern
-- No exponential backoff retry strategy
+- Failure handling must preserve the first exception, traceback, causal chain, and
+  subprocess outcome; the absence of retry or circuit-breaker paths is not a defect.
 - Monitoring and health-check methods exist; successful configured behavior still
   requires public runtime evidence.
 
@@ -348,11 +348,11 @@ tests/
    - Scheduled orchestration
    - File transfer patterns
 
-3. **Enterprise Features**
+3. **Failure and Monitoring Contracts**
 
-   - Circuit breaker implementation
-   - Retry strategies
-   - Monitoring and health checks
+   - Preserve the first failure and its original causal diagnostics
+   - Do not add retry, fallback, or circuit-breaker paths to continue after a failure
+   - Validate the implemented monitoring and health-check operations
 
 ### Phase 3: Production Readiness (Month 4+)
 
