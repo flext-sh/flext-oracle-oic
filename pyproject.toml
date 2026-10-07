@@ -391,6 +391,8 @@ testpaths = ["tests"]
 
 [tool.ruff]
 extend-exclude = [
+  "**/.archive/**",
+  "**/protos/**",
   "**/.agents/aihub-hooks/**",
   "**/.claude/aihub-hooks/**",
   "**/.codex/aihub-hooks/**",
@@ -455,6 +457,7 @@ runtime-evaluated-base-classes = [
   "flext_core.s",
   "flext_oracle_oic.FlextOracleOicService",
   "flext_oracle_oic.FlextOracleOicSettings",
+  "flext_oracle_oic.api.FlextOracleOicApiIntegrations",
   "flext_oracle_oic.m.BaseModel",
   "flext_oracle_oic.services.auth.FlextOracleOicAuthMixin",
   "flext_oracle_oic.services.base.FlextOracleOicServiceBase",
