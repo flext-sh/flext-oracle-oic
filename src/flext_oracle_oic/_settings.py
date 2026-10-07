@@ -66,6 +66,9 @@ class FlextOracleOicSettings(FlextSettings):
 
 
 settings: FlextOracleOicSettings = FlextOracleOicSettings.fetch_global()
-"""Pre-instantiated project settings singleton — ``from flext_oracle_oic import settings``."""
+"""Pre-instantiated project settings singleton.
+
+Exposed as ``from flext_oracle_oic import settings``.
+"""
 
 __all__ = ["FlextOracleOicSettings", "settings"]

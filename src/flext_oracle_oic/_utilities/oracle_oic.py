@@ -114,7 +114,8 @@ class FlextOracleOicUtilitiesOracleOic:
                     validated_data[plan.field_name] = field_result.value
             case _:
                 errors.append(
-                    f"{plan.label} validation: Integration {plan.field_name} must be a string",
+                    f"{plan.label} validation: "
+                    f"Integration {plan.field_name} must be a string",
                 )
 
     @staticmethod

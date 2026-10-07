@@ -15,7 +15,7 @@ from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 
 
 class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
-    """Mixin providing integration lifecycle operations for FlextOracleOicService facade."""
+    """Mixin providing integration lifecycle operations for the OIC service."""
 
     def activate_integration(self, integration_id: str) -> p.Result[bool]:
         """Activate Oracle OIC integration.

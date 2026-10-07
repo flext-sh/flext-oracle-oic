@@ -34,6 +34,32 @@ _VALID_CLIENT_ID = "client-id-123"
 _VALID_OAUTH_CREDENTIAL = "test-credential-123"
 
 
+def _invoke_unconfigured_operation(
+    svc: FlextOracleOicService,
+    operation: str,
+) -> object:
+    """Invoke one fallible service operation by name.
+
+    Returns:
+        The resulting operation ``r``.
+    """
+    operations: dict[str, object] = {
+        "execute": svc.execute,
+        "list_integrations": svc.list_integrations,
+        "create_integration": lambda: svc.create_integration({}),
+        "fetch_integration": lambda: svc.fetch_integration("int-1"),
+        "update_integration": lambda: svc.update_integration("int-1", {}),
+        "delete_integration": lambda: svc.delete_integration("int-1"),
+        "deploy_integration": lambda: svc.deploy_integration({}),
+        "list_connections": svc.list_connections,
+        "activate_integration": lambda: svc.activate_integration("int-1"),
+        "deactivate_integration": lambda: svc.deactivate_integration("int-1"),
+    }
+    fallback = svc.test_connection
+    invoke = operations.get(operation, fallback)
+    return invoke()
+
+
 class TestsFlextOracleOicExtServices:
     """Public-contract behavior of the Oracle OIC service facade."""
 
@@ -131,31 +157,7 @@ class TestsFlextOracleOicExtServices:
         operation: str,
     ) -> None:
         """Every fallible op returns a failed ``r`` (never raises) when unconfigured."""
-        svc = unconfigured_service
-        match operation:
-            case "execute":
-                result = svc.execute()
-            case "list_integrations":
-                result = svc.list_integrations()
-            case "create_integration":
-                result = svc.create_integration({})
-            case "fetch_integration":
-                result = svc.fetch_integration("int-1")
-            case "update_integration":
-                result = svc.update_integration("int-1", {})
-            case "delete_integration":
-                result = svc.delete_integration("int-1")
-            case "deploy_integration":
-                result = svc.deploy_integration({})
-            case "list_connections":
-                result = svc.list_connections()
-            case "activate_integration":
-                result = svc.activate_integration("int-1")
-            case "deactivate_integration":
-                result = svc.deactivate_integration("int-1")
-            case _:
-                result = svc.test_connection()
-
+        result = _invoke_unconfigured_operation(unconfigured_service, operation)
         assert result.failure
         assert result.error
 
