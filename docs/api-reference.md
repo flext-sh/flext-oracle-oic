@@ -112,7 +112,7 @@ auth_config = m.OracleOic.OICAuthConfig.model_validate(
 ## Available Components
 
 > **Important**: The following components exist in the codebase but may have limited or
-> placeholder functionality. Refer to source code for actual implementation details.
+> partially implemented functionality. Refer to source code for actual implementation details.
 
 ### Service Classes (Implementation Status Varies)
 
@@ -228,7 +228,8 @@ reachable instance.
 1. Complete OAuth2/IDCS authentication with Oracle Cloud Identity
 1. Validate existing Oracle OIC REST operations against the configured service.
 1. Verify orchestration and monitoring results through their public contracts.
-1. Measure remaining resilience requirements before adding new mechanisms.
+1. Verify that failed operations preserve their original cause and outcome without
+   retry, fallback, or circuit-breaker paths that normalize failure.
 
 **Phase 3: Production Readiness**
 

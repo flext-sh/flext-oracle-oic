@@ -10,7 +10,7 @@ from __future__ import annotations
 from types import MappingProxyType
 from typing import TYPE_CHECKING
 
-from flext_core import build_lazy_import_map, install_lazy_exports
+from flext_core import install_lazy_exports
 
 if TYPE_CHECKING:
     from flext_oracle_oic._utilities.authentication_validation import (
@@ -30,19 +30,14 @@ __all__: tuple[str, ...] = (
     "FlextOracleOicUtilitiesOracleOic",
 )
 
-_LAZY_IMPORTS = MappingProxyType(
-    build_lazy_import_map(
-        MappingProxyType({
-            ".authentication_validation": (
-                "FlextOracleOicUtilitiesAuthenticationValidation",
-            ),
-            ".connection_validation": ("FlextOracleOicUtilitiesConnectionValidation",),
-            ".monitoring": ("FlextOracleOicUtilitiesMonitoring",),
-            ".oracle_oic": ("FlextOracleOicUtilitiesOracleOic",),
-        }),
-        alias_groups=MappingProxyType({}),
-        sort_keys=False,
-    ),
+install_lazy_exports(
+    __name__,
+    globals(),
+    MappingProxyType({
+        "FlextOracleOicUtilitiesAuthenticationValidation": ".authentication_validation",
+        "FlextOracleOicUtilitiesConnectionValidation": ".connection_validation",
+        "FlextOracleOicUtilitiesMonitoring": ".monitoring",
+        "FlextOracleOicUtilitiesOracleOic": ".oracle_oic",
+    }),
+    public_exports=__all__,
 )
-
-install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, public_exports=__all__)
