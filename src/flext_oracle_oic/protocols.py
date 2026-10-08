@@ -17,8 +17,7 @@ from flext_oracle_oic._protocols.config import FlextOracleOicProtocolsConfig
 class FlextOracleOicProtocols(FlextAuthProtocols):
     """Oracle OIC Extension protocols extending ``p`` with OIC-specific interfaces."""
 
-    @runtime_checkable
-    class OracleOic(FlextOracleOicProtocolsConfig, Protocol):
+    class OracleOic(FlextOracleOicProtocolsConfig):
         """OracleOic domain namespace."""
 
         @runtime_checkable
