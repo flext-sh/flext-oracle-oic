@@ -26,9 +26,10 @@ class FlextOracleOicUtilitiesMonitoring:
                 ]
                 if metric_value > threshold:
                     return (
-                        "High response time: %sms (threshold: %sms)",
-                        metric_value,
-                        threshold,
+                        (
+                            f"High response time: {metric_value}ms "
+                            f"(threshold: {threshold}ms)"
+                        ),
                         "Consider optimizing integration mappings or pooling",
                         False,
                     )
@@ -36,9 +37,10 @@ class FlextOracleOicUtilitiesMonitoring:
                 threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["success_rate"]
                 if metric_value < threshold:
                     return (
-                        "Low success rate: %.2f%% (threshold: %.2f%%)",
-                        metric_value * 100,
-                        threshold * 100,
+                        (
+                            f"Low success rate: {metric_value:.2%} "
+                            f"(threshold: {threshold:.2%})"
+                        ),
                         "Investigate integration failures and error patterns",
                         True,
                     )
@@ -46,9 +48,10 @@ class FlextOracleOicUtilitiesMonitoring:
                 threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["error_rate"]
                 if metric_value > threshold:
                     return (
-                        "High error rate: %.2f%% (threshold: %.2f%%)",
-                        metric_value * 100,
-                        threshold * 100,
+                        (
+                            f"High error rate: {metric_value:.2%} "
+                            f"(threshold: {threshold:.2%})"
+                        ),
                         "Review error logs and implement error handling improvements",
                         False,
                     )

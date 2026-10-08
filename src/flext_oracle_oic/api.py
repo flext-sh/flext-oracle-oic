@@ -18,67 +18,7 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
 
 
-class FlextOracleOicApiIntegrations(FlextOracleOicService):
-    """Integration lifecycle facade behavior composed by the OIC API via MRO."""
-
-    _service: FlextOracleOicService
-
-    def activate_integration(self, integration_id: str) -> p.Result[bool]:
-        """Activate Oracle OIC integration.
-
-        Args:
-        integration_id: The integration identifier.
-
-        Returns:
-        r indicating success or failure.
-
-        """
-        return self._service.activate_integration(integration_id)
-
-    @override
-    def create_integration(
-        self,
-        integration_data: t.JsonMapping,
-    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
-        """Create new Oracle OIC integration.
-
-        Args:
-        integration_data: Integration configuration data.
-
-        Returns:
-        r containing created integration information.
-
-        """
-        return self._service.create_integration(integration_data)
-
-    @override
-    def deactivate_integration(self, integration_id: str) -> p.Result[bool]:
-        """Deactivate Oracle OIC integration.
-
-        Args:
-        integration_id: The integration identifier.
-
-        Returns:
-        r indicating success or failure.
-
-        """
-        return self._service.deactivate_integration(integration_id)
-
-    @override
-    def delete_integration(self, integration_id: str) -> p.Result[bool]:
-        """Delete Oracle OIC integration.
-
-        Args:
-        integration_id: The integration identifier.
-
-        Returns:
-        r indicating success or failure.
-
-        """
-        return self._service.delete_integration(integration_id)
-
-
-class FlextOracleOicApi(FlextOracleOicApiIntegrations):
+class FlextOracleOicApi(FlextOracleOicService):
     """Thin facade for Oracle OIC operations with complete FLEXT integration.
 
     Integrates:

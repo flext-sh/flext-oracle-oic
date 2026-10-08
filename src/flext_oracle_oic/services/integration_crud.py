@@ -89,7 +89,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         if client_result.failure:
             return r[m.OracleOic.OICIntegrationInfo].from_failure(client_result)
         client = client_result.value
-        integrations_result = client.get_integrations()
+        integrations_result = client.fetch_integrations()
         if integrations_result.failure:
             error_msg = integrations_result.error or "Failed to get integrations"
             return r[m.OracleOic.OICIntegrationInfo].fail(error_msg)
@@ -261,7 +261,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 client_result,
             )
         client = client_result.value
-        connections_result = client.get_connections(
+        connections_result = client.fetch_connections(
             type_filter=type_filter,
             page_size=c.DEFAULT_PAGE_SIZE,
         )
