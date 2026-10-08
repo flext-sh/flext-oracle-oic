@@ -13,12 +13,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator, Sequence
 
 import pytest
 from flext_tests import tm
 
-from flext_oracle_oic import FlextOracleOicService, FlextOracleOicSettings, p, s
+from flext_oracle_oic import FlextOracleOicService, FlextOracleOicSettings, m, p, s
 from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
 from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 from flext_oracle_oic.services.integration_crud import (
@@ -33,17 +33,26 @@ from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationM
 _VALID_CLIENT_ID = "client-id-123"
 _VALID_OAUTH_CREDENTIAL = "test-credential-123"
 
+type _OperationResult = (
+    p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]
+    | p.Result[m.OracleOic.OICIntegrationInfo]
+    | p.Result[Sequence[m.OracleOic.OICConnectionInfo]]
+    | p.Result[bool]
+    | p.Result[str]
+)
+"""Union of every fallible service-operation result the contract invokes."""
+
 
 def _invoke_unconfigured_operation(
     svc: FlextOracleOicService,
     operation: str,
-) -> object:
+) -> _OperationResult:
     """Invoke one fallible service operation by name.
 
     Returns:
         The resulting operation ``r``.
     """
-    operations: dict[str, object] = {
+    operations: dict[str, Callable[[], _OperationResult]] = {
         "execute": svc.execute,
         "list_integrations": svc.list_integrations,
         "create_integration": lambda: svc.create_integration({}),

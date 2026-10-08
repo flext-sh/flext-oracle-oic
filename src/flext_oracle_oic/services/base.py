@@ -225,7 +225,9 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
             )
             auth_config = m.OracleOic.OICAuthConfig(
                 oauth_client_id=self._oic_settings.OracleOic.oauth_client_id,
-                oauth_client_secret=self._oic_settings.OracleOic.oauth_client_secret,
+                oauth_client_secret=t.SecretStr(
+                    self._oic_settings.OracleOic.oauth_client_secret,
+                ),
                 oauth_token_url=self._oic_settings.OracleOic.oauth_token_url,
                 oauth_client_aud=self._oic_settings.OracleOic.oauth_client_aud,
                 oauth_scope=self._oic_settings.OracleOic.oauth_scope,
@@ -301,7 +303,8 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         if self._authenticator:
             refresh_fn = getattr(self._authenticator, "refresh_token", None)
             if callable(refresh_fn):
-                auth_token = refresh_fn()
+                refreshed = refresh_fn()
+                auth_token = refreshed if isinstance(refreshed, str) else None
         auth_headers: t.JsonMapping = {
             "Authorization": f"Bearer {auth_token or ''}",
             "Content-Type": "application/json",

@@ -30,6 +30,7 @@ class FlextOracleOicConstantsValues:
             "https://localhost.integration.ocp.oraclecloud.com"
         )
         DEFAULT_API_VERSION: Final[str] = "v1"
+        DEFAULT_TOKEN_URL: Final[str] = f"{DEFAULT_BASE_URL}/oauth/token"
         DEFAULT_PAGE_SIZE: Final[int] = 100
         MIN_PAGE_SIZE: Final[int] = 1
         MIN_REQUEST_TIMEOUT: Final[int] = 1

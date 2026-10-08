@@ -17,10 +17,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Annotated
+from typing import Annotated
 
 from flext_core import FlextSettings
-from flext_oracle_oic import m
+from flext_oracle_oic import c, m
 
 
 class FlextOracleOicSettings(FlextSettings):
@@ -32,37 +32,62 @@ class FlextOracleOicSettings(FlextSettings):
         extra="ignore",
     )
 
-    class _OracleOic(m.BaseModel):
-        """Namespaced Oracle OIC connection + OAuth + feature-flag scalars."""
+    class OracleOicSettings(m.BaseModel):
+        """Namespaced Oracle OIC connection + OAuth + feature-flag scalars.
 
-        base_url: str = "https://localhost.integration.ocp.oraclecloud.com"
-        api_version: str = "v1"
-        request_timeout: int = 30
-        max_retries: int = 3
-        verify_ssl: bool = True
-        use_ssl: bool = True
-        enable_monitoring: bool = True
-        enable_enterprise_patterns: bool = True
-        enable_orchestration: bool = True
-        oauth_client_id: str = ""
-        oauth_client_secret: str = ""
-        # NOTE (S105): a public OAuth endpoint URL is configuration, not a
-        # secret; Field(default=...) matches the flext-auth layer-0 settings
-        # pattern for non-secret URL defaults.
+        Defaults live on the assignment side (checker-visible optional
+        constructor parameters).
+        """
+
+        base_url: Annotated[
+            str,
+            m.Field(description="Oracle OIC instance base URL"),
+        ] = "https://localhost.integration.ocp.oraclecloud.com"
+        api_version: Annotated[str, m.Field(description="OIC REST API version")] = "v1"
+        request_timeout: Annotated[
+            int,
+            m.Field(description="Request timeout in seconds"),
+        ] = 30
+        max_retries: Annotated[int, m.Field(description="Maximum retry attempts")] = 3
+        verify_ssl: Annotated[bool, m.Field(description="Verify TLS certificates")] = (
+            True
+        )
+        use_ssl: Annotated[bool, m.Field(description="Use TLS transport")] = True
+        enable_monitoring: Annotated[
+            bool,
+            m.Field(description="Enable monitoring client"),
+        ] = True
+        enable_enterprise_patterns: Annotated[
+            bool,
+            m.Field(description="Enable enterprise patterns"),
+        ] = True
+        enable_orchestration: Annotated[
+            bool,
+            m.Field(description="Enable orchestration operations"),
+        ] = True
+        oauth_client_id: Annotated[
+            str,
+            m.Field(description="IDCS OAuth2 client ID"),
+        ] = ""
+        oauth_client_secret: Annotated[
+            str,
+            m.Field(description="IDCS OAuth2 client secret"),
+        ] = ""
+        # NOTE: a public OAuth endpoint URL is configuration, not a secret;
+        # the default is inlined from the constants SSOT (``c.OracleOic``),
+        # matching the flext-auth layer-0 settings pattern for non-secret
+        # URL defaults.
         oauth_token_url: Annotated[
             str,
-            m.Field(
-                default="https://localhost.integration.ocp.oraclecloud.com/oauth/token",
-                description="IDCS OAuth2 token endpoint URL",
-            ),
-        ]
-        oauth_client_aud: str = ""
-        oauth_scope: str = ""
+            m.Field(description="IDCS OAuth2 token endpoint URL"),
+        ] = c.OracleOic.DEFAULT_TOKEN_URL
+        oauth_client_aud: Annotated[str, m.Field(description="OAuth2 audience")] = ""
+        oauth_scope: Annotated[str, m.Field(description="OAuth2 scope")] = ""
 
-    if TYPE_CHECKING:
-        OracleOic: _OracleOic
-    else:
-        OracleOic: _OracleOic = m.Field(default_factory=_OracleOic)
+    OracleOic: OracleOicSettings = m.Field(
+        default_factory=OracleOicSettings,
+        description="Namespaced Oracle OIC settings branch.",
+    )
 
 
 settings: FlextOracleOicSettings = FlextOracleOicSettings.fetch_global()
