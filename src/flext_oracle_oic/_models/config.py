@@ -19,8 +19,6 @@ class FlextOracleOicModelsConfig:
 
         model_config: ClassVar[m.ConfigDict] = m.ConfigDict(extra="allow")
 
-        __pydantic_extra__: dict[str, t.JsonValue] = m.Field(init=False)
-
         api: t.JsonMapping
         integration: t.JsonMapping
         validation: t.JsonMapping

@@ -17,7 +17,7 @@ import json
 import os
 import shutil
 import stat
-import subprocess  # ruff: ignore[suspicious-subprocess-import] - stdlib bootstrap: git invocation
+import subprocess
 import sys
 import time
 import tomllib
@@ -82,7 +82,7 @@ class MiseLockTransaction:
                         break
                     except OSError:
                         if time.monotonic() >= deadline:
-
+                            timeout_seconds = MiseLockTransaction.MUTEX_TIMEOUT_SECONDS
                             message = (
                                 "Mise transaction mutex is held elsewhere for over "
                                 f"{timeout_seconds:.0f}s: {mutex}"
@@ -149,9 +149,8 @@ class MiseLockTransaction:
             The resulting ``tuple[str, str]``.
 
         Raises:
-            TypeError: When the annotation is not a table or is incomplete.
-            ValueError: When the annotation fails authentication against its
-                physical sidecar.
+            ValueError: When the annotation is not a table, is incomplete, or
+                fails authentication against its physical sidecar.
         """
         if not isinstance(annotation, dict):
             message = f"{cls.LOCK} {graph} annotation is not a table"
@@ -186,7 +185,7 @@ class MiseLockTransaction:
             The resulting ``dict[str, str]``.
 
         Raises:
-            TypeError: When the tools table or a tool entry is not a table.
+            ValueError: When the tools table or a tool entry is not a table.
         """
         if content is None:
             return {}
@@ -233,7 +232,7 @@ class MiseLockTransaction:
         if git_exec is None:
             message = "git executable not found on PATH"
             raise ValueError(message)
-        index = subprocess.run(  # ruff: ignore[subprocess-without-shell-equals-true] - git resolved via shutil.which
+        index = subprocess.run(
             [git_exec, "-C", str(project), "ls-files", "-u", "--", cls.LOCK],
             check=True,
             capture_output=True,

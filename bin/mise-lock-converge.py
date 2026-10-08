@@ -19,7 +19,7 @@ from __future__ import annotations
 import os
 import re
 import shutil
-import subprocess  # ruff: ignore[suspicious-subprocess-import] - stdlib bootstrap: pinned runtime invocation
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -182,7 +182,7 @@ class MiseLockConverge:
         Raises:
             ValueError: When Mise exits non-zero or warns unexpectedly.
         """
-        completed = subprocess.run(  # ruff: ignore[subprocess-without-shell-equals-true] - pinned runtime path, no shell
+        completed = subprocess.run(
             [str(runtime), *arguments],
             env=environment,
             capture_output=True,
@@ -233,7 +233,7 @@ class MiseLockConverge:
         Returns:
             The resulting ``tuple[bool, str]``.
         """
-        completed = subprocess.run(  # ruff: ignore[subprocess-without-shell-equals-true] - pinned runtime path, no shell
+        completed = subprocess.run(
             [str(runtime), "-C", str(stage), "install", "--dry-run"],
             env=environment,
             capture_output=True,
