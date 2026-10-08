@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import Annotated, ClassVar
 
 from flext_core import m, t
 
@@ -19,12 +19,22 @@ class FlextOracleOicModelsConfig:
 
         model_config: ClassVar[m.ConfigDict] = m.ConfigDict(extra="allow")
 
-        __pydantic_extra__: dict[str, t.JsonValue] = m.Field(init=False)
-
-        api: t.JsonMapping
-        integration: t.JsonMapping
-        validation: t.JsonMapping
-        monitoring: t.JsonMapping
+        api: Annotated[
+            t.JsonMapping,
+            m.Field(description="Oracle OIC API business rules"),
+        ]
+        integration: Annotated[
+            t.JsonMapping,
+            m.Field(description="Oracle OIC integration business rules"),
+        ]
+        validation: Annotated[
+            t.JsonMapping,
+            m.Field(description="Oracle OIC validation business rules"),
+        ]
+        monitoring: Annotated[
+            t.JsonMapping,
+            m.Field(description="Oracle OIC monitoring business rules"),
+        ]
 
 
 __all__: list[str] = ["FlextOracleOicModelsConfig"]

@@ -82,7 +82,7 @@ class TestsFlextOracleOicExtClient:
             auth_config=auth,
         )
 
-        body = client.get_oauth_request_body()
+        body = client.compute_oauth_request_body()
 
         tm.that(
             body,
@@ -97,7 +97,7 @@ class TestsFlextOracleOicExtClient:
         client: FlextOracleOicClient,
     ) -> None:
         """An empty scope with no audience falls back to the consumer default."""
-        body = client.get_oauth_request_body()
+        body = client.compute_oauth_request_body()
 
         tm.that(body["grant_type"], eq="client_credentials")
         tm.that(body["scope"], eq="urn:opc:resource:consumer:all")
@@ -118,7 +118,7 @@ class TestsFlextOracleOicExtClient:
             auth_config=auth,
         )
 
-        scope = client.get_oauth_request_body()["scope"]
+        scope = client.compute_oauth_request_body()["scope"]
 
         tm.that(scope, has="https://oic.example.com:443urn:opc:resource:consumer:all")
         tm.that(scope, has="https://oic.example.com:443/ic/api/")
@@ -138,7 +138,7 @@ class TestsFlextOracleOicExtClient:
             auth_config=auth,
         )
 
-        result = client.get_access_token()
+        result = client.fetch_access_token()
 
         tm.fail(result)
         tm.that(result.error, none=False)

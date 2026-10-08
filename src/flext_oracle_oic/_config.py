@@ -11,22 +11,18 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING
 
 from flext_cli import FlextCliConfig
 
 from flext_core import FlextSettings
 from flext_oracle_oic import m
 
-if TYPE_CHECKING:
-    from flext_oracle_oic import p
-
 
 class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
     """Oracle OIC business config validated from the canonical YAML source."""
 
     @cached_property
-    def OracleOic(self) -> p.OracleOic.Config:
+    def OracleOic(self) -> m.OracleOic.Config:
         """The required business namespace without synthesized defaults.
 
         Raises:

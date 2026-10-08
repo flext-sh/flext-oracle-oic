@@ -64,6 +64,10 @@ class FlextOracleOicClient:
         exc_tb: TracebackType | None,
     ) -> None:
         """Context manager exit."""
+        self.close()
+
+    def close(self) -> None:
+        """Close the underlying HTTP session when one was opened."""
         if self._client is not None:
             close_fn = getattr(self._client, "close", None)
             if callable(close_fn):
@@ -136,7 +140,7 @@ class FlextOracleOicClient:
         result = self.make_request(c.API.Method.POST, endpoint, json=schedule_config)
         return result.unwrap()
 
-    def get_access_token(self) -> p.Result[str]:
+    def fetch_access_token(self) -> p.Result[str]:
         """Get access token using OAuth2 client credentials flow.
 
         Returns:
@@ -151,7 +155,7 @@ class FlextOracleOicClient:
             .map(self._store_and_return_token)
         )
 
-    def get_connections(
+    def fetch_connections(
         self,
         type_filter: t.StrSequence | None = None,
         page_size: int = 100,
@@ -166,7 +170,7 @@ class FlextOracleOicClient:
             params["q"] = f"adapterType in ({','.join(type_filter)})"
         return self.paginate_request("/connections", page_size=page_size, params=params)
 
-    def get_integrations(
+    def fetch_integrations(
         self,
         status_filter: t.StrSequence | None = None,
         page_size: int = 100,
@@ -185,7 +189,7 @@ class FlextOracleOicClient:
             params=params,
         )
 
-    def get_lookups(
+    def fetch_lookups(
         self,
         page_size: int = 100,
     ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
@@ -196,7 +200,7 @@ class FlextOracleOicClient:
         """
         return self.paginate_request("/lookups", page_size=page_size)
 
-    def get_oauth_request_body(self) -> t.StrMapping:
+    def compute_oauth_request_body(self) -> t.StrMapping:
         """Generate OAuth2 request body for client credentials flow.
 
         Returns:
@@ -211,7 +215,7 @@ class FlextOracleOicClient:
             scope = self.auth_config.oauth_scope or "urn:opc:resource:consumer:all"
         return {"grant_type": "client_credentials", "scope": scope}
 
-    def get_packages(
+    def fetch_packages(
         self,
         page_size: int = 100,
     ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
@@ -358,7 +362,7 @@ class FlextOracleOicClient:
         Returns:
             The resulting ``p.Result[FlextApi]``.
         """
-        return self.get_access_token().flat_map(self._build_client_with_token)
+        return self.fetch_access_token().flat_map(self._build_client_with_token)
 
     def _execute_api_request(
         self,
@@ -547,7 +551,7 @@ class FlextOracleOicClient:
                 "Authorization": f"Basic {encoded_credentials}",
                 "Content-Type": "application/x-www-form-urlencoded",
             }
-            data = self.get_oauth_request_body()
+            data = self.compute_oauth_request_body()
             return r[tuple[t.StrMapping, t.StrMapping]].ok((headers, data))
         except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"Failed to prepare OAuth request: {exc}"

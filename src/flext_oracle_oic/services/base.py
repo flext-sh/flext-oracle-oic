@@ -51,7 +51,7 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         self._initialize_components()
 
     def __enter__(self) -> Self:
-        """Context manager entry.
+        """Enter the service session; the OIC client is created on first use.
 
         Returns:
             The resulting ``Self``.
@@ -60,11 +60,14 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
 
     def __exit__(
         self,
-        exc_type: type[BaseException] | None,
-        exc_val: BaseException | None,
-        exc_tb: TracebackType | None,
+        error_type: type[BaseException] | None,
+        error: BaseException | None,
+        error_traceback: TracebackType | None,
     ) -> None:
-        """Context manager exit."""
+        """Close the OIC client session this service owns."""
+        if self._client is not None:
+            self._client.close()
+            self._client = None
 
     @staticmethod
     def _as_text(value: t.JsonValue, default: str = "") -> str:
@@ -175,7 +178,7 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
             error_msg = client_result.error or "Client initialization failed"
             return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(error_msg)
         client = client_result.value
-        integrations_result = client.get_integrations()
+        integrations_result = client.fetch_integrations()
         if integrations_result.failure:
             error_msg = integrations_result.error or "Failed to get integrations"
             return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(error_msg)
