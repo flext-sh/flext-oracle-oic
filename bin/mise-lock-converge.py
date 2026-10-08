@@ -192,7 +192,6 @@ class MiseLockConverge:
         diagnostics = completed.stdout + completed.stderr
         if completed.returncode != 0:
             sys.stderr.write(diagnostics)
-<<<<<<< HEAD
             message = f"Mise exited {completed.returncode}: {' '.join(arguments)}\n{diagnostics.strip()}"
             raise ValueError(message)
         # The minimum_release_age supply-chain policy emits a deterministic
@@ -216,16 +215,6 @@ class MiseLockConverge:
             if not any(expected in line.lower() for expected in expected_folded)
         ]
         if unexpected:
-=======
-            msg = (
-                f"Mise exited {completed.returncode}: "
-                f"{' '.join(arguments)}\n{diagnostics.strip()}"
-            )
-            raise ValueError(
-                msg,
-            )
-        if "mise WARN" in diagnostics:
->>>>>>> dup-261007
             sys.stderr.write(diagnostics)
             message = f"Mise warned during {' '.join(arguments)}; converge stopped"
             raise ValueError(message)
@@ -274,7 +263,6 @@ class MiseLockConverge:
                 if selector and version and version[0].isdigit():
                     tools.append((selector, version))
         if not tools:
-<<<<<<< HEAD
             message = f"staged install failed but named no failing tool: {probe_output.strip()[:400]}"
             raise ValueError(message)
         return tools
@@ -287,24 +275,6 @@ class MiseLockConverge:
         selector: str,
     ) -> list[str]:
         """List releases of an ``ls-remote`` listing strictly older than the failed one."""
-=======
-            msg = (
-                "staged install failed but named no failing tool: "
-                f"{probe_output.strip()[:400]}"
-            )
-            raise ValueError(
-                msg,
-            )
-        return tools
-
-    @classmethod
-    def release_candidates(cls, listing: str, failed_version: str) -> list[str]:
-        """List ``ls-remote`` releases strictly older than the failed version.
-
-        Returns:
-            The resulting ``list[str]``.
-        """
->>>>>>> dup-261007
 
         def release_key(version: str) -> tuple[int, ...] | None:
             try:
@@ -325,16 +295,8 @@ class MiseLockConverge:
 
     @staticmethod
     def hold_manifest_version(manifest: Path, selector: str, version: str) -> None:
-<<<<<<< HEAD
         """Rewrite one tool's declared version inside the staged manifest copy."""
         manifest_selector = selector.removeprefix("core:")
-=======
-        """Rewrite one tool's declared version inside the staged manifest copy.
-
-        Raises:
-            ValueError: When the manifest declares no version to hold.
-        """
->>>>>>> dup-261007
         lines = manifest.read_text(encoding="utf-8").splitlines(keepends=True)
         headers = (
             f'[tools."{manifest_selector}"]',
@@ -466,17 +428,9 @@ class MiseLockConverge:
                     " failed install; the next upg retries the newest release\n",
                 )
             if not cls._probe(runtime, stage, environment)[0]:
-<<<<<<< HEAD
                 message = f"converge: held lock still fails install: {sorted(holds)}"
                 raise ValueError(message)
             print(f"converge: staged lock installs with holds {sorted(holds)}")
-=======
-                msg = f"converge: held lock still fails install: {sorted(holds)}"
-                raise ValueError(msg)
-            sys.stderr.write(
-                f"converge: staged lock installs with holds {sorted(holds)}\n",
-            )
->>>>>>> dup-261007
         finally:
             shutil.rmtree(scratch, ignore_errors=True)
 
@@ -575,7 +529,6 @@ class MiseLockConverge:
 
     @classmethod
     def main(cls, arguments: list[str]) -> int:
-<<<<<<< HEAD
         if arguments and arguments[0] == "pin":
             if len(arguments) not in {2, 3}:
                 message = "usage: mise-lock-converge.py pin STAGE [COMMITTED_LOCK]"
@@ -588,19 +541,6 @@ class MiseLockConverge:
         if len(arguments) != 3:
             message = "usage: mise-lock-converge.py STORAGE STAGE RELEASE"
             raise ValueError(message)
-=======
-        """Run the converge subcommand over one storage/stage/release triple.
-
-        Returns:
-            The resulting ``int``.
-
-        Raises:
-            ValueError: When the subcommand arguments are invalid.
-        """
-        if len(arguments) != cls.EXPECTED_ARGUMENTS:
-            msg = "usage: mise-lock-converge.py STORAGE STAGE RELEASE"
-            raise ValueError(msg)
->>>>>>> dup-261007
         cls.converge(
             Path(arguments[0]).absolute(),
             Path(arguments[1]).absolute(),

@@ -82,10 +82,7 @@ class MiseLockTransaction:
                         break
                     except OSError:
                         if time.monotonic() >= deadline:
-<<<<<<< HEAD
-=======
-                            timeout_seconds = MiseLockTransaction.MUTEX_TIMEOUT_SECONDS
->>>>>>> dup-261007
+
                             message = (
                                 "Mise transaction mutex is held elsewhere for over "
                                 f"{timeout_seconds:.0f}s: {mutex}"
@@ -158,20 +155,12 @@ class MiseLockTransaction:
         """
         if not isinstance(annotation, dict):
             message = f"{cls.LOCK} {graph} annotation is not a table"
-<<<<<<< HEAD
             raise ValueError(message)
-=======
-            raise TypeError(message)
->>>>>>> dup-261007
         relative = annotation.get("path")
         digest = annotation.get("digest")
         if not isinstance(relative, str) or not isinstance(digest, str):
             message = f"{cls.LOCK} {graph} annotation is incomplete"
-<<<<<<< HEAD
             raise ValueError(message)
-=======
-            raise TypeError(message)
->>>>>>> dup-261007
         selector = cls._sidecar_selector(relative)
         if not digest.startswith("sha256:"):
             message = f"invalid {cls.LOCK} sidecar digest: {relative}"
@@ -205,21 +194,13 @@ class MiseLockTransaction:
         tools = payload.get("tools")
         if not isinstance(tools, dict):
             message = f"{cls.LOCK} has no tools table"
-<<<<<<< HEAD
             raise ValueError(message)
-=======
-            raise TypeError(message)
->>>>>>> dup-261007
         result: dict[str, str] = {}
         for entries in tools.values():
             for entry in entries if isinstance(entries, list) else (entries,):
                 if not isinstance(entry, dict):
                     message = f"{cls.LOCK} tool entry is not a table"
-<<<<<<< HEAD
                     raise ValueError(message)
-=======
-                    raise TypeError(message)
->>>>>>> dup-261007
                 for graph, filename in cls.NATIVE_GRAPHS:
                     if entry.get(graph) is not None:
                         relative, tree = cls._sidecar_digest(
@@ -263,13 +244,8 @@ class MiseLockTransaction:
         ):
             message = f"conflicted {cls.LOCK} has no Git stage-2 source"
             raise ValueError(message)
-<<<<<<< HEAD
         prior = subprocess.run(
             ["git", "-C", str(project), "show", f":2:{cls.LOCK}"],
-=======
-        prior = subprocess.run(  # ruff: ignore[subprocess-without-shell-equals-true] - git resolved via shutil.which
-            [git_exec, "-C", str(project), "show", f":2:{cls.LOCK}"],
->>>>>>> dup-261007
             check=True,
             capture_output=True,
             shell=False,
@@ -791,21 +767,7 @@ class MiseLockTransaction:
 
     @classmethod
     def main(cls, arguments: list[str]) -> int:
-<<<<<<< HEAD
         if len(arguments) != 3 or arguments[0] not in {"publish", "recover"}:
-=======
-        """Run the publisher subcommand over one project/stage pair.
-
-        Returns:
-            The resulting ``int``.
-
-        Raises:
-            ValueError: When the subcommand arguments are invalid.
-        """
-        if len(arguments) != MiseLockTransaction.EXPECTED_ARGUMENTS or arguments[
-            0
-        ] not in {"publish", "recover"}:
->>>>>>> dup-261007
             message = "usage: mise-lock-transaction.py (publish|recover) PROJECT STAGE"
             raise ValueError(message)
         project = Path(arguments[1]).absolute()
