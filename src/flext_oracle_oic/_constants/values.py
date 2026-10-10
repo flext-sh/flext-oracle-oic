@@ -47,6 +47,12 @@ class FlextOracleOicConstantsValues:
         DEFAULT_VERSION: Final[str] = "01.00.0000"
         DEFAULT_VERSION_FALLBACK: Final[str] = "01.00.0000"
 
+    class Connection:
+        """Oracle OIC Connection scalar constants."""
+
+        DEFAULT_TIMEOUT_SECONDS: Final[int] = 30
+        DEFAULT_MAX_RETRIES: Final[int] = 3
+
     class Monitoring:
         """Oracle OIC Monitoring scalar constants."""
 

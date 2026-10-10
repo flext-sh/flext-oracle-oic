@@ -83,7 +83,7 @@ class FlextOracleOicClient:
         Returns:
             The resulting ``p.Result[t.JsonMapping]``.
         """
-        json_data = t.json_dict_adapter().validate_python(connection_data)
+        json_data = u.json_dict_adapter().validate_python(connection_data)
         return self.make_request(c.API.Method.POST, "/connections", json=json_data)
 
     def create_integration(
@@ -325,7 +325,7 @@ class FlextOracleOicClient:
             The resulting ``p.Result[t.JsonMapping]``.
         """
         endpoint = f"/integrations/{integration_id}"
-        json_data = t.json_dict_adapter().validate_python(integration_data)
+        json_data = u.json_dict_adapter().validate_python(integration_data)
         return self.make_request(c.API.Method.PUT, endpoint, json=json_data)
 
     def _build_client_with_token(self, token: str) -> p.Result[FlextApi]:
@@ -497,7 +497,7 @@ class FlextOracleOicClient:
             return r[t.JsonMapping].fail("Empty JSON response")
         parsed_body: t.JsonMapping
         if isinstance(body, str) and is_json:
-            parsed_body = t.json_mapping_adapter().validate_json(body)
+            parsed_body = u.json_mapping_adapter().validate_json(body)
         elif isinstance(body, Mapping):
             parsed_body = body
         else:
@@ -531,7 +531,7 @@ class FlextOracleOicClient:
         if isinstance(body_raw, Mapping):
             token_data = {k: body_raw[k] for k in body_raw}
         elif isinstance(body_raw, str):
-            token_data = t.json_mapping_adapter().validate_json(body_raw)
+            token_data = u.json_mapping_adapter().validate_json(body_raw)
         else:
             return r[str].fail("Empty or invalid OAuth response body")
         access_token: t.JsonValue | None = token_data.get("access_token")

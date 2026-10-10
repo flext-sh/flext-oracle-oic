@@ -41,7 +41,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         Returns:
             The resulting ``t.JsonMapping``.
         """
-        return t.json_mapping_adapter().validate_python({
+        return u.json_mapping_adapter().validate_python({
             c.Monitoring.COMPONENT_DATABASE: {"status": status},
             c.Monitoring.COMPONENT_MESSAGING: {"status": status},
             c.Monitoring.COMPONENT_INTEGRATION_ENGINE: {"status": status},
@@ -54,7 +54,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             The resulting ``t.JsonMapping``.
         """
         if not self._monitoring_client:
-            return t.json_mapping_adapter().validate_python({
+            return u.json_mapping_adapter().validate_python({
                 "status": c.Monitoring.HealthStatus.HEALTHY.value,
                 "components": self._component_statuses(
                     c.Monitoring.ComponentStatus.HEALTHY.value,
@@ -73,7 +73,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         )
         response_result = self._monitoring_client.request(req)
         if response_result.failure:
-            return t.json_mapping_adapter().validate_python({
+            return u.json_mapping_adapter().validate_python({
                 "status": c.Monitoring.HealthStatus.ERROR.value,
                 "components": self._component_statuses(
                     c.Monitoring.ComponentStatus.UNKNOWN.value,
@@ -82,7 +82,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             })
         response = response_result.value
         if response.status_code != c.API.HTTP_STATUS_OK:
-            return t.json_mapping_adapter().validate_python({
+            return u.json_mapping_adapter().validate_python({
                 "status": c.Monitoring.HealthStatus.UNHEALTHY.value,
                 "components": self._component_statuses(
                     c.Monitoring.ComponentStatus.UNKNOWN.value,
@@ -94,7 +94,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             if isinstance(response.body, Mapping)
             else {"raw": self._to_general_value(response.body)}
         )
-        return t.json_mapping_adapter().validate_python({
+        return u.json_mapping_adapter().validate_python({
             **base_health,
             "status": c.Monitoring.HealthStatus.HEALTHY.value,
             "components": self._component_statuses(
@@ -128,7 +128,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         Returns:
             The resulting ``p.Result[t.JsonMapping]``.
         """
-        error_health = t.json_mapping_adapter().validate_python({
+        error_health = u.json_mapping_adapter().validate_python({
             "status": c.Monitoring.HealthStatus.ERROR.value,
             "components": self._component_statuses(
                 c.Monitoring.ComponentStatus.UNKNOWN.value,
@@ -151,7 +151,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         r containing performance metrics with analysis
 
         """
-        base_metrics = t.json_mapping_adapter().validate_python({
+        base_metrics = u.json_mapping_adapter().validate_python({
             "active_integrations": 0,
             "total_executions": 0,
             "success_rate": 0.0,
@@ -175,7 +175,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
             The resulting ``t.JsonMapping``.
         """
         if not self._monitoring_client:
-            return t.json_mapping_adapter().validate_python({
+            return u.json_mapping_adapter().validate_python({
                 **base_metrics,
                 "timestamp": asyncio.get_event_loop().time(),
             })
@@ -191,22 +191,22 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         )
         response_result = self._monitoring_client.request(req)
         if response_result.failure:
-            return t.json_mapping_adapter().validate_python({
+            return u.json_mapping_adapter().validate_python({
                 **base_metrics,
                 "error": f"Request failed: {response_result.error}",
             })
         response = response_result.value
         if response.status_code != c.API.HTTP_STATUS_OK:
-            return t.json_mapping_adapter().validate_python({
+            return u.json_mapping_adapter().validate_python({
                 **base_metrics,
                 "error": f"HTTP {response.status_code}",
             })
         if isinstance(response.body, Mapping):
-            return t.json_mapping_adapter().validate_python({
+            return u.json_mapping_adapter().validate_python({
                 key: self._to_general_value(value)
                 for key, value in response.body.items()
             })
-        return t.json_mapping_adapter().validate_python({})
+        return u.json_mapping_adapter().validate_python({})
 
     def _metrics_with_analysis(
         self,
@@ -242,7 +242,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         Returns:
             The resulting ``t.MutableJsonMapping``.
         """
-        error_metrics = t.json_mapping_adapter().validate_python({
+        error_metrics = u.json_mapping_adapter().validate_python({
             **base_metrics,
             "error": str(exc),
         })

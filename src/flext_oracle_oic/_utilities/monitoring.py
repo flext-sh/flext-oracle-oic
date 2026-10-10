@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_core import FlextUtilities as ug, r
-from flext_oracle_oic import c, p, t
+from flext_oracle_oic import c, p, t, u
 
 
 class FlextOracleOicUtilitiesMonitoring:
@@ -112,7 +112,7 @@ class FlextOracleOicUtilitiesMonitoring:
             "critical_issues": list(critical_issues),
             "recommendations": list(recommendations),
         }
-        return r[t.JsonMapping].ok(t.json_mapping_adapter().validate_python(analysis))
+        return r[t.JsonMapping].ok(u.json_mapping_adapter().validate_python(analysis))
 
     @staticmethod
     def validate_health_status(health_data: t.JsonMapping) -> p.Result[t.JsonMapping]:
@@ -125,7 +125,7 @@ class FlextOracleOicUtilitiesMonitoring:
         r containing validated health data or error
 
         """
-        validated_data = t.json_dict_adapter().validate_python(health_data)
+        validated_data = u.json_dict_adapter().validate_python(health_data)
         error_message: str | None = None
         status = health_data.get("status")
         valid_statuses = {
