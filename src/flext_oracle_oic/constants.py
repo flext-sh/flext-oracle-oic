@@ -48,37 +48,22 @@ class FlextOracleOicConstants(FlextAuthConstants):
     - Complete documentation and usage examples
     """
 
-    @unique
-    class OICApiVersion(StrEnum):
-        """OIC API version enumeration."""
-
-        V1 = "v1"
-        V2 = "v2"
-
     class OracleOic(
         FlextOracleOicConstantsBase,
         FlextOracleOicConstantsValues.OracleOic,
+        FlextOracleOicConstantsValues.OracleOicValidation,
     ):
         """Oracle Integration Cloud specific constants."""
 
-    class Auth(FlextAuthConstants.Auth, FlextOracleOicConstantsValues.Auth):
-        """Oracle OIC Authentication constants extending base auth namespace."""
+        @unique
+        class OICApiVersion(StrEnum):
+            """OIC API version enumeration."""
 
-    class Cli(FlextOracleOicConstantsValues.Cli, FlextAuthConstants.Cli):
-        """Oracle OIC CLI constants extending the shared CLI namespace.
-
-        OIC-owned scalars are re-exported from ``_constants``.
-        """
-
-    class Integration(FlextOracleOicConstantsValues.Integration):
-        """Oracle OIC Integration constants.
-
-        ``DEFAULT_VERSION`` is owned by ``flext_oracle_oic._constants`` and
-        inherited through this facade subclass.
-        """
+            V1 = "v1"
+            V2 = "v2"
 
         @unique
-        class Status(StrEnum):
+        class IntegrationStatus(StrEnum):
             """Integration status values.
 
             DRY Pattern: This StrEnum is the single source of truth for
@@ -93,11 +78,8 @@ class FlextOracleOicConstants(FlextAuthConstants):
             STOPPED = "STOPPED"
             ERROR = "ERROR"
 
-    class Connection:
-        """Oracle OIC Connection constants."""
-
         @unique
-        class Status(StrEnum):
+        class ConnectionStatus(StrEnum):
             """Connection status values.
 
             DRY Pattern: This StrEnum is the single source of truth for
@@ -111,7 +93,7 @@ class FlextOracleOicConstants(FlextAuthConstants):
             UNKNOWN = "unknown"
 
         @unique
-        class Type(StrEnum):
+        class ConnectionType(StrEnum):
             """Connection type values.
 
             DRY Pattern: This StrEnum is the single source of truth for
@@ -126,15 +108,8 @@ class FlextOracleOicConstants(FlextAuthConstants):
             FILE = "FILE"
             FTP = "FTP"
 
-    class Monitoring(FlextOracleOicConstantsValues.Monitoring):
-        """Oracle OIC Monitoring constants.
-
-        Scalars are owned by ``flext_oracle_oic._constants`` and inherited
-        through this facade subclass.
-        """
-
         @unique
-        class HealthStatus(StrEnum):
+        class MonitoringHealthStatus(StrEnum):
             """Health status values.
 
             DRY Pattern: This StrEnum is the single source of truth for health statuses.
@@ -148,7 +123,7 @@ class FlextOracleOicConstants(FlextAuthConstants):
             UNKNOWN = "unknown"
 
         @unique
-        class ComponentStatus(StrEnum):
+        class MonitoringComponentStatus(StrEnum):
             """Component status values.
 
             DRY Pattern: This StrEnum is the single source of truth for
@@ -160,16 +135,8 @@ class FlextOracleOicConstants(FlextAuthConstants):
             UNHEALTHY = "unhealthy"
             UNKNOWN = "unknown"
 
-    class API(FlextOracleOicConstantsValues.API):
-        """Oracle OIC API constants.
-
-        ``HTTP_ERROR_STATUS_THRESHOLD`` is owned by
-        ``flext_oracle_oic._constants`` and inherited through this facade
-        subclass.
-        """
-
         @unique
-        class Method(StrEnum):
+        class APIMethod(StrEnum):
             """HTTP method values.
 
             DRY Pattern: This StrEnum is the single source of truth for HTTP methods.
@@ -182,17 +149,9 @@ class FlextOracleOicConstants(FlextAuthConstants):
             DELETE = "DELETE"
             PATCH = "PATCH"
 
-    class OracleOicValidation(FlextOracleOicConstantsValues.OracleOicValidation):
-        """Oracle OIC validation constants (named to avoid overriding c).
-
-        All scalars, patterns and whitelists are owned by
-        ``flext_oracle_oic._constants`` and inherited through this facade
-        subclass.
-        """
-
-    @unique
-    class ProjectType(StrEnum):
-        """Project-type identifiers for Oracle OIC packages."""
+        @unique
+        class ProjectType(StrEnum):
+            """Project-type identifiers for Oracle OIC packages."""
 
 
 c = FlextOracleOicConstants
