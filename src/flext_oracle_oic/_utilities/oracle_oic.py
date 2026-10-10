@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Annotated, ClassVar
 from flext_auth import m
 
 from flext_core import r
-from flext_oracle_oic import c, p, t
+from flext_oracle_oic import c, p, t, u
 
 if TYPE_CHECKING:
     from collections.abc import Callable, MutableSequence
@@ -57,7 +57,7 @@ class FlextOracleOicUtilitiesOracleOic:
 
         """
         errors: MutableSequence[str] = []
-        validated_data = t.json_dict_adapter().validate_python(integration_data)
+        validated_data = u.json_dict_adapter().validate_python(integration_data)
         field_specs: tuple[
             FlextOracleOicUtilitiesOracleOic.FieldValidationPlan,
             ...,

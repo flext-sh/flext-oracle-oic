@@ -16,6 +16,7 @@ from __future__ import annotations
 from enum import StrEnum, unique
 
 from flext_auth import FlextAuthConstants
+from flext_cli import FlextCliConstants
 
 from flext_oracle_oic._constants.base import FlextOracleOicConstantsBase
 from flext_oracle_oic._constants.values import FlextOracleOicConstantsValues
@@ -26,34 +27,7 @@ class FlextOracleOicConstants(FlextAuthConstants):
 
     Provides centralized constants for Oracle OIC Extension operations,
     following FLEXT architectural standards with flat structure and no duplication.
-
-    Usage:
-    ```python
-    from flext_oracle_oic import FlextOracleOicConstants
-    from flext_oracle_oic import t
-
-    # Access Oracle OIC specific constants
-    api_version = FlextOracleOicConstants.OracleOic.DEFAULT_API_VERSION
-    timeout = FlextOracleOicConstants.DEFAULT_TIMEOUT_SECONDS
-    page_size = FlextOracleOicConstants.OracleOic.DEFAULT_PAGE_SIZE
-    base_url = FlextOracleOicConstants.OracleOic.DEFAULT_BASE_URL
-    ```
-
-    IMPLEMENTATION NOTES:
-    - Inherits all constants from c base class
-    - Flat structure with nested namespaces for organization
-    - Single source of truth for all Oracle OIC Extension constants
-    - No duplication with c or other modules
-    - Type-safe constants with Final annotations
-    - Complete documentation and usage examples
     """
-
-    @unique
-    class OICApiVersion(StrEnum):
-        """OIC API version enumeration."""
-
-        V1 = "v1"
-        V2 = "v2"
 
     class OracleOic(
         FlextOracleOicConstantsBase,
@@ -61,30 +35,25 @@ class FlextOracleOicConstants(FlextAuthConstants):
     ):
         """Oracle Integration Cloud specific constants."""
 
-    class Auth(FlextAuthConstants.Auth, FlextOracleOicConstantsValues.Auth):
-        """Oracle OIC Authentication constants extending base auth namespace."""
+    class OracleOicValidation(
+        FlextOracleOicConstantsValues.OracleOicValidation,
+    ):
+        """Oracle OIC validation scalar constants."""
 
-    class Cli(FlextOracleOicConstantsValues.Cli, FlextAuthConstants.Cli):
-        """Oracle OIC CLI constants extending the shared CLI namespace.
+    class OICApiVersion:
+        """OIC API version enumeration."""
 
-        OIC-owned scalars are re-exported from ``_constants``.
-        """
+        V1 = "v1"
+        V2 = "v2"
 
-    class Integration(FlextOracleOicConstantsValues.Integration):
-        """Oracle OIC Integration constants.
-
-        ``DEFAULT_VERSION`` is owned by ``flext_oracle_oic._constants`` and
-        inherited through this facade subclass.
-        """
+    class Integration(
+        FlextOracleOicConstantsValues.Integration,
+    ):
+        """Oracle OIC Integration scalar constants."""
 
         @unique
         class Status(StrEnum):
-            """Integration status values.
-
-            DRY Pattern: This StrEnum is the single source of truth for
-            integration statuses. All integration status constants and Literal
-            types MUST reference this enum.
-            """
+            """Integration status values."""
 
             ACTIVATED = "ACTIVATED"
             DEACTIVATED = "DEACTIVATED"
@@ -93,54 +62,28 @@ class FlextOracleOicConstants(FlextAuthConstants):
             STOPPED = "STOPPED"
             ERROR = "ERROR"
 
-    class Connection:
-        """Oracle OIC Connection constants."""
+    class Connection(
+        FlextOracleOicConstantsValues.Connection,
+    ):
+        """Oracle OIC Connection scalar constants."""
 
         @unique
         class Status(StrEnum):
-            """Connection status values.
-
-            DRY Pattern: This StrEnum is the single source of truth for
-            connection statuses. All connection status constants and Literal
-            types MUST reference this enum.
-            """
+            """Connection status values."""
 
             ACTIVE = "ACTIVE"
             INACTIVE = "INACTIVE"
             ERROR = "ERROR"
             UNKNOWN = "unknown"
 
-        @unique
-        class Type(StrEnum):
-            """Connection type values.
-
-            DRY Pattern: This StrEnum is the single source of truth for
-            connection types. All connection type constants and Literal types
-            MUST reference this enum.
-            Note: ADAPTER_TYPE_* constants are aliases to these values.
-            """
-
-            REST = "REST"
-            SOAP = "SOAP"
-            DATABASE = "DATABASE"
-            FILE = "FILE"
-            FTP = "FTP"
-
-    class Monitoring(FlextOracleOicConstantsValues.Monitoring):
-        """Oracle OIC Monitoring constants.
-
-        Scalars are owned by ``flext_oracle_oic._constants`` and inherited
-        through this facade subclass.
-        """
+    class Monitoring(
+        FlextOracleOicConstantsValues.Monitoring,
+    ):
+        """Oracle OIC Monitoring scalar constants."""
 
         @unique
         class HealthStatus(StrEnum):
-            """Health status values.
-
-            DRY Pattern: This StrEnum is the single source of truth for health statuses.
-            All health status constants and Literal types MUST reference this
-            enum.
-            """
+            """Health status values."""
 
             HEALTHY = "healthy"
             UNHEALTHY = "unhealthy"
@@ -149,32 +92,20 @@ class FlextOracleOicConstants(FlextAuthConstants):
 
         @unique
         class ComponentStatus(StrEnum):
-            """Component status values.
-
-            DRY Pattern: This StrEnum is the single source of truth for
-            component statuses. All component status constants and Literal
-            types MUST reference this enum.
-            """
+            """Component status values."""
 
             HEALTHY = "healthy"
             UNHEALTHY = "unhealthy"
             UNKNOWN = "unknown"
 
-    class API(FlextOracleOicConstantsValues.API):
-        """Oracle OIC API constants.
-
-        ``HTTP_ERROR_STATUS_THRESHOLD`` is owned by
-        ``flext_oracle_oic._constants`` and inherited through this facade
-        subclass.
-        """
+    class API(
+        FlextOracleOicConstantsValues.API,
+    ):
+        """Oracle OIC API scalar constants."""
 
         @unique
         class Method(StrEnum):
-            """HTTP method values.
-
-            DRY Pattern: This StrEnum is the single source of truth for HTTP methods.
-            All HTTP method constants and Literal types MUST reference this enum.
-            """
+            """HTTP method values."""
 
             GET = "GET"
             POST = "POST"
@@ -182,17 +113,11 @@ class FlextOracleOicConstants(FlextAuthConstants):
             DELETE = "DELETE"
             PATCH = "PATCH"
 
-    class OracleOicValidation(FlextOracleOicConstantsValues.OracleOicValidation):
-        """Oracle OIC validation constants (named to avoid overriding c).
-
-        All scalars, patterns and whitelists are owned by
-        ``flext_oracle_oic._constants`` and inherited through this facade
-        subclass.
-        """
-
-    @unique
-    class ProjectType(StrEnum):
-        """Project-type identifiers for Oracle OIC packages."""
+    class Cli(
+        FlextOracleOicConstantsValues.Cli,
+        FlextCliConstants.Cli,
+    ):
+        """Oracle OIC CLI scalar constants."""
 
 
 c = FlextOracleOicConstants
