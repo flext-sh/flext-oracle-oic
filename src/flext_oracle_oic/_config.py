@@ -4,7 +4,7 @@ Business rules live in ``config/*.yaml`` under the ``OracleOic:`` key and are
 validated through the project's config declarations. Access remains
 ``config.OracleOic.<domain>[<key>...]``; values come from the YAML owner.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
+Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 

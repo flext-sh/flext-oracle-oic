@@ -11,7 +11,7 @@ env-provided plain ``str`` (empty default) per the strict pattern. Range/enum
 validation lives at the domain-model boundary
 (``m.OracleOic.OICConnectionConfig`` / ``OICAuthConfig``), not here.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
+Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 

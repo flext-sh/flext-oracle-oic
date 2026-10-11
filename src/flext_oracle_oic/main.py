@@ -4,7 +4,7 @@ FLEXT Unified Module Pattern: Single unified CLI class consolidating
 all Oracle OIC CLI functionality. Implements complete s pattern
 with railway-oriented error handling.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
+Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 

@@ -476,6 +476,20 @@ SETUP_ENVIRONMENT_RECIPE = set -eu; \
 		mise -C "$(PROJECT_ROOT)/$$member" config ls --json; \
 	done; \
 	$$credential_env $(UV) sync --project "$(UV_PROJECT)" --python "$$desired_python" $(UV_SYNC_FLAGS) --frozen --link-mode "$(UV_LINK_MODE)"; \
+	if [ "$(strip $(CI))" != "Y" ]; then \
+		set -- --editable "$(PROJECT_ROOT)"; \
+		for member in; do \
+			if [ ! -f "$(PROJECT_ROOT)/$$member/pyproject.toml" ]; then \
+				printf 'ERROR[setup] declared member metadata is missing: %s\n' "$(PROJECT_ROOT)/$$member/pyproject.toml" >&2; exit 2; \
+			fi; \
+			set -- "$$@" --editable "$(PROJECT_ROOT)/$$member"; \
+		done; \
+		if [ "$$\#" -gt 0 ]; then \
+			$(UV) pip install --python "$(RUNTIME_PYTHON)" --no-deps --link-mode "$(UV_LINK_MODE)" "$$@"; \
+		fi; \
+		$(UV) pip check --python "$(RUNTIME_PYTHON)"; \
+	fi; \
+	$(PROJECT_FLEXT_INFRA) workspace verify-environment --repository-root "$(RUNTIME_ROOT)"; \
 	$(PROJECT_FLEXT_INFRA) codegen mise-artifacts --repository-root "$(PROJECT_ROOT)" --config-only; \
 	for member in $(WORKSPACE_SUBPROJECTS); do \
 		$(PROJECT_FLEXT_INFRA) codegen mise-artifacts --repository-root "$(PROJECT_ROOT)/$$member" --config-only; \
@@ -1636,7 +1650,11 @@ endif
 # different workspace and break the gen fixed point. Provisioned
 # members are read as libraries; no verb gates them from here.
 _builtin_setup_environment: $(if $(filter Y,$(CI)),,_builtin_setup_submodules)
-	@$(SETUP_ENVIRONMENT_RECIPE)
+	+@if [ "$(PROJECT_ROOT)" != "$(RUNTIME_ROOT)" ]; then \
+		"$(SELF_MAKE_EXECUTABLE)" --no-print-directory -f "$(RUNTIME_ROOT)/Makefile" setup; \
+	else \
+		$(SETUP_ENVIRONMENT_RECIPE); \
+	fi
 ifeq ($(MAKE_PROFILE),workspace)
 	@$(UV) pip check --python "$(RUNTIME_VENV)"
 endif
@@ -2106,7 +2124,7 @@ ifneq ($(CI),Y)
 	@$(PROJECT_FLEXT_INFRA) workspace verify-lanes --repo-root "$(PROJECT_ROOT)"
 endif
 	@$(UV) pip check --python "$(RUNTIME_VENV)"
-	@$(if $(filter Y,$(CI)),$(PROJECT_FLEXT_INFRA) workspace verify-environment --repository-root "$(PROJECT_ROOT)",:)
+	@$(PROJECT_FLEXT_INFRA) workspace verify-environment --repository-root "$(RUNTIME_ROOT)"
 	@$(PROJECT_FLEXT_INFRA) codegen conform --root "$(PROJECT_ROOT)" --scope self --mode check
 _builtin-status: _builtin_status_diagnostics
 _builtin-verify-clean: _builtin_require_environment

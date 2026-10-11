@@ -4,7 +4,7 @@ FLEXT Unified Module Pattern: Thin facade exposing all domain functionality
 through complete flext-core integration. Provides single entry point for all
 Oracle OIC operations with enterprise patterns.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
+Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 
