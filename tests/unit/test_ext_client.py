@@ -10,10 +10,10 @@ from __future__ import annotations
 import base64
 
 import pytest
-from flext_tests import tm
 
 from flext_oracle_oic import m, t
 from flext_oracle_oic.ext_client import FlextOracleOicClient
+from tests import tm
 
 # Named (not literal, and named without "token"/"secret") so ruff's flake8-bandit
 # heuristics do not fire: S106 flags a string literal passed to an

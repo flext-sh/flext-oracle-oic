@@ -16,7 +16,6 @@ from __future__ import annotations
 from collections.abc import Callable, Iterator, Sequence
 
 import pytest
-from flext_tests import tm
 
 from flext_oracle_oic import FlextOracleOicService, FlextOracleOicSettings, m, p, s
 from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
@@ -29,6 +28,7 @@ from flext_oracle_oic.services.integration_lifecycle import (
 )
 from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
 from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
+from tests import tm
 
 _VALID_CLIENT_ID = "client-id-123"
 _VALID_OAUTH_CREDENTIAL = "test-credential-123"
