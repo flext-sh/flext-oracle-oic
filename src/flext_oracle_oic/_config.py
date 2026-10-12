@@ -15,14 +15,14 @@ from functools import cached_property
 from flext_cli import FlextCliConfig
 
 from flext_core import FlextSettings
-from flext_oracle_oic import m
+from flext_oracle_oic._models.config import FlextOracleOicModelsConfig
 
 
 class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
     """Oracle OIC business config validated from the canonical YAML source."""
 
     @cached_property
-    def OracleOic(self) -> m.OracleOic.Config:
+    def OracleOic(self) -> FlextOracleOicModelsConfig.Config:
         """The required business namespace without synthesized defaults.
 
         Raises:
@@ -31,7 +31,9 @@ class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
         if self.model_extra is None:
             msg = "Oracle OIC business configuration namespace is missing"
             raise ValueError(msg)
-        return m.OracleOic.Config.model_validate(self.model_extra["OracleOic"])
+        return FlextOracleOicModelsConfig.Config.model_validate(
+            self.model_extra["OracleOic"]
+        )
 
 
 config: FlextOracleOicConfig = FlextOracleOicConfig.fetch_global()
