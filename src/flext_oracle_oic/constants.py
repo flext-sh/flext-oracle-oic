@@ -18,8 +18,8 @@ from enum import StrEnum, unique
 from flext_auth import FlextAuthConstants
 from flext_cli import FlextCliConstants
 
+from flext_oracle_oic._constants import FlextOracleOicConstantsValues
 from flext_oracle_oic._constants.base import FlextOracleOicConstantsBase
-from flext_oracle_oic._constants.values import FlextOracleOicConstantsValues
 
 
 class FlextOracleOicConstants(FlextAuthConstants):

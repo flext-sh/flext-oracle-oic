@@ -11,7 +11,7 @@ from typing import Protocol, runtime_checkable
 from flext_auth import FlextAuthProtocols
 
 from flext_oracle_oic import t
-from flext_oracle_oic._protocols.config import FlextOracleOicProtocolsConfig
+from flext_oracle_oic._protocols import FlextOracleOicProtocolsConfig
 
 
 class FlextOracleOicProtocols(FlextAuthProtocols):

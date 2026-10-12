@@ -15,10 +15,17 @@ from typing import TYPE_CHECKING, Self, override
 
 from flext_api import FlextApi, FlextApiSettings
 
-from flext_core import r, s
-from flext_oracle_oic import c, m, p, t, u
-from flext_oracle_oic._settings import FlextOracleOicSettings
-from flext_oracle_oic.ext_client import FlextOracleOicClient
+from flext_core import s
+from flext_oracle_oic import (
+    FlextOracleOicClient,
+    FlextOracleOicSettings,
+    c,
+    m,
+    p,
+    r,
+    t,
+    u,
+)
 
 if TYPE_CHECKING:
     from types import TracebackType

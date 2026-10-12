@@ -14,10 +14,8 @@ import sys
 
 from flext_cli import cli, m as cli_m
 
-from flext_core import r
-from flext_oracle_oic import c, p, t
+from flext_oracle_oic import FlextOracleOicService, c, p, r, t
 from flext_oracle_oic.__version__ import __version__
-from flext_oracle_oic.service import FlextOracleOicService
 
 
 class FlextOracleOicCli:

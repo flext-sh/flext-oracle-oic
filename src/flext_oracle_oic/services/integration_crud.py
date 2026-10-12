@@ -11,9 +11,8 @@ from __future__ import annotations
 
 from collections.abc import MutableSequence, Sequence
 
-from flext_oracle_oic import c, m, p, r, t
-from flext_oracle_oic.ext_client import FlextOracleOicClient
-from flext_oracle_oic.services.base import FlextOracleOicServiceBase
+from flext_oracle_oic import FlextOracleOicClient, c, m, p, r, t
+from flext_oracle_oic.services import FlextOracleOicServiceBase
 
 
 class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):

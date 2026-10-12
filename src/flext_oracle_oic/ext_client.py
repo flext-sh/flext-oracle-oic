@@ -15,7 +15,7 @@ import base64
 from collections.abc import Mapping, MutableSequence
 from typing import TYPE_CHECKING, Self
 
-from flext_api import FlextApi, FlextApiConstants, FlextApiSettings
+from flext_api import FlextApi, FlextApiSettings
 
 from flext_oracle_oic import c, m, p, r, t, u
 
@@ -407,13 +407,13 @@ class FlextOracleOicClient:
             f"/ic/api/{self.connection_config.api_version}"
         )
         full_url = f"{base_url}/{endpoint.lstrip('/')}"
-        if method.upper() == FlextApiConstants.Api.Method.GET.value:
+        if method.upper() == c.Api.Method.GET.value:
             response_result = client.get(full_url, headers=None)
-        elif method.upper() == FlextApiConstants.Api.Method.POST.value:
+        elif method.upper() == c.Api.Method.POST.value:
             response_result = client.post(full_url, data=api_data, headers=None)
-        elif method.upper() == FlextApiConstants.Api.Method.PUT.value:
+        elif method.upper() == c.Api.Method.PUT.value:
             response_result = client.put(full_url, data=api_data, headers=None)
-        elif method.upper() == FlextApiConstants.Api.Method.DELETE.value:
+        elif method.upper() == c.Api.Method.DELETE.value:
             response_result = client.delete(full_url, headers=None)
         else:
             return r[t.JsonValue].fail(f"Unsupported HTTP method: {method}")
