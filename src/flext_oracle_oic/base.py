@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING, Self, override
 
 from flext_api import FlextApi, FlextApiSettings
 
-from flext_core import s
+from flext_core import FlextService
 from flext_oracle_oic import (
     FlextOracleOicClient,
     FlextOracleOicSettings,
@@ -31,7 +31,7 @@ if TYPE_CHECKING:
     from types import TracebackType
 
 
-class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
+class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegrationInfo]]):
     """Base service providing shared infrastructure for all OIC service mixins.
 
     Provides:
@@ -135,7 +135,7 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
             description=self._as_text(data.get("description"), ""),
             integration_version=self._as_text(
                 data.get("version"),
-                c.Integration.DEFAULT_VERSION_FALLBACK,
+                c.OracleOic.Integration.DEFAULT_VERSION_FALLBACK,
             ),
             status=self._as_text(data.get("status"), default_status),
             created_by=self._as_text(data.get("createdBy"), ""),
@@ -195,7 +195,7 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
             integration = self._build_integration_info(
                 item,
                 fallback_id="",
-                default_status=c.Connection.Status.UNKNOWN,
+                default_status=c.OracleOic.Connection.Status.UNKNOWN,
             )
             integrations.append(integration)
         return r[Sequence[m.OracleOic.OICIntegrationInfo]].ok(integrations)
@@ -329,4 +329,6 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         self._monitoring_client = FlextApi(runtime_settings=api_config)
 
 
-__all__: list[str] = ["FlextOracleOicServiceBase"]
+s = FlextOracleOicServiceBase
+
+__all__: list[str] = ["FlextOracleOicServiceBase", "s"]

@@ -23,10 +23,10 @@ class TestsFlextOracleOicTypingsUnit:
         assert t is TestsFlextOracleOicTypes
 
     @staticmethod
-    @pytest.mark.parametrize("base", [tests_t, FlextOracleOicTypes])
-    def test_facade_composes_both_type_domains(base: type[object]) -> None:
+    def test_facade_composes_both_type_domains() -> None:
         """Facade inherits from both the shared and OIC-specific type roots."""
-        assert issubclass(t, base)
+        assert issubclass(t, tests_t)
+        assert issubclass(t, FlextOracleOicTypes)
 
     @staticmethod
     @pytest.mark.parametrize("member", ["JsonValue", "JsonList", "JsonDict"])

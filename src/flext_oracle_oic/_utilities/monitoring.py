@@ -23,7 +23,7 @@ class FlextOracleOicUtilitiesMonitoring:
         """Return warning/critical/recommendation for one metric."""
         match metric_key:
             case "average_response_time":
-                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
+                threshold = c.OracleOic.OracleOicValidation.PERFORMANCE_THRESHOLDS[
                     "response_time_ms"
                 ]
                 if metric_value > threshold:
@@ -36,7 +36,9 @@ class FlextOracleOicUtilitiesMonitoring:
                         False,
                     )
             case "success_rate":
-                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["success_rate"]
+                threshold = c.OracleOic.OracleOicValidation.PERFORMANCE_THRESHOLDS[
+                    "success_rate"
+                ]
                 if metric_value < threshold:
                     return (
                         (
@@ -47,7 +49,9 @@ class FlextOracleOicUtilitiesMonitoring:
                         True,
                     )
             case "error_rate":
-                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["error_rate"]
+                threshold = c.OracleOic.OracleOicValidation.PERFORMANCE_THRESHOLDS[
+                    "error_rate"
+                ]
                 if metric_value > threshold:
                     return (
                         (
@@ -131,10 +135,10 @@ class FlextOracleOicUtilitiesMonitoring:
         error_message: str | None = None
         status = health_data.get("status")
         valid_statuses = {
-            c.Monitoring.HealthStatus.HEALTHY.value,
-            c.Monitoring.HealthStatus.UNHEALTHY.value,
-            c.Monitoring.HealthStatus.ERROR.value,
-            c.Monitoring.HealthStatus.UNKNOWN.value,
+            c.OracleOic.Monitoring.HealthStatus.HEALTHY.value,
+            c.OracleOic.Monitoring.HealthStatus.UNHEALTHY.value,
+            c.OracleOic.Monitoring.HealthStatus.ERROR.value,
+            c.OracleOic.Monitoring.HealthStatus.UNKNOWN.value,
         }
         if status is None:
             error_message = "Health data must include status"

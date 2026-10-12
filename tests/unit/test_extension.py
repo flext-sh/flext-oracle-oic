@@ -78,10 +78,10 @@ class TestsFlextOracleOicExtension:
 
     @staticmethod
     def test_facade_constructs_without_settings() -> None:
-        """Constructing with no settings yields a usable facade instance."""
+        """Constructing with no settings yields a usable, total facade."""
         api = FlextOracleOicApi()
 
-        tm.that(api, is_=FlextOracleOicApi)
+        tm.ok(api.fetch_connection_context())
 
     @staticmethod
     def test_facade_constructs_with_explicit_settings(
@@ -133,7 +133,7 @@ class TestsFlextOracleOicExtension:
         ("key", "expected"),
         [
             ("base_url", "https://custom.example.com"),
-            ("api_version", c.OICApiVersion.V1),
+            ("api_version", c.OracleOic.OICApiVersion.V1),
         ],
     )
     def test_connection_context_keys(

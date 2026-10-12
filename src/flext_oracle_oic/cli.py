@@ -1,8 +1,8 @@
-"""Main entry point for Oracle OIC Extension - FLEXT CLI Pattern.
+"""CLI entrypoint for Oracle OIC Extension - FLEXT CLI Pattern.
 
-FLEXT Unified Module Pattern: Single unified CLI class consolidating
-all Oracle OIC CLI functionality. Implements complete s pattern
-with railway-oriented error handling.
+FLEXT Unified Module Pattern: single unified CLI class consolidating all
+Oracle OIC CLI functionality. Implements the complete CLI facade pattern with
+railway-oriented error handling.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -14,8 +14,9 @@ import sys
 
 from flext_cli import cli, m as cli_m
 
-from flext_oracle_oic import FlextOracleOicService, c, p, r, t
+from flext_oracle_oic import c, p, r, t
 from flext_oracle_oic.__version__ import __version__
+from flext_oracle_oic.services import FlextOracleOicService
 
 
 class FlextOracleOicCli:
@@ -95,8 +96,8 @@ class FlextOracleOicCli:
             The resulting ``p.Cli.Application``.
         """
         app = cli.create_app_with_common_params(
-            name=c.Cli.APP_NAME,
-            help_text=c.Cli.APP_HELP,
+            name=c.OracleOic.Cli.APP_NAME,
+            help_text=c.OracleOic.Cli.APP_HELP,
         )
         cli.register_result_routes(
             app,
@@ -134,7 +135,7 @@ def main(args: t.StrSequence | None = None) -> int:
     try:
         outcome = cli.execute_app(
             app,
-            prog_name=c.Cli.APP_NAME,
+            prog_name=c.OracleOic.Cli.APP_NAME,
             args=list(args) if args is not None else sys.argv[1:],
         )
     except KeyboardInterrupt:

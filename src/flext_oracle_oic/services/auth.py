@@ -9,8 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_oracle_oic import c, p, r
-from flext_oracle_oic.services import FlextOracleOicServiceBase
+from flext_oracle_oic import FlextOracleOicServiceBase, c, p, r
 
 
 class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):

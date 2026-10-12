@@ -25,9 +25,9 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
 
         """
         client_id = client_id.strip()
-        if len(client_id) < c.OracleOicValidation.MIN_CLIENT_ID_LENGTH:
+        if len(client_id) < c.OracleOic.OracleOicValidation.MIN_CLIENT_ID_LENGTH:
             return r[str].fail("OAuth client ID cannot be empty")
-        if not c.OracleOicValidation.CLIENT_ID_RE.match(client_id):
+        if not c.OracleOic.OracleOicValidation.CLIENT_ID_RE.match(client_id):
             return r[str].fail("OAuth client ID contains invalid characters")
         return r[str].ok(client_id)
 
@@ -47,7 +47,7 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
         secret_value = client_secret.get_secret_value()
         if not secret_value or not secret_value.strip():
             return r[t.SecretStr].fail("OAuth client secret cannot be empty")
-        if len(secret_value) < c.OracleOicValidation.MIN_CLIENT_SECRET_LENGTH:
+        if len(secret_value) < c.OracleOic.OracleOicValidation.MIN_CLIENT_SECRET_LENGTH:
             return r[t.SecretStr].fail(
                 "OAuth client secret must be at least 8 characters",
             )

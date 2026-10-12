@@ -12,7 +12,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Self, override
 
-from flext_oracle_oic import FlextOracleOicService, FlextOracleOicSettings, m, p, r, t
+from flext_oracle_oic import FlextOracleOicSettings, m, p, r, t
+from flext_oracle_oic.services import FlextOracleOicService
 
 if TYPE_CHECKING:
     from collections.abc import Sequence

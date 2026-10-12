@@ -30,12 +30,12 @@ if TYPE_CHECKING:
     from flext_oracle_oic._config import FlextOracleOicConfig, config
     from flext_oracle_oic._settings import FlextOracleOicSettings, settings
     from flext_oracle_oic.api import FlextOracleOicApi, oracle_oic
+    from flext_oracle_oic.base import FlextOracleOicServiceBase, s
+    from flext_oracle_oic.cli import FlextOracleOicCli, main
     from flext_oracle_oic.constants import FlextOracleOicConstants, c
     from flext_oracle_oic.ext_client import FlextOracleOicClient
-    from flext_oracle_oic.main import FlextOracleOicCli, main
     from flext_oracle_oic.models import FlextOracleOicModels, m
     from flext_oracle_oic.protocols import FlextOracleOicProtocols, p
-    from flext_oracle_oic.service import FlextOracleOicService, s
     from flext_oracle_oic.typings import FlextOracleOicTypes, t
     from flext_oracle_oic.utilities import FlextOracleOicUtilities, u
 
@@ -48,7 +48,7 @@ __all__: tuple[str, ...] = (
     "FlextOracleOicConstants",
     "FlextOracleOicModels",
     "FlextOracleOicProtocols",
-    "FlextOracleOicService",
+    "FlextOracleOicServiceBase",
     "FlextOracleOicSettings",
     "FlextOracleOicTypes",
     "FlextOracleOicUtilities",
@@ -88,13 +88,13 @@ install_lazy_exports(
     globals(),
     MappingProxyType({
         "FlextOracleOicApi": ".api",
-        "FlextOracleOicCli": ".main",
+        "FlextOracleOicCli": ".cli",
         "FlextOracleOicClient": ".ext_client",
         "FlextOracleOicConfig": "._config",
         "FlextOracleOicConstants": ".constants",
         "FlextOracleOicModels": ".models",
         "FlextOracleOicProtocols": ".protocols",
-        "FlextOracleOicService": ".service",
+        "FlextOracleOicServiceBase": ".base",
         "FlextOracleOicSettings": "._settings",
         "FlextOracleOicTypes": ".typings",
         "FlextOracleOicUtilities": ".utilities",
@@ -116,11 +116,11 @@ install_lazy_exports(
         "e": "flext_auth",
         "h": "flext_auth",
         "m": ".models",
-        "main": ".main",
+        "main": ".cli",
         "oracle_oic": ".api",
         "p": ".protocols",
         "r": "flext_auth",
-        "s": ".service",
+        "s": ".base",
         "services": ".services",
         "settings": "._settings",
         "t": ".typings",

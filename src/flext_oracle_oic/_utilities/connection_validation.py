@@ -75,7 +75,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
         return FlextOracleOicUtilitiesConnectionValidation._validate_closed_string(
             status,
             field_label="Connection status",
-            valid_values=c.OracleOicValidation.VALID_CONNECTION_STATUSES,
+            valid_values=c.OracleOic.OracleOicValidation.VALID_CONNECTION_STATUSES,
         )
 
     @staticmethod
@@ -92,5 +92,5 @@ class FlextOracleOicUtilitiesConnectionValidation:
         return FlextOracleOicUtilitiesConnectionValidation._validate_closed_string(
             connection_type,
             field_label="Connection type",
-            valid_values=c.OracleOicValidation.VALID_CONNECTION_TYPES,
+            valid_values=c.OracleOic.OracleOicValidation.VALID_CONNECTION_TYPES,
         )

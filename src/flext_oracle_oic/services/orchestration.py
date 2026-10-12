@@ -11,8 +11,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from flext_oracle_oic import c, p, r, t
-from flext_oracle_oic.services import FlextOracleOicServiceBase
+from flext_oracle_oic import FlextOracleOicServiceBase, c, p, r, t
 
 if TYPE_CHECKING:
     from collections.abc import Callable

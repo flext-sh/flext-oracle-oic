@@ -13,14 +13,21 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
+    from flext_oracle_oic._constants.base import FlextOracleOicConstantsBase
     from flext_oracle_oic._constants.values import FlextOracleOicConstantsValues
 
 
-__all__: tuple[str, ...] = ("FlextOracleOicConstantsValues",)
+__all__: tuple[str, ...] = (
+    "FlextOracleOicConstantsBase",
+    "FlextOracleOicConstantsValues",
+)
 
 install_lazy_exports(
     __name__,
     globals(),
-    MappingProxyType({"FlextOracleOicConstantsValues": ".values"}),
+    MappingProxyType({
+        "FlextOracleOicConstantsBase": ".base",
+        "FlextOracleOicConstantsValues": ".values",
+    }),
     public_exports=__all__,
 )

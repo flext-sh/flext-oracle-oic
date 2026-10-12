@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import re
+from enum import StrEnum, unique
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final
 
@@ -17,29 +18,29 @@ if TYPE_CHECKING:
 
 
 class FlextOracleOicConstantsValues:
-    """Scalar constants.
+    """Scalar constants composed into the Oracle OIC constants facade.
 
-    Mixed into ``c.OracleOic``, ``c.Auth``, ``c.Integration``,
-    ``c.Monitoring``, ``c.API``, ``c.OracleOicValidation`` and ``c.Cli``.
+    Every scalar, compiled pattern, enum and nested namespace of the Oracle OIC
+    domain is owned here and inherited through the facade namespace
+    (``c.OracleOic``).
     """
 
-    class OracleOic:
-        """Oracle Integration Cloud specific constants."""
-
-        DEFAULT_BASE_URL: Final[str] = (
-            "https://localhost.integration.ocp.oraclecloud.com"
-        )
-        DEFAULT_API_VERSION: Final[str] = "v1"
-        DEFAULT_TOKEN_URL: Final[str] = f"{DEFAULT_BASE_URL}/oauth/token"
-        DEFAULT_PAGE_SIZE: Final[int] = 100
-        MIN_PAGE_SIZE: Final[int] = 1
-        MIN_REQUEST_TIMEOUT: Final[int] = 1
-        DEFAULT_VERIFY_SSL: Final[bool] = True
+    DEFAULT_API_VERSION: Final[str] = "v1"
+    DEFAULT_PAGE_SIZE: Final[int] = 100
+    MIN_PAGE_SIZE: Final[int] = 1
+    MIN_REQUEST_TIMEOUT: Final[int] = 1
+    DEFAULT_VERIFY_SSL: Final[bool] = True
 
     class Auth:
         """Oracle OIC Authentication scalar constants."""
 
         DEFAULT_OAUTH_SCOPE: Final[str] = ""
+
+    class OICApiVersion:
+        """OIC API version enumeration."""
+
+        V1: Final[str] = "v1"
+        V2: Final[str] = "v2"
 
     class Integration:
         """Oracle OIC Integration scalar constants."""
@@ -47,11 +48,31 @@ class FlextOracleOicConstantsValues:
         DEFAULT_VERSION: Final[str] = "01.00.0000"
         DEFAULT_VERSION_FALLBACK: Final[str] = "01.00.0000"
 
+        @unique
+        class Status(StrEnum):
+            """Integration status values."""
+
+            ACTIVATED = "ACTIVATED"
+            DEACTIVATED = "DEACTIVATED"
+            DRAFT = "DRAFT"
+            RUNNING = "RUNNING"
+            STOPPED = "STOPPED"
+            ERROR = "ERROR"
+
     class Connection:
         """Oracle OIC Connection scalar constants."""
 
         DEFAULT_TIMEOUT_SECONDS: Final[int] = 30
         DEFAULT_MAX_RETRIES: Final[int] = 3
+
+        @unique
+        class Status(StrEnum):
+            """Connection status values."""
+
+            ACTIVE = "ACTIVE"
+            INACTIVE = "INACTIVE"
+            ERROR = "ERROR"
+            UNKNOWN = "unknown"
 
     class Monitoring:
         """Oracle OIC Monitoring scalar constants."""
@@ -59,6 +80,23 @@ class FlextOracleOicConstantsValues:
         COMPONENT_DATABASE: Final[str] = "database"
         COMPONENT_MESSAGING: Final[str] = "messaging"
         COMPONENT_INTEGRATION_ENGINE: Final[str] = "integration_engine"
+
+        @unique
+        class HealthStatus(StrEnum):
+            """Health status values."""
+
+            HEALTHY = "healthy"
+            UNHEALTHY = "unhealthy"
+            ERROR = "error"
+            UNKNOWN = "unknown"
+
+        @unique
+        class ComponentStatus(StrEnum):
+            """Component status values."""
+
+            HEALTHY = "healthy"
+            UNHEALTHY = "unhealthy"
+            UNKNOWN = "unknown"
 
     class API:
         """Oracle OIC API scalar constants."""
@@ -69,6 +107,16 @@ class FlextOracleOicConstantsValues:
         HEADER_ACCEPT: Final[str] = "Accept"
         ENDPOINT_HEALTH: Final[str] = "/ic/api/integration/v1/health"
         HTTP_STATUS_OK: Final[int] = 200
+
+        @unique
+        class Method(StrEnum):
+            """HTTP method values."""
+
+            GET = "GET"
+            POST = "POST"
+            PUT = "PUT"
+            DELETE = "DELETE"
+            PATCH = "PATCH"
 
     class OracleOicValidation:
         """Oracle OIC validation scalar constants."""

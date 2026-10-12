@@ -84,7 +84,11 @@ class FlextOracleOicClient:
             The resulting ``p.Result[t.JsonMapping]``.
         """
         json_data = u.json_dict_adapter().validate_python(connection_data)
-        return self.make_request(c.API.Method.POST, "/connections", json=json_data)
+        return self.make_request(
+            c.OracleOic.API.Method.POST,
+            "/connections",
+            json=json_data,
+        )
 
     def create_integration(
         self,
@@ -96,7 +100,7 @@ class FlextOracleOicClient:
             The resulting ``p.Result[t.JsonMapping]``.
         """
         return self.make_request(
-            c.API.Method.POST,
+            c.OracleOic.API.Method.POST,
             "/integrations",
             json=integration_data,
         )
@@ -123,7 +127,11 @@ class FlextOracleOicClient:
             The resulting ``t.JsonMapping``.
         """
         endpoint = f"/integrations/{integration_id}/files"
-        result = self.make_request(c.API.Method.POST, endpoint, json=file_config)
+        result = self.make_request(
+            c.OracleOic.API.Method.POST,
+            endpoint,
+            json=file_config,
+        )
         return result.unwrap()
 
     def execute_scheduled_orchestration(
@@ -137,7 +145,11 @@ class FlextOracleOicClient:
             The resulting ``t.JsonMapping``.
         """
         endpoint = f"/integrations/{integration_id}/schedules"
-        result = self.make_request(c.API.Method.POST, endpoint, json=schedule_config)
+        result = self.make_request(
+            c.OracleOic.API.Method.POST,
+            endpoint,
+            json=schedule_config,
+        )
         return result.unwrap()
 
     def fetch_access_token(self) -> p.Result[str]:
@@ -294,7 +306,7 @@ class FlextOracleOicClient:
             request_params: t.MutableStrMapping = dict(base_params)
             request_params.update({"offset": str(offset), "limit": str(page_size)})
             response_result = self.make_request(
-                c.API.Method.GET,
+                c.OracleOic.API.Method.GET,
                 endpoint,
                 params=request_params,
             )
@@ -326,7 +338,7 @@ class FlextOracleOicClient:
         """
         endpoint = f"/integrations/{integration_id}"
         json_data = u.json_dict_adapter().validate_python(integration_data)
-        return self.make_request(c.API.Method.PUT, endpoint, json=json_data)
+        return self.make_request(c.OracleOic.API.Method.PUT, endpoint, json=json_data)
 
     def _build_client_with_token(self, token: str) -> p.Result[FlextApi]:
         """Build client with access token.
@@ -460,7 +472,7 @@ class FlextOracleOicClient:
         if response_result.failure:
             return r[t.JsonValue].fail_op("OAuth request", response_result.error)
         response = response_result.value
-        if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
+        if response.status_code >= c.OracleOic.API.HTTP_ERROR_STATUS_THRESHOLD:
             return r[t.JsonValue].fail(f"OAuth HTTP error: {response.status_code}")
         body: t.JsonValue = getattr(response, "body", str(response))
         return r[t.JsonValue].ok(body)

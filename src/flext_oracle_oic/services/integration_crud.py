@@ -11,8 +11,15 @@ from __future__ import annotations
 
 from collections.abc import MutableSequence, Sequence
 
-from flext_oracle_oic import FlextOracleOicClient, c, m, p, r, t
-from flext_oracle_oic.services import FlextOracleOicServiceBase
+from flext_oracle_oic import (
+    FlextOracleOicClient,
+    FlextOracleOicServiceBase,
+    c,
+    m,
+    p,
+    r,
+    t,
+)
 
 
 class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
@@ -52,7 +59,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         integration = self._build_integration_info(
             created_data,
             fallback_id="",
-            default_status=c.Integration.Status.DRAFT,
+            default_status=c.OracleOic.Integration.Status.DRAFT,
         )
         return r[m.OracleOic.OICIntegrationInfo].ok(integration)
 
@@ -104,7 +111,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         integration = self._build_integration_info(
             integration_data,
             fallback_id=integration_id,
-            default_status=c.Connection.Status.UNKNOWN,
+            default_status=c.OracleOic.Connection.Status.UNKNOWN,
         )
         return r[m.OracleOic.OICIntegrationInfo].ok(integration)
 
@@ -149,7 +156,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
         integration = self._build_integration_info(
             updated_data,
             fallback_id=integration_id,
-            default_status=c.Connection.Status.UNKNOWN,
+            default_status=c.OracleOic.Connection.Status.UNKNOWN,
         )
         return r[m.OracleOic.OICIntegrationInfo].ok(integration)
 
@@ -274,7 +281,10 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
                 connection_id=self._as_text(item.get("id"), ""),
                 name=self._as_text(item.get("name"), ""),
                 adapter_type=self._as_text(item.get("adapterType"), ""),
-                status=self._as_text(item.get("status"), c.Connection.Status.UNKNOWN),
+                status=self._as_text(
+                    item.get("status"),
+                    c.OracleOic.Connection.Status.UNKNOWN,
+                ),
                 connection_type=self._as_text(item.get("connectionType"), ""),
                 description=self._as_text(item.get("description"), ""),
             )

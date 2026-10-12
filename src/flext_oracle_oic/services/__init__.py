@@ -14,7 +14,7 @@ from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
     from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
-    from flext_oracle_oic.services.base import FlextOracleOicServiceBase
+    from flext_oracle_oic.services.facade import FlextOracleOicService
     from flext_oracle_oic.services.integration_crud import (
         FlextOracleOicIntegrationCrudMixin,
     )
@@ -31,7 +31,7 @@ __all__: tuple[str, ...] = (
     "FlextOracleOicIntegrationLifecycleMixin",
     "FlextOracleOicMonitoringMixin",
     "FlextOracleOicOrchestrationMixin",
-    "FlextOracleOicServiceBase",
+    "FlextOracleOicService",
 )
 
 install_lazy_exports(
@@ -43,7 +43,7 @@ install_lazy_exports(
         "FlextOracleOicIntegrationLifecycleMixin": ".integration_lifecycle",
         "FlextOracleOicMonitoringMixin": ".monitoring",
         "FlextOracleOicOrchestrationMixin": ".orchestration",
-        "FlextOracleOicServiceBase": ".base",
+        "FlextOracleOicService": ".facade",
     }),
     public_exports=__all__,
 )

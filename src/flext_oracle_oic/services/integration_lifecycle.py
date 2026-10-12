@@ -9,8 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_oracle_oic import c, p, r
-from flext_oracle_oic.services import FlextOracleOicServiceBase
+from flext_oracle_oic import FlextOracleOicServiceBase, c, p, r
 
 
 class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
@@ -113,7 +112,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].fail(error_msg)
         client = client_result.value
         test_result = client.make_request(
-            c.API.Method.GET,
+            c.OracleOic.API.Method.GET,
             "/ic/api/integration/v1/health",
         )
         if test_result.failure:
