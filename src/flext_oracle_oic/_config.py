@@ -14,12 +14,16 @@ from functools import cached_property
 
 from flext_cli import FlextCliConfig
 
-from flext_core import FlextSettings
 from flext_oracle_oic._models.config import FlextOracleOicModelsConfig
 
 
-class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
-    """Oracle OIC business config validated from the canonical YAML source."""
+class FlextOracleOicConfig(FlextCliConfig):
+    """Oracle OIC business config validated from the canonical YAML source.
+
+    The fleet-converged config inherits only the declared frozen config
+    capability base (``config_bases`` precedence: meltano -> cli -> core); the
+    adjustable runtime settings keep their own independent lifecycle.
+    """
 
     @cached_property
     def OracleOic(self) -> FlextOracleOicModelsConfig.Config:
