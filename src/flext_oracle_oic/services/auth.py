@@ -16,11 +16,10 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
     """Mixin providing authentication operations for FlextOracleOicService facade."""
 
     def refresh_auth_token(self) -> p.Result[str]:
-        """Refresh OAuth2 authentication token.
+        """Refresh the OAuth2 authentication token.
 
         Returns:
-        r containing new access token.
-
+            Result wrapping the new access token.
         """
         try:
             if not self._authenticator:
@@ -35,14 +34,13 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
             return r[str].fail_op("Token refresh", e)
 
     def validate_auth_token(self, token: str) -> p.Result[bool]:
-        """Validate OAuth2 authentication token.
+        """Validate an OAuth2 authentication token.
 
         Args:
-        token: Token to validate.
+            token: Token to validate.
 
         Returns:
-        r containing validation result.
-
+            Result holding the validation verdict.
         """
         try:
             if not self._authenticator:

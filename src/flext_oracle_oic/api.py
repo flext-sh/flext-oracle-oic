@@ -40,10 +40,10 @@ class FlextOracleOicApi(FlextOracleOicService):
     """
 
     def __init__(self, settings: FlextOracleOicSettings | None = None) -> None:
-        """Initialize FlextOracleOic facade with complete ecosystem integration.
+        """Initialize the FlextOracleOic facade with ecosystem integration.
 
         Args:
-        settings: Oracle OIC configuration. If None, uses global instance.
+            settings: Oracle OIC configuration. If None, uses global instance.
 
         """
         super().__init__()
@@ -58,7 +58,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         """Async context manager entry.
 
         Returns:
-            The resulting ``Self``.
+            The facade instance itself.
         """
         self.logger.info(
             "Oracle OIC service started",
@@ -86,7 +86,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         """Execute Oracle OIC API operations - delegates to service.
 
         Returns:
-            The resulting ``p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]``.
+            Result wrapping the list of OIC integrations.
         """
         return self._service.execute(**kwargs)
 
@@ -96,15 +96,14 @@ class FlextOracleOicApi(FlextOracleOicService):
         integration_id: str,
         payload: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
-        """Execute app-driven orchestration pattern.
+        """Execute the app-driven orchestration pattern.
 
         Args:
-        integration_id: The integration identifier.
-        payload: Orchestration payload data.
+            integration_id: The integration identifier.
+            payload: Orchestration payload data.
 
         Returns:
-        r containing execution result.
-
+            Result wrapping the orchestration execution output.
         """
         return self._service.execute_app_driven_orchestration(integration_id, payload)
 
@@ -114,15 +113,14 @@ class FlextOracleOicApi(FlextOracleOicService):
         integration_id: str,
         file_config: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
-        """Execute file transfer pattern.
+        """Execute the file transfer pattern.
 
         Args:
-        integration_id: The integration identifier.
-        file_config: File transfer configuration.
+            integration_id: The integration identifier.
+            file_config: File transfer configuration.
 
         Returns:
-        r containing execution result.
-
+            Result wrapping the file transfer execution output.
         """
         return self._service.execute_file_transfer(integration_id, file_config)
 
@@ -132,15 +130,14 @@ class FlextOracleOicApi(FlextOracleOicService):
         integration_id: str,
         schedule_config: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
-        """Execute scheduled orchestration pattern.
+        """Execute the scheduled orchestration pattern.
 
         Args:
-        integration_id: The integration identifier.
-        schedule_config: Schedule configuration.
+            integration_id: The integration identifier.
+            schedule_config: Schedule configuration.
 
         Returns:
-        r containing execution result.
-
+            Result wrapping the scheduled orchestration execution output.
         """
         return self._service.execute_scheduled_orchestration(
             integration_id,

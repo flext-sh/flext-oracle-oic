@@ -27,15 +27,14 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         integration_id: str,
         payload: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
-        """Execute app-driven orchestration pattern.
+        """Execute the app-driven orchestration pattern.
 
         Args:
-        integration_id: The integration identifier.
-        payload: Orchestration payload data.
+            integration_id: Identifier of the target integration.
+            payload: Orchestration payload data.
 
         Returns:
-        r containing execution result.
-
+            Result wrapping the orchestration execution output.
         """
         try:
             return self._execute_app_driven_orchestration(integration_id, payload)
@@ -51,10 +50,15 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         integration_id: str,
         payload: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
-        """Execute app-driven orchestration without exception translation.
+        """Execute the app-driven orchestration without exception translation.
+
+        Args:
+            integration_id: Identifier of the target integration.
+            payload: Orchestration payload data sent to the integration
+                connections endpoint.
 
         Returns:
-            The resulting ``p.Result[t.JsonMapping]``.
+            Result wrapping the orchestration execution output.
         """
         client_result = self._get_client()
         if client_result.failure:
@@ -75,15 +79,14 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         integration_id: str,
         file_config: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
-        """Execute file transfer pattern.
+        """Execute the file transfer pattern.
 
         Args:
-        integration_id: The integration identifier.
-        file_config: File transfer configuration.
+            integration_id: Identifier of the target integration.
+            file_config: File transfer configuration.
 
         Returns:
-        r containing execution result.
-
+            Result wrapping the file transfer execution output.
         """
         return self._execute_integration_operation(
             integration_id=integration_id,
@@ -98,15 +101,14 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         integration_id: str,
         schedule_config: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
-        """Execute scheduled orchestration pattern.
+        """Execute the scheduled orchestration pattern.
 
         Args:
-        integration_id: The integration identifier.
-        schedule_config: Schedule configuration.
+            integration_id: Identifier of the target integration.
+            schedule_config: Schedule configuration.
 
         Returns:
-        r containing execution result.
-
+            Result wrapping the scheduled orchestration execution output.
         """
         return self._execute_integration_operation(
             integration_id=integration_id,
@@ -122,6 +124,16 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         integration_id: str,
         operation_config: t.JsonMapping,
     ) -> t.JsonMapping:
+        """Run the file transfer operation against the given client.
+
+        Args:
+            client: OIC client used to perform the transfer.
+            integration_id: Identifier of the target integration.
+            operation_config: File transfer configuration.
+
+        Returns:
+            The OIC response payload for the file transfer request.
+        """
         return client.execute_file_transfer(integration_id, operation_config)
 
     @staticmethod
@@ -130,6 +142,16 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         integration_id: str,
         operation_config: t.JsonMapping,
     ) -> t.JsonMapping:
+        """Run the scheduled orchestration operation against the given client.
+
+        Args:
+            client: OIC client used to perform the orchestration.
+            integration_id: Identifier of the target integration.
+            operation_config: Schedule configuration.
+
+        Returns:
+            The OIC response payload for the schedule request.
+        """
         return client.execute_scheduled_orchestration(integration_id, operation_config)
 
     def _execute_integration_operation(
@@ -140,6 +162,19 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         log_message: str,
         error_message: str,
     ) -> p.Result[t.JsonMapping]:
+        """Execute an integration operation, translating network exceptions.
+
+        Args:
+            integration_id: Identifier of the target integration.
+            operation_config: Configuration payload passed to the operation.
+            operation: Callable that performs the operation against the client.
+            log_message: Message template logged when the operation raises.
+            error_message: Prefix used in the failure result message.
+
+        Returns:
+            Result wrapping the operation output, or a failure result when the
+            client is unavailable or the operation raises.
+        """
         try:
             client_result = self._get_client()
             if client_result.failure:

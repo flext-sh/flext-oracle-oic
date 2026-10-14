@@ -36,11 +36,11 @@ class FlextOracleOicClient:
         connection_config: m.OracleOic.OICConnectionConfig,
         auth_config: m.OracleOic.OICAuthConfig,
     ) -> None:
-        """Initialize unified Oracle OIC client.
+        """Initialize the unified Oracle OIC client.
 
         Args:
-        connection_config: OIC connection configuration
-        auth_config: OIC authentication configuration
+            connection_config: OIC connection configuration.
+            auth_config: OIC authentication configuration.
 
         """
         self.connection_config = connection_config
@@ -50,10 +50,10 @@ class FlextOracleOicClient:
         self._access_token: str | None = None
 
     def __enter__(self) -> Self:
-        """Context manager entry — OIC client enters its session.
+        """Enter the context-managed client session.
 
         Returns:
-            The resulting ``Self``.
+            The client instance itself.
         """
         return self
 
@@ -63,7 +63,7 @@ class FlextOracleOicClient:
         exc_val: BaseException | None,
         exc_tb: TracebackType | None,
     ) -> None:
-        """Context manager exit."""
+        """Exit the context-managed session and close the underlying client."""
         self.close()
 
     def close(self) -> None:
@@ -78,10 +78,14 @@ class FlextOracleOicClient:
         self,
         connection_data: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
-        """Create connection in OIC.
+        """Create a connection in OIC.
+
+        Args:
+            connection_data: Connection payload sent to the OIC connections
+                endpoint.
 
         Returns:
-            The resulting ``p.Result[t.JsonMapping]``.
+            Result wrapping the created connection payload.
         """
         json_data = u.json_dict_adapter().validate_python(connection_data)
         return self.make_request(
@@ -94,10 +98,14 @@ class FlextOracleOicClient:
         self,
         integration_data: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
-        """Create integration in OIC.
+        """Create an integration in OIC.
+
+        Args:
+            integration_data: Integration payload sent to the OIC integrations
+                endpoint.
 
         Returns:
-            The resulting ``p.Result[t.JsonMapping]``.
+            Result wrapping the created integration payload.
         """
         return self.make_request(
             c.OracleOic.API.Method.POST,
@@ -106,10 +114,10 @@ class FlextOracleOicClient:
         )
 
     def encode_client_credentials(self) -> str:
-        """Encode client credentials for HTTP Basic authentication.
+        """Encode the client credentials for HTTP Basic authentication.
 
         Returns:
-            The resulting ``str``.
+            Base64-encoded ``client_id:client_secret`` string.
         """
         client_id = self.auth_config.oauth_client_id
         client_secret = self.auth_config.oauth_client_secret.get_secret_value()
@@ -121,10 +129,17 @@ class FlextOracleOicClient:
         integration_id: str,
         file_config: t.JsonMapping,
     ) -> t.JsonMapping:
-        """Execute file transfer pattern for an integration.
+        """Execute the file transfer pattern for an integration.
+
+        Args:
+            integration_id: Identifier of the target integration.
+            file_config: File transfer configuration sent to the OIC files
+                endpoint.
 
         Returns:
-            The resulting ``t.JsonMapping``.
+            The OIC response payload for the file transfer request. The
+            underlying result is unwrapped, so a failed request raises
+            ``RuntimeError``.
         """
         endpoint = f"/integrations/{integration_id}/files"
         result = self.make_request(
@@ -139,10 +154,16 @@ class FlextOracleOicClient:
         integration_id: str,
         schedule_config: t.JsonMapping,
     ) -> t.JsonMapping:
-        """Execute scheduled orchestration for an integration.
+        """Execute the scheduled orchestration pattern for an integration.
+
+        Args:
+            integration_id: Identifier of the target integration.
+            schedule_config: Schedule configuration sent to the OIC schedules
+                endpoint.
 
         Returns:
-            The resulting ``t.JsonMapping``.
+            The OIC response payload for the schedule request. The underlying
+            result is unwrapped, so a failed request raises ``RuntimeError``.
         """
         endpoint = f"/integrations/{integration_id}/schedules"
         result = self.make_request(
@@ -153,10 +174,10 @@ class FlextOracleOicClient:
         return result.unwrap()
 
     def fetch_access_token(self) -> p.Result[str]:
-        """Get access token using OAuth2 client credentials flow.
+        """Fetch an OAuth2 access token using the client credentials flow.
 
         Returns:
-            The resulting ``p.Result[str]``.
+            Result wrapping the stored access token.
         """
         return (
             self
@@ -172,10 +193,15 @@ class FlextOracleOicClient:
         type_filter: t.StrSequence | None = None,
         page_size: int = 100,
     ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
-        """Get adapter connections from OIC.
+        """Fetch adapter connections from OIC.
+
+        Args:
+            type_filter: Adapter types to filter on; all connections when
+                omitted.
+            page_size: Number of records requested per page.
 
         Returns:
-            The resulting ``p.Result[t.SequenceOf[t.JsonMapping]]``.
+            Result wrapping the collected connection records.
         """
         params: t.MutableStrMapping = {}
         if type_filter:
@@ -187,10 +213,15 @@ class FlextOracleOicClient:
         status_filter: t.StrSequence | None = None,
         page_size: int = 100,
     ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
-        """Get integration flows from OIC.
+        """Fetch integration flows from OIC.
+
+        Args:
+            status_filter: Integration statuses to filter on; all integrations
+                when omitted.
+            page_size: Number of records requested per page.
 
         Returns:
-            The resulting ``p.Result[t.SequenceOf[t.JsonMapping]]``.
+            Result wrapping the collected integration records.
         """
         params: t.MutableStrMapping = {}
         if status_filter:
@@ -205,18 +236,21 @@ class FlextOracleOicClient:
         self,
         page_size: int = 100,
     ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
-        """Get lookup tables from OIC.
+        """Fetch lookup tables from OIC.
+
+        Args:
+            page_size: Number of records requested per page.
 
         Returns:
-            The resulting ``p.Result[t.SequenceOf[t.JsonMapping]]``.
+            Result wrapping the collected lookup records.
         """
         return self.paginate_request("/lookups", page_size=page_size)
 
     def compute_oauth_request_body(self) -> t.StrMapping:
-        """Generate OAuth2 request body for client credentials flow.
+        """Compute the OAuth2 request body for the client credentials flow.
 
         Returns:
-            The resulting ``t.StrMapping``.
+            Mapping holding the grant type and the resolved scope.
         """
         audience = self.auth_config.oauth_client_aud
         if audience:
@@ -231,10 +265,13 @@ class FlextOracleOicClient:
         self,
         page_size: int = 100,
     ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
-        """Get integration packages from OIC.
+        """Fetch integration packages from OIC.
+
+        Args:
+            page_size: Number of records requested per page.
 
         Returns:
-            The resulting ``p.Result[t.SequenceOf[t.JsonMapping]]``.
+            Result wrapping the collected package records.
         """
         return self.paginate_request("/packages", page_size=page_size)
 
@@ -246,10 +283,17 @@ class FlextOracleOicClient:
         data: t.StrMapping | None = None,
         json: t.JsonMapping | None = None,
     ) -> p.Result[t.JsonMapping]:
-        """Make authenticated request to OIC API.
+        """Make an authenticated request against the OIC API.
+
+        Args:
+            method: HTTP method name (``GET``, ``POST``, ``PUT``, ``DELETE``).
+            endpoint: Endpoint path relative to the OIC base URL.
+            params: Optional query parameters.
+            data: Optional form data payload.
+            json: Optional JSON payload.
 
         Returns:
-            The resulting ``p.Result[t.JsonMapping]``.
+            Result wrapping the parsed OIC response payload.
         """
         # Why: annotate explicitly so pyrefly binds the flat_map generic to
         # FlextApi instead of leaving the ternary's join implicit (was
@@ -276,10 +320,15 @@ class FlextOracleOicClient:
         page_size: int = 100,
         params: t.StrMapping | None = None,
     ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
-        """Paginate through OIC API responses.
+        """Paginate through OIC API responses, translating network exceptions.
+
+        Args:
+            endpoint: Endpoint path relative to the OIC base URL.
+            page_size: Number of records requested per page.
+            params: Optional query parameters applied to every page request.
 
         Returns:
-            The resulting ``p.Result[t.SequenceOf[t.JsonMapping]]``.
+            Result wrapping all collected records.
         """
         try:
             return self._paginate_request(endpoint, page_size, params)
@@ -296,8 +345,13 @@ class FlextOracleOicClient:
     ) -> p.Result[t.SequenceOf[t.JsonMapping]]:
         """Paginate through OIC API responses without exception translation.
 
+        Args:
+            endpoint: Endpoint path relative to the OIC base URL.
+            page_size: Number of records requested per page.
+            params: Optional query parameters applied to every page request.
+
         Returns:
-            The resulting ``p.Result[t.SequenceOf[t.JsonMapping]]``.
+            Result wrapping all collected records.
         """
         all_records: MutableSequence[t.JsonMapping] = []
         offset = 0
@@ -331,20 +385,27 @@ class FlextOracleOicClient:
         integration_id: str,
         integration_data: t.JsonMapping,
     ) -> p.Result[t.JsonMapping]:
-        """Update integration in OIC.
+        """Update an integration in OIC.
+
+        Args:
+            integration_id: Identifier of the target integration.
+            integration_data: Updated integration payload.
 
         Returns:
-            The resulting ``p.Result[t.JsonMapping]``.
+            Result wrapping the updated integration payload.
         """
         endpoint = f"/integrations/{integration_id}"
         json_data = u.json_dict_adapter().validate_python(integration_data)
         return self.make_request(c.OracleOic.API.Method.PUT, endpoint, json=json_data)
 
     def _build_client_with_token(self, token: str) -> p.Result[FlextApi]:
-        """Build client with access token.
+        """Build an API client carrying the given access token.
+
+        Args:
+            token: OAuth2 access token placed in the Authorization header.
 
         Returns:
-            The resulting ``p.Result[FlextApi]``.
+            Result wrapping the constructed client.
         """
         try:
             base_url = (
@@ -369,10 +430,10 @@ class FlextOracleOicClient:
             return r[FlextApi].fail(error_msg)
 
     def _create_authenticated_client(self) -> p.Result[FlextApi]:
-        """Create new authenticated client.
+        """Create a new authenticated API client.
 
         Returns:
-            The resulting ``p.Result[FlextApi]``.
+            Result wrapping the constructed client.
         """
         return self.fetch_access_token().flat_map(self._build_client_with_token)
 
@@ -385,10 +446,18 @@ class FlextOracleOicClient:
         _data: t.StrMapping | None,
         json: t.JsonMapping | None,
     ) -> p.Result[t.JsonValue]:
-        """Execute the actual API request.
+        """Execute the actual API request, translating network exceptions.
+
+        Args:
+            client: flext-api client used to perform the request.
+            method: HTTP method name.
+            endpoint: Endpoint path relative to the OIC base URL.
+            _params: Unused query parameters.
+            _data: Unused form data.
+            json: Optional JSON payload.
 
         Returns:
-            The resulting ``p.Result[t.JsonValue]``.
+            Result wrapping the raw response body value.
         """
         try:
             return self._run_api_request(client, method, endpoint, json)
@@ -404,10 +473,16 @@ class FlextOracleOicClient:
         endpoint: str,
         json: t.JsonMapping | None,
     ) -> p.Result[t.JsonValue]:
-        """Execute the actual API request without exception translation.
+        """Execute the API request without exception translation.
+
+        Args:
+            client: flext-api client used to perform the request.
+            method: HTTP method name; unsupported names yield a failure result.
+            endpoint: Endpoint path relative to the OIC base URL.
+            json: Optional JSON payload converted to a string-valued form body.
 
         Returns:
-            The resulting ``p.Result[t.JsonValue]``.
+            Result wrapping the raw response body value.
         """
         api_data: t.JsonDict | None = None
         if json is not None:
@@ -439,10 +514,13 @@ class FlextOracleOicClient:
         self,
         request_data: tuple[t.StrMapping, t.StrMapping],
     ) -> p.Result[t.JsonValue]:
-        """Execute OAuth token request.
+        """Execute the OAuth token request, translating network exceptions.
+
+        Args:
+            request_data: Tuple of request headers and form data.
 
         Returns:
-            The resulting ``p.Result[t.JsonValue]``.
+            Result wrapping the raw token response body value.
         """
         try:
             return self._request_access_token(request_data)
@@ -455,10 +533,13 @@ class FlextOracleOicClient:
         self,
         request_data: tuple[t.StrMapping, t.StrMapping],
     ) -> p.Result[t.JsonValue]:
-        """Execute OAuth token request without exception translation.
+        """Execute the OAuth token request without exception translation.
+
+        Args:
+            request_data: Tuple of request headers and form data.
 
         Returns:
-            The resulting ``p.Result[t.JsonValue]``.
+            Result wrapping the raw token response body value.
         """
         headers, data = request_data
         api_config = FlextApiSettings.model_validate({
@@ -478,10 +559,13 @@ class FlextOracleOicClient:
         return r[t.JsonValue].ok(body)
 
     def _parse_api_response(self, response: t.JsonValue) -> p.Result[t.JsonMapping]:
-        """Parse API response based on content type.
+        """Parse the API response according to its content type.
+
+        Args:
+            response: Raw response value to parse.
 
         Returns:
-            The resulting ``p.Result[t.JsonMapping]``.
+            Result wrapping the parsed mapping.
         """
         try:
             return self._parse_api_response_value(response)
@@ -494,10 +578,13 @@ class FlextOracleOicClient:
     def _parse_api_response_value(
         response: t.JsonValue,
     ) -> p.Result[t.JsonMapping]:
-        """Parse API response without exception translation.
+        """Parse the API response without exception translation.
+
+        Args:
+            response: Raw response value to parse.
 
         Returns:
-            The resulting ``p.Result[t.JsonMapping]``.
+            Result wrapping the parsed mapping.
         """
         headers: t.JsonMapping | None = getattr(response, "headers", None)
         body: t.JsonValue | None = getattr(response, "body", None)
@@ -517,10 +604,13 @@ class FlextOracleOicClient:
         return r[t.JsonMapping].ok(parsed_body)
 
     def _parse_token_response(self, response: t.JsonValue) -> p.Result[str]:
-        """Parse access token from OAuth response.
+        """Parse the access token from an OAuth response.
+
+        Args:
+            response: Raw token response value.
 
         Returns:
-            The resulting ``p.Result[str]``.
+            Result wrapping the access token string.
         """
         try:
             return self._parse_token_response_value(response)
@@ -531,10 +621,13 @@ class FlextOracleOicClient:
 
     @staticmethod
     def _parse_token_response_value(response: t.JsonValue) -> p.Result[str]:
-        """Parse access token without exception translation.
+        """Parse the access token without exception translation.
+
+        Args:
+            response: Raw token response value.
 
         Returns:
-            The resulting ``p.Result[str]``.
+            Result wrapping the access token string.
         """
         body_raw: t.JsonValue = getattr(response, "body", None)
         if body_raw is None:
@@ -552,10 +645,10 @@ class FlextOracleOicClient:
         return r[str].fail("No valid access token in response")
 
     def _prepare_oauth_request(self) -> p.Result[tuple[t.StrMapping, t.StrMapping]]:
-        """Prepare OAuth request headers and data.
+        """Prepare the OAuth request headers and form data.
 
         Returns:
-            The resulting ``p.Result[tuple[t.StrMapping, t.StrMapping]]``.
+            Result wrapping the headers/data tuple.
         """
         try:
             encoded_credentials = self.encode_client_credentials()
@@ -571,10 +664,13 @@ class FlextOracleOicClient:
             return r[tuple[t.StrMapping, t.StrMapping]].fail(error_msg)
 
     def _store_and_return_token(self, token: str) -> str:
-        """Store token and return it.
+        """Store the access token on the client and return it.
+
+        Args:
+            token: Access token to store.
 
         Returns:
-            The resulting ``str``.
+            The stored token.
         """
         self._access_token = token
         self.logger.info("OIC OAuth2 authentication successful")
@@ -584,10 +680,13 @@ class FlextOracleOicClient:
         self,
         value: t.JsonValue | t.Scalar | t.ScalarMapping | t.ScalarList,
     ) -> t.JsonValue:
-        """Normalize t.JsonValue into flext-api request body value type.
+        """Normalize a payload value into a JSON-compatible request body value.
+
+        Args:
+            value: Payload value to normalize.
 
         Returns:
-            The resulting ``t.JsonValue``.
+            The normalized JSON-compatible value.
         """
         if isinstance(value, c.PRIMITIVES_TYPES) or value is None:
             return value
@@ -600,10 +699,10 @@ class FlextOracleOicClient:
                 return str(value)
 
     def _validate_token_url(self) -> p.Result[bool]:
-        """Validate that OAuth token URL is configured.
+        """Validate that the OAuth token URL is configured.
 
         Returns:
-            The resulting ``p.Result[bool]``.
+            Result holding ``True`` when the token URL is present.
         """
         if not self.auth_config.oauth_token_url:
             return r[bool].fail("OAuth token URL not configured")
