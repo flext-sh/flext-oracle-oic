@@ -33,7 +33,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
                 *,
                 headers: t.StrMapping | None = None,
             ) -> p.Result[bool]:
-                """                    Execute an HTTP DELETE request.
+                """Execute an HTTP DELETE request.
 
                 Args:
                     url: Target URL.
@@ -41,8 +41,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
 
                 Returns:
                     The resulting ``p.Result[bool]``.
-
-"""
+                """
                 ...
 
             def get(
@@ -51,7 +50,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
                 *,
                 headers: t.StrMapping | None = None,
             ) -> p.Result[t.JsonValue]:
-                """                    Execute an HTTP GET request.
+                """Execute an HTTP GET request.
 
                 Args:
                     url: Target URL.
@@ -59,8 +58,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
 
                 Returns:
                     The resulting ``p.Result[t.JsonValue]``.
-
-"""
+                """
                 ...
 
             def post(
@@ -70,7 +68,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
                 *,
                 headers: t.StrMapping | None = None,
             ) -> p.Result[t.JsonValue]:
-                """                    Execute an HTTP POST request.
+                """Execute an HTTP POST request.
 
                 Args:
                     url: Target URL.
@@ -79,8 +77,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
 
                 Returns:
                     The resulting ``p.Result[t.JsonValue]``.
-
-"""
+                """
                 ...
 
             def put(
@@ -90,7 +87,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
                 *,
                 headers: t.StrMapping | None = None,
             ) -> p.Result[t.JsonValue]:
-                """                    Execute an HTTP PUT request.
+                """Execute an HTTP PUT request.
 
                 Args:
                     url: Target URL.
@@ -99,8 +96,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
 
                 Returns:
                     The resulting ``p.Result[t.JsonValue]``.
-
-"""
+                """
                 ...
 
         @runtime_checkable
@@ -118,8 +114,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
                 """Validate the service's own business rules.
 
                 Returns:
-                The resulting ``p.Result[bool]``.
-
+                    The resulting ``p.Result[bool]``.
                 """
                 ...
 

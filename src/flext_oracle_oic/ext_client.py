@@ -54,6 +54,7 @@ class FlextOracleOicClient:
 
         Returns:
             The client instance itself.
+
         """
         return self
 
@@ -86,6 +87,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the created connection payload.
+
         """
         json_data = u.json_dict_adapter().validate_python(connection_data)
         return self.make_request(
@@ -106,6 +108,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the created integration payload.
+
         """
         return self.make_request(
             c.OracleOic.API.Method.POST,
@@ -118,6 +121,7 @@ class FlextOracleOicClient:
 
         Returns:
             Base64-encoded ``client_id:client_secret`` string.
+
         """
         client_id = self.auth_config.oauth_client_id
         client_secret = self.auth_config.oauth_client_secret.get_secret_value()
@@ -140,6 +144,7 @@ class FlextOracleOicClient:
             The OIC response payload for the file transfer request. The
             underlying result is unwrapped, so a failed request raises
             ``RuntimeError``.
+
         """
         endpoint = f"/integrations/{integration_id}/files"
         result = self.make_request(
@@ -164,6 +169,7 @@ class FlextOracleOicClient:
         Returns:
             The OIC response payload for the schedule request. The underlying
             result is unwrapped, so a failed request raises ``RuntimeError``.
+
         """
         endpoint = f"/integrations/{integration_id}/schedules"
         result = self.make_request(
@@ -178,6 +184,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the stored access token.
+
         """
         return (
             self
@@ -202,6 +209,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the collected connection records.
+
         """
         params: t.MutableStrMapping = {}
         if type_filter:
@@ -222,6 +230,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the collected integration records.
+
         """
         params: t.MutableStrMapping = {}
         if status_filter:
@@ -243,6 +252,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the collected lookup records.
+
         """
         return self.paginate_request("/lookups", page_size=page_size)
 
@@ -251,6 +261,7 @@ class FlextOracleOicClient:
 
         Returns:
             Mapping holding the grant type and the resolved scope.
+
         """
         audience = self.auth_config.oauth_client_aud
         if audience:
@@ -272,6 +283,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the collected package records.
+
         """
         return self.paginate_request("/packages", page_size=page_size)
 
@@ -294,6 +306,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the parsed OIC response payload.
+
         """
         # Why: annotate explicitly so pyrefly binds the flat_map generic to
         # FlextApi instead of leaving the ternary's join implicit (was
@@ -329,6 +342,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping all collected records.
+
         """
         try:
             return self._paginate_request(endpoint, page_size, params)
@@ -352,6 +366,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping all collected records.
+
         """
         all_records: MutableSequence[t.JsonMapping] = []
         offset = 0
@@ -393,6 +408,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the updated integration payload.
+
         """
         endpoint = f"/integrations/{integration_id}"
         json_data = u.json_dict_adapter().validate_python(integration_data)
@@ -406,6 +422,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the constructed client.
+
         """
         try:
             base_url = (
@@ -434,6 +451,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the constructed client.
+
         """
         return self.fetch_access_token().flat_map(self._build_client_with_token)
 
@@ -458,6 +476,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the raw response body value.
+
         """
         try:
             return self._run_api_request(client, method, endpoint, json)
@@ -483,6 +502,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the raw response body value.
+
         """
         api_data: t.JsonDict | None = None
         if json is not None:
@@ -521,6 +541,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the raw token response body value.
+
         """
         try:
             return self._request_access_token(request_data)
@@ -540,6 +561,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the raw token response body value.
+
         """
         headers, data = request_data
         api_config = FlextApiSettings.model_validate({
@@ -566,6 +588,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the parsed mapping.
+
         """
         try:
             return self._parse_api_response_value(response)
@@ -585,6 +608,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the parsed mapping.
+
         """
         headers: t.JsonMapping | None = getattr(response, "headers", None)
         body: t.JsonValue | None = getattr(response, "body", None)
@@ -611,6 +635,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the access token string.
+
         """
         try:
             return self._parse_token_response_value(response)
@@ -628,6 +653,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the access token string.
+
         """
         body_raw: t.JsonValue = getattr(response, "body", None)
         if body_raw is None:
@@ -649,6 +675,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result wrapping the headers/data tuple.
+
         """
         try:
             encoded_credentials = self.encode_client_credentials()
@@ -671,6 +698,7 @@ class FlextOracleOicClient:
 
         Returns:
             The stored token.
+
         """
         self._access_token = token
         self.logger.info("OIC OAuth2 authentication successful")
@@ -687,6 +715,7 @@ class FlextOracleOicClient:
 
         Returns:
             The normalized JSON-compatible value.
+
         """
         if isinstance(value, c.PRIMITIVES_TYPES) or value is None:
             return value
@@ -703,6 +732,7 @@ class FlextOracleOicClient:
 
         Returns:
             Result holding ``True`` when the token URL is present.
+
         """
         if not self.auth_config.oauth_token_url:
             return r[bool].fail("OAuth token URL not configured")
