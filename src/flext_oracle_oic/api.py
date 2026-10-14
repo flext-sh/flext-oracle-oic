@@ -72,7 +72,13 @@ class FlextOracleOicApi(FlextOracleOicService):
         exc_val: BaseException | None,
         exc_tb: t.JsonValue,
     ) -> None:
-        """Async context manager exit."""
+        """Async context manager exit.
+
+        Args:
+            exc_type: Exception type if the body raised, else ``None``.
+            exc_val: Exception instance if the body raised, else ``None``.
+            exc_tb: Traceback if the body raised, else ``None``.
+        """
         self.logger.info(
             "Oracle OIC service stopped",
             extra_info=str(self.fetch_connection_context().value),
@@ -84,6 +90,9 @@ class FlextOracleOicApi(FlextOracleOicService):
         **kwargs: t.Scalar,
     ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
         """Execute Oracle OIC API operations - delegates to service.
+
+        Args:
+            **kwargs: Operation parameters forwarded to the service.
 
         Returns:
             Result wrapping the list of OIC integrations.
@@ -145,7 +154,11 @@ class FlextOracleOicApi(FlextOracleOicService):
         )
 
     def fetch_auth_context(self) -> p.Result[t.JsonMapping]:
-        """Return the current authentication configuration context (ENFORCE-056)."""
+        """Return the current authentication configuration context (ENFORCE-056).
+
+        Returns:
+            Result wrapping the authentication context mapping.
+        """
         return r[t.JsonMapping].ok({
             "oauth_client_id": self._oic_config.OracleOic.oauth_client_id,
             "oauth_token_url": self._oic_config.OracleOic.oauth_token_url,
@@ -153,7 +166,11 @@ class FlextOracleOicApi(FlextOracleOicService):
         })
 
     def fetch_connection_context(self) -> p.Result[t.JsonMapping]:
-        """Return the current connection configuration context (ENFORCE-056)."""
+        """Return the current connection configuration context (ENFORCE-056).
+
+        Returns:
+            Result wrapping the connection context mapping.
+        """
         return r[t.JsonMapping].ok({
             "base_url": self._oic_config.OracleOic.base_url,
             "api_version": self._oic_config.OracleOic.api_version,
@@ -161,7 +178,11 @@ class FlextOracleOicApi(FlextOracleOicService):
         })
 
     def fetch_features_context(self) -> p.Result[t.JsonMapping]:
-        """Return the current features configuration context (ENFORCE-056)."""
+        """Return the current features configuration context (ENFORCE-056).
+
+        Returns:
+            Result wrapping the feature flags mapping.
+        """
         return r[t.JsonMapping].ok({
             "enable_monitoring": self._oic_config.OracleOic.enable_monitoring,
             "use_ssl": self._oic_config.OracleOic.use_ssl,

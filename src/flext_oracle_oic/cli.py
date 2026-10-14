@@ -32,6 +32,9 @@ class FlextOracleOicCli:
     def probe_connection(_params: t.Cli.ModelLike) -> p.Result[bool]:
         """Probe the configured connection for a validated empty CLI request.
 
+        Args:
+            _params: Validated empty CLI request model (unused).
+
         Returns:
             The resulting ``p.Result[bool]``.
         """
@@ -49,6 +52,9 @@ class FlextOracleOicCli:
     @staticmethod
     def list_integrations(_params: t.Cli.ModelLike) -> p.Result[bool]:
         """List integrations for a validated empty CLI request.
+
+        Args:
+            _params: Validated empty CLI request model (unused).
 
         Returns:
             The resulting ``p.Result[bool]``.
@@ -80,6 +86,9 @@ class FlextOracleOicCli:
     @staticmethod
     def show_version(_params: t.Cli.ModelLike) -> p.Result[bool]:
         """Print the package version for a validated empty CLI request.
+
+        Args:
+            _params: Validated empty CLI request model (unused).
 
         Returns:
             The resulting ``p.Result[bool]``.
@@ -126,10 +135,14 @@ class FlextOracleOicCli:
 
 
 def main(args: t.StrSequence | None = None) -> int:
-    """Run main CLI entry point - FLEXT CLI Pattern.
+    """Run the main CLI entry point - FLEXT CLI Pattern.
+
+    Args:
+        args: CLI argument sequence; defaults to ``sys.argv[1:]``.
 
     Returns:
-        The resulting ``int``.
+        Process exit code; ``0`` on success, ``1`` on failure,
+        ``130`` on interrupt.
     """
     app = FlextOracleOicCli.build_app()
     try:
