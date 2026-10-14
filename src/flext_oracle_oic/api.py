@@ -170,11 +170,10 @@ class FlextOracleOicApi(FlextOracleOicService):
 
     @override
     def fetch_health_status(self) -> p.Result[t.JsonMapping]:
-        """Get Oracle OIC health status.
+        """Fetch the Oracle OIC health status.
 
         Returns:
-        r containing health status information.
-
+            Result wrapping the health status information.
         """
         return self._service.fetch_health_status()
 
@@ -183,24 +182,22 @@ class FlextOracleOicApi(FlextOracleOicService):
         self,
         integration_id: str,
     ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
-        """Get specific Oracle OIC integration by ID.
+        """Get a specific Oracle OIC integration by ID.
 
         Args:
-        integration_id: The integration identifier.
+            integration_id: The integration identifier.
 
         Returns:
-        r containing integration information.
-
+            Result wrapping the integration information.
         """
         return self._service.fetch_integration(integration_id)
 
     @override
     def fetch_performance_metrics(self) -> p.Result[t.JsonMapping]:
-        """Get Oracle OIC performance metrics.
+        """Fetch Oracle OIC performance metrics.
 
         Returns:
-        r containing performance metrics.
-
+            Result wrapping the performance metrics.
         """
         return self._service.fetch_performance_metrics()
 
@@ -209,28 +206,25 @@ class FlextOracleOicApi(FlextOracleOicService):
         """List all Oracle OIC integrations.
 
         Returns:
-        r containing list of integration information.
-
+            Result wrapping the list of integration information.
         """
         return self._service.list_integrations()
 
     @override
     def refresh_auth_token(self) -> p.Result[str]:
-        """Refresh OAuth2 authentication token.
+        """Refresh the OAuth2 authentication token.
 
         Returns:
-        r containing new access token.
-
+            Result wrapping the new access token.
         """
         return self._service.refresh_auth_token()
 
     @override
     def test_connection(self) -> p.Result[bool]:
-        """Test connection to Oracle OIC instance.
+        """Test the connection to the Oracle OIC instance.
 
         Returns:
-        r containing connection test result.
-
+            Result holding the connection test verdict.
         """
         return self._service.test_connection()
 
@@ -240,28 +234,26 @@ class FlextOracleOicApi(FlextOracleOicService):
         integration_id: str,
         integration_data: t.JsonMapping,
     ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
-        """Update existing Oracle OIC integration.
+        """Update an existing Oracle OIC integration.
 
         Args:
-        integration_id: The integration identifier.
-        integration_data: Updated integration configuration.
+            integration_id: The integration identifier.
+            integration_data: Updated integration configuration.
 
         Returns:
-        r containing updated integration information.
-
+            Result wrapping the updated integration information.
         """
         return self._service.update_integration(integration_id, integration_data)
 
     @override
     def validate_auth_token(self, token: str) -> p.Result[bool]:
-        """Validate OAuth2 authentication token.
+        """Validate an OAuth2 authentication token.
 
         Args:
-        token: Token to validate.
+            token: Token to validate.
 
         Returns:
-        r containing validation result.
-
+            Result holding the validation verdict.
         """
         return self._service.validate_auth_token(token)
 

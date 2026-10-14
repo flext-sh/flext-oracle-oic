@@ -27,11 +27,10 @@ class FlextOracleOicUtilitiesOracleOic:
         """Validate complete Oracle OIC integration data.
 
         Args:
-        integration_data: Integration configuration data
+            integration_data: Integration configuration data.
 
         Returns:
-        r containing validated data or validation errors
-
+            Result wrapping the validated data.
         """
         errors: MutableSequence[str] = []
         validated_data = u.json_dict_adapter().validate_python(integration_data)
@@ -97,14 +96,13 @@ class FlextOracleOicUtilitiesOracleOic:
 
     @staticmethod
     def validate_integration_name(name: str) -> p.Result[str]:
-        """Validate Oracle OIC integration name.
+        """Validate an Oracle OIC integration name.
 
         Args:
-        name: Integration name to validate
+            name: Integration name to validate.
 
         Returns:
-        r containing validated name or validation error
-
+            Result wrapping the validated name.
         """
         name = name.strip()
         if not name:
@@ -119,14 +117,13 @@ class FlextOracleOicUtilitiesOracleOic:
 
     @staticmethod
     def validate_integration_status(status: str) -> p.Result[str]:
-        """Validate Oracle OIC integration status.
+        """Validate an Oracle OIC integration status.
 
         Args:
-        status: Integration status to validate
+            status: Integration status to validate.
 
         Returns:
-        r containing validated status or error
-
+            Result wrapping the validated status.
         """
         status = status.upper().strip()
         if status not in c.OracleOic.OracleOicValidation.VALID_INTEGRATION_STATUSES:
@@ -138,14 +135,13 @@ class FlextOracleOicUtilitiesOracleOic:
 
     @staticmethod
     def validate_integration_version(version: str) -> p.Result[str]:
-        """Validate Oracle OIC integration version format.
+        """Validate an Oracle OIC integration version format.
 
         Args:
-        version: Version string to validate (format: XX.XX.XXXX)
+            version: Version string to validate (format: XX.XX.XXXX).
 
         Returns:
-        r containing validated version or error
-
+            Result wrapping the validated version.
         """
         version = version.strip()
         if not c.OracleOic.OracleOicValidation.VERSION_PATTERN.match(version):

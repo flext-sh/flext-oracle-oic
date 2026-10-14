@@ -22,8 +22,13 @@ class FlextOracleOicUtilitiesConnectionValidation:
     ) -> p.Result[str]:
         """Validate one upper-cased string against a closed canonical set.
 
+        Args:
+            value: Value to validate.
+            field_label: Label used in failure messages.
+            valid_values: Canonical values the input must match.
+
         Returns:
-            The resulting ``p.Result[str]``.
+            Result wrapping the normalized value.
         """
         match value:
             case str():
@@ -40,14 +45,13 @@ class FlextOracleOicUtilitiesConnectionValidation:
 
     @staticmethod
     def validate_base_url(base_url: p.AttributeProbe) -> p.Result[str]:
-        """Validate Oracle OIC base URL.
+        """Validate an Oracle OIC base URL.
 
         Args:
-        base_url: Base URL to validate
+            base_url: Base URL to validate.
 
         Returns:
-        r containing validated URL or error
-
+            Result wrapping the validated URL.
         """
         match base_url:
             case str():
@@ -63,14 +67,13 @@ class FlextOracleOicUtilitiesConnectionValidation:
 
     @staticmethod
     def validate_connection_status(status: p.AttributeProbe) -> p.Result[str]:
-        """Validate Oracle OIC connection status.
+        """Validate an Oracle OIC connection status.
 
         Args:
-        status: Connection status to validate
+            status: Connection status to validate.
 
         Returns:
-        r containing validated status or error
-
+            Result wrapping the validated status.
         """
         return FlextOracleOicUtilitiesConnectionValidation._validate_closed_string(
             status,
@@ -80,14 +83,13 @@ class FlextOracleOicUtilitiesConnectionValidation:
 
     @staticmethod
     def validate_connection_type(connection_type: p.AttributeProbe) -> p.Result[str]:
-        """Validate Oracle OIC connection type.
+        """Validate an Oracle OIC connection type.
 
         Args:
-        connection_type: Connection type to validate
+            connection_type: Connection type to validate.
 
         Returns:
-        r containing validated type or error
-
+            Result wrapping the validated type.
         """
         return FlextOracleOicUtilitiesConnectionValidation._validate_closed_string(
             connection_type,

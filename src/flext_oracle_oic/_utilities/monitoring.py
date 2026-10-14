@@ -82,11 +82,10 @@ class FlextOracleOicUtilitiesMonitoring:
         """Analyze Oracle OIC performance metrics.
 
         Args:
-        metrics: Performance metrics data
+            metrics: Performance metrics data.
 
         Returns:
-        r containing analysis results or error
-
+            Result wrapping the analysis results.
         """
         overall_health: str = c.HealthStatus.HEALTHY.value
         warnings: list[str] = []
@@ -125,11 +124,10 @@ class FlextOracleOicUtilitiesMonitoring:
         """Validate Oracle OIC health check data.
 
         Args:
-        health_data: Health check response data
+            health_data: Health check response data.
 
         Returns:
-        r containing validated health data or error
-
+            Result wrapping the validated health data.
         """
         validated_data = u.json_dict_adapter().validate_python(health_data)
         error_message: str | None = None

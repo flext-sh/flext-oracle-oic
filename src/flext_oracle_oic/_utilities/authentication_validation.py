@@ -15,14 +15,13 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
 
     @staticmethod
     def validate_oauth_client_id(client_id: str) -> p.Result[str]:
-        """Validate OAuth2 client ID.
+        """Validate an OAuth2 client ID.
 
         Args:
-        client_id: OAuth2 client ID to validate
+            client_id: OAuth2 client ID to validate.
 
         Returns:
-        r containing validated client ID or error
-
+            Result wrapping the validated client ID.
         """
         client_id = client_id.strip()
         if len(client_id) < c.OracleOic.OracleOicValidation.MIN_CLIENT_ID_LENGTH:
@@ -35,14 +34,13 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
     def validate_oauth_client_secret(
         client_secret: t.SecretStr,
     ) -> p.Result[t.SecretStr]:
-        """Validate OAuth2 client secret.
+        """Validate an OAuth2 client secret.
 
         Args:
-        client_secret: OAuth2 client secret to validate
+            client_secret: OAuth2 client secret to validate.
 
         Returns:
-        r containing validated secret or error
-
+            Result wrapping the validated secret.
         """
         secret_value = client_secret.get_secret_value()
         if not secret_value or not secret_value.strip():
