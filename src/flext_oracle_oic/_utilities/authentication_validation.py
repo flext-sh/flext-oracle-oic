@@ -52,3 +52,6 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
                 "OAuth client secret must be at least 8 characters",
             )
         return r[t.SecretStr].ok(client_secret)
+
+
+__all__: list[str] = ["FlextOracleOicUtilitiesAuthenticationValidation"]
