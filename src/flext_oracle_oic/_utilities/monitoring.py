@@ -159,3 +159,6 @@ class FlextOracleOicUtilitiesMonitoring:
         if "timestamp" not in validated_data:
             validated_data["timestamp"] = ug.now().isoformat()
         return r[t.JsonMapping].ok(validated_data)
+
+
+__all__: list[str] = ["FlextOracleOicUtilitiesMonitoring"]

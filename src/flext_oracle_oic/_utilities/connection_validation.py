@@ -101,3 +101,6 @@ class FlextOracleOicUtilitiesConnectionValidation:
             field_label="Connection type",
             valid_values=c.OracleOic.OracleOicValidation.VALID_CONNECTION_TYPES,
         )
+
+
+__all__: list[str] = ["FlextOracleOicUtilitiesConnectionValidation"]

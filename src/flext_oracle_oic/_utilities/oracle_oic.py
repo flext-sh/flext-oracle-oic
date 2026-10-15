@@ -151,3 +151,6 @@ class FlextOracleOicUtilitiesOracleOic:
         if not c.OracleOic.OracleOicValidation.VERSION_PATTERN.match(version):
             return r[str].fail("Invalid version format. Expected: XX.XX.XXXX")
         return r[str].ok(version)
+
+
+__all__: list[str] = ["FlextOracleOicUtilitiesOracleOic"]
