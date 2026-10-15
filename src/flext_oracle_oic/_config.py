@@ -4,7 +4,7 @@ Business rules live in ``config/*.yaml`` under the ``OracleOic:`` key and are
 validated through the project's config declarations. Access remains
 ``config.OracleOic.<domain>[<key>...]``; values come from the YAML owner.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
+Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 
@@ -14,24 +14,31 @@ from functools import cached_property
 
 from flext_cli import FlextCliConfig
 
-from flext_core import FlextSettings
-from flext_oracle_oic import m
+from flext_oracle_oic._models.config import FlextOracleOicModelsConfig
 
 
-class FlextOracleOicConfig(FlextSettings, FlextCliConfig):
-    """Oracle OIC business config validated from the canonical YAML source."""
+class FlextOracleOicConfig(FlextCliConfig):
+    """Oracle OIC business config validated from the canonical YAML source.
+
+    The fleet-converged config inherits only the declared frozen config
+    capability base (``config_bases`` precedence: meltano -> cli -> core); the
+    adjustable runtime settings keep their own independent lifecycle.
+    """
 
     @cached_property
-    def OracleOic(self) -> m.OracleOic.Config:
+    def OracleOic(self) -> FlextOracleOicModelsConfig.Config:
         """The required business namespace without synthesized defaults.
 
         Raises:
             ValueError: If Oracle OIC business configuration namespace is missing.
+
         """
         if self.model_extra is None:
             msg = "Oracle OIC business configuration namespace is missing"
             raise ValueError(msg)
-        return m.OracleOic.Config.model_validate(self.model_extra["OracleOic"])
+        return FlextOracleOicModelsConfig.Config.model_validate(
+            self.model_extra["OracleOic"]
+        )
 
 
 config: FlextOracleOicConfig = FlextOracleOicConfig.fetch_global()

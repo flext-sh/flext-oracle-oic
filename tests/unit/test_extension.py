@@ -14,7 +14,6 @@ from __future__ import annotations
 from collections.abc import Callable
 
 import pytest
-from flext_tests import tm
 
 from flext_oracle_oic import (
     FlextOracleOicApi,
@@ -24,6 +23,7 @@ from flext_oracle_oic import (
     p,
     t,
 )
+from tests import tm
 
 # Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
 # this Callable annotation instead of leaving it implicit (was flagged
@@ -51,6 +51,7 @@ class TestsFlextOracleOicExtension:
 
         Returns:
             The resulting ``FlextOracleOicSettings``.
+
         """
         return FlextOracleOicSettings.model_validate({
             "OracleOic": {
@@ -67,6 +68,7 @@ class TestsFlextOracleOicExtension:
 
         Returns:
             The resulting ``FlextOracleOicApi``.
+
         """
         return FlextOracleOicApi(settings)
 
@@ -78,10 +80,10 @@ class TestsFlextOracleOicExtension:
 
     @staticmethod
     def test_facade_constructs_without_settings() -> None:
-        """Constructing with no settings yields a usable facade instance."""
+        """Constructing with no settings yields a usable, total facade."""
         api = FlextOracleOicApi()
 
-        tm.that(api, is_=FlextOracleOicApi)
+        tm.ok(api.fetch_connection_context())
 
     @staticmethod
     def test_facade_constructs_with_explicit_settings(
@@ -133,7 +135,7 @@ class TestsFlextOracleOicExtension:
         ("key", "expected"),
         [
             ("base_url", "https://custom.example.com"),
-            ("api_version", c.OICApiVersion.V1),
+            ("api_version", c.OracleOic.OICApiVersion.V1),
         ],
     )
     def test_connection_context_keys(

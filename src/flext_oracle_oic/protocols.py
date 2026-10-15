@@ -1,6 +1,6 @@
 """Oracle OIC protocols for FLEXT ecosystem.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
+Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 
@@ -11,13 +11,16 @@ from typing import Protocol, runtime_checkable
 from flext_auth import FlextAuthProtocols
 
 from flext_oracle_oic import t
-from flext_oracle_oic._protocols.config import FlextOracleOicProtocolsConfig
+from flext_oracle_oic._protocols import (
+    FlextOracleOicProtocolsBase,
+    FlextOracleOicProtocolsConfig,
+)
 
 
 class FlextOracleOicProtocols(FlextAuthProtocols):
     """Oracle OIC Extension protocols extending ``p`` with OIC-specific interfaces."""
 
-    class OracleOic(FlextOracleOicProtocolsConfig):
+    class OracleOic(FlextOracleOicProtocolsBase, FlextOracleOicProtocolsConfig):
         """OracleOic domain namespace."""
 
         @runtime_checkable
@@ -30,7 +33,16 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
                 *,
                 headers: t.StrMapping | None = None,
             ) -> p.Result[bool]:
-                """Execute HTTP DELETE request."""
+                """Execute an HTTP DELETE request.
+
+                Args:
+                    url: Target URL.
+                    headers: Optional request headers.
+
+                Returns:
+                    The resulting ``p.Result[bool]``.
+
+                """
                 ...
 
             def get(
@@ -39,7 +51,16 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
                 *,
                 headers: t.StrMapping | None = None,
             ) -> p.Result[t.JsonValue]:
-                """Execute HTTP GET request."""
+                """Execute an HTTP GET request.
+
+                Args:
+                    url: Target URL.
+                    headers: Optional request headers.
+
+                Returns:
+                    The resulting ``p.Result[t.JsonValue]``.
+
+                """
                 ...
 
             def post(
@@ -49,7 +70,17 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
                 *,
                 headers: t.StrMapping | None = None,
             ) -> p.Result[t.JsonValue]:
-                """Execute HTTP POST request."""
+                """Execute an HTTP POST request.
+
+                Args:
+                    url: Target URL.
+                    data: Optional JSON payload mapping.
+                    headers: Optional request headers.
+
+                Returns:
+                    The resulting ``p.Result[t.JsonValue]``.
+
+                """
                 ...
 
             def put(
@@ -59,7 +90,17 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
                 *,
                 headers: t.StrMapping | None = None,
             ) -> p.Result[t.JsonValue]:
-                """Execute HTTP PUT request."""
+                """Execute an HTTP PUT request.
+
+                Args:
+                    url: Target URL.
+                    data: Optional JSON payload mapping.
+                    headers: Optional request headers.
+
+                Returns:
+                    The resulting ``p.Result[t.JsonValue]``.
+
+                """
                 ...
 
         @runtime_checkable
@@ -74,7 +115,12 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
             """
 
             def validate_business_rules(self) -> p.Result[bool]:
-                """Validate the service's own business rules."""
+                """Validate the service's own business rules.
+
+                Returns:
+                    The resulting ``p.Result[bool]``.
+
+                """
                 ...
 
 

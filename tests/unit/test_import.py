@@ -8,11 +8,10 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import tm
 
 import flext_oracle_oic
-from flext_oracle_oic import FlextOracleOicSettings
-from flext_oracle_oic.main import main as main_entrypoint
+from flext_oracle_oic import FlextOracleOicSettings, main
+from tests import tm
 
 
 class TestsFlextOracleOicImport:
@@ -26,7 +25,7 @@ class TestsFlextOracleOicImport:
             "FlextOracleOicConstants",
             "FlextOracleOicModels",
             "FlextOracleOicProtocols",
-            "FlextOracleOicService",
+            "FlextOracleOicServiceBase",
             "FlextOracleOicSettings",
             "FlextOracleOicTypes",
             "FlextOracleOicUtilities",
@@ -41,7 +40,7 @@ class TestsFlextOracleOicImport:
     @staticmethod
     def test_package_entrypoint_is_callable() -> None:
         """The published main entrypoint is invocable."""
-        assert callable(main_entrypoint)
+        assert callable(main)
 
     @staticmethod
     def test_version_metadata_matches_version_info_tuple() -> None:

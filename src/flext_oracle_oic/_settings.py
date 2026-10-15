@@ -11,7 +11,7 @@ env-provided plain ``str`` (empty default) per the strict pattern. Range/enum
 validation lives at the domain-model boundary
 (``m.OracleOic.OICConnectionConfig`` / ``OICAuthConfig``), not here.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
+Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 
@@ -19,8 +19,10 @@ from __future__ import annotations
 
 from typing import Annotated
 
+from flext_auth import m
 from flext_core import FlextSettings
-from flext_oracle_oic import c, m
+
+from flext_oracle_oic._constants.base import FlextOracleOicConstantsBase
 
 
 class FlextOracleOicSettings(FlextSettings):
@@ -73,14 +75,14 @@ class FlextOracleOicSettings(FlextSettings):
             str,
             m.Field(description="IDCS OAuth2 client secret"),
         ] = ""
-        # NOTE: a public OAuth endpoint URL is configuration, not a secret;
-        # the default is inlined from the constants SSOT (``c.OracleOic``),
-        # matching the flext-auth layer-0 settings pattern for non-secret
-        # URL defaults.
+        # NOTE: a public OAuth endpoint URL is configuration, not a secret; the
+        # default is owned by the constants SSOT and read through the family
+        # base, matching the flext-auth layer-0 settings pattern for
+        # non-secret URL defaults.
         oauth_token_url: Annotated[
             str,
             m.Field(description="IDCS OAuth2 token endpoint URL"),
-        ] = c.OracleOic.DEFAULT_TOKEN_URL
+        ] = FlextOracleOicConstantsBase.DEFAULT_TOKEN_URL
         oauth_client_aud: Annotated[str, m.Field(description="OAuth2 audience")] = ""
         oauth_scope: Annotated[str, m.Field(description="OAuth2 scope")] = ""
 

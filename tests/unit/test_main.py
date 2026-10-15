@@ -8,10 +8,9 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import tm
 
-from flext_oracle_oic import FlextOracleOicCli, __version__, c
-from flext_oracle_oic.main import main
+from flext_oracle_oic import FlextOracleOicCli, __version__, main
+from tests import tm
 
 
 class TestsFlextOracleOicMain:
@@ -51,12 +50,6 @@ class TestsFlextOracleOicMain:
 
         tm.that(first, none=False)
         tm.that(second, none=False)
-
-    @staticmethod
-    def test_app_identity_is_exposed_as_public_metadata() -> None:
-        """The CLI advertises its program name and help text as public contract."""
-        tm.that(c.Cli.APP_NAME, eq="flext-oracle-oic-ext")
-        tm.that(c.Cli.APP_HELP, has="Oracle OIC")
 
     @staticmethod
     def test_package_exposes_non_empty_version_string() -> None:

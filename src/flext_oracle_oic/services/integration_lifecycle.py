@@ -9,22 +9,20 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import r
-from flext_oracle_oic import c, p
-from flext_oracle_oic.services.base import FlextOracleOicServiceBase
+from flext_oracle_oic import FlextOracleOicServiceBase, c, p, r
 
 
 class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
     """Mixin providing integration lifecycle operations for the OIC service."""
 
     def activate_integration(self, integration_id: str) -> p.Result[bool]:
-        """Activate Oracle OIC integration.
+        """Activate an Oracle OIC integration.
 
         Args:
-        integration_id: The integration identifier.
+            integration_id: The integration identifier.
 
         Returns:
-        r indicating success or failure.
+            Result indicating success or failure.
 
         """
         try:
@@ -34,10 +32,14 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].fail_op("Integration activation", e)
 
     def _activate_integration(self, integration_id: str) -> p.Result[bool]:
-        """Activate Oracle OIC integration without exception translation.
+        """Activate an Oracle OIC integration without exception translation.
+
+        Args:
+            integration_id: Identifier of the integration to activate.
 
         Returns:
-            The resulting ``p.Result[bool]``.
+            Result holding ``True`` when the activation request succeeds.
+
         """
         client_result = self._get_client()
         if client_result.failure:
@@ -54,13 +56,13 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
         return r[bool].ok(value=True)
 
     def deactivate_integration(self, integration_id: str) -> p.Result[bool]:
-        """Deactivate Oracle OIC integration.
+        """Deactivate an Oracle OIC integration.
 
         Args:
-        integration_id: The integration identifier.
+            integration_id: The integration identifier.
 
         Returns:
-        r indicating success or failure.
+            Result indicating success or failure.
 
         """
         try:
@@ -70,10 +72,14 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].fail_op("Integration deactivation", e)
 
     def _deactivate_integration(self, integration_id: str) -> p.Result[bool]:
-        """Deactivate Oracle OIC integration without exception translation.
+        """Deactivate an Oracle OIC integration without exception translation.
+
+        Args:
+            integration_id: Identifier of the integration to deactivate.
 
         Returns:
-            The resulting ``p.Result[bool]``.
+            Result holding ``True`` when the deactivation request succeeds.
+
         """
         client_result = self._get_client()
         if client_result.failure:
@@ -90,10 +96,10 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
         return r[bool].ok(value=True)
 
     def test_connection(self) -> p.Result[bool]:
-        """Test connection to Oracle OIC instance.
+        """Test the connection to the Oracle OIC instance.
 
         Returns:
-        r containing connection test result.
+            Result holding the connection test verdict.
 
         """
         try:
@@ -103,10 +109,11 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].fail_op("Connection test", e)
 
     def _test_connection(self) -> p.Result[bool]:
-        """Test Oracle OIC connection without exception translation.
+        """Test the Oracle OIC connection without exception translation.
 
         Returns:
-            The resulting ``p.Result[bool]``.
+            Result holding ``True`` when the OIC health status reports healthy.
+
         """
         client_result = self._get_client()
         if client_result.failure:
@@ -114,7 +121,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
             return r[bool].fail(error_msg)
         client = client_result.value
         test_result = client.make_request(
-            c.API.Method.GET,
+            c.OracleOic.API.Method.GET,
             "/ic/api/integration/v1/health",
         )
         if test_result.failure:
