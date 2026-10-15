@@ -37,6 +37,7 @@ class FlextOracleOicCli:
 
         Returns:
             The resulting ``p.Result[bool]``.
+
         """
         try:
             service = FlextOracleOicService()
@@ -58,6 +59,7 @@ class FlextOracleOicCli:
 
         Returns:
             The resulting ``p.Result[bool]``.
+
         """
         try:
             service = FlextOracleOicService()
@@ -92,6 +94,7 @@ class FlextOracleOicCli:
 
         Returns:
             The resulting ``p.Result[bool]``.
+
         """
         cli.print(f"Oracle OIC Extension v{__version__}")
         cli.print("FLEXT CLI Pattern: Enterprise Oracle Integration Cloud")
@@ -103,6 +106,7 @@ class FlextOracleOicCli:
 
         Returns:
             The resulting ``p.Cli.Application``.
+
         """
         app = cli.create_app_with_common_params(
             name=c.OracleOic.Cli.APP_NAME,
@@ -143,6 +147,7 @@ def main(args: t.StrSequence | None = None) -> int:
     Returns:
         Process exit code; ``0`` on success, ``1`` on failure,
         ``130`` on interrupt.
+
     """
     app = FlextOracleOicCli.build_app()
     try:

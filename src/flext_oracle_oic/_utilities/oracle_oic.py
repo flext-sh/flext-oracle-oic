@@ -9,8 +9,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from flext_api import u
-
 from flext_core import r
+
 from flext_oracle_oic import c, m, p, t
 
 if TYPE_CHECKING:
@@ -31,6 +31,7 @@ class FlextOracleOicUtilitiesOracleOic:
 
         Returns:
             Result wrapping the validated data.
+
         """
         errors: MutableSequence[str] = []
         validated_data = u.json_dict_adapter().validate_python(integration_data)
@@ -103,6 +104,7 @@ class FlextOracleOicUtilitiesOracleOic:
 
         Returns:
             Result wrapping the validated name.
+
         """
         name = name.strip()
         if not name:
@@ -124,6 +126,7 @@ class FlextOracleOicUtilitiesOracleOic:
 
         Returns:
             Result wrapping the validated status.
+
         """
         status = status.upper().strip()
         if status not in c.OracleOic.OracleOicValidation.VALID_INTEGRATION_STATUSES:
@@ -142,6 +145,7 @@ class FlextOracleOicUtilitiesOracleOic:
 
         Returns:
             Result wrapping the validated version.
+
         """
         version = version.strip()
         if not c.OracleOic.OracleOicValidation.VERSION_PATTERN.match(version):

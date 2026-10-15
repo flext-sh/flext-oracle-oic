@@ -58,6 +58,7 @@ def _invoke_unconfigured_operation(
 
     Returns:
         The resulting operation ``r``.
+
     """
     operations: t.MappingKV[str, Callable[[], _OperationResult]] = {
         "execute": svc.execute,
@@ -86,6 +87,7 @@ class TestsFlextOracleOicExtServices:
 
         Yields:
             Each ``FlextOracleOicService``.
+
         """
         FlextOracleOicSettings.reset_for_testing()
         yield FlextOracleOicService()
@@ -100,6 +102,7 @@ class TestsFlextOracleOicExtServices:
 
         Yields:
             Each ``FlextOracleOicService``.
+
         """
         # NOTE (ADR-005): project fields are namespaced under settings.OracleOic,
         # so env vars use the nested delimiter form ORACLEOIC__<FIELD>.
@@ -252,6 +255,7 @@ class TestsFlextOracleOicExtServices:
 
         Returns:
             The resulting ``bool``.
+
         """
         return isinstance(candidate, p.OracleOic.ServiceRules)
 

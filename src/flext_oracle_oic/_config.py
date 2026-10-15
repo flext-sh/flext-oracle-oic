@@ -31,6 +31,7 @@ class FlextOracleOicConfig(FlextCliConfig):
 
         Raises:
             ValueError: If Oracle OIC business configuration namespace is missing.
+
         """
         if self.model_extra is None:
             msg = "Oracle OIC business configuration namespace is missing"

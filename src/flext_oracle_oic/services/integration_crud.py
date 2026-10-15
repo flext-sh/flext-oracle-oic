@@ -49,6 +49,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the created integration information.
+
         """
         client_result = self._get_client_or_fail()
         if client_result.failure:
@@ -77,6 +78,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the created integration information.
+
         """
         try:
             return self._create_integration_impl(integration_data)
@@ -95,6 +97,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the matching integration information.
+
         """
         client_result = self._get_client_or_fail()
         if client_result.failure:
@@ -131,6 +134,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the integration information.
+
         """
         try:
             return self._fetch_integration_impl(integration_id)
@@ -151,6 +155,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the updated integration information.
+
         """
         client_result = self._get_client_or_fail()
         if client_result.failure:
@@ -181,6 +186,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the updated integration information.
+
         """
         try:
             return self._update_integration_impl(integration_id, integration_data)
@@ -196,6 +202,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result holding ``True`` when the delete request succeeds.
+
         """
         client_result = self._get_client_or_fail()
         if client_result.failure:
@@ -215,6 +222,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result indicating success or failure.
+
         """
         try:
             return self._delete_integration_impl(integration_id)
@@ -233,6 +241,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the identifier of the deployed integration.
+
         """
         client_result = self._get_client_or_fail()
         if client_result.failure:
@@ -256,6 +265,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the deployed integration ID.
+
         """
         try:
             return self._deploy_integration_impl(integration_data)
@@ -275,6 +285,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the connection information list.
+
         """
         client_result = self._get_client_or_fail()
         if client_result.failure:
@@ -318,6 +329,7 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the connection information list.
+
         """
         try:
             return self._list_connections_impl(type_filter=type_filter)

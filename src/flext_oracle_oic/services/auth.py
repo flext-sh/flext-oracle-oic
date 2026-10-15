@@ -20,6 +20,7 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the new access token.
+
         """
         try:
             if not self._authenticator:
@@ -41,6 +42,7 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result holding the validation verdict.
+
         """
         try:
             if not self._authenticator:

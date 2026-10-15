@@ -35,6 +35,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the orchestration execution output.
+
         """
         try:
             return self._execute_app_driven_orchestration(integration_id, payload)
@@ -59,6 +60,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the orchestration execution output.
+
         """
         client_result = self._get_client()
         if client_result.failure:
@@ -87,6 +89,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the file transfer execution output.
+
         """
         return self._execute_integration_operation(
             integration_id=integration_id,
@@ -109,6 +112,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the scheduled orchestration execution output.
+
         """
         return self._execute_integration_operation(
             integration_id=integration_id,
@@ -133,6 +137,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
 
         Returns:
             The OIC response payload for the file transfer request.
+
         """
         return client.execute_file_transfer(integration_id, operation_config)
 
@@ -151,6 +156,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
 
         Returns:
             The OIC response payload for the schedule request.
+
         """
         return client.execute_scheduled_orchestration(integration_id, operation_config)
 
@@ -174,6 +180,7 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
         Returns:
             Result wrapping the operation output, or a failure result when the
             client is unavailable or the operation raises.
+
         """
         try:
             client_result = self._get_client()

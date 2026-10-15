@@ -41,6 +41,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
 
                 Returns:
                     The resulting ``p.Result[bool]``.
+
                 """
                 ...
 
@@ -58,6 +59,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
 
                 Returns:
                     The resulting ``p.Result[t.JsonValue]``.
+
                 """
                 ...
 
@@ -77,6 +79,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
 
                 Returns:
                     The resulting ``p.Result[t.JsonValue]``.
+
                 """
                 ...
 
@@ -96,6 +99,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
 
                 Returns:
                     The resulting ``p.Result[t.JsonValue]``.
+
                 """
                 ...
 
@@ -115,6 +119,7 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
 
                 Returns:
                     The resulting ``p.Result[bool]``.
+
                 """
                 ...
 

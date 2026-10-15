@@ -14,8 +14,8 @@ from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Self, override
 
 from flext_api import FlextApi, FlextApiSettings
-
 from flext_core import FlextService
+
 from flext_oracle_oic import (
     FlextOracleOicClient,
     FlextOracleOicSettings,
@@ -62,6 +62,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         Returns:
             The service instance itself.
+
         """
         return self
 
@@ -86,6 +87,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         Returns:
             The normalized string.
+
         """
         match value:
             case str():
@@ -107,6 +109,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         Returns:
             The normalized JSON-compatible value.
+
         """
         if isinstance(value, bytes):
             return value.decode(errors="replace")
@@ -140,6 +143,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         Returns:
             The constructed integration information model.
+
         """
         return m.OracleOic.OICIntegrationInfo(
             integration_id=self._as_text(data.get("id"), fallback_id),
@@ -160,6 +164,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         Returns:
             Result wrapping the list of OIC integrations.
+
         """
         return self.list_integrations()
 
@@ -174,6 +179,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         Returns:
             Result wrapping the list of integration information.
+
         """
         try:
             return self._list_integrations()
@@ -189,6 +195,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         Returns:
             Result wrapping the list of integration information.
+
         """
         client_result = self._get_client()
         if client_result.failure:
@@ -215,6 +222,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         Returns:
             Result wrapping the client instance.
+
         """
         try:
             return self._get_or_create_client()
@@ -228,6 +236,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
         Returns:
             Result wrapping the client instance, or a failure result when
             business-rule validation fails.
+
         """
         if self._client is None:
             validation_result = self.validate_business_rules()
@@ -260,6 +269,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         Returns:
             Result indicating validation success or failure.
+
         """
         settings = self._oic_settings
         base_url_validation: p.Result[bool] = (
@@ -303,6 +313,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
         Raises:
             EXC_NETWORK_TYPE: Re-raised when monitoring client initialization
                 fails.
+
         """
         try:
             self._initialize_monitoring_client()

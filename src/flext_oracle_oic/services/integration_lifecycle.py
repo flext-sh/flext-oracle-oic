@@ -23,6 +23,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result indicating success or failure.
+
         """
         try:
             return self._activate_integration(integration_id)
@@ -38,6 +39,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result holding ``True`` when the activation request succeeds.
+
         """
         client_result = self._get_client()
         if client_result.failure:
@@ -61,6 +63,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result indicating success or failure.
+
         """
         try:
             return self._deactivate_integration(integration_id)
@@ -76,6 +79,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result holding ``True`` when the deactivation request succeeds.
+
         """
         client_result = self._get_client()
         if client_result.failure:
@@ -96,6 +100,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result holding the connection test verdict.
+
         """
         try:
             return self._test_connection()
@@ -108,6 +113,7 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result holding ``True`` when the OIC health status reports healthy.
+
         """
         client_result = self._get_client()
         if client_result.failure:

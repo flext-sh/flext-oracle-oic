@@ -51,6 +51,7 @@ class TestsFlextOracleOicExtension:
 
         Returns:
             The resulting ``FlextOracleOicSettings``.
+
         """
         return FlextOracleOicSettings.model_validate({
             "OracleOic": {
@@ -67,6 +68,7 @@ class TestsFlextOracleOicExtension:
 
         Returns:
             The resulting ``FlextOracleOicApi``.
+
         """
         return FlextOracleOicApi(settings)
 

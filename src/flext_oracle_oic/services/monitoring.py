@@ -23,6 +23,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the validated health status information.
+
         """
         try:
             health_data = self._fetch_health_status_data()
@@ -40,6 +41,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
 
         Returns:
             Mapping of component name to its status payload.
+
         """
         return u.json_mapping_adapter().validate_python({
             c.OracleOic.Monitoring.COMPONENT_DATABASE: {"status": status},
@@ -52,6 +54,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
 
         Returns:
             Health status payload; degraded payloads carry an ``error`` entry.
+
         """
         if not self._monitoring_client:
             return u.json_mapping_adapter().validate_python({
@@ -114,6 +117,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         Returns:
             Result wrapping the validated payload, or the original payload
             when validation fails.
+
         """
         validation_result: p.Result[t.JsonMapping] = u.OracleOic.validate_health_status(
             health_data,
@@ -134,6 +138,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
 
         Returns:
             Result wrapping the validated degraded health status payload.
+
         """
         error_health = u.json_mapping_adapter().validate_python({
             "status": c.OracleOic.Monitoring.HealthStatus.ERROR.value,
@@ -157,6 +162,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         Returns:
             Result wrapping the performance metrics, with analysis attached
             when available.
+
         """
         base_metrics = u.json_mapping_adapter().validate_python({
             "active_integrations": 0,
@@ -184,6 +190,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
 
         Returns:
             Metrics payload; degraded payloads carry an ``error`` entry.
+
         """
         if not self._monitoring_client:
             return u.json_mapping_adapter().validate_python({
@@ -231,6 +238,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         Returns:
             Mutable mapping of normalized metrics, with analysis attached when
             the analysis succeeds.
+
         """
         metrics_dict: t.MutableJsonMapping = {}
         for key, value in metrics_data.items():
@@ -261,6 +269,7 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         Returns:
             Mutable mapping of baseline metrics with the error and analysis
             attached.
+
         """
         error_metrics = u.json_mapping_adapter().validate_python({
             **base_metrics,

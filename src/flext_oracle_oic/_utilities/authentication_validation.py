@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_core import r
+
 from flext_oracle_oic import c, p, t
 
 
@@ -22,6 +23,7 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
 
         Returns:
             Result wrapping the validated client ID.
+
         """
         client_id = client_id.strip()
         if len(client_id) < c.OracleOic.OracleOicValidation.MIN_CLIENT_ID_LENGTH:
@@ -41,6 +43,7 @@ class FlextOracleOicUtilitiesAuthenticationValidation:
 
         Returns:
             Result wrapping the validated secret.
+
         """
         secret_value = client_secret.get_secret_value()
         if not secret_value or not secret_value.strip():

@@ -20,8 +20,8 @@ from __future__ import annotations
 from typing import Annotated
 
 from flext_auth import m
-
 from flext_core import FlextSettings
+
 from flext_oracle_oic._constants.base import FlextOracleOicConstantsBase
 
 

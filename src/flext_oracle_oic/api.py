@@ -59,6 +59,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             The facade instance itself.
+
         """
         self.logger.info(
             "Oracle OIC service started",
@@ -78,6 +79,7 @@ class FlextOracleOicApi(FlextOracleOicService):
             exc_type: Exception type if the body raised, else ``None``.
             exc_val: Exception instance if the body raised, else ``None``.
             exc_tb: Traceback if the body raised, else ``None``.
+
         """
         self.logger.info(
             "Oracle OIC service stopped",
@@ -96,6 +98,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the list of OIC integrations.
+
         """
         return self._service.execute(**kwargs)
 
@@ -113,6 +116,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the orchestration execution output.
+
         """
         return self._service.execute_app_driven_orchestration(integration_id, payload)
 
@@ -130,6 +134,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the file transfer execution output.
+
         """
         return self._service.execute_file_transfer(integration_id, file_config)
 
@@ -147,6 +152,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the scheduled orchestration execution output.
+
         """
         return self._service.execute_scheduled_orchestration(
             integration_id,
@@ -158,6 +164,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the authentication context mapping.
+
         """
         return r[t.JsonMapping].ok({
             "oauth_client_id": self._oic_config.OracleOic.oauth_client_id,
@@ -170,6 +177,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the connection context mapping.
+
         """
         return r[t.JsonMapping].ok({
             "base_url": self._oic_config.OracleOic.base_url,
@@ -182,6 +190,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the feature flags mapping.
+
         """
         return r[t.JsonMapping].ok({
             "enable_monitoring": self._oic_config.OracleOic.enable_monitoring,
@@ -195,6 +204,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the health status information.
+
         """
         return self._service.fetch_health_status()
 
@@ -210,6 +220,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the integration information.
+
         """
         return self._service.fetch_integration(integration_id)
 
@@ -219,6 +230,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the performance metrics.
+
         """
         return self._service.fetch_performance_metrics()
 
@@ -228,6 +240,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the list of integration information.
+
         """
         return self._service.list_integrations()
 
@@ -237,6 +250,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the new access token.
+
         """
         return self._service.refresh_auth_token()
 
@@ -246,6 +260,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result holding the connection test verdict.
+
         """
         return self._service.test_connection()
 
@@ -263,6 +278,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result wrapping the updated integration information.
+
         """
         return self._service.update_integration(integration_id, integration_data)
 
@@ -275,6 +291,7 @@ class FlextOracleOicApi(FlextOracleOicService):
 
         Returns:
             Result holding the validation verdict.
+
         """
         return self._service.validate_auth_token(token)
 

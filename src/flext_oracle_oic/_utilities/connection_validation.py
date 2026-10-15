@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_core import r
+
 from flext_oracle_oic import c, p
 
 
@@ -29,6 +30,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
 
         Returns:
             Result wrapping the normalized value.
+
         """
         match value:
             case str():
@@ -52,6 +54,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
 
         Returns:
             Result wrapping the validated URL.
+
         """
         match base_url:
             case str():
@@ -74,6 +77,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
 
         Returns:
             Result wrapping the validated status.
+
         """
         return FlextOracleOicUtilitiesConnectionValidation._validate_closed_string(
             status,
@@ -90,6 +94,7 @@ class FlextOracleOicUtilitiesConnectionValidation:
 
         Returns:
             Result wrapping the validated type.
+
         """
         return FlextOracleOicUtilitiesConnectionValidation._validate_closed_string(
             connection_type,
