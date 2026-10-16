@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """Models for Oracle OIC External operations.
 
 This module provides data models for Oracle OIC External operations.
@@ -14,7 +15,7 @@ from flext_auth import FlextAuthModels
 from flext_core import m as _m
 
 from flext_oracle_oic import c, t
-from flext_oracle_oic._models.config import FlextOracleOicModelsConfig
+from flext_oracle_oic._models import FlextOracleOicModelsConfig
 
 
 class FlextOracleOicModels(FlextAuthModels):

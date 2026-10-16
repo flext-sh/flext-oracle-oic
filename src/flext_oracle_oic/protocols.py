@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """Oracle OIC protocols for FLEXT ecosystem.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
