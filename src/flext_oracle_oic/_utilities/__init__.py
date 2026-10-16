@@ -19,12 +19,8 @@ if TYPE_CHECKING:
     from flext_oracle_oic._utilities.connection_validation import (
         FlextOracleOicUtilitiesConnectionValidation,
     )
-    from flext_oracle_oic._utilities.monitoring import (
-        FlextOracleOicUtilitiesMonitoring,
-    )
-    from flext_oracle_oic._utilities.oracle_oic import (
-        FlextOracleOicUtilitiesOracleOic,
-    )
+    from flext_oracle_oic._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
+    from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
 
 __all__: tuple[str, ...] = (
     "FlextOracleOicUtilitiesAuthenticationValidation",

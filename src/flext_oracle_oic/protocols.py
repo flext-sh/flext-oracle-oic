@@ -7,8 +7,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Protocol, runtime_checkable
-
 from flext_auth import FlextAuthProtocols
 
 from flext_oracle_oic._protocols import (
