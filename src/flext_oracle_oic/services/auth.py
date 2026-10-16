@@ -9,19 +9,17 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import r
-from flext_oracle_oic import c, p
-from flext_oracle_oic.services.base import FlextOracleOicServiceBase
+from flext_oracle_oic import FlextOracleOicServiceBase, c, p, r
 
 
 class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
     """Mixin providing authentication operations for FlextOracleOicService facade."""
 
     def refresh_auth_token(self) -> p.Result[str]:
-        """Refresh OAuth2 authentication token.
+        """Refresh the OAuth2 authentication token.
 
         Returns:
-        r containing new access token.
+            Result wrapping the new access token.
 
         """
         try:
@@ -37,13 +35,13 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
             return r[str].fail_op("Token refresh", e)
 
     def validate_auth_token(self, token: str) -> p.Result[bool]:
-        """Validate OAuth2 authentication token.
+        """Validate an OAuth2 authentication token.
 
         Args:
-        token: Token to validate.
+            token: Token to validate.
 
         Returns:
-        r containing validation result.
+            Result holding the validation verdict.
 
         """
         try:

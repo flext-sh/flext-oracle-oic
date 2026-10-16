@@ -18,17 +18,15 @@
   Python Modules, Typing :: Typed
 - Project class: `domain`
 - Keywords: `adapter`, `enterprise`, `flext`, `integration`, `typed`
-- Main facades: `FlextOracleOicApi`, `FlextOracleOicAuthMixin`, `FlextOracleOicCli`,
-  `FlextOracleOicClient`, `FlextOracleOicConfig`, `FlextOracleOicConstants`,
-  `FlextOracleOicIntegrationCrudMixin`, `FlextOracleOicIntegrationLifecycleMixin` (+9
-  more)
+- Main facades: `FlextOracleOicApi`, `FlextOracleOicCli`, `FlextOracleOicClient`,
+  `FlextOracleOicConfig`, `FlextOracleOicConstants`, `FlextOracleOicModels`,
+  `FlextOracleOicProtocols`, `FlextOracleOicServiceBase` (+4 more)
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
-- Public symbol exports: `FlextOracleOicApi`, `FlextOracleOicAuthMixin`,
-  `FlextOracleOicCli`, `FlextOracleOicClient`, `FlextOracleOicConfig`,
-  `FlextOracleOicConstants`, `FlextOracleOicIntegrationCrudMixin`,
-  `FlextOracleOicIntegrationLifecycleMixin`, `FlextOracleOicModels`,
-  `FlextOracleOicMonitoringMixin` (+10 more)
-- Exported module shortcuts: `main`, `services`
+- Public symbol exports: `FlextOracleOicApi`, `FlextOracleOicCli`,
+  `FlextOracleOicClient`, `FlextOracleOicConfig`, `FlextOracleOicConstants`,
+  `FlextOracleOicModels`, `FlextOracleOicProtocols`, `FlextOracleOicServiceBase`,
+  `FlextOracleOicSettings`, `FlextOracleOicTypes` (+6 more)
+- Exported module shortcuts: `services`
 - Generated module pages: `9`
 
 ## Next Pages

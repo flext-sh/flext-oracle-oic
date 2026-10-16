@@ -14,10 +14,9 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import tm
 
 from flext_oracle_oic import FlextOracleOicSettings, c
-from tests import m, t
+from tests import m, t, tm
 
 
 class TestsFlextOracleOicBasic:
@@ -65,11 +64,11 @@ class TestsFlextOracleOicBasic:
     @staticmethod
     @pytest.mark.parametrize(
         ("raw", "expected"),
-        [("v1", c.OICApiVersion.V1), ("v2", c.OICApiVersion.V2)],
+        [("v1", c.OracleOic.OICApiVersion.V1), ("v2", c.OracleOic.OICApiVersion.V2)],
     )
     def test_settings_preserve_api_version_scalar(
         raw: str,
-        expected: c.OICApiVersion,
+        expected: c.OracleOic.OICApiVersion,
     ) -> None:
         """api_version is a plain scalar; the enum contract lives in c."""
         settings = FlextOracleOicSettings.model_validate({
@@ -104,7 +103,7 @@ class TestsFlextOracleOicBasic:
         second = FlextOracleOicSettings.model_validate({})
 
         tm.that(first.OracleOic.base_url, eq=c.OracleOic.DEFAULT_BASE_URL)
-        tm.that(first.OracleOic.api_version, eq=c.OICApiVersion.V1)
+        tm.that(first.OracleOic.api_version, eq=c.OracleOic.OICApiVersion.V1)
         tm.that(first.model_dump(), eq=second.model_dump())
 
     @staticmethod

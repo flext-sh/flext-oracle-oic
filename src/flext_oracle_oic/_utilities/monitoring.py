@@ -6,8 +6,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from flext_api import u
 from flext_core import FlextUtilities as ug, r
-from flext_oracle_oic import c, p, t, u
+
+from flext_oracle_oic import c, p, t
 
 
 class FlextOracleOicUtilitiesMonitoring:
@@ -21,7 +23,7 @@ class FlextOracleOicUtilitiesMonitoring:
         """Return warning/critical/recommendation for one metric."""
         match metric_key:
             case "average_response_time":
-                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS[
+                threshold = c.OracleOic.OracleOicValidation.PERFORMANCE_THRESHOLDS[
                     "response_time_ms"
                 ]
                 if metric_value > threshold:
@@ -34,7 +36,9 @@ class FlextOracleOicUtilitiesMonitoring:
                         False,
                     )
             case "success_rate":
-                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["success_rate"]
+                threshold = c.OracleOic.OracleOicValidation.PERFORMANCE_THRESHOLDS[
+                    "success_rate"
+                ]
                 if metric_value < threshold:
                     return (
                         (
@@ -45,7 +49,9 @@ class FlextOracleOicUtilitiesMonitoring:
                         True,
                     )
             case "error_rate":
-                threshold = c.OracleOicValidation.PERFORMANCE_THRESHOLDS["error_rate"]
+                threshold = c.OracleOic.OracleOicValidation.PERFORMANCE_THRESHOLDS[
+                    "error_rate"
+                ]
                 if metric_value > threshold:
                     return (
                         (
@@ -76,10 +82,10 @@ class FlextOracleOicUtilitiesMonitoring:
         """Analyze Oracle OIC performance metrics.
 
         Args:
-        metrics: Performance metrics data
+            metrics: Performance metrics data.
 
         Returns:
-        r containing analysis results or error
+            Result wrapping the analysis results.
 
         """
         overall_health: str = c.HealthStatus.HEALTHY.value
@@ -119,20 +125,20 @@ class FlextOracleOicUtilitiesMonitoring:
         """Validate Oracle OIC health check data.
 
         Args:
-        health_data: Health check response data
+            health_data: Health check response data.
 
         Returns:
-        r containing validated health data or error
+            Result wrapping the validated health data.
 
         """
         validated_data = u.json_dict_adapter().validate_python(health_data)
         error_message: str | None = None
         status = health_data.get("status")
         valid_statuses = {
-            c.Monitoring.HealthStatus.HEALTHY.value,
-            c.Monitoring.HealthStatus.UNHEALTHY.value,
-            c.Monitoring.HealthStatus.ERROR.value,
-            c.Monitoring.HealthStatus.UNKNOWN.value,
+            c.OracleOic.Monitoring.HealthStatus.HEALTHY.value,
+            c.OracleOic.Monitoring.HealthStatus.UNHEALTHY.value,
+            c.OracleOic.Monitoring.HealthStatus.ERROR.value,
+            c.OracleOic.Monitoring.HealthStatus.UNKNOWN.value,
         }
         if status is None:
             error_message = "Health data must include status"
@@ -153,3 +159,6 @@ class FlextOracleOicUtilitiesMonitoring:
         if "timestamp" not in validated_data:
             validated_data["timestamp"] = ug.now().isoformat()
         return r[t.JsonMapping].ok(validated_data)
+
+
+__all__: list[str] = ["FlextOracleOicUtilitiesMonitoring"]

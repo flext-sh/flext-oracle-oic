@@ -14,17 +14,24 @@ from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Self, override
 
 from flext_api import FlextApi, FlextApiSettings
+from flext_core import FlextService
 
-from flext_core import r, s
-from flext_oracle_oic import c, m, p, t, u
-from flext_oracle_oic._settings import FlextOracleOicSettings
-from flext_oracle_oic.ext_client import FlextOracleOicClient
+from flext_oracle_oic import (
+    FlextOracleOicClient,
+    FlextOracleOicSettings,
+    c,
+    m,
+    p,
+    r,
+    t,
+    u,
+)
 
 if TYPE_CHECKING:
     from types import TracebackType
 
 
-class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
+class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegrationInfo]]):
     """Base service providing shared infrastructure for all OIC service mixins.
 
     Provides:
@@ -54,7 +61,8 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         """Enter the service session; the OIC client is created on first use.
 
         Returns:
-            The resulting ``Self``.
+            The service instance itself.
+
         """
         return self
 
@@ -71,10 +79,15 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
 
     @staticmethod
     def _as_text(value: t.JsonValue, default: str = "") -> str:
-        """Normalize optional OIC values into strings for model construction.
+        """Normalize an optional OIC value into a string for model construction.
+
+        Args:
+            value: Value to normalize.
+            default: Value returned when the input is ``None``.
 
         Returns:
-            The resulting ``str``.
+            The normalized string.
+
         """
         match value:
             case str():
@@ -89,10 +102,14 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
     def _to_general_value(
         value: t.JsonValue | t.Scalar | t.ScalarMapping | t.ScalarList,
     ) -> t.JsonValue:
-        """Normalize arbitrary runtime values into t.JsonValue.
+        """Normalize an arbitrary runtime value into a JSON-compatible value.
+
+        Args:
+            value: Value to normalize.
 
         Returns:
-            The resulting ``t.JsonValue``.
+            The normalized JSON-compatible value.
+
         """
         if isinstance(value, bytes):
             return value.decode(errors="replace")
@@ -117,10 +134,16 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         fallback_id: str,
         default_status: str,
     ) -> m.OracleOic.OICIntegrationInfo:
-        """Build normalized integration model from API payload mapping.
+        """Build a normalized integration model from an API payload mapping.
+
+        Args:
+            data: API payload mapping to read fields from.
+            fallback_id: Integration ID used when the payload has no ``id``.
+            default_status: Status used when the payload has no ``status``.
 
         Returns:
-            The resulting ``m.OracleOic.OICIntegrationInfo``.
+            The constructed integration information model.
+
         """
         return m.OracleOic.OICIntegrationInfo(
             integration_id=self._as_text(data.get("id"), fallback_id),
@@ -128,7 +151,7 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
             description=self._as_text(data.get("description"), ""),
             integration_version=self._as_text(
                 data.get("version"),
-                c.Integration.DEFAULT_VERSION_FALLBACK,
+                c.OracleOic.Integration.DEFAULT_VERSION_FALLBACK,
             ),
             status=self._as_text(data.get("status"), default_status),
             created_by=self._as_text(data.get("createdBy"), ""),
@@ -137,10 +160,10 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
 
     @override
     def execute(self: Self) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
-        """Execute main service operation - list all integrations.
+        """Execute the main service operation - list all integrations.
 
         Returns:
-        r containing list of OIC integrations.
+            Result wrapping the list of OIC integrations.
 
         """
         return self.list_integrations()
@@ -155,7 +178,7 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         """List all Oracle OIC integrations.
 
         Returns:
-        r containing list of integration information.
+            Result wrapping the list of integration information.
 
         """
         try:
@@ -171,7 +194,8 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         """List all Oracle OIC integrations without exception translation.
 
         Returns:
-            The resulting ``p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]``.
+            Result wrapping the list of integration information.
+
         """
         client_result = self._get_client()
         if client_result.failure:
@@ -188,16 +212,16 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
             integration = self._build_integration_info(
                 item,
                 fallback_id="",
-                default_status=c.Connection.Status.UNKNOWN,
+                default_status=c.OracleOic.Connection.Status.UNKNOWN,
             )
             integrations.append(integration)
         return r[Sequence[m.OracleOic.OICIntegrationInfo]].ok(integrations)
 
     def _get_client(self) -> p.Result[FlextOracleOicClient]:
-        """Get or create Oracle OIC client instance.
+        """Get or create the Oracle OIC client instance.
 
         Returns:
-        r containing the client instance.
+            Result wrapping the client instance.
 
         """
         try:
@@ -207,10 +231,12 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
             return r[FlextOracleOicClient].fail_op("Client creation", exc)
 
     def _get_or_create_client(self) -> p.Result[FlextOracleOicClient]:
-        """Get or create Oracle OIC client without exception translation.
+        """Get or create the Oracle OIC client without exception translation.
 
         Returns:
-            The resulting ``p.Result[FlextOracleOicClient]``.
+            Result wrapping the client instance, or a failure result when
+            business-rule validation fails.
+
         """
         if self._client is None:
             validation_result = self.validate_business_rules()
@@ -239,10 +265,10 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         return r[FlextOracleOicClient].ok(self._client)
 
     def validate_business_rules(self) -> p.Result[bool]:
-        """Validate Oracle OIC service business rules.
+        """Validate the Oracle OIC service business rules.
 
         Returns:
-        r indicating validation success or failure.
+            Result indicating validation success or failure.
 
         """
         settings = self._oic_settings
@@ -285,7 +311,9 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         """Initialize service components.
 
         Raises:
-            EXC_NETWORK_TYPE: If a ``c.EXC_NETWORK_TYPE`` is caught.
+            EXC_NETWORK_TYPE: Re-raised when monitoring client initialization
+                fails.
+
         """
         try:
             self._initialize_monitoring_client()
@@ -322,4 +350,6 @@ class FlextOracleOicServiceBase(s[Sequence[m.OracleOic.OICIntegrationInfo]]):
         self._monitoring_client = FlextApi(runtime_settings=api_config)
 
 
-__all__: list[str] = ["FlextOracleOicServiceBase"]
+s = FlextOracleOicServiceBase
+
+__all__: list[str] = ["FlextOracleOicServiceBase", "s"]

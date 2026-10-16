@@ -6,42 +6,19 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Annotated, ClassVar
+from typing import TYPE_CHECKING
 
-from flext_auth import m
-
+from flext_api import u
 from flext_core import r
-from flext_oracle_oic import c, p, t, u
+
+from flext_oracle_oic import c, m, p, t
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, MutableSequence
+    from collections.abc import MutableSequence
 
 
 class FlextOracleOicUtilitiesOracleOic:
     """Oracle OIC integration validation utilities."""
-
-    class FieldValidationPlan(m.Value):
-        """Validated plan for one integration string field."""
-
-        model_config: ClassVar[m.ConfigDict] = m.ConfigDict(
-            arbitrary_types_allowed=True,
-            frozen=True,
-        )
-
-        field_name: Annotated[str, m.Field(description="Name of the field to validate")]
-        label: Annotated[str, m.Field(description="Human-readable label for the field")]
-        required: Annotated[
-            bool,
-            m.Field(description="Whether the field is required"),
-        ] = False
-        required_message: Annotated[
-            str,
-            m.Field(description="Error message when required field is missing"),
-        ] = ""
-        validator: Annotated[
-            Callable[[str], p.Result[str]],
-            m.Field(description="Validation function for the field value"),
-        ]
 
     @staticmethod
     def validate_integration_data(
@@ -50,31 +27,31 @@ class FlextOracleOicUtilitiesOracleOic:
         """Validate complete Oracle OIC integration data.
 
         Args:
-        integration_data: Integration configuration data
+            integration_data: Integration configuration data.
 
         Returns:
-        r containing validated data or validation errors
+            Result wrapping the validated data.
 
         """
         errors: MutableSequence[str] = []
         validated_data = u.json_dict_adapter().validate_python(integration_data)
         field_specs: tuple[
-            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan,
+            m.OracleOic.FieldValidationPlan,
             ...,
         ] = (
-            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan(
+            m.OracleOic.FieldValidationPlan(
                 field_name="name",
                 label="Name",
                 required=True,
                 required_message="Integration name is required",
                 validator=FlextOracleOicUtilitiesOracleOic.validate_integration_name,
             ),
-            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan(
+            m.OracleOic.FieldValidationPlan(
                 field_name="version",
                 label="Version",
                 validator=FlextOracleOicUtilitiesOracleOic.validate_integration_version,
             ),
-            FlextOracleOicUtilitiesOracleOic.FieldValidationPlan(
+            m.OracleOic.FieldValidationPlan(
                 field_name="status",
                 label="Status",
                 validator=FlextOracleOicUtilitiesOracleOic.validate_integration_status,
@@ -97,7 +74,7 @@ class FlextOracleOicUtilitiesOracleOic:
         integration_data: t.JsonMapping,
         validated_data: t.MutableJsonMapping,
         errors: MutableSequence[str],
-        plan: FieldValidationPlan,
+        plan: m.OracleOic.FieldValidationPlan,
     ) -> None:
         """Validate one string field and update normalized payload or errors."""
         if plan.field_name not in integration_data:
@@ -120,57 +97,60 @@ class FlextOracleOicUtilitiesOracleOic:
 
     @staticmethod
     def validate_integration_name(name: str) -> p.Result[str]:
-        """Validate Oracle OIC integration name.
+        """Validate an Oracle OIC integration name.
 
         Args:
-        name: Integration name to validate
+            name: Integration name to validate.
 
         Returns:
-        r containing validated name or validation error
+            Result wrapping the validated name.
 
         """
         name = name.strip()
         if not name:
             return r[str].fail("Integration name cannot be empty")
-        if len(name) < c.OracleOicValidation.MIN_INTEGRATION_NAME_LENGTH:
+        if len(name) < c.OracleOic.OracleOicValidation.MIN_INTEGRATION_NAME_LENGTH:
             return r[str].fail("Integration name too short")
-        if len(name) > c.OracleOicValidation.MAX_INTEGRATION_NAME_LENGTH:
+        if len(name) > c.OracleOic.OracleOicValidation.MAX_INTEGRATION_NAME_LENGTH:
             return r[str].fail("Integration name too long")
-        if not c.OracleOicValidation.INTEGRATION_NAME_RE.match(name):
+        if not c.OracleOic.OracleOicValidation.INTEGRATION_NAME_RE.match(name):
             return r[str].fail("Integration name contains invalid characters")
         return r[str].ok(name)
 
     @staticmethod
     def validate_integration_status(status: str) -> p.Result[str]:
-        """Validate Oracle OIC integration status.
+        """Validate an Oracle OIC integration status.
 
         Args:
-        status: Integration status to validate
+            status: Integration status to validate.
 
         Returns:
-        r containing validated status or error
+            Result wrapping the validated status.
 
         """
         status = status.upper().strip()
-        if status not in c.OracleOicValidation.VALID_INTEGRATION_STATUSES:
+        if status not in c.OracleOic.OracleOicValidation.VALID_INTEGRATION_STATUSES:
             valid_statuses = ", ".join(
-                sorted(c.OracleOicValidation.VALID_INTEGRATION_STATUSES),
+                sorted(c.OracleOic.OracleOicValidation.VALID_INTEGRATION_STATUSES),
             )
             return r[str].fail(f"Invalid integration status. Valid: {valid_statuses}")
         return r[str].ok(status)
 
     @staticmethod
     def validate_integration_version(version: str) -> p.Result[str]:
-        """Validate Oracle OIC integration version format.
+        """Validate an Oracle OIC integration version format.
 
         Args:
-        version: Version string to validate (format: XX.XX.XXXX)
+            version: Version string to validate (format: XX.XX.XXXX).
 
         Returns:
-        r containing validated version or error
+            Result wrapping the validated version.
 
         """
         version = version.strip()
-        if not c.OracleOicValidation.VERSION_PATTERN.match(version):
+        if not c.OracleOic.OracleOicValidation.VERSION_PATTERN.match(version):
             return r[str].fail("Invalid version format. Expected: XX.XX.XXXX")
         return r[str].ok(version)
+
+
+__all__: list[str] = ["FlextOracleOicUtilitiesOracleOic"]

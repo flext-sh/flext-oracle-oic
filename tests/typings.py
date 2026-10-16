@@ -3,7 +3,7 @@
 Provides TestsFlextOracleOicTypes, combining TestsFlextTypes with
 FlextOracleOicTypes for test-specific type definitions.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
+Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 

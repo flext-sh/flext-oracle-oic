@@ -16,11 +16,17 @@ from __future__ import annotations
 from collections.abc import Callable, Iterator, Sequence
 
 import pytest
-from flext_tests import tm
 
-from flext_oracle_oic import FlextOracleOicService, FlextOracleOicSettings, m, p, s
+from flext_oracle_oic import (
+    FlextOracleOicServiceBase,
+    FlextOracleOicSettings,
+    m,
+    p,
+    s,
+    t,
+)
+from flext_oracle_oic.services import FlextOracleOicService
 from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
-from flext_oracle_oic.services.base import FlextOracleOicServiceBase
 from flext_oracle_oic.services.integration_crud import (
     FlextOracleOicIntegrationCrudMixin,
 )
@@ -29,6 +35,7 @@ from flext_oracle_oic.services.integration_lifecycle import (
 )
 from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
 from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
+from tests import tm
 
 _VALID_CLIENT_ID = "client-id-123"
 _VALID_OAUTH_CREDENTIAL = "test-credential-123"
@@ -51,8 +58,9 @@ def _invoke_unconfigured_operation(
 
     Returns:
         The resulting operation ``r``.
+
     """
-    operations: dict[str, Callable[[], _OperationResult]] = {
+    operations: t.MappingKV[str, Callable[[], _OperationResult]] = {
         "execute": svc.execute,
         "list_integrations": svc.list_integrations,
         "create_integration": lambda: svc.create_integration({}),
@@ -79,6 +87,7 @@ class TestsFlextOracleOicExtServices:
 
         Yields:
             Each ``FlextOracleOicService``.
+
         """
         FlextOracleOicSettings.reset_for_testing()
         yield FlextOracleOicService()
@@ -93,6 +102,7 @@ class TestsFlextOracleOicExtServices:
 
         Yields:
             Each ``FlextOracleOicService``.
+
         """
         # NOTE (ADR-005): project fields are namespaced under settings.OracleOic,
         # so env vars use the nested delimiter form ORACLEOIC__<FIELD>.
@@ -130,9 +140,9 @@ class TestsFlextOracleOicExtServices:
         tm.that(unconfigured_service, is_=mixin)
 
     @staticmethod
-    def test_module_alias_s_is_the_service_class() -> None:
-        """The short ``s`` alias resolves to the service facade class."""
-        assert s is FlextOracleOicService
+    def test_module_alias_s_is_the_service_base_class() -> None:
+        """The short ``s`` alias resolves to the base service facade class."""
+        assert s is FlextOracleOicServiceBase
 
     @staticmethod
     def test_context_manager_yields_the_same_service(
@@ -245,6 +255,7 @@ class TestsFlextOracleOicExtServices:
 
         Returns:
             The resulting ``bool``.
+
         """
         return isinstance(candidate, p.OracleOic.ServiceRules)
 

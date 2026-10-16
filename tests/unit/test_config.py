@@ -12,10 +12,9 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import tm
 
 from flext_oracle_oic import FlextOracleOicSettings, c
-from tests import m
+from tests import m, t, tm
 
 
 class TestsFlextOracleOicConfig:
@@ -27,7 +26,7 @@ class TestsFlextOracleOicConfig:
         ns = FlextOracleOicSettings.model_validate({}).OracleOic
 
         tm.that(ns.base_url, eq=c.OracleOic.DEFAULT_BASE_URL)
-        tm.that(ns.api_version, eq=c.OICApiVersion.V1)
+        tm.that(ns.api_version, eq=c.OracleOic.OICApiVersion.V1)
         tm.that(ns.request_timeout, eq=c.DEFAULT_TIMEOUT_SECONDS)
         tm.that(ns.max_retries, eq=c.MAX_RETRY_ATTEMPTS)
         tm.that(ns.use_ssl, eq=True)
@@ -56,7 +55,7 @@ class TestsFlextOracleOicConfig:
         }).OracleOic
 
         tm.that(ns.base_url, eq="https://custom.integration.ocp.oraclecloud.com")
-        tm.that(ns.api_version, eq=c.OICApiVersion.V2)
+        tm.that(ns.api_version, eq=c.OracleOic.OICApiVersion.V2)
         tm.that(ns.request_timeout, eq=60)
         tm.that(ns.max_retries, eq=5)
         tm.that(ns.use_ssl, eq=False)
@@ -149,7 +148,7 @@ class TestsFlextOracleOicConfig:
         value: int,
     ) -> None:
         """Range constraints are enforced by OICConnectionConfig, not settings."""
-        payload: dict[str, str | int] = {
+        payload: t.JsonDict = {
             "base_url": "https://custom.integration.ocp.oraclecloud.com",
             field: value,
         }
@@ -185,5 +184,5 @@ class TestsFlextOracleOicConfig:
         second = FlextOracleOicSettings.model_validate({})
 
         tm.that(first.OracleOic.base_url, eq=c.OracleOic.DEFAULT_BASE_URL)
-        tm.that(first.OracleOic.api_version, eq=c.OICApiVersion.V1)
+        tm.that(first.OracleOic.api_version, eq=c.OracleOic.OICApiVersion.V1)
         tm.that(first.model_dump(), eq=second.model_dump())

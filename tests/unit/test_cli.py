@@ -8,10 +8,9 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import tm
 
-from flext_oracle_oic import FlextOracleOicCli, c
-from flext_oracle_oic.main import main
+from flext_oracle_oic import FlextOracleOicCli, main
+from tests import tm
 
 
 class TestsFlextOracleOicCli:
@@ -87,7 +86,12 @@ class TestsFlextOracleOicCli:
         assert first is not second
 
     @staticmethod
-    def test_app_identity_constants_are_populated() -> None:
-        """The CLI exposes a stable application name and help text."""
-        tm.that(c.Cli.APP_NAME, eq="flext-oracle-oic-ext")
-        tm.that(c.Cli.APP_HELP, has="Oracle OIC")
+    def test_help_invocation_reports_the_application_name(
+        capsys: pytest.CaptureFixture[str],
+    ) -> None:
+        """``--help`` prints the owned application help text to stdout."""
+        exit_code = main(["--help"])
+        out = capsys.readouterr().out
+
+        tm.that(exit_code, eq=0)
+        tm.that(out, has="Oracle OIC")
