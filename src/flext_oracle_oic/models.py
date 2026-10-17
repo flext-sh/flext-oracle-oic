@@ -11,7 +11,11 @@ from __future__ import annotations
 
 from flext_auth import FlextAuthModels
 
-from flext_oracle_oic._models import FlextOracleOicModelsConfig, domain as _domain
+from flext_oracle_oic._models import (
+    FlextOracleOicModelsConfig,
+    FlextOracleOicModelsDomain,
+    domain as _domain,
+)
 
 
 class FlextOracleOicModels(FlextAuthModels):
@@ -22,7 +26,7 @@ class FlextOracleOicModels(FlextAuthModels):
     the [Project]Models pattern for centralized Pydantic validation.
     """
 
-    class OracleOic(FlextOracleOicModelsConfig):
+    class OracleOic(FlextOracleOicModelsConfig, FlextOracleOicModelsDomain):
         """OracleOic domain namespace."""
 
         OICAuthConfig = _domain.OICAuthConfig
