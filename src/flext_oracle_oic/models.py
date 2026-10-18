@@ -14,7 +14,7 @@ from flext_auth import FlextAuthModels
 from flext_oracle_oic._models import (
     FlextOracleOicModelsConfig,
     FlextOracleOicModelsDomain,
-    domain as _domain,
+    domain,
 )
 
 
@@ -29,11 +29,11 @@ class FlextOracleOicModels(FlextAuthModels):
     class OracleOic(FlextOracleOicModelsConfig, FlextOracleOicModelsDomain):
         """OracleOic domain namespace."""
 
-        OICAuthConfig = _domain.OICAuthConfig
-        OICConnectionConfig = _domain.OICConnectionConfig
-        OICIntegrationInfo = _domain.OICIntegrationInfo
-        OICConnectionInfo = _domain.OICConnectionInfo
-        IntegrationStatus = _domain.IntegrationStatus
+        OICAuthConfig = domain.FlextOracleOicModelsDomain.OICAuthConfig
+        OICConnectionConfig = domain.FlextOracleOicModelsDomain.OICConnectionConfig
+        OICIntegrationInfo = domain.FlextOracleOicModelsDomain.OICIntegrationInfo
+        OICConnectionInfo = domain.FlextOracleOicModelsDomain.OICConnectionInfo
+        IntegrationStatus = domain.FlextOracleOicModelsDomain.IntegrationStatus
 
 
 m = FlextOracleOicModels

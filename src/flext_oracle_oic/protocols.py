@@ -12,7 +12,7 @@ from flext_auth import FlextAuthProtocols
 from flext_oracle_oic._protocols import (
     FlextOracleOicProtocolsBase,
     FlextOracleOicProtocolsConfig,
-    domain as _domain,
+    domain,
 )
 
 
@@ -22,8 +22,8 @@ class FlextOracleOicProtocols(FlextAuthProtocols):
     class OracleOic(FlextOracleOicProtocolsBase, FlextOracleOicProtocolsConfig):
         """OracleOic domain namespace."""
 
-        HTTPClient = _domain.HTTPClient
-        ServiceRules = _domain.ServiceRules
+        HTTPClient = domain.FlextOracleOicProtocolsDomain.HTTPClient
+        ServiceRules = domain.FlextOracleOicProtocolsDomain.ServiceRules
 
 
 p = FlextOracleOicProtocols
