@@ -29,11 +29,11 @@ class TestsFlextOracleOicConfig:
         tm.that(ns.api_version, eq=c.OracleOic.OICApiVersion.V1)
         tm.that(ns.request_timeout, eq=c.DEFAULT_TIMEOUT_SECONDS)
         tm.that(ns.max_retries, eq=c.MAX_RETRY_ATTEMPTS)
-        tm.that(ns.use_ssl, eq=True)
-        tm.that(ns.verify_ssl, eq=True)
-        tm.that(ns.enable_monitoring, eq=True)
-        tm.that(ns.enable_enterprise_patterns, eq=True)
-        tm.that(ns.enable_orchestration, eq=True)
+        tm.ok(ns.use_ssl)
+        tm.ok(ns.verify_ssl)
+        tm.ok(ns.enable_monitoring)
+        tm.ok(ns.enable_enterprise_patterns)
+        tm.ok(ns.enable_orchestration)
         tm.that(ns.oauth_client_id, eq="")
         tm.that(ns.oauth_client_secret, eq="")
         tm.that(ns.oauth_token_url, eq=(f"{c.OracleOic.DEFAULT_BASE_URL}/oauth/token"))
@@ -58,8 +58,8 @@ class TestsFlextOracleOicConfig:
         tm.that(ns.api_version, eq=c.OracleOic.OICApiVersion.V2)
         tm.that(ns.request_timeout, eq=60)
         tm.that(ns.max_retries, eq=5)
-        tm.that(ns.use_ssl, eq=False)
-        tm.that(ns.verify_ssl, eq=False)
+        tm.fail(ns.use_ssl)
+        tm.fail(ns.verify_ssl)
 
     @staticmethod
     def test_custom_auth_settings_are_preserved() -> None:

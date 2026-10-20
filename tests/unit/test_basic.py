@@ -32,7 +32,7 @@ class TestsFlextOracleOicBasic:
         tm.that(ns.api_version, eq=c.OracleOic.DEFAULT_API_VERSION)
         tm.that(ns.request_timeout, eq=c.DEFAULT_TIMEOUT_SECONDS)
         tm.that(ns.max_retries, eq=c.MAX_RETRY_ATTEMPTS)
-        tm.that(ns.verify_ssl, eq=True)
+        tm.ok(ns.verify_ssl)
 
     @staticmethod
     def test_settings_preserve_explicit_overrides() -> None:
@@ -148,7 +148,7 @@ class TestsFlextOracleOicBasic:
         tm.that(conn.base_url, eq="https://test.integration.ocp.oraclecloud.com")
         tm.that(conn.request_timeout, eq=30)
         tm.that(conn.max_retries, eq=3)
-        tm.that(conn.verify_ssl, eq=True)
+        tm.ok(conn.verify_ssl)
 
     @staticmethod
     def test_connection_config_rejects_non_positive_timeout() -> None:

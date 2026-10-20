@@ -130,7 +130,7 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.api_version, eq="v2")
         tm.that(config.request_timeout, eq=45)
         tm.that(config.max_retries, eq=5)
-        tm.that(config.verify_ssl, eq=False)
+        tm.fail(config.verify_ssl)
 
     @staticmethod
     def test_connection_config_applies_documented_defaults() -> None:

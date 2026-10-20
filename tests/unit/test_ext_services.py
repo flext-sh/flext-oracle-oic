@@ -177,7 +177,7 @@ class TestsFlextOracleOicExtServices:
     ) -> None:
         """Every fallible op returns a failed ``r`` (never raises) when unconfigured."""
         result = _invoke_unconfigured_operation(unconfigured_service, operation)
-        assert result.failure
+        tm.fail(result)
         assert result.error
 
     @staticmethod
@@ -264,7 +264,7 @@ class TestsFlextOracleOicExtServices:
         configured_service: FlextOracleOicService,
     ) -> None:
         """The real service structurally satisfies its own declared protocol."""
-        tm.that(self._is_service_rules(configured_service), eq=True)
+        tm.ok(self._is_service_rules(configured_service))
         result = configured_service.validate_business_rules()
         tm.ok(result)
-        tm.that(result.value, eq=True)
+        tm.ok(result.value)

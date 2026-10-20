@@ -126,9 +126,9 @@ class TestsFlextOracleOicExtension:
         """The features context exposes the default-enabled boolean flags."""
         payload = api.fetch_features_context().unwrap()
 
-        tm.that(payload["enable_monitoring"], eq=True)
-        tm.that(payload["use_ssl"], eq=True)
-        tm.that(payload["verify_ssl"], eq=True)
+        tm.ok(payload["enable_monitoring"])
+        tm.ok(payload["use_ssl"])
+        tm.ok(payload["verify_ssl"])
 
     @staticmethod
     @pytest.mark.parametrize(
