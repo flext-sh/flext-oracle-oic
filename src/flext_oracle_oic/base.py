@@ -68,9 +68,9 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
     def __exit__(
         self,
-        error_type: type[BaseException] | None,
-        error: BaseException | None,
-        error_traceback: TracebackType | None,
+        _error_type: type[BaseException] | None,
+        _error: BaseException | None,
+        _error_traceback: TracebackType | None,
     ) -> None:
         """Close the OIC client session this service owns."""
         if self._client is not None:
