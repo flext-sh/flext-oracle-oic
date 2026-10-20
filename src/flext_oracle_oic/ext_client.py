@@ -291,8 +291,6 @@ class FlextOracleOicClient:
         self,
         method: str,
         endpoint: str,
-        params: t.StrMapping | None = None,
-        data: t.StrMapping | None = None,
         json: t.JsonMapping | None = None,
     ) -> p.Result[t.JsonMapping]:
         """Make an authenticated request against the OIC API.
@@ -300,8 +298,6 @@ class FlextOracleOicClient:
         Args:
             method: HTTP method name (``GET``, ``POST``, ``PUT``, ``DELETE``).
             endpoint: Endpoint path relative to the OIC base URL.
-            params: Optional query parameters.
-            data: Optional form data payload.
             json: Optional JSON payload.
 
         Returns:
@@ -321,8 +317,6 @@ class FlextOracleOicClient:
                 client,
                 method,
                 endpoint,
-                params,
-                data,
                 json,
             ),
         ).flat_map(self._parse_api_response)
@@ -460,8 +454,6 @@ class FlextOracleOicClient:
         client: FlextApi,
         method: str,
         endpoint: str,
-        _params: t.StrMapping | None,
-        _data: t.StrMapping | None,
         json: t.JsonMapping | None,
     ) -> p.Result[t.JsonValue]:
         """Execute the actual API request, translating network exceptions.
@@ -470,8 +462,6 @@ class FlextOracleOicClient:
             client: flext-api client used to perform the request.
             method: HTTP method name.
             endpoint: Endpoint path relative to the OIC base URL.
-            _params: Unused query parameters.
-            _data: Unused form data.
             json: Optional JSON payload.
 
         Returns:
