@@ -225,7 +225,7 @@ class TestsFlextOracleOicExtServices:
         error = result.error
 
         tm.fail(result)
-        assert error is not None
+        tm.not_none(error)
         tm.that(error.lower(), has="validation")
 
     @staticmethod
@@ -236,7 +236,7 @@ class TestsFlextOracleOicExtServices:
         result = configured_service.validate_business_rules()
 
         tm.ok(result)
-        tm.that(result.value, eq=True)
+        tm.ok(result.value)
 
     @staticmethod
     def test_business_rules_validation_is_idempotent(
