@@ -11,10 +11,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
-from flext_oracle_oic import FlextOracleOicSettings
-from tests import c, m, t, tm
+from flext_oracle_oic import FlextOracleOicConfig, FlextOracleOicSettings, config
+from tests import c, m, t, tm, u
 
 
 class TestsFlextOracleOicConfig:
@@ -186,3 +188,62 @@ class TestsFlextOracleOicConfig:
         tm.that(first.OracleOic.base_url, eq=c.OracleOic.DEFAULT_BASE_URL)
         tm.that(first.OracleOic.api_version, eq=c.OracleOic.OICApiVersion.V1)
         tm.that(first.model_dump(), eq=second.model_dump())
+
+    @staticmethod
+    def test_business_namespace_preserves_loaded_values() -> None:
+        """The public namespace preserves the loader's complete validated payload."""
+        loaded = FlextOracleOicConfig()
+        expected = m.OracleOic.Config.model_validate(loaded.model_dump()["OracleOic"])
+
+        tm.that(loaded.OracleOic.model_dump(), eq=expected.model_dump())
+        tm.that(loaded.OracleOic is loaded.OracleOic, truth=True)
+
+    @staticmethod
+    def test_business_config_is_a_shared_frozen_root() -> None:
+        """Publication keeps one read-only config root and namespace reference."""
+        tm.that(FlextOracleOicConfig.fetch_global() is config, truth=True)
+        with pytest.raises(m.ValidationError, match="frozen_instance"):
+            config.OracleOic = config.OracleOic
+
+    @staticmethod
+    @pytest.mark.parametrize("page_size", [1, 17, 401])
+    def test_business_namespace_loads_arbitrary_valid_yaml(
+        tmp_path: Path,
+        page_size: int,
+    ) -> None:
+        """The native YAML loader validates supplied values without defaults."""
+        payload: t.JsonDict = {
+            "OracleOic": {
+                "api": {"page_size": page_size},
+                "integration": {},
+                "validation": {},
+                "monitoring": {},
+            },
+        }
+        tm.ok(
+            u.Cli.atomic_write_text_file(
+                tmp_path / "business.yaml", u.Cli.yaml_dump_str(payload)
+            )
+        )
+        with u.Tests.env_vars_context({"FLEXT_ORACLE_OIC_CONFIG_DIR": str(tmp_path)}):
+            loaded = FlextOracleOicConfig()
+
+        tm.that(loaded.OracleOic.api["page_size"], eq=page_size)
+        tm.that(loaded.OracleOic.model_dump(), eq=payload["OracleOic"])
+        tm.that(FlextOracleOicConfig.fetch_global() is config, truth=True)
+
+    @staticmethod
+    @pytest.mark.parametrize("yaml_text", ["{}", "OracleOic: {}"])
+    def test_business_namespace_rejects_missing_data_at_load(
+        tmp_path: Path,
+        yaml_text: str,
+    ) -> None:
+        """Missing namespaces and required domains fail before publication."""
+        tm.ok(u.Cli.atomic_write_text_file(tmp_path / "business.yaml", yaml_text))
+        with (
+            u.Tests.env_vars_context({"FLEXT_ORACLE_OIC_CONFIG_DIR": str(tmp_path)}),
+            pytest.raises(m.ValidationError, match="OracleOic"),
+        ):
+            FlextOracleOicConfig()
+
+        tm.that(FlextOracleOicConfig.fetch_global() is config, truth=True)
