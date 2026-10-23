@@ -142,7 +142,7 @@ class TestsFlextOracleOicExtServices:
     @staticmethod
     def test_module_alias_s_is_the_service_base_class() -> None:
         """The short ``s`` alias resolves to the base service facade class."""
-        assert s is FlextOracleOicServiceBase
+        tm.ok(s is FlextOracleOicServiceBase)
 
     @staticmethod
     def test_context_manager_yields_the_same_service(
@@ -150,7 +150,7 @@ class TestsFlextOracleOicExtServices:
     ) -> None:
         """Entering the service context returns the service instance itself."""
         with unconfigured_service as entered:
-            assert entered is unconfigured_service
+            tm.ok(entered is unconfigured_service)
 
     # -- fallible operations: graceful failure when unconfigured --------------
 
@@ -178,16 +178,16 @@ class TestsFlextOracleOicExtServices:
         """Every fallible op returns a failed ``r`` (never raises) when unconfigured."""
         result = _invoke_unconfigured_operation(unconfigured_service, operation)
         tm.fail(result)
-        assert result.error
+        tm.that(tm.not_none(result.error), empty=False)
 
     @staticmethod
     def test_execute_delegates_to_integration_listing(
         unconfigured_service: FlextOracleOicService,
     ) -> None:
         """``execute`` mirrors ``list_integrations`` (same failure error)."""
-        assert (
-            unconfigured_service.execute().error
-            == unconfigured_service.list_integrations().error
+        tm.that(
+            unconfigured_service.execute().error,
+            eq=unconfigured_service.list_integrations().error,
         )
 
     # -- authentication contract (independent of settings/network) ------------
@@ -225,7 +225,7 @@ class TestsFlextOracleOicExtServices:
         error = result.error
 
         tm.fail(result)
-        tm.not_none(error)
+        error = tm.not_none(error)
         tm.that(error.lower(), has="validation")
 
     @staticmethod
@@ -246,7 +246,8 @@ class TestsFlextOracleOicExtServices:
         first = configured_service.validate_business_rules()
         second = configured_service.validate_business_rules()
 
-        assert first.success is second.success is True
+        tm.ok(first)
+        tm.ok(second)
         tm.that(first.value, eq=second.value)
 
     @staticmethod

@@ -292,6 +292,7 @@ class FlextOracleOicClient:
         method: str,
         endpoint: str,
         json: t.JsonMapping | None = None,
+        request_kwargs: t.Api.RequestKwargs | None = None,
     ) -> p.Result[t.JsonMapping]:
         """Make an authenticated request against the OIC API.
 
@@ -299,6 +300,7 @@ class FlextOracleOicClient:
             method: HTTP method name (``GET``, ``POST``, ``PUT``, ``DELETE``).
             endpoint: Endpoint path relative to the OIC base URL.
             json: Optional JSON payload.
+            request_kwargs: Optional transport kwargs passed to the API facade.
 
         Returns:
             Result wrapping the parsed OIC response payload.
@@ -318,6 +320,7 @@ class FlextOracleOicClient:
                 method,
                 endpoint,
                 json,
+                request_kwargs,
             ),
         ).flat_map(self._parse_api_response)
 
@@ -371,7 +374,7 @@ class FlextOracleOicClient:
             response_result = self.make_request(
                 c.OracleOic.API.Method.GET,
                 endpoint,
-                params=request_params,
+                request_kwargs={"params": request_params},
             )
             if response_result.failure:
                 return r[t.SequenceOf[t.JsonMapping]].from_failure(response_result)
@@ -455,6 +458,7 @@ class FlextOracleOicClient:
         method: str,
         endpoint: str,
         json: t.JsonMapping | None,
+        request_kwargs: t.Api.RequestKwargs | None = None,
     ) -> p.Result[t.JsonValue]:
         """Execute the actual API request, translating network exceptions.
 
@@ -463,13 +467,14 @@ class FlextOracleOicClient:
             method: HTTP method name.
             endpoint: Endpoint path relative to the OIC base URL.
             json: Optional JSON payload.
+            request_kwargs: Optional transport kwargs passed to the API facade.
 
         Returns:
             Result wrapping the raw response body value.
 
         """
         try:
-            return self._run_api_request(client, method, endpoint, json)
+            return self._run_api_request(client, method, endpoint, json, request_kwargs)
         except c.EXC_NETWORK_TYPE as exc:
             error_msg = f"OIC API request failed: {exc}"
             self.logger.exception(error_msg)
@@ -481,6 +486,7 @@ class FlextOracleOicClient:
         method: str,
         endpoint: str,
         json: t.JsonMapping | None,
+        request_kwargs: t.Api.RequestKwargs | None = None,
     ) -> p.Result[t.JsonValue]:
         """Execute the API request without exception translation.
 
@@ -489,6 +495,7 @@ class FlextOracleOicClient:
             method: HTTP method name; unsupported names yield a failure result.
             endpoint: Endpoint path relative to the OIC base URL.
             json: Optional JSON payload converted to a string-valued form body.
+            request_kwargs: Optional transport kwargs passed to the API facade.
 
         Returns:
             Result wrapping the raw response body value.
@@ -505,13 +512,31 @@ class FlextOracleOicClient:
         )
         full_url = f"{base_url}/{endpoint.lstrip('/')}"
         if method.upper() == c.Api.Method.GET.value:
-            response_result = client.get(full_url, headers=None)
+            response_result = client.get(
+                full_url,
+                headers=None,
+                request_kwargs=request_kwargs,
+            )
         elif method.upper() == c.Api.Method.POST.value:
-            response_result = client.post(full_url, data=api_data, headers=None)
+            response_result = client.post(
+                full_url,
+                data=api_data,
+                headers=None,
+                request_kwargs=request_kwargs,
+            )
         elif method.upper() == c.Api.Method.PUT.value:
-            response_result = client.put(full_url, data=api_data, headers=None)
+            response_result = client.put(
+                full_url,
+                data=api_data,
+                headers=None,
+                request_kwargs=request_kwargs,
+            )
         elif method.upper() == c.Api.Method.DELETE.value:
-            response_result = client.delete(full_url, headers=None)
+            response_result = client.delete(
+                full_url,
+                headers=None,
+                request_kwargs=request_kwargs,
+            )
         else:
             return r[t.JsonValue].fail(f"Unsupported HTTP method: {method}")
         if response_result.failure:

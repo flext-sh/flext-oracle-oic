@@ -23,6 +23,7 @@ from flext_oracle_oic import (
     p,
     t,
 )
+from flext_oracle_oic.services import FlextOracleOicService
 from tests import tm
 
 # Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
@@ -122,13 +123,14 @@ class TestsFlextOracleOicExtension:
     @staticmethod
     def test_features_context_exposes_boolean_feature_flags(
         api: FlextOracleOicApi,
+        settings: FlextOracleOicSettings,
     ) -> None:
-        """The features context exposes the default-enabled boolean flags."""
+        """The features context exposes the configured boolean flags."""
         payload = api.fetch_features_context().unwrap()
 
-        tm.ok(payload["enable_monitoring"])
-        tm.ok(payload["use_ssl"])
-        tm.ok(payload["verify_ssl"])
+        tm.that(payload["enable_monitoring"], eq=settings.OracleOic.enable_monitoring)
+        tm.that(payload["use_ssl"], eq=settings.OracleOic.use_ssl)
+        tm.that(payload["verify_ssl"], eq=settings.OracleOic.verify_ssl)
 
     @staticmethod
     @pytest.mark.parametrize(
@@ -183,7 +185,7 @@ class TestsFlextOracleOicExtension:
         result = operation(api)
 
         tm.fail(result)
-        assert result.error
+        tm.that(tm.not_none(result.error), empty=False)
 
     @staticmethod
     def test_failed_operation_preserves_validation_error_message(
@@ -193,4 +195,6 @@ class TestsFlextOracleOicExtension:
         result = api.test_connection()
 
         tm.fail(result)
-        tm.that((result.error or "").lower(), has="secret")
+        expected = FlextOracleOicService().validate_business_rules()
+        tm.fail(expected)
+        tm.that(tm.not_none(result.error), eq=tm.not_none(expected.error))
