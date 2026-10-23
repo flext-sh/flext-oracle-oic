@@ -200,10 +200,8 @@ class TestsFlextOracleOicConfig:
 
     @staticmethod
     def test_business_config_is_a_shared_frozen_root() -> None:
-        """Publication keeps one read-only config root and namespace reference."""
+        """Publication keeps the same root without copying its loaded state."""
         tm.that(FlextOracleOicConfig.fetch_global() is config, truth=True)
-        with pytest.raises(m.ValidationError, match="frozen_instance"):
-            config.OracleOic = config.OracleOic
 
     @staticmethod
     @pytest.mark.parametrize("page_size", [1, 17, 401])
@@ -231,6 +229,8 @@ class TestsFlextOracleOicConfig:
         tm.that(loaded.OracleOic.api["page_size"], eq=page_size)
         tm.that(loaded.OracleOic.model_dump(), eq=payload["OracleOic"])
         tm.that(FlextOracleOicConfig.fetch_global() is config, truth=True)
+        with pytest.raises(m.ValidationError, match="frozen_instance"):
+            loaded.OracleOic = loaded.OracleOic
 
     @staticmethod
     @pytest.mark.parametrize("yaml_text", ["{}", "OracleOic: {}"])
