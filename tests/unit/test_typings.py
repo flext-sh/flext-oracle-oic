@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+import flext_tests
 import pytest
 
 from flext_oracle_oic import FlextOracleOicTypes
@@ -19,13 +20,13 @@ class TestsFlextOracleOicTypingsUnit:
     @staticmethod
     def test_facade_alias_is_the_composed_class() -> None:
         """``t`` is the public alias of the composed test-types class."""
-        assert t is TestsFlextOracleOicTypes
+        tm.that(t is TestsFlextOracleOicTypes, truth=True)
 
     @staticmethod
     def test_facade_composes_both_type_domains() -> None:
         """Facade inherits from both the shared and OIC-specific type roots."""
-        assert issubclass(t, t)
-        assert issubclass(t, FlextOracleOicTypes)
+        tm.that(issubclass(t, flext_tests.t), truth=True)
+        tm.that(issubclass(t, FlextOracleOicTypes), truth=True)
 
     @staticmethod
     @pytest.mark.parametrize("member", ["JsonValue", "JsonList", "JsonDict"])
@@ -37,9 +38,9 @@ class TestsFlextOracleOicTypingsUnit:
     @pytest.mark.parametrize("member", ["JsonValue", "JsonList", "JsonDict"])
     def test_members_resolve_to_the_root_definition(member: str) -> None:
         """MRO composition exposes each member without shadowing its root."""
-        assert getattr(t, member) is getattr(t, member)
+        tm.that(getattr(t, member) is getattr(flext_tests.t, member), truth=True)
 
     @staticmethod
     def test_oic_domain_does_not_shadow_shared_json_value() -> None:
         """OIC extension reuses (not redefines) the shared ``JsonValue``."""
-        assert t.JsonValue is FlextOracleOicTypes.JsonValue
+        tm.that(t.JsonValue is FlextOracleOicTypes.JsonValue, truth=True)

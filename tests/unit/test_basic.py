@@ -15,8 +15,8 @@ from __future__ import annotations
 
 import pytest
 
-from flext_oracle_oic import FlextOracleOicSettings, c
-from tests import m, t, tm
+from flext_oracle_oic import FlextOracleOicSettings
+from tests import c, m, t, tm
 
 
 class TestsFlextOracleOicBasic:
@@ -49,7 +49,7 @@ class TestsFlextOracleOicBasic:
 
         tm.that(ns.base_url, eq="https://test.integration.ocp.oraclecloud.com")
         tm.that(ns.oauth_client_id, eq="test_client_id")
-        assert ns.oauth_token_url.endswith("/oauth2/v1/token")
+        tm.that(ns.oauth_token_url.endswith("/oauth2/v1/token"), truth=True)
 
     @staticmethod
     def test_settings_ignore_unknown_keys() -> None:

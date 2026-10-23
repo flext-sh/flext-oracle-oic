@@ -35,7 +35,7 @@ from flext_oracle_oic.services.integration_lifecycle import (
 )
 from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
 from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
-from tests import tm
+from tests import c, tm
 
 _VALID_CLIENT_ID = "client-id-123"
 _VALID_OAUTH_CREDENTIAL = "test-credential-123"
@@ -156,7 +156,7 @@ class TestsFlextOracleOicExtServices:
 
     @staticmethod
     @pytest.mark.parametrize(
-        "operation",
+        c.ContextScope.OPERATION,
         [
             "execute",
             "list_integrations",

@@ -13,8 +13,8 @@ from __future__ import annotations
 
 import pytest
 
-from flext_oracle_oic import FlextOracleOicSettings, c
-from tests import m, t, tm
+from flext_oracle_oic import FlextOracleOicSettings
+from tests import c, m, t, tm
 
 
 class TestsFlextOracleOicConfig:
@@ -98,9 +98,9 @@ class TestsFlextOracleOicConfig:
             },
         }).OracleOic
 
-        assert ns.enable_monitoring is enabled
-        assert ns.enable_enterprise_patterns is enabled
-        assert ns.enable_orchestration is enabled
+        tm.that(ns.enable_monitoring is enabled, truth=True)
+        tm.that(ns.enable_enterprise_patterns is enabled, truth=True)
+        tm.that(ns.enable_orchestration is enabled, truth=True)
 
     @staticmethod
     def test_domain_auth_config_masks_secret_but_settings_do_not() -> None:
@@ -126,11 +126,11 @@ class TestsFlextOracleOicConfig:
             "nonexistent_field": "whatever",
         })
 
-        assert (
-            settings.OracleOic.base_url
-            == "https://custom.integration.ocp.oraclecloud.com"
+        tm.that(
+            settings.OracleOic.base_url,
+            eq="https://custom.integration.ocp.oraclecloud.com",
         )
-        assert not hasattr(settings, "nonexistent_field")
+        tm.that(hasattr(settings, "nonexistent_field"), truth=False)
 
     @staticmethod
     @pytest.mark.parametrize(

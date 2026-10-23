@@ -10,7 +10,7 @@ from __future__ import annotations
 import pytest
 
 from flext_oracle_oic import FlextOracleOicCli, main
-from tests import tm
+from tests import c, tm
 
 
 class TestsFlextOracleOicCli:
@@ -49,7 +49,7 @@ class TestsFlextOracleOicCli:
 
     @staticmethod
     @pytest.mark.parametrize(
-        "command",
+        c.HandlerMode.COMMAND,
         [
             pytest.param("test-connection", id="test-connection"),
             pytest.param("list-integrations", id="list-integrations"),
@@ -83,7 +83,7 @@ class TestsFlextOracleOicCli:
 
         tm.that(first, none=False)
         tm.that(second, none=False)
-        assert first is not second
+        tm.that(first is not second, truth=True)
 
     @staticmethod
     def test_help_invocation_reports_the_application_name(

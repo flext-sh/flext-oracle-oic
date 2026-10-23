@@ -139,7 +139,7 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.api_version, eq=c.OracleOic.DEFAULT_API_VERSION)
         tm.that(config.request_timeout, eq=c.DEFAULT_TIMEOUT_SECONDS)
         tm.that(config.max_retries, eq=c.MAX_RETRY_ATTEMPTS)
-        assert config.verify_ssl is c.OracleOic.DEFAULT_VERIFY_SSL
+        tm.that(config.verify_ssl is c.OracleOic.DEFAULT_VERIFY_SSL, truth=True)
 
     @staticmethod
     @pytest.mark.parametrize("field_name", m.OracleOic.OICConnectionConfig.model_fields)
@@ -179,7 +179,7 @@ class TestsFlextOracleOicModelsUnit:
             status="ACTIVE",
             integration_version="1.0.0",
             description="desc",
-            created_by="user",
+            created_by=c.ContextScope.USER,
             last_updated="2025-01-08T10:00:00Z",
         )
         dumped = info.model_dump()
@@ -188,7 +188,7 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(dumped["status"], eq="ACTIVE")
         tm.that(dumped["integration_version"], eq="1.0.0")
         tm.that(dumped["description"], eq="desc")
-        tm.that(dumped["created_by"], eq="user")
+        tm.that(dumped["created_by"], eq=c.ContextScope.USER)
         tm.that(dumped["last_updated"], eq="2025-01-08T10:00:00Z")
 
     @staticmethod
@@ -215,7 +215,7 @@ class TestsFlextOracleOicModelsUnit:
         )
         dumped = info.model_dump()
         tm.that(dumped["unique_id"], is_=str)
-        assert dumped["unique_id"]
+        tm.that(dumped["unique_id"], truth=True)
 
     @staticmethod
     def test_integration_info_requires_core_fields() -> None:

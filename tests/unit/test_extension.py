@@ -15,16 +15,9 @@ from collections.abc import Callable
 
 import pytest
 
-from flext_oracle_oic import (
-    FlextOracleOicApi,
-    FlextOracleOicSettings,
-    c,
-    oracle_oic,
-    p,
-    t,
-)
+from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, oracle_oic, p, t
 from flext_oracle_oic.services import FlextOracleOicService
-from tests import tm
+from tests import c, tm
 
 # Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
 # this Callable annotation instead of leaving it implicit (was flagged
@@ -171,7 +164,7 @@ class TestsFlextOracleOicExtension:
         tm.that(result.unwrap(), has="success_rate")
 
     @staticmethod
-    @pytest.mark.parametrize("operation", _CLIENT_OPERATIONS)
+    @pytest.mark.parametrize(c.ContextScope.OPERATION, _CLIENT_OPERATIONS)
     def test_client_operations_fail_when_credentials_incomplete(
         api: FlextOracleOicApi,
         operation: Callable[[FlextOracleOicApi], p.Result[None]],
