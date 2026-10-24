@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import Annotated
 
 from flext_auth import FlextAuthModels
+from flext_core import m
 
 from flext_oracle_oic import c, t
 
