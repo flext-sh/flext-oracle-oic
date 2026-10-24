@@ -41,7 +41,7 @@ class TestsFlextOracleOicBasic:
             "OracleOic": {
                 "base_url": "https://test.integration.ocp.oraclecloud.com",
                 "oauth_client_id": "test_client_id",
-                "oauth_client_secret": "s" + "0" * 16,
+                "oauth_client_secret": "s" + c.ParserBooleanToken.ZERO * 16,
                 "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
             },
         })

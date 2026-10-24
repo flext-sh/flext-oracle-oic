@@ -112,7 +112,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         """
         if isinstance(value, bytes):
-            return value.decode(errors="replace")
+            return value.decode(errors=c.MergeStrategy.REPLACE)
         if isinstance(value, c.PRIMITIVES_TYPES) or value is None:
             return value
         if isinstance(value, Mapping):

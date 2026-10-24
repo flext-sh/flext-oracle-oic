@@ -66,7 +66,7 @@ class TestsFlextOracleOicConfig:
     @staticmethod
     def test_custom_auth_settings_are_preserved() -> None:
         """OAuth overrides round-trip as plain scalars at the settings layer."""
-        client_secret = "s" + "1" * 16
+        client_secret = "s" + c.ParserBooleanToken.ONE * 16
         ns = FlextOracleOicSettings.model_validate({
             "OracleOic": {
                 "oauth_client_id": "custom_client_id",
