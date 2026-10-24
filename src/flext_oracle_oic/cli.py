@@ -14,7 +14,7 @@ import sys
 
 from flext_cli import cli
 
-from flext_oracle_oic import c, p, r, t
+from flext_oracle_oic import c, m, p, r, t
 from flext_oracle_oic.__version__ import __version__
 from flext_oracle_oic.services import FlextOracleOicService
 
@@ -118,19 +118,19 @@ class FlextOracleOicCli:
                 m.Cli.ResultCommandRoute(
                     name="test-connection",
                     help_text="Test connection to Oracle OIC instance",
-                    model_cls=cli_m.Cli.EmptyRequest,
+                    model_cls=m.Cli.EmptyRequest,
                     handler=cls.probe_connection,
                 ),
                 m.Cli.ResultCommandRoute(
                     name="list-integrations",
                     help_text="List Oracle OIC integrations",
-                    model_cls=cli_m.Cli.EmptyRequest,
+                    model_cls=m.Cli.EmptyRequest,
                     handler=cls.list_integrations,
                 ),
                 m.Cli.ResultCommandRoute(
                     name="version",
                     help_text="Show Oracle OIC Extension version",
-                    model_cls=cli_m.Cli.EmptyRequest,
+                    model_cls=m.Cli.EmptyRequest,
                     handler=cls.show_version,
                 ),
             ],
