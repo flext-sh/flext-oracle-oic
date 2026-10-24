@@ -15,15 +15,9 @@ from collections.abc import Callable
 
 import pytest
 
-from flext_oracle_oic import (
-    FlextOracleOicApi,
-    FlextOracleOicSettings,
-    c,
-    oracle_oic,
-    p,
-    t,
-)
-from tests import tm
+from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, oracle_oic, p, t
+from flext_oracle_oic.services import FlextOracleOicService
+from tests import c, tm
 
 # Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
 # this Callable annotation instead of leaving it implicit (was flagged
@@ -122,13 +116,14 @@ class TestsFlextOracleOicExtension:
     @staticmethod
     def test_features_context_exposes_boolean_feature_flags(
         api: FlextOracleOicApi,
+        settings: FlextOracleOicSettings,
     ) -> None:
-        """The features context exposes the default-enabled boolean flags."""
+        """The features context exposes the configured boolean flags."""
         payload = api.fetch_features_context().unwrap()
 
-        tm.that(payload["enable_monitoring"], eq=True)
-        tm.that(payload["use_ssl"], eq=True)
-        tm.that(payload["verify_ssl"], eq=True)
+        tm.that(payload["enable_monitoring"], eq=settings.OracleOic.enable_monitoring)
+        tm.that(payload["use_ssl"], eq=settings.OracleOic.use_ssl)
+        tm.that(payload["verify_ssl"], eq=settings.OracleOic.verify_ssl)
 
     @staticmethod
     @pytest.mark.parametrize(
@@ -169,7 +164,7 @@ class TestsFlextOracleOicExtension:
         tm.that(result.unwrap(), has="success_rate")
 
     @staticmethod
-    @pytest.mark.parametrize("operation", _CLIENT_OPERATIONS)
+    @pytest.mark.parametrize(c.ContextScope.OPERATION, _CLIENT_OPERATIONS)
     def test_client_operations_fail_when_credentials_incomplete(
         api: FlextOracleOicApi,
         operation: Callable[[FlextOracleOicApi], p.Result[None]],
@@ -183,7 +178,7 @@ class TestsFlextOracleOicExtension:
         result = operation(api)
 
         tm.fail(result)
-        assert result.error
+        tm.that(tm.not_none(result.error), empty=False)
 
     @staticmethod
     def test_failed_operation_preserves_validation_error_message(
@@ -193,4 +188,6 @@ class TestsFlextOracleOicExtension:
         result = api.test_connection()
 
         tm.fail(result)
-        tm.that((result.error or "").lower(), has="secret")
+        expected = FlextOracleOicService().validate_business_rules()
+        tm.fail(expected)
+        tm.that(tm.not_none(result.error), eq=tm.not_none(expected.error))

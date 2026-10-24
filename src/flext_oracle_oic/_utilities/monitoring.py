@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_api import u
-from flext_core import FlextUtilities as ug, r
+from flext_core import r
 
 from flext_oracle_oic import c, p, t
 
@@ -157,7 +157,7 @@ class FlextOracleOicUtilitiesMonitoring:
         if error_message is not None:
             return r[t.JsonMapping].fail(error_message)
         if "timestamp" not in validated_data:
-            validated_data["timestamp"] = ug.now().isoformat()
+            validated_data["timestamp"] = u.now().isoformat()
         return r[t.JsonMapping].ok(validated_data)
 
 

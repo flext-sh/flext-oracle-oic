@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """Oracle OIC Extension Constants - Unified Constants Pattern.
 
 This module provides centralized constants for the flext-oracle-oic project,
@@ -16,8 +17,10 @@ from __future__ import annotations
 
 from flext_auth import FlextAuthConstants
 
-from flext_oracle_oic._constants import FlextOracleOicConstantsValues
-from flext_oracle_oic._constants.base import FlextOracleOicConstantsBase
+from flext_oracle_oic._constants import (
+    FlextOracleOicConstantsBase,
+    FlextOracleOicConstantsValues,
+)
 
 
 class FlextOracleOicConstants(FlextAuthConstants):

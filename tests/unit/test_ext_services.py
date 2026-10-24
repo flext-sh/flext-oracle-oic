@@ -35,7 +35,7 @@ from flext_oracle_oic.services.integration_lifecycle import (
 )
 from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
 from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
-from tests import tm
+from tests import c, tm
 
 _VALID_CLIENT_ID = "client-id-123"
 _VALID_OAUTH_CREDENTIAL = "test-credential-123"
@@ -142,7 +142,7 @@ class TestsFlextOracleOicExtServices:
     @staticmethod
     def test_module_alias_s_is_the_service_base_class() -> None:
         """The short ``s`` alias resolves to the base service facade class."""
-        assert s is FlextOracleOicServiceBase
+        tm.ok(s is FlextOracleOicServiceBase)
 
     @staticmethod
     def test_context_manager_yields_the_same_service(
@@ -150,13 +150,13 @@ class TestsFlextOracleOicExtServices:
     ) -> None:
         """Entering the service context returns the service instance itself."""
         with unconfigured_service as entered:
-            assert entered is unconfigured_service
+            tm.ok(entered is unconfigured_service)
 
     # -- fallible operations: graceful failure when unconfigured --------------
 
     @staticmethod
     @pytest.mark.parametrize(
-        "operation",
+        c.ContextScope.OPERATION,
         [
             "execute",
             "list_integrations",
@@ -177,17 +177,17 @@ class TestsFlextOracleOicExtServices:
     ) -> None:
         """Every fallible op returns a failed ``r`` (never raises) when unconfigured."""
         result = _invoke_unconfigured_operation(unconfigured_service, operation)
-        assert result.failure
-        assert result.error
+        tm.fail(result)
+        tm.that(tm.not_none(result.error), empty=False)
 
     @staticmethod
     def test_execute_delegates_to_integration_listing(
         unconfigured_service: FlextOracleOicService,
     ) -> None:
         """``execute`` mirrors ``list_integrations`` (same failure error)."""
-        assert (
-            unconfigured_service.execute().error
-            == unconfigured_service.list_integrations().error
+        tm.that(
+            unconfigured_service.execute().error,
+            eq=unconfigured_service.list_integrations().error,
         )
 
     # -- authentication contract (independent of settings/network) ------------
@@ -225,7 +225,7 @@ class TestsFlextOracleOicExtServices:
         error = result.error
 
         tm.fail(result)
-        assert error is not None
+        error = tm.not_none(error)
         tm.that(error.lower(), has="validation")
 
     @staticmethod
@@ -236,7 +236,7 @@ class TestsFlextOracleOicExtServices:
         result = configured_service.validate_business_rules()
 
         tm.ok(result)
-        tm.that(result.value, eq=True)
+        tm.ok(result.value)
 
     @staticmethod
     def test_business_rules_validation_is_idempotent(
@@ -246,7 +246,8 @@ class TestsFlextOracleOicExtServices:
         first = configured_service.validate_business_rules()
         second = configured_service.validate_business_rules()
 
-        assert first.success is second.success is True
+        tm.ok(first)
+        tm.ok(second)
         tm.that(first.value, eq=second.value)
 
     @staticmethod
@@ -264,7 +265,7 @@ class TestsFlextOracleOicExtServices:
         configured_service: FlextOracleOicService,
     ) -> None:
         """The real service structurally satisfies its own declared protocol."""
-        tm.that(self._is_service_rules(configured_service), eq=True)
+        tm.ok(self._is_service_rules(configured_service))
         result = configured_service.validate_business_rules()
         tm.ok(result)
-        tm.that(result.value, eq=True)
+        tm.ok(result.value)

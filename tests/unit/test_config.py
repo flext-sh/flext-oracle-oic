@@ -11,10 +11,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
-from flext_oracle_oic import FlextOracleOicSettings, c
-from tests import m, t, tm
+from flext_oracle_oic import FlextOracleOicConfig, FlextOracleOicSettings, config
+from tests import c, m, t, tm, u
 
 
 class TestsFlextOracleOicConfig:
@@ -29,11 +31,11 @@ class TestsFlextOracleOicConfig:
         tm.that(ns.api_version, eq=c.OracleOic.OICApiVersion.V1)
         tm.that(ns.request_timeout, eq=c.DEFAULT_TIMEOUT_SECONDS)
         tm.that(ns.max_retries, eq=c.MAX_RETRY_ATTEMPTS)
-        tm.that(ns.use_ssl, eq=True)
-        tm.that(ns.verify_ssl, eq=True)
-        tm.that(ns.enable_monitoring, eq=True)
-        tm.that(ns.enable_enterprise_patterns, eq=True)
-        tm.that(ns.enable_orchestration, eq=True)
+        tm.ok(ns.use_ssl)
+        tm.ok(ns.verify_ssl)
+        tm.ok(ns.enable_monitoring)
+        tm.ok(ns.enable_enterprise_patterns)
+        tm.ok(ns.enable_orchestration)
         tm.that(ns.oauth_client_id, eq="")
         tm.that(ns.oauth_client_secret, eq="")
         tm.that(ns.oauth_token_url, eq=(f"{c.OracleOic.DEFAULT_BASE_URL}/oauth/token"))
@@ -58,13 +60,13 @@ class TestsFlextOracleOicConfig:
         tm.that(ns.api_version, eq=c.OracleOic.OICApiVersion.V2)
         tm.that(ns.request_timeout, eq=60)
         tm.that(ns.max_retries, eq=5)
-        tm.that(ns.use_ssl, eq=False)
-        tm.that(ns.verify_ssl, eq=False)
+        tm.fail(ns.use_ssl)
+        tm.fail(ns.verify_ssl)
 
     @staticmethod
     def test_custom_auth_settings_are_preserved() -> None:
         """OAuth overrides round-trip as plain scalars at the settings layer."""
-        client_secret = "s" + "1" * 16
+        client_secret = "s" + c.ParserBooleanToken.ONE * 16
         ns = FlextOracleOicSettings.model_validate({
             "OracleOic": {
                 "oauth_client_id": "custom_client_id",
@@ -98,9 +100,9 @@ class TestsFlextOracleOicConfig:
             },
         }).OracleOic
 
-        assert ns.enable_monitoring is enabled
-        assert ns.enable_enterprise_patterns is enabled
-        assert ns.enable_orchestration is enabled
+        tm.that(ns.enable_monitoring is enabled, truth=True)
+        tm.that(ns.enable_enterprise_patterns is enabled, truth=True)
+        tm.that(ns.enable_orchestration is enabled, truth=True)
 
     @staticmethod
     def test_domain_auth_config_masks_secret_but_settings_do_not() -> None:
@@ -126,11 +128,11 @@ class TestsFlextOracleOicConfig:
             "nonexistent_field": "whatever",
         })
 
-        assert (
-            settings.OracleOic.base_url
-            == "https://custom.integration.ocp.oraclecloud.com"
+        tm.that(
+            settings.OracleOic.base_url,
+            eq="https://custom.integration.ocp.oraclecloud.com",
         )
-        assert not hasattr(settings, "nonexistent_field")
+        tm.that(hasattr(settings, "nonexistent_field"), truth=False)
 
     @staticmethod
     @pytest.mark.parametrize(
@@ -186,3 +188,62 @@ class TestsFlextOracleOicConfig:
         tm.that(first.OracleOic.base_url, eq=c.OracleOic.DEFAULT_BASE_URL)
         tm.that(first.OracleOic.api_version, eq=c.OracleOic.OICApiVersion.V1)
         tm.that(first.model_dump(), eq=second.model_dump())
+
+    @staticmethod
+    def test_business_namespace_preserves_loaded_values() -> None:
+        """The public namespace preserves the loader's complete validated payload."""
+        loaded = FlextOracleOicConfig()
+        expected = m.OracleOic.Config.model_validate(loaded.model_dump()["OracleOic"])
+
+        tm.that(loaded.OracleOic.model_dump(), eq=expected.model_dump())
+        tm.that(loaded.OracleOic is loaded.OracleOic, truth=True)
+
+    @staticmethod
+    def test_business_config_is_a_shared_frozen_root() -> None:
+        """Publication keeps the same root without copying its loaded state."""
+        tm.that(FlextOracleOicConfig.fetch_global() is config, truth=True)
+
+    @staticmethod
+    @pytest.mark.parametrize("page_size", [1, 17, 401])
+    def test_business_namespace_loads_arbitrary_valid_yaml(
+        tmp_path: Path,
+        page_size: int,
+    ) -> None:
+        """The native YAML loader validates supplied values without defaults."""
+        payload: t.JsonDict = {
+            "OracleOic": {
+                "api": {"page_size": page_size},
+                "integration": {},
+                "validation": {},
+                "monitoring": {},
+            },
+        }
+        tm.ok(
+            u.Cli.atomic_write_text_file(
+                tmp_path / "business.yaml", u.Cli.yaml_dump_str(payload)
+            )
+        )
+        with u.Tests.env_vars_context({"FLEXT_ORACLE_OIC_CONFIG_DIR": str(tmp_path)}):
+            loaded = FlextOracleOicConfig()
+
+        tm.that(loaded.OracleOic.api["page_size"], eq=page_size)
+        tm.that(loaded.OracleOic.model_dump(), eq=payload["OracleOic"])
+        tm.that(FlextOracleOicConfig.fetch_global() is config, truth=True)
+        with pytest.raises(m.ValidationError, match="frozen_instance"):
+            loaded.OracleOic = loaded.OracleOic
+
+    @staticmethod
+    @pytest.mark.parametrize("yaml_text", ["{}", "OracleOic: {}"])
+    def test_business_namespace_rejects_missing_data_at_load(
+        tmp_path: Path,
+        yaml_text: str,
+    ) -> None:
+        """Missing namespaces and required domains fail before publication."""
+        tm.ok(u.Cli.atomic_write_text_file(tmp_path / "business.yaml", yaml_text))
+        with (
+            u.Tests.env_vars_context({"FLEXT_ORACLE_OIC_CONFIG_DIR": str(tmp_path)}),
+            pytest.raises(m.ValidationError, match="OracleOic"),
+        ):
+            FlextOracleOicConfig()
+
+        tm.that(FlextOracleOicConfig.fetch_global() is config, truth=True)

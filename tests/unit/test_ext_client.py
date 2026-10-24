@@ -144,13 +144,21 @@ class TestsFlextOracleOicExtClient:
         tm.that(result.error, none=False)
         tm.that(result.error, has="OAuth token URL not configured")
 
+        paginated = client.paginate_request(
+            "/integrations",
+            page_size=2,
+            params={"q": "status=ACTIVATED"},
+        )
+        tm.fail(paginated)
+        tm.that(paginated.error, eq=tm.not_none(result.error))
+
     @staticmethod
     def test_context_manager_yields_same_instance(
         client: FlextOracleOicClient,
     ) -> None:
         """Entering the context returns the client itself for chaining."""
         with client as entered:
-            assert entered is client
+            tm.ok(entered is client)
 
     @staticmethod
     def test_context_manager_exit_is_idempotent_without_client(
