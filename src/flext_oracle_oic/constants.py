@@ -43,5 +43,4 @@ class FlextOracleOicConstants(FlextAuthConstants):
 
 
 c = FlextOracleOicConstants
-
 __all__: list[str] = ["FlextOracleOicConstants", "c"]

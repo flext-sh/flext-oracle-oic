@@ -30,5 +30,4 @@ class FlextOracleOicModels(FlextAuthModels):
 
 
 m = FlextOracleOicModels
-
 __all__: list[str] = ["FlextOracleOicModels", "m"]

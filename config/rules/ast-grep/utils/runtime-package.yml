@@ -1,5 +1,0 @@
-# AUTO-GENERATED FILE — Regenerate with: make gen
-id: runtime-package
-language: Python
-rule:
-  regex: ^(?:PIL|_yaml|annotated_doc|annotated_types|anyio|attr|attrs|bcrypt|beartype|blinker|certifi|click|defusedxml|dependency_injector|docx|dotenv|et_xmlfile|fastapi|filelock|flask|flext_api|flext_auth|flext_cli|flext_core|flext_web|h11|httpcore|httpx|idna|itsdangerous|jinja2|jsonschema|jsonschema_specifications|jwt|lxml|markdown_it|markupsafe|mdurl|msgpack|networkx|openpyxl|opentelemetry|packaging|pptx|pydantic|pydantic_core|pydantic_settings|pygments|referencing|rich|rpds|ruamel|shellingham|starlette|structlog|tomlkit|typer|typing_extensions|typing_inspection|uvicorn|werkzeug|xlsxwriter|yaml)(?:[.\s]|$)
