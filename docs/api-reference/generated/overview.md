@@ -26,7 +26,7 @@
   `FlextOracleOicClient`, `FlextOracleOicConfig`, `FlextOracleOicConstants`,
   `FlextOracleOicModels`, `FlextOracleOicProtocols`, `FlextOracleOicServiceBase`,
   `FlextOracleOicSettings`, `FlextOracleOicTypes` (+6 more)
-- Exported module shortcuts: `services`
+- Exported module shortcuts: _none_
 - Generated module pages: `9`
 
 ## Next Pages

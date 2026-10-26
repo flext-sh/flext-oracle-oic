@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_auth import FlextAuthModels
+from flext_auth import m
 
 from flext_oracle_oic._models import (
     FlextOracleOicModelsConfig,
@@ -17,7 +17,7 @@ from flext_oracle_oic._models import (
 )
 
 
-class FlextOracleOicModels(FlextAuthModels):
+class FlextOracleOicModels(m):
     """Unified models for Oracle OIC Extension operations.
 
     Extends m to avoid duplication and ensure consistency.

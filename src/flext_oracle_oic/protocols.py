@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_auth import FlextAuthProtocols
+from flext_auth import p
 
 from flext_oracle_oic._protocols import (
     FlextOracleOicProtocolsBase,
@@ -16,7 +16,7 @@ from flext_oracle_oic._protocols import (
 )
 
 
-class FlextOracleOicProtocols(FlextAuthProtocols):
+class FlextOracleOicProtocols(p):
     """Oracle OIC Extension protocols extending ``p`` with OIC-specific interfaces."""
 
     class OracleOic(

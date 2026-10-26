@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_auth import FlextAuthConstants
+from flext_auth import c
 
 from flext_oracle_oic._constants import (
     FlextOracleOicConstantsBase,
@@ -23,7 +23,7 @@ from flext_oracle_oic._constants import (
 )
 
 
-class FlextOracleOicConstants(FlextAuthConstants):
+class FlextOracleOicConstants(c):
     """Oracle OIC Extension constants inheriting from c.
 
     Provides centralized constants for Oracle OIC Extension operations,

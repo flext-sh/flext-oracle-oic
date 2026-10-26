@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_auth import FlextAuthUtilities
+from flext_auth import u
 
 from flext_oracle_oic._utilities import (
     FlextOracleOicUtilitiesAuthenticationValidation,
@@ -30,7 +30,7 @@ from flext_oracle_oic._utilities import (
 
 
 class FlextOracleOicUtilities(
-    FlextAuthUtilities,
+    u,
     FlextOracleOicUtilitiesOracleOic,
     FlextOracleOicUtilitiesConnectionValidation,
     FlextOracleOicUtilitiesAuthenticationValidation,
