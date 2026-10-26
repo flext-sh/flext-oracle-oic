@@ -15,11 +15,13 @@ from flext_core.lazy import install_lazy_exports
 if TYPE_CHECKING:
     from flext_tests import (
         api,
+        cli,
         config,
         d,
         e,
         h,
         install_local_packages,
+        main,
         r,
         settings,
         td,
@@ -29,7 +31,7 @@ if TYPE_CHECKING:
         x,
     )
 
-    from flext_oracle_oic import auth, main, oracle_oic, web
+    from flext_oracle_oic import auth, oracle_oic, web
     from tests.base import TestsFlextOracleOicServiceBase, s
     from tests.constants import TestsFlextOracleOicConstants, c
     from tests.models import TestsFlextOracleOicModels, m
@@ -50,6 +52,7 @@ __all__: tuple[str, ...] = (
     "api",
     "auth",
     "c",
+    "cli",
     "config",
     "d",
     "e",
@@ -86,13 +89,14 @@ install_lazy_exports(
         "api": "flext_tests",
         "auth": "flext_oracle_oic",
         "c": ".constants",
+        "cli": "flext_tests",
         "config": "flext_tests",
         "d": "flext_tests",
         "e": "flext_tests",
         "h": "flext_tests",
         "install_local_packages": "flext_tests",
         "m": ".models",
-        "main": "flext_oracle_oic",
+        "main": "flext_tests",
         "oracle_oic": "flext_oracle_oic",
         "p": ".protocols",
         "r": "flext_tests",

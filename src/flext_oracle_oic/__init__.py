@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_auth import api, auth, d, e, h, r, web, x
+    from flext_auth import api, auth, cli, d, e, h, r, web, x
 
     from flext_oracle_oic.__version__ import (
         FlextOracleOicVersion,
@@ -63,6 +63,7 @@ __all__: tuple[str, ...] = (
     "api",
     "auth",
     "c",
+    "cli",
     "config",
     "d",
     "e",
@@ -106,6 +107,7 @@ install_lazy_exports(
         "api": "flext_auth",
         "auth": "flext_auth",
         "c": ".constants",
+        "cli": "flext_auth",
         "config": "._config",
         "d": "flext_auth",
         "e": "flext_auth",
