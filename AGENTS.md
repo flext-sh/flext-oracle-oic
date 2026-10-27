@@ -25,7 +25,8 @@ src/flext_oracle_oic/
 ├── api.py                # FlextOracleOicApi facade (async context manager)
 ├── ext_client.py         # FlextOracleOicClient
 ├── service.py main.py __main__.py
-├── services/             # integration CRUD, lifecycle, orchestration, monitoring, authentication mixins
+├── services/             # integration CRUD, lifecycle, orchestration,
+│                         # monitoring, authentication mixins
 ├── constants.py typings.py protocols.py models.py utilities.py   # AUTO-GENERATED facets
 └── _utilities/
 ```
