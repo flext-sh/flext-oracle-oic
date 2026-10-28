@@ -27,14 +27,14 @@ _OAUTH_ENDPOINT_SHORT = "https://idcs.example.com/token"
 class TestsFlextOracleOicExtClient:
     """Observable-behavior tests for the unified Oracle OIC client."""
 
-    @staticmethod
     @pytest.fixture
+    @staticmethod
     def connection_config() -> m.OracleOic.OICConnectionConfig:
         """Return a valid in-memory OIC connection configuration."""
         return m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
 
-    @staticmethod
     @pytest.fixture
+    @staticmethod
     def auth_config() -> m.OracleOic.OICAuthConfig:
         """Return a valid in-memory OIC authentication configuration."""
         return m.OracleOic.OICAuthConfig(
@@ -43,8 +43,8 @@ class TestsFlextOracleOicExtClient:
             oauth_token_url=_OAUTH_ENDPOINT,
         )
 
-    @staticmethod
     @pytest.fixture
+    @staticmethod
     def client(
         connection_config: m.OracleOic.OICConnectionConfig,
         auth_config: m.OracleOic.OICAuthConfig,

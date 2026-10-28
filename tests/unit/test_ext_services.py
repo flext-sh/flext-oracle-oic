@@ -80,8 +80,8 @@ def _invoke_unconfigured_operation(
 class TestsFlextOracleOicExtServices:
     """Public-contract behavior of the Oracle OIC service facade."""
 
-    @staticmethod
     @pytest.fixture
+    @staticmethod
     def unconfigured_service() -> Iterator[FlextOracleOicService]:
         """Service backed by default (credential-less) global settings.
 
@@ -93,8 +93,8 @@ class TestsFlextOracleOicExtServices:
         yield FlextOracleOicService()
         FlextOracleOicSettings.reset_for_testing()
 
-    @staticmethod
     @pytest.fixture
+    @staticmethod
     def configured_service(
         monkeypatch: pytest.MonkeyPatch,
     ) -> Iterator[FlextOracleOicService]:

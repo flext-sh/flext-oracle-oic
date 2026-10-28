@@ -38,8 +38,8 @@ _CLIENT_OPERATIONS: t.SequenceOf[Callable[[FlextOracleOicApi], p.Result[None]]] 
 class TestsFlextOracleOicExtension:
     """Public-contract tests for the Oracle OIC API facade."""
 
-    @staticmethod
     @pytest.fixture
+    @staticmethod
     def settings() -> FlextOracleOicSettings:
         """Deterministic in-memory settings with distinctive values.
 
@@ -55,8 +55,8 @@ class TestsFlextOracleOicExtension:
             },
         })
 
-    @staticmethod
     @pytest.fixture
+    @staticmethod
     def api(settings: FlextOracleOicSettings) -> FlextOracleOicApi:
         """Facade built from the deterministic settings fixture.
 
