@@ -6,6 +6,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
 from flext_auth import FlextAuthProtocols
@@ -27,7 +28,7 @@ class FlextOracleOicProtocolsDomain:
             self,
             url: str,
             *,
-            headers: t.StrMapping | None = None,
+            headers: Mapping[str, str] | None = None,
         ) -> p.Result[bool]:
             """Execute an HTTP DELETE request.
 
@@ -45,7 +46,7 @@ class FlextOracleOicProtocolsDomain:
             self,
             url: str,
             *,
-            headers: t.StrMapping | None = None,
+            headers: Mapping[str, str] | None = None,
         ) -> p.Result[t.JsonValue]:
             """Execute an HTTP GET request.
 
@@ -64,7 +65,7 @@ class FlextOracleOicProtocolsDomain:
             url: str,
             data: t.JsonMapping | None = None,
             *,
-            headers: t.StrMapping | None = None,
+            headers: Mapping[str, str] | None = None,
         ) -> p.Result[t.JsonValue]:
             """Execute an HTTP POST request.
 
@@ -84,7 +85,7 @@ class FlextOracleOicProtocolsDomain:
             url: str,
             data: t.JsonMapping | None = None,
             *,
-            headers: t.StrMapping | None = None,
+            headers: Mapping[str, str] | None = None,
         ) -> p.Result[t.JsonValue]:
             """Execute an HTTP PUT request.
 

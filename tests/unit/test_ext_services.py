@@ -13,18 +13,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterator, Sequence
+from collections.abc import Callable, Iterator, Mapping, Sequence
 
 import pytest
 
-from flext_oracle_oic import (
-    FlextOracleOicServiceBase,
-    FlextOracleOicSettings,
-    m,
-    p,
-    s,
-    t,
-)
+from flext_oracle_oic import FlextOracleOicServiceBase, FlextOracleOicSettings, m, p, s
 from flext_oracle_oic.services import FlextOracleOicService
 from flext_oracle_oic.services.auth import FlextOracleOicAuth
 from flext_oracle_oic.services.integration_crud import FlextOracleOicIntegrationCrud
@@ -58,7 +51,7 @@ def _invoke_unconfigured_operation(
         The resulting operation ``r``.
 
     """
-    operations: t.MappingKV[str, Callable[[], _OperationResult]] = {
+    operations: Mapping[str, Callable[[], _OperationResult]] = {
         "execute": svc.execute,
         "list_integrations": svc.list_integrations,
         "create_integration": lambda: svc.create_integration({}),

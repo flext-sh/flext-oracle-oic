@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import sys
+from collections.abc import Sequence
 
 from flext_cli import cli
 
@@ -138,7 +139,7 @@ class FlextOracleOicCli:
         return app
 
 
-def main(args: t.StrSequence | None = None) -> int:
+def main(args: Sequence[str] | None = None) -> int:
     """Run the main CLI entry point - FLEXT CLI Pattern.
 
     Args:
@@ -161,4 +162,4 @@ def main(args: t.StrSequence | None = None) -> int:
     return 0 if outcome.success else 1
 
 
-__all__: t.StrSequence = ("FlextOracleOicCli", "main")
+__all__: Sequence[str] = ("FlextOracleOicCli", "main")

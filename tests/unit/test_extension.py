@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 
 import pytest
 
@@ -24,7 +24,7 @@ from tests import c, tm
 # implicit-any-lambda); the success payload is discarded via `.map(lambda
 # _: None)` so every client-backed operation, despite differing success
 # value types, normalizes to one homogeneous `p.Result[None]` shape here.
-_CLIENT_OPERATIONS: t.SequenceOf[Callable[[FlextOracleOicApi], p.Result[None]]] = [
+_CLIENT_OPERATIONS: Sequence[Callable[[FlextOracleOicApi], p.Result[None]]] = [
     lambda api: api.test_connection().map(lambda _: None),
     lambda api: api.list_integrations().map(lambda _: None),
     lambda api: api.execute().map(lambda _: None),

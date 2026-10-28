@@ -11,6 +11,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import MutableMapping
+
 import pytest
 
 from tests import c, m, t, tm
@@ -105,7 +107,7 @@ class TestsFlextOracleOicModelsUnit:
     )
     def test_auth_config_requires_mandatory_fields(missing: str) -> None:
         """Omitting any required field raises a validation error."""
-        payload: t.MutableMappingKV[str, str] = {
+        payload: MutableMapping[str, str] = {
             "oauth_client_id": "cid",
             "oauth_client_secret": "secret",
             "oauth_token_url": _OAUTH_ENDPOINT,

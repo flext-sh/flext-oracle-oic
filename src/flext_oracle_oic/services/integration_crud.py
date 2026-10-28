@@ -275,7 +275,7 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
 
     def _list_connections_impl(
         self,
-        type_filter: t.StrSequence | None,
+        type_filter: Sequence[str] | None,
     ) -> p.Result[Sequence[m.OracleOic.OICConnectionInfo]]:
         """Core implementation for list_connections.
 
@@ -319,7 +319,7 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
 
     def list_connections(
         self,
-        type_filter: t.StrSequence | None = None,
+        type_filter: Sequence[str] | None = None,
     ) -> p.Result[Sequence[m.OracleOic.OICConnectionInfo]]:
         """List Oracle OIC connections.
 

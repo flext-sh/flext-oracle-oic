@@ -100,7 +100,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
     @staticmethod
     def _to_general_value(
-        value: t.JsonValue | t.Scalar | t.ScalarMapping | t.ScalarList,
+        value: t.JsonValue | t.Scalar | Mapping[str, t.Scalar] | Sequence[t.Scalar],
     ) -> t.JsonValue:
         """Normalize an arbitrary runtime value into a JSON-compatible value.
 
