@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from flext_oracle_oic import FlextOracleOicClient
 
 
-class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
+class FlextOracleOicOrchestration(FlextOracleOicServiceBase):
     """Mixin providing orchestration execution for FlextOracleOicService facade."""
 
     def execute_app_driven_orchestration(
@@ -195,4 +195,4 @@ class FlextOracleOicOrchestrationMixin(FlextOracleOicServiceBase):
             return r[t.JsonMapping].fail(f"{error_message}: {exc!s}")
 
 
-__all__: list[str] = ["FlextOracleOicOrchestrationMixin"]
+__all__: list[str] = ["FlextOracleOicOrchestration"]

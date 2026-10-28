@@ -12,7 +12,7 @@ from typing import Annotated, ClassVar
 from flext_core import m, p, t
 
 
-class FlextOracleOicModelsConfig:
+class FlextModelsOracleOicConfig:
     """Config declarations composed into the Oracle OIC model facade."""
 
     class Config(m.ImmutableValueModel):
@@ -61,4 +61,4 @@ class FlextOracleOicModelsConfig:
         ]
 
 
-__all__: list[str] = ["FlextOracleOicModelsConfig"]
+__all__: list[str] = ["FlextModelsOracleOicConfig"]

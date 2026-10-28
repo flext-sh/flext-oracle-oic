@@ -24,7 +24,7 @@ _OAUTH_ENDPOINT = "https://idcs.example.com/oauth2/v1/token"
 
 
 class TestsFlextOracleOicModelsUnit:
-    """Public-contract behavior of FlextOracleOicModels.OracleOic.*."""
+    """Public-contract behavior of FlextModelsOracleOic.OracleOic.*."""
 
     # ---- OICAuthConfig ---------------------------------------------------
 

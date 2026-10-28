@@ -13,24 +13,22 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
+    from flext_oracle_oic.services.auth import FlextOracleOicAuth
     from flext_oracle_oic.services.facade import FlextOracleOicService
-    from flext_oracle_oic.services.integration_crud import (
-        FlextOracleOicIntegrationCrudMixin,
-    )
+    from flext_oracle_oic.services.integration_crud import FlextOracleOicIntegrationCrud
     from flext_oracle_oic.services.integration_lifecycle import (
-        FlextOracleOicIntegrationLifecycleMixin,
+        FlextOracleOicIntegrationLifecycle,
     )
-    from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
-    from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
+    from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoring
+    from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestration
 
 
 __all__: tuple[str, ...] = (
-    "FlextOracleOicAuthMixin",
-    "FlextOracleOicIntegrationCrudMixin",
-    "FlextOracleOicIntegrationLifecycleMixin",
-    "FlextOracleOicMonitoringMixin",
-    "FlextOracleOicOrchestrationMixin",
+    "FlextOracleOicAuth",
+    "FlextOracleOicIntegrationCrud",
+    "FlextOracleOicIntegrationLifecycle",
+    "FlextOracleOicMonitoring",
+    "FlextOracleOicOrchestration",
     "FlextOracleOicService",
 )
 
@@ -38,11 +36,11 @@ install_lazy_exports(
     __name__,
     globals(),
     MappingProxyType({
-        "FlextOracleOicAuthMixin": ".auth",
-        "FlextOracleOicIntegrationCrudMixin": ".integration_crud",
-        "FlextOracleOicIntegrationLifecycleMixin": ".integration_lifecycle",
-        "FlextOracleOicMonitoringMixin": ".monitoring",
-        "FlextOracleOicOrchestrationMixin": ".orchestration",
+        "FlextOracleOicAuth": ".auth",
+        "FlextOracleOicIntegrationCrud": ".integration_crud",
+        "FlextOracleOicIntegrationLifecycle": ".integration_lifecycle",
+        "FlextOracleOicMonitoring": ".monitoring",
+        "FlextOracleOicOrchestration": ".orchestration",
         "FlextOracleOicService": ".facade",
     }),
     public_exports=__all__,

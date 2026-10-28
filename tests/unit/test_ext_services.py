@@ -26,15 +26,13 @@ from flext_oracle_oic import (
     t,
 )
 from flext_oracle_oic.services import FlextOracleOicService
-from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
-from flext_oracle_oic.services.integration_crud import (
-    FlextOracleOicIntegrationCrudMixin,
-)
+from flext_oracle_oic.services.auth import FlextOracleOicAuth
+from flext_oracle_oic.services.integration_crud import FlextOracleOicIntegrationCrud
 from flext_oracle_oic.services.integration_lifecycle import (
-    FlextOracleOicIntegrationLifecycleMixin,
+    FlextOracleOicIntegrationLifecycle,
 )
-from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
-from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
+from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoring
+from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestration
 from tests import c, tm
 
 _VALID_CLIENT_ID = "client-id-123"
@@ -124,11 +122,11 @@ class TestsFlextOracleOicExtServices:
         "mixin",
         [
             FlextOracleOicServiceBase,
-            FlextOracleOicAuthMixin,
-            FlextOracleOicMonitoringMixin,
-            FlextOracleOicOrchestrationMixin,
-            FlextOracleOicIntegrationLifecycleMixin,
-            FlextOracleOicIntegrationCrudMixin,
+            FlextOracleOicAuth,
+            FlextOracleOicMonitoring,
+            FlextOracleOicOrchestration,
+            FlextOracleOicIntegrationLifecycle,
+            FlextOracleOicIntegrationCrud,
         ],
     )
     def test_service_composes_every_documented_domain_mixin(

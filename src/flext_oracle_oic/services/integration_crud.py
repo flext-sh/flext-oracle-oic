@@ -22,7 +22,7 @@ from flext_oracle_oic import (
 )
 
 
-class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
+class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
     """Mixin providing integration CRUD operations for FlextOracleOicService facade."""
 
     def _get_client_or_fail(self) -> p.Result[FlextOracleOicClient]:
@@ -341,4 +341,4 @@ class FlextOracleOicIntegrationCrudMixin(FlextOracleOicServiceBase):
             )
 
 
-__all__: list[str] = ["FlextOracleOicIntegrationCrudMixin"]
+__all__: list[str] = ["FlextOracleOicIntegrationCrud"]

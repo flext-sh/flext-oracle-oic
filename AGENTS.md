@@ -38,7 +38,7 @@ src/flext_oracle_oic/
 | `FlextOracleOicApi`                  | class | `api.py`                       | facade: integration CRUD, orchestration, health/metrics, auth/token |
 | `FlextOracleOicClient`               | class | `ext_client.py`                | OIC REST client                                                     |
 | `FlextOracleOicService`              | class | `service.py`                   | service layer                                                       |
-| `FlextOracleOicIntegrationCrudMixin` | class | `services/integration_crud.py` | CRUD mixin                                                          |
+| `FlextOracleOicIntegrationCrud` | class | `services/integration_crud.py` | CRUD mixin                                                          |
 
 ## Conventions (specific to this package)
 

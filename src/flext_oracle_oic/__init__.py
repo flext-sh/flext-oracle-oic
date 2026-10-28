@@ -33,19 +33,19 @@ if TYPE_CHECKING:
     from flext_oracle_oic.cli import FlextOracleOicCli, main
     from flext_oracle_oic.constants import FlextOracleOicConstants, c
     from flext_oracle_oic.ext_client import FlextOracleOicClient
-    from flext_oracle_oic.models import FlextOracleOicModels, m
+    from flext_oracle_oic.models import FlextModelsOracleOic, m
     from flext_oracle_oic.protocols import FlextOracleOicProtocols, p
     from flext_oracle_oic.typings import FlextOracleOicTypes, t
     from flext_oracle_oic.utilities import FlextOracleOicUtilities, u
 
 
 __all__: tuple[str, ...] = (
+    "FlextModelsOracleOic",
     "FlextOracleOicApi",
     "FlextOracleOicCli",
     "FlextOracleOicClient",
     "FlextOracleOicConfig",
     "FlextOracleOicConstants",
-    "FlextOracleOicModels",
     "FlextOracleOicProtocols",
     "FlextOracleOicServiceBase",
     "FlextOracleOicSettings",
@@ -90,7 +90,7 @@ install_lazy_exports(
         "FlextOracleOicClient": ".ext_client",
         "FlextOracleOicConfig": "._config",
         "FlextOracleOicConstants": ".constants",
-        "FlextOracleOicModels": ".models",
+        "FlextModelsOracleOic": ".models",
         "FlextOracleOicProtocols": ".protocols",
         "FlextOracleOicServiceBase": ".base",
         "FlextOracleOicSettings": "._settings",
