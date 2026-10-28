@@ -39,7 +39,6 @@ class TestsFlextOracleOicExtension:
     """Public-contract tests for the Oracle OIC API facade."""
 
     @pytest.fixture
-    @staticmethod
     def settings() -> FlextOracleOicSettings:
         """Deterministic in-memory settings with distinctive values.
 
@@ -56,15 +55,14 @@ class TestsFlextOracleOicExtension:
         })
 
     @pytest.fixture
-    @staticmethod
-    def api(settings: FlextOracleOicSettings) -> FlextOracleOicApi:
+    def api(self: FlextOracleOicSettings) -> FlextOracleOicApi:
         """Facade built from the deterministic settings fixture.
 
         Returns:
             The resulting ``FlextOracleOicApi``.
 
         """
-        return FlextOracleOicApi(settings)
+        return FlextOracleOicApi(self)
 
     @staticmethod
     def test_facade_singleton_is_the_shared_api_instance() -> None:
