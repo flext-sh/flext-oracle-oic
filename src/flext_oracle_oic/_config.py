@@ -14,7 +14,7 @@ from typing import Annotated
 
 from flext_cli import FlextCliConfig, m
 
-from flext_oracle_oic._models.config import FlextModelsOracleOicConfig
+from flext_oracle_oic.config_models import FlextModelsOracleOicConfig
 
 
 class FlextOracleOicConfig(FlextCliConfig):
