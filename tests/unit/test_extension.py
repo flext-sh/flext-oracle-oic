@@ -54,15 +54,18 @@ class TestsFlextOracleOicExtension:
             },
         })
 
+    @staticmethod
     @pytest.fixture
-    def api(self: FlextOracleOicSettings) -> FlextOracleOicApi:
+    def api(
+        settings: FlextOracleOicSettings,
+    ) -> FlextOracleOicApi:
         """Facade built from the deterministic settings fixture.
 
         Returns:
             The resulting ``FlextOracleOicApi``.
 
         """
-        return FlextOracleOicApi(self)
+        return FlextOracleOicApi(settings)
 
     @staticmethod
     def test_facade_singleton_is_the_shared_api_instance() -> None:

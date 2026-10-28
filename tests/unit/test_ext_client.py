@@ -41,14 +41,15 @@ class TestsFlextOracleOicExtClient:
             oauth_token_url=_OAUTH_ENDPOINT,
         )
 
+    @staticmethod
     @pytest.fixture
     def client(
-        self: m.OracleOic.OICConnectionConfig,
+        connection_config: m.OracleOic.OICConnectionConfig,
         auth_config: m.OracleOic.OICAuthConfig,
     ) -> FlextOracleOicClient:
         """Return a client wired with valid configuration objects."""
         return FlextOracleOicClient(
-            connection_config=self,
+            connection_config=connection_config,
             auth_config=auth_config,
         )
 

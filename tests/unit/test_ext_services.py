@@ -92,9 +92,10 @@ class TestsFlextOracleOicExtServices:
         yield FlextOracleOicService()
         FlextOracleOicSettings.reset_for_testing()
 
+    @staticmethod
     @pytest.fixture
     def configured_service(
-        self: pytest.MonkeyPatch,
+        monkeypatch: pytest.MonkeyPatch,
     ) -> Iterator[FlextOracleOicService]:
         """Service backed by global settings with valid OAuth credentials.
 
@@ -104,11 +105,11 @@ class TestsFlextOracleOicExtServices:
         """
         # NOTE (ADR-005): project fields are namespaced under settings.OracleOic,
         # so env vars use the nested delimiter form ORACLEOIC__<FIELD>.
-        self.setenv(
+        monkeypatch.setenv(
             "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_ID",
             _VALID_CLIENT_ID,
         )
-        self.setenv(
+        monkeypatch.setenv(
             "FLEXT_ORACLE_OIC_ORACLEOIC__OAUTH_CLIENT_SECRET",
             _VALID_OAUTH_CREDENTIAL,
         )
