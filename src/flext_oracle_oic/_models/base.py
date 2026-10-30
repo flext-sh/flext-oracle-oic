@@ -7,5 +7,5 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 
-class FlextOracleOicModelsBase:
+class FlextModelsOracleOicBase:
     """Base family holder for flext-oracle-oic models."""

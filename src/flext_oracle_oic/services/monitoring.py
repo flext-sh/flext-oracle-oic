@@ -15,7 +15,7 @@ from collections.abc import Mapping
 from flext_oracle_oic import FlextOracleOicServiceBase, c, m, p, r, t, u
 
 
-class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
+class FlextOracleOicMonitoring(FlextOracleOicServiceBase):
     """Mixin providing monitoring operations for FlextOracleOicService facade."""
 
     def fetch_health_status(self) -> p.Result[t.JsonMapping]:
@@ -278,4 +278,4 @@ class FlextOracleOicMonitoringMixin(FlextOracleOicServiceBase):
         return self._metrics_with_analysis(error_metrics)
 
 
-__all__: list[str] = ["FlextOracleOicMonitoringMixin"]
+__all__: list[str] = ["FlextOracleOicMonitoring"]

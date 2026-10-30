@@ -11,6 +11,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import MutableMapping
+
 import pytest
 
 from tests import c, m, t, tm
@@ -24,7 +26,7 @@ _OAUTH_ENDPOINT = "https://idcs.example.com/oauth2/v1/token"
 
 
 class TestsFlextOracleOicModelsUnit:
-    """Public-contract behavior of FlextOracleOicModels.OracleOic.*."""
+    """Public-contract behavior of FlextModelsOracleOic.OracleOic.*."""
 
     # ---- OICAuthConfig ---------------------------------------------------
 
@@ -105,7 +107,7 @@ class TestsFlextOracleOicModelsUnit:
     )
     def test_auth_config_requires_mandatory_fields(missing: str) -> None:
         """Omitting any required field raises a validation error."""
-        payload: t.MutableMappingKV[str, str] = {
+        payload: MutableMapping[str, str] = {
             "oauth_client_id": "cid",
             "oauth_client_secret": "secret",
             "oauth_token_url": _OAUTH_ENDPOINT,
@@ -130,7 +132,7 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.api_version, eq="v2")
         tm.that(config.request_timeout, eq=45)
         tm.that(config.max_retries, eq=5)
-        tm.that(config.verify_ssl, eq=False)
+        tm.fail(config.verify_ssl)
 
     @staticmethod
     def test_connection_config_applies_documented_defaults() -> None:
@@ -139,7 +141,7 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.api_version, eq=c.OracleOic.DEFAULT_API_VERSION)
         tm.that(config.request_timeout, eq=c.DEFAULT_TIMEOUT_SECONDS)
         tm.that(config.max_retries, eq=c.MAX_RETRY_ATTEMPTS)
-        assert config.verify_ssl is c.OracleOic.DEFAULT_VERIFY_SSL
+        tm.that(config.verify_ssl is c.OracleOic.DEFAULT_VERIFY_SSL, truth=True)
 
     @staticmethod
     @pytest.mark.parametrize("field_name", m.OracleOic.OICConnectionConfig.model_fields)
@@ -179,7 +181,7 @@ class TestsFlextOracleOicModelsUnit:
             status="ACTIVE",
             integration_version="1.0.0",
             description="desc",
-            created_by="user",
+            created_by=c.ContextScope.USER,
             last_updated="2025-01-08T10:00:00Z",
         )
         dumped = info.model_dump()
@@ -188,7 +190,7 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(dumped["status"], eq="ACTIVE")
         tm.that(dumped["integration_version"], eq="1.0.0")
         tm.that(dumped["description"], eq="desc")
-        tm.that(dumped["created_by"], eq="user")
+        tm.that(dumped["created_by"], eq=c.ContextScope.USER)
         tm.that(dumped["last_updated"], eq="2025-01-08T10:00:00Z")
 
     @staticmethod
@@ -215,7 +217,7 @@ class TestsFlextOracleOicModelsUnit:
         )
         dumped = info.model_dump()
         tm.that(dumped["unique_id"], is_=str)
-        assert dumped["unique_id"]
+        tm.that(dumped["unique_id"], truth=True)
 
     @staticmethod
     def test_integration_info_requires_core_fields() -> None:

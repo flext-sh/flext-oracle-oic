@@ -12,7 +12,7 @@ from __future__ import annotations
 from flext_oracle_oic import FlextOracleOicServiceBase, c, p, r
 
 
-class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
+class FlextOracleOicAuth(FlextOracleOicServiceBase):
     """Mixin providing authentication operations for FlextOracleOicService facade."""
 
     def refresh_auth_token(self) -> p.Result[str]:
@@ -57,4 +57,4 @@ class FlextOracleOicAuthMixin(FlextOracleOicServiceBase):
             return r[bool].fail_op("Token validation", e)
 
 
-__all__: list[str] = ["FlextOracleOicAuthMixin"]
+__all__: list[str] = ["FlextOracleOicAuth"]

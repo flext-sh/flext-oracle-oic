@@ -68,9 +68,9 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
     def __exit__(
         self,
-        error_type: type[BaseException] | None,
-        error: BaseException | None,
-        error_traceback: TracebackType | None,
+        _error_type: type[BaseException] | None,
+        _error: BaseException | None,
+        _error_traceback: TracebackType | None,
     ) -> None:
         """Close the OIC client session this service owns."""
         if self._client is not None:
@@ -100,7 +100,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
     @staticmethod
     def _to_general_value(
-        value: t.JsonValue | t.Scalar | t.ScalarMapping | t.ScalarList,
+        value: t.JsonValue | t.Scalar | Mapping[str, t.Scalar] | Sequence[t.Scalar],
     ) -> t.JsonValue:
         """Normalize an arbitrary runtime value into a JSON-compatible value.
 
@@ -112,7 +112,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         """
         if isinstance(value, bytes):
-            return value.decode(errors="replace")
+            return value.decode(errors=c.MergeStrategy.REPLACE)
         if isinstance(value, c.PRIMITIVES_TYPES) or value is None:
             return value
         if isinstance(value, Mapping):

@@ -15,11 +15,13 @@ from flext_core.lazy import install_lazy_exports
 if TYPE_CHECKING:
     from flext_oracle_oic._protocols.base import FlextOracleOicProtocolsBase
     from flext_oracle_oic._protocols.config import FlextOracleOicProtocolsConfig
+    from flext_oracle_oic._protocols.domain import FlextOracleOicProtocolsDomain
 
 
 __all__: tuple[str, ...] = (
     "FlextOracleOicProtocolsBase",
     "FlextOracleOicProtocolsConfig",
+    "FlextOracleOicProtocolsDomain",
 )
 
 install_lazy_exports(
@@ -28,6 +30,7 @@ install_lazy_exports(
     MappingProxyType({
         "FlextOracleOicProtocolsBase": ".base",
         "FlextOracleOicProtocolsConfig": ".config",
+        "FlextOracleOicProtocolsDomain": ".domain",
     }),
     public_exports=__all__,
 )

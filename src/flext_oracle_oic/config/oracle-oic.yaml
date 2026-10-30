@@ -1,3 +1,7 @@
 OracleOic:
   name: flext-oracle-oic
   version: "0.12.0-dev"
+  api: {}
+  integration: {}
+  validation: {}
+  monitoring: {}

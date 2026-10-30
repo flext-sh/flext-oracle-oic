@@ -25,7 +25,8 @@ src/flext_oracle_oic/
 ├── api.py                # FlextOracleOicApi facade (async context manager)
 ├── ext_client.py         # FlextOracleOicClient
 ├── service.py main.py __main__.py
-├── services/             # integration CRUD, lifecycle, orchestration, monitoring, authentication mixins
+├── services/             # integration CRUD, lifecycle, orchestration,
+│                         # monitoring, authentication mixins
 ├── constants.py typings.py protocols.py models.py utilities.py   # AUTO-GENERATED facets
 └── _utilities/
 ```
@@ -37,13 +38,13 @@ src/flext_oracle_oic/
 | `FlextOracleOicApi`                  | class | `api.py`                       | facade: integration CRUD, orchestration, health/metrics, auth/token |
 | `FlextOracleOicClient`               | class | `ext_client.py`                | OIC REST client                                                     |
 | `FlextOracleOicService`              | class | `service.py`                   | service layer                                                       |
-| `FlextOracleOicIntegrationCrudMixin` | class | `services/integration_crud.py` | CRUD mixin                                                          |
+| `FlextOracleOicIntegrationCrud` | class | `services/integration_crud.py` | CRUD mixin                                                          |
 
 ## Conventions (specific to this package)
 
 - `FlextOracleOicApi` is an **async context manager** and depends on `flext-auth` for
   authentication/token handling.
-- Config/settings canonical pattern: ADR-012.
+- Config/settings canonical pattern: ADR-005 (SSOT) and ADR-024 (DI config contract).
 - Codemod governance (ast-grep + make mod): ADR-014.
 
 ## Anti-Patterns / Gotchas
@@ -58,7 +59,7 @@ member — `PROJECT=` is not a root Make variable):
 
 ```bash
 make check
-make test
+make tests
 ```
 
 <!-- AIHUB-AGENTS-SCOPE-LOCAL-END -->

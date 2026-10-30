@@ -10,11 +10,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from functools import cached_property
+from typing import Annotated
 
-from flext_cli import FlextCliConfig
+from flext_cli import FlextCliConfig, m
 
-from flext_oracle_oic._models.config import FlextOracleOicModelsConfig
+from flext_oracle_oic.config_models import FlextModelsOracleOicConfig
 
 
 class FlextOracleOicConfig(FlextCliConfig):
@@ -25,20 +25,10 @@ class FlextOracleOicConfig(FlextCliConfig):
     adjustable runtime settings keep their own independent lifecycle.
     """
 
-    @cached_property
-    def OracleOic(self) -> FlextOracleOicModelsConfig.Config:
-        """The required business namespace without synthesized defaults.
-
-        Raises:
-            ValueError: If Oracle OIC business configuration namespace is missing.
-
-        """
-        if self.model_extra is None:
-            msg = "Oracle OIC business configuration namespace is missing"
-            raise ValueError(msg)
-        return FlextOracleOicModelsConfig.Config.model_validate(
-            self.model_extra["OracleOic"]
-        )
+    OracleOic: Annotated[
+        FlextModelsOracleOicConfig.Config,
+        m.Field(description="Oracle OIC business domains from ``config/*.yaml``."),
+    ]
 
 
 config: FlextOracleOicConfig = FlextOracleOicConfig.fetch_global()

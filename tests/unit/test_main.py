@@ -55,4 +55,4 @@ class TestsFlextOracleOicMain:
     def test_package_exposes_non_empty_version_string() -> None:
         """`__version__` is a non-empty string usable by the `version` command."""
         tm.that(__version__, is_=str)
-        assert __version__
+        tm.that(__version__, truth=True)
