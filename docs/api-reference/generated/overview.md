@@ -22,10 +22,10 @@
   `FlextOracleOicConfig`, `FlextOracleOicConstants`, `FlextOracleOicProtocols`,
   `FlextOracleOicServiceBase`, `FlextOracleOicSettings` (+3 more)
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
-- Public symbol exports: `FlextModelsOracleOic`, `FlextOracleOicApi`,
-  `FlextOracleOicCli`, `FlextOracleOicClient`, `FlextOracleOicConfig`,
-  `FlextOracleOicConstants`, `FlextOracleOicProtocols`, `FlextOracleOicServiceBase`,
-  `FlextOracleOicSettings`, `FlextOracleOicTypes` (+6 more)
+- Public symbol exports: `FlextModelsOracleOic`, `FlextModelsOracleOicConfig`,
+  `FlextOracleOicApi`, `FlextOracleOicCli`, `FlextOracleOicClient`,
+  `FlextOracleOicConfig`, `FlextOracleOicConstants`, `FlextOracleOicProtocols`,
+  `FlextOracleOicServiceBase`, `FlextOracleOicSettings` (+7 more)
 - Exported module shortcuts: _none_
 - Generated module pages: `10`
 
