@@ -1,12 +1,13 @@
 # AGENTS.md — flext-oracle-oic
 
-> **Parent workspace law** lives in [`../AGENTS.md`](../AGENTS.md) — read it first.
-> Universal engineering core: `~/.agents/UNIVERSAL_CORE.md`. Composition: global
-> skills + parent/root `AGENTS.md` + this scope delta. Do not re-embed universal law.
->
-> **Standalone / independent mode:** when `../AGENTS.md` does not resolve, pin the
-> parent raw `AGENTS.md` URL to the same branch/release as this package (never
-> `main`): <https://raw.githubusercontent.com/flext-sh/flext/0.12.0-dev/AGENTS.md>
+Read the branch-matched [FLEXT root](../AGENTS.md) and its local flext-law through
+that root's authority entry point. In standalone mode resolve the same branch or
+release; a coincidental parent instruction file does not establish FLEXT authority.
+This file adds only this package's domain delta. Command routing, architecture
+and universal execution stay with their parent owners.
+
+Embedded AI Hub or Beads generated blocks are retired delivery material, not
+active local rules. Their withdrawal remains the publisher's responsibility.
 
 <!-- AIHUB-AGENTS-SCOPE-LOCAL-BEGIN -->
 
@@ -18,48 +19,15 @@
 Oracle Integration Cloud (OIC) extension library — integration CRUD, orchestration,
 monitoring. Base for `flext-tap-oracle-oic` and `flext-target-oracle-oic`.
 
-## Structure
-
-```text
-src/flext_oracle_oic/
-├── api.py                # FlextOracleOicApi facade (async context manager)
-├── ext_client.py         # FlextOracleOicClient
-├── service.py main.py __main__.py
-├── services/             # integration CRUD, lifecycle, orchestration, monitoring, authentication mixins
-├── constants.py typings.py protocols.py models.py utilities.py   # AUTO-GENERATED facets
-└── _utilities/
-```
-
-## Code Map
-
-| Symbol                               | Kind  | Location                       | Role                                                                |
-| ------------------------------------ | ----- | ------------------------------ | ------------------------------------------------------------------- |
-| `FlextOracleOicApi`                  | class | `api.py`                       | facade: integration CRUD, orchestration, health/metrics, auth/token |
-| `FlextOracleOicClient`               | class | `ext_client.py`                | OIC REST client                                                     |
-| `FlextOracleOicService`              | class | `service.py`                   | service layer                                                       |
-| `FlextOracleOicIntegrationCrudMixin` | class | `services/integration_crud.py` | CRUD mixin                                                          |
-
 ## Conventions (specific to this package)
 
 - `FlextOracleOicApi` is an **async context manager** and depends on `flext-auth` for
   authentication/token handling.
-- Config/settings canonical pattern: ADR-012.
-- Codemod governance (ast-grep + make mod): ADR-014.
 
 ## Anti-Patterns / Gotchas
 
 - Authentication lifecycle is separate from the service mixins — go through the facade's
   auth/token operations.
-
-## Commands
-
-Run from the workspace root (selector-free; the root dispatcher routes to every
-member — `PROJECT=` is not a root Make variable):
-
-```bash
-make check
-make test
-```
 
 <!-- AIHUB-AGENTS-SCOPE-LOCAL-END -->
 
