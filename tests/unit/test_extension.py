@@ -54,8 +54,8 @@ class TestsFlextOracleOicExtension:
             },
         })
 
-    @staticmethod
     @pytest.fixture
+    @staticmethod
     def api(
         settings: FlextOracleOicSettings,
     ) -> FlextOracleOicApi:

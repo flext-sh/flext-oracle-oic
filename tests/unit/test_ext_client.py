@@ -41,8 +41,8 @@ class TestsFlextOracleOicExtClient:
             oauth_token_url=_OAUTH_ENDPOINT,
         )
 
-    @staticmethod
     @pytest.fixture
+    @staticmethod
     def client(
         connection_config: m.OracleOic.OICConnectionConfig,
         auth_config: m.OracleOic.OICAuthConfig,

@@ -83,8 +83,8 @@ class TestsFlextOracleOicExtServices:
         yield FlextOracleOicService()
         FlextOracleOicSettings.reset_for_testing()
 
-    @staticmethod
     @pytest.fixture
+    @staticmethod
     def configured_service(
         monkeypatch: pytest.MonkeyPatch,
     ) -> Iterator[FlextOracleOicService]:
