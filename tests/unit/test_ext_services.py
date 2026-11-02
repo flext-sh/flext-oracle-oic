@@ -17,7 +17,7 @@ from collections.abc import Callable, Iterator, Mapping, Sequence
 
 import pytest
 
-from flext_oracle_oic import FlextOracleOicServiceBase, FlextOracleOicSettings, p, s
+from flext_oracle_oic import FlextOracleOicServiceBase, FlextOracleOicSettings, s
 from flext_oracle_oic.services import FlextOracleOicService
 from flext_oracle_oic.services.auth import FlextOracleOicAuth
 from flext_oracle_oic.services.integration_crud import FlextOracleOicIntegrationCrud

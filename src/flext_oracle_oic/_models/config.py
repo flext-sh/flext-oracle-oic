@@ -9,7 +9,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Annotated, ClassVar
 
-from flext_core import m, p
+from flext_core import m, p, t
 
 from flext_oracle_oic.config_models import FlextModelsOracleOicConfig as _ConfigModels
 
@@ -20,7 +20,7 @@ class FlextModelsOracleOicConfig(_ConfigModels):
     class FieldValidationPlan(m.Value):
         """Validated plan for one integration string field."""
 
-        model_config: ClassVar[p.ConfigDict] = m.ConfigDict(
+        model_config: ClassVar[t.ConfigDict] = m.ConfigDict(
             arbitrary_types_allowed=True,
             frozen=True,
         )
