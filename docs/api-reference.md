@@ -157,7 +157,7 @@ and a reachable instance. HTTP operations use the upstream `FlextApi` facade.
 Basic Pydantic data models are available:
 
 ```python
-from flext_oracle_oic import m
+from flext_oracle_oic import m, p
 
 integration_fields = tuple(m.OracleOic.OICIntegrationInfo.model_fields)
 ```
