@@ -41,7 +41,7 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
     def _create_integration_impl(
         self,
         integration_data: t.JsonMapping,
-    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[p.OracleOic.OICIntegrationInfo]:
         """Core implementation for create_integration.
 
         Args:
@@ -53,24 +53,24 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
         """
         client_result = self._get_client_or_fail()
         if client_result.failure:
-            return r[m.OracleOic.OICIntegrationInfo].from_failure(client_result)
+            return r[p.OracleOic.OICIntegrationInfo].from_failure(client_result)
         client = client_result.value
         created_result = client.create_integration(integration_data)
         if created_result.failure:
             error_msg = created_result.error or "Failed to create integration"
-            return r[m.OracleOic.OICIntegrationInfo].fail(error_msg)
+            return r[p.OracleOic.OICIntegrationInfo].fail(error_msg)
         created_data = created_result.value
         integration = self._build_integration_info(
             created_data,
             fallback_id="",
             default_status=c.OracleOic.Integration.Status.DRAFT,
         )
-        return r[m.OracleOic.OICIntegrationInfo].ok(integration)
+        return r[p.OracleOic.OICIntegrationInfo].ok(integration)
 
     def create_integration(
         self,
         integration_data: t.JsonMapping,
-    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[p.OracleOic.OICIntegrationInfo]:
         """Create a new Oracle OIC integration.
 
         Args:
@@ -84,12 +84,12 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
             return self._create_integration_impl(integration_data)
         except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to create integration")
-            return r[m.OracleOic.OICIntegrationInfo].fail_op("Integration creation", e)
+            return r[p.OracleOic.OICIntegrationInfo].fail_op("Integration creation", e)
 
     def _fetch_integration_impl(
         self,
         integration_id: str,
-    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[p.OracleOic.OICIntegrationInfo]:
         """Core implementation for fetch_integration.
 
         Args:
@@ -101,19 +101,19 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
         """
         client_result = self._get_client_or_fail()
         if client_result.failure:
-            return r[m.OracleOic.OICIntegrationInfo].from_failure(client_result)
+            return r[p.OracleOic.OICIntegrationInfo].from_failure(client_result)
         client = client_result.value
         integrations_result = client.fetch_integrations()
         if integrations_result.failure:
             error_msg = integrations_result.error or "Failed to get integrations"
-            return r[m.OracleOic.OICIntegrationInfo].fail(error_msg)
+            return r[p.OracleOic.OICIntegrationInfo].fail(error_msg)
         integrations_list = integrations_result.value
         integration_data = next(
             (item for item in integrations_list if item.get("id") == integration_id),
             None,
         )
         if not integration_data:
-            return r[m.OracleOic.OICIntegrationInfo].fail(
+            return r[p.OracleOic.OICIntegrationInfo].fail(
                 f"Integration {integration_id} not found",
             )
         integration = self._build_integration_info(
@@ -121,12 +121,12 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
             fallback_id=integration_id,
             default_status=c.OracleOic.Connection.Status.UNKNOWN,
         )
-        return r[m.OracleOic.OICIntegrationInfo].ok(integration)
+        return r[p.OracleOic.OICIntegrationInfo].ok(integration)
 
     def fetch_integration(
         self,
         integration_id: str,
-    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[p.OracleOic.OICIntegrationInfo]:
         """Get a specific Oracle OIC integration by ID.
 
         Args:
@@ -140,13 +140,13 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
             return self._fetch_integration_impl(integration_id)
         except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to get integration %s", integration_id)
-            return r[m.OracleOic.OICIntegrationInfo].fail_op("Integration retrieval", e)
+            return r[p.OracleOic.OICIntegrationInfo].fail_op("Integration retrieval", e)
 
     def _update_integration_impl(
         self,
         integration_id: str,
         integration_data: t.JsonMapping,
-    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[p.OracleOic.OICIntegrationInfo]:
         """Core implementation for update_integration.
 
         Args:
@@ -159,25 +159,25 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
         """
         client_result = self._get_client_or_fail()
         if client_result.failure:
-            return r[m.OracleOic.OICIntegrationInfo].from_failure(client_result)
+            return r[p.OracleOic.OICIntegrationInfo].from_failure(client_result)
         client = client_result.value
         updated_result = client.update_integration(integration_id, integration_data)
         if updated_result.failure:
             error_msg = updated_result.error or "Failed to update integration"
-            return r[m.OracleOic.OICIntegrationInfo].fail(error_msg)
+            return r[p.OracleOic.OICIntegrationInfo].fail(error_msg)
         updated_data = updated_result.value
         integration = self._build_integration_info(
             updated_data,
             fallback_id=integration_id,
             default_status=c.OracleOic.Connection.Status.UNKNOWN,
         )
-        return r[m.OracleOic.OICIntegrationInfo].ok(integration)
+        return r[p.OracleOic.OICIntegrationInfo].ok(integration)
 
     def update_integration(
         self,
         integration_id: str,
         integration_data: t.JsonMapping,
-    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[p.OracleOic.OICIntegrationInfo]:
         """Update an existing Oracle OIC integration.
 
         Args:
@@ -192,7 +192,7 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
             return self._update_integration_impl(integration_id, integration_data)
         except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to update integration %s", integration_id)
-            return r[m.OracleOic.OICIntegrationInfo].fail_op("Integration update", e)
+            return r[p.OracleOic.OICIntegrationInfo].fail_op("Integration update", e)
 
     def _delete_integration_impl(self, integration_id: str) -> p.Result[bool]:
         """Core implementation for delete_integration.
@@ -276,7 +276,7 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
     def _list_connections_impl(
         self,
         type_filter: Sequence[str] | None,
-    ) -> p.Result[Sequence[m.OracleOic.OICConnectionInfo]]:
+    ) -> p.Result[Sequence[p.OracleOic.OICConnectionInfo]]:
         """Core implementation for list_connections.
 
         Args:
@@ -289,7 +289,7 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
         """
         client_result = self._get_client_or_fail()
         if client_result.failure:
-            return r[Sequence[m.OracleOic.OICConnectionInfo]].from_failure(
+            return r[Sequence[p.OracleOic.OICConnectionInfo]].from_failure(
                 client_result,
             )
         client = client_result.value
@@ -299,9 +299,9 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
         )
         if connections_result.failure:
             error_msg = connections_result.error or "Failed to get connections"
-            return r[Sequence[m.OracleOic.OICConnectionInfo]].fail(error_msg)
+            return r[Sequence[p.OracleOic.OICConnectionInfo]].fail(error_msg)
         connections_data = connections_result.value
-        connections: MutableSequence[m.OracleOic.OICConnectionInfo] = []
+        connections: MutableSequence[p.OracleOic.OICConnectionInfo] = []
         for item in connections_data:
             connection = m.OracleOic.OICConnectionInfo(
                 connection_id=self._as_text(item.get("id"), ""),
@@ -315,12 +315,12 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
                 description=self._as_text(item.get("description"), ""),
             )
             connections.append(connection)
-        return r[Sequence[m.OracleOic.OICConnectionInfo]].ok(connections)
+        return r[Sequence[p.OracleOic.OICConnectionInfo]].ok(connections)
 
     def list_connections(
         self,
         type_filter: Sequence[str] | None = None,
-    ) -> p.Result[Sequence[m.OracleOic.OICConnectionInfo]]:
+    ) -> p.Result[Sequence[p.OracleOic.OICConnectionInfo]]:
         """List Oracle OIC connections.
 
         Args:
@@ -335,7 +335,7 @@ class FlextOracleOicIntegrationCrud(FlextOracleOicServiceBase):
             return self._list_connections_impl(type_filter=type_filter)
         except c.EXC_NETWORK_TYPE as e:
             self.logger.exception("Failed to list connections")
-            return r[Sequence[m.OracleOic.OICConnectionInfo]].fail_op(
+            return r[Sequence[p.OracleOic.OICConnectionInfo]].fail_op(
                 "Connection listing",
                 e,
             )

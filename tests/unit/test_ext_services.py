@@ -17,7 +17,7 @@ from collections.abc import Callable, Iterator, Mapping, Sequence
 
 import pytest
 
-from flext_oracle_oic import FlextOracleOicServiceBase, FlextOracleOicSettings, m, p, s
+from flext_oracle_oic import FlextOracleOicServiceBase, FlextOracleOicSettings, p, s
 from flext_oracle_oic.services import FlextOracleOicService
 from flext_oracle_oic.services.auth import FlextOracleOicAuth
 from flext_oracle_oic.services.integration_crud import FlextOracleOicIntegrationCrud
@@ -26,15 +26,15 @@ from flext_oracle_oic.services.integration_lifecycle import (
 )
 from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoring
 from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestration
-from tests import c, tm
+from tests import c, p, tm
 
 _VALID_CLIENT_ID = "client-id-123"
 _VALID_OAUTH_CREDENTIAL = "test-credential-123"
 
 type _OperationResult = (
-    p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]
-    | p.Result[m.OracleOic.OICIntegrationInfo]
-    | p.Result[Sequence[m.OracleOic.OICConnectionInfo]]
+    p.Result[Sequence[p.OracleOic.OICIntegrationInfo]]
+    | p.Result[p.OracleOic.OICIntegrationInfo]
+    | p.Result[Sequence[p.OracleOic.OICConnectionInfo]]
     | p.Result[bool]
     | p.Result[str]
 )

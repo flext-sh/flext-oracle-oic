@@ -11,9 +11,9 @@ import base64
 
 import pytest
 
-from flext_oracle_oic import m, t
+from flext_oracle_oic import m, p, t
 from flext_oracle_oic.ext_client import FlextOracleOicClient
-from tests import tm
+from tests import p, tm
 
 # Named (not literal, and named without "token"/"secret") so ruff's flake8-bandit
 # heuristics do not fire: S106 flags a string literal passed to an
@@ -28,12 +28,12 @@ class TestsFlextOracleOicExtClient:
     """Observable-behavior tests for the unified Oracle OIC client."""
 
     @pytest.fixture
-    def connection_config() -> m.OracleOic.OICConnectionConfig:
+    def connection_config() -> p.OracleOic.OICConnectionConfig:
         """Return a valid in-memory OIC connection configuration."""
         return m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
 
     @pytest.fixture
-    def auth_config() -> m.OracleOic.OICAuthConfig:
+    def auth_config() -> p.OracleOic.OICAuthConfig:
         """Return a valid in-memory OIC authentication configuration."""
         return m.OracleOic.OICAuthConfig(
             oauth_client_id="client-42",
@@ -44,8 +44,8 @@ class TestsFlextOracleOicExtClient:
     @pytest.fixture
     @staticmethod
     def client(
-        connection_config: m.OracleOic.OICConnectionConfig,
-        auth_config: m.OracleOic.OICAuthConfig,
+        connection_config: p.OracleOic.OICConnectionConfig,
+        auth_config: p.OracleOic.OICAuthConfig,
     ) -> FlextOracleOicClient:
         """Return a client wired with valid configuration objects."""
         return FlextOracleOicClient(
@@ -66,7 +66,7 @@ class TestsFlextOracleOicExtClient:
 
     @staticmethod
     def test_oauth_request_body_uses_scope_when_no_audience(
-        connection_config: m.OracleOic.OICConnectionConfig,
+        connection_config: p.OracleOic.OICConnectionConfig,
     ) -> None:
         """Without audience, the configured scope drives the request body."""
         auth = m.OracleOic.OICAuthConfig(
@@ -102,7 +102,7 @@ class TestsFlextOracleOicExtClient:
 
     @staticmethod
     def test_oauth_request_body_composes_audience_scopes(
-        connection_config: m.OracleOic.OICConnectionConfig,
+        connection_config: p.OracleOic.OICConnectionConfig,
     ) -> None:
         """A configured audience yields both resource and api scope fragments."""
         auth = m.OracleOic.OICAuthConfig(
@@ -123,7 +123,7 @@ class TestsFlextOracleOicExtClient:
 
     @staticmethod
     def test_get_access_token_fails_when_token_url_missing(
-        connection_config: m.OracleOic.OICConnectionConfig,
+        connection_config: p.OracleOic.OICConnectionConfig,
     ) -> None:
         """A blank token URL short-circuits to a failure result, no network."""
         auth = m.OracleOic.OICAuthConfig(

@@ -71,7 +71,7 @@ class FlextOracleOicUtilitiesOracleOic:
         integration_data: t.JsonMapping,
         validated_data: t.MutableJsonMapping,
         errors: MutableSequence[str],
-        plan: m.OracleOic.FieldValidationPlan,
+        plan: p.OracleOic.FieldValidationPlan,
     ) -> None:
         """Validate one string field and update normalized payload or errors."""
         if plan.field_name not in integration_data:

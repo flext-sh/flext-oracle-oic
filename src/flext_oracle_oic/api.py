@@ -13,7 +13,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Self, override
 
-from flext_oracle_oic import FlextOracleOicSettings, m, p, r, t
+from flext_oracle_oic import FlextOracleOicSettings, p, r, t
 from flext_oracle_oic.services import FlextOracleOicService
 
 
@@ -88,7 +88,7 @@ class FlextOracleOicApi(FlextOracleOicService):
     def execute(
         self,
         **kwargs: t.Scalar,
-    ) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    ) -> p.Result[Sequence[p.OracleOic.OICIntegrationInfo]]:
         """Execute Oracle OIC API operations - delegates to service.
 
         Args:
@@ -210,7 +210,7 @@ class FlextOracleOicApi(FlextOracleOicService):
     def fetch_integration(
         self,
         integration_id: str,
-    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[p.OracleOic.OICIntegrationInfo]:
         """Get a specific Oracle OIC integration by ID.
 
         Args:
@@ -233,7 +233,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         return self._service.fetch_performance_metrics()
 
     @override
-    def list_integrations(self) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    def list_integrations(self) -> p.Result[Sequence[p.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -267,7 +267,7 @@ class FlextOracleOicApi(FlextOracleOicService):
         self,
         integration_id: str,
         integration_data: t.JsonMapping,
-    ) -> p.Result[m.OracleOic.OICIntegrationInfo]:
+    ) -> p.Result[p.OracleOic.OICIntegrationInfo]:
         """Update an existing Oracle OIC integration.
 
         Args:

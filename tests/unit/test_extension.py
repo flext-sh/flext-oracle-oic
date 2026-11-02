@@ -17,7 +17,7 @@ import pytest
 
 from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, oracle_oic, p, t
 from flext_oracle_oic.services import FlextOracleOicService
-from tests import c, tm
+from tests import c, p, tm
 
 # Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
 # this Callable annotation instead of leaving it implicit (was flagged
