@@ -12,12 +12,12 @@ from __future__ import annotations
 from flext_auth import m
 
 from flext_oracle_oic._models import (
-    FlextModelsOracleOicConfig,
-    FlextModelsOracleOicDomain,
+    FlextOracleOicModelsConfig,
+    FlextOracleOicModelsDomain,
 )
 
 
-class FlextModelsOracleOic(m):
+class FlextOracleOicModels(m):
     """Unified models for Oracle OIC Extension operations.
 
     Extends m to avoid duplication and ensure consistency.
@@ -25,10 +25,10 @@ class FlextModelsOracleOic(m):
     the [Project]Models pattern for centralized Pydantic validation.
     """
 
-    class OracleOic(FlextModelsOracleOicConfig, FlextModelsOracleOicDomain):
+    class OracleOic(FlextOracleOicModelsConfig, FlextOracleOicModelsDomain):
         """OracleOic domain namespace."""
 
 
-m = FlextModelsOracleOic
+m = FlextOracleOicModels
 
-__all__: list[str] = ["FlextModelsOracleOic", "m"]
+__all__: list[str] = ["FlextOracleOicModels", "m"]

@@ -17,7 +17,7 @@ from collections.abc import Mapping
 from pydantic import BaseModel, ConfigDict, JsonValue
 
 
-class FlextModelsOracleOicConfig:
+class FlextOracleOicModelsConfig:
     """Namespace of typed flext-oracle-oic config models (pure Pydantic)."""
 
     class Config(BaseModel):
@@ -31,4 +31,4 @@ class FlextModelsOracleOicConfig:
         monitoring: Mapping[str, JsonValue]
 
 
-__all__: list[str] = ["FlextModelsOracleOicConfig"]
+__all__: list[str] = ["FlextOracleOicModelsConfig"]

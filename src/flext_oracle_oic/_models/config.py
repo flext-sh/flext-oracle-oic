@@ -11,10 +11,10 @@ from typing import Annotated, ClassVar
 
 from flext_core import m, p, t
 
-from flext_oracle_oic.config_models import FlextModelsOracleOicConfig as _ConfigModels
+from flext_oracle_oic.config_models import FlextOracleOicModelsConfig as _ConfigModels
 
 
-class FlextModelsOracleOicConfig(_ConfigModels):
+class FlextOracleOicModelsConfig(_ConfigModels):
     """Expose the single configuration schema owner through the model family."""
 
     class FieldValidationPlan(m.Value):
@@ -41,4 +41,4 @@ class FlextModelsOracleOicConfig(_ConfigModels):
         ]
 
 
-__all__: list[str] = ["FlextModelsOracleOicConfig"]
+__all__: list[str] = ["FlextOracleOicModelsConfig"]

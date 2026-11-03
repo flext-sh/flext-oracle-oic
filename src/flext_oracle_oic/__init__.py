@@ -7,7 +7,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from types import MappingProxyType
 from typing import TYPE_CHECKING
 
 from flext_core.lazy import install_lazy_exports
@@ -31,23 +30,23 @@ if TYPE_CHECKING:
     from flext_oracle_oic.api import FlextOracleOicApi, oracle_oic
     from flext_oracle_oic.base import FlextOracleOicServiceBase, s
     from flext_oracle_oic.cli import FlextOracleOicCli, main
-    from flext_oracle_oic.config_models import FlextModelsOracleOicConfig
+    from flext_oracle_oic.config_models import FlextOracleOicModelsConfig
     from flext_oracle_oic.constants import FlextOracleOicConstants, c
     from flext_oracle_oic.ext_client import FlextOracleOicClient
-    from flext_oracle_oic.models import FlextModelsOracleOic, m
+    from flext_oracle_oic.models import FlextOracleOicModels, m
     from flext_oracle_oic.protocols import FlextOracleOicProtocols, p
     from flext_oracle_oic.typings import FlextOracleOicTypes, t
     from flext_oracle_oic.utilities import FlextOracleOicUtilities, u
 
 
 __all__: tuple[str, ...] = (
-    "FlextModelsOracleOic",
-    "FlextModelsOracleOicConfig",
     "FlextOracleOicApi",
     "FlextOracleOicCli",
     "FlextOracleOicClient",
     "FlextOracleOicConfig",
     "FlextOracleOicConstants",
+    "FlextOracleOicModels",
+    "FlextOracleOicModelsConfig",
     "FlextOracleOicProtocols",
     "FlextOracleOicServiceBase",
     "FlextOracleOicSettings",
@@ -82,14 +81,14 @@ __all__: tuple[str, ...] = (
 install_lazy_exports(
     __name__,
     globals(),
-    MappingProxyType({
-        "FlextModelsOracleOic": ".models",
-        "FlextModelsOracleOicConfig": ".config_models",
+    {
+        "FlextOracleOicModelsConfig": ".config_models",
         "FlextOracleOicApi": ".api",
         "FlextOracleOicCli": ".cli",
         "FlextOracleOicClient": ".ext_client",
         "FlextOracleOicConfig": "._config",
         "FlextOracleOicConstants": ".constants",
+        "FlextOracleOicModels": ".models",
         "FlextOracleOicProtocols": ".protocols",
         "FlextOracleOicServiceBase": ".base",
         "FlextOracleOicSettings": "._settings",
@@ -118,7 +117,7 @@ install_lazy_exports(
         "t": ".typings",
         "u": ".utilities",
         "x": "flext_auth",
-    }),
+    },
     public_exports=__all__,
 )
 
