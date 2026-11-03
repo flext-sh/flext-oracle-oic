@@ -18,13 +18,13 @@
   Python Modules, Typing :: Typed
 - Project class: `domain`
 - Keywords: `adapter`, `enterprise`, `flext`, `integration`, `typed`
-- Main facades: `FlextOracleOicModels`, `FlextOracleOicApi`, `FlextOracleOicCli`,
-  `FlextOracleOicClient`, `FlextOracleOicConfig`, `FlextOracleOicConstants`,
-  `FlextOracleOicProtocols`, `FlextOracleOicServiceBase` (+4 more)
+- Main facades: `FlextOracleOicApi`, `FlextOracleOicCli`, `FlextOracleOicClient`,
+  `FlextOracleOicConfig`, `FlextOracleOicConstants`, `FlextOracleOicModels`,
+  `FlextOracleOicModelsConfig`, `FlextOracleOicProtocols` (+5 more)
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
-- Public symbol exports: `FlextOracleOicModels`, `FlextOracleOicModelsConfig`,
-  `FlextOracleOicApi`, `FlextOracleOicCli`, `FlextOracleOicClient`,
-  `FlextOracleOicConfig`, `FlextOracleOicConstants`, `FlextOracleOicProtocols`,
+- Public symbol exports: `FlextOracleOicApi`, `FlextOracleOicCli`,
+  `FlextOracleOicClient`, `FlextOracleOicConfig`, `FlextOracleOicConstants`,
+  `FlextOracleOicModels`, `FlextOracleOicModelsConfig`, `FlextOracleOicProtocols`,
   `FlextOracleOicServiceBase`, `FlextOracleOicSettings` (+7 more)
 - Exported module shortcuts: _none_
 - Generated module pages: `10`

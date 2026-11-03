@@ -45,7 +45,7 @@ class FlextOracleOicProtocolsConfig:
             ...
 
     @runtime_checkable
-    class FieldValidationPlan(FlextAuthProtocols.Model, Protocol):
+    class FieldValidationPlan(FlextAuthProtocols.BaseModel, Protocol):
         """Structural data contract projected from the owning model."""
 
         @property

@@ -123,7 +123,7 @@ class FlextOracleOicProtocolsDomain:
             ...
 
     @runtime_checkable
-    class OICAuthConfig(FlextAuthProtocols.Model, Protocol):
+    class OICAuthConfig(FlextAuthProtocols.BaseModel, Protocol):
         """Structural data contract projected from the owning model."""
 
         @property
@@ -152,7 +152,7 @@ class FlextOracleOicProtocolsDomain:
             ...
 
     @runtime_checkable
-    class OICConnectionConfig(FlextAuthProtocols.Model, Protocol):
+    class OICConnectionConfig(FlextAuthProtocols.BaseModel, Protocol):
         """Structural data contract projected from the owning model."""
 
         @property
@@ -181,7 +181,7 @@ class FlextOracleOicProtocolsDomain:
             ...
 
     @runtime_checkable
-    class OICIntegrationInfo(FlextAuthProtocols.Model, Protocol):
+    class OICIntegrationInfo(FlextAuthProtocols.BaseModel, Protocol):
         """Structural data contract projected from the owning model."""
 
         @property
@@ -189,43 +189,16 @@ class FlextOracleOicProtocolsDomain:
             """List of uncommitted domain events for event sourcing."""
             ...
 
-        @property
-        def integration_id(self) -> str:
-            """Integration unique identifier."""
-            ...
-
-        @property
-        def name(self) -> str:
-            """Integration name."""
-            ...
-
-        @property
-        def status(self) -> str:
-            """Integration status."""
-            ...
-
-        @property
-        def integration_version(self) -> str:
-            """Integration version."""
-            ...
-
-        @property
-        def description(self) -> str:
-            """Integration description."""
-            ...
-
-        @property
-        def created_by(self) -> str:
-            """Creator username."""
-            ...
-
-        @property
-        def last_updated(self) -> str:
-            """Last update timestamp."""
-            ...
+        integration_id: str
+        name: str
+        status: str
+        integration_version: str
+        description: str
+        created_by: str
+        last_updated: str
 
     @runtime_checkable
-    class OICConnectionInfo(FlextAuthProtocols.Model, Protocol):
+    class OICConnectionInfo(FlextAuthProtocols.BaseModel, Protocol):
         """Structural data contract projected from the owning model."""
 
         @property
@@ -233,38 +206,15 @@ class FlextOracleOicProtocolsDomain:
             """List of uncommitted domain events for event sourcing."""
             ...
 
-        @property
-        def connection_id(self) -> str:
-            """Connection unique identifier."""
-            ...
-
-        @property
-        def name(self) -> str:
-            """Connection name."""
-            ...
-
-        @property
-        def adapter_type(self) -> str:
-            """Adapter type."""
-            ...
-
-        @property
-        def status(self) -> str:
-            """Connection status."""
-            ...
-
-        @property
-        def connection_type(self) -> str:
-            """Connection type."""
-            ...
-
-        @property
-        def description(self) -> str:
-            """Connection description."""
-            ...
+        connection_id: str
+        name: str
+        adapter_type: str
+        status: str
+        connection_type: str
+        description: str
 
     @runtime_checkable
-    class IntegrationStatus(FlextAuthProtocols.Model, Protocol):
+    class IntegrationStatus(FlextAuthProtocols.BaseModel, Protocol):
         """Structural data contract projected from the owning model."""
 
         @property
@@ -272,30 +222,11 @@ class FlextOracleOicProtocolsDomain:
             """List of uncommitted domain events for event sourcing."""
             ...
 
-        @property
-        def integration_id(self) -> str:
-            """Integration unique identifier."""
-            ...
-
-        @property
-        def integration_version(self) -> str:
-            """Integration version."""
-            ...
-
-        @property
-        def status(self) -> str:
-            """Integration status."""
-            ...
-
-        @property
-        def last_updated(self) -> str:
-            """Last update timestamp."""
-            ...
-
-        @property
-        def activated_by(self) -> str:
-            """User who activated the integration."""
-            ...
+        integration_id: str
+        integration_version: str
+        status: str
+        last_updated: str
+        activated_by: str
 
 
 __all__: list[str] = ["FlextOracleOicProtocolsDomain"]
