@@ -14,7 +14,7 @@ from flext_core import m
 from flext_oracle_oic import c, t
 
 
-class FlextModelsOracleOicDomain:
+class FlextOracleOicModelsDomain:
     """Oracle OIC domain models composed into ``m.OracleOic``."""
 
     class OICAuthConfig(FlextAuthModels.Value):
@@ -142,4 +142,4 @@ class FlextModelsOracleOicDomain:
         ] = ""
 
 
-__all__: list[str] = ["FlextModelsOracleOicDomain"]
+__all__: list[str] = ["FlextOracleOicModelsDomain"]

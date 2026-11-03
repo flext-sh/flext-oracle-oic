@@ -14,7 +14,7 @@ from typing import Annotated
 
 from flext_cli import FlextCliConfig, m
 
-from flext_oracle_oic.config_models import FlextModelsOracleOicConfig
+from flext_oracle_oic.config_models import FlextOracleOicModelsConfig
 
 
 class FlextOracleOicConfig(FlextCliConfig):
@@ -26,7 +26,7 @@ class FlextOracleOicConfig(FlextCliConfig):
     """
 
     OracleOic: Annotated[
-        FlextModelsOracleOicConfig.Config,
+        FlextOracleOicModelsConfig.Config,
         m.Field(description="Oracle OIC business domains from ``config/*.yaml``."),
     ]
 

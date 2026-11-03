@@ -8,7 +8,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
+from flext_auth import FlextAuthProtocols
+
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from flext_auth import p
     from flext_core import t
 
 
@@ -37,6 +42,35 @@ class FlextOracleOicProtocolsConfig:
         @property
         def monitoring(self) -> t.JsonMapping:
             """The configured monitoring rules."""
+            ...
+
+    @runtime_checkable
+    class FieldValidationPlan(FlextAuthProtocols.Model, Protocol):
+        """Structural data contract projected from the owning model."""
+
+        @property
+        def field_name(self) -> str:
+            """Name of the field to validate."""
+            ...
+
+        @property
+        def label(self) -> str:
+            """Human-readable label for the field."""
+            ...
+
+        @property
+        def required(self) -> bool:
+            """Whether the field is required."""
+            ...
+
+        @property
+        def required_message(self) -> str:
+            """Error message when required field is missing."""
+            ...
+
+        @property
+        def validator(self) -> Callable[[str], p.Result[str]]:
+            """Validation function for the field value."""
             ...
 
 

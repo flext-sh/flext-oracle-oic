@@ -1,7 +1,7 @@
 """Test models for flext-oracle-oic.
 
 Provides TestsFlextOracleOicModels, combining TestsFlextModels with
-FlextModelsOracleOic for test-specific model definitions.
+FlextOracleOicModels for test-specific model definitions.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -11,10 +11,10 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsModels
 
-from flext_oracle_oic import FlextModelsOracleOic
+from flext_oracle_oic import FlextOracleOicModels
 
 
-class TestsFlextOracleOicModels(FlextTestsModels, FlextModelsOracleOic):
+class TestsFlextOracleOicModels(FlextTestsModels, FlextOracleOicModels):
     """Test models combining TestsFlextModels with flext-oracle-oic models."""
 
 

@@ -23,7 +23,7 @@ class TestsFlextOracleOicImport:
         [
             "FlextOracleOicApi",
             "FlextOracleOicConstants",
-            "FlextModelsOracleOic",
+            "FlextOracleOicModels",
             "FlextOracleOicProtocols",
             "FlextOracleOicServiceBase",
             "FlextOracleOicSettings",
