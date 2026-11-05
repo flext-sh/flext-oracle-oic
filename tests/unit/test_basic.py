@@ -16,7 +16,7 @@ from __future__ import annotations
 import pytest
 
 from flext_oracle_oic import FlextOracleOicSettings
-from tests import c, m, t, tm
+from tests import c, m, t, tm, u
 
 
 class TestsFlextOracleOicBasic:
@@ -133,7 +133,7 @@ class TestsFlextOracleOicBasic:
         }
         del payload[missing]
 
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICAuthConfig.model_validate(payload)
 
     @staticmethod
@@ -153,7 +153,7 @@ class TestsFlextOracleOicBasic:
     @staticmethod
     def test_connection_config_rejects_non_positive_timeout() -> None:
         """request_timeout on the connection model enforces its constraint."""
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig.model_validate({
                 "base_url": "https://test.integration.ocp.oraclecloud.com",
                 "request_timeout": 0,

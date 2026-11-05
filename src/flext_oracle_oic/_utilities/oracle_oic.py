@@ -8,10 +8,13 @@ from __future__ import annotations
 
 from collections.abc import MutableSequence
 
-from flext_api import u
 from flext_core import r
 
-from flext_oracle_oic import c, m, p, t
+from flext_oracle_oic.constants import c
+from flext_oracle_oic.models import m
+from flext_oracle_oic.protocols import p
+from flext_oracle_oic.typings import t
+from flext_oracle_oic.utilities import u
 
 
 class FlextOracleOicUtilitiesOracleOic:

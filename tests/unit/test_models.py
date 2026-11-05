@@ -15,7 +15,7 @@ from collections.abc import MutableMapping
 
 import pytest
 
-from tests import c, m, t, tm
+from tests import c, m, t, tm, u
 
 # Named (not literal, and named without "token"/"secret") so ruff's flake8-bandit
 # heuristics do not fire: S106 flags a string literal passed to an
@@ -82,7 +82,7 @@ class TestsFlextOracleOicModelsUnit:
             oauth_client_secret=t.SecretStr("secret"),
             oauth_token_url=_OAUTH_ENDPOINT,
         )
-        with pytest.raises(c.ValidationError, match="frozen_instance"):
+        with u.Tests.raises(c.ValidationError, match="frozen_instance"):
             setattr(config, field_name, "mutated")
 
     @staticmethod
@@ -113,7 +113,7 @@ class TestsFlextOracleOicModelsUnit:
             "oauth_token_url": _OAUTH_ENDPOINT,
         }
         del payload[missing]
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICAuthConfig.model_validate(payload)
 
     # ---- OICConnectionConfig --------------------------------------------
@@ -148,14 +148,14 @@ class TestsFlextOracleOicModelsUnit:
     def test_connection_config_is_immutable(field_name: str) -> None:
         """Connection config is a frozen value object."""
         config = m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
-        with pytest.raises(c.ValidationError, match="frozen_instance"):
+        with u.Tests.raises(c.ValidationError, match="frozen_instance"):
             setattr(config, field_name, not config.verify_ssl)
 
     @staticmethod
     @pytest.mark.parametrize("timeout", [0, -1, -30])
     def test_connection_config_rejects_non_positive_timeout(timeout: int) -> None:
         """request_timeout must be strictly positive."""
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig(
                 base_url="https://oic.example.com",
                 request_timeout=timeout,
@@ -164,7 +164,7 @@ class TestsFlextOracleOicModelsUnit:
     @staticmethod
     def test_connection_config_rejects_negative_retries() -> None:
         """max_retries cannot be negative."""
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig(
                 base_url="https://oic.example.com",
                 max_retries=-1,
@@ -222,7 +222,7 @@ class TestsFlextOracleOicModelsUnit:
     @staticmethod
     def test_integration_info_requires_core_fields() -> None:
         """The domain identifier and descriptors are mandatory."""
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICIntegrationInfo.model_validate({"name": "only name"})
 
     # ---- OICConnectionInfo (entity) -------------------------------------
@@ -261,7 +261,7 @@ class TestsFlextOracleOicModelsUnit:
     @staticmethod
     def test_connection_info_requires_core_fields() -> None:
         """Connection identifier and descriptors are mandatory."""
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICConnectionInfo.model_validate({"name": "only name"})
 
     # ---- IntegrationStatus (entity) -------------------------------------

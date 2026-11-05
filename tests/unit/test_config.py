@@ -155,7 +155,7 @@ class TestsFlextOracleOicConfig:
             field: value,
         }
 
-        with pytest.raises(m.ValidationError) as exc_info:
+        with u.Tests.raises(m.ValidationError) as exc_info:
             m.OracleOic.OICConnectionConfig.model_validate(payload)
 
         tm.that(str(exc_info.value), has=field)
@@ -229,7 +229,7 @@ class TestsFlextOracleOicConfig:
         tm.that(loaded.OracleOic.api["page_size"], eq=page_size)
         tm.that(loaded.OracleOic.model_dump(), eq=payload["OracleOic"])
         tm.that(FlextOracleOicConfig.fetch_global() is config, truth=True)
-        with pytest.raises(m.ValidationError, match="frozen_instance"):
+        with u.Tests.raises(m.ValidationError, match="frozen_instance"):
             loaded.OracleOic = loaded.OracleOic
 
     @staticmethod

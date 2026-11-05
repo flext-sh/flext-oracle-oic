@@ -17,7 +17,11 @@ from typing import TYPE_CHECKING, Self
 
 from flext_api import FlextApi, FlextApiSettings
 
-from flext_oracle_oic import c, p, r, t, u
+from flext_oracle_oic.constants import c
+from flext_oracle_oic.protocols import p
+from flext_oracle_oic.result import r
+from flext_oracle_oic.typings import t
+from flext_oracle_oic.utilities import u
 
 if TYPE_CHECKING:
     from types import TracebackType
