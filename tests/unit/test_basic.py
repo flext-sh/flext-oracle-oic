@@ -13,8 +13,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
-
 from flext_oracle_oic import FlextOracleOicSettings
 from tests import c, m, t, tm, u
 
@@ -62,7 +60,7 @@ class TestsFlextOracleOicBasic:
         tm.that(settings.OracleOic.base_url, eq=c.OracleOic.DEFAULT_BASE_URL)
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         ("raw", "expected"),
         [("v1", c.OracleOic.OICApiVersion.V1), ("v2", c.OracleOic.OICApiVersion.V2)],
     )
@@ -120,7 +118,7 @@ class TestsFlextOracleOicBasic:
         tm.that(auth.oauth_client_aud, none=True)
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         "missing",
         ["oauth_client_id", "oauth_client_secret", "oauth_token_url"],
     )

@@ -9,10 +9,8 @@ from __future__ import annotations
 
 import base64
 
-import pytest
-
 from flext_oracle_oic.ext_client import FlextOracleOicClient
-from tests import m, p, t, tm
+from tests import m, p, t, tm, u
 
 # Named (not literal, and named without "token"/"secret") so ruff's flake8-bandit
 # heuristics do not fire: S106 flags a string literal passed to an
@@ -26,12 +24,12 @@ _OAUTH_ENDPOINT_SHORT = "https://idcs.example.com/token"
 class TestsFlextOracleOicExtClient:
     """Observable-behavior tests for the unified Oracle OIC client."""
 
-    @pytest.fixture
+    @u.Tests.fixture
     def connection_config() -> p.OracleOic.OICConnectionConfig:
         """Return a valid in-memory OIC connection configuration."""
         return m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
 
-    @pytest.fixture
+    @u.Tests.fixture
     def auth_config() -> p.OracleOic.OICAuthConfig:
         """Return a valid in-memory OIC authentication configuration."""
         return m.OracleOic.OICAuthConfig(
@@ -40,7 +38,7 @@ class TestsFlextOracleOicExtClient:
             oauth_token_url=_OAUTH_ENDPOINT,
         )
 
-    @pytest.fixture
+    @u.Tests.fixture
     @staticmethod
     def client(
         connection_config: p.OracleOic.OICConnectionConfig,

@@ -15,13 +15,9 @@ from collections.abc import Sequence
 
 from flext_cli import cli
 
+from flext_oracle_oic import c, m, p, r, t
 from flext_oracle_oic.__version__ import __version__
-from flext_oracle_oic.constants import c
-from flext_oracle_oic.models import m
-from flext_oracle_oic.protocols import p
-from flext_oracle_oic.result import r
 from flext_oracle_oic.services import FlextOracleOicService
-from flext_oracle_oic.typings import t
 
 
 class FlextOracleOicCli:
