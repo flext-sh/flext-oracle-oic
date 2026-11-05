@@ -7,18 +7,16 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
-
 import flext_oracle_oic
 from flext_oracle_oic import FlextOracleOicSettings, main
-from tests import tm
+from tests import c, tm
 
 
 class TestsFlextOracleOicImport:
     """Public-contract behavior for the flext_oracle_oic package facade."""
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         "export_name",
         [
             "FlextOracleOicApi",
@@ -101,7 +99,7 @@ class TestsFlextOracleOicImport:
         tm.that(restored.OracleOic.max_retries, eq=original.OracleOic.max_retries)
 
     @staticmethod
-    @pytest.mark.parametrize("invalid_timeout", [-5, 0])
+    @c.Tests.MARK.parametrize("invalid_timeout", [-5, 0])
     def test_settings_accept_raw_scalars_without_range_checks(
         invalid_timeout: int,
     ) -> None:

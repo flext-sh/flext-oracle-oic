@@ -15,9 +15,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterator, Mapping, Sequence
 
-import pytest
-
-from flext_oracle_oic import FlextOracleOicServiceBase, FlextOracleOicSettings, s
+from flext_oracle_oic import FlextOracleOicServiceBase, FlextOracleOicSettings
 from flext_oracle_oic.services import FlextOracleOicService
 from flext_oracle_oic.services.auth import FlextOracleOicAuth
 from flext_oracle_oic.services.integration_crud import FlextOracleOicIntegrationCrud
@@ -26,7 +24,7 @@ from flext_oracle_oic.services.integration_lifecycle import (
 )
 from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoring
 from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestration
-from tests import c, p, tm
+from tests import c, p, s, t, tm, u
 
 _VALID_CLIENT_ID = "client-id-123"
 _VALID_OAUTH_CREDENTIAL = "test-credential-123"
@@ -71,7 +69,7 @@ def _invoke_unconfigured_operation(
 class TestsFlextOracleOicExtServices:
     """Public-contract behavior of the Oracle OIC service facade."""
 
-    @pytest.fixture
+    @u.Tests.fixture
     def unconfigured_service() -> Iterator[FlextOracleOicService]:
         """Service backed by default (credential-less) global settings.
 
@@ -83,10 +81,10 @@ class TestsFlextOracleOicExtServices:
         yield FlextOracleOicService()
         FlextOracleOicSettings.reset_for_testing()
 
-    @pytest.fixture
+    @u.Tests.fixture
     @staticmethod
     def configured_service(
-        monkeypatch: pytest.MonkeyPatch,
+        monkeypatch: t.Tests.MonkeyPatch,
     ) -> Iterator[FlextOracleOicService]:
         """Service backed by global settings with valid OAuth credentials.
 
@@ -111,7 +109,7 @@ class TestsFlextOracleOicExtServices:
     # -- composition contract -------------------------------------------------
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         "mixin",
         [
             FlextOracleOicServiceBase,
@@ -145,7 +143,7 @@ class TestsFlextOracleOicExtServices:
     # -- fallible operations: graceful failure when unconfigured --------------
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         c.ContextScope.OPERATION,
         [
             "execute",
@@ -193,7 +191,7 @@ class TestsFlextOracleOicExtServices:
         tm.that(result.error, eq="Authenticator not initialized")
 
     @staticmethod
-    @pytest.mark.parametrize("token", ["", "some-token", "expired.jwt.value"])
+    @c.Tests.MARK.parametrize("token", ["", "some-token", "expired.jwt.value"])
     def test_validate_auth_token_reports_missing_authenticator(
         unconfigured_service: FlextOracleOicService,
         token: str,

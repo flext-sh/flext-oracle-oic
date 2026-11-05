@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
 from flext_auth import FlextAuthProtocols
 
-from flext_oracle_oic.typings import t
+from flext_oracle_oic import t
 
 if TYPE_CHECKING:
     from collections.abc import Sequence

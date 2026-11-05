@@ -13,8 +13,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from flext_oracle_oic import FlextOracleOicConfig, FlextOracleOicSettings, config
 from tests import c, m, t, tm, u
 
@@ -89,7 +87,7 @@ class TestsFlextOracleOicConfig:
         tm.that(ns.oauth_scope, eq="custom_scope")
 
     @staticmethod
-    @pytest.mark.parametrize("enabled", [True, False])
+    @c.Tests.MARK.parametrize("enabled", [True, False])
     def test_feature_flags_reflect_input(*, enabled: bool) -> None:
         """Extension feature flags reflect exactly the supplied booleans."""
         ns = FlextOracleOicSettings.model_validate({
@@ -135,7 +133,7 @@ class TestsFlextOracleOicConfig:
         tm.that(hasattr(settings, "nonexistent_field"), truth=False)
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         ("field", "value"),
         [
             ("request_timeout", 0),
@@ -204,7 +202,7 @@ class TestsFlextOracleOicConfig:
         tm.that(FlextOracleOicConfig.fetch_global() is config, truth=True)
 
     @staticmethod
-    @pytest.mark.parametrize("page_size", [1, 17, 401])
+    @c.Tests.MARK.parametrize("page_size", [1, 17, 401])
     def test_business_namespace_loads_arbitrary_valid_yaml(
         tmp_path: Path,
         page_size: int,
@@ -233,7 +231,7 @@ class TestsFlextOracleOicConfig:
             loaded.OracleOic = loaded.OracleOic
 
     @staticmethod
-    @pytest.mark.parametrize("yaml_text", ["{}", "OracleOic: {}"])
+    @c.Tests.MARK.parametrize("yaml_text", ["{}", "OracleOic: {}"])
     def test_business_namespace_rejects_missing_data_at_load(
         tmp_path: Path,
         yaml_text: str,
@@ -242,7 +240,7 @@ class TestsFlextOracleOicConfig:
         tm.ok(u.Cli.atomic_write_text_file(tmp_path / "business.yaml", yaml_text))
         with (
             u.Tests.env_vars_context({"FLEXT_ORACLE_OIC_CONFIG_DIR": str(tmp_path)}),
-            pytest.raises(m.ValidationError, match="OracleOic"),
+            u.Tests.raises(m.ValidationError, match="OracleOic"),
         ):
             FlextOracleOicConfig()
 

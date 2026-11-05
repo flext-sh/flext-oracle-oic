@@ -13,8 +13,6 @@ from __future__ import annotations
 
 from collections.abc import MutableMapping
 
-import pytest
-
 from tests import c, m, t, tm, u
 
 # Named (not literal, and named without "token"/"secret") so ruff's flake8-bandit
@@ -74,7 +72,7 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.oauth_client_secret.get_secret_value(), eq="super_secret")
 
     @staticmethod
-    @pytest.mark.parametrize("field_name", m.OracleOic.OICAuthConfig.model_fields)
+    @c.Tests.MARK.parametrize("field_name", m.OracleOic.OICAuthConfig.model_fields)
     def test_auth_config_is_immutable(field_name: str) -> None:
         """Auth config is a frozen value object; mutation is rejected."""
         config = m.OracleOic.OICAuthConfig(
@@ -101,7 +99,7 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(first, eq=second)
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         "missing",
         ["oauth_client_id", "oauth_client_secret", "oauth_token_url"],
     )
@@ -144,7 +142,9 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.verify_ssl is c.OracleOic.DEFAULT_VERIFY_SSL, truth=True)
 
     @staticmethod
-    @pytest.mark.parametrize("field_name", m.OracleOic.OICConnectionConfig.model_fields)
+    @c.Tests.MARK.parametrize(
+        "field_name", m.OracleOic.OICConnectionConfig.model_fields
+    )
     def test_connection_config_is_immutable(field_name: str) -> None:
         """Connection config is a frozen value object."""
         config = m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
@@ -152,7 +152,7 @@ class TestsFlextOracleOicModelsUnit:
             setattr(config, field_name, not config.verify_ssl)
 
     @staticmethod
-    @pytest.mark.parametrize("timeout", [0, -1, -30])
+    @c.Tests.MARK.parametrize("timeout", [0, -1, -30])
     def test_connection_config_rejects_non_positive_timeout(timeout: int) -> None:
         """request_timeout must be strictly positive."""
         with u.Tests.raises(c.ValidationError):

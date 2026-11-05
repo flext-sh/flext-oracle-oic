@@ -13,11 +13,9 @@ from __future__ import annotations
 
 from collections.abc import Callable, Sequence
 
-import pytest
-
 from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, oracle_oic
 from flext_oracle_oic.services import FlextOracleOicService
-from tests import c, p, t, tm
+from tests import c, p, t, tm, u
 
 # Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
 # this Callable annotation instead of leaving it implicit (was flagged
@@ -38,7 +36,7 @@ _CLIENT_OPERATIONS: Sequence[Callable[[FlextOracleOicApi], p.Result[None]]] = [
 class TestsFlextOracleOicExtension:
     """Public-contract tests for the Oracle OIC API facade."""
 
-    @pytest.fixture
+    @u.Tests.fixture
     def settings() -> FlextOracleOicSettings:
         """Deterministic in-memory settings with distinctive values.
 
@@ -54,7 +52,7 @@ class TestsFlextOracleOicExtension:
             },
         })
 
-    @pytest.fixture
+    @u.Tests.fixture
     @staticmethod
     def api(
         settings: FlextOracleOicSettings,
@@ -127,7 +125,7 @@ class TestsFlextOracleOicExtension:
         tm.that(payload["verify_ssl"], eq=settings.OracleOic.verify_ssl)
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         ("key", "expected"),
         [
             ("base_url", "https://custom.example.com"),
@@ -165,7 +163,7 @@ class TestsFlextOracleOicExtension:
         tm.that(result.unwrap(), has="success_rate")
 
     @staticmethod
-    @pytest.mark.parametrize(c.ContextScope.OPERATION, _CLIENT_OPERATIONS)
+    @c.Tests.MARK.parametrize(c.ContextScope.OPERATION, _CLIENT_OPERATIONS)
     def test_client_operations_fail_when_credentials_incomplete(
         api: FlextOracleOicApi,
         operation: Callable[[FlextOracleOicApi], p.Result[None]],
