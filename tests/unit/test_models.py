@@ -11,9 +11,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
+from collections.abc import MutableMapping
 
-from tests import c, m, t, tm
+from tests import c, m, t, tm, u
 
 # Named (not literal, and named without "token"/"secret") so ruff's flake8-bandit
 # heuristics do not fire: S106 flags a string literal passed to an
@@ -72,7 +72,7 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.oauth_client_secret.get_secret_value(), eq="super_secret")
 
     @staticmethod
-    @pytest.mark.parametrize("field_name", m.OracleOic.OICAuthConfig.model_fields)
+    @c.Tests.MARK.parametrize("field_name", m.OracleOic.OICAuthConfig.model_fields)
     def test_auth_config_is_immutable(field_name: str) -> None:
         """Auth config is a frozen value object; mutation is rejected."""
         config = m.OracleOic.OICAuthConfig(
@@ -80,7 +80,7 @@ class TestsFlextOracleOicModelsUnit:
             oauth_client_secret=t.SecretStr("secret"),
             oauth_token_url=_OAUTH_ENDPOINT,
         )
-        with pytest.raises(c.ValidationError, match="frozen_instance"):
+        with u.Tests.raises(c.ValidationError, match="frozen_instance"):
             setattr(config, field_name, "mutated")
 
     @staticmethod
@@ -99,19 +99,19 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(first, eq=second)
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         "missing",
         ["oauth_client_id", "oauth_client_secret", "oauth_token_url"],
     )
     def test_auth_config_requires_mandatory_fields(missing: str) -> None:
         """Omitting any required field raises a validation error."""
-        payload: t.MutableMappingKV[str, str] = {
+        payload: MutableMapping[str, str] = {
             "oauth_client_id": "cid",
             "oauth_client_secret": "secret",
             "oauth_token_url": _OAUTH_ENDPOINT,
         }
         del payload[missing]
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICAuthConfig.model_validate(payload)
 
     # ---- OICConnectionConfig --------------------------------------------
@@ -130,7 +130,7 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.api_version, eq="v2")
         tm.that(config.request_timeout, eq=45)
         tm.that(config.max_retries, eq=5)
-        tm.that(config.verify_ssl, eq=False)
+        tm.fail(config.verify_ssl)
 
     @staticmethod
     def test_connection_config_applies_documented_defaults() -> None:
@@ -139,21 +139,23 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(config.api_version, eq=c.OracleOic.DEFAULT_API_VERSION)
         tm.that(config.request_timeout, eq=c.DEFAULT_TIMEOUT_SECONDS)
         tm.that(config.max_retries, eq=c.MAX_RETRY_ATTEMPTS)
-        assert config.verify_ssl is c.OracleOic.DEFAULT_VERIFY_SSL
+        tm.that(config.verify_ssl is c.OracleOic.DEFAULT_VERIFY_SSL, truth=True)
 
     @staticmethod
-    @pytest.mark.parametrize("field_name", m.OracleOic.OICConnectionConfig.model_fields)
+    @c.Tests.MARK.parametrize(
+        "field_name", m.OracleOic.OICConnectionConfig.model_fields
+    )
     def test_connection_config_is_immutable(field_name: str) -> None:
         """Connection config is a frozen value object."""
         config = m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
-        with pytest.raises(c.ValidationError, match="frozen_instance"):
+        with u.Tests.raises(c.ValidationError, match="frozen_instance"):
             setattr(config, field_name, not config.verify_ssl)
 
     @staticmethod
-    @pytest.mark.parametrize("timeout", [0, -1, -30])
+    @c.Tests.MARK.parametrize("timeout", [0, -1, -30])
     def test_connection_config_rejects_non_positive_timeout(timeout: int) -> None:
         """request_timeout must be strictly positive."""
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig(
                 base_url="https://oic.example.com",
                 request_timeout=timeout,
@@ -162,7 +164,7 @@ class TestsFlextOracleOicModelsUnit:
     @staticmethod
     def test_connection_config_rejects_negative_retries() -> None:
         """max_retries cannot be negative."""
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig(
                 base_url="https://oic.example.com",
                 max_retries=-1,
@@ -179,7 +181,7 @@ class TestsFlextOracleOicModelsUnit:
             status="ACTIVE",
             integration_version="1.0.0",
             description="desc",
-            created_by="user",
+            created_by=c.ContextScope.USER,
             last_updated="2025-01-08T10:00:00Z",
         )
         dumped = info.model_dump()
@@ -188,7 +190,7 @@ class TestsFlextOracleOicModelsUnit:
         tm.that(dumped["status"], eq="ACTIVE")
         tm.that(dumped["integration_version"], eq="1.0.0")
         tm.that(dumped["description"], eq="desc")
-        tm.that(dumped["created_by"], eq="user")
+        tm.that(dumped["created_by"], eq=c.ContextScope.USER)
         tm.that(dumped["last_updated"], eq="2025-01-08T10:00:00Z")
 
     @staticmethod
@@ -215,12 +217,12 @@ class TestsFlextOracleOicModelsUnit:
         )
         dumped = info.model_dump()
         tm.that(dumped["unique_id"], is_=str)
-        assert dumped["unique_id"]
+        tm.that(dumped["unique_id"], truth=True)
 
     @staticmethod
     def test_integration_info_requires_core_fields() -> None:
         """The domain identifier and descriptors are mandatory."""
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICIntegrationInfo.model_validate({"name": "only name"})
 
     # ---- OICConnectionInfo (entity) -------------------------------------
@@ -259,7 +261,7 @@ class TestsFlextOracleOicModelsUnit:
     @staticmethod
     def test_connection_info_requires_core_fields() -> None:
         """Connection identifier and descriptors are mandatory."""
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICConnectionInfo.model_validate({"name": "only name"})
 
     # ---- IntegrationStatus (entity) -------------------------------------

@@ -326,47 +326,47 @@ tests/
 
 1. **Resolve Measured Findings**
 
-   - Repair current lint, type, facade, and composition findings at their canonical owners
-   - Preserve existing public HTTP, CLI, and service boundaries
+    - Repair current lint, type, facade, and composition findings at their canonical owners
+    - Preserve existing public HTTP, CLI, and service boundaries
 
 2. **Validate Canonical Fixed Points**
 
-   - Run generation, repair, formatting, and modernization through root Make verbs
-   - Verify the resulting public consumer and rerun applicable checks
+    - Run generation, repair, formatting, and modernization through root Make verbs
+    - Verify the resulting public consumer and rerun applicable checks
 
 ### Phase 2: Oracle OIC Implementation (Months 2-3)
 
 1. **OAuth2/IDCS Authentication**
 
-   - Complete Oracle cloud authentication
-   - Token lifecycle management
-   - Secure credential storage
+    - Complete Oracle cloud authentication
+    - Token lifecycle management
+    - Secure credential storage
 
 2. **Integration Patterns**
 
-   - App-driven orchestration
-   - Scheduled orchestration
-   - File transfer patterns
+    - App-driven orchestration
+    - Scheduled orchestration
+    - File transfer patterns
 
 3. **Failure and Monitoring Contracts**
 
-   - Preserve the first failure and its original causal diagnostics
-   - Do not add retry, fallback, or circuit-breaker paths to continue after a failure
-   - Validate the implemented monitoring and health-check operations
+    - Preserve the first failure and its original causal diagnostics
+    - Do not add retry, fallback, or circuit-breaker paths to continue after a failure
+    - Validate the implemented monitoring and health-check operations
 
 ### Phase 3: Production Readiness (Month 4+)
 
 1. **Comprehensive Testing**
 
-   - Coverage against the configured policy with meaningful integration tests
-   - Contract testing with Oracle OIC APIs
-   - Performance benchmarking
+    - Coverage against the configured policy with meaningful integration tests
+    - Contract testing with Oracle OIC APIs
+    - Performance benchmarking
 
 2. **Documentation Completion**
 
-   - Complete API reference
-   - Integration examples
-   - Troubleshooting guides
+    - Complete API reference
+    - Integration examples
+    - Troubleshooting guides
 
 ## Integration with FLEXT Ecosystem
 

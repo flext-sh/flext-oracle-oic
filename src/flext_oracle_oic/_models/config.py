@@ -11,36 +11,16 @@ from typing import Annotated, ClassVar
 
 from flext_core import m, p, t
 
+from flext_oracle_oic.config_models import FlextOracleOicModelsConfig as _ConfigModels
 
-class FlextOracleOicModelsConfig:
-    """Config declarations composed into the Oracle OIC model facade."""
 
-    class Config(m.ImmutableValueModel):
-        """Required business domains with values supplied by the YAML owner."""
-
-        model_config: ClassVar[m.ConfigDict] = m.ConfigDict(extra="allow")
-
-        api: Annotated[
-            t.JsonMapping,
-            m.Field(description="Oracle OIC API business rules"),
-        ]
-        integration: Annotated[
-            t.JsonMapping,
-            m.Field(description="Oracle OIC integration business rules"),
-        ]
-        validation: Annotated[
-            t.JsonMapping,
-            m.Field(description="Oracle OIC validation business rules"),
-        ]
-        monitoring: Annotated[
-            t.JsonMapping,
-            m.Field(description="Oracle OIC monitoring business rules"),
-        ]
+class FlextOracleOicModelsConfig(_ConfigModels):
+    """Expose the single configuration schema owner through the model family."""
 
     class FieldValidationPlan(m.Value):
         """Validated plan for one integration string field."""
 
-        model_config: ClassVar[m.ConfigDict] = m.ConfigDict(
+        model_config: ClassVar[t.ConfigDict] = m.ConfigDict(
             arbitrary_types_allowed=True,
             frozen=True,
         )

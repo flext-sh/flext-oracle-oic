@@ -7,10 +7,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
-
 from flext_oracle_oic import FlextOracleOicCli, __version__, main
-from tests import tm
+from tests import c, tm
 
 
 class TestsFlextOracleOicMain:
@@ -30,7 +28,7 @@ class TestsFlextOracleOicMain:
         tm.that(exit_code, ne=0)
 
     @staticmethod
-    @pytest.mark.parametrize("args", [["version"], ["--help"]])
+    @c.Tests.MARK.parametrize("args", [["version"], ["--help"]])
     def test_documented_invocations_return_int_exit_code(args: list[str]) -> None:
         """Every documented invocation returns an int the process can exit with."""
         tm.that(main(args), is_=int)
@@ -55,4 +53,4 @@ class TestsFlextOracleOicMain:
     def test_package_exposes_non_empty_version_string() -> None:
         """`__version__` is a non-empty string usable by the `version` command."""
         tm.that(__version__, is_=str)
-        assert __version__
+        tm.that(__version__, truth=True)

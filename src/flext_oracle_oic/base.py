@@ -31,7 +31,7 @@ if TYPE_CHECKING:
     from types import TracebackType
 
 
-class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegrationInfo]]):
+class FlextOracleOicServiceBase(FlextService[Sequence[p.OracleOic.OICIntegrationInfo]]):
     """Base service providing shared infrastructure for all OIC service mixins.
 
     Provides:
@@ -68,9 +68,9 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
     def __exit__(
         self,
-        error_type: type[BaseException] | None,
-        error: BaseException | None,
-        error_traceback: TracebackType | None,
+        _error_type: type[BaseException] | None,
+        _error: BaseException | None,
+        _error_traceback: TracebackType | None,
     ) -> None:
         """Close the OIC client session this service owns."""
         if self._client is not None:
@@ -100,7 +100,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
     @staticmethod
     def _to_general_value(
-        value: t.JsonValue | t.Scalar | t.ScalarMapping | t.ScalarList,
+        value: t.JsonValue | t.Scalar | Mapping[str, t.Scalar] | Sequence[t.Scalar],
     ) -> t.JsonValue:
         """Normalize an arbitrary runtime value into a JSON-compatible value.
 
@@ -112,7 +112,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
 
         """
         if isinstance(value, bytes):
-            return value.decode(errors="replace")
+            return value.decode(errors=c.MergeStrategy.REPLACE)
         if isinstance(value, c.PRIMITIVES_TYPES) or value is None:
             return value
         if isinstance(value, Mapping):
@@ -133,7 +133,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
         *,
         fallback_id: str,
         default_status: str,
-    ) -> m.OracleOic.OICIntegrationInfo:
+    ) -> p.OracleOic.OICIntegrationInfo:
         """Build a normalized integration model from an API payload mapping.
 
         Args:
@@ -159,7 +159,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
         )
 
     @override
-    def execute(self: Self) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    def execute(self: Self) -> p.Result[Sequence[p.OracleOic.OICIntegrationInfo]]:
         """Execute the main service operation - list all integrations.
 
         Returns:
@@ -174,7 +174,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
         """The typed Oracle OIC settings namespace."""
         return self._oic_settings
 
-    def list_integrations(self) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    def list_integrations(self) -> p.Result[Sequence[p.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
 
         Returns:
@@ -185,12 +185,12 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
             return self._list_integrations()
         except c.EXC_NETWORK_TYPE as exc:
             u.fetch_logger(__name__).exception("Failed to list integrations")
-            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail_op(
+            return r[Sequence[p.OracleOic.OICIntegrationInfo]].fail_op(
                 "Integration listing",
                 exc,
             )
 
-    def _list_integrations(self) -> p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]:
+    def _list_integrations(self) -> p.Result[Sequence[p.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations without exception translation.
 
         Returns:
@@ -200,14 +200,14 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
         client_result = self._get_client()
         if client_result.failure:
             error_msg = client_result.error or "Client initialization failed"
-            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(error_msg)
+            return r[Sequence[p.OracleOic.OICIntegrationInfo]].fail(error_msg)
         client = client_result.value
         integrations_result = client.fetch_integrations()
         if integrations_result.failure:
             error_msg = integrations_result.error or "Failed to get integrations"
-            return r[Sequence[m.OracleOic.OICIntegrationInfo]].fail(error_msg)
+            return r[Sequence[p.OracleOic.OICIntegrationInfo]].fail(error_msg)
         integrations_data = integrations_result.value
-        integrations: list[m.OracleOic.OICIntegrationInfo] = []
+        integrations: list[p.OracleOic.OICIntegrationInfo] = []
         for item in integrations_data:
             integration = self._build_integration_info(
                 item,
@@ -215,7 +215,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[m.OracleOic.OICIntegration
                 default_status=c.OracleOic.Connection.Status.UNKNOWN,
             )
             integrations.append(integration)
-        return r[Sequence[m.OracleOic.OICIntegrationInfo]].ok(integrations)
+        return r[Sequence[p.OracleOic.OICIntegrationInfo]].ok(integrations)
 
     def _get_client(self) -> p.Result[FlextOracleOicClient]:
         """Get or create the Oracle OIC client instance.

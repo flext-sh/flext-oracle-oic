@@ -25,26 +25,26 @@ class TestsFlextOracleOicVersion:
         """__version__ is a non-empty string."""
         tm.that(__version__, is_=str)
         tm.that(__version__.strip(), eq=__version__)
-        assert len(__version__) >= 1
+        tm.that(len(__version__) >= 1, truth=True)
 
     @staticmethod
     def test_version_info_is_release_triple() -> None:
         """__version_info__ is an exact three-integer release tuple."""
         tm.that(__version_info__, is_=tuple)
         tm.that(len(__version_info__), eq=3)
-        assert all(isinstance(part, int) for part in __version_info__)
+        tm.that(all(isinstance(part, int) for part in __version_info__), truth=True)
 
     @staticmethod
     def test_version_info_starts_with_three_integer_components() -> None:
         """The first three components form a major.minor.patch integer triple."""
-        assert len(__version_info__) >= 3
+        tm.that(len(__version_info__), gte=3)
         major, minor, patch = __version_info__[:3]
-        assert isinstance(major, int)
-        assert isinstance(minor, int)
-        assert isinstance(patch, int)
-        assert major >= 0
-        assert minor >= 0
-        assert patch >= 0
+        tm.that(major, is_=int)
+        tm.that(minor, is_=int)
+        tm.that(patch, is_=int)
+        tm.that(major >= 0, truth=True)
+        tm.that(minor >= 0, truth=True)
+        tm.that(patch >= 0, truth=True)
 
     @staticmethod
     def test_version_string_matches_version_info() -> None:

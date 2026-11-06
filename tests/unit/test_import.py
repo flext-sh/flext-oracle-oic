@@ -7,18 +7,16 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
-
 import flext_oracle_oic
 from flext_oracle_oic import FlextOracleOicSettings, main
-from tests import tm
+from tests import c, tm
 
 
 class TestsFlextOracleOicImport:
     """Public-contract behavior for the flext_oracle_oic package facade."""
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         "export_name",
         [
             "FlextOracleOicApi",
@@ -40,15 +38,18 @@ class TestsFlextOracleOicImport:
     @staticmethod
     def test_package_entrypoint_is_callable() -> None:
         """The published main entrypoint is invocable."""
-        assert callable(main)
+        tm.that(callable(main), truth=True)
 
     @staticmethod
     def test_version_metadata_matches_version_info_tuple() -> None:
         """__version__ string is consistent with the __version_info__ tuple."""
         info = flext_oracle_oic.__version_info__
         tm.that(info, is_=tuple)
-        assert flext_oracle_oic.__version__.startswith(
-            ".".join(str(part) for part in info[:3]),
+        tm.that(
+            flext_oracle_oic.__version__.startswith(
+                ".".join(str(part) for part in info[:3]),
+            ),
+            truth=True,
         )
 
     @staticmethod
@@ -56,15 +57,19 @@ class TestsFlextOracleOicImport:
         """Default settings expose a stable namespaced field contract."""
         settings = FlextOracleOicSettings()
         dumped = settings.OracleOic.model_dump()
-        assert {
-            "base_url",
-            "api_version",
-            "request_timeout",
-            "max_retries",
-            "verify_ssl",
-        } <= dumped.keys()
-        assert settings.OracleOic.request_timeout > 0
-        assert settings.OracleOic.max_retries >= 0
+        tm.that(
+            {
+                "base_url",
+                "api_version",
+                "request_timeout",
+                "max_retries",
+                "verify_ssl",
+            }
+            <= dumped.keys(),
+            truth=True,
+        )
+        tm.that(settings.OracleOic.request_timeout > 0, truth=True)
+        tm.that(settings.OracleOic.max_retries >= 0, truth=True)
 
     @staticmethod
     def test_settings_override_public_fields() -> None:
@@ -94,7 +99,7 @@ class TestsFlextOracleOicImport:
         tm.that(restored.OracleOic.max_retries, eq=original.OracleOic.max_retries)
 
     @staticmethod
-    @pytest.mark.parametrize("invalid_timeout", [-5, 0])
+    @c.Tests.MARK.parametrize("invalid_timeout", [-5, 0])
     def test_settings_accept_raw_scalars_without_range_checks(
         invalid_timeout: int,
     ) -> None:

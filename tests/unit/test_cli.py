@@ -7,10 +7,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
-
 from flext_oracle_oic import FlextOracleOicCli, main
-from tests import tm
+from tests import c, t, tm, u
 
 
 class TestsFlextOracleOicCli:
@@ -23,7 +21,7 @@ class TestsFlextOracleOicCli:
 
     @staticmethod
     def test_version_command_prints_version_banner(
-        capsys: pytest.CaptureFixture[str],
+        capsys: t.Tests.CaptureFixture[str],
     ) -> None:
         """The ``version`` command emits the Oracle OIC banner to stdout."""
         exit_code = main(["version"])
@@ -34,11 +32,11 @@ class TestsFlextOracleOicCli:
         tm.that(out, has="FLEXT CLI Pattern")
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         "argv",
         [
-            pytest.param([], id="no-command"),
-            pytest.param(["does-not-exist"], id="unknown-command"),
+            u.Tests.param([], id="no-command"),
+            u.Tests.param(["does-not-exist"], id="unknown-command"),
         ],
     )
     def test_invalid_invocation_returns_failure_exit_code(
@@ -48,11 +46,11 @@ class TestsFlextOracleOicCli:
         tm.that(main(argv), eq=1)
 
     @staticmethod
-    @pytest.mark.parametrize(
-        "command",
+    @c.Tests.MARK.parametrize(
+        c.HandlerMode.COMMAND,
         [
-            pytest.param("test-connection", id="test-connection"),
-            pytest.param("list-integrations", id="list-integrations"),
+            u.Tests.param("test-connection", id="test-connection"),
+            u.Tests.param("list-integrations", id="list-integrations"),
         ],
     )
     def test_network_commands_fail_gracefully_without_backend(
@@ -83,11 +81,11 @@ class TestsFlextOracleOicCli:
 
         tm.that(first, none=False)
         tm.that(second, none=False)
-        assert first is not second
+        tm.that(first is not second, truth=True)
 
     @staticmethod
     def test_help_invocation_reports_the_application_name(
-        capsys: pytest.CaptureFixture[str],
+        capsys: t.Tests.CaptureFixture[str],
     ) -> None:
         """``--help`` prints the owned application help text to stdout."""
         exit_code = main(["--help"])

@@ -12,7 +12,7 @@ from __future__ import annotations
 from flext_oracle_oic import FlextOracleOicServiceBase, c, p, r
 
 
-class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
+class FlextOracleOicIntegrationLifecycle(FlextOracleOicServiceBase):
     """Mixin providing integration lifecycle operations for the OIC service."""
 
     def activate_integration(self, integration_id: str) -> p.Result[bool]:
@@ -137,4 +137,4 @@ class FlextOracleOicIntegrationLifecycleMixin(FlextOracleOicServiceBase):
         return r[bool].ok(is_connected)
 
 
-__all__: list[str] = ["FlextOracleOicIntegrationLifecycleMixin"]
+__all__: list[str] = ["FlextOracleOicIntegrationLifecycle"]

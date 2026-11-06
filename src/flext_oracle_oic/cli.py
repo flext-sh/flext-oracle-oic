@@ -11,10 +11,11 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import sys
+from collections.abc import Sequence
 
-from flext_cli import cli, m as cli_m
+from flext_cli import cli
 
-from flext_oracle_oic import c, p, r, t
+from flext_oracle_oic import c, m, p, r, t
 from flext_oracle_oic.__version__ import __version__
 from flext_oracle_oic.services import FlextOracleOicService
 
@@ -115,22 +116,22 @@ class FlextOracleOicCli:
         cli.register_result_routes(
             app,
             [
-                cli_m.Cli.ResultCommandRoute(
+                m.Cli.ResultCommandRoute(
                     name="test-connection",
                     help_text="Test connection to Oracle OIC instance",
-                    model_cls=cli_m.Cli.EmptyRequest,
+                    model_cls=m.Cli.EmptyRequest,
                     handler=cls.probe_connection,
                 ),
-                cli_m.Cli.ResultCommandRoute(
+                m.Cli.ResultCommandRoute(
                     name="list-integrations",
                     help_text="List Oracle OIC integrations",
-                    model_cls=cli_m.Cli.EmptyRequest,
+                    model_cls=m.Cli.EmptyRequest,
                     handler=cls.list_integrations,
                 ),
-                cli_m.Cli.ResultCommandRoute(
+                m.Cli.ResultCommandRoute(
                     name="version",
                     help_text="Show Oracle OIC Extension version",
-                    model_cls=cli_m.Cli.EmptyRequest,
+                    model_cls=m.Cli.EmptyRequest,
                     handler=cls.show_version,
                 ),
             ],
@@ -138,7 +139,7 @@ class FlextOracleOicCli:
         return app
 
 
-def main(args: t.StrSequence | None = None) -> int:
+def main(args: Sequence[str] | None = None) -> int:
     """Run the main CLI entry point - FLEXT CLI Pattern.
 
     Args:
@@ -161,4 +162,4 @@ def main(args: t.StrSequence | None = None) -> int:
     return 0 if outcome.success else 1
 
 
-__all__: t.StrSequence = ("FlextOracleOicCli", "main")
+__all__: Sequence[str] = ("FlextOracleOicCli", "main")

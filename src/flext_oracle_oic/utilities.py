@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """Oracle OIC Extension utilities module.
 
 This module provides domain-specific utilities for Oracle Integration Cloud (OIC)
@@ -18,20 +19,18 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_auth import FlextAuthUtilities
+from flext_auth import u
 
-from flext_oracle_oic._utilities.authentication_validation import (
+from flext_oracle_oic._utilities import (
     FlextOracleOicUtilitiesAuthenticationValidation,
-)
-from flext_oracle_oic._utilities.connection_validation import (
     FlextOracleOicUtilitiesConnectionValidation,
+    FlextOracleOicUtilitiesMonitoring,
+    FlextOracleOicUtilitiesOracleOic,
 )
-from flext_oracle_oic._utilities.monitoring import FlextOracleOicUtilitiesMonitoring
-from flext_oracle_oic._utilities.oracle_oic import FlextOracleOicUtilitiesOracleOic
 
 
 class FlextOracleOicUtilities(
-    FlextAuthUtilities,
+    u,
     FlextOracleOicUtilitiesOracleOic,
     FlextOracleOicUtilitiesConnectionValidation,
     FlextOracleOicUtilitiesAuthenticationValidation,
@@ -44,10 +43,10 @@ class FlextOracleOicUtilities(
     """
 
     class OracleOic(
-        FlextOracleOicUtilitiesOracleOic,
-        FlextOracleOicUtilitiesConnectionValidation,
         FlextOracleOicUtilitiesAuthenticationValidation,
+        FlextOracleOicUtilitiesConnectionValidation,
         FlextOracleOicUtilitiesMonitoring,
+        FlextOracleOicUtilitiesOracleOic,
     ):
         """Oracle OIC domain utilities namespace.
 

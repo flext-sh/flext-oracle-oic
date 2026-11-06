@@ -13,10 +13,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
-
-from flext_oracle_oic import FlextOracleOicSettings, c
-from tests import m, t, tm
+from flext_oracle_oic import FlextOracleOicSettings
+from tests import c, m, t, tm, u
 
 
 class TestsFlextOracleOicBasic:
@@ -32,7 +30,7 @@ class TestsFlextOracleOicBasic:
         tm.that(ns.api_version, eq=c.OracleOic.DEFAULT_API_VERSION)
         tm.that(ns.request_timeout, eq=c.DEFAULT_TIMEOUT_SECONDS)
         tm.that(ns.max_retries, eq=c.MAX_RETRY_ATTEMPTS)
-        tm.that(ns.verify_ssl, eq=True)
+        tm.ok(ns.verify_ssl)
 
     @staticmethod
     def test_settings_preserve_explicit_overrides() -> None:
@@ -41,7 +39,7 @@ class TestsFlextOracleOicBasic:
             "OracleOic": {
                 "base_url": "https://test.integration.ocp.oraclecloud.com",
                 "oauth_client_id": "test_client_id",
-                "oauth_client_secret": "s" + "0" * 16,
+                "oauth_client_secret": "s" + c.ParserBooleanToken.ZERO * 16,
                 "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
             },
         })
@@ -49,7 +47,7 @@ class TestsFlextOracleOicBasic:
 
         tm.that(ns.base_url, eq="https://test.integration.ocp.oraclecloud.com")
         tm.that(ns.oauth_client_id, eq="test_client_id")
-        assert ns.oauth_token_url.endswith("/oauth2/v1/token")
+        tm.that(ns.oauth_token_url.endswith("/oauth2/v1/token"), truth=True)
 
     @staticmethod
     def test_settings_ignore_unknown_keys() -> None:
@@ -62,7 +60,7 @@ class TestsFlextOracleOicBasic:
         tm.that(settings.OracleOic.base_url, eq=c.OracleOic.DEFAULT_BASE_URL)
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         ("raw", "expected"),
         [("v1", c.OracleOic.OICApiVersion.V1), ("v2", c.OracleOic.OICApiVersion.V2)],
     )
@@ -120,7 +118,7 @@ class TestsFlextOracleOicBasic:
         tm.that(auth.oauth_client_aud, none=True)
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         "missing",
         ["oauth_client_id", "oauth_client_secret", "oauth_token_url"],
     )
@@ -133,7 +131,7 @@ class TestsFlextOracleOicBasic:
         }
         del payload[missing]
 
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICAuthConfig.model_validate(payload)
 
     @staticmethod
@@ -148,12 +146,12 @@ class TestsFlextOracleOicBasic:
         tm.that(conn.base_url, eq="https://test.integration.ocp.oraclecloud.com")
         tm.that(conn.request_timeout, eq=30)
         tm.that(conn.max_retries, eq=3)
-        tm.that(conn.verify_ssl, eq=True)
+        tm.ok(conn.verify_ssl)
 
     @staticmethod
     def test_connection_config_rejects_non_positive_timeout() -> None:
         """request_timeout on the connection model enforces its constraint."""
-        with pytest.raises(c.ValidationError):
+        with u.Tests.raises(c.ValidationError):
             m.OracleOic.OICConnectionConfig.model_validate({
                 "base_url": "https://test.integration.ocp.oraclecloud.com",
                 "request_timeout": 0,

@@ -6,15 +6,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from collections.abc import MutableSequence
 
-from flext_api import u
+from flext_auth import u
 from flext_core import r
 
 from flext_oracle_oic import c, m, p, t
-
-if TYPE_CHECKING:
-    from collections.abc import MutableSequence
 
 
 class FlextOracleOicUtilitiesOracleOic:
@@ -74,7 +71,7 @@ class FlextOracleOicUtilitiesOracleOic:
         integration_data: t.JsonMapping,
         validated_data: t.MutableJsonMapping,
         errors: MutableSequence[str],
-        plan: m.OracleOic.FieldValidationPlan,
+        plan: p.OracleOic.FieldValidationPlan,
     ) -> None:
         """Validate one string field and update normalized payload or errors."""
         if plan.field_name not in integration_data:

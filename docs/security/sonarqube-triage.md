@@ -300,7 +300,7 @@ padrão.
        83              client_value="secret",
        84              idcs_url="https://idcs.example.com/oauth2/v1/token",
        85          )
->>>    86          with pytest.raises(c.ValidationError):
+>>>    86          with u.Tests.raises(c.ValidationError):
        87              getattr(config, "__setattr__")("oauth_scope", "mutated")
        88
        89      def test_auth_config_equality_is_by_value(self) -> None:
@@ -321,10 +321,10 @@ padrão.
       142      def test_connection_config_is_immutable(self) -> None:
       143          """Connection config is a frozen value object."""
       144          config = m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
->>>   145          with pytest.raises(c.ValidationError):
+>>>   145          with u.Tests.raises(c.ValidationError):
       146              getattr(config, "__setattr__")("verify_ssl", False)
       147
-      148      @pytest.mark.parametrize("timeout", [0, -1, -30])
+      148      @c.Tests.MARK.parametrize("timeout", [0, -1, -30])
       149      def test_connection_config_rejects_non_positive_timeout(self, timeout ...
 ```
 

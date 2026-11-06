@@ -74,7 +74,7 @@ runtime_settings = FlextOracleOicSettings.model_validate(settings.model_dump())
 HTTP connection configuration for Oracle Integration Cloud.
 
 ```python
-from flext_oracle_oic import m, settings
+from flext_oracle_oic import m, p, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
@@ -95,7 +95,7 @@ connection_config = m.OracleOic.OICConnectionConfig.model_validate(
 OAuth2/IDCS authentication configuration for Oracle cloud integration.
 
 ```python
-from flext_oracle_oic import m, settings
+from flext_oracle_oic import m, p, settings
 
 auth_config = m.OracleOic.OICAuthConfig.model_validate(
     settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
@@ -157,7 +157,7 @@ and a reachable instance. HTTP operations use the upstream `FlextApi` facade.
 Basic Pydantic data models are available:
 
 ```python
-from flext_oracle_oic import m
+from flext_oracle_oic import m, p
 
 integration_fields = tuple(m.OracleOic.OICIntegrationInfo.model_fields)
 ```
@@ -263,7 +263,7 @@ if runtime_settings.OracleOic != settings.OracleOic:
 ### Current Version (v0.12.0-dev)
 
 ```python
-from flext_oracle_oic import m, settings
+from flext_oracle_oic import m, p, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(

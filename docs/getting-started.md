@@ -101,7 +101,7 @@ if runtime_settings.OracleOic.base_url != settings.OracleOic.base_url:
 > It does not contact Oracle or prove authentication succeeds:
 
 ```python
-from flext_oracle_oic import m, settings
+from flext_oracle_oic import m, p, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
@@ -164,17 +164,17 @@ make test-file FILE=docs/configuration.md
 
 1. **FLEXT Compliance Violations**:
 
-   - HTTP and CLI use upstream facades, and the service inherits upstream `s`
-   - Remaining facade, composition, and declaration findings require canonical repair
+    - HTTP and CLI use upstream facades, and the service inherits upstream `s`
+    - Remaining facade, composition, and declaration findings require canonical repair
 
 1. **Type Safety Issues**:
 
-   - Use current `make check` lint and type receipts, not historical error counts
+    - Use current `make check` lint and type receipts, not historical error counts
 
 1. **Test Coverage**:
 
-   - Obtain current coverage from canonical tests against the configured policy
-   - Offline examples do not establish configured Oracle integration success
+    - Obtain current coverage from canonical tests against the configured policy
+    - Offline examples do not establish configured Oracle integration success
 
 ## Troubleshooting
 

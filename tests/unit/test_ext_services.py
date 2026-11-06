@@ -13,37 +13,26 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterator, Sequence
+from collections.abc import Callable, Iterator, Mapping, Sequence
 
-import pytest
-
-from flext_oracle_oic import (
-    FlextOracleOicServiceBase,
-    FlextOracleOicSettings,
-    m,
-    p,
-    s,
-    t,
-)
+from flext_oracle_oic import FlextOracleOicServiceBase, FlextOracleOicSettings
 from flext_oracle_oic.services import FlextOracleOicService
-from flext_oracle_oic.services.auth import FlextOracleOicAuthMixin
-from flext_oracle_oic.services.integration_crud import (
-    FlextOracleOicIntegrationCrudMixin,
-)
+from flext_oracle_oic.services.auth import FlextOracleOicAuth
+from flext_oracle_oic.services.integration_crud import FlextOracleOicIntegrationCrud
 from flext_oracle_oic.services.integration_lifecycle import (
-    FlextOracleOicIntegrationLifecycleMixin,
+    FlextOracleOicIntegrationLifecycle,
 )
-from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoringMixin
-from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestrationMixin
-from tests import tm
+from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoring
+from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestration
+from tests import c, p, s, t, tm, u
 
 _VALID_CLIENT_ID = "client-id-123"
 _VALID_OAUTH_CREDENTIAL = "test-credential-123"
 
 type _OperationResult = (
-    p.Result[Sequence[m.OracleOic.OICIntegrationInfo]]
-    | p.Result[m.OracleOic.OICIntegrationInfo]
-    | p.Result[Sequence[m.OracleOic.OICConnectionInfo]]
+    p.Result[Sequence[p.OracleOic.OICIntegrationInfo]]
+    | p.Result[p.OracleOic.OICIntegrationInfo]
+    | p.Result[Sequence[p.OracleOic.OICConnectionInfo]]
     | p.Result[bool]
     | p.Result[str]
 )
@@ -60,7 +49,7 @@ def _invoke_unconfigured_operation(
         The resulting operation ``r``.
 
     """
-    operations: t.MappingKV[str, Callable[[], _OperationResult]] = {
+    operations: Mapping[str, Callable[[], _OperationResult]] = {
         "execute": svc.execute,
         "list_integrations": svc.list_integrations,
         "create_integration": lambda: svc.create_integration({}),
@@ -80,8 +69,7 @@ def _invoke_unconfigured_operation(
 class TestsFlextOracleOicExtServices:
     """Public-contract behavior of the Oracle OIC service facade."""
 
-    @staticmethod
-    @pytest.fixture
+    @u.Tests.fixture
     def unconfigured_service() -> Iterator[FlextOracleOicService]:
         """Service backed by default (credential-less) global settings.
 
@@ -93,10 +81,10 @@ class TestsFlextOracleOicExtServices:
         yield FlextOracleOicService()
         FlextOracleOicSettings.reset_for_testing()
 
+    @u.Tests.fixture
     @staticmethod
-    @pytest.fixture
     def configured_service(
-        monkeypatch: pytest.MonkeyPatch,
+        monkeypatch: t.Tests.MonkeyPatch,
     ) -> Iterator[FlextOracleOicService]:
         """Service backed by global settings with valid OAuth credentials.
 
@@ -121,15 +109,15 @@ class TestsFlextOracleOicExtServices:
     # -- composition contract -------------------------------------------------
 
     @staticmethod
-    @pytest.mark.parametrize(
+    @c.Tests.MARK.parametrize(
         "mixin",
         [
             FlextOracleOicServiceBase,
-            FlextOracleOicAuthMixin,
-            FlextOracleOicMonitoringMixin,
-            FlextOracleOicOrchestrationMixin,
-            FlextOracleOicIntegrationLifecycleMixin,
-            FlextOracleOicIntegrationCrudMixin,
+            FlextOracleOicAuth,
+            FlextOracleOicMonitoring,
+            FlextOracleOicOrchestration,
+            FlextOracleOicIntegrationLifecycle,
+            FlextOracleOicIntegrationCrud,
         ],
     )
     def test_service_composes_every_documented_domain_mixin(
@@ -142,7 +130,7 @@ class TestsFlextOracleOicExtServices:
     @staticmethod
     def test_module_alias_s_is_the_service_base_class() -> None:
         """The short ``s`` alias resolves to the base service facade class."""
-        assert s is FlextOracleOicServiceBase
+        tm.ok(s is FlextOracleOicServiceBase)
 
     @staticmethod
     def test_context_manager_yields_the_same_service(
@@ -150,13 +138,13 @@ class TestsFlextOracleOicExtServices:
     ) -> None:
         """Entering the service context returns the service instance itself."""
         with unconfigured_service as entered:
-            assert entered is unconfigured_service
+            tm.ok(entered is unconfigured_service)
 
     # -- fallible operations: graceful failure when unconfigured --------------
 
     @staticmethod
-    @pytest.mark.parametrize(
-        "operation",
+    @c.Tests.MARK.parametrize(
+        c.ContextScope.OPERATION,
         [
             "execute",
             "list_integrations",
@@ -177,17 +165,17 @@ class TestsFlextOracleOicExtServices:
     ) -> None:
         """Every fallible op returns a failed ``r`` (never raises) when unconfigured."""
         result = _invoke_unconfigured_operation(unconfigured_service, operation)
-        assert result.failure
-        assert result.error
+        tm.fail(result)
+        tm.that(tm.not_none(result.error), empty=False)
 
     @staticmethod
     def test_execute_delegates_to_integration_listing(
         unconfigured_service: FlextOracleOicService,
     ) -> None:
         """``execute`` mirrors ``list_integrations`` (same failure error)."""
-        assert (
-            unconfigured_service.execute().error
-            == unconfigured_service.list_integrations().error
+        tm.that(
+            unconfigured_service.execute().error,
+            eq=unconfigured_service.list_integrations().error,
         )
 
     # -- authentication contract (independent of settings/network) ------------
@@ -203,7 +191,7 @@ class TestsFlextOracleOicExtServices:
         tm.that(result.error, eq="Authenticator not initialized")
 
     @staticmethod
-    @pytest.mark.parametrize("token", ["", "some-token", "expired.jwt.value"])
+    @c.Tests.MARK.parametrize("token", ["", "some-token", "expired.jwt.value"])
     def test_validate_auth_token_reports_missing_authenticator(
         unconfigured_service: FlextOracleOicService,
         token: str,
@@ -225,7 +213,7 @@ class TestsFlextOracleOicExtServices:
         error = result.error
 
         tm.fail(result)
-        assert error is not None
+        error = tm.not_none(error)
         tm.that(error.lower(), has="validation")
 
     @staticmethod
@@ -236,7 +224,7 @@ class TestsFlextOracleOicExtServices:
         result = configured_service.validate_business_rules()
 
         tm.ok(result)
-        tm.that(result.value, eq=True)
+        tm.ok(result.value)
 
     @staticmethod
     def test_business_rules_validation_is_idempotent(
@@ -246,7 +234,8 @@ class TestsFlextOracleOicExtServices:
         first = configured_service.validate_business_rules()
         second = configured_service.validate_business_rules()
 
-        assert first.success is second.success is True
+        tm.ok(first)
+        tm.ok(second)
         tm.that(first.value, eq=second.value)
 
     @staticmethod
@@ -264,7 +253,7 @@ class TestsFlextOracleOicExtServices:
         configured_service: FlextOracleOicService,
     ) -> None:
         """The real service structurally satisfies its own declared protocol."""
-        tm.that(self._is_service_rules(configured_service), eq=True)
+        tm.ok(self._is_service_rules(configured_service))
         result = configured_service.validate_business_rules()
         tm.ok(result)
-        tm.that(result.value, eq=True)
+        tm.ok(result.value)
