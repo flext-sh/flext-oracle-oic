@@ -95,7 +95,7 @@ The library follows these core principles from the FLEXT ecosystem:
 
 **Public and Implementation Owners**
 
-```
+```text
 src/flext_oracle_oic/
 ├── __init__.py              # Generated public exports
 ├── _settings.py             # settings.OracleOic deployment inputs
@@ -288,7 +288,7 @@ they do not substitute for configured Oracle integration tests.
 
 **Test Structure**
 
-```
+```text
 
 tests/
 ├── unit/                    # Basic unit tests
