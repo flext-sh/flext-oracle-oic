@@ -183,11 +183,14 @@ class TestsFlextOracleOicExtension:
     @staticmethod
     def test_failed_operation_preserves_validation_error_message(
         api: FlextOracleOicApi,
+        settings: FlextOracleOicSettings,
     ) -> None:
         """The failure error identifies the offending credential validation."""
         result = api.test_connection()
 
         tm.fail(result)
-        expected = FlextOracleOicService().validate_business_rules()
+        expected = FlextOracleOicService(
+            oic_settings=settings
+        ).validate_business_rules()
         tm.fail(expected)
         tm.that(tm.not_none(result.error), eq=tm.not_none(expected.error))
