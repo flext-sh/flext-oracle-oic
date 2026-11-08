@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+import secrets
 from collections.abc import MutableMapping
 
 from tests import c, m, t, tm, u
@@ -107,7 +108,7 @@ class TestsFlextOracleOicModelsUnit:
         """Omitting any required field raises a validation error."""
         payload: MutableMapping[str, str] = {
             "oauth_client_id": "cid",
-            "oauth_client_secret": "secret",
+            "oauth_client_secret": secrets.token_urlsafe(),
             "oauth_token_url": _OAUTH_ENDPOINT,
         }
         del payload[missing]

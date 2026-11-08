@@ -188,8 +188,7 @@ class FlextOracleOicClient:
         """
         return (
             self
-            ._validate_token_url()
-            .flat_map(lambda _: self._prepare_oauth_request())
+            ._prepare_oauth_request()
             .flat_map(self._execute_token_request)
             .flat_map(self._parse_token_response)
             .map(self._store_and_return_token)
@@ -743,17 +742,6 @@ class FlextOracleOicClient:
                 return [self._to_api_payload(item) for item in value]
             case _:
                 return str(value)
-
-    def _validate_token_url(self) -> p.Result[bool]:
-        """Validate that the OAuth token URL is configured.
-
-        Returns:
-            Result holding ``True`` when the token URL is present.
-
-        """
-        if not self.auth_config.oauth_token_url:
-            return r[bool].fail("OAuth token URL not configured")
-        return r[bool].ok(value=True)
 
 
 __all__: list[str] = ["FlextOracleOicClient"]

@@ -10,7 +10,7 @@ from __future__ import annotations
 import base64
 
 from flext_oracle_oic.ext_client import FlextOracleOicClient
-from tests import m, p, t, tm, u
+from tests import c, m, p, t, tm, u
 
 # Named (not literal, and named without "token"/"secret") so ruff's flake8-bandit
 # heuristics do not fire: S106 flags a string literal passed to an
@@ -121,33 +121,17 @@ class TestsFlextOracleOicExtClient:
         tm.that(scope, has="https://oic.example.com:443/ic/api/")
 
     @staticmethod
-    def test_get_access_token_fails_when_token_url_missing(
-        connection_config: p.OracleOic.OICConnectionConfig,
+    @c.Tests.MARK.parametrize("endpoint", [""])
+    def test_auth_config_rejects_an_empty_token_endpoint(
+        auth_config: p.OracleOic.OICAuthConfig,
+        endpoint: str,
     ) -> None:
-        """A blank token URL short-circuits to a failure result, no network."""
-        auth = m.OracleOic.OICAuthConfig(
-            oauth_client_id="id",
-            oauth_client_secret=t.SecretStr("secret"),
-            oauth_token_url="",
-        )
-        client = FlextOracleOicClient(
-            connection_config=connection_config,
-            auth_config=auth,
-        )
-
-        result = client.fetch_access_token()
-
-        tm.fail(result)
-        tm.that(result.error, none=False)
-        tm.that(result.error, has="OAuth token URL not configured")
-
-        paginated = client.paginate_request(
-            "/integrations",
-            page_size=2,
-            params={"q": "status=ACTIVATED"},
-        )
-        tm.fail(paginated)
-        tm.that(paginated.error, eq=tm.not_none(result.error))
+        """An empty token endpoint is refused at the model boundary, not later."""
+        with u.Tests.raises(c.ValidationError):
+            m.OracleOic.OICAuthConfig.model_validate({
+                **auth_config.model_dump(),
+                "oauth_token_url": endpoint,
+            })
 
     @staticmethod
     def test_context_manager_yields_same_instance(
