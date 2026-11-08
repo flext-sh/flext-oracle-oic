@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterator, Mapping, Sequence
 
-from flext_oracle_oic import FlextOracleOicServiceBase, FlextOracleOicSettings
+from flext_oracle_oic import FlextOracleOicServiceBase, FlextOracleOicSettings, s
 from flext_oracle_oic.services import FlextOracleOicService
 from flext_oracle_oic.services.auth import FlextOracleOicAuth
 from flext_oracle_oic.services.integration_crud import FlextOracleOicIntegrationCrud
@@ -24,7 +24,7 @@ from flext_oracle_oic.services.integration_lifecycle import (
 )
 from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoring
 from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestration
-from tests import c, p, s, t, tm, u
+from tests import c, p, t, tm, u
 
 _VALID_CLIENT_ID = "client-id-123"
 _VALID_OAUTH_CREDENTIAL = "test-credential-123"
@@ -70,6 +70,7 @@ class TestsFlextOracleOicExtServices:
     """Public-contract behavior of the Oracle OIC service facade."""
 
     @u.Tests.fixture
+    @staticmethod
     def unconfigured_service() -> Iterator[FlextOracleOicService]:
         """Service backed by default (credential-less) global settings.
 
