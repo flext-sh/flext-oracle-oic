@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+import secrets
 from pathlib import Path
 
 from flext_oracle_oic import FlextOracleOicConfig, FlextOracleOicSettings, config
@@ -64,14 +65,12 @@ class TestsFlextOracleOicConfig:
     @staticmethod
     def test_custom_auth_settings_are_preserved() -> None:
         """OAuth overrides round-trip as plain scalars at the settings layer."""
-        client_secret = "s" + c.ParserBooleanToken.ONE * 16
+        client_secret = secrets.token_urlsafe()
         ns = FlextOracleOicSettings.model_validate({
             "OracleOic": {
                 "oauth_client_id": "custom_client_id",
                 "oauth_client_secret": client_secret,
-                "oauth_token_url": (
-                    "https://custom.identity.oraclecloud.com/oauth2/v1/token"
-                ),
+                "oauth_token_url": c.OracleOic.DEFAULT_TOKEN_URL,
                 "oauth_client_aud": "custom_audience",
                 "oauth_scope": "custom_scope",
             },
@@ -79,10 +78,7 @@ class TestsFlextOracleOicConfig:
 
         tm.that(ns.oauth_client_id, eq="custom_client_id")
         tm.that(ns.oauth_client_secret, eq=client_secret)
-        tm.that(
-            ns.oauth_token_url,
-            eq=("https://custom.identity.oraclecloud.com/oauth2/v1/token"),
-        )
+        tm.that(ns.oauth_token_url, eq=c.OracleOic.DEFAULT_TOKEN_URL)
         tm.that(ns.oauth_client_aud, eq="custom_audience")
         tm.that(ns.oauth_scope, eq="custom_scope")
 
@@ -105,18 +101,19 @@ class TestsFlextOracleOicConfig:
     @staticmethod
     def test_domain_auth_config_masks_secret_but_settings_do_not() -> None:
         """SecretStr masking lives at the domain boundary, not in settings."""
+        client_secret = secrets.token_urlsafe()
         ns = FlextOracleOicSettings.model_validate({
-            "OracleOic": {"oauth_client_secret": "topsecret"},
+            "OracleOic": {"oauth_client_secret": client_secret},
         }).OracleOic
         auth = m.OracleOic.OICAuthConfig.model_validate({
             "oauth_client_id": "id",
-            "oauth_client_secret": "topsecret",
-            "oauth_token_url": "https://token.example/oauth",
+            "oauth_client_secret": client_secret,
+            "oauth_token_url": c.OracleOic.DEFAULT_TOKEN_URL,
         })
 
-        tm.that(ns.oauth_client_secret, eq="topsecret")
-        tm.that(auth.oauth_client_secret.get_secret_value(), eq="topsecret")
-        tm.that(str(auth.model_dump()["oauth_client_secret"]), lacks="topsecret")
+        tm.that(ns.oauth_client_secret, eq=client_secret)
+        tm.that(auth.oauth_client_secret.get_secret_value(), eq=client_secret)
+        tm.that(str(auth.model_dump()["oauth_client_secret"]), lacks=client_secret)
 
     @staticmethod
     def test_unknown_keys_are_ignored() -> None:
