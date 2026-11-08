@@ -50,7 +50,7 @@ class FlextOracleOicApi(FlextOracleOicService):
             if settings is not None
             else FlextOracleOicSettings.model_validate({})
         )
-        self._service = FlextOracleOicService()
+        self._service = FlextOracleOicService(self._oic_config)
 
     def __aenter__(self) -> Self:
         """Async context manager entry.

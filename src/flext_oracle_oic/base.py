@@ -41,16 +41,17 @@ class FlextOracleOicServiceBase(FlextService[Sequence[p.OracleOic.OICIntegration
     - Settings access
     """
 
-    def __init__(self) -> None:
+    def __init__(self, settings: FlextOracleOicSettings | None = None) -> None:
         """Initialize base Oracle OIC service.
 
-        Uses singleton settings pattern - no settings parameter needed.
+        Args:
+            settings: Settings injected by the composition root; the process
+                singleton when omitted.
+
         """
         super().__init__()
-        # NOTE: singleton resolved via fetch_global(), matching the flext-auth
-        # services pattern (no facade-level settings import in layer-1 code).
         self._oic_settings: FlextOracleOicSettings = (
-            FlextOracleOicSettings.fetch_global()
+            settings if settings is not None else FlextOracleOicSettings.fetch_global()
         )
         self._client: FlextOracleOicClient | None = None
         self._monitoring_client: FlextApi | None = None
