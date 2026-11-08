@@ -25,11 +25,13 @@ class TestsFlextOracleOicExtClient:
     """Observable-behavior tests for the unified Oracle OIC client."""
 
     @u.Tests.fixture
+    @staticmethod
     def connection_config() -> p.OracleOic.OICConnectionConfig:
         """Return a valid in-memory OIC connection configuration."""
         return m.OracleOic.OICConnectionConfig(base_url="https://oic.example.com")
 
     @u.Tests.fixture
+    @staticmethod
     def auth_config() -> p.OracleOic.OICAuthConfig:
         """Return a valid in-memory OIC authentication configuration."""
         return m.OracleOic.OICAuthConfig(

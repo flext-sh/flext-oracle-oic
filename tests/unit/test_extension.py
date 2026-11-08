@@ -37,6 +37,7 @@ class TestsFlextOracleOicExtension:
     """Public-contract tests for the Oracle OIC API facade."""
 
     @u.Tests.fixture
+    @staticmethod
     def settings() -> FlextOracleOicSettings:
         """Deterministic in-memory settings with distinctive values.
 

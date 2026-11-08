@@ -70,6 +70,7 @@ class TestsFlextOracleOicExtServices:
     """Public-contract behavior of the Oracle OIC service facade."""
 
     @u.Tests.fixture
+    @staticmethod
     def unconfigured_service() -> Iterator[FlextOracleOicService]:
         """Service backed by default (credential-less) global settings.
 
