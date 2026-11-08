@@ -13,6 +13,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+import secrets
+
 from flext_oracle_oic import FlextOracleOicSettings
 from tests import c, m, t, tm, u
 
@@ -39,15 +41,15 @@ class TestsFlextOracleOicBasic:
             "OracleOic": {
                 "base_url": "https://test.integration.ocp.oraclecloud.com",
                 "oauth_client_id": "test_client_id",
-                "oauth_client_secret": "s" + c.ParserBooleanToken.ZERO * 16,
-                "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+                "oauth_client_secret": secrets.token_urlsafe(),
+                "oauth_token_url": c.OracleOic.DEFAULT_TOKEN_URL,
             },
         })
         ns = settings.OracleOic
 
         tm.that(ns.base_url, eq="https://test.integration.ocp.oraclecloud.com")
         tm.that(ns.oauth_client_id, eq="test_client_id")
-        tm.that(ns.oauth_token_url.endswith("/oauth2/v1/token"), truth=True)
+        tm.that(ns.oauth_token_url, eq=c.OracleOic.DEFAULT_TOKEN_URL)
 
     @staticmethod
     def test_settings_ignore_unknown_keys() -> None:
@@ -88,11 +90,12 @@ class TestsFlextOracleOicBasic:
     @staticmethod
     def test_settings_secret_is_plain_scalar() -> None:
         """At the settings layer the OAuth secret is an env-provided plain str."""
+        client_secret = secrets.token_urlsafe()
         settings = FlextOracleOicSettings.model_validate({
-            "OracleOic": {"oauth_client_secret": "s3cr3t"},
+            "OracleOic": {"oauth_client_secret": client_secret},
         })
 
-        tm.that(settings.OracleOic.oauth_client_secret, eq="s3cr3t")
+        tm.that(settings.OracleOic.oauth_client_secret, eq=client_secret)
 
     @staticmethod
     def test_default_construction_is_deterministic() -> None:
@@ -107,14 +110,15 @@ class TestsFlextOracleOicBasic:
     @staticmethod
     def test_auth_config_exposes_provided_credentials() -> None:
         """OICAuthConfig surfaces credentials via its public fields."""
+        client_secret = secrets.token_urlsafe()
         auth = m.OracleOic.OICAuthConfig.model_validate({
             "oauth_client_id": "test_client_id",
-            "oauth_client_secret": t.SecretStr("test_secret"),
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+            "oauth_client_secret": t.SecretStr(client_secret),
+            "oauth_token_url": c.OracleOic.DEFAULT_TOKEN_URL,
         })
 
         tm.that(auth.oauth_client_id, eq="test_client_id")
-        tm.that(auth.oauth_client_secret.get_secret_value(), eq="test_secret")
+        tm.that(auth.oauth_client_secret.get_secret_value(), eq=client_secret)
         tm.that(auth.oauth_client_aud, none=True)
 
     @staticmethod
@@ -126,8 +130,8 @@ class TestsFlextOracleOicBasic:
         """Each required auth field is enforced at validation time."""
         payload = {
             "oauth_client_id": "id",
-            "oauth_client_secret": t.SecretStr("secret"),
-            "oauth_token_url": "https://token.example/oauth",
+            "oauth_client_secret": t.SecretStr(secrets.token_urlsafe()),
+            "oauth_token_url": c.OracleOic.DEFAULT_TOKEN_URL,
         }
         del payload[missing]
 
