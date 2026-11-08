@@ -189,6 +189,8 @@ class TestsFlextOracleOicExtension:
         result = api.test_connection()
 
         tm.fail(result)
-        expected = FlextOracleOicService(settings).validate_business_rules()
+        expected = FlextOracleOicService(
+            oic_settings=settings
+        ).validate_business_rules()
         tm.fail(expected)
         tm.that(tm.not_none(result.error), eq=tm.not_none(expected.error))

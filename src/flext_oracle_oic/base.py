@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
-from typing import TYPE_CHECKING, Self, override
+from typing import TYPE_CHECKING, Annotated, Self, override
 
 from flext_api import FlextApi, FlextApiSettings
 from flext_core import FlextService
@@ -41,21 +41,20 @@ class FlextOracleOicServiceBase(FlextService[Sequence[p.OracleOic.OICIntegration
     - Settings access
     """
 
-    def __init__(self, settings: FlextOracleOicSettings | None = None) -> None:
-        """Initialize base Oracle OIC service.
+    oic_settings: Annotated[
+        FlextOracleOicSettings,
+        m.Field(
+            description="Settings injected by the composition root.",
+        ),
+    ] = m.Field(default_factory=FlextOracleOicSettings.fetch_global)
+    _client: FlextOracleOicClient | None = m.PrivateAttr(default=None)
+    _monitoring_client: FlextApi | None = m.PrivateAttr(default=None)
+    _authenticator: t.JsonValue | None = m.PrivateAttr(default=None)
 
-        Args:
-            settings: Settings injected by the composition root; the process
-                singleton when omitted.
-
-        """
-        super().__init__()
-        self._oic_settings: FlextOracleOicSettings = (
-            settings if settings is not None else FlextOracleOicSettings.fetch_global()
-        )
-        self._client: FlextOracleOicClient | None = None
-        self._monitoring_client: FlextApi | None = None
-        self._authenticator: t.JsonValue | None = None
+    @override
+    def model_post_init(self, __context: Mapping[str, t.Scalar] | None, /) -> None:
+        """Initialize private client state from the validated settings."""
+        super().model_post_init(__context)
         self._initialize_components()
 
     def __enter__(self) -> Self:
@@ -173,7 +172,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[p.OracleOic.OICIntegration
     @override
     def settings(self) -> FlextOracleOicSettings:
         """The typed Oracle OIC settings namespace."""
-        return self._oic_settings
+        return self.oic_settings
 
     def list_integrations(self) -> p.Result[Sequence[p.OracleOic.OICIntegrationInfo]]:
         """List all Oracle OIC integrations.
@@ -244,20 +243,20 @@ class FlextOracleOicServiceBase(FlextService[Sequence[p.OracleOic.OICIntegration
             if validation_result.failure:
                 return r[FlextOracleOicClient].fail(validation_result.error)
             connection_config = m.OracleOic.OICConnectionConfig(
-                base_url=self._oic_settings.OracleOic.base_url,
-                api_version=self._oic_settings.OracleOic.api_version,
-                request_timeout=self._oic_settings.OracleOic.request_timeout,
-                max_retries=self._oic_settings.OracleOic.max_retries,
-                verify_ssl=self._oic_settings.OracleOic.verify_ssl,
+                base_url=self.oic_settings.OracleOic.base_url,
+                api_version=self.oic_settings.OracleOic.api_version,
+                request_timeout=self.oic_settings.OracleOic.request_timeout,
+                max_retries=self.oic_settings.OracleOic.max_retries,
+                verify_ssl=self.oic_settings.OracleOic.verify_ssl,
             )
             auth_config = m.OracleOic.OICAuthConfig(
-                oauth_client_id=self._oic_settings.OracleOic.oauth_client_id,
+                oauth_client_id=self.oic_settings.OracleOic.oauth_client_id,
                 oauth_client_secret=t.SecretStr(
-                    self._oic_settings.OracleOic.oauth_client_secret,
+                    self.oic_settings.OracleOic.oauth_client_secret,
                 ),
-                oauth_token_url=self._oic_settings.OracleOic.oauth_token_url,
-                oauth_client_aud=self._oic_settings.OracleOic.oauth_client_aud,
-                oauth_scope=self._oic_settings.OracleOic.oauth_scope,
+                oauth_token_url=self.oic_settings.OracleOic.oauth_token_url,
+                oauth_client_aud=self.oic_settings.OracleOic.oauth_client_aud,
+                oauth_scope=self.oic_settings.OracleOic.oauth_scope,
             )
             self._client = FlextOracleOicClient(
                 connection_config=connection_config,
@@ -272,7 +271,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[p.OracleOic.OICIntegration
             Result indicating validation success or failure.
 
         """
-        settings = self._oic_settings
+        settings = self.oic_settings
         base_url_validation: p.Result[bool] = (
             u.OracleOic
             .validate_base_url(settings.OracleOic.base_url)
@@ -326,7 +325,7 @@ class FlextOracleOicServiceBase(FlextService[Sequence[p.OracleOic.OICIntegration
 
     def _initialize_monitoring_client(self) -> None:
         """Initialize the monitoring client when monitoring is enabled."""
-        if not self._oic_settings.OracleOic.enable_monitoring:
+        if not self.oic_settings.OracleOic.enable_monitoring:
             return
         auth_token: str | None = None
         if self._authenticator:
@@ -339,10 +338,10 @@ class FlextOracleOicServiceBase(FlextService[Sequence[p.OracleOic.OICIntegration
             "Content-Type": "application/json",
         }
         api_config = FlextApiSettings.model_validate({
-            "base_url": self._oic_settings.OracleOic.base_url,
-            "timeout": self._oic_settings.OracleOic.request_timeout,
-            "max_retries": self._oic_settings.OracleOic.max_retries,
-            "verify_ssl": self._oic_settings.OracleOic.verify_ssl,
+            "base_url": self.oic_settings.OracleOic.base_url,
+            "timeout": self.oic_settings.OracleOic.request_timeout,
+            "max_retries": self.oic_settings.OracleOic.max_retries,
+            "verify_ssl": self.oic_settings.OracleOic.verify_ssl,
             "default_headers": auth_headers,
             "headers": auth_headers,
             "log_requests": False,
