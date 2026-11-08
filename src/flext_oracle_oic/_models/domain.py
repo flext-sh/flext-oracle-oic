@@ -34,7 +34,7 @@ class FlextOracleOicModelsDomain:
         ]
         oauth_token_url: Annotated[
             str,
-            m.Field(description="IDCS OAuth2 token endpoint"),
+            m.Field(min_length=1, description="IDCS OAuth2 token endpoint"),
         ]
         oauth_client_aud: Annotated[
             str | None,
