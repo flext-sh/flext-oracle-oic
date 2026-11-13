@@ -39,11 +39,11 @@ class TestsFlextOracleOicCli:
             u.Tests.param(["does-not-exist"], id="unknown-command"),
         ],
     )
-    def test_invalid_invocation_returns_failure_exit_code(
+    def test_invalid_invocation_returns_usage_exit_code(
         argv: list[str],
     ) -> None:
-        """Missing or unknown commands yield a non-zero exit code, never raise."""
-        tm.that(main(argv), eq=1)
+        """Missing or unknown commands yield Click's usage exit code, never raise."""
+        tm.that(main(argv), eq=c.Cli.EXIT_CODE_USAGE)
 
     @staticmethod
     @c.Tests.MARK.parametrize(
