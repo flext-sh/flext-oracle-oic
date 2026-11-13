@@ -146,8 +146,9 @@ def main(args: Sequence[str] | None = None) -> int:
         args: CLI argument sequence; defaults to ``sys.argv[1:]``.
 
     Returns:
-        Process exit code; ``0`` on success, ``1`` on failure,
-        ``130`` on interrupt.
+        Process exit code; ``0`` on success, ``1`` on a domain failure
+        (rendered once on stderr), ``2`` on a usage error, ``130`` on
+        interrupt.
 
     """
     app = FlextOracleOicCli.build_app()
@@ -159,7 +160,7 @@ def main(args: Sequence[str] | None = None) -> int:
         )
     except KeyboardInterrupt:
         return 130
-    return 0 if outcome.success else 1
+    return cli.finalize_result(outcome)
 
 
 __all__: Sequence[str] = ("FlextOracleOicCli", "main")
