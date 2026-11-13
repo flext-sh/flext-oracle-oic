@@ -7,11 +7,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Protocol, runtime_checkable
 
-
-@runtime_checkable
-class FlextOracleOicProtocolsBase(Protocol):
+class FlextOracleOicProtocolsBase:
     """Base Oracle OIC protocol part composed by the protocols facade."""
 
 
