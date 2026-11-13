@@ -47,7 +47,7 @@ Configure Oracle Integration Cloud connection parameters using
 `m.OracleOic.OICConnectionConfig`:
 
 ```python
-from flext_oracle_oic import m, p, settings
+from flext_oracle_oic import m, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
@@ -67,7 +67,7 @@ connection_config = m.OracleOic.OICConnectionConfig.model_validate(
 Validate OAuth2/IDCS authentication using `m.OracleOic.OICAuthConfig`:
 
 ```python
-from flext_oracle_oic import m, p, settings
+from flext_oracle_oic import m, settings
 
 auth_config = m.OracleOic.OICAuthConfig.model_validate(
     settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
@@ -136,7 +136,7 @@ runtime_settings = FlextOracleOicSettings()
 Pydantic automatically validates configuration objects:
 
 ```python
-from flext_oracle_oic import m, p, settings
+from flext_oracle_oic import m, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
@@ -183,7 +183,7 @@ Based on the actual Pydantic models implementation:
 **Secret Handling:**
 
 ```python
-from flext_oracle_oic import m, p, settings
+from flext_oracle_oic import m, settings
 
 auth_config = m.OracleOic.OICAuthConfig.model_validate(
     settings.OracleOic.model_dump(include=set(m.OracleOic.OICAuthConfig.model_fields)),
