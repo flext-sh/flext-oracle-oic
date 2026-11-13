@@ -101,7 +101,7 @@ if runtime_settings.OracleOic.base_url != settings.OracleOic.base_url:
 > It does not contact Oracle or prove authentication succeeds:
 
 ```python
-from flext_oracle_oic import m, p, settings
+from flext_oracle_oic import m, settings
 
 connection_config = m.OracleOic.OICConnectionConfig.model_validate(
     settings.OracleOic.model_dump(
