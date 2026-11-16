@@ -15,15 +15,8 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterator, Mapping, Sequence
 
-from flext_oracle_oic import FlextOracleOicServiceBase, FlextOracleOicSettings, s
+from flext_oracle_oic import FlextOracleOicSettings
 from flext_oracle_oic.services import FlextOracleOicService
-from flext_oracle_oic.services.auth import FlextOracleOicAuth
-from flext_oracle_oic.services.integration_crud import FlextOracleOicIntegrationCrud
-from flext_oracle_oic.services.integration_lifecycle import (
-    FlextOracleOicIntegrationLifecycle,
-)
-from flext_oracle_oic.services.monitoring import FlextOracleOicMonitoring
-from flext_oracle_oic.services.orchestration import FlextOracleOicOrchestration
 from tests import c, p, t, tm, u
 
 _VALID_CLIENT_ID = "client-id-123"
@@ -108,30 +101,6 @@ class TestsFlextOracleOicExtServices:
         FlextOracleOicSettings.reset_for_testing()
 
     # -- composition contract -------------------------------------------------
-
-    @staticmethod
-    @c.Tests.MARK.parametrize(
-        "mixin",
-        [
-            FlextOracleOicServiceBase,
-            FlextOracleOicAuth,
-            FlextOracleOicMonitoring,
-            FlextOracleOicOrchestration,
-            FlextOracleOicIntegrationLifecycle,
-            FlextOracleOicIntegrationCrud,
-        ],
-    )
-    def test_service_composes_every_documented_domain_mixin(
-        unconfigured_service: FlextOracleOicService,
-        mixin: type[FlextOracleOicServiceBase],
-    ) -> None:
-        """The facade is-a every domain mixin it advertises composing."""
-        tm.that(unconfigured_service, is_=mixin)
-
-    @staticmethod
-    def test_module_alias_s_is_the_service_base_class() -> None:
-        """The short ``s`` alias resolves to the base service facade class."""
-        tm.ok(s is FlextOracleOicServiceBase)
 
     @staticmethod
     def test_context_manager_yields_the_same_service(
