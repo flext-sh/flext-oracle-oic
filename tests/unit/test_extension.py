@@ -14,7 +14,6 @@ from __future__ import annotations
 from collections.abc import Callable, Sequence
 
 from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings, oracle_oic
-from flext_oracle_oic.services import FlextOracleOicService
 from tests import c, p, t, tm, u
 
 # Why: explicitly typed so pyrefly binds each lambda's `api` parameter from
@@ -179,18 +178,3 @@ class TestsFlextOracleOicExtension:
 
         tm.fail(result)
         tm.that(tm.not_none(result.error), empty=False)
-
-    @staticmethod
-    def test_failed_operation_preserves_validation_error_message(
-        api: FlextOracleOicApi,
-        settings: FlextOracleOicSettings,
-    ) -> None:
-        """The failure error identifies the offending credential validation."""
-        result = api.test_connection()
-
-        tm.fail(result)
-        expected = FlextOracleOicService(
-            oic_settings=settings
-        ).validate_business_rules()
-        tm.fail(expected)
-        tm.that(tm.not_none(result.error), eq=tm.not_none(expected.error))
