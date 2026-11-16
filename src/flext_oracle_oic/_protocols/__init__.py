@@ -32,4 +32,19 @@ install_lazy_exports(
         "FlextOracleOicProtocolsDomain": ".domain",
     },
     public_exports=__all__,
+    deferred_members={
+        "FlextOracleOicProtocolsConfig": (
+            "Config",
+            "FieldValidationPlan",
+        ),
+        "FlextOracleOicProtocolsDomain": (
+            "HTTPClient",
+            "ServiceRules",
+            "OICAuthConfig",
+            "OICConnectionConfig",
+            "OICIntegrationInfo",
+            "OICConnectionInfo",
+            "IntegrationStatus",
+        ),
+    },
 )

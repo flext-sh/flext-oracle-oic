@@ -119,6 +119,9 @@ install_lazy_exports(
         "x": "flext_auth",
     },
     public_exports=__all__,
+    deferred_members={
+        "FlextOracleOicModelsConfig": ("Config",),
+    },
 )
 
 if not TYPE_CHECKING:
