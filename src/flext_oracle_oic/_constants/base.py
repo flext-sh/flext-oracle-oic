@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Final
+from typing import ClassVar
 
 
 class FlextOracleOicConstantsBase:
@@ -17,8 +17,8 @@ class FlextOracleOicConstantsBase:
     scalar is owned by ``_constants.values``.
     """
 
-    DEFAULT_BASE_URL: Final[str] = "https://localhost.integration.ocp.oraclecloud.com"
-    DEFAULT_TOKEN_URL: Final[str] = f"{DEFAULT_BASE_URL}/oauth/token"
+    DEFAULT_BASE_URL: ClassVar[str] = "https://localhost.integration.ocp.oraclecloud.com"
+    DEFAULT_TOKEN_URL: ClassVar[str] = f"{DEFAULT_BASE_URL}/oauth/token"
 
 
 __all__: list[str] = ["FlextOracleOicConstantsBase"]
