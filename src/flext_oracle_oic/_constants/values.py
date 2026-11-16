@@ -10,7 +10,7 @@ import re
 from collections.abc import Mapping
 from enum import StrEnum, unique
 from types import MappingProxyType
-from typing import Final
+from typing import ClassVar
 
 from flext_core import t
 
@@ -23,28 +23,28 @@ class FlextOracleOicConstantsValues:
     (``c.OracleOic``).
     """
 
-    DEFAULT_API_VERSION: Final[str] = "v1"
-    DEFAULT_PAGE_SIZE: Final[int] = 100
-    MIN_PAGE_SIZE: Final[int] = 1
-    MIN_REQUEST_TIMEOUT: Final[int] = 1
-    DEFAULT_VERIFY_SSL: Final[bool] = True
+    DEFAULT_API_VERSION: ClassVar[str] = "v1"
+    DEFAULT_PAGE_SIZE: ClassVar[int] = 100
+    MIN_PAGE_SIZE: ClassVar[int] = 1
+    MIN_REQUEST_TIMEOUT: ClassVar[int] = 1
+    DEFAULT_VERIFY_SSL: ClassVar[bool] = True
 
     class Auth:
         """Oracle OIC Authentication scalar constants."""
 
-        DEFAULT_OAUTH_SCOPE: Final[str] = ""
+        DEFAULT_OAUTH_SCOPE: ClassVar[str] = ""
 
     class OICApiVersion:
         """OIC API version enumeration."""
 
-        V1: Final[str] = "v1"
-        V2: Final[str] = "v2"
+        V1: ClassVar[str] = "v1"
+        V2: ClassVar[str] = "v2"
 
     class Integration:
         """Oracle OIC Integration scalar constants."""
 
-        DEFAULT_VERSION: Final[str] = "01.00.0000"
-        DEFAULT_VERSION_FALLBACK: Final[str] = "01.00.0000"
+        DEFAULT_VERSION: ClassVar[str] = "01.00.0000"
+        DEFAULT_VERSION_FALLBACK: ClassVar[str] = "01.00.0000"
 
         @unique
         class Status(StrEnum):
@@ -60,8 +60,8 @@ class FlextOracleOicConstantsValues:
     class Connection:
         """Oracle OIC Connection scalar constants."""
 
-        DEFAULT_TIMEOUT_SECONDS: Final[int] = 30
-        DEFAULT_MAX_RETRIES: Final[int] = 3
+        DEFAULT_TIMEOUT_SECONDS: ClassVar[int] = 30
+        DEFAULT_MAX_RETRIES: ClassVar[int] = 3
 
         @unique
         class Status(StrEnum):
@@ -75,9 +75,9 @@ class FlextOracleOicConstantsValues:
     class Monitoring:
         """Oracle OIC Monitoring scalar constants."""
 
-        COMPONENT_DATABASE: Final[str] = "database"
-        COMPONENT_MESSAGING: Final[str] = "messaging"
-        COMPONENT_INTEGRATION_ENGINE: Final[str] = "integration_engine"
+        COMPONENT_DATABASE: ClassVar[str] = "database"
+        COMPONENT_MESSAGING: ClassVar[str] = "messaging"
+        COMPONENT_INTEGRATION_ENGINE: ClassVar[str] = "integration_engine"
 
         @unique
         class HealthStatus(StrEnum):
@@ -99,12 +99,12 @@ class FlextOracleOicConstantsValues:
     class API:
         """Oracle OIC API scalar constants."""
 
-        HTTP_ERROR_STATUS_THRESHOLD: Final[int] = 400
-        HEADER_CONTENT_TYPE: Final[str] = "Content-Type"
-        HEADER_AUTHORIZATION: Final[str] = "Authorization"
-        HEADER_ACCEPT: Final[str] = "Accept"
-        ENDPOINT_HEALTH: Final[str] = "/ic/api/integration/v1/health"
-        HTTP_STATUS_OK: Final[int] = 200
+        HTTP_ERROR_STATUS_THRESHOLD: ClassVar[int] = 400
+        HEADER_CONTENT_TYPE: ClassVar[str] = "Content-Type"
+        HEADER_AUTHORIZATION: ClassVar[str] = "Authorization"
+        HEADER_ACCEPT: ClassVar[str] = "Accept"
+        ENDPOINT_HEALTH: ClassVar[str] = "/ic/api/integration/v1/health"
+        HTTP_STATUS_OK: ClassVar[int] = 200
 
         @unique
         class Method(StrEnum):
@@ -119,14 +119,16 @@ class FlextOracleOicConstantsValues:
     class OracleOicValidation:
         """Oracle OIC validation scalar constants."""
 
-        MIN_INTEGRATION_NAME_LENGTH: Final[int] = 1
-        MAX_INTEGRATION_NAME_LENGTH: Final[int] = 100
-        INTEGRATION_NAME_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\s]+$")
-        CLIENT_ID_RE: Final[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
-        VERSION_PATTERN: Final[t.RegexPattern] = re.compile(
+        MIN_INTEGRATION_NAME_LENGTH: ClassVar[int] = 1
+        MAX_INTEGRATION_NAME_LENGTH: ClassVar[int] = 100
+        INTEGRATION_NAME_RE: ClassVar[t.RegexPattern] = re.compile(
+            r"^[a-zA-Z0-9_\-\s]+$"
+        )
+        CLIENT_ID_RE: ClassVar[t.RegexPattern] = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
+        VERSION_PATTERN: ClassVar[t.RegexPattern] = re.compile(
             r"^\\d{2}\\.\\d{2}\\.\\d{4}$",
         )
-        VALID_INTEGRATION_STATUSES: Final[frozenset[str]] = frozenset({
+        VALID_INTEGRATION_STATUSES: ClassVar[frozenset[str]] = frozenset({
             "ACTIVATED",
             "DEACTIVATED",
             "DRAFT",
@@ -135,7 +137,7 @@ class FlextOracleOicConstantsValues:
             "STOPPED",
             "ERROR",
         })
-        VALID_CONNECTION_TYPES: Final[frozenset[str]] = frozenset({
+        VALID_CONNECTION_TYPES: ClassVar[frozenset[str]] = frozenset({
             "REST",
             "SOAP",
             "DATABASE",
@@ -143,15 +145,15 @@ class FlextOracleOicConstantsValues:
             "FTP",
             "SFTP",
         })
-        VALID_CONNECTION_STATUSES: Final[frozenset[str]] = frozenset({
+        VALID_CONNECTION_STATUSES: ClassVar[frozenset[str]] = frozenset({
             "ACTIVE",
             "INACTIVE",
             "ERROR",
             "unknown",
         })
-        MIN_CLIENT_ID_LENGTH: Final[int] = 1
-        MIN_CLIENT_SECRET_LENGTH: Final[int] = 8
-        PERFORMANCE_THRESHOLDS: Final[Mapping[str, float]] = MappingProxyType({
+        MIN_CLIENT_ID_LENGTH: ClassVar[int] = 1
+        MIN_CLIENT_SECRET_LENGTH: ClassVar[int] = 8
+        PERFORMANCE_THRESHOLDS: ClassVar[Mapping[str, float]] = MappingProxyType({
             "response_time_ms": 5000.0,
             "success_rate": 0.95,
             "error_rate": 0.05,
@@ -160,8 +162,8 @@ class FlextOracleOicConstantsValues:
     class Cli:
         """Oracle OIC CLI scalar constants."""
 
-        APP_NAME: Final[str] = "flext-oracle-oic-ext"
-        APP_HELP: Final[str] = (
+        APP_NAME: ClassVar[str] = "flext-oracle-oic-ext"
+        APP_HELP: ClassVar[str] = (
             "FLEXT Oracle OIC Extension CLI - Enterprise Oracle "
             "Integration Cloud operations"
         )
