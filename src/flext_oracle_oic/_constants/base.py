@@ -17,7 +17,9 @@ class FlextOracleOicConstantsBase:
     scalar is owned by ``_constants.values``.
     """
 
-    DEFAULT_BASE_URL: ClassVar[str] = "https://localhost.integration.ocp.oraclecloud.com"
+    DEFAULT_BASE_URL: ClassVar[str] = (
+        "https://localhost.integration.ocp.oraclecloud.com"
+    )
     DEFAULT_TOKEN_URL: ClassVar[str] = f"{DEFAULT_BASE_URL}/oauth/token"
 
 
