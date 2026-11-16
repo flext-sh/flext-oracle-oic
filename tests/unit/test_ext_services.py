@@ -1,6 +1,6 @@
 """Behavioral tests for the Oracle OIC service facade public contract.
 
-Exercises the observable behavior of ``FlextOracleOicService`` (the MRO
+Exercises the observable behavior of ``FlextOracleOicApi`` (the MRO
 composition facade for all Oracle OIC extension services) through its public
 API only: the ``r[T]`` outcomes of its fallible operations, the graceful
 failure channel when the service is unconfigured, and the business-rule
@@ -15,8 +15,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterator, Mapping, Sequence
 
-from flext_oracle_oic import FlextOracleOicSettings
-from flext_oracle_oic.services import FlextOracleOicService
+from flext_oracle_oic import FlextOracleOicApi, FlextOracleOicSettings
 from tests import c, p, t, tm, u
 
 _VALID_CLIENT_ID = "client-id-123"
@@ -33,7 +32,7 @@ type _OperationResult = (
 
 
 def _invoke_unconfigured_operation(
-    svc: FlextOracleOicService,
+    svc: FlextOracleOicApi,
     operation: str,
 ) -> _OperationResult:
     """Invoke one fallible service operation by name.
@@ -64,26 +63,26 @@ class TestsFlextOracleOicExtServices:
 
     @u.Tests.fixture
     @staticmethod
-    def unconfigured_service() -> Iterator[FlextOracleOicService]:
+    def unconfigured_service() -> Iterator[FlextOracleOicApi]:
         """Service backed by default (credential-less) global settings.
 
         Yields:
-            Each ``FlextOracleOicService``.
+            Each ``FlextOracleOicApi``.
 
         """
         FlextOracleOicSettings.reset_for_testing()
-        yield FlextOracleOicService()
+        yield FlextOracleOicApi()
         FlextOracleOicSettings.reset_for_testing()
 
     @u.Tests.fixture
     @staticmethod
     def configured_service(
         monkeypatch: t.Tests.MonkeyPatch,
-    ) -> Iterator[FlextOracleOicService]:
+    ) -> Iterator[FlextOracleOicApi]:
         """Service backed by global settings with valid OAuth credentials.
 
         Yields:
-            Each ``FlextOracleOicService``.
+            Each ``FlextOracleOicApi``.
 
         """
         # NOTE (ADR-005): project fields are namespaced under settings.OracleOic,
@@ -97,14 +96,14 @@ class TestsFlextOracleOicExtServices:
             _VALID_OAUTH_CREDENTIAL,
         )
         FlextOracleOicSettings.reset_for_testing()
-        yield FlextOracleOicService()
+        yield FlextOracleOicApi()
         FlextOracleOicSettings.reset_for_testing()
 
     # -- composition contract -------------------------------------------------
 
     @staticmethod
     def test_context_manager_yields_the_same_service(
-        unconfigured_service: FlextOracleOicService,
+        unconfigured_service: FlextOracleOicApi,
     ) -> None:
         """Entering the service context returns the service instance itself."""
         with unconfigured_service as entered:
@@ -130,7 +129,7 @@ class TestsFlextOracleOicExtServices:
         ],
     )
     def test_operations_fail_gracefully_without_credentials(
-        unconfigured_service: FlextOracleOicService,
+        unconfigured_service: FlextOracleOicApi,
         operation: str,
     ) -> None:
         """Every fallible op returns a failed ``r`` (never raises) when unconfigured."""
@@ -140,7 +139,7 @@ class TestsFlextOracleOicExtServices:
 
     @staticmethod
     def test_execute_delegates_to_integration_listing(
-        unconfigured_service: FlextOracleOicService,
+        unconfigured_service: FlextOracleOicApi,
     ) -> None:
         """``execute`` mirrors ``list_integrations`` (same failure error)."""
         tm.that(
@@ -152,7 +151,7 @@ class TestsFlextOracleOicExtServices:
 
     @staticmethod
     def test_refresh_auth_token_reports_missing_authenticator(
-        unconfigured_service: FlextOracleOicService,
+        unconfigured_service: FlextOracleOicApi,
     ) -> None:
         """Token refresh fails with an explicit missing-authenticator error."""
         result = unconfigured_service.refresh_auth_token()
@@ -163,7 +162,7 @@ class TestsFlextOracleOicExtServices:
     @staticmethod
     @c.Tests.MARK.parametrize("token", ["", "some-token", "expired.jwt.value"])
     def test_validate_auth_token_reports_missing_authenticator(
-        unconfigured_service: FlextOracleOicService,
+        unconfigured_service: FlextOracleOicApi,
         token: str,
     ) -> None:
         """Token validation fails identically regardless of the token value."""
@@ -176,7 +175,7 @@ class TestsFlextOracleOicExtServices:
 
     @staticmethod
     def test_business_rules_fail_without_oauth_credentials(
-        unconfigured_service: FlextOracleOicService,
+        unconfigured_service: FlextOracleOicApi,
     ) -> None:
         """Default (credential-less) settings fail business-rule validation."""
         result = unconfigured_service.validate_business_rules()
@@ -188,7 +187,7 @@ class TestsFlextOracleOicExtServices:
 
     @staticmethod
     def test_business_rules_pass_with_valid_credentials(
-        configured_service: FlextOracleOicService,
+        configured_service: FlextOracleOicApi,
     ) -> None:
         """Valid OAuth credentials satisfy business-rule validation."""
         result = configured_service.validate_business_rules()
@@ -198,7 +197,7 @@ class TestsFlextOracleOicExtServices:
 
     @staticmethod
     def test_business_rules_validation_is_idempotent(
-        configured_service: FlextOracleOicService,
+        configured_service: FlextOracleOicApi,
     ) -> None:
         """Repeated validation of the same settings yields the same success."""
         first = configured_service.validate_business_rules()
@@ -220,7 +219,7 @@ class TestsFlextOracleOicExtServices:
 
     def test_configured_service_satisfies_its_own_rules_protocol(
         self,
-        configured_service: FlextOracleOicService,
+        configured_service: FlextOracleOicApi,
     ) -> None:
         """The real service structurally satisfies its own declared protocol."""
         tm.ok(self._is_service_rules(configured_service))
