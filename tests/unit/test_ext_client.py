@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import base64
 
-from flext_oracle_oic.ext_client import FlextOracleOicClient
+from flext_oracle_oic import FlextOracleOicClient
 from tests import c, m, p, t, tm, u
 
 # Named (not literal, and named without "token"/"secret") so ruff's flake8-bandit
