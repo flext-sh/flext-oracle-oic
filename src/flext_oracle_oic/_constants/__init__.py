@@ -29,4 +29,25 @@ install_lazy_exports(
         "FlextOracleOicConstantsValues": ".values",
     },
     public_exports=__all__,
+    deferred_members={
+        "FlextOracleOicConstantsBase": (
+            "DEFAULT_BASE_URL",
+            "DEFAULT_TOKEN_URL",
+        ),
+        "FlextOracleOicConstantsValues": (
+            "DEFAULT_API_VERSION",
+            "DEFAULT_PAGE_SIZE",
+            "MIN_PAGE_SIZE",
+            "MIN_REQUEST_TIMEOUT",
+            "DEFAULT_VERIFY_SSL",
+            "Auth",
+            "OICApiVersion",
+            "Integration",
+            "Connection",
+            "Monitoring",
+            "API",
+            "OracleOicValidation",
+            "Cli",
+        ),
+    },
 )
