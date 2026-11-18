@@ -39,29 +39,10 @@ install_lazy_exports(
         "FlextOracleOicUtilitiesOracleOic": ".oracle_oic",
     },
     public_exports=__all__,
-    deferred_members={
-        "FlextOracleOicUtilitiesAuthenticationValidation": (
-            "validate_oauth_client_id",
-            "validate_oauth_client_secret",
-        ),
-        "FlextOracleOicUtilitiesConnectionValidation": (
-            "_validate_closed_string",
-            "validate_base_url",
-            "validate_connection_status",
-            "validate_connection_type",
-        ),
-        "FlextOracleOicUtilitiesMonitoring": (
-            "_assess_metric",
-            "_components_validation_error",
-            "analyze_performance_metrics",
-            "validate_health_status",
-        ),
-        "FlextOracleOicUtilitiesOracleOic": (
-            "validate_integration_data",
-            "validate_string_field",
-            "validate_integration_name",
-            "validate_integration_status",
-            "validate_integration_version",
-        ),
-    },
+    deferred_members=(
+        "FlextOracleOicUtilitiesAuthenticationValidation",
+        "FlextOracleOicUtilitiesConnectionValidation",
+        "FlextOracleOicUtilitiesMonitoring",
+        "FlextOracleOicUtilitiesOracleOic",
+    ),
 )
