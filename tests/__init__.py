@@ -33,6 +33,14 @@ if TYPE_CHECKING:
         oracle_oic,
         settings,
     )
+    from flext_oracle_oic.services import (
+        FlextOracleOicAuth,
+        FlextOracleOicIntegrationCrud,
+        FlextOracleOicIntegrationLifecycle,
+        FlextOracleOicMonitoring,
+        FlextOracleOicOrchestration,
+        FlextOracleOicService,
+    )
     from tests.base import TestsFlextOracleOicServiceBase, s
     from tests.constants import TestsFlextOracleOicConstants, c
     from tests.models import TestsFlextOracleOicModels, m
@@ -44,13 +52,19 @@ if TYPE_CHECKING:
 
 __all__: tuple[str, ...] = (
     "FlextOracleOicApi",
+    "FlextOracleOicAuth",
     "FlextOracleOicCli",
     "FlextOracleOicClient",
     "FlextOracleOicConfig",
     "FlextOracleOicConstants",
+    "FlextOracleOicIntegrationCrud",
+    "FlextOracleOicIntegrationLifecycle",
     "FlextOracleOicModels",
     "FlextOracleOicModelsConfig",
+    "FlextOracleOicMonitoring",
+    "FlextOracleOicOrchestration",
     "FlextOracleOicProtocols",
+    "FlextOracleOicService",
     "FlextOracleOicServiceBase",
     "FlextOracleOicSettings",
     "FlextOracleOicTypes",
@@ -90,13 +104,19 @@ install_lazy_exports(
     globals(),
     {
         "FlextOracleOicApi": "flext_oracle_oic",
+        "FlextOracleOicAuth": "flext_oracle_oic.services",
         "FlextOracleOicCli": "flext_oracle_oic",
         "FlextOracleOicClient": "flext_oracle_oic",
         "FlextOracleOicConfig": "flext_oracle_oic",
         "FlextOracleOicConstants": "flext_oracle_oic",
+        "FlextOracleOicIntegrationCrud": "flext_oracle_oic.services",
+        "FlextOracleOicIntegrationLifecycle": "flext_oracle_oic.services",
         "FlextOracleOicModels": "flext_oracle_oic",
         "FlextOracleOicModelsConfig": "flext_oracle_oic",
+        "FlextOracleOicMonitoring": "flext_oracle_oic.services",
+        "FlextOracleOicOrchestration": "flext_oracle_oic.services",
         "FlextOracleOicProtocols": "flext_oracle_oic",
+        "FlextOracleOicService": "flext_oracle_oic.services",
         "FlextOracleOicServiceBase": "flext_oracle_oic",
         "FlextOracleOicSettings": "flext_oracle_oic",
         "FlextOracleOicTypes": "flext_oracle_oic",
