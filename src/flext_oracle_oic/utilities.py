@@ -31,10 +31,6 @@ from flext_oracle_oic._utilities import (
 
 class FlextOracleOicUtilities(
     FlextAuthUtilities,
-    FlextOracleOicUtilitiesOracleOic,
-    FlextOracleOicUtilitiesConnectionValidation,
-    FlextOracleOicUtilitiesAuthenticationValidation,
-    FlextOracleOicUtilitiesMonitoring,
 ):
     """Unified Oracle OIC Extension utilities.
 
