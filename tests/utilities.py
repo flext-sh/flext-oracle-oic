@@ -11,17 +11,14 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsUtilities
 
-from flext_oracle_oic import FlextOracleOicUtilities
+from tests import FlextOracleOicUtilities
 
 
 class TestsFlextOracleOicUtilities(FlextTestsUtilities, FlextOracleOicUtilities):
     """Test utilities combining TestsFlextUtilities with flext-oracle-oic utilities."""
 
-    class OracleOic(FlextOracleOicUtilities.OracleOic):
-        """OracleOic test utilities namespace."""
-
-        class Tests:
-            """Internal tests declarations."""
+    class Tests(FlextTestsUtilities.Tests):
+        """Internal tests declarations."""
 
 
 u = TestsFlextOracleOicUtilities

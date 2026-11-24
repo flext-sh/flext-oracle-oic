@@ -11,17 +11,14 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsProtocols
 
-from flext_oracle_oic import FlextOracleOicProtocols
+from tests import FlextOracleOicProtocols
 
 
 class TestsFlextOracleOicProtocols(FlextTestsProtocols, FlextOracleOicProtocols):
     """Test protocols combining TestsFlextProtocols and FlextOracleOicProtocols."""
 
-    class OracleOic(FlextOracleOicProtocols.OracleOic):
-        """OracleOic test protocols namespace."""
-
-        class Tests:
-            """OracleOic-specific test protocols."""
+    class Tests(FlextTestsProtocols.Tests):
+        """OracleOic-specific test protocols."""
 
 
 p = TestsFlextOracleOicProtocols

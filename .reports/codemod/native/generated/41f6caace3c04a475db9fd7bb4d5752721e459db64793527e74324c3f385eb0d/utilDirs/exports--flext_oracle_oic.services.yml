@@ -1,0 +1,1 @@
+{"id":"exports--flext_oracle_oic.services","language":"Python","rule":{"regex":"^(?:FlextOracleOicAuth|FlextOracleOicIntegrationCrud|FlextOracleOicIntegrationLifecycle|FlextOracleOicMonitoring|FlextOracleOicOrchestration|FlextOracleOicService)$"}}
