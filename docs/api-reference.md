@@ -302,9 +302,9 @@ gate receipts and successful configured runtime validation, not API presence alo
 
 - [flext-core Foundation](https://github.com/flext-sh/flext-core/blob/0.12.0-dev/docs/api-reference/README.md) -
   Core APIs and patterns
-- [flext-core Railway-Oriented Programming](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-core/docs/guides/railway-oriented-programming.md) -
+- [flext-core Railway-Oriented Programming](https://github.com/flext-sh/flext-core/blob/0.12.0-dev/docs/guides/railway-oriented-programming.md) -
   r patterns
-- [flext-db-oracle Integration](https://github.com/flext-sh/flext/tree/0.12.0-dev/flext-db-oracle/AGENTS.md) -
+- [flext-db-oracle Integration](https://github.com/flext-sh/flext-db-oracle/blob/0.12.0-dev/AGENTS.md) -
   Oracle database integration
 
 **External Resources**:
